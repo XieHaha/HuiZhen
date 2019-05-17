@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@color/color_1491fc"
+    android:layout_height="wrap_content">
+
+    <View
+        android:id="@+id/status_bar_fix"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/color_f5f5f5" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="62dp">
+
+        <TextView
+            android:id="@+id/public_main_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="20dp"
+            android:textColor="@color/color_17242e"
+            android:textSize="@dimen/text_24"
+            tools:text="标题" />
+
+        <TextView
+            android:id="@+id/public_main_title_status"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textColor="@color/txt_main_color_selector"
+            android:textSize="@dimen/text_16"
+            android:gravity="bottom"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            tools:text="全部已读" />
+    </RelativeLayout>
+
+
+</LinearLayout>

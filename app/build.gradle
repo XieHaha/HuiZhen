@@ -1,0 +1,104 @@
+apply plugin: 'com.android.application'
+
+def releaseTime() {
+    return new Date().format("MM月dd日", TimeZone.getTimeZone("UTC"))
+}
+
+android {
+    compileSdkVersion 26
+    defaultConfig {
+        minSdkVersion 19
+        targetSdkVersion 26
+        versionCode 18
+        versionName "2.1.1"
+        flavorDimensions "default"
+        multiDexEnabled true
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    flavorDimensions "zyc"
+    productFlavors {
+        zyc {
+            dimension "zyc"
+            applicationId "com.yht.yihuantong"
+            buildConfigField "String", "BASE_BASIC_URL", "\"http://www.zychealth.com\""
+            resValue "string", "APP_NAME", "\"会珍医生版\""
+            manifestPlaceholders = [ease_appkey : "1110180330253249#dpappproject",
+                                    jpush_appkey: "8b803f7221a77f19b78b3523"]
+        }
+
+        develop {
+            dimension "zyc"
+            applicationId "com.yht.yihuantong"
+            buildConfigField "String", "BASE_BASIC_URL", "\"http://test.zychealth.com\""
+            resValue "string", "APP_NAME", "\"会珍医生内测版\""
+            manifestPlaceholders = [ease_appkey : "1110180330253249#dpappproject",
+                                    jpush_appkey: "8b803f7221a77f19b78b3523"]
+        }
+
+        beta {
+            dimension "zyc"
+            applicationId "com.yht.yihuantong_test"
+            buildConfigField "String", "BASE_BASIC_URL", "\"http://gray.zychealth.com\""
+            resValue "string", "APP_NAME", "\"会珍医生测试版\""
+            manifestPlaceholders = [ease_appkey : "1105190122042534#dp-test-app",
+                                    jpush_appkey: "0253e6c0183a34f72630c349"]
+        }
+    }
+
+    signingConfigs {
+        release {
+            keyAlias '智予成'
+            keyPassword '123456'
+            storeFile file('F:/ZYC/HuiZhen/app/zyc.jks')
+            storePassword 'android'
+        }
+
+        debug {
+            keyAlias '测试'
+            keyPassword '999999'
+            storeFile file('F:/ZYC/HuiZhen/app/zyc.jks')
+            storePassword 'android'
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
+            signingConfig signingConfigs.debug
+        }
+    }
+
+    android.applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "会珍医生版V${variant.versionName}-${releaseTime()}.apk"
+        }
+    }
+    compileOptions {
+        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_8
+    }
+    dexOptions {
+        javaMaxHeapSize "4g"
+    }
+    lintOptions {
+        disable 'GoogleAppIndexingWarning'
+    }
+
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation project(':frame')
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
+    //注解
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.0'
+}

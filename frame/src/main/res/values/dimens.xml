@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--title bar 高度-->
+    <dimen name="app_title_bar_height">44dp</dimen>
+    <!--图片库  图片大小-->
+    <dimen name="app_picture_size">120dp</dimen>
+    <dimen name="app_hei_line">1px</dimen>
+
+    <dimen name="text_24">24sp</dimen>
+    <dimen name="text_20">20sp</dimen>
+    <dimen name="text_17">17sp</dimen>
+    <dimen name="text_16">16sp</dimen>
+    <dimen name="text_13">13sp</dimen>
+    <dimen name="text_11">11sp</dimen>
+</resources>

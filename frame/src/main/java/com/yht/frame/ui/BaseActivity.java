@@ -1,0 +1,429 @@
+package com.yht.frame.ui;
+
+import android.annotation.TargetApi;
+import android.app.Activity;
+import android.graphics.Color;
+import android.os.Build;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
+import com.yht.frame.R;
+import com.yht.frame.data.BaseResponse;
+import com.yht.frame.data.Tasks;
+import com.yht.frame.http.listener.ResponseListener;
+import com.yht.frame.permission.OnPermissionCallback;
+import com.yht.frame.permission.Permission;
+import com.yht.frame.permission.PermissionHelper;
+import com.yht.frame.utils.LogUtils;
+import com.yht.frame.utils.SharePreferenceUtil;
+import com.yht.frame.utils.ToastUtil;
+import com.yht.frame.widgets.dialog.LoadingDialog;
+
+import butterknife.ButterKnife;
+
+/**
+ * activity基类
+ *
+ * @author DUNDUN
+ */
+public abstract class BaseActivity<T> extends RxAppCompatActivity
+        implements UiInterface, ResponseListener<BaseResponse>, View.OnClickListener, OnPermissionCallback {
+    /**
+     * load view
+     */
+    private LoadingDialog loadingView;
+    /**
+     * 轻量级存储
+     */
+    protected SharePreferenceUtil sharePreferenceUtil;
+    /**
+     * 权限管理类
+     */
+    protected PermissionHelper permissionHelper;
+    private boolean isRequest = true;
+    private boolean isRequestPhone = true;
+    private boolean isRequestCamera = true;
+    private boolean isRequestRecord = true;
+    /**
+     * 返回按钮对象
+     */
+    protected ImageView backBtn;
+    /**
+     * 标题
+     */
+    private TextView tvTitle;
+
+    @Override
+    protected final void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        AppManager.getInstance().addActivity(this);
+        befordCreateView(savedInstanceState);
+        int layoutID = getLayoutID();
+        if (layoutID != 0) {
+            setContentView(layoutID);
+        }
+        else {
+            setContentView(getLayoutView());
+        }
+        ButterKnife.bind(this);
+        sharePreferenceUtil = new SharePreferenceUtil(this);
+        /**
+         * 权限管理类
+         */
+        permissionHelper = PermissionHelper.getInstance(this);
+        permissionHelper.request(new String[] {
+                Permission.READ_PHONE_STATE, Permission.STORAGE_WRITE });
+        init(savedInstanceState);
+    }
+
+    /**
+     * 方法回调顺序
+     * 1.initView
+     * 2.initClss
+     * 3.initData
+     * 4.initListener
+     *
+     * @param savedInstanceState
+     */
+    private void init(@NonNull Bundle savedInstanceState) {
+        initBaseViews();
+        if (isInitBackBtn()) {
+            initBackBtn();
+        }
+        initObject(savedInstanceState);
+        initData(savedInstanceState);
+        initListener();
+    }
+
+    private void initBaseViews() {
+        try {
+            backBtn = findViewById(R.id.public_title_bar_back);
+            tvTitle = findViewById(R.id.public_title_bar_title);
+        }
+        catch (Exception e) {
+            LogUtils.e(getClass().getSimpleName(), e.getMessage());
+        }
+    }
+
+    /**
+     * 初始化back按钮事件，及title名称赋值
+     */
+    private void initBackBtn() {
+        try {
+            backBtn.setVisibility(View.VISIBLE);
+            backBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
+            tvTitle.setText(getTitle().toString());
+        }
+        catch (Exception e) {
+            LogUtils.e(getClass().getSimpleName(), e.getMessage());
+        }
+    }
+
+    /**
+     * 是否初始化返回按钮
+     *
+     * @return 如果不想baseactivity自动设置监听返回按钮的话就传回null，
+     * 系统则不会自动设置监听,但是会初始化控件
+     */
+    protected boolean isInitBackBtn() {
+        return false;
+    }
+
+    private void initLoadingView() {
+        loadingView = new LoadingDialog(this);
+    }
+
+    /**
+     * 显示进度条
+     */
+    public void showLoadingView() {
+        showLoadingView(true);
+    }
+
+    /**
+     * 显示进度条
+     *
+     * @param cancel 是否可取消
+     */
+    public void showLoadingView(final boolean cancel) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (loadingView == null) {
+                    initLoadingView();
+                }
+                loadingView.setCancelable(cancel);
+                loadingView.setCanceledOnTouchOutside(cancel);
+                if (!loadingView.isShowing()) {
+                    loadingView.show();
+                }
+            }
+        });
+    }
+
+    /**
+     * 关闭进度条
+     */
+    public void closeLoadingView() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (loadingView == null) {
+                    return;
+                }
+                if (!loadingView.isShowing()) {
+                    return;
+                }
+                loadingView.setCancelable(true);
+                loadingView.setCanceledOnTouchOutside(true);
+                loadingView.dismiss();
+            }
+        });
+    }
+
+    /**
+     * 获取状态栏高度,在页面还没有显示出来之前
+     *
+     * @param a
+     * @return
+     */
+    public static int getStateBarHeight(Activity a) {
+        int result = 0;
+        int resourceId = a.getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = a.getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
+    }
+
+    /**
+     * 修改状态栏为全透明
+     *
+     * @param activity
+     */
+    @TargetApi(19)
+    public void transparencyBar(Activity activity) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = activity.getWindow();
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.getDecorView()
+                  .setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Color.TRANSPARENT);
+        }
+        else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Window window = activity.getWindow();
+            window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
+                            WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }
+    }
+
+    /**
+     * 得到返回按钮控件
+     */
+    public ImageView getBackBtnView() {
+        return backBtn;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        AppManager.getInstance().removeActivity(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        onClick(v, v.getId());
+    }
+
+    /**
+     * 单击回调
+     *
+     * @param v       点击的view
+     * @param clickID 点击的控件id
+     */
+    public void onClick(View v, int clickID) {
+    }
+
+    /**
+     * 默认不适用此方法，在子类里可以重构他
+     */
+    @Override
+    public View getLayoutView() {
+        return null;
+    }
+    //=====================setContentView 前回调
+
+    @Override
+    public void befordCreateView(@NonNull Bundle savedInstanceState) {
+    }
+
+    @Override
+    public void initObject(@NonNull Bundle savedInstanceState) {
+    }
+
+    @Override
+    public void initData(@NonNull Bundle savedInstanceState) {
+    }
+
+    @Override
+    public void initListener() {
+    }
+
+    @Override
+    public int getLayoutID() {
+        return 0;
+    }
+
+    @Override
+    public void beforeCreateView(@NonNull Bundle savedInstanceState) {
+    }
+
+    /**
+     * ==============================网络回调
+     */
+    @Override
+    public void onResponseSuccess(Tasks task, BaseResponse response) {
+    }
+
+    @Override
+    public void onResponseCode(Tasks task, BaseResponse response) {
+    }
+
+    @Override
+    public void onResponseError(Tasks task, Exception e) {
+        ToastUtil.toast(this, e.getMessage());
+    }
+
+    @Override
+    public void onResponseStart(Tasks task) {
+    }
+
+    @Override
+    public void onResponseEnd(Tasks task) {
+    }
+
+    @Override
+    public void onResponseCancel(Tasks task) {
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+            @NonNull int[] grantResults) {
+        if (permissions == null) {
+            return;
+        }
+        for (String per : permissions) {
+            if (Permission.STORAGE_WRITE.equals(per)) {
+                permissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
+                return;
+            }
+            if (Permission.READ_PHONE_STATE.equals(per)) {
+                permissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
+                return;
+            }
+            if (Permission.CAMERA.equals(per)) {
+                permissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
+                return;
+            }
+            if (Permission.RECORD_AUDIO.equals(per)) {
+                permissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
+                return;
+            }
+        }
+    }
+
+    @Override
+    public void onPermissionGranted(@NonNull String[] permissionName) {
+        isRequest = true;
+        isRequestPhone = true;
+        isRequestCamera = true;
+        isRequestRecord = true;
+    }
+
+    @Override
+    public void onPermissionDeclined(@NonNull String[] permissionName) {
+        if (permissionName == null) {
+            return;
+        }
+        for (String permission : permissionName) {
+            if (Permission.STORAGE_WRITE.equals(permission)) {
+                ToastUtil.toast(getApplicationContext(), R.string.dialog_no_storage_permission_tip);
+                break;
+            }
+            if (Permission.READ_PHONE_STATE.equals(permission)) {
+                ToastUtil.toast(getApplicationContext(), R.string.dialog_no_read_phone_state_tip);
+                break;
+            }
+            if (Permission.CAMERA.equals(permission)) {
+                ToastUtil.toast(getApplicationContext(), R.string.dialog_no_camera_permission_tip);
+                break;
+            }
+            if (Permission.RECORD_AUDIO.equals(permission)) {
+                ToastUtil.toast(getApplicationContext(), R.string.dialog_no_audio_permission_tip);
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void onPermissionPreGranted(@NonNull String permissionsName) {
+        isRequest = true;
+        isRequestPhone = true;
+        isRequestCamera = true;
+        isRequestRecord = true;
+    }
+
+    @Override
+    public void onPermissionNeedExplanation(@NonNull String permissionName) {
+        if (isRequest) {
+            isRequest = false;
+            permissionHelper.requestAfterExplanation(Permission.STORAGE_WRITE);
+        }
+        if (isRequestPhone) {
+            isRequestPhone = false;
+            permissionHelper.requestAfterExplanation(Permission.READ_PHONE_STATE);
+        }
+        if (isRequestCamera) {
+            isRequestCamera = false;
+            permissionHelper.requestAfterExplanation(Permission.CAMERA);
+        }
+        if (isRequestRecord) {
+            isRequestRecord = false;
+            permissionHelper.requestAfterExplanation(Permission.RECORD_AUDIO);
+        }
+    }
+
+    @Override
+    public void onPermissionReallyDeclined(@NonNull String permissionName) {
+    }
+
+    @Override
+    public void onNoPermissionNeeded(@NonNull Object permissionName) {
+        isRequest = true;
+        isRequestPhone = true;
+        isRequestCamera = true;
+        isRequestRecord = true;
+    }
+}

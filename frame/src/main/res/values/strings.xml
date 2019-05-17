@@ -1,0 +1,50 @@
+<resources>
+    <string name="app_name">frame</string>
+
+
+    <!--公用-->
+    <string name="txt_hint">提示</string>
+    <string name="txt_cancel">取消</string>
+    <string name="txt_call">呼叫</string>
+    <string name="txt_sure">确定</string>
+    <string name="txt_open">去开启</string>
+    <string name="txt_exit">退出</string>
+    <string name="txt_loading_again">重新加载</string>
+    <string name="txt_none_network">抱歉，好像网络出问题了</string>
+    <string name="txt_none_message">暂无消息</string>
+    <string name="txt_none_patient">暂无患者</string>
+    <string name="txt_none_recording">暂无记录</string>
+    <string name="txt_none_upgrade">功能升级</string>
+
+    <!--主页-->
+    <string name="txt_message">消息</string>
+    <string name="txt_worker">工作室</string>
+    <string name="txt_patient">患者</string>
+
+    <!--启动页 引导页-->
+    <string name="txt_splash_time_hint">跳过(%ds)</string>
+
+
+    <!--版本更新-->
+    <string name="txt_version_ignore">忽略</string>
+    <string name="txt_version_update">马上更新</string>
+    <string name="txt_version_install">立即安装</string>
+
+    <!--检查相关-->
+    <string name="txt_reserve_check">预约检查</string>
+
+    <!--permission-->
+    <string name="toast_public_current_no_network">当前无网络连接</string>
+    <string name="dialog_no_camera_permission_tip">无法打开摄像头，请检查是否已经打开摄像头权限</string>
+    <string name="dialog_no_storage_permission_tip">无法访问存储空间，请检查是否已经打开存储权限</string>
+    <string name="dialog_no_audio_permission_tip">无法启用录音，请检查是否已经打开录音权限</string>
+    <string name="dialog_no_location_permission_tip">无法获取位置信息，请检查是否已经打开位置信息权限</string>
+    <string name="dialog_no_audio_camera_permission_tip">无法启用相机和录音，请检查是否已经打开相机和录音权限</string>
+    <string name="dialog_no_read_phone_state_tip">无法获取手机信息，请检查是否已经打开电话权限</string>
+    <string name="dialog_no_camera_tip">无法打开摄像头</string>
+    <string name="dialog_no_storage_tip">无法访问存储空间</string>
+    <string name="dialog_no_audio_tip">无法启用录音</string>
+    <string name="dialog_no_permission_tip">，请检查是否打开相关权限</string>
+    <string name="dialog_no_record_tip">无法录像，请检查是否打开相机和录音权限</string>
+    <string name="dialog_discard_before_vedio">确认将丢弃之前已拍摄的视频</string>
+</resources>

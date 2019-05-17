@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:background="@color/color_f5f5f5"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:id="@+id/act_main_tab_frameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="60dp" />
+
+    <com.lijiankun24.shadowlayout.ShadowLayout
+        android:layout_width="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_height="60dp"
+        app:shadowColor="#1a000000"
+        app:shadowDx="0dp"
+        app:shadowDy="0dp"
+        app:shadowRadius="6dp"
+        app:shadowShape="rectangle"
+        app:shadowSide="top">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            android:background="@drawable/corner10_top_white_bg"
+            android:layout_height="49dp">
+
+            <LinearLayout
+                android:id="@+id/act_main_tab1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="21dp"
+                    android:src="@drawable/selector_message_main_tab" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:text="@string/txt_message"
+                    android:textColor="@color/txt_main_color_selector"
+                    android:textSize="@dimen/text_11" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/act_main_tab3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="21dp"
+                    android:src="@drawable/selector_patient_main_tab" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:text="@string/txt_patient"
+                    android:textColor="@color/txt_main_color_selector"
+                    android:textSize="@dimen/text_11" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </com.lijiankun24.shadowlayout.ShadowLayout>
+
+    <com.lijiankun24.shadowlayout.ShadowLayout
+        android:layout_width="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_height="73dp"
+        app:shadowColor="#1a000000"
+        app:shadowDx="0dp"
+        app:shadowDy="0dp"
+        app:shadowRadius="6dp"
+        app:shadowShape="oval"
+        app:shadowSide="top|left|right">
+
+        <LinearLayout
+            android:id="@+id/act_main_tab2"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:elevation="4dp"
+            android:layout_width="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/corner28_top_white_bg"
+            android:layout_height="60dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:src="@drawable/selector_worker_main_tab"
+                android:layout_centerInParent="true"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:text="@string/txt_worker"
+                android:textColor="@color/txt_main_color_selector"
+                android:textSize="@dimen/text_11" />
+
+        </LinearLayout>
+    </com.lijiankun24.shadowlayout.ShadowLayout>
+
+
+</RelativeLayout>
