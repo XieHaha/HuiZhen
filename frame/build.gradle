@@ -32,13 +32,11 @@ android {
 }
 
 dependencies {
-    api fileTree(dir: 'libs', include: ['*.jar'])
+    api fileTree(include: ['*.jar'], dir: 'libs')
     api 'com.android.support:appcompat-v7:26.1.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-
-
     //注解
     api 'com.jakewharton:butterknife:8.8.0'
     //kotlin 2019年4月12日16:45:52
@@ -65,4 +63,6 @@ dependencies {
     api 'com.yanzhenjie.nohttp:nohttp:1.1.10'
     //阴影
     api 'com.lijiankun24:shadowlayout:1.1.0'
+    // recyclerview帮助类
+    api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
 }

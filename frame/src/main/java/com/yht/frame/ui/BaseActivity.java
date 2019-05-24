@@ -292,11 +292,6 @@ public abstract class BaseActivity<T> extends RxAppCompatActivity
     }
 
     @Override
-    public int getLayoutID() {
-        return 0;
-    }
-
-    @Override
     public void beforeCreateView(@NonNull Bundle savedInstanceState) {
     }
 

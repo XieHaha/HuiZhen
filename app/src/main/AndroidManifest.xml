@@ -39,7 +39,12 @@
         <activity
             android:name=".ui.SplashActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppFullScreenTheme"></activity>
+            android:theme="@style/AppFullScreenTheme">
+        </activity>
+        <activity
+            android:name=".ui.SearchActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysVisible" />
     </application>
 
 </manifest>

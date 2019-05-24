@@ -1,6 +1,7 @@
 package com.yht.frame.ui;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -8,11 +9,13 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.http.listener.ResponseListener;
 import com.yht.frame.utils.ToastUtil;
+import com.yht.frame.widgets.edittext.SuperEditText;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -99,6 +102,24 @@ public abstract class BaseFragment extends Fragment
     public void onDestroy() {
         super.onDestroy();
         AppManager.getInstance().removeActivity(getActivity());
+    }
+
+    /**
+     * 隐藏软键盘
+     */
+    public void hideSoftInputFromWindow(Context context, SuperEditText editText) {
+        InputMethodManager inputMethodManager = (InputMethodManager)context.getSystemService(
+                Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+    }
+
+    /**
+     * 打开软键盘
+     */
+    public void showSoftInputFromWindow(Context context, SuperEditText editText) {
+        InputMethodManager inputMethodManager = (InputMethodManager)context.getSystemService(
+                Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.showSoftInput(editText, InputMethodManager.SHOW_FORCED);
     }
 
     /**

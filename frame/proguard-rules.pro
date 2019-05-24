@@ -33,3 +33,14 @@
 -dontwarn cn.jiguang.**
 -keep class cn.jiguang.** { *; }
 #极光
+
+#RecyclerView帮助类
+-keep class com.chad.library.adapter.** {
+*;
+}
+-keep public class * extends com.chad.library.adapter.base.BaseQuickAdapter
+-keep public class * extends com.chad.library.adapter.base.BaseViewHolder
+-keepclassmembers  class **$** extends com.chad.library.adapter.base.BaseViewHolder {
+     <init>(...);
+}
+#RecyclerView帮助类

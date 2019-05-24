@@ -2,32 +2,39 @@ package com.zyc.doctor.ui.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Button;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
-import com.yht.frame.data.BaseData;
 import com.yht.frame.ui.BaseFragment;
-import com.yht.frame.utils.ToastUtil;
-import com.yht.frame.widgets.LoadViewHelper;
-import com.yht.frame.widgets.dialog.HintDialog;
+import com.yht.frame.widgets.edittext.SuperEditText;
 import com.zyc.doctor.R;
+import com.zyc.doctor.ui.AnimFinishAdapter;
 
 import butterknife.BindView;
-import me.jessyan.autosize.internal.CustomAdapt;
 
 /**
  * @author 顿顿
  * @date 19/5/17 14:55
  * @des 工作室
  */
-public class WorkerFragment extends BaseFragment implements CustomAdapt, LoadViewHelper.OnNextClickListener {
-    @BindView(R.id.button)
-    Button button;
-    @BindView(R.id.button1)
-    Button button1;
-    @BindView(R.id.button2)
-    Button button2;
-    int type = 1;
+public class WorkerFragment extends BaseFragment {
+    @BindView(R.id.view_search_bg)
+    RelativeLayout viewSearchBg;
+    @BindView(R.id.view_search_cancel)
+    TextView viewSearchCancel;
+    @BindView(R.id.view_search_edit)
+    SuperEditText viewSearchEdit;
+    @BindView(R.id.view_search_layout)
+    RelativeLayout viewSearchLayout;
+    @BindView(R.id.view_search_list)
+    RecyclerView viewSearchList;
+    @BindView(R.id.view_search_edit_layout)
+    RelativeLayout viewSearchEditLayout;
 
     @Override
     public int getLayoutID() {
@@ -37,50 +44,49 @@ public class WorkerFragment extends BaseFragment implements CustomAdapt, LoadVie
     @Override
     public void initView(View view, @NonNull Bundle savedInstanceState) {
         super.initView(view, savedInstanceState);
-        LoadViewHelper helper = new LoadViewHelper(view);
-        helper.setOnNextClickListener(this);
-        button.setOnClickListener(new View.OnClickListener() {
+        viewSearchCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDialog();
+                setTopBarVisibility(View.GONE);
             }
         });
-        button1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ToastUtil.toast(getContext(), "中间显示");
-            }
-        });
-        button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (type > 5) {
-                    type = 1;
+    }
+
+    /**
+     * 设置tabbar的可见性
+     */
+    public void setTopBarVisibility(int visibility) {
+        if (visibility == View.VISIBLE) {
+            Animation toDown = new TranslateAnimation(0f, 0f, -viewSearchLayout.getMeasuredHeight(), 0f);
+            toDown.setDuration(300);
+            viewSearchLayout.startAnimation(toDown);
+            Animation alpha = new AlphaAnimation(0, 1);
+            alpha.setDuration(300);
+            viewSearchBg.startAnimation(alpha);
+            viewSearchLayout.setVisibility(View.VISIBLE);
+            showSoftInputFromWindow(getContext(), viewSearchEdit);
+            toDown.setAnimationListener(new AnimFinishAdapter() {
+                @Override
+                public void end() {
+                    viewSearchBg.setVisibility(View.VISIBLE);
                 }
-                helper.load(type);
-                type++;
-            }
-        });
-    }
-
-    private void showDialog() {
-        HintDialog hintDialog = new HintDialog(getContext());
-        hintDialog.show();
-    }
-
-    @Override
-    public void onNextClick() {
-        ToastUtil.toast(getContext(), "next");
-    }
-
-    /*************************屏幕适配*/
-    @Override
-    public boolean isBaseOnWidth() {
-        return false;
-    }
-
-    @Override
-    public float getSizeInDp() {
-        return BaseData.BASE_DEVICE_DEFAULT_WIDTH;
+            });
+        }
+        else {
+            Animation toUp = new TranslateAnimation(0f, 0f, 0f, -viewSearchLayout.getMeasuredHeight());
+            toUp.setDuration(300);
+            viewSearchLayout.startAnimation(toUp);
+            Animation alpha = new AlphaAnimation(1, 0);
+            alpha.setDuration(300);
+            viewSearchBg.startAnimation(alpha);
+            hideSoftInputFromWindow(getContext(), viewSearchEdit);
+            toUp.setAnimationListener(new AnimFinishAdapter() {
+                @Override
+                public void end() {
+                    viewSearchLayout.setVisibility(View.INVISIBLE);
+                    viewSearchBg.setVisibility(View.GONE);
+                }
+            });
+        }
     }
 }
