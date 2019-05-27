@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:background="@color/color_ffffff"
+    android:paddingLeft="35dp"
+    android:paddingRight="35dp">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_login_logo"
+        android:layout_marginTop="101dp" />
+
+
+    <TextView
+        android:id="@+id/tv_login_wechat"
+        android:layout_width="match_parent"
+        android:layout_height="38dp"
+        android:layout_marginTop="83dp"
+        android:background="@drawable/corner28_1491fc_bg"
+        android:text="@string/txt_login_wechat"
+        android:gravity="center"
+        android:textSize="@dimen/text_16"
+        android:textColor="@color/color_ffffff" />
+
+    <TextView
+        android:id="@+id/tv_login_phone"
+        android:layout_width="match_parent"
+        android:layout_height="38dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/corner28_stroke1_1491fc"
+        android:text="@string/txt_login_phone"
+        android:gravity="center"
+        android:textSize="@dimen/text_16"
+        android:textColor="@color/color_1491fc" />
+
+    <TextView
+        android:id="@+id/tv_login_protocol"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/txt_login_protocol"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:textSize="@dimen/text_13"
+        android:padding="5dp"
+        android:textColor="@color/color_9b9b9b" />
+
+</LinearLayout>

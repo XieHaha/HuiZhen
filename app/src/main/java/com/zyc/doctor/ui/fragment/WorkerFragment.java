@@ -1,5 +1,6 @@
 package com.zyc.doctor.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -14,6 +16,7 @@ import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.widgets.edittext.SuperEditText;
 import com.zyc.doctor.R;
 import com.zyc.doctor.ui.AnimFinishAdapter;
+import com.zyc.doctor.ui.login.LoginOptionsActivity;
 
 import butterknife.BindView;
 
@@ -35,6 +38,8 @@ public class WorkerFragment extends BaseFragment {
     RecyclerView viewSearchList;
     @BindView(R.id.view_search_edit_layout)
     RelativeLayout viewSearchEditLayout;
+    @BindView(R.id.button)
+    Button button;
 
     @Override
     public int getLayoutID() {
@@ -48,6 +53,12 @@ public class WorkerFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 setTopBarVisibility(View.GONE);
+            }
+        });
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(), LoginOptionsActivity.class));
             }
         });
     }
@@ -67,7 +78,7 @@ public class WorkerFragment extends BaseFragment {
             showSoftInputFromWindow(getContext(), viewSearchEdit);
             toDown.setAnimationListener(new AnimFinishAdapter() {
                 @Override
-                public void end() {
+                public void onAnimationEnd(Animation animation) {
                     viewSearchBg.setVisibility(View.VISIBLE);
                 }
             });
@@ -82,7 +93,7 @@ public class WorkerFragment extends BaseFragment {
             hideSoftInputFromWindow(getContext(), viewSearchEdit);
             toUp.setAnimationListener(new AnimFinishAdapter() {
                 @Override
-                public void end() {
+                public void onAnimationEnd(Animation animation) {
                     viewSearchLayout.setVisibility(View.INVISIBLE);
                     viewSearchBg.setVisibility(View.GONE);
                 }

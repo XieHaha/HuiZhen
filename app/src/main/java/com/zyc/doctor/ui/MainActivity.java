@@ -10,7 +10,6 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 
 import com.yht.frame.ui.BaseActivity;
-import com.yht.frame.utils.StatusBarUtil;
 import com.zyc.doctor.R;
 import com.zyc.doctor.ui.fragment.MessageFragment;
 import com.zyc.doctor.ui.fragment.PatientFragment;
@@ -48,7 +47,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public int getLayoutID() {
-        return R.layout.activity_main;
+        return R.layout.act_main;
     }
 
     @Override
@@ -56,7 +55,6 @@ public class MainActivity extends BaseActivity {
         super.initData(savedInstanceState);
         //状态栏透明
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        StatusBarUtil.statuBarLightMode(this);
         initTab();
     }
 

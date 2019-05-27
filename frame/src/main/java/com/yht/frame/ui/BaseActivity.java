@@ -22,6 +22,7 @@ import com.yht.frame.permission.Permission;
 import com.yht.frame.permission.PermissionHelper;
 import com.yht.frame.utils.LogUtils;
 import com.yht.frame.utils.SharePreferenceUtil;
+import com.yht.frame.utils.StatusBarUtil;
 import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.widgets.dialog.LoadingDialog;
 
@@ -96,6 +97,9 @@ public abstract class BaseActivity<T> extends RxAppCompatActivity
         if (isInitBackBtn()) {
             initBackBtn();
         }
+        if (isInitStatusBar()) {
+            initStatusBar();
+        }
         initObject(savedInstanceState);
         initData(savedInstanceState);
         initListener();
@@ -131,6 +135,13 @@ public abstract class BaseActivity<T> extends RxAppCompatActivity
     }
 
     /**
+     * 状态栏处理
+     */
+    private void initStatusBar() {
+        StatusBarUtil.statuBarLightMode(this);
+    }
+
+    /**
      * 是否初始化返回按钮
      *
      * @return 如果不想baseactivity自动设置监听返回按钮的话就传回null，
@@ -138,6 +149,10 @@ public abstract class BaseActivity<T> extends RxAppCompatActivity
      */
     protected boolean isInitBackBtn() {
         return false;
+    }
+
+    protected boolean isInitStatusBar() {
+        return true;
     }
 
     private void initLoadingView() {
