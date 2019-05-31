@@ -1,0 +1,24 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.hyphenate.easeui">
+
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <application android:allowBackup="true">
+
+
+        <activity android:name=".ui.EaseShowBigImageActivity" />
+        <activity android:name=".ui.EaseShowVideoActivity" />
+        <activity android:name=".ui.EaseBaiduMapActivity" />
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+        <meta-data
+            android:name="android.support.FILE_PROVIDER_PATHS"
+            android:resource="@xml/file_paths_public"></meta-data>
+
+        </provider>
+    </application>
+
+</manifest>
