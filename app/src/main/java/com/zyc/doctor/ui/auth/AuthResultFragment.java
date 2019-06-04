@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.yht.frame.ui.BaseFragment;
 import com.zyc.doctor.R;
+import com.zyc.doctor.ui.auth.listener.OnAuthStepListener;
 
 /**
  * @author 顿顿
@@ -21,5 +22,13 @@ public class AuthResultFragment extends BaseFragment {
     @Override
     public void initView(View view, @NonNull Bundle savedInstanceState) {
         super.initView(view, savedInstanceState);
+    }
+
+
+
+    private OnAuthStepListener onAuthStepListener;
+
+    public void setOnAuthStepListener(OnAuthStepListener onAuthStepListener) {
+        this.onAuthStepListener = onAuthStepListener;
     }
 }

@@ -1,5 +1,6 @@
 package com.zyc.doctor.ui.auth;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
@@ -85,9 +86,6 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
      * 初始化tabs
      */
     private void initTab() {
-        ivAuthBase.setEnabled(false);
-        ivAuthLicense.setEnabled(false);
-        ivAuthResult.setEnabled(false);
         fragmentManager = getSupportFragmentManager();
         transaction = fragmentManager.beginTransaction();
         tabAuthBaseView();
@@ -98,6 +96,7 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
         hideAll(transaction);
         if (authBaseFragment == null) {
             authBaseFragment = new AuthBaseFragment();
+            authBaseFragment.setOnAuthStepListener(this);
             transaction.add(R.id.layout_frame_root, authBaseFragment);
         }
         else {
@@ -113,6 +112,7 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
         hideAll(transaction);
         if (authLicenseFragment == null) {
             authLicenseFragment = new AuthLicenseFragment();
+            authLicenseFragment.setOnAuthStepListener(this);
             transaction.add(R.id.layout_frame_root, authLicenseFragment);
         }
         else {
@@ -128,6 +128,7 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
         hideAll(transaction);
         if (authResultFragment == null) {
             authResultFragment = new AuthResultFragment();
+            authResultFragment.setOnAuthStepListener(this);
             transaction.add(R.id.layout_frame_root, authResultFragment);
         }
         else {
@@ -159,19 +160,37 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
     private void selectTab(int index) {
         switch (index) {
             case 0:
-                layoutAuthBase.setSelected(true);
+                ivAuthBase.setSelected(true);
+                tvAuthBase.setSelected(true);
                 break;
             case 1:
+                //设置不为加粗
+                tvAuthBase.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+                layoutAuthBase.setSelected(true);
+                ivAuthBase.setImageResource(R.mipmap.ic_step_finish);
+                //认证
+                viewAuthLicenseLeft.setSelected(true);
+                ivAuthLicense.setSelected(true);
+                tvAuthLicense.setSelected(true);
+                tvAuthLicense.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
                 break;
             case 2:
+                layoutAuthLicense.setSelected(true);
+                tvAuthLicense.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+                ivAuthLicense.setImageResource(R.mipmap.ic_step_finish);
+                //结果
+                layoutAuthResult.setSelected(true);
                 break;
             default:
+                ivAuthBase.setSelected(true);
+                tvAuthBase.setSelected(true);
                 break;
         }
     }
 
     @Override
     public void onStepOne() {
+        tabAuthLicenseView();
     }
 
     @Override
@@ -180,5 +199,56 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
 
     @Override
     public void onStepThree() {
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+            @NonNull int[] grantResults) {
+        if (authBaseFragment != null) {
+            authBaseFragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+
+    @Override
+    public void onPermissionGranted(@NonNull String[] permissionName) {
+        if (authBaseFragment != null) {
+            authBaseFragment.onPermissionGranted(permissionName);
+        }
+    }
+
+    @Override
+    public void onPermissionDeclined(@NonNull String[] permissionName) {
+        if (authBaseFragment != null) {
+            authBaseFragment.onPermissionDeclined(permissionName);
+        }
+    }
+
+    @Override
+    public void onPermissionPreGranted(@NonNull String permissionsName) {
+        if (authBaseFragment != null) {
+            authBaseFragment.onPermissionPreGranted(permissionsName);
+        }
+    }
+
+    @Override
+    public void onPermissionNeedExplanation(@NonNull String permissionName) {
+        if (authBaseFragment != null) {
+            authBaseFragment.onPermissionNeedExplanation(permissionName);
+        }
+    }
+
+    @Override
+    public void onPermissionReallyDeclined(@NonNull String permissionName) {
+        if (authBaseFragment != null) {
+            authBaseFragment.onPermissionReallyDeclined(permissionName);
+        }
+    }
+
+    @Override
+    public void onNoPermissionNeeded(@NonNull Object permissionName) {
+        if (authBaseFragment != null) {
+            authBaseFragment.onNoPermissionNeeded(permissionName);
+        }
     }
 }

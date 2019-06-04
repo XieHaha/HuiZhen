@@ -24,6 +24,7 @@ import com.yht.frame.utils.LogUtils;
 import com.yht.frame.utils.SharePreferenceUtil;
 import com.yht.frame.utils.StatusBarUtil;
 import com.yht.frame.utils.ToastUtil;
+import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.frame.widgets.dialog.LoadingDialog;
 
 import butterknife.ButterKnife;
@@ -427,6 +428,21 @@ public abstract class BaseActivity<T> extends RxAppCompatActivity
 
     @Override
     public void onPermissionReallyDeclined(@NonNull String permissionName) {
+        HintDialog dialog = new HintDialog(this);
+        switch (permissionName) {
+            case Permission.STORAGE_WRITE:
+                dialog.setContentString(getString(R.string.dialog_no_storage_permission_tip));
+                break;
+            case Permission.READ_PHONE_STATE:
+                dialog.setContentString(getString(R.string.dialog_no_read_phone_state_tip));
+                break;
+            case Permission.CAMERA:
+                dialog.setContentString(getString(R.string.dialog_no_camera_permission_tip));
+                break;
+            default:
+                break;
+        }
+        dialog.show();
     }
 
     @Override
