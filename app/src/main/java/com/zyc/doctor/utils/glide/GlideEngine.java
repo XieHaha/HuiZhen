@@ -1,4 +1,4 @@
-package com.yht.frame.utils.glide;
+package com.zyc.doctor.utils.glide;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;

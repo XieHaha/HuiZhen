@@ -61,9 +61,7 @@
         <!--屏幕适配 end-->
         <activity
             android:name=".ui.main.MainActivity"
-            android:screenOrientation="portrait">
-
-        </activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.SplashActivity"
             android:screenOrientation="portrait"
@@ -86,6 +84,11 @@
             android:name=".ui.auth.AuthDoctorActivity"
             android:screenOrientation="portrait"
             android:label="@string/title_auth"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.auth.SelectHospital"
+            android:screenOrientation="portrait"
+            android:label="@string/title_select_hospital"
             android:windowSoftInputMode="adjustPan|stateHidden" />
 
 
@@ -138,6 +141,16 @@
             </intent-filter>
         </receiver>
         <!--环信配置  end-->
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths_public"></meta-data>
+        </provider>
     </application>
 
 </manifest>

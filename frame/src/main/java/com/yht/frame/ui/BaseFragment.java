@@ -29,6 +29,14 @@ public abstract class BaseFragment extends Fragment
      * 注解
      */
     protected Unbinder unbinder;
+    /**
+     * 选择图片
+     */
+    public static final int RC_PICK_IMG = 0x0001;
+    /**
+     * 图片  裁剪
+     */
+    public static final int RC_CROP_IMG = RC_PICK_IMG + 1;
 
     @Override
     public final void onCreate(Bundle savedInstanceState) {

@@ -1,4 +1,4 @@
-package com.zyc.doctor.ui.auth;
+package com.zyc.doctor.ui.auth.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;

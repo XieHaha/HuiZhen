@@ -4,6 +4,7 @@
 
     <!--title-->
     <string name="title_auth">医生认证</string>
+    <string name="title_select_hospital">选择医院</string>
 
     <!--公用-->
     <string name="txt_app_name">会珍</string>
@@ -56,6 +57,7 @@
     <string name="txt_depart">科室</string>
     <string name="txt_title">职称</string>
     <string name="txt_select_hint">请选择</string>
+    <string name="txt_select_hospital_hint">请输入医院名称搜索</string>
 
     <!--版本更新-->
     <string name="txt_version_ignore">忽略</string>

@@ -1,7 +1,6 @@
 package com.yht.frame.utils;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.TypedValue;
@@ -46,20 +45,14 @@ public class BaseUtils {
 
     /**
      * 将dp值转换为像素值
-     *
-     * @param mContext Context对象
-     * @param size     dp值
-     * @return 像素值
      */
-    public static float dipToPx(Context mContext, float size) {
-        Resources r;
-        if (mContext == null) {
-            r = Resources.getSystem();
-        }
-        else {
-            r = mContext.getResources();
-        }
-        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, size, r.getDisplayMetrics());
+    public static int dp2px(Context context, int dp) {
+        return (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
+                                              context.getResources().getDisplayMetrics());
+    }
+
+    public static int px2dp(Context context, float pxValue) {
+        return (int)(pxValue / context.getResources().getDisplayMetrics().density + 0.5f);
     }
 
     /**

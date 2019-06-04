@@ -1,4 +1,4 @@
-package com.yht.frame.utils.glide;
+package com.zyc.doctor.utils.glide;
 
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import com.yht.frame.R;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
+import com.zhihu.matisse.internal.entity.CaptureStrategy;
+import com.zyc.doctor.ZycApplication;
 
 /**
  * @author 顿顿
@@ -25,7 +27,11 @@ public class MatisseUtils {
                .choose(MimeType.ofImage())
                // 显示选择的数量
                .countable(true)
-               // 黑色背景
+               //相机
+               .capture(true)
+               .captureStrategy(
+                       new CaptureStrategy(true, ZycApplication.getInstance().getPackageName() + ".fileprovider"))
+               // light
                .theme(R.style.Matisse_Zhihu)
                // 图片选择的最多数量
                .maxSelectable(1)
@@ -40,13 +46,17 @@ public class MatisseUtils {
                .forResult(RC_PICK_IMG);
     }
 
-    public static void open(Fragment fragment) {
+    public static void open(Fragment fragment,boolean isCapture) {
         Matisse.from(fragment)
                // 选择 mime 的类型
                .choose(MimeType.ofImage())
                // 显示选择的数量
                .countable(false)
-               // 黑色背景
+               //相机
+               .capture(isCapture)
+               .captureStrategy(
+                       new CaptureStrategy(true, ZycApplication.getInstance().getPackageName() + ".fileprovider"))
+               // light
                .theme(R.style.Matisse_Zhihu)
                // 图片选择的最多数量
                .maxSelectable(1)

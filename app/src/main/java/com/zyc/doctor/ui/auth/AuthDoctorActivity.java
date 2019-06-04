@@ -12,6 +12,9 @@ import android.widget.TextView;
 
 import com.yht.frame.ui.BaseActivity;
 import com.zyc.doctor.R;
+import com.zyc.doctor.ui.auth.fragment.AuthBaseFragment;
+import com.zyc.doctor.ui.auth.fragment.AuthLicenseFragment;
+import com.zyc.doctor.ui.auth.fragment.AuthResultFragment;
 import com.zyc.doctor.ui.auth.listener.OnAuthStepListener;
 
 import butterknife.BindView;

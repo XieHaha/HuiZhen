@@ -14,8 +14,9 @@ import com.yht.frame.widgets.dialog.listener.OnEnterClickListener;
 
 /**
  * @author dundun
+ * 版本更新
  */
-public class HintDialog extends Dialog implements OnClickListener {
+public class UpdateDialog extends Dialog implements OnClickListener {
     private TextView enter, cancel;
     private TextView title, content;
     private String titleString = "提示";
@@ -26,7 +27,7 @@ public class HintDialog extends Dialog implements OnClickListener {
     private boolean isShowCancelBtn = true;
     private boolean isShow = false;
 
-    public HintDialog(Context context) {
+    public UpdateDialog(Context context) {
         super(context, R.style.normal_dialog);
     }
 
@@ -73,7 +74,7 @@ public class HintDialog extends Dialog implements OnClickListener {
     /**
      * @param titleString 标题
      */
-    public HintDialog setTitleString(String titleString) {
+    public UpdateDialog setTitleString(String titleString) {
         this.titleString = titleString;
         return this;
     }
@@ -83,7 +84,7 @@ public class HintDialog extends Dialog implements OnClickListener {
      *
      * @param contentString 内容
      */
-    public HintDialog setContentString(String contentString) {
+    public UpdateDialog setContentString(String contentString) {
         this.contentString = contentString;
         return this;
     }
@@ -91,7 +92,7 @@ public class HintDialog extends Dialog implements OnClickListener {
     /**
      * 设置确定按钮的文本
      */
-    public HintDialog setEnterBtnTxt(String str) {
+    public UpdateDialog setEnterBtnTxt(String str) {
         this.enterString = str;
         return this;
     }
@@ -99,7 +100,7 @@ public class HintDialog extends Dialog implements OnClickListener {
     /**
      * 设置确定按钮的颜色
      */
-    public HintDialog setEnterTxtColor(int color) {
+    public UpdateDialog setEnterTxtColor(int color) {
         this.enterColor = color;
         return this;
     }
@@ -107,7 +108,7 @@ public class HintDialog extends Dialog implements OnClickListener {
     /**
      * 设置取消按钮的文本
      */
-    public HintDialog setCancleBtnTxt(String str) {
+    public UpdateDialog setCancleBtnTxt(String str) {
         this.cancelString = str;
         return this;
     }
@@ -141,12 +142,12 @@ public class HintDialog extends Dialog implements OnClickListener {
     private OnEnterClickListener onEnterClickListener = null;
     private OnCancelClickListener onCancelClickListener = null;
 
-    public HintDialog setOnEnterClickListener(OnEnterClickListener onEnterClickListener) {
+    public UpdateDialog setOnEnterClickListener(OnEnterClickListener onEnterClickListener) {
         this.onEnterClickListener = onEnterClickListener;
         return this;
     }
 
-    public HintDialog setOnCancelClickListener(OnCancelClickListener onCancelClickListener) {
+    public UpdateDialog setOnCancelClickListener(OnCancelClickListener onCancelClickListener) {
         this.onCancelClickListener = onCancelClickListener;
         return this;
     }

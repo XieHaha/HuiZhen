@@ -53,6 +53,7 @@
                     android:layout_centerInParent="true" />
 
                 <ImageView
+                    android:id="@+id/iv_auth_base_img"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
             </RelativeLayout>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    android:background="@color/color_ffffff">
+
+    <include layout="@layout/public_title" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="38dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="24dp">
+
+        <com.yht.frame.widgets.edittext.SuperEditText
+            android:id="@+id/et_search_hospital"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="@string/txt_select_hospital_hint"
+            android:textSize="@dimen/text_16"
+            android:textColorHint="@color/color_a1a8b3"
+            android:textColor="@color/color_373d4d"
+            android:imeOptions="actionDone"
+            android:singleLine="true"
+            android:background="@drawable/corner4_ebedf0_bg"
+            android:paddingStart="39dp"
+            android:paddingEnd="16dp"
+            app:hide_left_icon="true" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_search"
+            android:layout_centerVertical="true"
+            android:paddingStart="16dp" />
+
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_hospital"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </android.support.v7.widget.RecyclerView>
+
+</LinearLayout>
