@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="76dp"
+    android:orientation="horizontal"
+    android:background="@color/color_ffffff">
+
+    <LinearLayout
+        android:id="@+id/layout_auth_base"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv_auth_base"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/selector_auth_step_status"
+                android:layout_centerInParent="true" />
+
+            <View
+                android:id="@+id/view_auth_base"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/app_hei_line"
+                android:background="@drawable/selector_line"
+                android:layout_toRightOf="@id/iv_auth_base"
+                android:layout_centerVertical="true" />
+        </RelativeLayout>
+
+
+        <TextView
+            android:id="@+id/tv_auth_base"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/txt_main_color_selector"
+            android:textSize="@dimen/text_15"
+            android:text="@string/txt_auth_base"
+            android:layout_marginTop="7dp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_auth_license"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv_auth_license"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/selector_auth_step_status"
+                android:layout_centerInParent="true" />
+
+            <View
+                android:id="@+id/view_auth_license_left"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/app_hei_line"
+                android:background="@drawable/selector_line"
+                android:layout_toLeftOf="@id/iv_auth_license"
+                android:layout_centerVertical="true" />
+
+            <View
+                android:id="@+id/view_auth_license_right"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/app_hei_line"
+                android:background="@drawable/selector_line"
+                android:layout_toRightOf="@id/iv_auth_license"
+                android:layout_centerVertical="true" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_auth_license"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/txt_main_color_selector"
+            android:textSize="@dimen/text_15"
+            android:text="@string/txt_auth_license"
+            android:layout_marginTop="7dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_auth_result"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv_auth_result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/selector_auth_step_status"
+                android:layout_centerInParent="true" />
+
+            <View
+                android:id="@+id/view_auth_result"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/app_hei_line"
+                android:background="@drawable/selector_line"
+                android:layout_toLeftOf="@id/iv_auth_result"
+                android:layout_centerVertical="true" />
+        </RelativeLayout>
+
+
+        <TextView
+            android:id="@+id/tv_auth_result"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/txt_main_color_selector"
+            android:textSize="@dimen/text_15"
+            android:text="@string/txt_auth_result"
+            android:layout_marginTop="7dp" />
+    </LinearLayout>
+
+</LinearLayout>

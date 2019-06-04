@@ -11,7 +11,7 @@ public interface BaseData {
      */
     int BASE_NICK_NAME_LENGTH = 20;
     /**
-     * S手机号默认长度
+     * 手机号默认长度
      */
     int BASE_PHONE_DEFAULT_LENGTH = 11;
     /**

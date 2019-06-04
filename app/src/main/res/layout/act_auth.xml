@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <include layout="@layout/public_title" />
+
+    <include layout="@layout/view_step_title" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/color_f8f9fa" />
+
+    <FrameLayout
+        android:id="@+id/layout_frame_root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

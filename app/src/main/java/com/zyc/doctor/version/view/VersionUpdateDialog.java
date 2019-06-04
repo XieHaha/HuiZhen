@@ -98,7 +98,7 @@ public class VersionUpdateDialog extends Dialog implements ConstantsVersionMode,
             for (int i = 0; i < list.size(); i++) {
                 TextView textView = new TextView(context);
                 textView.setText(list.get(i));
-                textView.setTextColor(context.getResources().getColor(R.color.color_9b9b9b));
+                textView.setTextColor(context.getResources().getColor(R.color.color_a1a8b3));
                 textView.setTextSize(12);
                 textView.setPadding(0, 0, 0, 10);
                 llUpdateContentLayout.addView(textView);

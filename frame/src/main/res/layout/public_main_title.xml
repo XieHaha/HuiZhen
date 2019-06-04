@@ -3,14 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:background="@color/color_f5f5f5"
+    android:background="@color/color_f8f9fa"
     android:layout_height="wrap_content">
 
     <View
         android:id="@+id/status_bar_fix"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@color/color_f5f5f5" />
+        android:background="@color/color_f8f9fa" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginLeft="20dp"
-            android:textColor="@color/color_17242e"
+            android:textColor="@color/color_373d4d"
             android:textSize="@dimen/text_24"
             tools:text="标题" />
 

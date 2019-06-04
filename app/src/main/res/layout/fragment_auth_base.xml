@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_ffffff"
+    android:scrollbars="none">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingTop="14dp"
+        android:paddingLeft="20dp"
+        android:paddingBottom="31dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="30dp"
+            android:paddingRight="20dp">
+
+            <TextView
+                android:id="@+id/tv_auth_base_up"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_16"
+                android:textColor="@color/color_373d4d"
+                android:text="@string/txt_upload_img"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_15"
+                android:textColor="@color/color_6a6f80"
+                android:text="@string/txt_upload_img_hint"
+                android:layout_below="@id/tv_auth_base_up"
+                android:layout_marginTop="12dp" />
+
+
+            <RelativeLayout
+                android:id="@+id/layout_upload_img"
+                android:layout_width="92dp"
+                android:layout_height="92dp"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/corner4_ebedf0_bg">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/ic_camera"
+                    android:layout_centerInParent="true" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_16"
+                android:textColor="@color/color_373d4d"
+                android:text="@string/txt_name"
+                android:textStyle="bold" />
+
+            <com.yht.frame.widgets.edittext.SuperEditText
+                android:id="@+id/et_auth_base_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="35dp"
+                android:layout_marginEnd="20dp"
+                android:hint="@string/txt_name_hint"
+                android:textSize="@dimen/text_16"
+                android:textColorHint="@color/color_a1a8b3"
+                android:textColor="@color/color_373d4d"
+                android:imeOptions="actionDone"
+                android:singleLine="true"
+                android:background="@null"
+                android:gravity="right"
+                android:layout_alignParentRight="true"
+                app:hide_left_icon="true" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/app_hei_line"
+                android:layout_below="@id/et_auth_base_name"
+                android:layout_marginTop="18dp"
+                android:background="@color/color_ebedf0" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_auth_base_sex"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_16"
+                android:textColor="@color/color_373d4d"
+                android:text="@string/txt_sex"
+                android:textStyle="bold"
+                android:layout_marginTop="18dp" />
+
+            <RadioGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="35dp"
+                android:layout_marginEnd="20dp"
+                android:layout_alignParentRight="true"
+                android:orientation="horizontal"
+                android:layout_marginTop="13dp">
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:text="@string/txt_sex_male" />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:text="@string/txt_sex_female"
+                    android:layout_marginLeft="16dp" />
+            </RadioGroup>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/app_hei_line"
+                android:layout_below="@id/tv_auth_base_sex"
+                android:layout_marginTop="18dp"
+                android:background="@color/color_ebedf0" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout_base_hospital"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="18dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_16"
+                android:textColor="@color/color_373d4d"
+                android:text="@string/txt_hospital"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_auth_base_hospital"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:hint="@string/txt_select_hint"
+                android:textSize="@dimen/text_16"
+                android:textColor="@color/txt_color_selector"
+                android:drawableRight="@mipmap/ic_right"
+                android:drawablePadding="11dp"
+                android:gravity="center"
+                android:layout_alignParentRight="true" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/app_hei_line"
+                android:layout_below="@id/tv_auth_base_hospital"
+                android:layout_marginTop="18dp"
+                android:background="@color/color_ebedf0" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout_base_depart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="18dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_16"
+                android:textColor="@color/color_373d4d"
+                android:text="@string/txt_depart"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_auth_base_depart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:hint="@string/txt_select_hint"
+                android:textSize="@dimen/text_16"
+                android:textColor="@color/txt_color_selector"
+                android:drawableRight="@mipmap/ic_right"
+                android:drawablePadding="11dp"
+                android:gravity="center"
+                android:layout_alignParentRight="true" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/app_hei_line"
+                android:layout_below="@id/tv_auth_base_depart"
+                android:layout_marginTop="18dp"
+                android:background="@color/color_ebedf0" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout_base_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="18dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_16"
+                android:textColor="@color/color_373d4d"
+                android:text="@string/txt_title"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_auth_base_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:hint="@string/txt_select_hint"
+                android:textSize="@dimen/text_16"
+                android:textColor="@color/txt_color_selector"
+                android:drawableRight="@mipmap/ic_right"
+                android:drawablePadding="11dp"
+                android:gravity="center"
+                android:layout_alignParentRight="true" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_auth_base_next"
+            android:layout_width="match_parent"
+            android:layout_marginEnd="31dp"
+            android:layout_marginStart="19dp"
+            android:layout_height="42dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/selector_public_next"
+            android:text="@string/txt_next"
+            android:gravity="center"
+            android:textSize="@dimen/text_16"
+            android:textColor="@color/color_ffffff" />
+    </LinearLayout>
+</ScrollView>

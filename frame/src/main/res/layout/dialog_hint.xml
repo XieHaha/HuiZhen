@@ -33,7 +33,7 @@
             android:paddingLeft="37dp"
             android:paddingRight="37dp"
             android:text="测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试"
-            android:textColor="@color/color_17242e"
+            android:textColor="@color/color_373d4d"
             android:textSize="@dimen/text_16" />
 
         <TextView
@@ -67,9 +67,9 @@
                 android:layout_height="30dp"
                 android:gravity="center"
                 android:maxLines="1"
-                android:background="@drawable/corner15_stroke1_9b9b9b"
+                android:background="@drawable/corner15_stroke1_a1a8b3"
                 android:text="@string/txt_cancel"
-                android:textColor="@color/color_9b9b9b"
+                android:textColor="@color/color_a1a8b3"
                 android:textSize="@dimen/text_16" />
 
             <TextView

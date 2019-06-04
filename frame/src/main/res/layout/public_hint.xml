@@ -16,7 +16,7 @@
         android:id="@+id/public_hint_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/color_17242e"
+        android:textColor="@color/color_373d4d"
         android:layout_below="@id/public_hint_img"
         android:layout_marginTop="10dp"
         android:layout_centerHorizontal="true"
