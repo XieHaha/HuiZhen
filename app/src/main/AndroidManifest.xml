@@ -86,10 +86,18 @@
             android:label="@string/title_auth"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.auth.SelectHospital"
+            android:name=".ui.auth.SelectHospitalActivity"
             android:screenOrientation="portrait"
             android:label="@string/title_select_hospital"
             android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity android:name=".ui.auth.AddHospitalActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/title_add_hospital"
+            android:windowSoftInputMode="stateAlwaysVisible"/>
+        <activity android:name=".ui.auth.SelectDepartActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/title_select_depart"
+            android:windowSoftInputMode="adjustPan|stateHidden"/>
 
 
         <!--环信消息点击事件处理-->

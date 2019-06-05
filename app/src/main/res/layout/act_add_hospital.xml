@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/color_ffffff"
+    android:fitsSystemWindows="true">
+
+    <include layout="@layout/public_title" />
+
+    <com.yht.frame.widgets.edittext.SuperEditText
+        android:id="@+id/tv_login_account"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="35dp"
+        android:layout_marginEnd="35dp"
+        android:layout_marginTop="32dp"
+        android:hint="@string/txt_select_hospital"
+        android:textSize="@dimen/text_16"
+        android:textColorHint="@color/color_a1a8b3"
+        android:textColor="@color/color_373d4d"
+        app:hide_left_icon="true"
+        android:imeOptions="actionDone"
+        android:singleLine="true"
+        android:background="@null" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/app_hei_line"
+        android:background="@color/color_ebedf0"
+        android:layout_marginStart="35dp"
+        android:layout_marginEnd="35dp"
+        android:layout_marginTop="10dp" />
+
+    <TextView
+        android:id="@+id/tv_add_hospital_next"
+        android:layout_width="match_parent"
+        android:layout_marginRight="35dp"
+        android:layout_marginLeft="35dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="62dp"
+        android:background="@drawable/corner28_1491fc_bg"
+        android:text="@string/txt_save"
+        android:gravity="center"
+        android:textSize="@dimen/text_16"
+        android:textColor="@color/color_ffffff"
+        android:imeOptions="actionDone" />
+
+</LinearLayout>

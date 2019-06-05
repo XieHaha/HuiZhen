@@ -43,8 +43,46 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_hospital"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="gone">
 
     </android.support.v7.widget.RecyclerView>
+
+    <LinearLayout
+        android:id="@+id/layout_none_hospital"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:paddingTop="52dp"
+        android:visibility="visible">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/pic_none_hospital" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_6a6f80"
+            android:layout_marginTop="27dp"
+            android:textSize="@dimen/text_15"
+            android:text="@string/txt_none_hospital" />
+
+        <TextView
+            android:id="@+id/tv_add_hospital_next"
+            android:layout_width="match_parent"
+            android:layout_marginRight="35dp"
+            android:layout_marginLeft="35dp"
+            android:layout_height="42dp"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/corner28_1491fc_bg"
+            android:text="@string/txt_add_hospital"
+            android:gravity="center"
+            android:textSize="@dimen/text_16"
+            android:textColor="@color/color_ffffff" />
+
+    </LinearLayout>
 
 </LinearLayout>

@@ -2,12 +2,15 @@ package com.zyc.doctor.ui.auth.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.content.FileProvider;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -15,7 +18,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.yht.frame.api.DirHelper;
-import com.yht.frame.data.BaseData;
 import com.yht.frame.permission.OnPermissionCallback;
 import com.yht.frame.permission.Permission;
 import com.yht.frame.permission.PermissionHelper;
@@ -26,12 +28,17 @@ import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.frame.widgets.edittext.SuperEditText;
 import com.zhihu.matisse.Matisse;
 import com.zyc.doctor.R;
-import com.zyc.doctor.ui.auth.SelectHospital;
+import com.zyc.doctor.ZycApplication;
+import com.zyc.doctor.ui.auth.SelectDepartActivity;
+import com.zyc.doctor.ui.auth.SelectHospitalActivity;
 import com.zyc.doctor.ui.auth.listener.OnAuthStepListener;
+import com.zyc.doctor.ui.dialog.DownDialog;
+import com.zyc.doctor.ui.dialog.listener.OnMediaItemClickListener;
 import com.zyc.doctor.utils.glide.GlideHelper;
 import com.zyc.doctor.utils.glide.MatisseUtils;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -42,7 +49,7 @@ import butterknife.OnClick;
  * @date 19/5/17 14:55
  * @des 认证基础信息
  */
-public class AuthBaseFragment extends BaseFragment implements OnPermissionCallback {
+public class AuthBaseFragment extends BaseFragment implements OnPermissionCallback, OnMediaItemClickListener {
     @BindView(R.id.layout_upload_img)
     RelativeLayout layoutUploadImg;
     @BindView(R.id.et_auth_base_name)
@@ -67,6 +74,8 @@ public class AuthBaseFragment extends BaseFragment implements OnPermissionCallba
     ImageView ivAuthBaseImg;
     private Uri originUri, cutFileUri;
     private File cameraTempFile;
+    private Uri mCurrentPhotoUri;
+    private String mCurrentPhotoPath;
     /**
      * 动态权限
      */
@@ -89,6 +98,12 @@ public class AuthBaseFragment extends BaseFragment implements OnPermissionCallba
     public void initView(View view, @NonNull Bundle savedInstanceState) {
         super.initView(view, savedInstanceState);
         permissionHelper = PermissionHelper.getInstance(getActivity());
+        data = new ArrayList<String>() {
+            {
+                add(getString(R.string.txt_camera));
+                add(getString(R.string.txt_photo));
+            }
+        };
     }
 
     @OnClick({
@@ -98,14 +113,18 @@ public class AuthBaseFragment extends BaseFragment implements OnPermissionCallba
         Intent intent;
         switch (view.getId()) {
             case R.id.layout_upload_img:
-                //动态申请权限
-                permissionHelper.request(new String[] { Permission.CAMERA, Permission.STORAGE_WRITE });
+                DownDialog dialog = new DownDialog(getContext());
+                dialog.setData(data);
+                dialog.setOnMediaItemClickListener(this);
+                dialog.show();
                 break;
             case R.id.layout_base_hospital:
-                intent = new Intent(getContext(), SelectHospital.class);
+                intent = new Intent(getContext(), SelectHospitalActivity.class);
                 startActivityForResult(intent, REQUEST_CODE_HOSPITAL);
                 break;
             case R.id.layout_base_depart:
+                intent = new Intent(getContext(), SelectDepartActivity.class);
+                startActivityForResult(intent, REQUEST_CODE_DEPART);
                 break;
             case R.id.layout_base_title:
                 break;
@@ -120,10 +139,64 @@ public class AuthBaseFragment extends BaseFragment implements OnPermissionCallba
     }
 
     /**
+     * 相机 相册回调
+     *
+     * @param position
+     */
+    @Override
+    public void onMediaItemClick(int position) {
+        switch (position) {
+            case 0:
+                permissionHelper.request(new String[] { Permission.CAMERA, Permission.STORAGE_WRITE });
+                break;
+            case 1:
+                permissionHelper.request(new String[] { Permission.STORAGE_WRITE });
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
      * 打开图片库
      */
     private void openPhoto() {
         MatisseUtils.open(this, false);
+    }
+
+    /**
+     * 打开相机
+     */
+    private void openCamera() {
+        cameraTempFile = new File(DirHelper.getPathImage(), System.currentTimeMillis() + ".jpg");
+        if (cameraTempFile != null) {
+            mCurrentPhotoPath = cameraTempFile.getAbsolutePath();
+        }
+        //选择拍照
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // 指定调用相机拍照后照片的储存路径
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            mCurrentPhotoUri = FileProvider.getUriForFile(getContext(), ZycApplication.getInstance().getPackageName() +
+                                                                        ".fileprovider", cameraTempFile);
+        }
+        else {
+            mCurrentPhotoUri = Uri.fromFile(cameraTempFile);
+        }
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            List<ResolveInfo> resInfoList = getContext().getPackageManager()
+                                                        .queryIntentActivities(intent,
+                                                                               PackageManager.MATCH_DEFAULT_ONLY);
+            for (ResolveInfo resolveInfo : resInfoList) {
+                String packageName = resolveInfo.activityInfo.packageName;
+                getContext().grantUriPermission(packageName, mCurrentPhotoUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION |
+                                                                               Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            }
+        }
+        // 指定调用相机拍照后照片的储存路径
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, mCurrentPhotoUri);
+        //        intent.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
+        startActivityForResult(intent, RC_PICK_CAMERA);
     }
 
     /**
@@ -132,34 +205,7 @@ public class AuthBaseFragment extends BaseFragment implements OnPermissionCallba
     private void startCutImg(Uri uri, Uri cutUri) {
         originUri = uri;
         cutFileUri = cutUri;
-        //系统裁剪
-        Intent intent = new Intent("com.android.camera.action.CROP");
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            //添加这一句表示对目标应用临时授权该Uri所代表的文件
-            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        }
-        // 在Android N中，为了安全起见，您必须获得“写入或读取Uri文件”的权限。如果您希望系统照片裁剪您的“uri文件”，那么您 必须允许系统照片。
-        intent.setDataAndType(originUri, "image/*");
-        intent.putExtra("crop", "true");
-        // aspectX aspectY 是宽高的比例
-        if (Build.BRAND.toUpperCase().contains(BaseData.BASE_HONOR_NAME) ||
-            Build.BRAND.toUpperCase().contains(BaseData.BASE_HUAWEI_NAME)) {
-            //华为特殊处理 不然会显示圆
-            intent.putExtra("aspectX", 9998);
-            intent.putExtra("aspectY", 9999);
-        }
-        else {
-            intent.putExtra("aspectX", 1);
-            intent.putExtra("aspectY", 1);
-        }
-        intent.putExtra("outputX", 300);
-        intent.putExtra("outputY", 300);
-        intent.putExtra("scale", true);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, cutFileUri);
-        intent.putExtra("return-data", false);
-        intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
-        intent.putExtra("noFaceDetection", true);
-        startActivityForResult(intent, RC_CROP_IMG);
+        startActivityForResult(getCutimgIntent(originUri, cutFileUri), RC_CROP_IMG);
     }
 
     @Override
@@ -177,6 +223,12 @@ public class AuthBaseFragment extends BaseFragment implements OnPermissionCallba
                     File file = new File(DirHelper.getPathCache(), fileName);
                     startCutImg(uris.get(0), Uri.fromFile(file));
                 }
+                break;
+            case RC_PICK_CAMERA:
+                cameraTempFile = new File(mCurrentPhotoPath);
+                String fileName = "corp" + System.currentTimeMillis() + ".jpg";
+                File file = new File(DirHelper.getPathCache(), fileName);
+                startCutImg(mCurrentPhotoUri, Uri.fromFile(file));
                 break;
             case RC_CROP_IMG:
                 //裁剪完成，上传图片
@@ -200,6 +252,16 @@ public class AuthBaseFragment extends BaseFragment implements OnPermissionCallba
         permissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
+    private boolean isSamePermission(String o, String n) {
+        if (TextUtils.isEmpty(o) || TextUtils.isEmpty(n)) {
+            return false;
+        }
+        if (o.equals(n)) {
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public void onPermissionGranted(@NonNull String[] permissionName) {
         onNoPermissionNeeded(permissionName);
@@ -210,7 +272,16 @@ public class AuthBaseFragment extends BaseFragment implements OnPermissionCallba
         if (permissionName == null) {
             return;
         }
-        ToastUtil.toast(getContext(), R.string.dialog_no_camera_permission_tip);
+        for (String permission : permissionName) {
+            if (Permission.STORAGE_WRITE.equals(permission)) {
+                ToastUtil.toast(getContext(), R.string.dialog_no_storage_permission_tip);
+                break;
+            }
+            if (Permission.CAMERA.equals(permission)) {
+                ToastUtil.toast(getContext(), R.string.dialog_no_camera_permission_tip);
+                break;
+            }
+        }
     }
 
     @Override
@@ -220,19 +291,31 @@ public class AuthBaseFragment extends BaseFragment implements OnPermissionCallba
 
     @Override
     public void onPermissionNeedExplanation(@NonNull String permissionName) {
-        permissionHelper.requestAfterExplanation(Permission.CAMERA);
+        permissionHelper.requestAfterExplanation(permissionName);
     }
 
     @Override
     public void onPermissionReallyDeclined(@NonNull String permissionName) {
         HintDialog dialog = new HintDialog(getContext());
-        dialog.setContentString(getString(R.string.dialog_no_camera_permission_tip));
+        if (isSamePermission(Permission.STORAGE_WRITE, permissionName)) {
+            dialog.setContentString(getString(R.string.dialog_no_storage_permission_tip));
+        }
+        else if (isSamePermission(Permission.CAMERA, permissionName)) {
+            dialog.setContentString(getString(R.string.dialog_no_camera_permission_tip));
+        }
         dialog.show();
     }
 
     @Override
     public void onNoPermissionNeeded(@NonNull Object permissionName) {
-        openPhoto();
+        if (permissionName instanceof String[]) {
+            if (isSamePermission(Permission.STORAGE_WRITE, ((String[])permissionName)[0])) {
+                openPhoto();
+            }
+            else if (isSamePermission(Permission.CAMERA, ((String[])permissionName)[0])) {
+                openCamera();
+            }
+        }
     }
 
     private OnAuthStepListener onAuthStepListener;

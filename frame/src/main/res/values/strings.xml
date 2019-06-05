@@ -5,6 +5,8 @@
     <!--title-->
     <string name="title_auth">医生认证</string>
     <string name="title_select_hospital">选择医院</string>
+    <string name="title_add_hospital">添加医院</string>
+    <string name="title_select_depart">选择科室</string>
 
     <!--公用-->
     <string name="txt_app_name">会珍</string>
@@ -12,6 +14,7 @@
     <string name="txt_cancel">取消</string>
     <string name="txt_call">呼叫</string>
     <string name="txt_sure">确定</string>
+    <string name="txt_save">保存</string>
     <string name="txt_open">去开启</string>
     <string name="txt_exit">退出</string>
     <string name="txt_next">下一步</string>
@@ -21,6 +24,8 @@
     <string name="txt_none_patient">暂无患者</string>
     <string name="txt_none_recording">暂无记录</string>
     <string name="txt_none_upgrade">功能升级</string>
+    <string name="txt_camera">拍照</string>
+    <string name="txt_photo">从手机相册选择</string>
 
     <!--主页-->
     <string name="txt_message">消息</string>
@@ -58,6 +63,9 @@
     <string name="txt_title">职称</string>
     <string name="txt_select_hint">请选择</string>
     <string name="txt_select_hospital_hint">请输入医院名称搜索</string>
+    <string name="txt_select_hospital">请输入医院名称</string>
+    <string name="txt_none_hospital">没有找到您的医院</string>
+    <string name="txt_add_hospital">添加医院</string>
 
     <!--版本更新-->
     <string name="txt_version_ignore">忽略</string>

@@ -53,7 +53,7 @@ public class SplashActivity extends BaseActivity implements DocAuthStatu {
     /**
      * 广告页最长等待时间
      */
-    private static final int MAX_WAIT_TIME = 5;
+    private static final int MAX_WAIT_TIME = 2;
     private Handler handler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message message) {

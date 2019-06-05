@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="82dp"
+    android:background="@color/color_ffffff"
+    android:paddingLeft="35dp">
+
+
+    <TextView
+        android:id="@+id/tv_hospital_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_16"
+        android:textColor="@color/color_373d4d"
+        android:layout_marginTop="20dp"
+        android:text="医院" />
+
+    <TextView
+        android:id="@+id/tv_hospital_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_13"
+        android:textColor="@color/color_a1a8b3"
+        android:layout_below="@id/tv_hospital_name"
+        android:layout_marginTop="2dp"
+        android:text="地址" />
+
+    <View
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/app_hei_line"
+        android:background="@color/color_ebedf0"
+        android:layout_alignParentBottom="true" />
+
+
+</RelativeLayout>
