@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 import com.yht.frame.R;
+import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.http.listener.ResponseListener;
@@ -35,7 +36,7 @@ import butterknife.ButterKnife;
  * @author DUNDUN
  */
 public abstract class BaseActivity<T> extends RxAppCompatActivity
-        implements UiInterface, ResponseListener<BaseResponse>, View.OnClickListener, OnPermissionCallback {
+        implements UiInterface, BaseData, ResponseListener<BaseResponse>, View.OnClickListener, OnPermissionCallback {
     /**
      * load view
      */

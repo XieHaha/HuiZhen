@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="52dp"
     android:text="@string/txt_cancel"
-    android:textColor="@color/color_373d4d"
+    android:textColor="@color/txt_color_373d4d_1491fc_selector"
     android:textSize="@dimen/text_16"
     android:gravity="center"
     android:background="@color/color_ffffff"

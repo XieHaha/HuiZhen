@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -68,6 +69,10 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
      * 认证结果
      */
     private AuthResultFragment authResultFragment;
+    /**
+     * 当前碎片
+     */
+    private int curPage;
 
     @Override
     protected boolean isInitBackBtn() {
@@ -82,6 +87,7 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
+        findViewById(R.id.public_title_bar_back).setOnClickListener(this);
         initTab();
     }
 
@@ -107,7 +113,7 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
             authBaseFragment.onResume();
         }
         transaction.commitAllowingStateLoss();
-        selectTab(0);
+        selectTab(BASE_ZERO);
     }
 
     private void tabAuthLicenseView() {
@@ -123,7 +129,7 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
             authLicenseFragment.onResume();
         }
         transaction.commitAllowingStateLoss();
-        selectTab(1);
+        selectTab(BASE_ONE);
     }
 
     private void tabAuthResultView() {
@@ -139,7 +145,7 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
             authResultFragment.onResume();
         }
         transaction.commitAllowingStateLoss();
-        selectTab(2);
+        selectTab(BASE_TWO);
     }
 
     /**
@@ -162,31 +168,73 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
      */
     private void selectTab(int index) {
         switch (index) {
-            case 0:
-                ivAuthBase.setSelected(true);
+            case BASE_ZERO:
+                curPage = BASE_ZERO;
+                //0
                 tvAuthBase.setSelected(true);
+                viewAuthBase.setSelected(false);
+                ivAuthBase.setImageResource(R.mipmap.ic_step_sel);
+                tvAuthBase.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+                //1
+                tvAuthLicense.setSelected(false);
+                viewAuthLicenseLeft.setSelected(false);
+                ivAuthLicense.setImageResource(R.mipmap.ic_step_def);
+                tvAuthLicense.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
                 break;
-            case 1:
-                //设置不为加粗
+            case BASE_ONE:
+                curPage = BASE_ONE;
+                //0
+                viewAuthBase.setSelected(true);
                 tvAuthBase.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
-                layoutAuthBase.setSelected(true);
                 ivAuthBase.setImageResource(R.mipmap.ic_step_finish);
-                //认证
-                viewAuthLicenseLeft.setSelected(true);
-                ivAuthLicense.setSelected(true);
+                //1
                 tvAuthLicense.setSelected(true);
+                viewAuthLicenseLeft.setSelected(true);
+                viewAuthLicenseRight.setSelected(false);
+                ivAuthLicense.setImageResource(R.mipmap.ic_step_sel);
                 tvAuthLicense.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+                //2
+                layoutAuthResult.setSelected(false);
+                ivAuthResult.setImageResource(R.mipmap.ic_step_def);
+                tvAuthResult.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
                 break;
-            case 2:
-                layoutAuthLicense.setSelected(true);
+            case BASE_TWO:
+                curPage = BASE_TWO;
+                //1
+                viewAuthLicenseRight.setSelected(true);
                 tvAuthLicense.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
                 ivAuthLicense.setImageResource(R.mipmap.ic_step_finish);
-                //结果
+                //2
                 layoutAuthResult.setSelected(true);
+                ivAuthResult.setImageResource(R.mipmap.ic_step_sel);
+                tvAuthResult.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
                 break;
             default:
-                ivAuthBase.setSelected(true);
+                curPage = BASE_ZERO;
+                //0
                 tvAuthBase.setSelected(true);
+                viewAuthBase.setSelected(false);
+                ivAuthBase.setImageResource(R.mipmap.ic_step_sel);
+                tvAuthBase.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+                //1
+                tvAuthLicense.setSelected(false);
+                viewAuthLicenseLeft.setSelected(false);
+                ivAuthLicense.setImageResource(R.mipmap.ic_step_def);
+                tvAuthLicense.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+                break;
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        super.onClick(v);
+        switch (v.getId()) {
+            case R.id.public_title_bar_back:
+                if (finishPage()) {
+                    finish();
+                }
+                break;
+            default:
                 break;
         }
     }
@@ -197,61 +245,176 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
     }
 
     @Override
-    public void onStepTwo() {
+    public void onStepTwo(int type) {
+        switch (type) {
+            case BASE_ONE:
+                tabAuthBaseView();
+                break;
+            case BASE_TWO:
+                tabAuthResultView();
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
     public void onStepThree() {
     }
 
+    /**
+     * 页面逻辑处理
+     *
+     * @return
+     */
+    private boolean finishPage() {
+        if (curPage == BASE_TWO) {
+            curPage = 1;
+            tabAuthLicenseView();
+            return false;
+        }
+        else if (curPage == 1) {
+            curPage = 0;
+            tabAuthBaseView();
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+            if (!finishPage()) {
+                return true;
+            }
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
             @NonNull int[] grantResults) {
-        if (authBaseFragment != null) {
-            authBaseFragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (curPage) {
+            case BASE_ZERO:
+                if (authBaseFragment != null) {
+                    authBaseFragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
+                }
+                break;
+            case BASE_ONE:
+                if (authLicenseFragment != null) {
+                    authLicenseFragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
+                }
+                break;
+            default:
+                break;
         }
     }
 
     @Override
     public void onPermissionGranted(@NonNull String[] permissionName) {
-        if (authBaseFragment != null) {
-            authBaseFragment.onPermissionGranted(permissionName);
+        switch (curPage) {
+            case BASE_ZERO:
+                if (authBaseFragment != null) {
+                    authBaseFragment.onPermissionGranted(permissionName);
+                }
+                break;
+            case BASE_ONE:
+                if (authLicenseFragment != null) {
+                    authLicenseFragment.onPermissionGranted(permissionName);
+                }
+                break;
+            default:
+                break;
         }
     }
 
     @Override
     public void onPermissionDeclined(@NonNull String[] permissionName) {
-        if (authBaseFragment != null) {
-            authBaseFragment.onPermissionDeclined(permissionName);
+        switch (curPage) {
+            case BASE_ZERO:
+                if (authBaseFragment != null) {
+                    authBaseFragment.onPermissionDeclined(permissionName);
+                }
+                break;
+            case BASE_ONE:
+                if (authLicenseFragment != null) {
+                    authLicenseFragment.onPermissionDeclined(permissionName);
+                }
+                break;
+            default:
+                break;
         }
     }
 
     @Override
     public void onPermissionPreGranted(@NonNull String permissionsName) {
-        if (authBaseFragment != null) {
-            authBaseFragment.onPermissionPreGranted(permissionsName);
+        switch (curPage) {
+            case BASE_ZERO:
+                if (authBaseFragment != null) {
+                    authBaseFragment.onPermissionPreGranted(permissionsName);
+                }
+                break;
+            case BASE_ONE:
+                if (authLicenseFragment != null) {
+                    authLicenseFragment.onPermissionPreGranted(permissionsName);
+                }
+                break;
+            default:
+                break;
         }
     }
 
     @Override
     public void onPermissionNeedExplanation(@NonNull String permissionName) {
-        if (authBaseFragment != null) {
-            authBaseFragment.onPermissionNeedExplanation(permissionName);
+        switch (curPage) {
+            case BASE_ZERO:
+                if (authBaseFragment != null) {
+                    authBaseFragment.onPermissionNeedExplanation(permissionName);
+                }
+                break;
+            case BASE_ONE:
+                if (authLicenseFragment != null) {
+                    authLicenseFragment.onPermissionNeedExplanation(permissionName);
+                }
+                break;
+            default:
+                break;
         }
     }
 
     @Override
     public void onPermissionReallyDeclined(@NonNull String permissionName) {
-        if (authBaseFragment != null) {
-            authBaseFragment.onPermissionReallyDeclined(permissionName);
+        switch (curPage) {
+            case BASE_ZERO:
+                if (authBaseFragment != null) {
+                    authBaseFragment.onPermissionReallyDeclined(permissionName);
+                }
+                break;
+            case BASE_ONE:
+                if (authLicenseFragment != null) {
+                    authLicenseFragment.onPermissionReallyDeclined(permissionName);
+                }
+                break;
+            default:
+                break;
         }
     }
 
     @Override
     public void onNoPermissionNeeded(@NonNull Object permissionName) {
-        if (authBaseFragment != null) {
-            authBaseFragment.onNoPermissionNeeded(permissionName);
+        switch (curPage) {
+            case BASE_ZERO:
+                if (authBaseFragment != null) {
+                    authBaseFragment.onNoPermissionNeeded(permissionName);
+                }
+                break;
+            case BASE_ONE:
+                if (authLicenseFragment != null) {
+                    authLicenseFragment.onNoPermissionNeeded(permissionName);
+                }
+                break;
+            default:
+                break;
         }
     }
 }

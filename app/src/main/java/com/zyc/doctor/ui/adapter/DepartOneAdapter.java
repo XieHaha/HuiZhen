@@ -25,14 +25,12 @@ public class DepartOneAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
     protected void convert(BaseViewHolder helper, String item) {
         RelativeLayout relativeLayout = helper.getView(R.id.layout_depart);
         if (curPosition == helper.getAdapterPosition()) {
-            relativeLayout.setSelected(false);
-        }
-        else {
             relativeLayout.setSelected(true);
         }
+        else {
+            relativeLayout.setSelected(false);
+        }
         helper.setText(R.id.tv_depart, item);
-
-
     }
 
     public void setCurPosition(int curPosition) {

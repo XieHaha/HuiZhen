@@ -34,6 +34,7 @@ import com.zyc.doctor.ui.auth.SelectHospitalActivity;
 import com.zyc.doctor.ui.auth.listener.OnAuthStepListener;
 import com.zyc.doctor.ui.dialog.DownDialog;
 import com.zyc.doctor.ui.dialog.listener.OnMediaItemClickListener;
+import com.zyc.doctor.ui.dialog.listener.OnTitleItemClickListener;
 import com.zyc.doctor.utils.glide.GlideHelper;
 import com.zyc.doctor.utils.glide.MatisseUtils;
 
@@ -49,7 +50,8 @@ import butterknife.OnClick;
  * @date 19/5/17 14:55
  * @des 认证基础信息
  */
-public class AuthBaseFragment extends BaseFragment implements OnPermissionCallback, OnMediaItemClickListener {
+public class AuthBaseFragment extends BaseFragment implements OnPermissionCallback, OnMediaItemClickListener,
+                                                              OnTitleItemClickListener {
     @BindView(R.id.layout_upload_img)
     RelativeLayout layoutUploadImg;
     @BindView(R.id.et_auth_base_name)
@@ -80,6 +82,7 @@ public class AuthBaseFragment extends BaseFragment implements OnPermissionCallba
      * 动态权限
      */
     private PermissionHelper permissionHelper;
+    private List<String> titleDatas;
     /**
      * 医院选择
      */
@@ -98,10 +101,12 @@ public class AuthBaseFragment extends BaseFragment implements OnPermissionCallba
     public void initView(View view, @NonNull Bundle savedInstanceState) {
         super.initView(view, savedInstanceState);
         permissionHelper = PermissionHelper.getInstance(getActivity());
-        data = new ArrayList<String>() {
+        titleDatas = new ArrayList<String>() {
             {
-                add(getString(R.string.txt_camera));
-                add(getString(R.string.txt_photo));
+                add(getString(R.string.txt_title_chief_physician));
+                add(getString(R.string.txt_title_deputy_chief_physician));
+                add(getString(R.string.txt_title_attending_physician));
+                add(getString(R.string.txt_title_hospitalization__physician));
             }
         };
     }
@@ -113,10 +118,7 @@ public class AuthBaseFragment extends BaseFragment implements OnPermissionCallba
         Intent intent;
         switch (view.getId()) {
             case R.id.layout_upload_img:
-                DownDialog dialog = new DownDialog(getContext());
-                dialog.setData(data);
-                dialog.setOnMediaItemClickListener(this);
-                dialog.show();
+                new DownDialog(getContext()).setData(data).setOnMediaItemClickListener(this).show();
                 break;
             case R.id.layout_base_hospital:
                 intent = new Intent(getContext(), SelectHospitalActivity.class);
@@ -127,6 +129,7 @@ public class AuthBaseFragment extends BaseFragment implements OnPermissionCallba
                 startActivityForResult(intent, REQUEST_CODE_DEPART);
                 break;
             case R.id.layout_base_title:
+                new DownDialog(getContext()).setData(titleDatas).setOnTitleItemClickListener(this).show();
                 break;
             case R.id.tv_auth_base_next:
                 if (onAuthStepListener != null) {
@@ -155,6 +158,14 @@ public class AuthBaseFragment extends BaseFragment implements OnPermissionCallba
             default:
                 break;
         }
+    }
+
+    /**
+     * 职称
+     * @param position
+     */
+    @Override
+    public void onTitleItemClick(int position) {
     }
 
     /**

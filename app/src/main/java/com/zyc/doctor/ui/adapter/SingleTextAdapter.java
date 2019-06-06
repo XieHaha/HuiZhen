@@ -1,6 +1,7 @@
 package com.zyc.doctor.ui.adapter;
 
 import android.support.annotation.Nullable;
+import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -14,12 +15,25 @@ import java.util.List;
  * @des
  */
 public class SingleTextAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
+    private int curPosition = -1;
+
     public SingleTextAdapter(int layoutResId, @Nullable List<String> data) {
         super(layoutResId, data);
     }
 
     @Override
     protected void convert(BaseViewHolder helper, String item) {
-        helper.setText(R.id.tv_single_txt, item);
+        TextView textView = helper.getView(R.id.tv_single_txt);
+        textView.setText(item);
+        if (curPosition == helper.getAdapterPosition()) {
+            textView.setSelected(true);
+        }
+        else {
+            textView.setSelected(false);
+        }
+    }
+
+    public void setCurPosition(int curPosition) {
+        this.curPosition = curPosition;
     }
 }

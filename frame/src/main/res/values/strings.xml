@@ -18,6 +18,7 @@
     <string name="txt_open">去开启</string>
     <string name="txt_exit">退出</string>
     <string name="txt_next">下一步</string>
+    <string name="txt_last">上一步</string>
     <string name="txt_loading_again">重新加载</string>
     <string name="txt_none_network">抱歉，好像网络出问题了</string>
     <string name="txt_none_message">暂无消息</string>
@@ -26,6 +27,7 @@
     <string name="txt_none_upgrade">功能升级</string>
     <string name="txt_camera">拍照</string>
     <string name="txt_photo">从手机相册选择</string>
+    <string name="txt_contact">联系我们</string>
 
     <!--主页-->
     <string name="txt_message">消息</string>
@@ -66,6 +68,20 @@
     <string name="txt_select_hospital">请输入医院名称</string>
     <string name="txt_none_hospital">没有找到您的医院</string>
     <string name="txt_add_hospital">添加医院</string>
+    <string name="txt_title_chief_physician">主任医师</string>
+    <string name="txt_title_deputy_chief_physician">副主任医师</string>
+    <string name="txt_title_attending_physician">主治医师</string>
+    <string name="txt_title_hospitalization__physician">住院医师</string>
+    <string name="txt_upload_card">上传证件</string>
+    <string name="txt_upload_card_hint">请上传工牌照或执业证书前两页。\n照片仅用于认证您的真实身份，不向用户展示。</string>
+    <string name="txt_auth_hint">温馨提示：\n请确保图片中的姓名、科室、医院、证件编号所有信息清晰可见。</string>
+    <string name="txt_submit">提交审核</string>
+    <string name="txt_submit_again">重新认证</string>
+
+    <string name="txt_review">审核中</string>
+    <string name="txt_review_hint">我们将尽快完成审核，请耐心等候</string>
+    <string name="txt_review_failure">审核未通过</string>
+    <string name="txt_review_failure_hint">失败原因50字，超级过的十几个 啊火锅和军事基地，手机号改户火锅看帅哥开始减肥。是开花结果后。</string>
 
     <!--版本更新-->
     <string name="txt_version_ignore">忽略</string>

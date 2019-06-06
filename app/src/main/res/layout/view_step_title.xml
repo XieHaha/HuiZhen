@@ -23,7 +23,7 @@
                 android:id="@+id/iv_auth_base"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/selector_auth_step_status"
+                android:src="@mipmap/ic_step_def"
                 android:layout_centerInParent="true" />
 
             <View
@@ -64,7 +64,7 @@
                 android:id="@+id/iv_auth_license"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/selector_auth_step_status"
+                android:src="@mipmap/ic_step_def"
                 android:layout_centerInParent="true" />
 
             <View
@@ -111,7 +111,7 @@
                 android:id="@+id/iv_auth_result"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/selector_auth_step_status"
+                android:src="@mipmap/ic_step_def"
                 android:layout_centerInParent="true" />
 
             <View

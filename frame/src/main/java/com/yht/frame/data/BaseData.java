@@ -7,6 +7,18 @@ package com.yht.frame.data;
  */
 public interface BaseData {
     /**
+     * 基础type 0
+     */
+    int BASE_ZERO = 0;
+    /**
+     * 基础type 1
+     */
+    int BASE_ONE = 1;
+    /**
+     * 基础type 2
+     */
+    int BASE_TWO = 2;
+    /**
      * 昵称的最大长度
      */
     int BASE_NICK_NAME_LENGTH = 20;

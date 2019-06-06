@@ -74,7 +74,7 @@ public class SelectDepartActivity extends BaseActivity implements BaseQuickAdapt
         rvDepartOne.setAdapter(departOneAdapter);
         //二级科室
         rvDepartTwo.setLayoutManager(new LinearLayoutManager(this));
-        departTwoAdapter = new DepartTwoAdapter(R.layout.item_depart, departTwos);
+        departTwoAdapter = new DepartTwoAdapter(R.layout.item_depart_two, departTwos);
         departTwoAdapter.setCurPosition(positionTwo);
         departTwoAdapter.setOnItemClickListener(this);
         rvDepartTwo.setAdapter(departTwoAdapter);

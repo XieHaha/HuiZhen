@@ -16,15 +16,13 @@ import com.zyc.doctor.ui.auth.listener.OnAuthStepListener;
 public class AuthResultFragment extends BaseFragment {
     @Override
     public int getLayoutID() {
-        return R.layout.fragment_worker;
+        return R.layout.fragment_auth_result;
     }
 
     @Override
     public void initView(View view, @NonNull Bundle savedInstanceState) {
         super.initView(view, savedInstanceState);
     }
-
-
 
     private OnAuthStepListener onAuthStepListener;
 

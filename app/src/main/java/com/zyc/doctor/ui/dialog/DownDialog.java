@@ -27,10 +27,11 @@ public class DownDialog extends Dialog implements BaseQuickAdapter.OnItemClickLi
     private Context context;
     private RecyclerView recyclerView;
     private TextView tvCancel;
-    private List<String> data;
     private SingleTextAdapter singleTextAdapter;
     private OnMediaItemClickListener onMediaItemClickListener;
     private OnTitleItemClickListener onTitleItemClickListener;
+    private List<String> data;
+    private int curPosition = -1;
 
     public DownDialog(Context context) {
         super(context, R.style.ActionSheetDialogStyle);
@@ -55,6 +56,7 @@ public class DownDialog extends Dialog implements BaseQuickAdapter.OnItemClickLi
         recyclerView.setAdapter(singleTextAdapter);
         setCanceledOnTouchOutside(true);
         singleTextAdapter.setOnItemClickListener(this);
+        singleTextAdapter.setCurPosition(curPosition);
         tvCancel.setOnClickListener(this);
     }
 
@@ -75,8 +77,14 @@ public class DownDialog extends Dialog implements BaseQuickAdapter.OnItemClickLi
      *
      * @param data
      */
-    public void setData(List<String> data) {
+    public DownDialog setData(List<String> data) {
         this.data = data;
+        return this;
+    }
+
+    public DownDialog setCurPosition(int curPosition) {
+        this.curPosition = curPosition;
+        return this;
     }
 
     /**
@@ -84,12 +92,14 @@ public class DownDialog extends Dialog implements BaseQuickAdapter.OnItemClickLi
      *
      * @param onMediaItemClickListener
      */
-    public void setOnMediaItemClickListener(OnMediaItemClickListener onMediaItemClickListener) {
+    public DownDialog setOnMediaItemClickListener(OnMediaItemClickListener onMediaItemClickListener) {
         this.onMediaItemClickListener = onMediaItemClickListener;
+        return this;
     }
 
-    public void setOnTitleItemClickListener(OnTitleItemClickListener onTitleItemClickListener) {
+    public DownDialog setOnTitleItemClickListener(OnTitleItemClickListener onTitleItemClickListener) {
         this.onTitleItemClickListener = onTitleItemClickListener;
+        return this;
     }
 
     @Override

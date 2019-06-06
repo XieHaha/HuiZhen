@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
+import com.yht.frame.R;
 import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.Tasks;
@@ -23,6 +24,7 @@ import com.yht.frame.http.listener.ResponseListener;
 import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.widgets.edittext.SuperEditText;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -32,7 +34,7 @@ import butterknife.Unbinder;
  * @author dundun
  */
 public abstract class BaseFragment extends Fragment
-        implements UiInterface, ResponseListener<BaseResponse>, View.OnClickListener {
+        implements UiInterface, BaseData, ResponseListener<BaseResponse>, View.OnClickListener {
     /**
      * 注解
      */
@@ -69,6 +71,12 @@ public abstract class BaseFragment extends Fragment
             view = getLayoutView();
         }
         unbinder = ButterKnife.bind(this, view);
+        data = new ArrayList<String>() {
+            {
+                add(getString(R.string.txt_camera));
+                add(getString(R.string.txt_photo));
+            }
+        };
         init(view, savedInstanceState);
         return view;
     }

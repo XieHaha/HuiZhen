@@ -13,8 +13,10 @@ public interface OnAuthStepListener {
 
     /**
      * 执照
+     *
+     * @param type 操作类型
      */
-    void onStepTwo();
+    void onStepTwo(int type);
 
     /**
      * 结果
