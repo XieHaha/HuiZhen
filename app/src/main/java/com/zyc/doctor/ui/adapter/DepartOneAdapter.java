@@ -31,6 +31,8 @@ public class DepartOneAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
             relativeLayout.setSelected(true);
         }
         helper.setText(R.id.tv_depart, item);
+
+
     }
 
     public void setCurPosition(int curPosition) {
