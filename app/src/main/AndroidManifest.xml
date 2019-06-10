@@ -115,6 +115,16 @@
             android:screenOrientation="portrait"
             android:label="@string/title_about"
             android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.currency.IncomeActivity"
+            android:screenOrientation="portrait"
+            android:label=""
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.personal.PersonalInfoActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/title_personal_info"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
 
         <!--环信消息点击事件处理-->
         <receiver

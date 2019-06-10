@@ -1,5 +1,6 @@
 package com.zyc.doctor.ui.main;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
@@ -8,6 +9,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.yht.frame.ui.BaseActivity;
 import com.zyc.doctor.R;
@@ -24,6 +26,12 @@ public class MainActivity extends BaseActivity {
     LinearLayout actMainTab3;
     @BindView(R.id.act_main_tab2)
     LinearLayout actMainTab2;
+    @BindView(R.id.tv_message)
+    TextView tvMessage;
+    @BindView(R.id.tv_patient)
+    TextView tvPatient;
+    @BindView(R.id.tv_worker)
+    TextView tvWorker;
     /**
      * 碎片管理
      */
@@ -157,21 +165,33 @@ public class MainActivity extends BaseActivity {
     private void selectTab(int index) {
         switch (index) {
             case 0:
+                tvMessage.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+                tvWorker.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+                tvPatient.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
                 actMainTab1.setSelected(true);
                 actMainTab2.setSelected(false);
                 actMainTab3.setSelected(false);
                 break;
             case 1:
+                tvMessage.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+                tvWorker.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+                tvPatient.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
                 actMainTab1.setSelected(false);
                 actMainTab2.setSelected(true);
                 actMainTab3.setSelected(false);
                 break;
             case 2:
+                tvMessage.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+                tvWorker.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+                tvPatient.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
                 actMainTab1.setSelected(false);
                 actMainTab2.setSelected(false);
                 actMainTab3.setSelected(true);
                 break;
             default:
+                tvMessage.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+                tvWorker.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+                tvPatient.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
                 actMainTab1.setSelected(true);
                 actMainTab2.setSelected(false);
                 actMainTab3.setSelected(false);

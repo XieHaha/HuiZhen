@@ -10,10 +10,10 @@ import java.util.List;
 /**
  * @author 顿顿
  * @date 19/6/10 12:18
- * @des 个人中心历史记录
+ * @des 收入记录
  */
-public class PersonalHistoryAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
-    public PersonalHistoryAdapter(int layoutResId, @Nullable List<String> data) {
+public class CurrencyIncomeAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
+    public CurrencyIncomeAdapter(int layoutResId, @Nullable List<String> data) {
         super(layoutResId, data);
     }
 

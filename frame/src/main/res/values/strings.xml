@@ -9,6 +9,9 @@
     <string name="title_select_depart">选择科室</string>
     <string name="title_setting">设置</string>
     <string name="title_about">关于会珍</string>
+    <string name="title_personal_info">个人信息</string>
+    <string name="title_total_income">累计收入</string>
+    <string name="title_month_income">本月收入</string>
 
     <!--公用-->
     <string name="txt_app_name">会珍</string>
@@ -99,6 +102,11 @@
     <string name="txt_set_exit_sure">确认退出？</string>
     <string name="txt_about_protocol">服务协议</string>
     <string name="txt_about_understand">了解会珍</string>
+    <string name="txt_info_head_img">头像</string>
+    <string name="txt_info_sex">性别</string>
+    <string name="txt_info_phone">手机号</string>
+    <!--会珍币管理-->
+    <string name="txt_currency_arrival">已到账</string>
 
     <!--版本更新-->
     <string name="txt_version_ignore">忽略</string>
