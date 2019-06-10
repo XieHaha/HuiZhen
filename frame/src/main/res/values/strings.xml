@@ -7,6 +7,8 @@
     <string name="title_select_hospital">选择医院</string>
     <string name="title_add_hospital">添加医院</string>
     <string name="title_select_depart">选择科室</string>
+    <string name="title_setting">设置</string>
+    <string name="title_about">关于会珍</string>
 
     <!--公用-->
     <string name="txt_app_name">会珍</string>
@@ -55,7 +57,6 @@
     <string name="txt_auth_base">基本信息</string>
     <string name="txt_auth_license">医生执照</string>
     <string name="txt_auth_result">认证结果</string>
-
     <string name="txt_upload_img">上传照片</string>
     <string name="txt_upload_img_hint">请上传你的真实头像</string>
     <string name="txt_name">姓名</string>
@@ -80,11 +81,24 @@
     <string name="txt_auth_hint">温馨提示：\n请确保图片中的姓名、科室、医院、证件编号所有信息清晰可见。</string>
     <string name="txt_submit">提交审核</string>
     <string name="txt_submit_again">重新认证</string>
-
     <string name="txt_review">审核中</string>
     <string name="txt_review_hint">我们将尽快完成审核，请耐心等候</string>
     <string name="txt_review_failure">审核未通过</string>
     <string name="txt_review_failure_hint">失败原因50字，超级过的十几个 啊火锅和军事基地，手机号改户火锅看帅哥开始减肥。是开花结果后。</string>
+
+    <!--个人中心-->
+    <string name="txt_personal_balance">我的余额</string>
+    <string name="txt_personal_total">累计已到账</string>
+    <string name="txt_personal_month_total">本月已到账</string>
+    <string name="txt_personal_estimate_income">预计收入&#160;%s</string>
+    <string name="txt_personal_history">历史记录</string>
+    <string name="txt_set_message">新消息通知</string>
+    <string name="txt_set_about">关于会珍</string>
+    <string name="txt_set_version">当前版本</string>
+    <string name="txt_set_exit">退出登录</string>
+    <string name="txt_set_exit_sure">确认退出？</string>
+    <string name="txt_about_protocol">服务协议</string>
+    <string name="txt_about_understand">了解会珍</string>
 
     <!--版本更新-->
     <string name="txt_version_ignore">忽略</string>

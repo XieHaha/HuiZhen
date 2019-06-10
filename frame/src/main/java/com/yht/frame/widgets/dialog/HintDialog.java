@@ -23,7 +23,6 @@ public class HintDialog extends Dialog implements OnClickListener {
     private String enterString = "确定";
     private int enterColor = 0;
     private String cancelString = "取消";
-    private boolean isShowCancelBtn = true;
     private boolean isShow = false;
 
     public HintDialog(Context context) {
@@ -112,28 +111,14 @@ public class HintDialog extends Dialog implements OnClickListener {
         return this;
     }
 
-    /**
-     * 设置取消Btn显示/隐藏
-     *
-     * @param isShowCancelBtn
-     */
-    public void isShowCancelBtn(boolean isShowCancelBtn) {
-        this.isShowCancelBtn = isShowCancelBtn;
-    }
-
     @Override
     public void show() {
         if (!isShow) {
             super.show();
+            title.setText(titleString);
             content.setText(contentString);
             enter.setText(enterString);
-            if (enterColor != 0) { enter.setTextColor(content.getResources().getColor(enterColor)); }
-            if (!isShowCancelBtn) {
-                cancel.setVisibility(View.GONE);
-            }
-            else {
-                cancel.setText(cancelString);
-            }
+            cancel.setText(cancelString);
             isShow = true;
         }
     }

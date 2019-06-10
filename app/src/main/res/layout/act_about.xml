@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/color_ffffff"
+    android:fitsSystemWindows="true">
+
+    <include layout="@layout/public_title" />
+
+
+    <ImageView
+        android:layout_width="74dp"
+        android:layout_height="74dp"
+        android:src="@mipmap/ic_logo"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="47dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/txt_app_name"
+        android:textColor="@color/color_373d4d"
+        android:textSize="@dimen/text_20"
+        android:layout_gravity="center_horizontal"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp" />
+
+    <LinearLayout
+        android:id="@+id/layout_service_protocol"
+        android:layout_width="match_parent"
+        android:layout_height="62dp"
+        android:background="@color/color_ffffff"
+        android:gravity="center_vertical"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:layout_marginTop="69dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@string/txt_about_protocol"
+            android:textColor="@color/color_373d4d"
+            android:textSize="@dimen/text_16" />
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_right" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/app_hei_line"
+        android:background="@color/color_ebedf0"
+        android:layout_marginStart="10dp" />
+
+    <LinearLayout
+        android:id="@+id/layout_about_understand"
+        android:layout_width="match_parent"
+        android:layout_height="62dp"
+        android:background="@color/color_ffffff"
+        android:gravity="center_vertical"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@string/txt_about_understand"
+            android:textColor="@color/color_373d4d"
+            android:textSize="@dimen/text_16" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_right" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/app_hei_line"
+        android:background="@color/color_ebedf0"
+        android:layout_marginStart="10dp" />
+
+</LinearLayout>

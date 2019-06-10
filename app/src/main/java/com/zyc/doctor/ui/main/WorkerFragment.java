@@ -16,7 +16,7 @@ import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.widgets.edittext.SuperEditText;
 import com.zyc.doctor.R;
 import com.zyc.doctor.ui.AbstractAnimFinish;
-import com.zyc.doctor.ui.login.LoginOptionsActivity;
+import com.zyc.doctor.ui.personal.PersonalActivity;
 
 import butterknife.BindView;
 
@@ -58,7 +58,7 @@ public class WorkerFragment extends BaseFragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getContext(), LoginOptionsActivity.class));
+                startActivity(new Intent(getContext(), PersonalActivity.class));
             }
         });
     }

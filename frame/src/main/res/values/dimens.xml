@@ -19,6 +19,7 @@
 
     <!--辅助文字-->
     <dimen name="text_13">13sp</dimen>
+    <dimen name="text_12">12sp</dimen>
 
     <dimen name="text_14">14sp</dimen>
     <dimen name="text_17">17sp</dimen>
