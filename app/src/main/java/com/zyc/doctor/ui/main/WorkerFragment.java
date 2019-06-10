@@ -15,7 +15,7 @@ import android.widget.TextView;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.widgets.edittext.SuperEditText;
 import com.zyc.doctor.R;
-import com.zyc.doctor.ui.AnimFinishAdapter;
+import com.zyc.doctor.ui.AbstractAnimFinish;
 import com.zyc.doctor.ui.login.LoginOptionsActivity;
 
 import butterknife.BindView;
@@ -76,7 +76,7 @@ public class WorkerFragment extends BaseFragment {
             viewSearchBg.startAnimation(alpha);
             viewSearchLayout.setVisibility(View.VISIBLE);
             showSoftInputFromWindow(getContext(), viewSearchEdit);
-            toDown.setAnimationListener(new AnimFinishAdapter() {
+            toDown.setAnimationListener(new AbstractAnimFinish() {
                 @Override
                 public void onAnimationEnd(Animation animation) {
                     viewSearchBg.setVisibility(View.VISIBLE);
@@ -91,7 +91,7 @@ public class WorkerFragment extends BaseFragment {
             alpha.setDuration(300);
             viewSearchBg.startAnimation(alpha);
             hideSoftInputFromWindow(getContext(), viewSearchEdit);
-            toUp.setAnimationListener(new AnimFinishAdapter() {
+            toUp.setAnimationListener(new AbstractAnimFinish() {
                 @Override
                 public void onAnimationEnd(Animation animation) {
                     viewSearchLayout.setVisibility(View.INVISIBLE);

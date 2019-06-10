@@ -45,8 +45,11 @@
     <string name="txt_login_account_hint">请输入手机号</string>
     <string name="txt_login_code_hint">短信验证码</string>
     <string name="txt_login_obtain_code">获取验证码</string>
+    <string name="txt_login_time">%ds</string>
     <string name="txt_login_phone_error">手机号不能为空</string>
     <string name="txt_login">登录</string>
+    <string name="txt_login_bind_phone">绑定手机号</string>
+    <string name="txt_login_bind_phone_hint">根据国家法规对于账号实名的要求，进行下一步操作前，请先完成手机绑定。</string>
 
     <!--认证-->
     <string name="txt_auth_base">基本信息</string>

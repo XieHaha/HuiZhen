@@ -27,6 +27,10 @@ public interface BaseData {
      */
     int BASE_PHONE_DEFAULT_LENGTH = 11;
     /**
+     * 验证码默认长度
+     */
+    int BASE_VERIFY_CODE_DEFAULT_LENGTH = 6;
+    /**
      * 验证码二次获取默认时间
      */
     int BASE_MAX_RESEND_TIME = 60;

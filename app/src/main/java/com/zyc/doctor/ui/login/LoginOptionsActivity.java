@@ -16,7 +16,6 @@ import android.widget.TextView;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.ToastUtil;
 import com.zyc.doctor.R;
-import com.zyc.doctor.ui.auth.AuthDoctorActivity;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -52,7 +51,8 @@ public class LoginOptionsActivity extends BaseActivity {
                 ToastUtil.toast(this, "微信登录");
                 break;
             case R.id.tv_login_phone:
-                startActivity(new Intent(this, AuthDoctorActivity.class));
+                //                startActivity(new Intent(this, AuthDoctorActivity.class));
+                startActivity(new Intent(this, LoginActivity.class));
                 break;
             default:
                 break;

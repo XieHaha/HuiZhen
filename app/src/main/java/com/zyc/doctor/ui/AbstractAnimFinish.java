@@ -6,8 +6,7 @@ import android.view.animation.Animation.AnimationListener;
 /**
  * @author dundun
  */
-public abstract class AnimFinishAdapter implements AnimationListener {
-
+public abstract class AbstractAnimFinish implements AnimationListener {
     @Override
     public void onAnimationRepeat(Animation animation) {
     }
