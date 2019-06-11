@@ -116,7 +116,7 @@
             android:label="@string/title_about"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.currency.IncomeActivity"
+            android:name=".ui.currency.CurrencyActivity"
             android:screenOrientation="portrait"
             android:label=""
             android:windowSoftInputMode="adjustPan|stateHidden" />
@@ -124,6 +124,16 @@
             android:name=".ui.personal.PersonalInfoActivity"
             android:screenOrientation="portrait"
             android:label="@string/title_personal_info"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.currency.WithdrawDetailActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/title_withdraw_detail"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.currency.IncomeDetailActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/title_income_detail"
             android:windowSoftInputMode="adjustPan|stateHidden" />
 
         <!--环信消息点击事件处理-->

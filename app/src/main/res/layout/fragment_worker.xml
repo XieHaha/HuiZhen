@@ -9,7 +9,15 @@
         android:layout_width="wrap_content"
         android:layout_marginTop="40dp"
         android:layout_height="wrap_content"
-        android:text="登录" />
+        android:text="个人信息" />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/button"
+        android:text="医生认证" />
 
     <include layout="@layout/view_search" />
 

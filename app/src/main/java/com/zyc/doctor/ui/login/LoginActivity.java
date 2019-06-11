@@ -1,5 +1,6 @@
 package com.zyc.doctor.ui.login;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -17,6 +18,7 @@ import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.widgets.edittext.SuperEditText;
 import com.zyc.doctor.R;
 import com.zyc.doctor.ui.AbstractTextWatcher;
+import com.zyc.doctor.ui.main.MainActivity;
 
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 
@@ -142,6 +144,8 @@ public class LoginActivity extends BaseActivity {
                 onResponseSuccess(Tasks.GET_VERIFY_CODE, null);
                 break;
             case R.id.tv_login_next:
+                startActivity(new Intent(this, MainActivity.class));
+                finish();
                 break;
             default:
                 break;

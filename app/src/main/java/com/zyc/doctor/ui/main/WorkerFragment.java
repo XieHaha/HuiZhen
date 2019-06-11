@@ -16,6 +16,7 @@ import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.widgets.edittext.SuperEditText;
 import com.zyc.doctor.R;
 import com.zyc.doctor.ui.AbstractAnimFinish;
+import com.zyc.doctor.ui.auth.AuthDoctorActivity;
 import com.zyc.doctor.ui.personal.PersonalActivity;
 
 import butterknife.BindView;
@@ -40,6 +41,8 @@ public class WorkerFragment extends BaseFragment {
     RelativeLayout viewSearchEditLayout;
     @BindView(R.id.button)
     Button button;
+    @BindView(R.id.button1)
+    Button button1;
 
     @Override
     public int getLayoutID() {
@@ -59,6 +62,12 @@ public class WorkerFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getContext(), PersonalActivity.class));
+            }
+        });
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(), AuthDoctorActivity.class));
             }
         });
     }

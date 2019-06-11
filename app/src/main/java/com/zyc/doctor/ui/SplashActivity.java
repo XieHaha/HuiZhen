@@ -26,7 +26,6 @@ import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.LogUtils;
 import com.zyc.doctor.R;
 import com.zyc.doctor.ui.login.LoginOptionsActivity;
-import com.zyc.doctor.ui.main.MainActivity;
 
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 
@@ -107,7 +106,7 @@ public class SplashActivity extends BaseActivity implements DocAuthStatu {
      * 页面初始化
      */
     private void initPage() {
-        startActivity(new Intent(this, MainActivity.class));
+        startActivity(new Intent(this, LoginOptionsActivity.class));
         finish();
     }
 

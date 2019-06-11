@@ -20,9 +20,9 @@ import butterknife.BindView;
 /**
  * @author 顿顿
  * @date 19/6/10 15:33
- * @des 收入
+ * @des 会珍币管理
  */
-public class IncomeActivity extends BaseActivity {
+public class CurrencyActivity extends BaseActivity {
     @BindView(R.id.public_title_bar_title)
     TextView publicTitleBarTitle;
     @BindView(R.id.recyclerview)
@@ -44,7 +44,7 @@ public class IncomeActivity extends BaseActivity {
 
     @Override
     public int getLayoutID() {
-        return R.layout.act_income;
+        return R.layout.act_currency;
     }
 
     @Override

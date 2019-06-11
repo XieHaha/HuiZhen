@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    android:background="@color/color_ffffff">
+
+    <include layout="@layout/public_title" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:scrollbars="none"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_6a6f80"
+                android:textSize="@dimen/text_15"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="49dp"
+                android:text="@string/txt_currency_arrival" />
+
+            <TextView
+                android:id="@+id/tv_income_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#2e3340"
+                android:textSize="40sp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="4dp"
+                tools:text="100.00"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_income_estimate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_373d4d"
+                android:textSize="@dimen/text_16"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dp"
+                android:text="@string/txt_personal_estimate_income" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="62dp"
+                android:layout_marginTop="40dp"
+                android:paddingStart="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_a1a8b3"
+                    android:textSize="@dimen/text_16"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/txt_currency_income_service_type"
+                    android:layout_centerVertical="true" />
+
+                <TextView
+                    android:id="@+id/tv_service_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_373d4d"
+                    android:textSize="@dimen/text_16"
+                    android:layout_gravity="center_horizontal"
+                    tools:text="预约检查"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="20dp"
+                    android:layout_centerVertical="true" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/app_hei_line"
+                    android:background="@color/color_ebedf0"
+                    android:layout_alignParentBottom="true" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="62dp"
+                android:paddingStart="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_a1a8b3"
+                    android:textSize="@dimen/text_16"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/txt_currency_income_patient_name"
+                    android:layout_centerVertical="true" />
+
+                <TextView
+                    android:id="@+id/tv_patient_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_373d4d"
+                    android:textSize="@dimen/text_16"
+                    android:layout_gravity="center_horizontal"
+                    tools:text="姓名"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="20dp"
+                    android:layout_centerVertical="true" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/app_hei_line"
+                    android:background="@color/color_ebedf0"
+                    android:layout_alignParentBottom="true" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="62dp"
+                android:paddingStart="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_a1a8b3"
+                    android:textSize="@dimen/text_16"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/txt_currency_income_hospital"
+                    android:layout_centerVertical="true" />
+
+                <TextView
+                    android:id="@+id/tv_service_hospital"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_1491fc"
+                    android:textSize="@dimen/text_16"
+                    android:layout_gravity="center_horizontal"
+                    tools:text="华西"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="20dp"
+                    android:layout_centerVertical="true" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/app_hei_line"
+                    android:background="@color/color_ebedf0"
+                    android:layout_alignParentBottom="true" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/layout_doctor"
+                android:layout_width="match_parent"
+                android:layout_height="62dp"
+                android:paddingStart="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_a1a8b3"
+                    android:textSize="@dimen/text_16"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/txt_currency_income_doctor_name"
+                    android:layout_centerVertical="true" />
+
+                <TextView
+                    android:id="@+id/tv_receive_doctor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_373d4d"
+                    android:textSize="@dimen/text_16"
+                    android:layout_gravity="center_horizontal"
+                    tools:text="医生"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="20dp"
+                    android:layout_centerVertical="true" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/app_hei_line"
+                    android:background="@color/color_ebedf0"
+                    android:layout_alignParentBottom="true" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_project_checked"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="20dp"
+                android:paddingStart="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_a1a8b3"
+                    android:textSize="@dimen/text_16"
+                    android:text="@string/txt_currency_income_project" />
+
+                <com.yht.frame.widgets.FullListView
+                    android:id="@+id/lv_checked"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp">
+
+                </com.yht.frame.widgets.FullListView>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/app_hei_line"
+                    android:background="@color/color_ebedf0"
+                    android:layout_marginTop="20dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="20dp"
+                android:paddingTop="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_a1a8b3"
+                    android:textSize="@dimen/text_16"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/txt_currency_income_time"
+                    android:layout_marginEnd="60dp" />
+
+                <TextView
+                    android:id="@+id/tv_diagnosis_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_373d4d"
+                    android:textSize="@dimen/text_16"
+                    android:layout_gravity="center_horizontal"
+                    tools:text="2019-06-112019-06-112019-06-112019-06-112019-06-112019-06-112019-06-112019-06-112019-06-112019-06-112019-06-112019-06-112019-06-112019-06-11"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="20dp"
+                    android:gravity="right" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </ScrollView>
+</LinearLayout>

@@ -16,7 +16,7 @@ import com.yht.frame.data.CommonData;
 import com.yht.frame.ui.BaseActivity;
 import com.zyc.doctor.R;
 import com.zyc.doctor.ui.adapter.CurrencyIncomeAdapter;
-import com.zyc.doctor.ui.currency.IncomeActivity;
+import com.zyc.doctor.ui.currency.CurrencyActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -116,12 +116,12 @@ public class PersonalActivity extends BaseActivity {
         Intent intent;
         switch (v.getId()) {
             case R.id.layout_total_income:
-                intent = new Intent(this, IncomeActivity.class);
+                intent = new Intent(this, CurrencyActivity.class);
                 intent.putExtra(CommonData.KEY_PUBLIC, getString(R.string.title_total_income));
                 startActivity(intent);
                 break;
             case R.id.layout_month_income:
-                intent = new Intent(this, IncomeActivity.class);
+                intent = new Intent(this, CurrencyActivity.class);
                 intent.putExtra(CommonData.KEY_PUBLIC, getString(R.string.title_month_income));
                 startActivity(intent);
                 break;
