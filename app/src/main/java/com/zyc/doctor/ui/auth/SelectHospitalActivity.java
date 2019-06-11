@@ -22,6 +22,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+import static com.zyc.doctor.ui.auth.fragment.AuthBaseFragment.REQUEST_CODE_HOSPITAL;
+
 /**
  * @author 顿顿
  * @date 19/6/4 17:53
@@ -38,10 +40,6 @@ public class SelectHospitalActivity extends BaseActivity implements BaseQuickAda
     LinearLayout layoutNoneHospital;
     private HospitalAdapter hospitalAdapter;
     private List<String> hospitals;
-    /**
-     * 添加医院
-     */
-    public static final int REQUEST_CODE_ADD_HOSPITAL = 100;
 
     @Override
     protected boolean isInitBackBtn() {
@@ -70,7 +68,7 @@ public class SelectHospitalActivity extends BaseActivity implements BaseQuickAda
     @OnClick(R.id.tv_add_hospital_next)
     public void onViewClicked() {
         Intent intent = new Intent(this, AddHospitalActivity.class);
-        startActivityForResult(intent, REQUEST_CODE_ADD_HOSPITAL);
+        startActivityForResult(intent, REQUEST_CODE_HOSPITAL);
     }
 
     @Override
@@ -82,6 +80,14 @@ public class SelectHospitalActivity extends BaseActivity implements BaseQuickAda
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != Activity.RESULT_OK) {
             return;
+        }
+        switch (requestCode) {
+            case REQUEST_CODE_HOSPITAL:
+                setResult(RESULT_OK, data);
+                finish();
+                break;
+            default:
+                break;
         }
     }
 }

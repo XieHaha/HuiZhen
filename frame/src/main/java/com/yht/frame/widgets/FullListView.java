@@ -5,7 +5,8 @@ import android.util.AttributeSet;
 import android.widget.ListView;
 
 /**
- * Created by DUNDUN on 17.11.14.
+ * @author DUNDUN
+ * @date 17.11.14
  */
 public class FullListView extends ListView {
     public FullListView(Context context) {

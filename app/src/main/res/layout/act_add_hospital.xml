@@ -10,7 +10,7 @@
     <include layout="@layout/public_title" />
 
     <com.yht.frame.widgets.edittext.SuperEditText
-        android:id="@+id/tv_login_account"
+        android:id="@+id/et_hospital"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="35dp"

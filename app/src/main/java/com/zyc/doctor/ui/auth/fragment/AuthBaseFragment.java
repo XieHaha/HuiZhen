@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.yht.frame.api.DirHelper;
+import com.yht.frame.data.CommonData;
 import com.yht.frame.permission.OnPermissionCallback;
 import com.yht.frame.permission.Permission;
 import com.yht.frame.permission.PermissionHelper;
@@ -50,8 +51,8 @@ import butterknife.OnClick;
  * @date 19/5/17 14:55
  * @des 认证基础信息
  */
-public class AuthBaseFragment extends BaseFragment implements OnPermissionCallback, OnMediaItemClickListener,
-                                                              OnTitleItemClickListener {
+public class AuthBaseFragment extends BaseFragment
+        implements OnPermissionCallback, OnMediaItemClickListener, OnTitleItemClickListener {
     @BindView(R.id.layout_upload_img)
     RelativeLayout layoutUploadImg;
     @BindView(R.id.et_auth_base_name)
@@ -74,7 +75,8 @@ public class AuthBaseFragment extends BaseFragment implements OnPermissionCallba
     TextView tvAuthBaseNext;
     @BindView(R.id.iv_auth_base_img)
     ImageView ivAuthBaseImg;
-    private Uri originUri, cutFileUri;
+    private String name, hospital, depart, title;
+    private Uri cutFileUri;
     private File cameraTempFile;
     private Uri mCurrentPhotoUri;
     private String mCurrentPhotoPath;
@@ -129,7 +131,10 @@ public class AuthBaseFragment extends BaseFragment implements OnPermissionCallba
                 startActivityForResult(intent, REQUEST_CODE_DEPART);
                 break;
             case R.id.layout_base_title:
-                new DownDialog(getContext()).setData(titleDatas).setOnTitleItemClickListener(this).show();
+                new DownDialog(getContext()).setData(titleDatas)
+                                            .setCurPosition(titleDatas.indexOf(title))
+                                            .setOnTitleItemClickListener(this)
+                                            .show();
                 break;
             case R.id.tv_auth_base_next:
                 if (onAuthStepListener != null) {
@@ -162,10 +167,14 @@ public class AuthBaseFragment extends BaseFragment implements OnPermissionCallba
 
     /**
      * 职称
+     *
      * @param position
      */
     @Override
     public void onTitleItemClick(int position) {
+        title = titleDatas.get(position);
+        tvAuthBaseTitle.setText(title);
+        tvAuthBaseTitle.setSelected(true);
     }
 
     /**
@@ -214,9 +223,8 @@ public class AuthBaseFragment extends BaseFragment implements OnPermissionCallba
      * 图片裁剪
      */
     private void startCutImg(Uri uri, Uri cutUri) {
-        originUri = uri;
         cutFileUri = cutUri;
-        startActivityForResult(getCutimgIntent(originUri, cutFileUri), RC_CROP_IMG);
+        startActivityForResult(getCutimgIntent(uri, cutFileUri), RC_CROP_IMG);
     }
 
     @Override
@@ -243,13 +251,22 @@ public class AuthBaseFragment extends BaseFragment implements OnPermissionCallba
                 break;
             case RC_CROP_IMG:
                 //裁剪完成，上传图片
-                //上传完成，替换本地图片
                 Glide.with(this)
                      .load(cutFileUri)
                      .apply(GlideHelper.getOptionsPic(BaseUtils.dp2px(getContext(), 4)))
                      .into(ivAuthBaseImg);
                 break;
+            //医院选择
             case REQUEST_CODE_HOSPITAL:
+                hospital = data.getStringExtra(CommonData.KEY_HOSPITAL_NAME);
+                tvAuthBaseHospital.setText(hospital);
+                tvAuthBaseHospital.setSelected(true);
+                break;
+            //科室选择
+            case REQUEST_CODE_DEPART:
+                depart = data.getStringExtra(CommonData.KEY_DEPART_NAME);
+                tvAuthBaseDepart.setText(depart);
+                tvAuthBaseDepart.setSelected(true);
                 break;
             default:
                 break;
