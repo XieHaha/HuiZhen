@@ -14,6 +14,8 @@
     <string name="title_month_income">本月收入</string>
     <string name="title_withdraw_detail">提现详情</string>
     <string name="title_income_detail">收入详情</string>
+    <string name="title_message">消息</string>
+    <string name="title_patient">患者(%s)</string>
 
     <!--公用-->
     <string name="txt_app_name">会珍</string>
@@ -35,11 +37,13 @@
     <string name="txt_camera">拍照</string>
     <string name="txt_photo">从手机相册选择</string>
     <string name="txt_contact">联系我们</string>
+    <string name="txt_contact_hotline">您将要拨打医助热线：\n028&#8211;88888888</string>
 
     <!--主页-->
     <string name="txt_message">消息</string>
     <string name="txt_worker">工作室</string>
     <string name="txt_patient">患者</string>
+    <string name="txt_message_status">全部已读</string>
 
     <!--启动页 引导页-->
     <string name="txt_splash_time_hint">跳过(%ds)</string>
@@ -57,6 +61,8 @@
     <string name="txt_login">登录</string>
     <string name="txt_login_bind_phone">绑定手机号</string>
     <string name="txt_login_bind_phone_hint">根据国家法规对于账号实名的要求，进行下一步操作前，请先完成手机绑定。</string>
+    <string name="txt_account_disable">账号禁用</string>
+    <string name="txt_account_disable_hint">由于多名患者举报，您的账号被禁用</string>
 
     <!--认证-->
     <string name="txt_auth_base">基本信息</string>

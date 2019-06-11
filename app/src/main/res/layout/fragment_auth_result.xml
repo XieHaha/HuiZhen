@@ -6,7 +6,8 @@
     android:paddingTop="20dp"
     android:paddingLeft="20dp"
     android:paddingRight="20dp"
-    android:paddingBottom="31dp">
+    android:paddingBottom="31dp"
+    android:background="@color/color_ffffff">
 
     <TextView
         android:id="@+id/tv_auth_result_status"
@@ -29,11 +30,13 @@
         android:layout_marginTop="12dp" />
 
     <ImageView
+        android:id="@+id/tv_auth_result_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="29dp"
-        android:layout_below="@id/tv_auth_result_txt" />
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/tv_auth_result_txt"
+        android:src="@mipmap/pic_auth_success" />
 
 
     <LinearLayout
@@ -46,16 +49,15 @@
         android:layout_alignParentBottom="true">
 
         <TextView
-            android:id="@+id/tv_auth_result_last"
+            android:id="@+id/tv_auth_result_contact"
             android:layout_width="wrap_content"
             android:layout_weight="1"
             android:layout_height="match_parent"
-
-            android:background="@drawable/corner28_stroke1_1491fc"
+            android:background="@drawable/selector_contact_tab"
             android:text="@string/txt_contact"
             android:gravity="center"
             android:textSize="@dimen/text_16"
-            android:textColor="@color/color_1491fc" />
+            android:textColor="@color/txt_color_ffffff_1491fc_selector" />
 
         <TextView
             android:id="@+id/tv_auth_result_submit"
@@ -63,7 +65,7 @@
             android:layout_weight="1"
             android:layout_height="match_parent"
             android:background="@drawable/corner28_1491fc_bg"
-            android:text="@string/txt_submit"
+            android:text="@string/txt_submit_again"
             android:gravity="center"
             android:textSize="@dimen/text_16"
             android:layout_marginLeft="20dp"

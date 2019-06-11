@@ -13,6 +13,9 @@ import android.widget.TextView;
 
 import com.yht.frame.ui.BaseActivity;
 import com.zyc.doctor.R;
+import com.zyc.doctor.ui.main.fragment.MessageFragment;
+import com.zyc.doctor.ui.main.fragment.PatientFragment;
+import com.zyc.doctor.ui.main.fragment.WorkerFragment;
 
 import butterknife.BindView;
 

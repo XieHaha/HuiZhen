@@ -53,6 +53,7 @@ public class LoginOptionsActivity extends BaseActivity {
             case R.id.tv_login_phone:
                 //                startActivity(new Intent(this, AuthDoctorActivity.class));
                 startActivity(new Intent(this, LoginActivity.class));
+                finish();
                 break;
             default:
                 break;

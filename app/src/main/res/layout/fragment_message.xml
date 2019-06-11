@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        layout="@layout/public_main_title"
+        android:id="@+id/title_bar" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/title_bar">
+
+    </android.support.v7.widget.RecyclerView>
+
+
+    <TextView
+        android:id="@+id/tv_none_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_15"
+        android:textColor="@color/color_6a6f80"
+        android:text="@string/txt_none_message"
+        android:drawableTop="@mipmap/pic_none_message"
+        android:gravity="center"
+        android:layout_centerInParent="true" />
+
+
+</RelativeLayout>

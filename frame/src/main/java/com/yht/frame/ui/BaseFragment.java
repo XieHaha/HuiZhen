@@ -93,6 +93,9 @@ public abstract class BaseFragment extends Fragment
      * @return
      */
     public static int getStateBarHeight(Activity a) {
+        if (a == null) {
+            return 0;
+        }
         int result = 0;
         int resourceId = a.getResources().getIdentifier("status_bar_height", "dimen", "android");
         if (resourceId > 0) {

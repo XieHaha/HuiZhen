@@ -3,7 +3,6 @@ package com.zyc.doctor.ui.personal;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -32,8 +31,6 @@ import butterknife.OnClick;
 public class PersonalActivity extends BaseActivity {
     @BindView(R.id.recyclerview)
     RecyclerView recyclerview;
-    @BindView(R.id.swiperefreshlayout)
-    SwipeRefreshLayout swiperefreshlayout;
     @BindView(R.id.public_title_bar_right_img)
     ImageView publicTitleBarRightImg;
     /**

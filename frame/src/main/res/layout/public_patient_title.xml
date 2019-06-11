@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@color/color_ffffff"
+    android:layout_height="wrap_content">
+
+    <View
+        android:id="@+id/status_bar_fix"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/color_ffffff" />
+
+
+    <TextView
+        android:id="@+id/public_main_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="16dp"
+        android:textColor="@color/color_373d4d"
+        android:textSize="@dimen/text_20"
+        android:textStyle="bold"
+        tools:text="标题" />
+
+
+</LinearLayout>

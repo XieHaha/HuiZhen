@@ -21,6 +21,7 @@
         tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
     <!-- Optional for location -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" /> <!-- 用于开启 debug 版本的应用在6.0 系统上 层叠窗口权限 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -134,6 +135,11 @@
             android:name=".ui.currency.IncomeDetailActivity"
             android:screenOrientation="portrait"
             android:label="@string/title_income_detail"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.login.AccountDisableActivity"
+            android:screenOrientation="portrait"
+            android:label=""
             android:windowSoftInputMode="adjustPan|stateHidden" />
 
         <!--环信消息点击事件处理-->

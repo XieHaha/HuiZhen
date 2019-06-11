@@ -21,8 +21,8 @@ public class HintDialog extends Dialog implements OnClickListener {
     private String titleString = "提示";
     private String contentString = "确认合格？";
     private String enterString = "确定";
-    private int enterColor = 0;
     private String cancelString = "取消";
+    private boolean enterSelect = false;
     private boolean isShow = false;
 
     public HintDialog(Context context) {
@@ -95,11 +95,8 @@ public class HintDialog extends Dialog implements OnClickListener {
         return this;
     }
 
-    /**
-     * 设置确定按钮的颜色
-     */
-    public HintDialog setEnterTxtColor(int color) {
-        this.enterColor = color;
+    public HintDialog setEnterSelect(boolean enterSelect) {
+        this.enterSelect = enterSelect;
         return this;
     }
 
@@ -118,6 +115,7 @@ public class HintDialog extends Dialog implements OnClickListener {
             title.setText(titleString);
             content.setText(contentString);
             enter.setText(enterString);
+            enter.setSelected(enterSelect);
             cancel.setText(cancelString);
             isShow = true;
         }
