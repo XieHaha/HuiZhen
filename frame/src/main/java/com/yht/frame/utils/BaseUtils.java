@@ -5,6 +5,9 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.TypedValue;
 
+import com.github.promeg.pinyinhelper.Pinyin;
+import com.yht.frame.data.bean.PatientBean;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
@@ -13,7 +16,10 @@ import java.io.OutputStream;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -197,5 +203,52 @@ public class BaseUtils {
             }
         }
         return count;
+    }
+
+    /**
+     * 对数据进行排序
+     *
+     * @param list 要进行排序的数据源
+     */
+    public static void sortData(List<PatientBean> list) {
+        if (list == null || list.size() == 0) { return; }
+        for (int i = 0; i < list.size(); i++) {
+            PatientBean bean = list.get(i);
+            String tag = Pinyin.toPinyin(bean.getName().substring(0, 1).charAt(0)).substring(0, 1);
+            if (tag.matches("[A-Z]")) {
+                bean.setIndexTag(tag);
+            }
+            else {
+                bean.setIndexTag("#");
+            }
+        }
+        Collections.sort(list, new Comparator<PatientBean>() {
+            @Override
+            public int compare(PatientBean o1, PatientBean o2) {
+                if ("#".equals(o1.getIndexTag())) {
+                    return 1;
+                }
+                else if ("#".equals(o2.getIndexTag())) {
+                    return -1;
+                }
+                else {
+                    return o1.getIndexTag().compareTo(o2.getIndexTag());
+                }
+            }
+        });
+    }
+
+    /**
+     * @param beans 数据源
+     * @return tags 返回一个包含所有Tag字母在内的字符串
+     */
+    public static String getTags(List<PatientBean> beans) {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < beans.size(); i++) {
+            if (!builder.toString().contains(beans.get(i).getIndexTag())) {
+                builder.append(beans.get(i).getIndexTag());
+            }
+        }
+        return builder.toString();
     }
 }

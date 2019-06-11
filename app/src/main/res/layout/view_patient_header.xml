@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:paddingTop="20dp"
+    android:paddingBottom="20dp">
+
+    <com.yht.frame.widgets.edittext.SuperEditText
+        android:id="@+id/et_search_hospital"
+        android:layout_width="match_parent"
+        android:layout_height="38dp"
+        android:hint="@string/txt_patient_hint"
+        android:textSize="@dimen/text_16"
+        android:textColorHint="@color/color_a1a8b3"
+        android:textColor="@color/color_373d4d"
+        android:imeOptions="actionDone"
+        android:singleLine="true"
+        android:background="@drawable/corner4_ebedf0_bg"
+        android:paddingStart="39dp"
+        android:paddingEnd="16dp"
+        app:hide_left_icon="true" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_search"
+        android:layout_centerVertical="true"
+        android:paddingStart="16dp" />
+
+</RelativeLayout>

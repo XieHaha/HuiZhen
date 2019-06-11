@@ -32,6 +32,10 @@ public class PatientBean extends DataSupport implements Serializable {
     private long gmtCreate;
     private long gmtModified;
     private int requestSource;
+    /**
+     * 排序
+     */
+    private String indexTag;
 
     public int getFocusStatus() {
         return focusStatus;
@@ -199,5 +203,13 @@ public class PatientBean extends DataSupport implements Serializable {
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
+    }
+
+    public String getIndexTag() {
+        return indexTag;
+    }
+
+    public void setIndexTag(String indexTag) {
+        this.indexTag = indexTag;
     }
 }

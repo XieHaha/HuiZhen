@@ -109,8 +109,8 @@ public abstract class BaseActivity<T> extends RxAppCompatActivity
 
     private void initBaseViews() {
         try {
-            backBtn = findViewById(R.id.public_title_bar_back);
-            tvTitle = findViewById(R.id.public_title_bar_title);
+            backBtn = (ImageView)findViewById(R.id.public_title_bar_back);
+            tvTitle = (TextView)findViewById(R.id.public_title_bar_title);
         }
         catch (Exception e) {
             LogUtils.e(getClass().getSimpleName(), e.getMessage());
