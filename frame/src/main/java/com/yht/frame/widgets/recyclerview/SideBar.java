@@ -22,8 +22,8 @@ public class SideBar extends View {
     private int singleHeight;
     private Context mContext;
     private IndexChangeListener listener;
-    private final int TOTAL_MARGIN = 160;
-    private final int TOP_MARGIN = 80;
+    private final int TOTAL_MARGIN = 80;
+    private final int TOP_MARGIN = 20;
 
     public SideBar(Context context) {
         this(context, null);
@@ -56,9 +56,9 @@ public class SideBar extends View {
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         //导航栏居中显示，上下各有80dp的边距
-        mHeight = (int)(h - BaseUtils.dp2px(mContext, TOTAL_MARGIN));
+        mHeight = (h - BaseUtils.dp2px(mContext, TOTAL_MARGIN));
         mWidth = w;
-        singleHeight = mHeight / indexStr.length();
+        singleHeight = BaseUtils.dp2px(mContext, 20);
     }
 
     @Override
@@ -84,8 +84,8 @@ public class SideBar extends View {
                 mPaint.setColor(Color.BLACK);
                 invalidate();
             case MotionEvent.ACTION_MOVE:
-                //滑动 event.getY()得到在父View中的Y坐标，通过和总高度的比例再乘以字符个数总长度得到按下的位置
-                int position = (int)((event.getY() - getTop() - BaseUtils.dp2px(mContext, 80)) / mHeight *
+                //滑动 event.getY()得到在父View中的Y坐标，通过和总高度的比例再乘以字符个数总长度得到按下的位置  200为margintop距离
+                int position = (int)((event.getY() - getTop() - BaseUtils.dp2px(mContext, 20) + 200) / mHeight *
                                      indexStr.toCharArray().length);
                 if (position >= 0 && position < indexStr.length()) {
                     ((IndexBar)getParent()).setDrawData(event.getY(), String.valueOf(indexStr.toCharArray()[position]),

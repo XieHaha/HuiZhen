@@ -10,20 +10,27 @@
     android:focusable="true"
     android:focusableInTouchMode="true">
 
-    <com.yht.frame.widgets.edittext.SuperEditText
-        android:id="@+id/et_search_hospital"
+    <LinearLayout
+        android:id="@+id/layout_search"
         android:layout_width="match_parent"
-        android:layout_height="38dp"
-        android:hint="@string/txt_patient_hint"
-        android:textSize="@dimen/text_16"
-        android:textColorHint="@color/color_a1a8b3"
-        android:textColor="@color/color_373d4d"
-        android:imeOptions="actionDone"
-        android:singleLine="true"
-        android:background="@drawable/corner4_f0f3fa_bg"
-        android:paddingStart="39dp"
-        android:paddingEnd="16dp"
-        app:hide_left_icon="true" />
+        android:layout_height="38dp">
+
+        <com.yht.frame.widgets.edittext.SuperEditText
+            android:id="@+id/et_search_hospital"
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:hint="@string/txt_patient_hint"
+            android:textSize="@dimen/text_16"
+            android:textColorHint="@color/color_a1a8b3"
+            android:textColor="@color/color_373d4d"
+            android:imeOptions="actionDone"
+            android:singleLine="true"
+            android:background="@drawable/corner4_f0f3fa_bg"
+            android:paddingStart="39dp"
+            android:paddingEnd="16dp"
+            app:hide_left_icon="true" />
+    </LinearLayout>
+
 
     <ImageView
         android:layout_width="wrap_content"
@@ -31,5 +38,17 @@
         android:src="@mipmap/ic_search"
         android:layout_centerVertical="true"
         android:paddingStart="16dp" />
+
+    <TextView
+        android:id="@+id/et_search_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="38dp"
+        android:text="@string/txt_cancel"
+        android:textSize="16sp"
+        android:textColor="@color/color_1491fc"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:layout_alignParentEnd="true"
+        android:visibility="gone" />
 
 </RelativeLayout>

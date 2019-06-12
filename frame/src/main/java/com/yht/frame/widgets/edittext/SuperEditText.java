@@ -149,6 +149,9 @@ public class SuperEditText extends AppCompatEditText {
                 if (drawable != null && event.getX() <= (getWidth() - getPaddingRight()) &&
                     event.getX() >= (getWidth() - getPaddingRight() - drawable.getBounds().width())) {
                     setText("");
+                    if (ondeleteClickListener != null) {
+                        ondeleteClickListener.OnDeleteClick();
+                    }
                 }
                 break;
             default:
@@ -182,10 +185,20 @@ public class SuperEditText extends AppCompatEditText {
         // 获取控件长度
         int w = this.getMeasuredWidth();
         // 传入参数时，线的长度 = 控件长度 + 延伸后的长度
-//        if (getBackground() == null) {
-//            canvas.drawLine(0, this.getMeasuredHeight() - linePosition, w + x, this.getMeasuredHeight() - linePosition,
-//                            mPaint);
-//        }
+        //        if (getBackground() == null) {
+        //            canvas.drawLine(0, this.getMeasuredHeight() - linePosition, w + x, this.getMeasuredHeight() - linePosition,
+        //                            mPaint);
+        //        }
+    }
+
+    private OndeleteClickListener ondeleteClickListener;
+
+    public void setOndeleteClickListener(OndeleteClickListener ondeleteClickListener) {
+        this.ondeleteClickListener = ondeleteClickListener;
+    }
+
+    public interface OndeleteClickListener {
+        void OnDeleteClick();
     }
 }
 

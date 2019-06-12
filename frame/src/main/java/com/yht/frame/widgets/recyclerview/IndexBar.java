@@ -96,7 +96,7 @@ public class IndexBar extends ViewGroup {
         View childView = getChildAt(0);
         childWidth = childView.getMeasuredWidth();
         //把SideBar排列到最右侧
-        childView.layout((mWidth - childWidth), 0, mWidth, mHeight);
+        childView.layout((mWidth - childWidth), 200, mWidth, mHeight);
     }
 
     /**

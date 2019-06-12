@@ -38,7 +38,8 @@
             android:id="@+id/iv_personal_image"
             android:layout_width="56dp"
             android:layout_height="56dp"
-            android:layout_alignParentRight="true" />
+            android:layout_alignParentRight="true"
+            android:src="@mipmap/ic_default_header_r" />
 
     </RelativeLayout>
 

@@ -62,7 +62,8 @@
         <!--屏幕适配 end-->
         <activity
             android:name=".ui.main.MainActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".ui.SplashActivity"
             android:screenOrientation="portrait"

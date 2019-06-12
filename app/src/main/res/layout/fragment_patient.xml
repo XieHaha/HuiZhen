@@ -19,7 +19,7 @@
     <com.yht.frame.widgets.recyclerview.IndexBar
         android:id="@+id/index_bar"
         android:layout_width="200dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_below="@id/title_bar"
         android:background="@color/color_00000000">
@@ -27,7 +27,7 @@
         <com.yht.frame.widgets.recyclerview.SideBar
             android:id="@+id/side_bar"
             android:layout_width="30dp"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content" />
     </com.yht.frame.widgets.recyclerview.IndexBar>
 
 
