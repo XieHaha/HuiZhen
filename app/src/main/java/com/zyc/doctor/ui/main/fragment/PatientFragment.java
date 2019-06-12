@@ -57,7 +57,7 @@ public class PatientFragment extends BaseFragment {
     /**
      *
      */
-    private List<PatientBean> data = new ArrayList<>();
+    private List<PatientBean> patientBeans = new ArrayList<>();
 
     @Override
     public int getLayoutID() {
@@ -81,7 +81,7 @@ public class PatientFragment extends BaseFragment {
         recyclerview.addItemDecoration(decoration = new CustomItemDecoration(getContext()));
         recyclerview.setItemAnimator(new SlideInOutLeftItemAnimator(recyclerview));
         initDatas();
-        patientAdapter = new PatientAdapter(R.layout.item_patient, data);
+        patientAdapter = new PatientAdapter(R.layout.item_patient, patientBeans);
         View headerView = LayoutInflater.from(getContext()).inflate(R.layout.view_patient_header, null);
         View view = LayoutInflater.from(getContext()).inflate(R.layout.view_bottom_space, null);
         patientAdapter.addHeaderView(headerView);
@@ -91,10 +91,10 @@ public class PatientFragment extends BaseFragment {
 
     public void initEvents() {
         sideBar.setIndexChangeListener(tag -> {
-            if (TextUtils.isEmpty(tag) || data.size() <= 0) { return; }
-            for (int i = 0; i < data.size(); i++) {
-                if (tag.equals(data.get(i).getIndexTag())) {
-                    layoutManager.scrollToPositionWithOffset(i, 0);
+            if (TextUtils.isEmpty(tag) || patientBeans.size() <= 0) { return; }
+            for (int i = 0; i < patientBeans.size(); i++) {
+                if (tag.equals(patientBeans.get(i).getIndexTag())) {
+                    layoutManager.scrollToPositionWithOffset(i + 1, 0);
                     return;
                 }
             }
@@ -110,13 +110,13 @@ public class PatientFragment extends BaseFragment {
         for (String name : names) {
             PatientBean bean = new PatientBean();
             bean.setName(name);
-            data.add(bean);
+            patientBeans.add(bean);
         }
         //对数据源进行排序
-        BaseUtils.sortData(data);
+        BaseUtils.sortData(patientBeans);
         //返回一个包含所有Tag字母在内的字符串并赋值给tagsStr
-        String tagsStr = BaseUtils.getTags(data);
+        String tagsStr = BaseUtils.getTags(patientBeans);
         sideBar.setIndexStr(tagsStr);
-        decoration.setDatas(data, tagsStr);
+        decoration.setDatas(patientBeans, tagsStr);
     }
 }
