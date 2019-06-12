@@ -10,7 +10,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.View;
 
 import com.yht.frame.R;
@@ -29,11 +28,11 @@ public class CustomItemDecoration extends RecyclerView.ItemDecoration {
     private static final int DIVIDER_HEIGHT = 80;
     private Context mContext;
     private final Rect mBounds = new Rect();
-    private String tagsStr;
+    private String titleBar;
 
     public void setDatas(List<PatientBean> mBeans, String tagsStr) {
         this.patientBeans = mBeans;
-        this.tagsStr = tagsStr;
+        this.titleBar = tagsStr;
     }
 
     public CustomItemDecoration(Context mContext) {
@@ -55,20 +54,20 @@ public class CustomItemDecoration extends RecyclerView.ItemDecoration {
             final View child = parent.getChildAt(i);
             final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams)child.getLayoutParams();
             int position = params.getViewLayoutPosition();
-            if (patientBeans == null || patientBeans.size() == 0 || patientBeans.size() <= position || position < 0) {
+            //第一条数据为头部，不需要titlebar，
+            int realPosition = position - 1;
+            if (patientBeans == null || patientBeans.size() == 0 || patientBeans.size() <= realPosition ||
+                realPosition < 0) {
                 continue;
             }
-            if (position == 0) {
-                //第一条数据有bar
-                drawTitleBar(canvas, parent, child, patientBeans.get(position),
-                             tagsStr.indexOf(patientBeans.get(position).getIndexTag()));
+            PatientBean bean = patientBeans.get(realPosition);
+            if (realPosition == 0) {
+                drawTitleBar(canvas, parent, child, bean, titleBar.indexOf(bean.getIndexTag()));
             }
-            else if (position > 0) {
-                if (TextUtils.isEmpty(patientBeans.get(position).getIndexTag())) { continue; }
+            else {
                 //与上一条数据中的tag不同时，该显示bar了
-                if (!patientBeans.get(position).getIndexTag().equals(patientBeans.get(position - 1).getIndexTag())) {
-                    drawTitleBar(canvas, parent, child, patientBeans.get(position),
-                                 tagsStr.indexOf(patientBeans.get(position).getIndexTag()));
+                if (!bean.getIndexTag().equals(patientBeans.get(realPosition - 1).getIndexTag())) {
+                    drawTitleBar(canvas, parent, child, bean, titleBar.indexOf(bean.getIndexTag()));
                 }
             }
         }
@@ -83,9 +82,6 @@ public class CustomItemDecoration extends RecyclerView.ItemDecoration {
      * @param child  ItemView
      */
     private void drawTitleBar(Canvas canvas, RecyclerView parent, View child, PatientBean bean, int position) {
-        if (position == 0) {
-            return;
-        }
         final int left = 0;
         final int right = parent.getWidth();
         //返回一个包含Decoration和Margin在内的Rect
@@ -98,7 +94,8 @@ public class CustomItemDecoration extends RecyclerView.ItemDecoration {
         mPaint.setColor(ContextCompat.getColor(mContext, R.color.color_373d4d));
         Typeface font = Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD);
         mPaint.setTypeface(font);
-        canvas.drawText(bean.getIndexTag(), BaseUtils.dp2px(mContext, 30), bottom - DIVIDER_HEIGHT / 4, mPaint);
+        canvas.drawText(bean.getIndexTag(), BaseUtils.dp2px(mContext, 30), bottom + BaseUtils.dp2px(mContext, 5),
+                        mPaint);
     }
 
     /**
@@ -112,39 +109,51 @@ public class CustomItemDecoration extends RecyclerView.ItemDecoration {
     public void onDrawOver(Canvas canvas, RecyclerView parent, RecyclerView.State state) {
         //用来绘制悬浮框
         int position = ((LinearLayoutManager)(parent.getLayoutManager())).findFirstVisibleItemPosition();
-        if (position == 0) {
-            return;
-        }
-        if (patientBeans == null || patientBeans.size() == 0 || patientBeans.size() <= position || position < 0) {
+        // 第一条数据是头部 不需要bar, 直接从第二条数据开始
+        int realPosition = position - 1;
+        if (patientBeans == null || patientBeans.size() == 0 || patientBeans.size() <= realPosition ||
+            realPosition < 0) {
             return;
         }
         final int bottom = parent.getPaddingTop() + DIVIDER_HEIGHT;
         mPaint.setColor(Color.WHITE);
         canvas.drawRect(parent.getLeft(), parent.getPaddingTop(), parent.getRight() - parent.getPaddingRight(),
-                        parent.getPaddingTop() + DIVIDER_HEIGHT, mPaint);
+                        bottom / 2 * 3, mPaint);
         mPaint.setTextSize(40);
         mPaint.setColor(ContextCompat.getColor(mContext, R.color.color_373d4d));
         Typeface font = Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD);
         mPaint.setTypeface(font);
-        canvas.drawText(patientBeans.get(position).getIndexTag(), BaseUtils.dp2px(mContext, 30),
-                        bottom - DIVIDER_HEIGHT / 4, mPaint);
+        //悬浮窗字母位置
+        canvas.drawText(patientBeans.get(realPosition).getIndexTag(), BaseUtils.dp2px(mContext, 30),
+                        bottom + BaseUtils.dp2px(mContext, 5), mPaint);
     }
 
+    /**
+     * 插入 titlebar 空间
+     *
+     * @param outRect
+     * @param view
+     * @param parent
+     * @param state
+     */
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         int position = parent.getChildAdapterPosition(view);
-        if (patientBeans == null || patientBeans.size() == 0 || patientBeans.size() <= position || position < 0) {
+        // 第一条数据是头部 不需要bar, 直接从第二条数据开始
+        int realPosition = position - 1;
+        if (patientBeans == null || patientBeans.size() == 0 || patientBeans.size() <= realPosition ||
+            realPosition < 0) {
             super.getItemOffsets(outRect, view, parent, state);
             return;
         }
-        if (position == 0) {
-            //第一条数据有bar
-            //            outRect.set(0, DIVIDER_HEIGHT, 0, 0);
+        if (realPosition == 0) {
+            outRect.set(0, DIVIDER_HEIGHT, 0, 0);
         }
-        else if (position > 0) {
-            if (TextUtils.isEmpty(patientBeans.get(position).getIndexTag())) { return; }
+        else {
             //与上一条数据中的tag不同时，该显示bar了
-            if (!patientBeans.get(position).getIndexTag().equals(patientBeans.get(position - 1).getIndexTag())) {
+            if (!patientBeans.get(realPosition)
+                             .getIndexTag()
+                             .equals(patientBeans.get(realPosition - 1).getIndexTag())) {
                 outRect.set(0, DIVIDER_HEIGHT, 0, 0);
             }
         }

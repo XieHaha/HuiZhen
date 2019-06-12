@@ -6,7 +6,9 @@
     android:paddingStart="16dp"
     android:paddingEnd="16dp"
     android:paddingTop="20dp"
-    android:paddingBottom="20dp">
+    android:paddingBottom="20dp"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
 
     <com.yht.frame.widgets.edittext.SuperEditText
         android:id="@+id/et_search_hospital"
@@ -18,7 +20,7 @@
         android:textColor="@color/color_373d4d"
         android:imeOptions="actionDone"
         android:singleLine="true"
-        android:background="@drawable/corner4_ebedf0_bg"
+        android:background="@drawable/corner4_f0f3fa_bg"
         android:paddingStart="39dp"
         android:paddingEnd="16dp"
         app:hide_left_icon="true" />
