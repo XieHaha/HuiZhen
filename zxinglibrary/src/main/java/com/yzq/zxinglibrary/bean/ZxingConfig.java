@@ -21,18 +21,6 @@ public class ZxingConfig implements Serializable {
      */
     private boolean isShake = true;
     /**
-     * 是否显示下方的其他功能布局
-     */
-    private boolean isShowBottomLayout = true;
-    /**
-     * 是否显示闪光灯按钮
-     */
-    private boolean isShowFlashLight = true;
-    /**
-     * 是否显示相册按钮
-     */
-    private boolean isShowAlbum;
-    /**
      * 是否解析条形码
      */
     private boolean isDecodeBarCode;
@@ -112,27 +100,4 @@ public class ZxingConfig implements Serializable {
         isShake = shake;
     }
 
-    public boolean isShowBottomLayout() {
-        return isShowBottomLayout;
-    }
-
-    public void setShowBottomLayout(boolean showBottomLayout) {
-        isShowBottomLayout = showBottomLayout;
-    }
-
-    public boolean isShowFlashLight() {
-        return isShowFlashLight;
-    }
-
-    public void setShowFlashLight(boolean showFlashLight) {
-        isShowFlashLight = showFlashLight;
-    }
-
-    public boolean isShowAlbum() {
-        return isShowAlbum;
-    }
-
-    public void setShowAlbum(boolean showAlbum) {
-        isShowAlbum = showAlbum;
-    }
 }

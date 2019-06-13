@@ -10,14 +10,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
-import android.support.v7.widget.AppCompatImageView;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,12 +43,8 @@ public class CaptureActivity extends AppCompatActivity implements SurfaceHolder.
     public ZxingConfig config;
     private SurfaceView previewView;
     private ViewfinderView viewfinderView;
-    private AppCompatImageView flashLightIv;
-    private TextView flashLightTv;
-    private AppCompatImageView backIv;
-    private LinearLayoutCompat flashLightLayout;
-    private LinearLayoutCompat albumLayout;
-    private LinearLayoutCompat bottomLayout;
+    private TextView tvLight, tvClose;
+    private View statusBarFix;
     private boolean hasSurface;
     private InactivityTimer inactivityTimer;
     private BeepManager beepManager;
@@ -79,9 +75,11 @@ public class CaptureActivity extends AppCompatActivity implements SurfaceHolder.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // 保持Activity处于唤醒状态
         Window window = getWindow();
+        // 保持Activity处于唤醒状态
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        //状态栏透明
+        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.setStatusBarColor(Color.BLACK);
         }
@@ -106,30 +104,24 @@ public class CaptureActivity extends AppCompatActivity implements SurfaceHolder.
     }
 
     private void initView() {
+        statusBarFix = findViewById(R.id.status_bar_fix);
+        statusBarFix.setLayoutParams(
+                new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getStateBarHeight()));
         previewView = findViewById(R.id.preview_view);
         previewView.setOnClickListener(this);
         viewfinderView = findViewById(R.id.viewfinder_view);
         viewfinderView.setZxingConfig(config);
-        backIv = findViewById(R.id.backIv);
-        backIv.setOnClickListener(this);
-        flashLightIv = findViewById(R.id.flashLightIv);
-        flashLightTv = findViewById(R.id.flashLightTv);
-        flashLightLayout = findViewById(R.id.flashLightLayout);
-        flashLightLayout.setOnClickListener(this);
-        albumLayout = findViewById(R.id.albumLayout);
-        albumLayout.setOnClickListener(this);
-        bottomLayout = findViewById(R.id.bottomLayout);
-        switchVisibility(bottomLayout, config.isShowBottomLayout());
-        switchVisibility(flashLightLayout, config.isShowFlashLight());
-        switchVisibility(albumLayout, config.isShowAlbum());
-
+        tvLight = findViewById(R.id.tv_light);
+        tvLight.setOnClickListener(this);
+        tvClose = findViewById(R.id.tv_close);
+        tvClose.setOnClickListener(this);
 
         /*有闪光灯就显示手电筒按钮  否则不显示*/
         if (isSupportCameraLedFlash(getPackageManager())) {
-            flashLightLayout.setVisibility(View.VISIBLE);
+            tvLight.setVisibility(View.VISIBLE);
         }
         else {
-            flashLightLayout.setVisibility(View.GONE);
+            tvLight.setVisibility(View.GONE);
         }
     }
 
@@ -152,20 +144,6 @@ public class CaptureActivity extends AppCompatActivity implements SurfaceHolder.
     }
 
     /**
-     * @param flashState 切换闪光灯图片
-     */
-    public void switchFlashImg(int flashState) {
-        if (flashState == Constant.FLASH_OPEN) {
-            flashLightIv.setImageResource(R.drawable.ic_open);
-            flashLightTv.setText(R.string.close_flash);
-        }
-        else {
-            flashLightIv.setImageResource(R.drawable.ic_close);
-            flashLightTv.setText(R.string.open_flash);
-        }
-    }
-
-    /**
      * @param rawResult 返回的扫描结果
      */
     public void handleDecode(Result rawResult) {
@@ -175,15 +153,6 @@ public class CaptureActivity extends AppCompatActivity implements SurfaceHolder.
         intent.putExtra(Constant.CODED_CONTENT, rawResult.getText());
         setResult(RESULT_OK, intent);
         this.finish();
-    }
-
-    private void switchVisibility(View view, boolean b) {
-        if (b) {
-            view.setVisibility(View.VISIBLE);
-        }
-        else {
-            view.setVisibility(View.GONE);
-        }
     }
 
     @Override
@@ -224,7 +193,6 @@ public class CaptureActivity extends AppCompatActivity implements SurfaceHolder.
             displayFrameworkBugMessageAndExit();
         }
         catch (RuntimeException e) {
-            Log.w(TAG, "Unexpected error initializing camera", e);
             displayFrameworkBugMessageAndExit();
         }
     }
@@ -240,7 +208,6 @@ public class CaptureActivity extends AppCompatActivity implements SurfaceHolder.
 
     @Override
     protected void onPause() {
-        Log.i("CaptureActivity", "onPause");
         if (handler != null) {
             handler.quitSynchronously();
             handler = null;
@@ -281,18 +248,11 @@ public class CaptureActivity extends AppCompatActivity implements SurfaceHolder.
     @Override
     public void onClick(View view) {
         int id = view.getId();
-        if (id == R.id.flashLightLayout) {
+        if (id == R.id.tv_light) {
             /*切换闪光灯*/
             cameraManager.switchFlashLight(handler);
         }
-        else if (id == R.id.albumLayout) {
-            /*打开相册*/
-            Intent intent = new Intent();
-            intent.setAction(Intent.ACTION_PICK);
-            intent.setType("image/*");
-            startActivityForResult(intent, Constant.REQUEST_IMAGE);
-        }
-        else if (id == R.id.backIv) {
+        else if (id == R.id.tv_close) {
             finish();
         }
     }
@@ -310,9 +270,23 @@ public class CaptureActivity extends AppCompatActivity implements SurfaceHolder.
 
                 @Override
                 public void onImageDecodeFailed() {
-                    Toast.makeText(CaptureActivity.this, R.string.scan_failed_tip, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CaptureActivity.this, "失败", Toast.LENGTH_SHORT).show();
                 }
             }).run();
         }
+    }
+
+    /**
+     * 获取状态栏高度,在页面还没有显示出来之前
+     *
+     * @return
+     */
+    public int getStateBarHeight() {
+        int result = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
     }
 }
