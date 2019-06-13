@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "F:\\ZYC\\HuiZhen\\easeui\\build\\intermediates\\res\\merged\\release\\layout-v21\\notification_template_custom_big.xml",
+        "source": "C:\\Users\\dundun\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-26.1.0.aar\\1e003dd964b459047893e6d30a3edffc\\res\\layout-v21\\notification_template_custom_big.xml"
+    },
+    {
+        "merged": "F:\\ZYC\\HuiZhen\\easeui\\build\\intermediates\\res\\merged\\release\\layout-v21\\notification_template_icon_group.xml",
+        "source": "C:\\Users\\dundun\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-26.1.0.aar\\1e003dd964b459047893e6d30a3edffc\\res\\layout-v21\\notification_template_icon_group.xml"
+    },
+    {
+        "merged": "F:\\ZYC\\HuiZhen\\easeui\\build\\intermediates\\res\\merged\\release\\layout-v21\\notification_action.xml",
+        "source": "C:\\Users\\dundun\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-26.1.0.aar\\1e003dd964b459047893e6d30a3edffc\\res\\layout-v21\\notification_action.xml"
+    },
+    {
+        "merged": "F:\\ZYC\\HuiZhen\\easeui\\build\\intermediates\\res\\merged\\release\\layout-v21\\notification_action_tombstone.xml",
+        "source": "C:\\Users\\dundun\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-26.1.0.aar\\1e003dd964b459047893e6d30a3edffc\\res\\layout-v21\\notification_action_tombstone.xml"
+    }
+]

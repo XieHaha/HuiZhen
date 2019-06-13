@@ -10,9 +10,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.zxing.integration.android.IntentIntegrator;
 import com.yht.frame.ui.BaseFragment;
 import com.zyc.doctor.R;
 import com.zyc.doctor.ui.auth.AuthDoctorActivity;
+import com.zyc.doctor.ui.capture.CaptureQrCodeActivity;
 import com.zyc.doctor.ui.personal.PersonalActivity;
 
 import butterknife.BindView;
@@ -52,5 +54,10 @@ public class WorkerFragment extends BaseFragment {
     }
 
     @OnClick(R.id.public_main_title_scan)
-    public void onViewClicked() {}
+    public void onViewClicked() {
+        new IntentIntegrator(getActivity()).setCaptureActivity(CaptureQrCodeActivity.class)
+                                           .setPrompt(getString(R.string.txt_camera_hint))
+                                           .setBarcodeImageEnabled(false)
+                                           .initiateScan();
+    }
 }
