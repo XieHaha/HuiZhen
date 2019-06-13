@@ -16,12 +16,14 @@
 
         <TextView
             android:id="@+id/tv_personal_depart"
-            android:layout_width="68dp"
+            android:layout_width="wrap_content"
             android:layout_height="26dp"
-            android:textColor="@color/color_fc671a"
+            android:textColor="@color/color_fd8134"
             android:textSize="@dimen/text_14"
-            android:background="@drawable/corner15_stroke1_fc671a"
+            android:background="@drawable/corner15_stroke1_fd8134"
             tools:text="脑外科"
+            android:paddingEnd="12dp"
+            android:paddingStart="12dp"
             android:gravity="center" />
 
         <TextView

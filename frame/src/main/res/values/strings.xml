@@ -47,6 +47,8 @@
     <string name="txt_patient">患者</string>
     <string name="txt_patient_hint">请输入患者姓名</string>
     <string name="txt_message_status">全部已读</string>
+    <string name="txt_my_patient">我的患者</string>
+    <string name="txt_my_consulting_room">我的诊疗室</string>
 
     <!--相机-->
     <string name="txt_camera_hint">将二维码放入框中，即可自动扫描</string>
@@ -142,6 +144,11 @@
 
     <!--检查相关-->
     <string name="txt_reserve_check">预约检查</string>
+    <string name="txt_remote_billing">远程开单</string>
+
+    <!--转诊相关-->
+    <string name="txt_reserve_transfer">预约转诊</string>
+    <string name="txt_bilateral_transfer">双向转诊</string>
 
     <!--permission-->
     <string name="toast_public_current_no_network">当前无网络连接</string>

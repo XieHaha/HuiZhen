@@ -18,6 +18,7 @@ import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.yht.frame.data.BaseData;
 import com.yht.frame.ui.BaseActivity;
+import com.yht.frame.utils.LogUtils;
 import com.yht.frame.utils.ToastUtil;
 import com.zyc.doctor.R;
 import com.zyc.doctor.ZycApplication;
@@ -123,5 +124,11 @@ public class LoginOptionsActivity extends BaseActivity {
         if (view instanceof TextView) {
             ((TextView)view).setHighlightColor(ContextCompat.getColor(this, android.R.color.transparent));
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LogUtils.e("test", "onDestroy");
     }
 }
