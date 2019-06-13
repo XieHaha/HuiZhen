@@ -48,7 +48,7 @@ android {
 
     signingConfigs {
         release {
-            storeFile file('F:/ZYC/HuiZhen/app/zyc.jks')
+            storeFile file('F:/HuiZhen/app/zyc.jks')
             storePassword 'android'
             keyAlias = '智予成'
             keyPassword '123456'
@@ -56,7 +56,7 @@ android {
         debug {
             keyAlias '测试'
             keyPassword '999999'
-            storeFile file('F:/ZYC/HuiZhen/app/zyc.jks')
+            storeFile file('F:/HuiZhen/app/zyc.jks')
             storePassword 'android'
         }
     }

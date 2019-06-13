@@ -16,6 +16,7 @@ import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.LogUtils;
 import com.zyc.doctor.R;
 import com.zyc.doctor.ui.capture.CaptureQrCodeActivity;
+import com.zyc.doctor.ui.check.ReservationCheckHistoryActivity;
 import com.zyc.doctor.ui.personal.PersonalActivity;
 
 import butterknife.BindView;
@@ -91,6 +92,7 @@ public class WorkerFragment extends BaseFragment {
                 startActivity(new Intent(getContext(), PersonalActivity.class));
                 break;
             case R.id.layout_check:
+                startActivity(new Intent(getContext(), ReservationCheckHistoryActivity.class));
                 break;
             case R.id.layout_transfer:
                 break;
