@@ -1,5 +1,6 @@
 package com.zyc.doctor.ui.main.fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,11 +12,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
-import com.google.zxing.integration.android.IntentIntegrator;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.LogUtils;
+import com.yht.frame.utils.ToastUtil;
+import com.yzq.zxinglibrary.android.CaptureActivity;
+import com.yzq.zxinglibrary.common.Constant;
 import com.zyc.doctor.R;
-import com.zyc.doctor.ui.capture.CaptureQrCodeActivity;
 import com.zyc.doctor.ui.check.ReservationCheckHistoryActivity;
 import com.zyc.doctor.ui.personal.PersonalActivity;
 
@@ -48,6 +50,10 @@ public class WorkerFragment extends BaseFragment {
     TextView tvTransferNum;
     @BindView(R.id.view_flipper)
     ViewFlipper viewFlipper;
+    /**
+     * 扫码
+     */
+    private static final int REQUEST_CODE_SCAN = 100;
 
     @Override
     public int getLayoutID() {
@@ -83,10 +89,9 @@ public class WorkerFragment extends BaseFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.public_main_title_scan:
-                new IntentIntegrator(getActivity()).setCaptureActivity(CaptureQrCodeActivity.class)
-                                                   .setPrompt(getString(R.string.txt_camera_hint))
-                                                   .setBarcodeImageEnabled(false)
-                                                   .initiateScan();
+                Intent intent = new Intent(getContext(), CaptureActivity.class);
+                startActivityForResult(intent, REQUEST_CODE_SCAN);
+                getActivity().overridePendingTransition(R.anim.keep, R.anim.keep);
                 break;
             case R.id.layout_personal_base:
                 startActivity(new Intent(getContext(), PersonalActivity.class));
@@ -98,6 +103,24 @@ public class WorkerFragment extends BaseFragment {
                 break;
             case R.id.view_flipper:
                 LogUtils.i("test", "value:" + viewFlipper.getCurrentView().getTag());
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+        switch (requestCode) {
+            case REQUEST_CODE_SCAN:
+                if (data != null) {
+                    String content = data.getStringExtra(Constant.CODED_CONTENT);
+                    ToastUtil.toast(getContext(), content);
+                }
                 break;
             default:
                 break;
