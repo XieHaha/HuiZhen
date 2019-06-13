@@ -16,10 +16,12 @@
     <string name="title_income_detail">收入详情</string>
     <string name="title_message">消息</string>
     <string name="title_patient">患者(%s)</string>
+    <string name="title_camera">扫一扫</string>
 
     <!--公用-->
     <string name="txt_app_name">会珍</string>
     <string name="txt_hint">提示</string>
+    <string name="txt_close">关闭</string>
     <string name="txt_cancel">取消</string>
     <string name="txt_call">呼叫</string>
     <string name="txt_sure">确定</string>
@@ -45,6 +47,11 @@
     <string name="txt_patient">患者</string>
     <string name="txt_patient_hint">请输入患者姓名</string>
     <string name="txt_message_status">全部已读</string>
+
+    <!--相机-->
+    <string name="txt_camera_hint">将二维码放入框中，即可自动扫描</string>
+    <string name="txt_camera_error">二维码有误</string>
+    <string name="txt_camera_qr">二维码</string>
 
     <!--启动页 引导页-->
     <string name="txt_splash_time_hint">跳过(%ds)</string>

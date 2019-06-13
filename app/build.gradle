@@ -48,12 +48,11 @@ android {
 
     signingConfigs {
         release {
-            keyAlias '智予成'
-            keyPassword '123456'
             storeFile file('F:/ZYC/HuiZhen/app/zyc.jks')
             storePassword 'android'
+            keyAlias = '智予成'
+            keyPassword '123456'
         }
-
         debug {
             keyAlias '测试'
             keyPassword '999999'
@@ -66,6 +65,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
 
         debug {
@@ -100,6 +100,8 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
+    //微信登录  不包含统计
+    implementation 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
     //注解
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.0'
 }

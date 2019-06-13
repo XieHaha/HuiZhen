@@ -44,3 +44,9 @@
      <init>(...);
 }
 #RecyclerView帮助类
+
+#微信登录
+-keep class com.tencent.mm.opensdk.** { *; }
+-keep class com.tencent.wxop.** { *; }
+-keep class com.tencent.mm.sdk.** { *; }
+#微信登录

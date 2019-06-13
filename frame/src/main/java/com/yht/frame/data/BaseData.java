@@ -62,4 +62,20 @@ public interface BaseData {
      * 图片类型
      */
     String BASE_IMAGE_TYPE = "image/bmp&&image/gif&&image/jpeg&&image/png";
+    /**
+     * 微信登录APP_ID
+     */
+    String WECHAT_ID = "wx06ffa935bd113f48";
+    /**
+     * 微信登录APP_SECRET
+     */
+    String WECHAT_SECRET = "fd5358444b736b8017ef9337c3210aad";
+    /**
+     * SCOPE
+     */
+    String WECHAT_SCOPE = "snsapi_userinfo";
+    /**
+     * state
+     */
+    String WECHAT_STATE = "huizhen_wechat_login";
 }

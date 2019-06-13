@@ -142,6 +142,10 @@
             android:screenOrientation="portrait"
             android:label=""
             android:windowSoftInputMode="adjustPan|stateHidden" />
+        <!--微信登录-->
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:exported="true" />
 
         <!--环信消息点击事件处理-->
         <receiver

@@ -5,6 +5,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.support.multidex.MultiDex;
 
+import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yht.frame.api.ApiManager;
 import com.yht.frame.api.CrashHandler;
@@ -24,6 +25,10 @@ import me.jessyan.autosize.unit.Subunits;
  */
 public class ZycApplication extends LitePalApplication {
     private static ZycApplication instance;
+    /**
+     * 微信api
+     */
+    public static IWXAPI iwxapi;
 
     @Override
     public void onCreate() {
