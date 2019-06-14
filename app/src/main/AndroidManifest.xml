@@ -71,7 +71,7 @@
         </activity>
         <!--微信登录-->
         <activity
-            android:name=".wxapi.WXEntryActivity"
+            android:name="com.yht.yihuantong.wxapi.WXEntryActivity"
             android:exported="true" />
         <activity
             android:name=".ui.main.MainActivity"
@@ -143,11 +143,6 @@
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".ui.login.AccountDisableActivity"
-            android:screenOrientation="portrait"
-            android:label=""
-            android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity
-            android:name=".ui.capture.CaptureQrCodeActivity"
             android:screenOrientation="portrait"
             android:label=""
             android:windowSoftInputMode="adjustPan|stateHidden" />

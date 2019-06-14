@@ -1,4 +1,4 @@
-package com.zyc.doctor.wxapi;
+package com.yht.yihuantong.wxapi;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -57,11 +57,14 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                 break;
             case BaseResp.ErrCode.ERR_AUTH_DENIED:
                 ToastUtil.toast(this, "拒绝");
+                finish();
                 break;
             case BaseResp.ErrCode.ERR_USER_CANCEL:
                 ToastUtil.toast(this, "取消");
+                finish();
                 break;
             default:
+                finish();
                 break;
         }
     }
