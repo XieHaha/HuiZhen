@@ -1,19 +1,3 @@
-/*
- * Copyright (C) 2008 ZXing authors
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.yzq.zxinglibrary.camera;
 
 import android.content.Context;
@@ -41,11 +25,8 @@ import java.io.IOException;
  * @author dswitkin@google.com (Daniel Switkin)
  */
 public final class CameraManager {
-
     private static final String TAG = CameraManager.class.getSimpleName();
-
     private static CameraManager cameraManager;
-
     private final Context context;
     private final CameraConfigurationManager configManager;
     private ZxingConfig config;
@@ -71,13 +52,11 @@ public final class CameraManager {
         previewCallback = new PreviewCallback(configManager);
         this.config = config;
     }
-
-//    public static void init(Context context) {
-//        if (cameraManager == null) {
-//            cameraManager = new CameraManager(context, null);
-//        }
-//    }
-
+    //    public static void init(Context context) {
+    //        if (cameraManager == null) {
+    //            cameraManager = new CameraManager(context, null);
+    //        }
+    //    }
 
     /**
      * Opens the camera driver and initializes the hardware parameters.
@@ -86,47 +65,40 @@ public final class CameraManager {
      *               into.
      * @throws IOException Indicates the camera driver failed to open.
      */
-    public synchronized void openDriver(SurfaceHolder holder)
-            throws IOException {
+    public synchronized void openDriver(SurfaceHolder holder) throws IOException {
         Camera theCamera = camera;
-
         if (theCamera == null) {
-
             if (requestedCameraId >= 0) {
                 theCamera = OpenCameraInterface.open(requestedCameraId);
-            } else {
+            }
+            else {
                 theCamera = OpenCameraInterface.open();
             }
-
             if (theCamera == null) {
                 throw new IOException();
             }
             camera = theCamera;
         }
         theCamera.setPreviewDisplay(holder);
-
         if (!initialized) {
             initialized = true;
             configManager.initFromCameraParameters(theCamera);
             if (requestedFramingRectWidth > 0 && requestedFramingRectHeight > 0) {
-                setManualFramingRect(requestedFramingRectWidth,
-                        requestedFramingRectHeight);
+                setManualFramingRect(requestedFramingRectWidth, requestedFramingRectHeight);
                 requestedFramingRectWidth = 0;
                 requestedFramingRectHeight = 0;
             }
         }
-
         Camera.Parameters parameters = theCamera.getParameters();
-        String parametersFlattened = parameters == null ? null : parameters
-                .flatten(); // Save these, temporarily
+        // Save these, temporarily
+        String parametersFlattened = parameters == null ? null : parameters.flatten();
         try {
             configManager.setDesiredCameraParameters(theCamera);
-        } catch (RuntimeException re) {
+        }
+        catch (RuntimeException re) {
             // Driver failed
-            Log.w(TAG,
-                    "Camera rejected parameters. Setting only minimal safe-mode parameters");
-            Log.i(TAG, "Resetting to saved camera params: "
-                    + parametersFlattened);
+            Log.w(TAG, "Camera rejected parameters. Setting only minimal safe-mode parameters");
+            Log.i(TAG, "Resetting to saved camera params: " + parametersFlattened);
             // Reset:
             if (parametersFlattened != null) {
                 parameters = theCamera.getParameters();
@@ -134,14 +106,13 @@ public final class CameraManager {
                 try {
                     theCamera.setParameters(parameters);
                     configManager.setDesiredCameraParameters(theCamera);
-                } catch (RuntimeException re2) {
+                }
+                catch (RuntimeException re2) {
                     // Well, darn. Give up
-                    Log.w(TAG,
-                            "Camera rejected even safe-mode parameters! No configuration");
+                    Log.w(TAG, "Camera rejected even safe-mode parameters! No configuration");
                 }
             }
         }
-
     }
 
     public synchronized boolean isOpen() {
@@ -163,25 +134,19 @@ public final class CameraManager {
         }
     }
 
-
-    /*切换闪光灯*/
+    /**
+     * 切换闪光灯
+     */
     public void switchFlashLight(CaptureActivityHandler handler) {
-        //  Log.i("打开闪光灯", "openFlashLight");
-
         Camera.Parameters parameters = camera.getParameters();
-
         Message msg = new Message();
-
         String flashMode = parameters.getFlashMode();
-
         if (flashMode.equals(Camera.Parameters.FLASH_MODE_TORCH)) {
             /*关闭闪光灯*/
             parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
-
             msg.what = Constant.FLASH_CLOSE;
-
-
-        } else {
+        }
+        else {
             /*打开闪光灯*/
             parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
             msg.what = Constant.FLASH_OPEN;
@@ -189,7 +154,6 @@ public final class CameraManager {
         camera.setParameters(parameters);
         handler.sendMessage(msg);
     }
-
 
     /**
      * Asks the camera hardware to begin drawing preview frames to the screen.
@@ -234,8 +198,9 @@ public final class CameraManager {
         }
     }
 
-
-    /*取景框*/
+    /**
+     * 取景框
+     */
     public synchronized Rect getFramingRect() {
         if (framingRect == null) {
             if (camera == null) {
@@ -246,24 +211,20 @@ public final class CameraManager {
                 // Called early, before init even finished
                 return null;
             }
-
             int screenResolutionX = screenResolution.x;
-
-            int width = (int) (screenResolutionX * 0.6);
+            int width = (int)(screenResolutionX * 0.69);
             int height = width;
+            Log.i("test", "screenResolutionX:" + screenResolutionX + "  width:" + width);
 
 
             /*水平居中  偏上显示*/
             int leftOffset = (screenResolution.x - width) / 2;
             int topOffset = (screenResolution.y - height) / 5;
-
-            framingRect = new Rect(leftOffset, topOffset, leftOffset + width,
-                    topOffset + height);
-            Log.d(TAG, "Calculated framing rect: " + framingRect);
+            Log.i("test", "leftOffset:" + leftOffset + "  topOffset:" + topOffset);
+            framingRect = new Rect(leftOffset, topOffset, leftOffset + width, topOffset + height);
         }
         return framingRect;
     }
-
 
     /**
      * Like {@link #getFramingRect} but coordinates are in terms of the preview
@@ -285,7 +246,6 @@ public final class CameraManager {
                 // Called early, before init even finished
                 return null;
             }
-
             /******************** 竖屏更改1(cameraResolution.x/y互换) ************************/
             rect.left = rect.left * cameraResolution.y / screenResolution.x;
             rect.right = rect.right * cameraResolution.y / screenResolution.x;
@@ -325,11 +285,11 @@ public final class CameraManager {
             }
             int leftOffset = (screenResolution.x - width) / 2;
             int topOffset = (screenResolution.y - height) / 5;
-            framingRect = new Rect(leftOffset, topOffset, leftOffset + width,
-                    topOffset + height);
+            framingRect = new Rect(leftOffset, topOffset, leftOffset + width, topOffset + height);
             Log.d(TAG, "Calculated manual framing rect: " + framingRect);
             framingRectInPreview = null;
-        } else {
+        }
+        else {
             requestedFramingRectWidth = width;
             requestedFramingRectHeight = height;
         }
@@ -344,29 +304,23 @@ public final class CameraManager {
      * @param height The height of the image.
      * @return A PlanarYUVLuminanceSource instance.
      */
-    public PlanarYUVLuminanceSource buildLuminanceSource(byte[] data,
-                                                         int width, int height) {
+    public PlanarYUVLuminanceSource buildLuminanceSource(byte[] data, int width, int height) {
         Rect rect = getFramingRectInPreview();
         if (rect == null) {
             return null;
         }
         // Go ahead and assume it's YUV rather than die.
-
-
         if (config == null) {
             config = new ZxingConfig();
         }
-
         if (config.isFullScreenScan()) {
-            return new PlanarYUVLuminanceSource(data, width, height, 0,
-                    0, width, height, false);
-        } else {
-            int actionbarHeight = context.getResources().getDimensionPixelSize(R.dimen.toolBarHeight);
-            return new PlanarYUVLuminanceSource(data, width, height, rect.left,
-                    rect.top + actionbarHeight, rect.width(), rect.height(), false);
+            return new PlanarYUVLuminanceSource(data, width, height, 0, 0, width, height, false);
         }
-
-
+        else {
+            int actionbarHeight = context.getResources().getDimensionPixelSize(R.dimen.toolBarHeight);
+            return new PlanarYUVLuminanceSource(data, width, height, rect.left, rect.top + actionbarHeight,
+                                                rect.width(), rect.height(), false);
+        }
     }
 
     public static CameraManager get() {

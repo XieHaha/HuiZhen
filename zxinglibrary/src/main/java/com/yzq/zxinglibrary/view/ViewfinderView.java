@@ -34,7 +34,7 @@ public final class ViewfinderView extends View {
     private static final int MAX_RESULT_POINTS = 20;
     private static final int POINT_SIZE = 6;
     private CameraManager cameraManager;
-    private Paint paint, scanLinePaint, reactPaint, frameLinePaint;
+    private Paint paint, scanLinePaint, reactPaint, frameLinePaint, wordsPaint;
     private Bitmap resultBitmap;
     /**
      * 取景框外的背景颜色
@@ -68,7 +68,8 @@ public final class ViewfinderView extends View {
     private int scanLineTop;
     private ZxingConfig config;
     private ValueAnimator valueAnimator;
-    private Rect frame;
+    private Rect rect, textRect;
+    private String hintText = "将二维码放入框中，即可自动扫描";
 
     public ViewfinderView(Context context) {
         this(context, null);
@@ -122,11 +123,15 @@ public final class ViewfinderView extends View {
         scanLinePaint.setStyle(Paint.Style.FILL);
         scanLinePaint.setDither(true);
         scanLinePaint.setColor(scanLineColor);
+        //文字画笔
+        wordsPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        wordsPaint.setColor(ContextCompat.getColor(getContext(), R.color.defaultColor));
+        wordsPaint.setTextSize(sp2px(16));
     }
 
     private void initAnimator() {
         if (valueAnimator == null) {
-            valueAnimator = ValueAnimator.ofInt(frame.top, frame.bottom);
+            valueAnimator = ValueAnimator.ofInt(rect.top, rect.bottom);
             valueAnimator.setDuration(3000);
             valueAnimator.setInterpolator(new DecelerateInterpolator());
             valueAnimator.setRepeatMode(ValueAnimator.RESTART);
@@ -160,45 +165,45 @@ public final class ViewfinderView extends View {
         if (cameraManager == null) {
             return;
         }
-        // frame为取景框
-        frame = cameraManager.getFramingRect();
+        // rect为取景框
+        rect = cameraManager.getFramingRect();
         Rect previewFrame = cameraManager.getFramingRectInPreview();
-        if (frame == null || previewFrame == null) {
+        if (rect == null || previewFrame == null) {
             return;
         }
         initAnimator();
         int width = canvas.getWidth();
         int height = canvas.getHeight();
-
+        textRect = new Rect(0, rect.bottom + dp2px(40), width, rect.bottom + dp2px(100));
         /*绘制遮罩*/
-        drawMaskView(canvas, frame, width, height);
+        drawMaskView(canvas, rect, width, height);
 
         /*绘制取景框边框*/
-        drawFrameBounds(canvas, frame);
+        drawFrameBounds(canvas, rect);
         if (resultBitmap != null) {
             // Draw the opaque result bitmap over the scanning rectangle
             // 如果有二维码结果的Bitmap，在扫取景框内绘制不透明的result Bitmap
             paint.setAlpha(CURRENT_POINT_OPACITY);
-            canvas.drawBitmap(resultBitmap, null, frame, paint);
+            canvas.drawBitmap(resultBitmap, null, rect, paint);
         }
         else {
-
             /*绘制扫描线*/
-            drawScanLight(canvas, frame);
-
+            drawScanLight(canvas, rect);
             /*绘制闪动的点*/
-            // drawPoint(canvas, frame, previewFrame);
+            // drawPoint(canvas, rect, previewFrame);
         }
+        //绘制文字
+        drawHintText(canvas, textRect, rect, width);
     }
 
-    private void drawPoint(Canvas canvas, Rect frame, Rect previewFrame) {
-        float scaleX = frame.width() / (float)previewFrame.width();
-        float scaleY = frame.height() / (float)previewFrame.height();
+    private void drawPoint(Canvas canvas, Rect rect, Rect previewFrame) {
+        float scaleX = rect.width() / (float)previewFrame.width();
+        float scaleY = rect.height() / (float)previewFrame.height();
         // 绘制扫描线周围的特征点
         List<ResultPoint> currentPossible = possibleResultPoints;
         List<ResultPoint> currentLast = lastPossibleResultPoints;
-        int frameLeft = frame.left;
-        int frameTop = frame.top;
+        int frameLeft = rect.left;
+        int frameTop = rect.top;
         if (currentPossible.isEmpty()) {
             lastPossibleResultPoints = null;
         }
@@ -228,70 +233,79 @@ public final class ViewfinderView extends View {
         // Request another update at the animation interval, but only
         // repaint the laser line,
         // not the entire viewfinder mask.
-        postInvalidateDelayed(ANIMATION_DELAY, frame.left - POINT_SIZE, frame.top - POINT_SIZE,
-                              frame.right + POINT_SIZE, frame.bottom + POINT_SIZE);
+        postInvalidateDelayed(ANIMATION_DELAY, rect.left - POINT_SIZE, rect.top - POINT_SIZE, rect.right + POINT_SIZE,
+                              rect.bottom + POINT_SIZE);
     }
 
-    private void drawMaskView(Canvas canvas, Rect frame, int width, int height) {
+    private void drawMaskView(Canvas canvas, Rect rect, int width, int height) {
         // Draw the exterior (i.e. outside the framing rect) darkened
         // 绘制取景框外的暗灰色的表面，分四个矩形绘制
         paint.setColor(resultBitmap != null ? resultColor : maskColor);
         /*上面的框*/
-        canvas.drawRect(0, 0, width, frame.top, paint);
+        canvas.drawRect(0, 0, width, rect.top, paint);
         /*绘制左边的框*/
-        canvas.drawRect(0, frame.top, frame.left, frame.bottom + 1, paint);
+        canvas.drawRect(0, rect.top, rect.left, rect.bottom + 1, paint);
         /*绘制右边的框*/
-        canvas.drawRect(frame.right + 1, frame.top, width, frame.bottom + 1, paint);
+        canvas.drawRect(rect.right + 1, rect.top, width, rect.bottom + 1, paint);
         /*绘制下面的框*/
-        canvas.drawRect(0, frame.bottom + 1, width, height, paint);
+        canvas.drawRect(0, rect.bottom + 1, width, height, paint);
     }
 
     /**
      * 绘制取景框边框
      *
      * @param canvas
-     * @param frame
+     * @param rect
      */
-    private void drawFrameBounds(Canvas canvas, Rect frame) {
-
+    private void drawFrameBounds(Canvas canvas, Rect rect) {
         /*扫描框的边框线*/
         if (frameLineColor != -1) {
-            canvas.drawRect(frame, frameLinePaint);
+            canvas.drawRect(rect, frameLinePaint);
         }
 
-
         /*四个角的长度和宽度*/
-        int width = frame.width();
+        int width = rect.width();
         int corLength = (int)(width * 0.07);
         int corWidth = (int)(corLength * 0.2);
         corWidth = corWidth > 15 ? 15 : corWidth;
 
-
         /*角在线外*/
         // 左上角
-        canvas.drawRect(frame.left - corWidth, frame.top, frame.left, frame.top + corLength, reactPaint);
-        canvas.drawRect(frame.left - corWidth, frame.top - corWidth, frame.left + corLength, frame.top, reactPaint);
+        canvas.drawRect(rect.left - corWidth, rect.top, rect.left, rect.top + corLength, reactPaint);
+        canvas.drawRect(rect.left - corWidth, rect.top - corWidth, rect.left + corLength, rect.top, reactPaint);
         // 右上角
-        canvas.drawRect(frame.right, frame.top, frame.right + corWidth, frame.top + corLength, reactPaint);
-        canvas.drawRect(frame.right - corLength, frame.top - corWidth, frame.right + corWidth, frame.top, reactPaint);
+        canvas.drawRect(rect.right, rect.top, rect.right + corWidth, rect.top + corLength, reactPaint);
+        canvas.drawRect(rect.right - corLength, rect.top - corWidth, rect.right + corWidth, rect.top, reactPaint);
         // 左下角
-        canvas.drawRect(frame.left - corWidth, frame.bottom - corLength, frame.left, frame.bottom, reactPaint);
-        canvas.drawRect(frame.left - corWidth, frame.bottom, frame.left + corLength, frame.bottom + corWidth,
-                        reactPaint);
+        canvas.drawRect(rect.left - corWidth, rect.bottom - corLength, rect.left, rect.bottom, reactPaint);
+        canvas.drawRect(rect.left - corWidth, rect.bottom, rect.left + corLength, rect.bottom + corWidth, reactPaint);
         // 右下角
-        canvas.drawRect(frame.right, frame.bottom - corLength, frame.right + corWidth, frame.bottom, reactPaint);
-        canvas.drawRect(frame.right - corLength, frame.bottom, frame.right + corWidth, frame.bottom + corWidth,
-                        reactPaint);
+        canvas.drawRect(rect.right, rect.bottom - corLength, rect.right + corWidth, rect.bottom, reactPaint);
+        canvas.drawRect(rect.right - corLength, rect.bottom, rect.right + corWidth, rect.bottom + corWidth, reactPaint);
     }
 
     /**
      * 绘制移动扫描线
      *
      * @param canvas
-     * @param frame
+     * @param rect
      */
-    private void drawScanLight(Canvas canvas, Rect frame) {
-        canvas.drawLine(frame.left, scanLineTop, frame.right, scanLineTop, scanLinePaint);
+    private void drawScanLight(Canvas canvas, Rect rect) {
+        canvas.drawLine(rect.left + dp2px(28), scanLineTop, rect.right - dp2px(28), scanLineTop, scanLinePaint);
+    }
+
+    /**
+     * 绘制提示文字
+     *
+     * @param canvas
+     * @param textRect
+     * @param rect
+     * @param width
+     */
+    private void drawHintText(Canvas canvas, Rect textRect, Rect rect, int width) {
+        wordsPaint.getTextBounds(hintText, 0, hintText.length(), textRect);
+        int wordWidth = textRect.width();
+        canvas.drawText(hintText, width / 2 - wordWidth / 2, rect.bottom + dp2px(60), wordsPaint);
     }
 
     public void drawViewfinder() {
@@ -328,5 +342,27 @@ public final class ViewfinderView extends View {
 
     private int dp2px(int dp) {
         return (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
+    }
+
+    /**
+     * 将sp值转换为px值，保证文字大小不变
+     *
+     * @param spValue
+     * @param fontScale（DisplayMetrics类中属性scaledDensity）
+     * @return
+     */
+    public float sp2px(float spValue, float fontScale) {
+        return (spValue * fontScale + 0.5f);
+    }
+
+    /**
+     * 将sp值转换为px值，保证文字大小不变
+     *
+     * @param spValue
+     * @return
+     */
+    public float sp2px(float spValue) {
+        float scale = getContext().getResources().getDisplayMetrics().density;
+        return sp2px(spValue, scale);
     }
 }
