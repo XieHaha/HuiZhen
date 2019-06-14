@@ -19,7 +19,7 @@ import butterknife.OnClick;
  * @date 19/6/14 10:56
  * @des 预约检查详情
  */
-public class ReservationCheckDetailActivity extends BaseActivity {
+public class CheckDetailActivity extends BaseActivity {
     @BindView(R.id.iv_patient_img)
     ImageView ivPatientImg;
     @BindView(R.id.tv_patient_name)
@@ -68,7 +68,7 @@ public class ReservationCheckDetailActivity extends BaseActivity {
 
     @Override
     public int getLayoutID() {
-        return R.layout.act_reservation_check_detail;
+        return R.layout.act_check_detail;
     }
 
     @Override

@@ -157,6 +157,11 @@
     <string name="txt_reserve_check_diagnosis">初步诊断</string>
     <string name="txt_remote_billing">远程开单</string>
 
+    <!--预约检查-->
+    <string name="txt_patient_name_hint">请填写患者真实姓名</string>
+    <string name="txt_patient_id_card">身份证</string>
+
+
     <!--转诊相关-->
     <string name="txt_reserve_transfer">预约转诊</string>
     <string name="txt_bilateral_transfer">双向转诊</string>

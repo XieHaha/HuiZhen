@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.widgets.dialog.HintDialog;
 import com.zyc.doctor.R;
-import com.zyc.doctor.ui.auth.listener.OnAuthStepListener;
+import com.zyc.doctor.ui.auth.listener.OnStepListener;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -75,9 +75,9 @@ public class AuthResultFragment extends BaseFragment {
         startActivity(intent);
     }
 
-    private OnAuthStepListener onAuthStepListener;
+    private OnStepListener onAuthStepListener;
 
-    public void setOnAuthStepListener(OnAuthStepListener onAuthStepListener) {
+    public void setOnAuthStepListener(OnStepListener onAuthStepListener) {
         this.onAuthStepListener = onAuthStepListener;
     }
 }

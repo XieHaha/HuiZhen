@@ -32,7 +32,7 @@ import com.zyc.doctor.R;
 import com.zyc.doctor.ZycApplication;
 import com.zyc.doctor.ui.auth.SelectDepartActivity;
 import com.zyc.doctor.ui.auth.SelectHospitalActivity;
-import com.zyc.doctor.ui.auth.listener.OnAuthStepListener;
+import com.zyc.doctor.ui.auth.listener.OnStepListener;
 import com.zyc.doctor.ui.dialog.DownDialog;
 import com.zyc.doctor.ui.dialog.listener.OnMediaItemClickListener;
 import com.zyc.doctor.ui.dialog.listener.OnTitleItemClickListener;
@@ -346,9 +346,9 @@ public class AuthBaseFragment extends BaseFragment
         }
     }
 
-    private OnAuthStepListener onAuthStepListener;
+    private OnStepListener onAuthStepListener;
 
-    public void setOnAuthStepListener(OnAuthStepListener onAuthStepListener) {
+    public void setOnAuthStepListener(OnStepListener onAuthStepListener) {
         this.onAuthStepListener = onAuthStepListener;
     }
 }

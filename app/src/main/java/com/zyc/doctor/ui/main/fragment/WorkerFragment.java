@@ -18,7 +18,7 @@ import com.yht.frame.utils.ToastUtil;
 import com.yzq.zxinglibrary.android.CaptureActivity;
 import com.yzq.zxinglibrary.common.Constant;
 import com.zyc.doctor.R;
-import com.zyc.doctor.ui.check.ReservationCheckHistoryActivity;
+import com.zyc.doctor.ui.check.CheckHistoryActivity;
 import com.zyc.doctor.ui.personal.PersonalActivity;
 
 import butterknife.BindView;
@@ -97,7 +97,7 @@ public class WorkerFragment extends BaseFragment {
                 startActivity(new Intent(getContext(), PersonalActivity.class));
                 break;
             case R.id.layout_check:
-                startActivity(new Intent(getContext(), ReservationCheckHistoryActivity.class));
+                startActivity(new Intent(getContext(), CheckHistoryActivity.class));
                 break;
             case R.id.layout_transfer:
                 break;

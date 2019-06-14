@@ -28,7 +28,7 @@ import com.yht.frame.widgets.dialog.HintDialog;
 import com.zhihu.matisse.Matisse;
 import com.zyc.doctor.R;
 import com.zyc.doctor.ZycApplication;
-import com.zyc.doctor.ui.auth.listener.OnAuthStepListener;
+import com.zyc.doctor.ui.auth.listener.OnStepListener;
 import com.zyc.doctor.ui.dialog.DownDialog;
 import com.zyc.doctor.ui.dialog.listener.OnMediaItemClickListener;
 import com.zyc.doctor.utils.glide.GlideHelper;
@@ -318,9 +318,9 @@ public class AuthLicenseFragment extends BaseFragment implements OnMediaItemClic
         }
     }
 
-    private OnAuthStepListener onAuthStepListener;
+    private OnStepListener onAuthStepListener;
 
-    public void setOnAuthStepListener(OnAuthStepListener onAuthStepListener) {
+    public void setOnAuthStepListener(OnStepListener onAuthStepListener) {
         this.onAuthStepListener = onAuthStepListener;
     }
 }

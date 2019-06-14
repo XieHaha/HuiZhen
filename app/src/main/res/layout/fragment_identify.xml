@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="19dp"
+    android:paddingStart="20dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_16"
+            android:textColor="@color/color_373d4d"
+            android:text="@string/txt_name"
+            android:textStyle="bold" />
+
+        <com.yht.frame.widgets.edittext.SuperEditText
+            android:id="@+id/et_patient_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="35dp"
+            android:layout_marginEnd="20dp"
+            android:hint="@string/txt_patient_name_hint"
+            android:textSize="@dimen/text_16"
+            android:textColorHint="@color/color_a1a8b3"
+            android:textColor="@color/color_373d4d"
+            android:imeOptions="actionDone"
+            android:singleLine="true"
+            android:background="@null"
+            android:gravity="end"
+            android:layout_alignParentEnd="true"
+            app:hide_left_icon="true" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/app_hei_line"
+            android:layout_below="@id/et_patient_name"
+            android:layout_marginTop="18dp"
+            android:background="@color/color_ebedf0" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="19dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_16"
+            android:textColor="@color/color_373d4d"
+            android:text="@string/txt_patient_id_card"
+            android:textStyle="bold" />
+
+        <com.yht.frame.widgets.edittext.SuperEditText
+            android:id="@+id/et_patient_id_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="35dp"
+            android:layout_marginEnd="20dp"
+            android:hint="@string/txt_patient_name_hint"
+            android:textSize="@dimen/text_16"
+            android:textColorHint="@color/color_a1a8b3"
+            android:textColor="@color/color_373d4d"
+            android:imeOptions="actionDone"
+            android:singleLine="true"
+            android:background="@null"
+            android:gravity="end"
+            android:layout_alignParentEnd="true"
+            app:hide_left_icon="true" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/app_hei_line"
+            android:layout_below="@id/et_patient_id_card"
+            android:layout_marginTop="18dp"
+            android:background="@color/color_ebedf0" />
+
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/tv_identify_next"
+        android:layout_width="match_parent"
+        android:layout_marginEnd="31dp"
+        android:layout_marginStart="19dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="56dp"
+        android:background="@drawable/selector_public_next"
+        android:text="@string/txt_next"
+        android:gravity="center"
+        android:textSize="@dimen/text_16"
+        android:textColor="@color/color_ffffff" />
+
+</LinearLayout>

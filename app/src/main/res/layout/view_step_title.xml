@@ -7,7 +7,7 @@
     android:background="@color/color_ffffff">
 
     <LinearLayout
-        android:id="@+id/layout_auth_base"
+        android:id="@+id/layout_base"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"
@@ -20,24 +20,24 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:id="@+id/iv_auth_base"
+                android:id="@+id/iv_base"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@mipmap/ic_step_def"
                 android:layout_centerInParent="true" />
 
             <View
-                android:id="@+id/view_auth_base"
+                android:id="@+id/view_base"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/app_hei_line"
                 android:background="@drawable/selector_line"
-                android:layout_toRightOf="@id/iv_auth_base"
+                android:layout_toRightOf="@id/iv_base"
                 android:layout_centerVertical="true" />
         </RelativeLayout>
 
 
         <TextView
-            android:id="@+id/tv_auth_base"
+            android:id="@+id/tv_base"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/txt_main_color_selector"
@@ -48,7 +48,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/layout_auth_license"
+        android:id="@+id/layout_two"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"
@@ -61,31 +61,31 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:id="@+id/iv_auth_license"
+                android:id="@+id/iv_two"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@mipmap/ic_step_def"
                 android:layout_centerInParent="true" />
 
             <View
-                android:id="@+id/view_auth_license_left"
+                android:id="@+id/view_two_left"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/app_hei_line"
                 android:background="@drawable/selector_line"
-                android:layout_toLeftOf="@id/iv_auth_license"
+                android:layout_toLeftOf="@id/iv_two"
                 android:layout_centerVertical="true" />
 
             <View
-                android:id="@+id/view_auth_license_right"
+                android:id="@+id/view_two_right"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/app_hei_line"
                 android:background="@drawable/selector_line"
-                android:layout_toRightOf="@id/iv_auth_license"
+                android:layout_toRightOf="@id/iv_two"
                 android:layout_centerVertical="true" />
         </RelativeLayout>
 
         <TextView
-            android:id="@+id/tv_auth_license"
+            android:id="@+id/tv_two"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/txt_main_color_selector"
@@ -95,7 +95,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/layout_auth_result"
+        android:id="@+id/layout_end"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"
@@ -108,24 +108,24 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:id="@+id/iv_auth_result"
+                android:id="@+id/iv_end"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@mipmap/ic_step_def"
                 android:layout_centerInParent="true" />
 
             <View
-                android:id="@+id/view_auth_result"
+                android:id="@+id/view_end"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/app_hei_line"
                 android:background="@drawable/selector_line"
-                android:layout_toLeftOf="@id/iv_auth_result"
+                android:layout_toLeftOf="@id/iv_end"
                 android:layout_centerVertical="true" />
         </RelativeLayout>
 
 
         <TextView
-            android:id="@+id/tv_auth_result"
+            android:id="@+id/tv_end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/txt_main_color_selector"

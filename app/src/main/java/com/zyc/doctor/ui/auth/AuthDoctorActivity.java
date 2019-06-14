@@ -16,7 +16,7 @@ import com.zyc.doctor.R;
 import com.zyc.doctor.ui.auth.fragment.AuthBaseFragment;
 import com.zyc.doctor.ui.auth.fragment.AuthLicenseFragment;
 import com.zyc.doctor.ui.auth.fragment.AuthResultFragment;
-import com.zyc.doctor.ui.auth.listener.OnAuthStepListener;
+import com.zyc.doctor.ui.auth.listener.OnStepListener;
 
 import butterknife.BindView;
 
@@ -25,32 +25,32 @@ import butterknife.BindView;
  * @date 19/6/3 16:24
  * @des 医生认证
  */
-public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListener {
-    @BindView(R.id.iv_auth_base)
+public class AuthDoctorActivity extends BaseActivity implements OnStepListener {
+    @BindView(R.id.iv_base)
     ImageView ivAuthBase;
-    @BindView(R.id.tv_auth_base)
+    @BindView(R.id.tv_base)
     TextView tvAuthBase;
-    @BindView(R.id.layout_auth_base)
+    @BindView(R.id.layout_base)
     LinearLayout layoutAuthBase;
-    @BindView(R.id.iv_auth_license)
+    @BindView(R.id.iv_two)
     ImageView ivAuthLicense;
-    @BindView(R.id.tv_auth_license)
+    @BindView(R.id.tv_two)
     TextView tvAuthLicense;
-    @BindView(R.id.layout_auth_license)
+    @BindView(R.id.layout_two)
     LinearLayout layoutAuthLicense;
-    @BindView(R.id.iv_auth_result)
+    @BindView(R.id.iv_end)
     ImageView ivAuthResult;
-    @BindView(R.id.tv_auth_result)
+    @BindView(R.id.tv_end)
     TextView tvAuthResult;
-    @BindView(R.id.layout_auth_result)
+    @BindView(R.id.layout_end)
     LinearLayout layoutAuthResult;
-    @BindView(R.id.view_auth_base)
+    @BindView(R.id.view_base)
     View viewAuthBase;
-    @BindView(R.id.view_auth_license_left)
+    @BindView(R.id.view_two_left)
     View viewAuthLicenseLeft;
-    @BindView(R.id.view_auth_license_right)
+    @BindView(R.id.view_two_right)
     View viewAuthLicenseRight;
-    @BindView(R.id.view_auth_result)
+    @BindView(R.id.view_end)
     View viewAuthResult;
     /**
      * 碎片管理

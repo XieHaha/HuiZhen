@@ -26,7 +26,7 @@ import butterknife.OnClick;
  * @date 19/6/13 15:26
  * @des
  */
-public class ReservationCheckHistoryActivity extends BaseActivity implements BaseQuickAdapter.OnItemClickListener {
+public class CheckHistoryActivity extends BaseActivity implements BaseQuickAdapter.OnItemClickListener {
     @BindView(R.id.recyclerview)
     RecyclerView recyclerview;
     /**
@@ -43,7 +43,7 @@ public class ReservationCheckHistoryActivity extends BaseActivity implements Bas
 
     @Override
     public int getLayoutID() {
-        return R.layout.act_reservation_check_history;
+        return R.layout.act_check_history;
     }
 
     @Override
@@ -79,6 +79,6 @@ public class ReservationCheckHistoryActivity extends BaseActivity implements Bas
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        startActivity(new Intent(this, ReservationCheckDetailActivity.class));
+        startActivity(new Intent(this, CheckDetailActivity.class));
     }
 }
