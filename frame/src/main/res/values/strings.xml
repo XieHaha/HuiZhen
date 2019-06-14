@@ -145,6 +145,16 @@
     <!--检查相关-->
     <string name="txt_reserve_check">预约检查</string>
     <string name="txt_reserve_check_detail">预约检查详情</string>
+    <string name="txt_reserve_check_hospital">检查医院</string>
+    <string name="txt_reserve_check_pregnancy">是否备孕</string>
+    <string name="txt_reserve_check_payment">缴费类型</string>
+    <string name="txt_reserve_check_status">状态</string>
+    <string name="txt_reserve_check_status_cancel">取消原因</string>
+    <string name="txt_reserve_check_report">报告</string>
+    <string name="txt_reserve_check_report_num">(已上传%d/%d)</string>
+    <string name="txt_reserve_check_doctor">初诊医生</string>
+    <string name="txt_reserve_check_time">初诊时间</string>
+    <string name="txt_reserve_check_diagnosis">初步诊断</string>
     <string name="txt_remote_billing">远程开单</string>
 
     <!--转诊相关-->

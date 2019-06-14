@@ -1,10 +1,13 @@
 package com.zyc.doctor.ui.check;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.yht.frame.data.bean.PatientBean;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
@@ -23,7 +26,7 @@ import butterknife.OnClick;
  * @date 19/6/13 15:26
  * @des
  */
-public class ReservationCheckHistoryActivity extends BaseActivity {
+public class ReservationCheckHistoryActivity extends BaseActivity implements BaseQuickAdapter.OnItemClickListener {
     @BindView(R.id.recyclerview)
     RecyclerView recyclerview;
     /**
@@ -51,6 +54,7 @@ public class ReservationCheckHistoryActivity extends BaseActivity {
         recyclerview.addItemDecoration(timeItemDecoration);
         initDatas();
         checkHistoryAdapter = new CheckHistoryAdapter(R.layout.item_check_history, checkedList);
+        checkHistoryAdapter.setOnItemClickListener(this);
         recyclerview.setAdapter(checkHistoryAdapter);
     }
 
@@ -72,4 +76,9 @@ public class ReservationCheckHistoryActivity extends BaseActivity {
 
     @OnClick(R.id.tv_check_next)
     public void onViewClicked() {}
+
+    @Override
+    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+        startActivity(new Intent(this, ReservationCheckDetailActivity.class));
+    }
 }
