@@ -146,7 +146,7 @@ public class SuperEditText extends AppCompatEditText {
             // 判断动作 = 手指抬起时
             case MotionEvent.ACTION_UP:
                 Drawable drawable = icDelete;
-                if (drawable != null && event.getX() <= (getWidth() - getPaddingRight()) &&
+                if (hasFocus() && drawable != null && event.getX() <= (getWidth() - getPaddingRight()) &&
                     event.getX() >= (getWidth() - getPaddingRight() - drawable.getBounds().width())) {
                     setText("");
                     if (ondeleteClickListener != null) {

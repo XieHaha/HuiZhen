@@ -159,15 +159,20 @@
 
     <!--预约检查-->
     <string name="txt_patient_name_hint">请填写患者真实姓名</string>
+    <string name="txt_patient_id_card_hint">请填写患者身份证号码</string>
     <string name="txt_patient_id_card">身份证</string>
+    <string name="txt_identify">确认身份</string>
+    <string name="txt_material">完善资料</string>
+    <string name="txt_sure_submit">确认提交</string>
 
 
     <!--转诊相关-->
     <string name="txt_reserve_transfer">预约转诊</string>
     <string name="txt_bilateral_transfer">双向转诊</string>
-
-    <!--permission-->
+    <!--toast-->
     <string name="toast_public_current_no_network">当前无网络连接</string>
+    <string name="toast_id_card_error">身份证号码格式错误</string>
+    <!--permission-->
     <string name="dialog_no_camera_permission_tip">无法打开摄像头，请检查是否已经打开摄像头权限</string>
     <string name="dialog_no_storage_permission_tip">无法访问存储空间，请检查是否已经打开存储权限</string>
     <string name="dialog_no_audio_permission_tip">无法启用录音，请检查是否已经打开录音权限</string>

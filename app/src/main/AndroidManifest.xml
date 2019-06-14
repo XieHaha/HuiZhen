@@ -151,10 +151,16 @@
             android:screenOrientation="portrait"
             android:label="@string/txt_reserve_check"
             android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity android:name=".ui.check.CheckDetailActivity"
+        <activity
+            android:name=".ui.check.CheckDetailActivity"
             android:screenOrientation="portrait"
             android:label="@string/txt_reserve_check_detail"
-            android:windowSoftInputMode="adjustPan|stateHidden"/>
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.check.ReservationCheckActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/txt_reserve_check"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
 
         <!--环信消息点击事件处理-->
         <receiver

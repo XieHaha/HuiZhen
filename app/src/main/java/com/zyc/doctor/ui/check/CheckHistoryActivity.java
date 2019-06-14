@@ -75,7 +75,9 @@ public class CheckHistoryActivity extends BaseActivity implements BaseQuickAdapt
     }
 
     @OnClick(R.id.tv_check_next)
-    public void onViewClicked() {}
+    public void onViewClicked() {
+        startActivity(new Intent(this, ReservationCheckActivity.class));
+    }
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {

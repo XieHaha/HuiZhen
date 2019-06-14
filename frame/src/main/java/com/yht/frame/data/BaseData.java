@@ -23,6 +23,10 @@ public interface BaseData {
      */
     int BASE_NICK_NAME_LENGTH = 20;
     /**
+     * 身份证号最大长度
+     */
+    int BASE_ID_CARD_LENGTH = 18;
+    /**
      * 手机号默认长度
      */
     int BASE_PHONE_DEFAULT_LENGTH = 11;

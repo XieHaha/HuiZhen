@@ -1,17 +1,21 @@
 package com.zyc.doctor.ui.check;
 
+import android.content.Intent;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.yht.frame.ui.BaseActivity;
+import com.yht.frame.widgets.dialog.HintDialog;
 import com.zyc.doctor.R;
 import com.zyc.doctor.ui.auth.listener.OnStepListener;
 import com.zyc.doctor.ui.check.fragment.IdentifyFragment;
@@ -33,11 +37,11 @@ public class ReservationCheckActivity extends BaseActivity implements OnStepList
     @BindView(R.id.layout_base)
     LinearLayout layoutReservationBase;
     @BindView(R.id.iv_two)
-    ImageView ivReservationLicense;
+    ImageView ivReservationMaterial;
     @BindView(R.id.tv_two)
-    TextView tvReservationLicense;
+    TextView tvReservationMaterial;
     @BindView(R.id.layout_two)
-    LinearLayout layoutReservationLicense;
+    LinearLayout layoutReservationMaterial;
     @BindView(R.id.iv_end)
     ImageView ivReservationResult;
     @BindView(R.id.tv_end)
@@ -52,6 +56,10 @@ public class ReservationCheckActivity extends BaseActivity implements OnStepList
     View viewReservationLicenseRight;
     @BindView(R.id.view_end)
     View viewReservationResult;
+    @BindView(R.id.public_title_bar_more)
+    TextView publicTitleBarMore;
+    @BindView(R.id.layout_frame_root)
+    FrameLayout layoutFrameRoot;
     /**
      * 碎片管理
      */
@@ -88,7 +96,19 @@ public class ReservationCheckActivity extends BaseActivity implements OnStepList
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         findViewById(R.id.public_title_bar_back).setOnClickListener(this);
+        publicTitleBarMore.setVisibility(View.VISIBLE);
+        publicTitleBarMore.setOnClickListener(this);
+        initTitlePage();
         initTab();
+    }
+
+    /**
+     * title处理
+     */
+    private void initTitlePage() {
+        tvReservationBase.setText(R.string.txt_identify);
+        tvReservationMaterial.setText(R.string.txt_material);
+        tvReservationResult.setText(R.string.txt_sure_submit);
     }
 
     /**
@@ -176,10 +196,10 @@ public class ReservationCheckActivity extends BaseActivity implements OnStepList
                 ivReservationBase.setImageResource(R.mipmap.ic_step_sel);
                 tvReservationBase.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
                 //1
-                tvReservationLicense.setSelected(false);
+                tvReservationMaterial.setSelected(false);
                 viewReservationLicenseLeft.setSelected(false);
-                ivReservationLicense.setImageResource(R.mipmap.ic_step_def);
-                tvReservationLicense.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+                ivReservationMaterial.setImageResource(R.mipmap.ic_step_def);
+                tvReservationMaterial.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
                 break;
             case BASE_ONE:
                 curPage = BASE_ONE;
@@ -188,11 +208,11 @@ public class ReservationCheckActivity extends BaseActivity implements OnStepList
                 tvReservationBase.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
                 ivReservationBase.setImageResource(R.mipmap.ic_step_finish);
                 //1
-                tvReservationLicense.setSelected(true);
+                tvReservationMaterial.setSelected(true);
                 viewReservationLicenseLeft.setSelected(true);
                 viewReservationLicenseRight.setSelected(false);
-                ivReservationLicense.setImageResource(R.mipmap.ic_step_sel);
-                tvReservationLicense.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+                ivReservationMaterial.setImageResource(R.mipmap.ic_step_sel);
+                tvReservationMaterial.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
                 //2
                 layoutReservationResult.setSelected(false);
                 ivReservationResult.setImageResource(R.mipmap.ic_step_def);
@@ -202,8 +222,8 @@ public class ReservationCheckActivity extends BaseActivity implements OnStepList
                 curPage = BASE_TWO;
                 //1
                 viewReservationLicenseRight.setSelected(true);
-                tvReservationLicense.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
-                ivReservationLicense.setImageResource(R.mipmap.ic_step_finish);
+                tvReservationMaterial.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+                ivReservationMaterial.setImageResource(R.mipmap.ic_step_finish);
                 //2
                 layoutReservationResult.setSelected(true);
                 ivReservationResult.setImageResource(R.mipmap.ic_step_sel);
@@ -217,10 +237,10 @@ public class ReservationCheckActivity extends BaseActivity implements OnStepList
                 ivReservationBase.setImageResource(R.mipmap.ic_step_sel);
                 tvReservationBase.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
                 //1
-                tvReservationLicense.setSelected(false);
+                tvReservationMaterial.setSelected(false);
                 viewReservationLicenseLeft.setSelected(false);
-                ivReservationLicense.setImageResource(R.mipmap.ic_step_def);
-                tvReservationLicense.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+                ivReservationMaterial.setImageResource(R.mipmap.ic_step_def);
+                tvReservationMaterial.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
                 break;
         }
     }
@@ -233,6 +253,13 @@ public class ReservationCheckActivity extends BaseActivity implements OnStepList
                 if (finishPage()) {
                     finish();
                 }
+            case R.id.public_title_bar_more:
+                new HintDialog(this).setTitleString(getString(R.string.txt_hint))
+                                    .setContentString(getString(R.string.txt_contact_hotline))
+                                    .setEnterBtnTxt(getString(R.string.txt_call))
+                                    .setEnterSelect(true)
+                                    .setOnEnterClickListener(() -> callPhone(""))
+                                    .show();
                 break;
             default:
                 break;
@@ -279,6 +306,18 @@ public class ReservationCheckActivity extends BaseActivity implements OnStepList
             return false;
         }
         return true;
+    }
+
+    /**
+     * 拨打电话（跳转到拨号界面，用户手动点击拨打）
+     *
+     * @param phoneNum 电话号码
+     */
+    public void callPhone(String phoneNum) {
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        Uri data = Uri.parse("tel:" + phoneNum);
+        intent.setData(data);
+        startActivity(intent);
     }
 
     @Override
