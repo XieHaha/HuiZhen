@@ -144,6 +144,7 @@
 
     <!--检查相关-->
     <string name="txt_reserve_check">预约检查</string>
+    <string name="txt_reserve_check_detail">预约检查详情</string>
     <string name="txt_remote_billing">远程开单</string>
 
     <!--转诊相关-->
