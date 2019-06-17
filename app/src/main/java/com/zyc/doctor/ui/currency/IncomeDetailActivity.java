@@ -7,7 +7,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yht.frame.ui.BaseActivity;
-import com.yht.frame.widgets.FullListView;
+import com.yht.frame.widgets.recyclerview.FullListView;
 import com.zyc.doctor.R;
 
 import butterknife.BindView;

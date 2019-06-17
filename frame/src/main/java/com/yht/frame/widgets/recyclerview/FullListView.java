@@ -1,4 +1,4 @@
-package com.yht.frame.widgets;
+package com.yht.frame.widgets.recyclerview;
 
 import android.content.Context;
 import android.util.AttributeSet;

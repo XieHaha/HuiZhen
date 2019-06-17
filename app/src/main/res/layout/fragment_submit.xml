@@ -1,24 +1,276 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingTop="19dp"
-    android:paddingStart="20dp">
+    android:background="@color/color_f8f9fa">
 
-
-    <TextView
-        android:id="@+id/tv_identify_next"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_marginEnd="31dp"
-        android:layout_marginStart="19dp"
-        android:layout_height="42dp"
-        android:layout_marginTop="56dp"
-        android:background="@drawable/selector_public_next"
-        android:text="@string/txt_next"
-        android:gravity="center"
-        android:textSize="@dimen/text_16"
-        android:textColor="@color/color_ffffff" />
+        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:paddingBottom="31dp">
 
-</LinearLayout>
+        <LinearLayout
+            android:id="@+id/layout_select_check_type"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:background="@color/color_ffffff">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_373d4d"
+                android:textSize="@dimen/text_16"
+                android:layout_weight="1"
+                android:textStyle="bold"
+                android:text="@string/txt_currency_income_project" />
+
+            <TextView
+                android:id="@+id/tv_select"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/txt_select_hint"
+                android:textColor="@color/color_a1a8b3"
+                android:textSize="@dimen/text_16"
+                android:layout_marginEnd="11dp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_right" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_check_root"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:paddingStart="20dp"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:background="@color/color_ffffff">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/app_hei_line"
+                android:background="@color/color_ebedf0" />
+
+            <com.yht.frame.widgets.recyclerview.FullListView
+                android:id="@+id/fullistview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </com.yht.frame.widgets.recyclerview.FullListView>
+
+            <TextView
+                android:id="@+id/tv_delete_all"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="14dp"
+                android:paddingBottom="12dp"
+                android:paddingEnd="20dp"
+                android:text="@string/txt_delete_all"
+                android:textSize="@dimen/text_15"
+                android:textColor="@color/color_1491fc"
+                android:layout_gravity="end" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="20dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/color_ffffff">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_16"
+                android:textColor="@color/color_373d4d"
+                android:text="@string/txt_reserve_check_pregnancy"
+                android:textStyle="bold"
+                android:layout_marginTop="18dp" />
+
+            <RadioGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="35dp"
+                android:layout_marginEnd="20dp"
+                android:layout_alignParentRight="true"
+                android:orientation="horizontal"
+                android:layout_marginTop="18dp">
+
+                <RadioButton
+                    android:id="@+id/rb_yes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:text="@string/txt_yes"
+                    android:button="@drawable/selector_public_status"
+                    android:paddingHorizontal="4dp"
+                    android:gravity="center" />
+
+                <RadioButton
+                    android:id="@+id/rb_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:text="@string/txt_no"
+                    android:layout_marginLeft="14dp"
+                    android:button="@drawable/selector_public_status"
+                    android:paddingHorizontal="4dp" />
+            </RadioGroup>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/app_hei_line"
+                android:layout_below="@id/title"
+                android:layout_marginTop="18dp"
+                android:background="@color/color_ebedf0" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="20dp"
+            android:paddingBottom="18dp"
+            android:background="@color/color_ffffff">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_16"
+                android:textColor="@color/color_373d4d"
+                android:text="@string/txt_reserve_check_payment"
+                android:textStyle="bold"
+                android:layout_marginTop="18dp" />
+
+            <RadioGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="35dp"
+                android:layout_marginEnd="20dp"
+                android:layout_alignParentRight="true"
+                android:orientation="horizontal"
+                android:layout_marginTop="18dp">
+
+                <RadioButton
+                    android:id="@+id/rb_self"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:text="@string/txt_self_pay"
+                    android:button="@drawable/selector_public_status"
+                    android:paddingHorizontal="4dp"
+                    android:gravity="center" />
+
+                <RadioButton
+                    android:id="@+id/rb_medicare"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:text="@string/txt_medicare"
+                    android:button="@drawable/selector_public_status"
+                    android:layout_marginLeft="14dp"
+                    android:paddingHorizontal="4dp"
+                    android:gravity="center" />
+
+                <RadioButton
+                    android:id="@+id/rb_all"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:text="@string/txt_self_medicare"
+                    android:layout_marginLeft="14dp"
+                    android:button="@drawable/selector_public_status"
+                    android:paddingHorizontal="4dp" />
+            </RadioGroup>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="20dp"
+            android:paddingBottom="20dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/color_ffffff"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:gravity="center_vertical"
+                android:textSize="@dimen/text_16"
+                android:textColor="@color/color_373d4d"
+                android:text="@string/txt_camera_people"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/app_hei_line"
+                android:background="@color/color_ebedf0" />
+
+            <RelativeLayout
+                android:id="@+id/layout_upload_one"
+                android:layout_width="158dp"
+                android:layout_height="92dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/corner4_ebedf0_bg">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/ic_people"
+                    android:layout_centerInParent="true" />
+
+                <ImageView
+                    android:id="@+id/iv_upload_one"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <ImageView
+                    android:id="@+id/iv_delete_one"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@mipmap/ic_delete"
+                    android:layout_alignParentEnd="true"
+                    android:padding="6dp"
+                    android:visibility="gone" />
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_a1a8b3"
+                android:textSize="@dimen/text_13"
+                android:layout_marginTop="12dp"
+                android:text="@string/txt_camera_people_hint" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_submit_next"
+            android:layout_width="match_parent"
+            android:layout_marginEnd="31dp"
+            android:layout_marginStart="19dp"
+            android:layout_height="42dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/selector_public_next"
+            android:text="@string/txt_next"
+            android:gravity="center"
+            android:textSize="@dimen/text_16"
+            android:textColor="@color/color_ffffff" />
+    </LinearLayout>
+</ScrollView>

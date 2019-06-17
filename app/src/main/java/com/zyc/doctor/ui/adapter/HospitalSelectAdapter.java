@@ -13,8 +13,8 @@ import java.util.List;
  * @date 19/6/5 14:25
  * @des 医院搜索适配器
  */
-public class HospitalAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
-    public HospitalAdapter(int layoutResId, @Nullable List<String> data) {
+public class HospitalSelectAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
+    public HospitalSelectAdapter(int layoutResId, @Nullable List<String> data) {
         super(layoutResId, data);
     }
 

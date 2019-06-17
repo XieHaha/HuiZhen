@@ -17,6 +17,7 @@
     <string name="title_message">消息</string>
     <string name="title_patient">患者(%s)</string>
     <string name="title_camera">扫一扫</string>
+    <string name="title_add_check">添加检查项目</string>
 
     <!--公用-->
     <string name="txt_app_name">会珍</string>
@@ -29,6 +30,7 @@
     <string name="txt_open">去开启</string>
     <string name="txt_exit">退出</string>
     <string name="txt_clear">清除</string>
+    <string name="txt_delete_all">全部删除</string>
     <string name="txt_next">下一步</string>
     <string name="txt_last">上一步</string>
     <string name="txt_loading_again">重新加载</string>
@@ -42,6 +44,8 @@
     <string name="txt_contact">联系我们</string>
     <string name="txt_contact_hotline">您将要拨打医助热线：\n028&#8211;88888888</string>
     <string name="txt_calc_num">%d/500</string>
+    <string name="txt_yes">是</string>
+    <string name="txt_no">否</string>
 
     <!--主页-->
     <string name="txt_message">消息</string>
@@ -176,6 +180,15 @@
     <string name="txt_allergies_not">该患者否认有过敏史</string>
     <string name="txt_allergies">过敏史</string>
     <string name="txt_diagnosis_hint">请针对患者病情填写初步诊断结果</string>
+    <string name="txt_camera_people">拍照确认</string>
+    <string name="txt_camera_people_hint">请按照图示，拍摄患者头像确认。</string>
+    <string name="txt_self_pay">自费</string>
+    <string name="txt_medicare">医保</string>
+    <string name="txt_self_medicare">自费+医保</string>
+    <string name="txt_success_hint">恭喜你，提交成功。\n医院将尽快确认预约，与患者联系。</string>
+    <string name="txt_look_check_detail">查看检查详情</string>
+    <string name="txt_check_again">继续预约检查</string>
+    <string name="txt_add_check_hint">请输入检查名称搜索</string>
 
 
     <!--转诊相关-->

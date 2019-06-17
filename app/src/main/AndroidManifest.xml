@@ -160,7 +160,17 @@
             android:name=".ui.check.ReservationCheckActivity"
             android:screenOrientation="portrait"
             android:label="@string/txt_reserve_check"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".ui.check.CheckSuccessActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/txt_reserve_check"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".ui.check.SelectCheckTypeActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/title_add_check"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
 
         <!--环信消息点击事件处理-->
         <receiver

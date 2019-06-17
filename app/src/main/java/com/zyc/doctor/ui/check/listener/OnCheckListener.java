@@ -13,10 +13,8 @@ public interface OnCheckListener {
 
     /**
      * 执照
-     *
-     * @param type 操作类型
      */
-    void onStepTwo(int type);
+    void onStepTwo();
 
     /**
      * 结果

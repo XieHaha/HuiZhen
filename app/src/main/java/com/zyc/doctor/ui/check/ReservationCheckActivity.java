@@ -281,21 +281,14 @@ public class ReservationCheckActivity extends BaseActivity implements OnCheckLis
     }
 
     @Override
-    public void onStepTwo(int type) {
-        switch (type) {
-            case BASE_ONE:
-                tabReservationBaseView();
-                break;
-            case BASE_TWO:
-                tabReservationResultView();
-                break;
-            default:
-                break;
-        }
+    public void onStepTwo() {
+        tabReservationResultView();
     }
 
     @Override
     public void onStepThree() {
+        startActivity(new Intent(this, CheckSuccessActivity.class));
+        finish();
     }
 
     /**

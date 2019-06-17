@@ -248,7 +248,7 @@ public class MaterialFragment extends BaseFragment {
                 break;
             case R.id.tv_identify_next:
                 if (checkListener != null) {
-                    checkListener.onStepTwo(1);
+                    checkListener.onStepTwo();
                 }
                 break;
             default:
