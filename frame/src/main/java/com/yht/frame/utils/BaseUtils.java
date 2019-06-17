@@ -3,9 +3,11 @@ package com.yht.frame.utils;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.text.TextUtils;
 import android.util.TypedValue;
 
 import com.github.promeg.pinyinhelper.Pinyin;
+import com.yht.frame.data.BaseData;
 import com.yht.frame.data.bean.PatientBean;
 
 import java.io.BufferedInputStream;
@@ -246,5 +248,57 @@ public class BaseUtils {
             }
         }
         return builder.toString();
+    }
+
+    /**
+     * 根据身份证的号码算出当前身份证持有者的年龄 18位身份证
+     *
+     * @return
+     */
+    public static String getAgeByCard(String idCard) {
+        if (TextUtils.isEmpty(idCard) || idCard.length() != BaseData.BASE_ID_CARD_LENGTH) {
+            return "";
+        }
+        // 得到年份
+        String year = idCard.substring(6).substring(0, 4);
+        // 得到月份
+        String yue = idCard.substring(10).substring(0, 2);
+        // 得到当前的系统时间
+        Date date = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        // 当前年份
+        String fyear = format.format(date).substring(0, 4);
+        // 月份
+        String fyue = format.format(date).substring(5, 7);
+        int age = 0;
+        // 当前月份大于用户出身的月份表示已过生
+        if (Integer.parseInt(yue) <= Integer.parseInt(fyue)) {
+            age = Integer.parseInt(fyear) - Integer.parseInt(year) + 1;
+        }
+        // 当前用户还没过生
+        else {
+            age = Integer.parseInt(fyear) - Integer.parseInt(year);
+        }
+        return String.valueOf(age);
+    }
+
+    /**
+     * 根据身份证号判断性别
+     *
+     * @param idCard
+     * @return
+     */
+    public static String getSexByCard(String idCard) {
+        if (TextUtils.isEmpty(idCard) || idCard.length() != BaseData.BASE_ID_CARD_LENGTH) {
+            return "";
+        }
+        String sex;
+        if (Integer.parseInt(idCard.substring(16).substring(0, 1)) % 2 == 0) {
+            sex = "女";
+        }
+        else {
+            sex = "男";
+        }
+        return sex;
     }
 }

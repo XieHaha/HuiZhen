@@ -81,6 +81,10 @@ public class ReservationCheckActivity extends BaseActivity implements OnCheckLis
      * 当前碎片
      */
     private int curPage;
+    /**
+     * 姓名 身份证
+     */
+    private String name, idCard;
 
     @Override
     protected boolean isInitBackBtn() {
@@ -143,10 +147,12 @@ public class ReservationCheckActivity extends BaseActivity implements OnCheckLis
         if (materialFragment == null) {
             materialFragment = new MaterialFragment();
             materialFragment.setOnCheckListener(this);
+            materialFragment.setValue(name, idCard);
             transaction.add(R.id.layout_frame_root, materialFragment);
         }
         else {
             transaction.show(materialFragment);
+            materialFragment.setValue(name, idCard);
             materialFragment.onResume();
         }
         transaction.commitAllowingStateLoss();
@@ -269,6 +275,8 @@ public class ReservationCheckActivity extends BaseActivity implements OnCheckLis
 
     @Override
     public void onStepOne(String name, String idCard) {
+        this.name = name;
+        this.idCard = idCard;
         tabReservationLicenseView();
     }
 

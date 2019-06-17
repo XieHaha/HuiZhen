@@ -156,7 +156,7 @@
                 android:text="@string/txt_patient_id_card"
                 android:textStyle="bold" />
 
-            <TextView
+            <com.yht.frame.widgets.edittext.SuperEditText
                 android:id="@+id/tv_id_card"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -164,7 +164,11 @@
                 android:layout_marginEnd="20dp"
                 android:textSize="@dimen/text_16"
                 android:textColor="@color/color_373d4d"
-                android:layout_alignParentEnd="true" />
+                android:layout_alignParentEnd="true"
+                android:background="@null"
+                android:focusableInTouchMode="false"
+                android:focusable="false"
+                app:hide_left_icon="true" />
 
             <View
                 android:layout_width="match_parent"

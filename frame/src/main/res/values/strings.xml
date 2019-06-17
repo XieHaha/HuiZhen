@@ -175,6 +175,7 @@
     <string name="txt_family_medical_his_not">该患者否认有家族病史</string>
     <string name="txt_allergies_not">该患者否认有过敏史</string>
     <string name="txt_allergies">过敏史</string>
+    <string name="txt_diagnosis_hint">请针对患者病情填写初步诊断结果</string>
 
 
     <!--转诊相关-->
