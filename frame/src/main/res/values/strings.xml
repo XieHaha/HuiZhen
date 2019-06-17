@@ -28,6 +28,7 @@
     <string name="txt_save">保存</string>
     <string name="txt_open">去开启</string>
     <string name="txt_exit">退出</string>
+    <string name="txt_clear">清除</string>
     <string name="txt_next">下一步</string>
     <string name="txt_last">上一步</string>
     <string name="txt_loading_again">重新加载</string>
@@ -40,6 +41,7 @@
     <string name="txt_photo">从手机相册选择</string>
     <string name="txt_contact">联系我们</string>
     <string name="txt_contact_hotline">您将要拨打医助热线：\n028&#8211;88888888</string>
+    <string name="txt_calc_num">%d/500</string>
 
     <!--主页-->
     <string name="txt_message">消息</string>
@@ -82,12 +84,15 @@
     <string name="txt_upload_img_hint">请上传你的真实头像</string>
     <string name="txt_name">姓名</string>
     <string name="txt_name_hint">请填写本人真实姓名</string>
+    <string name="txt_age">年龄</string>
+    <string name="txt_age_hint">请输入真实年龄</string>
     <string name="txt_sex">性别</string>
     <string name="txt_sex_male">男</string>
     <string name="txt_sex_female">女</string>
     <string name="txt_hospital">医院</string>
     <string name="txt_depart">科室</string>
     <string name="txt_title">职称</string>
+    <string name="txt_contact_type">联系方式</string>
     <string name="txt_select_hint">请选择</string>
     <string name="txt_select_hospital_hint">请输入医院名称搜索</string>
     <string name="txt_select_hospital">请输入医院名称</string>
@@ -164,6 +169,12 @@
     <string name="txt_identify">确认身份</string>
     <string name="txt_material">完善资料</string>
     <string name="txt_sure_submit">确认提交</string>
+    <string name="txt_past_medical_his">既往病史</string>
+    <string name="txt_past_medical_his_not">该患者否认有既往病史</string>
+    <string name="txt_family_medical_his">家族病史</string>
+    <string name="txt_family_medical_his_not">该患者否认有家族病史</string>
+    <string name="txt_allergies_not">该患者否认有过敏史</string>
+    <string name="txt_allergies">过敏史</string>
 
 
     <!--转诊相关-->

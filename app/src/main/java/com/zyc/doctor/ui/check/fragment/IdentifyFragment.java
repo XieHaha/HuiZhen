@@ -12,8 +12,8 @@ import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.widgets.edittext.SuperEditText;
 import com.zyc.doctor.R;
 import com.zyc.doctor.ui.AbstractTextWatcher;
-import com.zyc.doctor.ui.auth.listener.OnStepListener;
 import com.zyc.doctor.ui.check.BankCardTextWatcher;
+import com.zyc.doctor.ui.check.listener.OnCheckListener;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -63,8 +63,8 @@ public class IdentifyFragment extends BaseFragment implements View.OnFocusChange
 
     @OnClick(R.id.tv_identify_next)
     public void onViewClicked() {
-        if (onStepListener != null && tvIdentifyNext.isSelected()) {
-            onStepListener.onStepOne();
+        if (checkListener != null && tvIdentifyNext.isSelected()) {
+            checkListener.onStepOne(name, idCard);
         }
     }
 
@@ -91,9 +91,9 @@ public class IdentifyFragment extends BaseFragment implements View.OnFocusChange
         }
     }
 
-    private OnStepListener onStepListener;
+    private OnCheckListener checkListener;
 
-    public void setOnStepListener(OnStepListener onStepListener) {
-        this.onStepListener = onStepListener;
+    public void setOnCheckListener(OnCheckListener onCheckListener) {
+        this.checkListener = onCheckListener;
     }
 }

@@ -2,7 +2,7 @@ package com.zyc.doctor.ui.check.fragment;
 
 import com.yht.frame.ui.BaseFragment;
 import com.zyc.doctor.R;
-import com.zyc.doctor.ui.auth.listener.OnStepListener;
+import com.zyc.doctor.ui.check.listener.OnCheckListener;
 
 /**
  * @author 顿顿
@@ -15,9 +15,9 @@ public class SubmitFragment extends BaseFragment {
         return R.layout.fragment_submit;
     }
 
-    private OnStepListener onStepListener;
+    private OnCheckListener checkListener;
 
-    public void setOnStepListener(OnStepListener onStepListener) {
-        this.onStepListener = onStepListener;
+    public void setOnCheckListener(OnCheckListener onCheckListener) {
+        this.checkListener = onCheckListener;
     }
 }

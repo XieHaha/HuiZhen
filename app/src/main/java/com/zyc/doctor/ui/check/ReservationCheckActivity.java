@@ -17,10 +17,10 @@ import android.widget.TextView;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.widgets.dialog.HintDialog;
 import com.zyc.doctor.R;
-import com.zyc.doctor.ui.auth.listener.OnStepListener;
 import com.zyc.doctor.ui.check.fragment.IdentifyFragment;
 import com.zyc.doctor.ui.check.fragment.MaterialFragment;
 import com.zyc.doctor.ui.check.fragment.SubmitFragment;
+import com.zyc.doctor.ui.check.listener.OnCheckListener;
 
 import butterknife.BindView;
 
@@ -29,7 +29,7 @@ import butterknife.BindView;
  * @date 19/6/14 14:05
  * @des 新增预约检查
  */
-public class ReservationCheckActivity extends BaseActivity implements OnStepListener {
+public class ReservationCheckActivity extends BaseActivity implements OnCheckListener {
     @BindView(R.id.iv_base)
     ImageView ivReservationBase;
     @BindView(R.id.tv_base)
@@ -97,6 +97,7 @@ public class ReservationCheckActivity extends BaseActivity implements OnStepList
         super.initData(savedInstanceState);
         findViewById(R.id.public_title_bar_back).setOnClickListener(this);
         publicTitleBarMore.setVisibility(View.VISIBLE);
+        publicTitleBarMore.setText(R.string.txt_contact);
         publicTitleBarMore.setOnClickListener(this);
         initTitlePage();
         initTab();
@@ -125,7 +126,7 @@ public class ReservationCheckActivity extends BaseActivity implements OnStepList
         hideAll(transaction);
         if (identifyFragment == null) {
             identifyFragment = new IdentifyFragment();
-            identifyFragment.setOnStepListener(this);
+            identifyFragment.setOnCheckListener(this);
             transaction.add(R.id.layout_frame_root, identifyFragment);
         }
         else {
@@ -141,7 +142,7 @@ public class ReservationCheckActivity extends BaseActivity implements OnStepList
         hideAll(transaction);
         if (materialFragment == null) {
             materialFragment = new MaterialFragment();
-            materialFragment.setOnStepListener(this);
+            materialFragment.setOnCheckListener(this);
             transaction.add(R.id.layout_frame_root, materialFragment);
         }
         else {
@@ -157,7 +158,7 @@ public class ReservationCheckActivity extends BaseActivity implements OnStepList
         hideAll(transaction);
         if (submitFragment == null) {
             submitFragment = new SubmitFragment();
-            submitFragment.setOnStepListener(this);
+            submitFragment.setOnCheckListener(this);
             transaction.add(R.id.layout_frame_root, submitFragment);
         }
         else {
@@ -267,7 +268,7 @@ public class ReservationCheckActivity extends BaseActivity implements OnStepList
     }
 
     @Override
-    public void onStepOne() {
+    public void onStepOne(String name, String idCard) {
         tabReservationLicenseView();
     }
 
