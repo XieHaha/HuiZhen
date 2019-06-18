@@ -63,7 +63,7 @@ public class IdentifyFragment extends BaseFragment implements View.OnFocusChange
 
     @OnClick(R.id.tv_identify_next)
     public void onViewClicked() {
-        if (checkListener != null && tvIdentifyNext.isSelected()) {
+        if (checkListener != null) {
             checkListener.onStepOne(name, idCard);
         }
     }

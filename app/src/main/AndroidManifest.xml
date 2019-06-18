@@ -171,6 +171,11 @@
             android:screenOrientation="portrait"
             android:label="@string/title_add_check"
             android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".ui.check.SelectCheckTypeByHospitalActivity"
+            android:screenOrientation="portrait"
+            android:label=""
+            android:windowSoftInputMode="adjustResize|stateHidden" />
 
         <!--环信消息点击事件处理-->
         <receiver

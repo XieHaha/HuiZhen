@@ -260,6 +260,7 @@ public class ReservationCheckActivity extends BaseActivity implements OnCheckLis
                 if (finishPage()) {
                     finish();
                 }
+                break;
             case R.id.public_title_bar_more:
                 new HintDialog(this).setTitleString(getString(R.string.txt_hint))
                                     .setContentString(getString(R.string.txt_contact_hotline))

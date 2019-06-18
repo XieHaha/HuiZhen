@@ -36,7 +36,7 @@
         android:layout_marginRight="17dp"
         android:gravity="center"
         android:textSize="@dimen/text_17"
-        android:textColor="@color/color_373d4d"
+        android:textColor="@color/txt_color_373d4d_1491fc_selector"
         android:visibility="gone"
         tools:text="联系我们" />
 
