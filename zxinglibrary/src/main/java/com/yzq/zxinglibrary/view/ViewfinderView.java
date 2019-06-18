@@ -7,6 +7,8 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
@@ -35,7 +37,7 @@ public final class ViewfinderView extends View {
     private static final int POINT_SIZE = 6;
     private CameraManager cameraManager;
     private Paint paint, scanLinePaint, reactPaint, frameLinePaint, wordsPaint;
-    private Bitmap resultBitmap;
+    private Bitmap resultBitmap, scanLineBitmap;
     /**
      * 取景框外的背景颜色
      */
@@ -123,6 +125,9 @@ public final class ViewfinderView extends View {
         scanLinePaint.setStyle(Paint.Style.FILL);
         scanLinePaint.setDither(true);
         scanLinePaint.setColor(scanLineColor);
+        //扫描线 bitmap
+        Drawable drawable = ContextCompat.getDrawable(getContext(), R.mipmap.pic_camera_line);
+        scanLineBitmap = ((BitmapDrawable)drawable).getBitmap();
         //文字画笔
         wordsPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         wordsPaint.setColor(ContextCompat.getColor(getContext(), R.color.defaultColor));
@@ -291,7 +296,7 @@ public final class ViewfinderView extends View {
      * @param rect
      */
     private void drawScanLight(Canvas canvas, Rect rect) {
-        canvas.drawLine(rect.left + dp2px(28), scanLineTop, rect.right - dp2px(28), scanLineTop, scanLinePaint);
+        canvas.drawBitmap(scanLineBitmap, rect.left + dp2px(20), scanLineTop, scanLinePaint);
     }
 
     /**
@@ -337,6 +342,16 @@ public final class ViewfinderView extends View {
                 // trim it
                 points.subList(0, size - MAX_RESULT_POINTS / 2).clear();
             }
+        }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if (scanLineBitmap != null || !scanLineBitmap.isRecycled()) {
+            scanLineBitmap.recycle();
+            scanLineBitmap = null;
+            System.gc();
         }
     }
 

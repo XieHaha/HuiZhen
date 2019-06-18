@@ -1,4 +1,4 @@
-package com.zyc.doctor.ui.check;
+package com.zyc.doctor.utils.text;
 
 import android.support.v4.app.Fragment;
 import android.text.Editable;
