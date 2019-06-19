@@ -13,6 +13,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 
+import com.yht.frame.permission.rom.HuaweiUtils;
+import com.yht.frame.permission.rom.MeizuUtils;
+import com.yht.frame.permission.rom.MiuiUtils;
+import com.yht.frame.permission.rom.OppoUtils;
+import com.yht.frame.permission.rom.QikuUtils;
+import com.yht.frame.permission.rom.RomUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,7 +70,8 @@ public class PermissionHelper implements OnActivityPermissionCallback {
             }
             else {
                 String[] declinedPermissions = declinedPermissions(context, permissions);
-                List<Boolean> deniedPermissionsLength = new ArrayList<>();//needed
+                //needed
+                List<Boolean> deniedPermissionsLength = new ArrayList<>();
                 for (String permissionName : declinedPermissions) {
                     if (permissionName != null && !isExplanationNeeded(permissionName)) {
                         permissionCallback.onPermissionReallyDeclined(permissionName);
@@ -433,5 +441,58 @@ public class PermissionHelper implements OnActivityPermissionCallback {
             return Settings.canDrawOverlays(context);
         }
         return true;
+    }
+
+    /**
+     * 跳转到权限设置界面
+     *
+     * @param context
+     */
+    public static void toPermissionSetting(Context context) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            if (RomUtils.checkIsMiuiRom()) {
+                MiuiUtils.applyMiuiPermission(context);
+            }
+            else if (RomUtils.checkIsMeizuRom()) {
+                MeizuUtils.applyPermission(context);
+            }
+            else if (RomUtils.checkIsHuaweiRom()) {
+                HuaweiUtils.applyPermission(context);
+            }
+            else if (RomUtils.checkIs360Rom()) {
+                QikuUtils.applyPermission(context);
+            }
+            else if (RomUtils.checkIsOppoRom()) {
+                OppoUtils.applyOppoPermission(context);
+            }
+            else {
+                RomUtils.getAppDetailSettingIntent(context);
+            }
+        }
+        else {
+            if (RomUtils.checkIsMeizuRom()) {
+                MeizuUtils.applyPermission(context);
+            }
+            else {
+                try {
+                    if (RomUtils.checkIsOppoRom() || RomUtils.checkIsVivoRom() || RomUtils.checkIsHuaweiRom() ||
+                        RomUtils.checkIsSamsunRom()) {
+                        RomUtils.getAppDetailSettingIntent(context);
+                    }
+                    else if (RomUtils.checkIsMiuiRom()) {
+                        MiuiUtils.toPermisstionSetting(context);
+                    }
+                    else {
+                        RomUtils.commonROMPermissionApplyInternal(context);
+                    }
+                }
+                catch (NoSuchFieldException e) {
+                    e.printStackTrace();
+                }
+                catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }

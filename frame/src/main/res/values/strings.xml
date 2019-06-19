@@ -207,6 +207,8 @@
     <string name="brvah_load_failed">加载失败，请点我重试</string>
     <string name="brvah_load_end">没有更多数据</string>
 
+    <!--dialog-->
+    <string name="txt_open_camera_hint">开启相机权限</string>
     <!--permission-->
     <string name="dialog_no_camera_permission_tip">无法打开摄像头，请检查是否已经打开摄像头权限</string>
     <string name="dialog_no_storage_permission_tip">无法访问存储空间，请检查是否已经打开存储权限</string>

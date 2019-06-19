@@ -311,60 +311,6 @@ public class AuthDoctorActivity extends BaseActivity implements OnStepListener {
     }
 
     @Override
-    public void onPermissionGranted(@NonNull String[] permissionName) {
-        switch (curPage) {
-            case BASE_ZERO:
-                if (authBaseFragment != null) {
-                    authBaseFragment.onPermissionGranted(permissionName);
-                }
-                break;
-            case BASE_ONE:
-                if (authLicenseFragment != null) {
-                    authLicenseFragment.onPermissionGranted(permissionName);
-                }
-                break;
-            default:
-                break;
-        }
-    }
-
-    @Override
-    public void onPermissionDeclined(@NonNull String[] permissionName) {
-        switch (curPage) {
-            case BASE_ZERO:
-                if (authBaseFragment != null) {
-                    authBaseFragment.onPermissionDeclined(permissionName);
-                }
-                break;
-            case BASE_ONE:
-                if (authLicenseFragment != null) {
-                    authLicenseFragment.onPermissionDeclined(permissionName);
-                }
-                break;
-            default:
-                break;
-        }
-    }
-
-    @Override
-    public void onPermissionPreGranted(@NonNull String permissionsName) {
-        switch (curPage) {
-            case BASE_ZERO:
-                if (authBaseFragment != null) {
-                    authBaseFragment.onPermissionPreGranted(permissionsName);
-                }
-                break;
-            case BASE_ONE:
-                if (authLicenseFragment != null) {
-                    authLicenseFragment.onPermissionPreGranted(permissionsName);
-                }
-                break;
-            default:
-                break;
-        }
-    }
-
-    @Override
     public void onPermissionNeedExplanation(@NonNull String permissionName) {
         switch (curPage) {
             case BASE_ZERO:
@@ -375,24 +321,6 @@ public class AuthDoctorActivity extends BaseActivity implements OnStepListener {
             case BASE_ONE:
                 if (authLicenseFragment != null) {
                     authLicenseFragment.onPermissionNeedExplanation(permissionName);
-                }
-                break;
-            default:
-                break;
-        }
-    }
-
-    @Override
-    public void onPermissionReallyDeclined(@NonNull String permissionName) {
-        switch (curPage) {
-            case BASE_ZERO:
-                if (authBaseFragment != null) {
-                    authBaseFragment.onPermissionReallyDeclined(permissionName);
-                }
-                break;
-            case BASE_ONE:
-                if (authLicenseFragment != null) {
-                    authLicenseFragment.onPermissionReallyDeclined(permissionName);
                 }
                 break;
             default:

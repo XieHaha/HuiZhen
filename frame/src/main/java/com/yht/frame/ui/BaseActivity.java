@@ -27,6 +27,7 @@ import com.yht.frame.utils.StatusBarUtil;
 import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.frame.widgets.dialog.LoadingDialog;
+import com.yht.frame.widgets.dialog.listener.OnEnterClickListener;
 
 import butterknife.ButterKnife;
 
@@ -368,10 +369,7 @@ public abstract class BaseActivity<T> extends RxAppCompatActivity
 
     @Override
     public void onPermissionGranted(@NonNull String[] permissionName) {
-        isRequest = true;
-        isRequestPhone = true;
-        isRequestCamera = true;
-        isRequestRecord = true;
+        onNoPermissionNeeded(permissionName);
     }
 
     @Override
@@ -401,10 +399,7 @@ public abstract class BaseActivity<T> extends RxAppCompatActivity
 
     @Override
     public void onPermissionPreGranted(@NonNull String permissionsName) {
-        isRequest = true;
-        isRequestPhone = true;
-        isRequestCamera = true;
-        isRequestRecord = true;
+        onNoPermissionNeeded(permissionsName);
     }
 
     @Override
@@ -430,6 +425,14 @@ public abstract class BaseActivity<T> extends RxAppCompatActivity
     @Override
     public void onPermissionReallyDeclined(@NonNull String permissionName) {
         HintDialog dialog = new HintDialog(this);
+        dialog.setEnterBtnTxt(getString(R.string.txt_open));
+        dialog.setEnterSelect(true);
+        dialog.setOnEnterClickListener(new OnEnterClickListener() {
+            @Override
+            public void onEnter() {
+                PermissionHelper.toPermissionSetting(getBaseContext());
+            }
+        });
         switch (permissionName) {
             case Permission.STORAGE_WRITE:
                 dialog.setContentString(getString(R.string.dialog_no_storage_permission_tip));

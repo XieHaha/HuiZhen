@@ -202,6 +202,28 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+            @NonNull int[] grantResults) {
+        if (workerFragment != null) {
+            workerFragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+
+    @Override
+    public void onPermissionNeedExplanation(@NonNull String permissionName) {
+        if (workerFragment != null) {
+            workerFragment.onPermissionNeedExplanation(permissionName);
+        }
+    }
+
+    @Override
+    public void onNoPermissionNeeded(@NonNull Object permissionName) {
+        if (workerFragment != null) {
+            workerFragment.onNoPermissionNeeded(permissionName);
+        }
+    }
+
     /**
      * 返回键 后台运行
      * 如果前一个activity未finish  会导致无法返回到后台

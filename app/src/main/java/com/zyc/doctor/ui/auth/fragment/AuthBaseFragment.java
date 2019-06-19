@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -19,13 +18,9 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.yht.frame.api.DirHelper;
 import com.yht.frame.data.CommonData;
-import com.yht.frame.permission.OnPermissionCallback;
 import com.yht.frame.permission.Permission;
-import com.yht.frame.permission.PermissionHelper;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
-import com.yht.frame.utils.ToastUtil;
-import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.frame.widgets.edittext.SuperEditText;
 import com.zhihu.matisse.Matisse;
 import com.zyc.doctor.R;
@@ -51,8 +46,7 @@ import butterknife.OnClick;
  * @date 19/5/17 14:55
  * @des 认证基础信息
  */
-public class AuthBaseFragment extends BaseFragment
-        implements OnPermissionCallback, OnMediaItemClickListener, OnTitleItemClickListener {
+public class AuthBaseFragment extends BaseFragment implements OnMediaItemClickListener, OnTitleItemClickListener {
     @BindView(R.id.layout_upload_img)
     RelativeLayout layoutUploadImg;
     @BindView(R.id.et_auth_base_name)
@@ -80,10 +74,6 @@ public class AuthBaseFragment extends BaseFragment
     private File cameraTempFile;
     private Uri mCurrentPhotoUri;
     private String mCurrentPhotoPath;
-    /**
-     * 动态权限
-     */
-    private PermissionHelper permissionHelper;
     private List<String> titleDatas;
     /**
      * 医院选择
@@ -102,7 +92,6 @@ public class AuthBaseFragment extends BaseFragment
     @Override
     public void initView(View view, @NonNull Bundle savedInstanceState) {
         super.initView(view, savedInstanceState);
-        permissionHelper = PermissionHelper.getInstance(getActivity());
         titleDatas = new ArrayList<String>() {
             {
                 add(getString(R.string.txt_title_chief_physician));
@@ -272,66 +261,6 @@ public class AuthBaseFragment extends BaseFragment
                 break;
         }
         super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-            @NonNull int[] grantResults) {
-        permissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
-
-    private boolean isSamePermission(String o, String n) {
-        if (TextUtils.isEmpty(o) || TextUtils.isEmpty(n)) {
-            return false;
-        }
-        if (o.equals(n)) {
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public void onPermissionGranted(@NonNull String[] permissionName) {
-        onNoPermissionNeeded(permissionName);
-    }
-
-    @Override
-    public void onPermissionDeclined(@NonNull String[] permissionName) {
-        if (permissionName == null) {
-            return;
-        }
-        for (String permission : permissionName) {
-            if (Permission.STORAGE_WRITE.equals(permission)) {
-                ToastUtil.toast(getContext(), R.string.dialog_no_storage_permission_tip);
-                break;
-            }
-            if (Permission.CAMERA.equals(permission)) {
-                ToastUtil.toast(getContext(), R.string.dialog_no_camera_permission_tip);
-                break;
-            }
-        }
-    }
-
-    @Override
-    public void onPermissionPreGranted(@NonNull String permissionsName) {
-        onNoPermissionNeeded(permissionsName);
-    }
-
-    @Override
-    public void onPermissionNeedExplanation(@NonNull String permissionName) {
-        permissionHelper.requestAfterExplanation(permissionName);
-    }
-
-    @Override
-    public void onPermissionReallyDeclined(@NonNull String permissionName) {
-        HintDialog dialog = new HintDialog(getContext());
-        if (isSamePermission(Permission.STORAGE_WRITE, permissionName)) {
-            dialog.setContentString(getString(R.string.dialog_no_storage_permission_tip));
-        }
-        else if (isSamePermission(Permission.CAMERA, permissionName)) {
-            dialog.setContentString(getString(R.string.dialog_no_camera_permission_tip));
-        }
-        dialog.show();
     }
 
     @Override

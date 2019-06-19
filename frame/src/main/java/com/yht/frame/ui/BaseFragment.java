@@ -11,6 +11,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,8 @@ import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.http.listener.ResponseListener;
+import com.yht.frame.permission.OnPermissionCallback;
+import com.yht.frame.permission.PermissionHelper;
 import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.widgets.edittext.SuperEditText;
 
@@ -34,11 +37,15 @@ import butterknife.Unbinder;
  * @author dundun
  */
 public abstract class BaseFragment extends Fragment
-        implements UiInterface, BaseData, ResponseListener<BaseResponse>, View.OnClickListener {
+        implements UiInterface, BaseData, OnPermissionCallback, ResponseListener<BaseResponse>, View.OnClickListener {
     /**
      * 注解
      */
     protected Unbinder unbinder;
+    /**
+     * 动态权限
+     */
+    public PermissionHelper permissionHelper;
     /**
      * 选择图片
      */
@@ -71,6 +78,7 @@ public abstract class BaseFragment extends Fragment
             view = getLayoutView();
         }
         unbinder = ButterKnife.bind(this, view);
+        permissionHelper = PermissionHelper.getInstance(getActivity());
         data = new ArrayList<String>() {
             {
                 add(getString(R.string.txt_camera));
@@ -247,5 +255,46 @@ public abstract class BaseFragment extends Fragment
 
     @Override
     public void onResponseCancel(Tasks task) {
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+            @NonNull int[] grantResults) {
+        permissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
+    public void onPermissionGranted(@NonNull String[] permissionName) {
+    }
+
+    @Override
+    public void onPermissionDeclined(@NonNull String[] permissionName) {
+    }
+
+    @Override
+    public void onPermissionPreGranted(@NonNull String permissionsName) {
+    }
+
+    @Override
+    public void onPermissionNeedExplanation(@NonNull String permissionName) {
+        permissionHelper.requestAfterExplanation(permissionName);
+    }
+
+    @Override
+    public void onPermissionReallyDeclined(@NonNull String permissionName) {
+    }
+
+    @Override
+    public void onNoPermissionNeeded(@NonNull Object permissionName) {
+    }
+
+    public boolean isSamePermission(String o, String n) {
+        if (TextUtils.isEmpty(o) || TextUtils.isEmpty(n)) {
+            return false;
+        }
+        if (o.equals(n)) {
+            return true;
+        }
+        return false;
     }
 }

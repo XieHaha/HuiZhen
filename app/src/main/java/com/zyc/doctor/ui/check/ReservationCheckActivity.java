@@ -342,27 +342,6 @@ public class ReservationCheckActivity extends BaseActivity implements OnCheckLis
     }
 
     @Override
-    public void onPermissionGranted(@NonNull String[] permissionName) {
-        if (submitFragment != null) {
-            submitFragment.onPermissionGranted(permissionName);
-        }
-    }
-
-    @Override
-    public void onPermissionDeclined(@NonNull String[] permissionName) {
-        if (submitFragment != null) {
-            submitFragment.onPermissionDeclined(permissionName);
-        }
-    }
-
-    @Override
-    public void onPermissionPreGranted(@NonNull String permissionsName) {
-        if (submitFragment != null) {
-            submitFragment.onPermissionPreGranted(permissionsName);
-        }
-    }
-
-    @Override
     public void onPermissionNeedExplanation(@NonNull String permissionName) {
         if (submitFragment != null) {
             submitFragment.onPermissionNeedExplanation(permissionName);
@@ -370,14 +349,8 @@ public class ReservationCheckActivity extends BaseActivity implements OnCheckLis
     }
 
     @Override
-    public void onPermissionReallyDeclined(@NonNull String permissionName) {
-        if (submitFragment != null) {
-            submitFragment.onPermissionReallyDeclined(permissionName);
-        }
-    }
-
-    @Override
     public void onNoPermissionNeeded(@NonNull Object permissionName) {
+        super.onNoPermissionNeeded(permissionName);
         if (submitFragment != null) {
             submitFragment.onNoPermissionNeeded(permissionName);
         }

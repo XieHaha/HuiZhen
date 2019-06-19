@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
+import com.yht.frame.permission.Permission;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.ToastUtil;
 import com.yzq.zxinglibrary.android.CaptureActivity;
@@ -19,6 +20,8 @@ import com.yzq.zxinglibrary.common.Constant;
 import com.zyc.doctor.R;
 import com.zyc.doctor.ui.check.CheckHistoryActivity;
 import com.zyc.doctor.ui.personal.PersonalActivity;
+
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -88,9 +91,7 @@ public class WorkerFragment extends BaseFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.public_main_title_scan:
-                Intent intent = new Intent(getContext(), CaptureActivity.class);
-                startActivityForResult(intent, REQUEST_CODE_SCAN);
-                getActivity().overridePendingTransition(R.anim.keep, R.anim.keep);
+                permissionHelper.request(new String[] { Permission.CAMERA });
                 break;
             case R.id.layout_personal_base:
                 startActivity(new Intent(getContext(), PersonalActivity.class));
@@ -107,21 +108,35 @@ public class WorkerFragment extends BaseFragment {
         }
     }
 
+    /**
+     * 开启扫一扫
+     */
+    private void openScan() {
+        Intent intent = new Intent(getContext(), CaptureActivity.class);
+        startActivityForResult(intent, REQUEST_CODE_SCAN);
+        Objects.requireNonNull(getActivity()).overridePendingTransition(R.anim.keep, R.anim.keep);
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != Activity.RESULT_OK) {
             return;
         }
-        switch (requestCode) {
-            case REQUEST_CODE_SCAN:
-                if (data != null) {
-                    String content = data.getStringExtra(Constant.CODED_CONTENT);
-                    ToastUtil.toast(getContext(), content);
-                }
-                break;
-            default:
-                break;
+        if (requestCode == REQUEST_CODE_SCAN) {
+            if (data != null) {
+                String content = data.getStringExtra(Constant.CODED_CONTENT);
+                ToastUtil.toast(getContext(), content);
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onNoPermissionNeeded(@NonNull Object permissionName) {
+        if (permissionName instanceof String[]) {
+            if (isSamePermission(Permission.CAMERA, ((String[])permissionName)[0])) {
+                openScan();
+            }
         }
     }
 }
