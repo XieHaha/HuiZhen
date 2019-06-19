@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:scrollbars="none"
     android:background="@color/color_f8f9fa">
 
     <LinearLayout
@@ -113,6 +114,7 @@
                     android:textSize="@dimen/text_16"
                     android:textColor="@color/color_373d4d"
                     android:text="@string/txt_yes"
+                    android:checked="true"
                     android:button="@drawable/selector_public_status"
                     android:paddingHorizontal="4dp"
                     android:gravity="center" />
@@ -170,9 +172,21 @@
                     android:textSize="@dimen/text_16"
                     android:textColor="@color/color_373d4d"
                     android:text="@string/txt_self_pay"
+                    android:checked="true"
                     android:button="@drawable/selector_public_status"
                     android:paddingHorizontal="4dp"
                     android:gravity="center" />
+
+                <RadioButton
+                    android:id="@+id/rb_ncms"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:text="@string/txt_self_medicare"
+                    android:layout_marginLeft="14dp"
+                    android:button="@drawable/selector_public_status"
+                    android:paddingHorizontal="4dp" />
 
                 <RadioButton
                     android:id="@+id/rb_medicare"
@@ -185,17 +199,6 @@
                     android:layout_marginLeft="14dp"
                     android:paddingHorizontal="4dp"
                     android:gravity="center" />
-
-                <RadioButton
-                    android:id="@+id/rb_all"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_16"
-                    android:textColor="@color/color_373d4d"
-                    android:text="@string/txt_self_medicare"
-                    android:layout_marginLeft="14dp"
-                    android:button="@drawable/selector_public_status"
-                    android:paddingHorizontal="4dp" />
             </RadioGroup>
 
         </RelativeLayout>

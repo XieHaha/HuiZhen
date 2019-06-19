@@ -1,4 +1,4 @@
-package com.yht.frame.widgets.recyclerview;
+package com.yht.frame.utils;
 
 import android.graphics.Color;
 import android.graphics.Paint;

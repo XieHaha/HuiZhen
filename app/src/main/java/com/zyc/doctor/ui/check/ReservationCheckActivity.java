@@ -336,29 +336,50 @@ public class ReservationCheckActivity extends BaseActivity implements OnCheckLis
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
             @NonNull int[] grantResults) {
+        if (submitFragment != null) {
+            submitFragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
     }
 
     @Override
     public void onPermissionGranted(@NonNull String[] permissionName) {
+        if (submitFragment != null) {
+            submitFragment.onPermissionGranted(permissionName);
+        }
     }
 
     @Override
     public void onPermissionDeclined(@NonNull String[] permissionName) {
+        if (submitFragment != null) {
+            submitFragment.onPermissionDeclined(permissionName);
+        }
     }
 
     @Override
     public void onPermissionPreGranted(@NonNull String permissionsName) {
+        if (submitFragment != null) {
+            submitFragment.onPermissionPreGranted(permissionsName);
+        }
     }
 
     @Override
     public void onPermissionNeedExplanation(@NonNull String permissionName) {
+        if (submitFragment != null) {
+            submitFragment.onPermissionNeedExplanation(permissionName);
+        }
     }
 
     @Override
     public void onPermissionReallyDeclined(@NonNull String permissionName) {
+        if (submitFragment != null) {
+            submitFragment.onPermissionReallyDeclined(permissionName);
+        }
     }
 
     @Override
     public void onNoPermissionNeeded(@NonNull Object permissionName) {
+        if (submitFragment != null) {
+            submitFragment.onNoPermissionNeeded(permissionName);
+        }
     }
 }

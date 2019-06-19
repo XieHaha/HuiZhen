@@ -18,7 +18,7 @@ import com.yht.frame.data.bean.PatientBean;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.widgets.edittext.SuperEditText;
-import com.yht.frame.widgets.recyclerview.CustomItemDecoration;
+import com.yht.frame.widgets.recyclerview.decoration.CustomItemDecoration;
 import com.yht.frame.widgets.recyclerview.IndexBar;
 import com.yht.frame.widgets.recyclerview.SideBar;
 import com.yht.frame.widgets.recyclerview.animator.SlideInOutLeftItemAnimator;

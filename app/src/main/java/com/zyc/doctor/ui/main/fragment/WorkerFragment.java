@@ -13,7 +13,6 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.yht.frame.ui.BaseFragment;
-import com.yht.frame.utils.LogUtils;
 import com.yht.frame.utils.ToastUtil;
 import com.yzq.zxinglibrary.android.CaptureActivity;
 import com.yzq.zxinglibrary.common.Constant;
@@ -42,12 +41,12 @@ public class WorkerFragment extends BaseFragment {
     TextView tvPersonalHospital;
     @BindView(R.id.iv_personal_image)
     ImageView ivPersonalImage;
-    @BindView(R.id.tv_patient_num)
-    TextView tvPatientNum;
-    @BindView(R.id.tv_check_num)
-    TextView tvCheckNum;
-    @BindView(R.id.tv_transfer_num)
-    TextView tvTransferNum;
+    @BindView(R.id.tv_initiate_check_num)
+    TextView tvInitiateCheckNum;
+    @BindView(R.id.tv_initiate_transfer_num)
+    TextView tvInitiateTransferNum;
+    @BindView(R.id.tv_accepted_transfer_num)
+    TextView tvAcceptedTransferNum;
     @BindView(R.id.view_flipper)
     ViewFlipper viewFlipper;
     /**
@@ -102,7 +101,6 @@ public class WorkerFragment extends BaseFragment {
             case R.id.layout_transfer:
                 break;
             case R.id.view_flipper:
-                LogUtils.i("test", "value:" + viewFlipper.getCurrentView().getTag());
                 break;
             default:
                 break;

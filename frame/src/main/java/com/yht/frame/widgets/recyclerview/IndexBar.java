@@ -8,6 +8,8 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.yht.frame.utils.ColorUtil;
+
 /**
  * @author MQ
  * @date 2017/5/18
