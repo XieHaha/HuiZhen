@@ -7,7 +7,6 @@
     android:minHeight="62dp"
     android:orientation="vertical">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="horizontal"
@@ -16,7 +15,13 @@
         android:paddingStart="15dp"
         android:paddingEnd="15dp">
 
-        <RadioButton
+        <ImageView
+            android:id="@+id/iv_select"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/selector_public_status" />
+
+        <TextView
             android:id="@+id/rb_check_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -24,10 +29,9 @@
             android:textSize="@dimen/text_16"
             android:textColor="@color/color_373d4d"
             android:text="检查项检查项检查项检查项检查项检查项检查项检查项检查项检查项"
-            android:button="@drawable/selector_public_status"
-            android:paddingHorizontal="4dp"
             android:gravity="top"
-            android:layout_marginEnd="15dp" />
+            android:layout_marginEnd="15dp"
+            android:layout_marginStart="6dp" />
 
         <TextView
             android:id="@+id/tv_check_price"

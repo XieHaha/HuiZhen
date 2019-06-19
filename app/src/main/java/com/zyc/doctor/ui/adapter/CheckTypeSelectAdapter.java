@@ -2,14 +2,12 @@ package com.zyc.doctor.ui.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.widgets.view.ExpandableLayout;
 import com.zyc.doctor.R;
 
@@ -63,7 +61,7 @@ public class CheckTypeSelectAdapter extends RecyclerView.Adapter<CheckTypeSelect
         private TextView tvCheckType;
         private View viewLine;
 
-        public ViewHolder(View itemView) {
+        private ViewHolder(View itemView) {
             super(itemView);
             tvCheckType = itemView.findViewById(R.id.tv_check_type_name);
             viewLine = itemView.findViewById(R.id.view_line);
@@ -79,7 +77,7 @@ public class CheckTypeSelectAdapter extends RecyclerView.Adapter<CheckTypeSelect
             tvCheckType.setOnClickListener(this);
         }
 
-        public void bind() {
+        private void bind() {
             int position = getAdapterPosition();
             boolean isSelected = position == selectedItem;
             expandableLayout.setExpanded(isSelected, false);
@@ -92,12 +90,8 @@ public class CheckTypeSelectAdapter extends RecyclerView.Adapter<CheckTypeSelect
                         selectedItem);
                 if (holder != null) {
                     holder.expandableLayout.collapse();
-                    holder.viewLine.postOnAnimationDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            holder.viewLine.setVisibility(View.INVISIBLE);
-                        }
-                    }, 300);
+                    //在动画完成时处理
+                    holder.viewLine.postOnAnimationDelayed(() -> holder.viewLine.setVisibility(View.INVISIBLE), 300);
                     holder.tvCheckType.setSelected(false);
                 }
                 int position = getAdapterPosition();
@@ -112,16 +106,33 @@ public class CheckTypeSelectAdapter extends RecyclerView.Adapter<CheckTypeSelect
                 }
             }
             else if (view instanceof LinearLayout) {
-                ToastUtil.toast(context, "position: " + getAdapterPosition() + " tag:" + view.getTag());
+                if (onCheckItemClickListener != null) {
+                    onCheckItemClickListener.onCheckItemClick(getAdapterPosition(), (Integer)view.getTag());
+                }
             }
         }
 
         @Override
         public void onExpansionUpdate(float expansionFraction, int state) {
-            Log.d("ExpandableLayout", "State: " + state);
             if (state == ExpandableLayout.State.EXPANDING) {
                 recyclerView.smoothScrollToPosition(getAdapterPosition());
             }
         }
+    }
+
+    private OnCheckItemClickListener onCheckItemClickListener;
+
+    public void setOnCheckItemClickListener(OnCheckItemClickListener onCheckItemClickListener) {
+        this.onCheckItemClickListener = onCheckItemClickListener;
+    }
+
+    public interface OnCheckItemClickListener {
+        /**
+         * 点击事件回调
+         *
+         * @param parentPosition 检查项目
+         * @param position       医院
+         */
+        void onCheckItemClick(int parentPosition, int position);
     }
 }

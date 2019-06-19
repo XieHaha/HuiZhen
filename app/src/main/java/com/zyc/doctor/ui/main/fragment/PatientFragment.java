@@ -18,10 +18,10 @@ import com.yht.frame.data.bean.PatientBean;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.widgets.edittext.SuperEditText;
-import com.yht.frame.widgets.recyclerview.decoration.CustomItemDecoration;
 import com.yht.frame.widgets.recyclerview.IndexBar;
 import com.yht.frame.widgets.recyclerview.SideBar;
 import com.yht.frame.widgets.recyclerview.animator.SlideInOutLeftItemAnimator;
+import com.yht.frame.widgets.recyclerview.decoration.CustomItemDecoration;
 import com.zyc.doctor.R;
 import com.zyc.doctor.ui.adapter.PatientAdapter;
 
@@ -83,17 +83,23 @@ public class PatientFragment extends BaseFragment implements SuperEditText.Ondel
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-        layoutManager = new LinearLayoutManager(getContext());
-        recyclerview.setLayoutManager(layoutManager);
+        recyclerview.setLayoutManager(layoutManager = new LinearLayoutManager(getContext()));
         recyclerview.addItemDecoration(decoration = new CustomItemDecoration(getContext()));
         recyclerview.setItemAnimator(new SlideInOutLeftItemAnimator(recyclerview));
         initDatas();
+        initAdapter();
+    }
+
+    /**
+     * 适配器
+     */
+    private void initAdapter() {
         patientAdapter = new PatientAdapter(R.layout.item_patient, patientBeans);
         View headerView = LayoutInflater.from(getContext()).inflate(R.layout.view_patient_header, null);
         initHeaderView(headerView);
-        View view = LayoutInflater.from(getContext()).inflate(R.layout.view_bottom_space, null);
         patientAdapter.addHeaderView(headerView);
-        patientAdapter.addFooterView(view);
+        View footerView = LayoutInflater.from(getContext()).inflate(R.layout.view_bottom_space, null);
+        patientAdapter.addFooterView(footerView);
         recyclerview.setAdapter(patientAdapter);
     }
 

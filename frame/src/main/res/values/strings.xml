@@ -193,6 +193,7 @@
     <string name="txt_look_check_detail">查看检查详情</string>
     <string name="txt_check_again">继续预约检查</string>
     <string name="txt_add_check_hint">请输入检查名称搜索</string>
+    <string name="txt_add_hospital_check">添加同院检查项目</string>
 
 
     <!--转诊相关-->

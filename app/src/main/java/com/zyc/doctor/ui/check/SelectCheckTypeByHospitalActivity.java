@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.widgets.edittext.SuperEditText;
@@ -28,7 +29,7 @@ import static com.zyc.doctor.ui.auth.fragment.AuthBaseFragment.REQUEST_CODE_HOSP
  * @date 19/6/4 17:53
  * @des 选择医院下所有检查项目
  */
-public class SelectCheckTypeByHospitalActivity extends BaseActivity {
+public class SelectCheckTypeByHospitalActivity extends BaseActivity implements BaseQuickAdapter.OnItemClickListener {
     @BindView(R.id.et_search_check_type)
     SuperEditText etSearchCheckType;
     @BindView(R.id.recyclerview)
@@ -37,8 +38,9 @@ public class SelectCheckTypeByHospitalActivity extends BaseActivity {
     TextView publicTitleBarMore;
     @BindView(R.id.public_title_bar_title)
     TextView publicTitleBarTitle;
-    private CheckTypeByHospitalSelectAdapter checkTypeSelectAdapter;
+    private CheckTypeByHospitalSelectAdapter checkTypeByHospitalSelectAdapter;
     private List<String> hospitals;
+    private ArrayList<Integer> selectPosition = new ArrayList<>();
 
     @Override
     protected boolean isInitBackBtn() {
@@ -56,12 +58,14 @@ public class SelectCheckTypeByHospitalActivity extends BaseActivity {
         initTitle();
         recyclerview.setLayoutManager(new LinearLayoutManager(this));
         hospitals = new ArrayList<>();
-        hospitals.add("a");
-        hospitals.add("a");
-        hospitals.add("a");
-        hospitals.add("a");
-        checkTypeSelectAdapter = new CheckTypeByHospitalSelectAdapter(R.layout.item_check_select, hospitals);
-        recyclerview.setAdapter(checkTypeSelectAdapter);
+        hospitals.add("检查项目1");
+        hospitals.add("检查项目2");
+        hospitals.add("检查项目3");
+        hospitals.add("检查项目4");
+        checkTypeByHospitalSelectAdapter = new CheckTypeByHospitalSelectAdapter(R.layout.item_check_by_hospital_select,
+                                                                                hospitals);
+        checkTypeByHospitalSelectAdapter.setOnItemClickListener(this);
+        recyclerview.setAdapter(checkTypeByHospitalSelectAdapter);
     }
 
     /**
@@ -75,11 +79,16 @@ public class SelectCheckTypeByHospitalActivity extends BaseActivity {
         //右边按钮
         publicTitleBarMore.setVisibility(View.VISIBLE);
         publicTitleBarMore.setText(R.string.txt_add);
-        publicTitleBarMore.setSelected(true);
     }
 
     @OnClick(R.id.public_title_bar_more)
     public void onViewClicked() {
+        if (publicTitleBarMore.isSelected()) {
+            Intent intent = new Intent();
+            intent.putExtra("test", selectPosition);
+            setResult(RESULT_OK, intent);
+            finish();
+        }
     }
 
     @Override
@@ -92,5 +101,24 @@ public class SelectCheckTypeByHospitalActivity extends BaseActivity {
             setResult(RESULT_OK, data);
             finish();
         }
+    }
+
+    @Override
+    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+        Integer integer = position;
+        if (selectPosition.contains(integer)) {
+            selectPosition.remove(integer);
+        }
+        else {
+            selectPosition.add(integer);
+        }
+        if (selectPosition.size() > 0) {
+            publicTitleBarMore.setSelected(true);
+        }
+        else {
+            publicTitleBarMore.setSelected(false);
+        }
+        checkTypeByHospitalSelectAdapter.setSelectPosition(selectPosition);
+        checkTypeByHospitalSelectAdapter.notifyDataSetChanged();
     }
 }

@@ -24,7 +24,7 @@ import static com.zyc.doctor.ui.auth.fragment.AuthBaseFragment.REQUEST_CODE_HOSP
  * @date 19/6/4 17:53
  * @des 医院选择
  */
-public class SelectCheckTypeActivity extends BaseActivity {
+public class SelectCheckTypeActivity extends BaseActivity implements CheckTypeSelectAdapter.OnCheckItemClickListener {
     @BindView(R.id.et_search_check_type)
     SuperEditText etSearchCheckType;
     @BindView(R.id.recyclerview)
@@ -53,7 +53,14 @@ public class SelectCheckTypeActivity extends BaseActivity {
         hospitals.add("a");
         checkTypeSelectAdapter = new CheckTypeSelectAdapter(this, recyclerview);
         checkTypeSelectAdapter.setDatas(hospitals);
+        checkTypeSelectAdapter.setOnCheckItemClickListener(this);
         recyclerview.setAdapter(checkTypeSelectAdapter);
+    }
+
+    @Override
+    public void onCheckItemClick(int parentPosition, int position) {
+        setResult(RESULT_OK);
+        finish();
     }
 
     @Override

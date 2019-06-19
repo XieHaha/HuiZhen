@@ -19,6 +19,7 @@ import com.yzq.zxinglibrary.android.CaptureActivity;
 import com.yzq.zxinglibrary.common.Constant;
 import com.zyc.doctor.R;
 import com.zyc.doctor.ui.check.CheckHistoryActivity;
+import com.zyc.doctor.ui.check.ReservationCheckActivity;
 import com.zyc.doctor.ui.personal.PersonalActivity;
 
 import java.util.Objects;
@@ -87,7 +88,8 @@ public class WorkerFragment extends BaseFragment {
 
     @OnClick({
             R.id.public_main_title_scan, R.id.layout_personal_base, R.id.layout_check, R.id.layout_transfer,
-            R.id.view_flipper })
+            R.id.view_flipper, R.id.layout_initiate_check, R.id.layout_initiate_transfer,
+            R.id.layout_accepted_transfer })
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.public_main_title_scan:
@@ -102,6 +104,13 @@ public class WorkerFragment extends BaseFragment {
             case R.id.layout_transfer:
                 break;
             case R.id.view_flipper:
+                break;
+            case R.id.layout_initiate_check:
+                startActivity(new Intent(getContext(), ReservationCheckActivity.class));
+                break;
+            case R.id.layout_initiate_transfer:
+                break;
+            case R.id.layout_accepted_transfer:
                 break;
             default:
                 break;
