@@ -2,7 +2,6 @@ package com.zyc.doctor.ui.main.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.transition.AutoTransition;
@@ -18,9 +17,9 @@ import com.yht.frame.data.bean.PatientBean;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.widgets.edittext.SuperEditText;
+import com.yht.frame.widgets.recyclerview.ControlScrollLayoutManager;
 import com.yht.frame.widgets.recyclerview.IndexBar;
 import com.yht.frame.widgets.recyclerview.SideBar;
-import com.yht.frame.widgets.recyclerview.animator.SlideInOutLeftItemAnimator;
 import com.yht.frame.widgets.recyclerview.decoration.CustomItemDecoration;
 import com.zyc.doctor.R;
 import com.zyc.doctor.ui.adapter.PatientAdapter;
@@ -35,7 +34,8 @@ import butterknife.BindView;
  * @date 19/5/17 14:55
  * @des 患者列表
  */
-public class PatientFragment extends BaseFragment implements SuperEditText.OnDeleteClickListener {
+public class PatientFragment extends BaseFragment
+        implements SuperEditText.OnDeleteClickListener, View.OnFocusChangeListener {
     @BindView(R.id.status_bar_fix)
     View statusBarFix;
     @BindView(R.id.public_main_title)
@@ -56,7 +56,7 @@ public class PatientFragment extends BaseFragment implements SuperEditText.OnDel
     /**
      * recycler
      */
-    private LinearLayoutManager layoutManager;
+    private ControlScrollLayoutManager layoutManager;
     /**
      * 分隔线
      */
@@ -83,9 +83,9 @@ public class PatientFragment extends BaseFragment implements SuperEditText.OnDel
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-        recyclerview.setLayoutManager(layoutManager = new LinearLayoutManager(getContext()));
+        recyclerview.setLayoutManager(layoutManager = new ControlScrollLayoutManager(getContext(), recyclerview));
+        layoutManager.setCanAutoScroll(true);
         recyclerview.addItemDecoration(decoration = new CustomItemDecoration(getContext()));
-        recyclerview.setItemAnimator(new SlideInOutLeftItemAnimator(recyclerview));
         initDatas();
         initAdapter();
     }
@@ -113,8 +113,7 @@ public class PatientFragment extends BaseFragment implements SuperEditText.OnDel
         searchEdit = headerView.findViewById(R.id.et_search_patient);
         tvCancel = headerView.findViewById(R.id.et_search_cancel);
         //让EditText失去焦点，然后获取点击事件
-        searchEdit.setFocusable(false);
-        searchEdit.setFocusableInTouchMode(false);
+        searchEdit.setOnFocusChangeListener(this);
         searchEdit.setOnDeleteClickListener(this);
         searchEdit.setOnClickListener(this);
         tvCancel.setOnClickListener(this);
@@ -168,6 +167,7 @@ public class PatientFragment extends BaseFragment implements SuperEditText.OnDel
             case R.id.et_search_cancel:
                 searchEdit.setFocusable(false);
                 searchEdit.setFocusableInTouchMode(false);
+                searchEdit.setText("");
                 hideSoftInputFromWindow(getContext(), searchEdit);
                 expand();
                 break;
@@ -205,7 +205,8 @@ public class PatientFragment extends BaseFragment implements SuperEditText.OnDel
             tvCancel.setVisibility(View.GONE);
         }
         else {
-            tvCancel.setVisibility(View.VISIBLE);
+            tvCancel.postDelayed(() -> tvCancel.setVisibility(View.VISIBLE), 500);
+//            tvCancel.setVisibility(View.VISIBLE);
         }
         mSet = new AutoTransition();
         //设置动画持续时间
@@ -217,5 +218,16 @@ public class PatientFragment extends BaseFragment implements SuperEditText.OnDel
     @Override
     public void onDeleteClick() {
         layoutManager.scrollToPositionWithOffset(0, 0);
+    }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if (layoutManager == null) { return; }
+        if (hasFocus) {
+            layoutManager.setCanAutoScroll(false);
+        }
+        else {
+            layoutManager.setCanAutoScroll(true);
+        }
     }
 }
