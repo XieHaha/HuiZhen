@@ -69,10 +69,10 @@ public class IdentifyFragment extends BaseFragment implements View.OnFocusChange
     }
 
     @Override
-    public void onFocusChange(View view, boolean b) {
-        if (!b) {
+    public void onFocusChange(View view, boolean hasFocus) {
+        if (!hasFocus && etPatientIdCard != null) {
             idCard = etPatientIdCard.getText().toString().replace(" ", "");
-            if (!TextUtils.isEmpty(idCard) && !BaseUtils.isCardNum(idCard)) {
+            if (!BaseUtils.isCardNum(idCard)) {
                 ToastUtil.toast(getContext(), R.string.toast_id_card_error);
             }
         }
@@ -89,6 +89,11 @@ public class IdentifyFragment extends BaseFragment implements View.OnFocusChange
         else {
             tvIdentifyNext.setSelected(false);
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 
     private OnCheckListener checkListener;

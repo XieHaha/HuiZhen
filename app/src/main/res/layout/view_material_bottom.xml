@@ -376,7 +376,7 @@
         android:background="@color/color_f8f9fa">
 
         <TextView
-            android:id="@+id/tv_identify_next"
+            android:id="@+id/tv_material_next"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/selector_public_next"

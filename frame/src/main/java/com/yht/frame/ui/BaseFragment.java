@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 
 import com.yht.frame.R;
 import com.yht.frame.data.BaseData;
@@ -25,7 +26,6 @@ import com.yht.frame.http.listener.ResponseListener;
 import com.yht.frame.permission.OnPermissionCallback;
 import com.yht.frame.permission.PermissionHelper;
 import com.yht.frame.utils.ToastUtil;
-import com.yht.frame.widgets.edittext.SuperEditText;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -147,7 +147,7 @@ public abstract class BaseFragment extends Fragment
     /**
      * 隐藏软键盘
      */
-    public void hideSoftInputFromWindow(Context context, SuperEditText editText) {
+    public void hideSoftInputFromWindow(Context context, EditText editText) {
         InputMethodManager inputMethodManager = (InputMethodManager)context.getSystemService(
                 Context.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(editText.getWindowToken(), 0);
@@ -156,7 +156,7 @@ public abstract class BaseFragment extends Fragment
     /**
      * 打开软键盘
      */
-    public void showSoftInputFromWindow(Context context, SuperEditText editText) {
+    public void showSoftInputFromWindow(Context context, EditText editText) {
         InputMethodManager inputMethodManager = (InputMethodManager)context.getSystemService(
                 Context.INPUT_METHOD_SERVICE);
         inputMethodManager.showSoftInput(editText, InputMethodManager.SHOW_FORCED);

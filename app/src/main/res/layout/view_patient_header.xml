@@ -6,9 +6,7 @@
     android:paddingStart="16dp"
     android:paddingEnd="16dp"
     android:paddingTop="20dp"
-    android:paddingBottom="20dp"
-    android:focusable="true"
-    android:focusableInTouchMode="true">
+    android:paddingBottom="20dp">
 
     <LinearLayout
         android:id="@+id/layout_search"
@@ -16,7 +14,7 @@
         android:layout_height="38dp">
 
         <com.yht.frame.widgets.edittext.SuperEditText
-            android:id="@+id/et_search_hospital"
+            android:id="@+id/et_search_patient"
             android:layout_width="match_parent"
             android:layout_height="38dp"
             android:hint="@string/txt_patient_hint"

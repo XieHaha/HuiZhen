@@ -202,6 +202,7 @@
     <!--toast-->
     <string name="toast_public_current_no_network">当前无网络连接</string>
     <string name="toast_id_card_error">身份证号码格式错误</string>
+    <string name="toast_phone_error">手机号码格式错误</string>
 
     <!--loadview-->
     <string name="brvah_loading">正在加载中&#8230;</string>

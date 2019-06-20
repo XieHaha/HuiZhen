@@ -110,7 +110,7 @@ public class PatientFragment extends BaseFragment implements SuperEditText.OnDel
      */
     private void initHeaderView(View headerView) {
         layoutSearch = headerView.findViewById(R.id.layout_search);
-        searchEdit = headerView.findViewById(R.id.et_search_hospital);
+        searchEdit = headerView.findViewById(R.id.et_search_patient);
         tvCancel = headerView.findViewById(R.id.et_search_cancel);
         //让EditText失去焦点，然后获取点击事件
         searchEdit.setFocusable(false);
@@ -158,7 +158,7 @@ public class PatientFragment extends BaseFragment implements SuperEditText.OnDel
     public void onClick(View v) {
         super.onClick(v);
         switch (v.getId()) {
-            case R.id.et_search_hospital:
+            case R.id.et_search_patient:
                 searchEdit.setFocusable(true);
                 searchEdit.setFocusableInTouchMode(true);
                 searchEdit.requestFocus();

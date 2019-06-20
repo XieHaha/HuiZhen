@@ -156,9 +156,11 @@ public class BaseUtils {
      * @return
      */
     public static boolean isMobileNumber(String str) {
-        Matcher phoneMatcher = Pattern.compile(REGEX_PHONE).matcher(str);
-        if (phoneMatcher.matches()) {
-            return true;
+        if (!TextUtils.isEmpty(str)) {
+            Matcher phoneMatcher = Pattern.compile(REGEX_PHONE).matcher(str);
+            if (phoneMatcher.matches()) {
+                return true;
+            }
         }
         return false;
     }
@@ -170,9 +172,11 @@ public class BaseUtils {
      * @return
      */
     public static boolean isCardNum(String str) {
-        Matcher phoneMatcher = Pattern.compile(REGEX_CARD_NUM).matcher(str);
-        if (phoneMatcher.matches()) {
-            return true;
+        if (!TextUtils.isEmpty(str)) {
+            Matcher phoneMatcher = Pattern.compile(REGEX_CARD_NUM).matcher(str);
+            if (phoneMatcher.matches()) {
+                return true;
+            }
         }
         return false;
     }
