@@ -85,6 +85,7 @@ public class SuperEditText extends AppCompatEditText {
             icLeftNoClick = ContextCompat.getDrawable(context, icLeftNoClickResID);
             icLeftNoClick.setBounds(leftX, leftY, leftWidth, leftHeight);
         }
+        setCompoundDrawables(icLeftNoClick, null, null, null);
         //===================删除图标================
         // 1. 获取资源ID
         int icDeleteResID = typedArray.getResourceId(R.styleable.SuperEditText_ic_delete, R.mipmap.ic_delete);
@@ -94,10 +95,9 @@ public class SuperEditText extends AppCompatEditText {
         // 起点(x，y)、宽= left_width、高 = left_height
         int deleteX = typedArray.getInteger(R.styleable.SuperEditText_delete_x, 0);
         int deleteY = typedArray.getInteger(R.styleable.SuperEditText_delete_y, 0);
-        int deleteWidth = typedArray.getInteger(R.styleable.SuperEditText_delete_width, 60);
-        int deleteHeight = typedArray.getInteger(R.styleable.SuperEditText_delete_height, 60);
+        int deleteWidth = typedArray.getInteger(R.styleable.SuperEditText_delete_width, 45);
+        int deleteHeight = typedArray.getInteger(R.styleable.SuperEditText_delete_height, 45);
         icDelete.setBounds(deleteX, deleteY, deleteWidth, deleteHeight);
-        setCompoundDrawables(icLeftNoClick, null, null, null);
         // 1. 设置画笔
         mPaint = new Paint();
         // 分割线粗细
@@ -150,7 +150,7 @@ public class SuperEditText extends AppCompatEditText {
                     event.getX() >= (getWidth() - getPaddingRight() - drawable.getBounds().width())) {
                     setText("");
                     if (ondeleteClickListener != null) {
-                        ondeleteClickListener.OnDeleteClick();
+                        ondeleteClickListener.onDeleteClick();
                     }
                 }
                 break;
@@ -177,28 +177,16 @@ public class SuperEditText extends AppCompatEditText {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         mPaint.setColor(color);
-        // 绘制分割线
-        // 需要考虑：当输入长度超过输入框时，所画的线需要跟随着延伸
-        // 解决方案：线的长度 = 控件长度 + 延伸后的长度
-        // 获取延伸后的长度
-        int x = this.getScrollX();
-        // 获取控件长度
-        int w = this.getMeasuredWidth();
-        // 传入参数时，线的长度 = 控件长度 + 延伸后的长度
-        //        if (getBackground() == null) {
-        //            canvas.drawLine(0, this.getMeasuredHeight() - linePosition, w + x, this.getMeasuredHeight() - linePosition,
-        //                            mPaint);
-        //        }
     }
 
-    private OndeleteClickListener ondeleteClickListener;
+    private OnDeleteClickListener ondeleteClickListener;
 
-    public void setOndeleteClickListener(OndeleteClickListener ondeleteClickListener) {
+    public void setOnDeleteClickListener(OnDeleteClickListener ondeleteClickListener) {
         this.ondeleteClickListener = ondeleteClickListener;
     }
 
-    public interface OndeleteClickListener {
-        void OnDeleteClick();
+    public interface OnDeleteClickListener {
+        void onDeleteClick();
     }
 }
 

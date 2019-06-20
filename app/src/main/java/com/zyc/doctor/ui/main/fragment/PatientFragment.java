@@ -35,7 +35,7 @@ import butterknife.BindView;
  * @date 19/5/17 14:55
  * @des 患者列表
  */
-public class PatientFragment extends BaseFragment implements SuperEditText.OndeleteClickListener {
+public class PatientFragment extends BaseFragment implements SuperEditText.OnDeleteClickListener {
     @BindView(R.id.status_bar_fix)
     View statusBarFix;
     @BindView(R.id.public_main_title)
@@ -115,7 +115,7 @@ public class PatientFragment extends BaseFragment implements SuperEditText.Ondel
         //让EditText失去焦点，然后获取点击事件
         searchEdit.setFocusable(false);
         searchEdit.setFocusableInTouchMode(false);
-        searchEdit.setOndeleteClickListener(this);
+        searchEdit.setOnDeleteClickListener(this);
         searchEdit.setOnClickListener(this);
         tvCancel.setOnClickListener(this);
     }
@@ -215,7 +215,7 @@ public class PatientFragment extends BaseFragment implements SuperEditText.Ondel
     }
 
     @Override
-    public void OnDeleteClick() {
+    public void onDeleteClick() {
         layoutManager.scrollToPositionWithOffset(0, 0);
     }
 }
