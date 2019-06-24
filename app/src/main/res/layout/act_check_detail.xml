@@ -81,6 +81,12 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginStart="11dp" />
 
+                <ImageView
+                    android:id="@+id/iv_check_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:src="@mipmap/ic_check_incomplete" />
 
             </RelativeLayout>
 
@@ -259,7 +265,6 @@
                     android:layout_marginTop="20dp" />
 
             </LinearLayout>
-
 
             <LinearLayout
                 android:layout_width="match_parent"

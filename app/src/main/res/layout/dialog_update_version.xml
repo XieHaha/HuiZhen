@@ -27,7 +27,7 @@
             android:id="@+id/act_update_version_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:text="新版特性："
             android:textColor="#333333" />
@@ -36,7 +36,7 @@
             android:id="@+id/act_update_version_content_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="25dp"
+            android:layout_marginStart="25dp"
             android:layout_marginTop="10dp"
             android:orientation="vertical">
 

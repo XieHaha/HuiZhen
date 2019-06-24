@@ -21,6 +21,6 @@ public class PatientAdapter extends BaseQuickAdapter<PatientBean, BaseViewHolder
 
     @Override
     protected void convert(BaseViewHolder helper, PatientBean item) {
-        helper.setText(R.id.tv_patient_name, item.getName());
+        helper.setText(R.id.tv_patient_name, item.getName()).addOnClickListener(R.id.iv_patient_call);
     }
 }

@@ -138,7 +138,7 @@
                     android:textSize="@dimen/text_16"
                     android:textColor="@color/color_373d4d"
                     android:text="@string/txt_sex_female"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginStart="16dp"
                     android:button="@drawable/selector_public_status"
                     android:paddingHorizontal="4dp" />
             </RadioGroup>

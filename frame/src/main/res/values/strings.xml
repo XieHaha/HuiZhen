@@ -112,7 +112,7 @@
     <string name="txt_title_hospitalization__physician">住院医师</string>
     <string name="txt_upload_card">上传证件</string>
     <string name="txt_upload_card_hint">请上传工牌照或执业证书前两页。\n照片仅用于认证您的真实身份，不向用户展示。</string>
-    <string name="txt_auth_hint">温馨提示：\n请确保图片中的姓名、科室、医院、证件编号所有信息清晰可见。</string>
+    <string name="txt_auth_hint">温馨提示：\n请确保图片中的姓名、科室、医院、证件编号等所有信息清晰可见。</string>
     <string name="txt_submit">提交审核</string>
     <string name="txt_submit_again">重新认证</string>
     <string name="txt_review">审核中</string>
@@ -121,10 +121,13 @@
     <string name="txt_review_failure_hint">失败原因50字，超级过的十几个 啊火锅和军事基地，手机号改户火锅看帅哥开始减肥。是开花结果后。</string>
 
     <!--个人中心-->
+    <string name="txt_star">****</string>
     <string name="txt_personal_balance">我的余额</string>
     <string name="txt_personal_total">累计已到账</string>
     <string name="txt_personal_month_total">本月已到账</string>
     <string name="txt_personal_estimate_income">预计收入&#160;%s</string>
+    <string name="txt_personal_all_income">总收入&#160;%s</string>
+    <string name="txt_personal_month_income">本月收入&#160;%s</string>
     <string name="txt_personal_history">历史记录</string>
     <string name="txt_set_message">新消息通知</string>
     <string name="txt_set_about">关于会珍</string>

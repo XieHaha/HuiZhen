@@ -112,9 +112,12 @@ public class SideBar extends View {
                 if (y > 0) {
                     curPosition = (int)(y / mHeight * indexStr.toCharArray().length);
                     if (curPosition >= 0 && curPosition < indexStr.length()) {
-                        ((IndexBar)getParent()).setDrawData(event.getY(),
-                                                            String.valueOf(indexStr.toCharArray()[curPosition]),
-                                                            curPosition);
+                        /**
+                         * 绘制浮窗圆
+                         */
+                        //                        ((IndexBar)getParent()).setDrawData(event.getY(),
+                        //                                                            String.valueOf(indexStr.toCharArray()[curPosition]),
+                        //                                                            curPosition);
                         if (listener != null) {
                             listener.indexChanged(indexStr.substring(curPosition, curPosition + 1));
                         }

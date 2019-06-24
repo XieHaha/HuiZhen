@@ -48,7 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_weight="1"
                 android:layout_height="113dp"
-                android:layout_marginRight="7dp"
+                android:layout_marginEnd="7dp"
                 android:background="@drawable/corner4_ebedf0_bg">
 
                 <ImageView
@@ -128,7 +128,7 @@
                 android:layout_width="wrap_content"
                 android:layout_weight="1"
                 android:layout_height="match_parent"
-                android:layout_marginRight="20dp"
+                android:layout_marginEnd="20dp"
                 android:background="@drawable/corner28_stroke1_1491fc"
                 android:text="@string/txt_last"
                 android:gravity="center"

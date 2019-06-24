@@ -36,7 +36,7 @@ public class PersonalActivity extends BaseActivity {
     /**
      * 头部控件
      */
-    private TextView tvPersonalDepart, tvPersonalHospital, tvBalanceTotal, tvBalanceMonthTotal;
+    private TextView tvPersonalDepart, tvPersonalHospital, tvBalance, tvTotalIncome, tvTotal, tvMonthTotalIncome, tvMonthTotal;
     private ImageView ivPersonalImage, ivBalanceTab;
     private LinearLayout layoutTotalIncome, layoutMonthIncome;
     private RelativeLayout layoutPersonalBase;
@@ -53,7 +53,7 @@ public class PersonalActivity extends BaseActivity {
 
     @Override
     public int getLayoutID() {
-        return R.layout.public_recyclerview_layout1;
+        return R.layout.act_personal;
     }
 
     @Override
@@ -97,14 +97,42 @@ public class PersonalActivity extends BaseActivity {
         tvPersonalHospital = view.findViewById(R.id.tv_personal_hospital);
         ivPersonalImage = view.findViewById(R.id.iv_personal_image);
         ivBalanceTab = view.findViewById(R.id.iv_balance_tab);
-        tvBalanceTotal = view.findViewById(R.id.tv_balance_total);
-        tvBalanceMonthTotal = view.findViewById(R.id.tv_balance_month_total);
+        tvBalance = view.findViewById(R.id.tv_balance);
+        tvTotal = view.findViewById(R.id.tv_total);
+        tvTotalIncome = view.findViewById(R.id.tv_total_income);
+        tvMonthTotal = view.findViewById(R.id.tv_total_month);
+        tvMonthTotalIncome = view.findViewById(R.id.tv_month_income);
         layoutTotalIncome = view.findViewById(R.id.layout_total_income);
         layoutMonthIncome = view.findViewById(R.id.layout_month_income);
         layoutPersonalBase = view.findViewById(R.id.layout_personal_base);
+        ivBalanceTab.setOnClickListener(this);
         layoutTotalIncome.setOnClickListener(this);
         layoutMonthIncome.setOnClickListener(this);
         layoutPersonalBase.setOnClickListener(this);
+        initAmountDisplay();
+    }
+
+    /**
+     * 金额显示与隐藏处理
+     */
+    private void initAmountDisplay() {
+        if (ivBalanceTab.isSelected()) {
+            ivBalanceTab.setSelected(false);
+            tvBalance.setText(R.string.txt_star);
+            tvTotal.setText(String.format(getString(R.string.txt_personal_all_income), getString(R.string.txt_star)));
+            tvTotalIncome.setText(R.string.txt_star);
+            tvMonthTotal.setText(
+                    String.format(getString(R.string.txt_personal_month_income), getString(R.string.txt_star)));
+            tvMonthTotalIncome.setText(R.string.txt_star);
+        }
+        else {
+            ivBalanceTab.setSelected(true);
+            tvBalance.setText("100");
+            tvTotal.setText(String.format(getString(R.string.txt_personal_all_income), "1000"));
+            tvTotalIncome.setText("100");
+            tvMonthTotal.setText(String.format(getString(R.string.txt_personal_month_income), "1000"));
+            tvMonthTotalIncome.setText("100");
+        }
     }
 
     @Override
@@ -112,6 +140,9 @@ public class PersonalActivity extends BaseActivity {
         super.onClick(v);
         Intent intent;
         switch (v.getId()) {
+            case R.id.iv_balance_tab:
+                initAmountDisplay();
+                break;
             case R.id.layout_total_income:
                 intent = new Intent(this, CurrencyActivity.class);
                 intent.putExtra(CommonData.KEY_PUBLIC, getString(R.string.title_total_income));
