@@ -36,7 +36,7 @@
                     android:textColor="@color/color_fd8134"
                     android:textSize="@dimen/text_14"
                     android:background="@drawable/corner15_stroke1_fd8134"
-                    tools:text="脑外科"
+                    android:text="科室"
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp"
                     android:gravity="center" />
@@ -47,7 +47,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/color_6a6f80"
                     android:textSize="@dimen/text_15"
-                    tools:text="医院"
+                    android:text="医院"
                     android:layout_below="@id/tv_personal_depart"
                     android:layout_marginTop="9dp" />
 

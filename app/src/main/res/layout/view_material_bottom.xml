@@ -154,7 +154,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_16"
                 android:textColor="@color/color_1491fc"
-                android:text="@string/txt_family_medical_his_not" />/>
+                android:text="@string/txt_family_medical_his_not" />
 
             <ImageView
                 android:id="@+id/iv_family_medical_his"

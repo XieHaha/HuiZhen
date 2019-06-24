@@ -3,6 +3,7 @@ package com.yht.frame.widgets.dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
@@ -16,12 +17,14 @@ import com.yht.frame.widgets.dialog.listener.OnEnterClickListener;
  * @author dundun
  */
 public class HintDialog extends Dialog implements OnClickListener {
-    private TextView enter, cancel;
-    private TextView title, content;
-    private String titleString = "提示";
-    private String contentString = "确认合格？";
-    private String enterString = "确定";
-    private String cancelString = "取消";
+    private TextView tvEnter, tvCancel, tvTitle, tvContent;
+    /**
+     * 初始值
+     */
+    private String titleString = "提示", contentString = "确认合格？", enterString = "确定", cancelString = "取消";
+    /**
+     * 确认按钮颜色控制
+     */
     private boolean enterSelect = false;
     private boolean isShow = false;
 
@@ -36,32 +39,29 @@ public class HintDialog extends Dialog implements OnClickListener {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         setContentView(R.layout.dialog_hint);
         initWidget();
-        init();
     }
 
     private void initWidget() {
-        enter = findViewById(R.id.dialog_simple_hint_enter);
-        cancel = findViewById(R.id.dialog_simple_hint_cancel);
-        title = findViewById(R.id.dialog_simple_hint_title);
-        content = findViewById(R.id.dialog_simple_hint_content);
-        cancel.setOnClickListener(this);
-        enter.setOnClickListener(this);
+        tvEnter = findViewById(R.id.dialog_simple_hint_enter);
+        tvCancel = findViewById(R.id.dialog_simple_hint_cancel);
+        tvTitle = findViewById(R.id.dialog_simple_hint_title);
+        tvContent = findViewById(R.id.dialog_simple_hint_content);
+        tvContent.setMovementMethod(ScrollingMovementMethod.getInstance());
+        tvCancel.setOnClickListener(this);
+        tvEnter.setOnClickListener(this);
         setCanceledOnTouchOutside(true);
-    }
-
-    private void init() {
         setCancelable(true);
     }
 
     @Override
     public void onClick(View v) {
-        if (v == enter) {
+        if (v == tvEnter) {
             if (onEnterClickListener != null) {
                 onEnterClickListener.onEnter();
             }
             dismiss();
         }
-        else if (v == cancel) {
+        else if (v == tvCancel) {
             if (onCancelClickListener != null) {
                 onCancelClickListener.onCancel();
             }
@@ -112,11 +112,11 @@ public class HintDialog extends Dialog implements OnClickListener {
     public void show() {
         if (!isShow) {
             super.show();
-            title.setText(titleString);
-            content.setText(contentString);
-            enter.setText(enterString);
-            enter.setSelected(enterSelect);
-            cancel.setText(cancelString);
+            tvTitle.setText(titleString);
+            tvContent.setText(contentString);
+            tvEnter.setText(enterString);
+            tvEnter.setSelected(enterSelect);
+            tvCancel.setText(cancelString);
             isShow = true;
         }
     }

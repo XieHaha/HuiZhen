@@ -1,7 +1,10 @@
 package com.zyc.doctor.ui.auth;
 
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.widget.TextView;
 
 import com.yht.frame.data.CommonData;
 import com.yht.frame.ui.BaseActivity;
@@ -20,7 +23,8 @@ import butterknife.OnClick;
 public class AddHospitalActivity extends BaseActivity {
     @BindView(R.id.et_hospital)
     SuperEditText etHospital;
-    private String hospitalName;
+    @BindView(R.id.public_title_bar_more)
+    TextView publicTitleBarMore;
 
     @Override
     protected boolean isInitBackBtn() {
@@ -32,9 +36,16 @@ public class AddHospitalActivity extends BaseActivity {
         return R.layout.act_add_hospital;
     }
 
-    @OnClick(R.id.tv_add_hospital_next)
+    @Override
+    public void initData(@NonNull Bundle savedInstanceState) {
+        super.initData(savedInstanceState);
+        publicTitleBarMore.setSelected(true);
+        publicTitleBarMore.setText(R.string.txt_save);
+    }
+
+    @OnClick(R.id.public_title_bar_more)
     public void onViewClicked() {
-        hospitalName = etHospital.getText().toString().trim();
+        String hospitalName = etHospital.getText().toString().trim();
         if (TextUtils.isEmpty(hospitalName)) {
             ToastUtil.toast(this, "");
             return;

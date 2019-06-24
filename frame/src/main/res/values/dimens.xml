@@ -4,7 +4,7 @@
     <dimen name="app_title_bar_height">44dp</dimen>
     <!--图片库  图片大小-->
     <dimen name="app_picture_size">120dp</dimen>
-    <dimen name="app_hei_line">1dp</dimen>
+    <dimen name="app_hei_line">0.5dp</dimen>
 
     <dimen name="text_24">24sp</dimen>
     <!--数字、金额等-->
