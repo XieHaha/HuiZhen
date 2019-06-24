@@ -134,7 +134,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="35dp"
                 android:layout_marginEnd="20dp"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:orientation="horizontal"
                 android:layout_marginTop="18dp">
 
@@ -157,7 +157,7 @@
                     android:textSize="@dimen/text_16"
                     android:textColor="@color/color_373d4d"
                     android:text="@string/txt_no"
-                    android:layout_marginLeft="14dp"
+                    android:layout_marginStart="14dp"
                     android:button="@drawable/selector_public_status"
                     android:paddingHorizontal="4dp" />
             </RadioGroup>
@@ -192,7 +192,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="35dp"
                 android:layout_marginEnd="20dp"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:orientation="horizontal"
                 android:layout_marginTop="18dp">
 
@@ -215,7 +215,7 @@
                     android:textSize="@dimen/text_16"
                     android:textColor="@color/color_373d4d"
                     android:text="@string/txt_self_medicare"
-                    android:layout_marginLeft="14dp"
+                    android:layout_marginStart="14dp"
                     android:button="@drawable/selector_public_status"
                     android:paddingHorizontal="4dp" />
 
@@ -227,7 +227,7 @@
                     android:textColor="@color/color_373d4d"
                     android:text="@string/txt_medicare"
                     android:button="@drawable/selector_public_status"
-                    android:layout_marginLeft="14dp"
+                    android:layout_marginStart="14dp"
                     android:paddingHorizontal="4dp"
                     android:gravity="center" />
             </RadioGroup>

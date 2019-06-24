@@ -13,7 +13,7 @@
 
     <TextView
         android:id="@+id/tv_check_type_name"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:textColor="@color/color_373d4d"

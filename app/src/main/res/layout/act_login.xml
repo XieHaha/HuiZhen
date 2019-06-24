@@ -77,8 +77,8 @@
             android:layout_height="14dp"
             android:background="@color/color_d8d8d8"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@id/tv_login_obtain_code"
-            android:layout_marginRight="8dp" />
+            android:layout_toStartOf="@id/tv_login_obtain_code"
+            android:layout_marginEnd="8dp" />
 
         <com.yht.frame.widgets.edittext.SuperEditText
             android:id="@+id/et_login_code"
@@ -89,8 +89,8 @@
             android:textColorHint="@color/color_a1a8b3"
             android:textColor="@color/color_373d4d"
             app:hide_left_icon="true"
-            android:layout_toLeftOf="@id/tv_login_obtain_code"
-            android:layout_marginRight="13dp"
+            android:layout_toStartOf="@id/tv_login_obtain_code"
+            android:layout_marginEnd="13dp"
             android:inputType="number"
             android:background="@null"
             android:singleLine="true"
@@ -107,7 +107,7 @@
     <TextView
         android:id="@+id/tv_login_next"
         android:layout_width="match_parent"
-        android:layout_marginRight="35dp"
+        android:layout_marginEnd="35dp"
         android:layout_marginLeft="35dp"
         android:layout_height="42dp"
         android:layout_marginTop="50dp"

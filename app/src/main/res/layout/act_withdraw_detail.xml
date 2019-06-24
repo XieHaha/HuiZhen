@@ -155,7 +155,6 @@
             android:textSize="@dimen/text_16"
             android:layout_gravity="center_horizontal"
             tools:text="2019-06-112019-06-112019-06-112019-06-112019-06-112019-06-112019-06-112019-06-112019-06-112019-06-112019-06-112019-06-112019-06-112019-06-11"
-            android:layout_alignParentEnd="true"
             android:layout_marginEnd="20dp"
             android:gravity="right" />
 

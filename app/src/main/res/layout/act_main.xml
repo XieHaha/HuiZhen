@@ -101,7 +101,6 @@
         <ImageView
             android:layout_width="wrap_content"
             android:src="@drawable/selector_worker_main_tab"
-            android:layout_centerInParent="true"
             android:layout_height="wrap_content" />
 
         <TextView
@@ -113,6 +112,4 @@
             android:textSize="@dimen/text_12" />
 
     </LinearLayout>
-
-
 </RelativeLayout>
