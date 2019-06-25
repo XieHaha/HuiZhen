@@ -6,7 +6,7 @@ import android.text.Selection;
 import android.text.TextWatcher;
 import android.widget.EditText;
 
-import com.zyc.doctor.ui.check.fragment.IdentifyFragment;
+import com.zyc.doctor.ui.reservation.fragment.IdentifyFragment;
 
 /**
  * @author 顿顿

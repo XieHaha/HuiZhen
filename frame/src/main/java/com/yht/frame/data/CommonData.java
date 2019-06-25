@@ -9,6 +9,10 @@ public interface CommonData {
      */
     String KEY_PUBLIC = "key_public";
     /**
+     * 检查或者转诊  true为转诊  false为检查
+     */
+    String KEY_CHECK_OR_TRANSFER = "key_check_or_transfer";
+    /**
      * 公用数据key
      */
     String KEY_PUBLIC_STRING = "key_public_string";

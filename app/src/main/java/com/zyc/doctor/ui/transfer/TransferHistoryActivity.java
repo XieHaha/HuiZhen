@@ -1,4 +1,4 @@
-package com.zyc.doctor.ui.check;
+package com.zyc.doctor.ui.transfer;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.bean.PatientBean;
 import com.yht.frame.ui.BaseActivity;
@@ -16,7 +17,7 @@ import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.widgets.recyclerview.decoration.TimeItemDecoration;
 import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.zyc.doctor.R;
-import com.zyc.doctor.ui.adapter.CheckHistoryAdapter;
+import com.zyc.doctor.ui.adapter.TransferHistoryAdapter;
 import com.zyc.doctor.ui.reservation.ReservationCheckOrTransferActivity;
 
 import java.util.ArrayList;
@@ -28,9 +29,9 @@ import butterknife.OnClick;
 /**
  * @author 顿顿
  * @date 19/6/13 15:26
- * @des
+ * @des 转诊列表
  */
-public class CheckHistoryActivity extends BaseActivity
+public class TransferHistoryActivity extends BaseActivity
         implements BaseQuickAdapter.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener,
                    BaseQuickAdapter.RequestLoadMoreListener {
     @BindView(R.id.recyclerview)
@@ -41,8 +42,8 @@ public class CheckHistoryActivity extends BaseActivity
      * 时间分隔
      */
     private TimeItemDecoration timeItemDecoration;
-    private CheckHistoryAdapter checkHistoryAdapter;
-    private List<PatientBean> checkedList;
+    private TransferHistoryAdapter transferHistoryAdapter;
+    private List<PatientBean> transferList;
 
     @Override
     protected boolean isInitBackBtn() {
@@ -51,7 +52,7 @@ public class CheckHistoryActivity extends BaseActivity
 
     @Override
     public int getLayoutID() {
-        return R.layout.act_check_history;
+        return R.layout.act_transfer_history;
     }
 
     @Override
@@ -62,7 +63,7 @@ public class CheckHistoryActivity extends BaseActivity
         timeItemDecoration = new TimeItemDecoration(this);
         recyclerview.setLayoutManager(new LinearLayoutManager(this));
         recyclerview.addItemDecoration(timeItemDecoration);
-        initDatas();
+        initData();
         initAdapter();
     }
 
@@ -70,12 +71,12 @@ public class CheckHistoryActivity extends BaseActivity
      * 适配器处理
      */
     private void initAdapter() {
-        checkHistoryAdapter = new CheckHistoryAdapter(R.layout.item_check_history, checkedList);
-        checkHistoryAdapter.setLoadMoreView(new CustomLoadMoreView());
-        checkHistoryAdapter.setOnLoadMoreListener(this, recyclerview);
-        checkHistoryAdapter.setOnItemClickListener(this);
-        checkHistoryAdapter.loadMoreEnd();
-        recyclerview.setAdapter(checkHistoryAdapter);
+        transferHistoryAdapter = new TransferHistoryAdapter(R.layout.item_transfer_history, transferList);
+        transferHistoryAdapter.setLoadMoreView(new CustomLoadMoreView());
+        transferHistoryAdapter.setOnLoadMoreListener(this, recyclerview);
+        transferHistoryAdapter.setOnItemClickListener(this);
+        transferHistoryAdapter.loadMoreEnd();
+        recyclerview.setAdapter(transferHistoryAdapter);
     }
 
     @Override
@@ -87,30 +88,32 @@ public class CheckHistoryActivity extends BaseActivity
     /**
      * 数据处理
      */
-    private void initDatas() {
-        checkedList = new ArrayList<>();
+    private void initData() {
+        transferList = new ArrayList<>();
         String[] names = {
                 "孙尚香", "安其拉", "白起", "不知火舞" };
         for (String name : names) {
             PatientBean bean = new PatientBean();
             bean.setName(name);
-            checkedList.add(bean);
+            transferList.add(bean);
         }
         //对数据源进行排序
-        BaseUtils.sortData(checkedList);
+        BaseUtils.sortData(transferList);
         //返回一个包含所有Tag字母在内的字符串并赋值给tagsStr
-        String tagsStr = BaseUtils.getTags(checkedList);
-        timeItemDecoration.setDatas(checkedList, tagsStr);
+        String tagsStr = BaseUtils.getTags(transferList);
+        timeItemDecoration.setDatas(transferList, tagsStr);
     }
 
     @OnClick(R.id.tv_check_next)
     public void onViewClicked() {
-        startActivity(new Intent(this, ReservationCheckOrTransferActivity.class));
+        Intent intent = new Intent(this, ReservationCheckOrTransferActivity.class);
+        intent.putExtra(CommonData.KEY_CHECK_OR_TRANSFER, true);
+        startActivity(intent);
     }
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        startActivity(new Intent(this, CheckDetailActivity.class));
+        startActivity(new Intent(this, TransferDetailActivity.class));
     }
 
     /**

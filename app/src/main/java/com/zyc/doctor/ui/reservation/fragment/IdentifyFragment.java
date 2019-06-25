@@ -1,4 +1,4 @@
-package com.zyc.doctor.ui.check.fragment;
+package com.zyc.doctor.ui.reservation.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;

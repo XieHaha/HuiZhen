@@ -286,7 +286,7 @@
             android:textColor="@color/color_373d4d"
             android:textSize="@dimen/text_16"
             android:textStyle="bold"
-            android:text="@string/txt_reserve_check_diagnosis" />
+            android:text="@string/txt_first_diagnosis" />
 
         <TextView
             android:id="@+id/tv_diagnosis_clear"

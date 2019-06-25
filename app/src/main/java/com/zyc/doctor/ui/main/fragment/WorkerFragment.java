@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
+import com.yht.frame.data.CommonData;
 import com.yht.frame.permission.Permission;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.ToastUtil;
@@ -19,9 +20,10 @@ import com.yzq.zxinglibrary.android.CaptureActivity;
 import com.yzq.zxinglibrary.common.Constant;
 import com.zyc.doctor.R;
 import com.zyc.doctor.ui.check.CheckHistoryActivity;
-import com.zyc.doctor.ui.check.ReservationCheckActivity;
+import com.zyc.doctor.ui.reservation.ReservationCheckOrTransferActivity;
 import com.zyc.doctor.ui.login.LoginOptionsActivity;
 import com.zyc.doctor.ui.personal.PersonalActivity;
+import com.zyc.doctor.ui.transfer.TransferHistoryActivity;
 
 import java.util.Objects;
 
@@ -92,6 +94,7 @@ public class WorkerFragment extends BaseFragment {
             R.id.view_flipper, R.id.layout_initiate_check, R.id.layout_initiate_transfer, R.id.layout_accepted_transfer,
             R.id.layout_transfer_apply })
     public void onViewClicked(View view) {
+        Intent intent;
         switch (view.getId()) {
             case R.id.public_main_title_scan:
                 permissionHelper.request(new String[] { Permission.CAMERA });
@@ -103,17 +106,22 @@ public class WorkerFragment extends BaseFragment {
                 startActivity(new Intent(getContext(), CheckHistoryActivity.class));
                 break;
             case R.id.layout_transfer:
+                startActivity(new Intent(getContext(), TransferHistoryActivity.class));
                 break;
             case R.id.layout_transfer_apply:
-                Intent intent = new Intent(getContext(), LoginOptionsActivity.class);
+                intent = new Intent(getContext(), LoginOptionsActivity.class);
                 startActivity(intent);
                 break;
             case R.id.view_flipper:
                 break;
             case R.id.layout_initiate_check:
-                startActivity(new Intent(getContext(), ReservationCheckActivity.class));
+                intent = new Intent(getContext(), ReservationCheckOrTransferActivity.class);
+                startActivity(intent);
                 break;
             case R.id.layout_initiate_transfer:
+                intent = new Intent(getContext(), ReservationCheckOrTransferActivity.class);
+                intent.putExtra(CommonData.KEY_CHECK_OR_TRANSFER, true);
+                startActivity(intent);
                 break;
             case R.id.layout_accepted_transfer:
                 break;

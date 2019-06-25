@@ -8,6 +8,9 @@ package com.zyc.doctor.ui.check.listener;
 public interface OnCheckListener {
     /**
      * 基础信息
+     *
+     * @param name
+     * @param idCard
      */
     void onStepOne(String name, String idCard);
 

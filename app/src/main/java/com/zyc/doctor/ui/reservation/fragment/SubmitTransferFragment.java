@@ -1,4 +1,4 @@
-package com.zyc.doctor.ui.check.fragment;
+package com.zyc.doctor.ui.reservation.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -41,9 +41,9 @@ import butterknife.OnClick;
 /**
  * @author 顿顿
  * @date 19/6/14 14:23
- * @des 确认提交
+ * @des 预约转诊 确认提交
  */
-public class SubmitFragment extends BaseFragment implements CheckTypeListviewAdapter.OnDeleteClickListener {
+public class SubmitTransferFragment extends BaseFragment implements CheckTypeListviewAdapter.OnDeleteClickListener {
     @BindView(R.id.tv_select)
     TextView tvSelect;
     @BindView(R.id.full_listview)

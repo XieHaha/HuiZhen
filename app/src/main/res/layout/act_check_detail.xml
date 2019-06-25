@@ -114,7 +114,7 @@
                         android:textSize="@dimen/text_16"
                         android:textColor="@color/color_373d4d"
                         android:textStyle="bold"
-                        android:text="@string/txt_reserve_check_doctor" />
+                        android:text="@string/txt_first_doctor" />
 
                     <TextView
                         android:id="@+id/tv_check_doctor_top"
@@ -147,7 +147,7 @@
                         android:textSize="@dimen/text_16"
                         android:textColor="@color/color_373d4d"
                         android:textStyle="bold"
-                        android:text="@string/txt_reserve_check_time" />
+                        android:text="@string/txt_first_time" />
 
                     <TextView
                         android:id="@+id/tv_check_time_top"
@@ -180,7 +180,7 @@
                         android:textSize="@dimen/text_16"
                         android:textColor="@color/color_373d4d"
                         android:textStyle="bold"
-                        android:text="@string/txt_reserve_check_diagnosis" />
+                        android:text="@string/txt_first_diagnosis" />
 
                     <TextView
                         android:id="@+id/tv_check_diagnosis_top"
@@ -278,7 +278,7 @@
                     android:textSize="@dimen/text_16"
                     android:textColor="@color/color_373d4d"
                     android:textStyle="bold"
-                    android:text="@string/txt_reserve_check_pregnancy" />
+                    android:text="@string/txt_pregnancy" />
 
                 <TextView
                     android:id="@+id/tv_check_pregnancy"
@@ -311,7 +311,7 @@
                     android:textSize="@dimen/text_16"
                     android:textColor="@color/color_373d4d"
                     android:textStyle="bold"
-                    android:text="@string/txt_reserve_check_payment" />
+                    android:text="@string/txt_payment" />
 
                 <TextView
                     android:id="@+id/tv_check_payment"
@@ -344,7 +344,7 @@
                     android:textSize="@dimen/text_16"
                     android:textColor="@color/color_373d4d"
                     android:textStyle="bold"
-                    android:text="@string/txt_reserve_check_status" />
+                    android:text="@string/txt_status" />
 
                 <TextView
                     android:id="@+id/tv_check_status"
@@ -377,7 +377,7 @@
                     android:textSize="@dimen/text_16"
                     android:textColor="@color/color_373d4d"
                     android:textStyle="bold"
-                    android:text="@string/txt_reserve_check_status_cancel" />
+                    android:text="@string/txt_cancel_result" />
 
                 <TextView
                     android:id="@+id/tv_check_cancel"
@@ -411,7 +411,7 @@
                     android:textSize="@dimen/text_16"
                     android:textColor="@color/color_373d4d"
                     android:textStyle="bold"
-                    android:text="@string/txt_reserve_check_report" />
+                    android:text="@string/txt_report" />
 
                 <TextView
                     android:id="@+id/tv_check_report"
@@ -419,7 +419,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_16"
                     android:textColor="@color/color_1491fc"
-                    android:text="@string/txt_reserve_check_report_num"
+                    android:text="@string/txt_report_num"
                     android:layout_toEndOf="@id/text"
                     android:layout_marginStart="5dp" />
 
@@ -459,7 +459,7 @@
                         android:textSize="@dimen/text_16"
                         android:textColor="@color/color_373d4d"
                         android:textStyle="bold"
-                        android:text="@string/txt_reserve_check_doctor" />
+                        android:text="@string/txt_first_doctor" />
 
                     <TextView
                         android:id="@+id/tv_check_doctor_bottom"
@@ -492,7 +492,7 @@
                         android:textSize="@dimen/text_16"
                         android:textColor="@color/color_373d4d"
                         android:textStyle="bold"
-                        android:text="@string/txt_reserve_check_time" />
+                        android:text="@string/txt_first_time" />
 
                     <TextView
                         android:id="@+id/tv_check_time_bottom"
@@ -525,7 +525,7 @@
                         android:textSize="@dimen/text_16"
                         android:textColor="@color/color_373d4d"
                         android:textStyle="bold"
-                        android:text="@string/txt_reserve_check_diagnosis" />
+                        android:text="@string/txt_first_diagnosis" />
 
                     <TextView
                         android:id="@+id/tv_check_diagnosis_bottom"

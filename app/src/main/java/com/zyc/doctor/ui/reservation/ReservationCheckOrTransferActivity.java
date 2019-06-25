@@ -1,4 +1,4 @@
-package com.zyc.doctor.ui.check;
+package com.zyc.doctor.ui.reservation;
 
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -17,19 +17,23 @@ import android.widget.TextView;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.widgets.dialog.HintDialog;
 import com.zyc.doctor.R;
-import com.zyc.doctor.ui.check.fragment.IdentifyFragment;
-import com.zyc.doctor.ui.check.fragment.MaterialFragment;
-import com.zyc.doctor.ui.check.fragment.SubmitFragment;
+import com.zyc.doctor.ui.check.CheckSuccessActivity;
 import com.zyc.doctor.ui.check.listener.OnCheckListener;
+import com.zyc.doctor.ui.reservation.fragment.IdentifyFragment;
+import com.zyc.doctor.ui.reservation.fragment.MaterialFragment;
+import com.zyc.doctor.ui.reservation.fragment.SubmitCheckFragment;
+import com.zyc.doctor.ui.reservation.fragment.SubmitTransferFragment;
 
 import butterknife.BindView;
 
 /**
  * @author 顿顿
  * @date 19/6/14 14:05
- * @des 新增预约检查
+ * @des 新增 预约检查 预约转诊
  */
-public class ReservationCheckActivity extends BaseActivity implements OnCheckListener {
+public class ReservationCheckOrTransferActivity extends BaseActivity implements OnCheckListener {
+    @BindView(R.id.public_title_bar_title)
+    TextView publicTitleBarTitle;
     @BindView(R.id.iv_base)
     ImageView ivReservationBase;
     @BindView(R.id.tv_base)
@@ -74,9 +78,13 @@ public class ReservationCheckActivity extends BaseActivity implements OnCheckLis
      */
     private MaterialFragment materialFragment;
     /**
-     * 确认提交
+     * 确认提交(预约检查)
      */
-    private SubmitFragment submitFragment;
+    private SubmitCheckFragment submitCheckFragment;
+    /**
+     * 确认提交(预约转诊)
+     */
+    private SubmitTransferFragment submitTransferFragment;
     /**
      * 当前碎片
      */
@@ -159,17 +167,39 @@ public class ReservationCheckActivity extends BaseActivity implements OnCheckLis
         selectTab(BASE_ONE);
     }
 
-    private void tabReservationResultView() {
+    /**
+     * 预约检查提交碎片
+     */
+    private void tabCheckResultView() {
         transaction = fragmentManager.beginTransaction();
         hideAll(transaction);
-        if (submitFragment == null) {
-            submitFragment = new SubmitFragment();
-            submitFragment.setOnCheckListener(this);
-            transaction.add(R.id.layout_frame_root, submitFragment);
+        if (submitCheckFragment == null) {
+            submitCheckFragment = new SubmitCheckFragment();
+            submitCheckFragment.setOnCheckListener(this);
+            transaction.add(R.id.layout_frame_root, submitCheckFragment);
         }
         else {
-            transaction.show(submitFragment);
-            submitFragment.onResume();
+            transaction.show(submitCheckFragment);
+            submitCheckFragment.onResume();
+        }
+        transaction.commitAllowingStateLoss();
+        selectTab(BASE_TWO);
+    }
+
+    /**
+     * 预约转诊提交碎片
+     */
+    private void tabTransferResultView() {
+        transaction = fragmentManager.beginTransaction();
+        hideAll(transaction);
+        if (submitTransferFragment == null) {
+            submitTransferFragment = new SubmitTransferFragment();
+            submitTransferFragment.setOnCheckListener(this);
+            transaction.add(R.id.layout_frame_root, submitTransferFragment);
+        }
+        else {
+            transaction.show(submitTransferFragment);
+            submitTransferFragment.onResume();
         }
         transaction.commitAllowingStateLoss();
         selectTab(BASE_TWO);
@@ -185,8 +215,11 @@ public class ReservationCheckActivity extends BaseActivity implements OnCheckLis
         if (materialFragment != null) {
             transaction.hide(materialFragment);
         }
-        if (submitFragment != null) {
-            transaction.hide(submitFragment);
+        if (submitCheckFragment != null) {
+            transaction.hide(submitCheckFragment);
+        }
+        if (submitTransferFragment != null) {
+            transaction.hide(submitTransferFragment);
         }
     }
 
@@ -283,7 +316,7 @@ public class ReservationCheckActivity extends BaseActivity implements OnCheckLis
 
     @Override
     public void onStepTwo() {
-        tabReservationResultView();
+        tabCheckResultView();
     }
 
     @Override
@@ -336,23 +369,32 @@ public class ReservationCheckActivity extends BaseActivity implements OnCheckLis
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
             @NonNull int[] grantResults) {
-        if (submitFragment != null) {
-            submitFragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (submitCheckFragment != null) {
+            submitCheckFragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+        if (submitTransferFragment != null) {
+            submitTransferFragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 
     @Override
     public void onPermissionNeedExplanation(@NonNull String permissionName) {
-        if (submitFragment != null) {
-            submitFragment.onPermissionNeedExplanation(permissionName);
+        if (submitCheckFragment != null) {
+            submitCheckFragment.onPermissionNeedExplanation(permissionName);
+        }
+        if (submitTransferFragment != null) {
+            submitTransferFragment.onPermissionNeedExplanation(permissionName);
         }
     }
 
     @Override
     public void onNoPermissionNeeded(@NonNull Object permissionName) {
         super.onNoPermissionNeeded(permissionName);
-        if (submitFragment != null) {
-            submitFragment.onNoPermissionNeeded(permissionName);
+        if (submitCheckFragment != null) {
+            submitCheckFragment.onNoPermissionNeeded(permissionName);
+        }
+        if (submitTransferFragment != null) {
+            submitTransferFragment.onNoPermissionNeeded(permissionName);
         }
     }
 }

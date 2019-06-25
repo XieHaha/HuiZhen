@@ -157,7 +157,7 @@
             android:label="@string/txt_reserve_check_detail"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.check.ReservationCheckActivity"
+            android:name=".ui.reservation.ReservationCheckOrTransferActivity"
             android:screenOrientation="portrait"
             android:label="@string/txt_reserve_check"
             android:windowSoftInputMode="adjustResize|stateHidden" />
@@ -175,6 +175,16 @@
             android:name=".ui.check.SelectCheckTypeByHospitalActivity"
             android:screenOrientation="portrait"
             android:label=""
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".ui.transfer.TransferHistoryActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/title_add_transfer"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".ui.transfer.TransferDetailActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/title_transfer_detail"
             android:windowSoftInputMode="adjustResize|stateHidden" />
 
         <!--环信消息点击事件处理-->
