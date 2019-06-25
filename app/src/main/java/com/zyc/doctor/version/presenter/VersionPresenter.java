@@ -59,7 +59,7 @@ public class VersionPresenter implements ConstantsVersionMode {
         builder.setWhen(System.currentTimeMillis())
                .setPriority(Notification.PRIORITY_DEFAULT)
                .setOngoing(false)
-               .setSmallIcon(R.mipmap.ic_launcher_test);
+               .setSmallIcon(R.mipmap.ic_launcher_round);
         pendingIntent = PendingIntent.getActivity(context, UPDATE_VERSION_RESULT, new Intent(),
                                                   PendingIntent.FLAG_UPDATE_CURRENT);
         versionModel = new VersionModel(context);

@@ -39,8 +39,8 @@ public class AddHospitalActivity extends BaseActivity {
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
+        publicTitleBarMore.setText(R.string.txt_add);
         publicTitleBarMore.setSelected(true);
-        publicTitleBarMore.setText(R.string.txt_save);
     }
 
     @OnClick(R.id.public_title_bar_more)

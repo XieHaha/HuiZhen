@@ -245,7 +245,7 @@
                     android:textSize="@dimen/text_16"
                     android:textColor="@color/color_373d4d"
                     android:textStyle="bold"
-                    android:text="@string/txt_reserve_check_hospital" />
+                    android:text="@string/txt_check_hospital" />
 
                 <TextView
                     android:id="@+id/tv_check_hospital"
@@ -567,7 +567,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/corner28_1491fc_bg"
-            android:text="@string/txt_reserve_check"
+            android:text="@string/txt_contact_patient"
             android:textColor="@color/color_ffffff"
             android:textSize="@dimen/text_16"
             android:gravity="center" />

@@ -129,7 +129,7 @@
                     android:textColor="@color/color_a1a8b3"
                     android:textSize="@dimen/text_16"
                     android:layout_gravity="center_horizontal"
-                    android:text="@string/txt_currency_income_hospital"
+                    android:text="@string/txt_check_hospital"
                     android:layout_centerVertical="true" />
 
                 <TextView
@@ -164,7 +164,7 @@
                     android:textColor="@color/color_a1a8b3"
                     android:textSize="@dimen/text_16"
                     android:layout_gravity="center_horizontal"
-                    android:text="@string/txt_currency_income_doctor_name"
+                    android:text="@string/txt_receiving_doctor"
                     android:layout_centerVertical="true" />
 
                 <TextView

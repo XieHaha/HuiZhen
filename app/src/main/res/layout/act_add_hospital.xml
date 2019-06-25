@@ -22,7 +22,6 @@
         android:textColor="@color/color_373d4d"
         app:hide_left_icon="true"
         android:imeOptions="actionDone"
-        android:singleLine="true"
         android:background="@null" />
 
     <View

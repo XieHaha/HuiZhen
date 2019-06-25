@@ -28,15 +28,15 @@ public final class GlideHelper {
 
     public static RequestOptions getOptions() {
         return OPTIONS.centerCrop()
-                      .placeholder(R.mipmap.ic_launcher_test)
-                      .error(R.mipmap.ic_launcher_test)
+                      .placeholder(R.mipmap.ic_launcher_round)
+                      .error(R.mipmap.ic_launcher_round)
                       .priority(Priority.NORMAL);
     }
 
     public static RequestOptions getOptionsP() {
         return OPTIONS_P.centerCrop()
-                        .placeholder(R.mipmap.ic_launcher_test)
-                        .error(R.mipmap.ic_launcher_test)
+                        .placeholder(R.mipmap.ic_launcher_round)
+                        .error(R.mipmap.ic_launcher_round)
                         .priority(Priority.NORMAL);
     }
 
@@ -44,15 +44,15 @@ public final class GlideHelper {
         //设置图片圆角角度
         RoundedCorners roundedCorners = new RoundedCorners(corner);
         return OPTIONS_PIC.optionalTransform(roundedCorners)
-                          .placeholder(R.mipmap.ic_launcher_test)
-                          .error(R.mipmap.ic_launcher_test)
+                          .placeholder(R.mipmap.ic_launcher_round)
+                          .error(R.mipmap.ic_launcher_round)
                           .priority(Priority.NORMAL);
     }
 
     public static RequestOptions getOptionsHospitalPic() {
         return OPTIONS_HOSPITAL_PIC.centerCrop()
-                                   .placeholder(R.mipmap.ic_launcher_test)
-                                   .error(R.mipmap.ic_launcher_test)
+                                   .placeholder(R.mipmap.ic_launcher_round)
+                                   .error(R.mipmap.ic_launcher_round)
                                    .priority(Priority.NORMAL);
     }
 }

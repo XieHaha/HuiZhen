@@ -1,6 +1,5 @@
 package com.zyc.doctor.ui.check;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
@@ -120,7 +119,7 @@ public class CheckDetailActivity extends BaseActivity {
 
     @OnClick(R.id.tv_check_next)
     public void onViewClicked() {
-        startActivity(new Intent(this, ReservationCheckActivity.class));
+        //TODO 联系患者
     }
 
     @Override

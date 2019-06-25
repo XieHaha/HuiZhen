@@ -12,7 +12,7 @@
     <ImageView
         android:layout_width="74dp"
         android:layout_height="74dp"
-        android:src="@mipmap/ic_logo"
+        android:src="@mipmap/logo_icon"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="47dp" />
 

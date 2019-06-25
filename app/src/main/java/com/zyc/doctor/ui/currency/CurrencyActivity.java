@@ -7,8 +7,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.ui.BaseActivity;
+import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.zyc.doctor.R;
 import com.zyc.doctor.ui.adapter.CurrencyIncomeAdapter;
 
@@ -22,7 +24,7 @@ import butterknife.BindView;
  * @date 19/6/10 15:33
  * @des 会珍币管理
  */
-public class CurrencyActivity extends BaseActivity {
+public class CurrencyActivity extends BaseActivity implements BaseQuickAdapter.RequestLoadMoreListener {
     @BindView(R.id.public_title_bar_title)
     TextView publicTitleBarTitle;
     @BindView(R.id.recyclerview)
@@ -64,19 +66,19 @@ public class CurrencyActivity extends BaseActivity {
                 add("a");
                 add("a");
                 add("a");
-                add("a");
-                add("a");
-                add("a");
-                add("a");
-                add("a");
-                add("a");
-                add("a");
             }
         };
         currencyIncomeAdapter = new CurrencyIncomeAdapter(R.layout.item_income, data);
         View view = getLayoutInflater().inflate(R.layout.view_space, null);
         currencyIncomeAdapter.addHeaderView(view);
+        currencyIncomeAdapter.setLoadMoreView(new CustomLoadMoreView());
+        currencyIncomeAdapter.setOnLoadMoreListener(this, recyclerview);
+        currencyIncomeAdapter.loadMoreEnd();
         recyclerview.setLayoutManager(new LinearLayoutManager(this));
         recyclerview.setAdapter(currencyIncomeAdapter);
+    }
+
+    @Override
+    public void onLoadMoreRequested() {
     }
 }

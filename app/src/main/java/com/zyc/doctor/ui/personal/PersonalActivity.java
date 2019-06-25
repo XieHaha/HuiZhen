@@ -11,8 +11,10 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.ui.BaseActivity;
+import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.zyc.doctor.R;
 import com.zyc.doctor.ui.adapter.CurrencyIncomeAdapter;
 import com.zyc.doctor.ui.currency.CurrencyActivity;
@@ -28,7 +30,7 @@ import butterknife.OnClick;
  * @date 19/6/10 11:01
  * @des 个人中心
  */
-public class PersonalActivity extends BaseActivity {
+public class PersonalActivity extends BaseActivity implements BaseQuickAdapter.RequestLoadMoreListener {
     @BindView(R.id.recyclerview)
     RecyclerView recyclerview;
     @BindView(R.id.public_title_bar_right_img)
@@ -83,6 +85,9 @@ public class PersonalActivity extends BaseActivity {
         View view = getLayoutInflater().inflate(R.layout.view_personal_header, null);
         initHeaderView(view);
         currencyIncomeAdapter.addHeaderView(view);
+        currencyIncomeAdapter.setLoadMoreView(new CustomLoadMoreView());
+        currencyIncomeAdapter.setOnLoadMoreListener(this, recyclerview);
+        currencyIncomeAdapter.loadMoreEnd();
         recyclerview.setLayoutManager(new LinearLayoutManager(this));
         recyclerview.setAdapter(currencyIncomeAdapter);
     }
@@ -165,5 +170,12 @@ public class PersonalActivity extends BaseActivity {
     @OnClick({ R.id.public_title_bar_right_img })
     public void onViewClicked() {
         startActivity(new Intent(this, SettingActivity.class));
+    }
+
+    /**
+     * 加载更多
+     */
+    @Override
+    public void onLoadMoreRequested() {
     }
 }

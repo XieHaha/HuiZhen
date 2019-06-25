@@ -10,7 +10,7 @@
         android:layout_height="match_parent"
         android:scaleType="fitXY"
         android:fitsSystemWindows="true"
-        android:src="@mipmap/ic_launcher_test" />
+        android:src="@mipmap/logo_icon" />
 
     <TextView
         android:id="@+id/act_splash_time_hint"
