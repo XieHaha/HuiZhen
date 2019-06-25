@@ -15,11 +15,10 @@ import android.widget.ViewFlipper;
 import com.yht.frame.permission.Permission;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.ToastUtil;
-import com.yht.frame.widgets.dialog.HintDialog;
-import com.yht.frame.widgets.dialog.InputDialog;
 import com.yzq.zxinglibrary.android.CaptureActivity;
 import com.yzq.zxinglibrary.common.Constant;
 import com.zyc.doctor.R;
+import com.zyc.doctor.ui.auth.AddHospitalActivity;
 import com.zyc.doctor.ui.check.CheckHistoryActivity;
 import com.zyc.doctor.ui.check.ReservationCheckActivity;
 import com.zyc.doctor.ui.personal.PersonalActivity;
@@ -104,16 +103,10 @@ public class WorkerFragment extends BaseFragment {
                 startActivity(new Intent(getContext(), CheckHistoryActivity.class));
                 break;
             case R.id.layout_transfer:
-                new HintDialog(getContext()).setContentString(
-                        "测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试")
-                                            .show();
                 break;
             case R.id.layout_transfer_apply:
-                new InputDialog(getContext()).Builder()
-                                             .setEnterBtnTxt("再想想")
-                                             .setEnterSelect(true)
-                                             .setCancleBtnTxt("确认取消")
-                                             .show();
+                Intent intent = new Intent(getContext(), AddHospitalActivity.class);
+                startActivity(intent);
                 break;
             case R.id.view_flipper:
                 break;

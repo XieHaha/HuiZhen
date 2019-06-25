@@ -14,7 +14,7 @@ import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.widgets.edittext.SuperEditText;
 import com.zyc.doctor.R;
-import com.zyc.doctor.ui.AbstractTextWatcher;
+import com.yht.frame.widgets.edittext.AbstractTextWatcher;
 import com.zyc.doctor.ui.check.listener.OnCheckListener;
 import com.zyc.doctor.utils.text.BankCardTextWatcher;
 

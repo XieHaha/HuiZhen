@@ -1,9 +1,6 @@
 package com.yht.frame.widgets.edittext;
 
 import android.content.Context;
-import android.content.res.TypedArray;
-import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
@@ -19,25 +16,13 @@ import com.yht.frame.R;
  */
 public class SuperEditText extends AppCompatEditText {
     /**
-     * 定义属性变量
-     * 画笔
-     */
-    private Paint mPaint;
-    /**
      * 删除图标
      */
     private Drawable icDelete;
     /**
-     * 左侧图标（点击 & 未点击）
+     * 删除键宽高
      */
-    private Drawable icLeftClick, icLeftNoClick;
-    /**
-     * 分割线变量
-     * 点击时 & 未点击颜色
-     */
-    private int lineColorClick, lineColorNoClick;
-    private int color;
-    private int linePosition;
+    private int deleteWidth = 45, deleteHeight = 45;
 
     public SuperEditText(Context context) {
         super(context);
@@ -45,74 +30,23 @@ public class SuperEditText extends AppCompatEditText {
 
     public SuperEditText(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(context, attrs);
+        init(context);
     }
 
     public SuperEditText(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(context, attrs);
+        init(context);
     }
 
     /**
      * 步骤1：初始化属性
      */
-    private void init(Context context, AttributeSet attrs) {
-        // 获取控件资源
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.SuperEditText);
-        boolean hide = typedArray.getBoolean(R.styleable.SuperEditText_hide_left_icon, false);
-        if (!hide) {
-            // ==============a. 点击状态的左侧图标================
-            // 1. 获取资源ID
-            int icLeftClickResID = typedArray.getResourceId(R.styleable.SuperEditText_ic_left_click,
-                                                            R.mipmap.ic_delete);
-            // 2. 根据资源ID获取图标资源（转化成Drawable对象）
-            icLeftClick = ContextCompat.getDrawable(context, icLeftClickResID);
-            // 3. 设置图标大小
-            // 起点(x，y)、宽= left_width、高 = left_height
-            int leftX = typedArray.getInteger(R.styleable.SuperEditText_left_x, 0);
-            int leftY = typedArray.getInteger(R.styleable.SuperEditText_left_y, 0);
-            int leftWidth = typedArray.getInteger(R.styleable.SuperEditText_left_width, 60);
-            int leftHeight = typedArray.getInteger(R.styleable.SuperEditText_left_height, 60);
-            icLeftClick.setBounds(leftX, leftY, leftWidth, leftHeight);
-            // Drawable.setBounds(x,y,width,height) = 设置Drawable的初始位置、宽和高等信息
-            // x = 组件在容器X轴上的起点、y = 组件在容器Y轴上的起点、width=组件的长度、height = 组件的高度
-            // ==================b. 未点击状态的左侧图标=================
-            // 1. 获取资源ID
-            int icLeftNoClickResID = typedArray.getResourceId(R.styleable.SuperEditText_ic_left_unclick,
-                                                              R.mipmap.ic_delete);
-            // 2. 根据资源ID获取图标资源（转化成Drawable对象）
-            // 3. 设置图标大小（此处默认左侧图标点解 & 未点击状态的大小相同）
-            icLeftNoClick = ContextCompat.getDrawable(context, icLeftNoClickResID);
-            icLeftNoClick.setBounds(leftX, leftY, leftWidth, leftHeight);
-        }
-        setCompoundDrawables(icLeftNoClick, null, null, null);
+    private void init(Context context) {
         //===================删除图标================
-        // 1. 获取资源ID
-        int icDeleteResID = typedArray.getResourceId(R.styleable.SuperEditText_ic_delete, R.mipmap.ic_delete);
-        // 2. 根据资源ID获取图标资源（转化成Drawable对象）
-        icDelete = ContextCompat.getDrawable(context, icDeleteResID);
-        // 3. 设置图标大小
-        // 起点(x，y)、宽= left_width、高 = left_height
-        int deleteX = typedArray.getInteger(R.styleable.SuperEditText_delete_x, 0);
-        int deleteY = typedArray.getInteger(R.styleable.SuperEditText_delete_y, 0);
-        int deleteWidth = typedArray.getInteger(R.styleable.SuperEditText_delete_width, 45);
-        int deleteHeight = typedArray.getInteger(R.styleable.SuperEditText_delete_height, 45);
-        icDelete.setBounds(deleteX, deleteY, deleteWidth, deleteHeight);
-        // 1. 设置画笔
-        mPaint = new Paint();
-        // 分割线粗细
-        mPaint.setStrokeWidth(1.0f);
-        // 2. 设置分割线颜色（使用十六进制代码，如#333、#8e8e8e）
-        int lineColorClickDefault = ContextCompat.getColor(context, R.color.color_d8d8d8);
-        int lineColorNoClickDefault = ContextCompat.getColor(context, R.color.color_d8d8d8);
-        lineColorClick = typedArray.getColor(R.styleable.SuperEditText_lineColor_click, lineColorClickDefault);
-        lineColorNoClick = typedArray.getColor(R.styleable.SuperEditText_lineColor_unclick, lineColorNoClickDefault);
-        color = lineColorNoClick;
-        // 分割线默认颜色 = 灰色
-        mPaint.setColor(lineColorNoClick);
-        // 3. 分割线位置
-        linePosition = typedArray.getInteger(R.styleable.SuperEditText_linePosition, 1);
-        typedArray.recycle();
+        // 1. 根据资源ID获取图标资源（转化成Drawable对象）
+        icDelete = ContextCompat.getDrawable(context, R.mipmap.ic_delete);
+        // 2. 设置图标大小  起点(x，y)、宽= left_width、高 = left_height
+        icDelete.setBounds(0, 0, deleteWidth, deleteHeight);
     }
 
     /**
@@ -122,7 +56,7 @@ public class SuperEditText extends AppCompatEditText {
     @Override
     protected void onTextChanged(CharSequence text, int start, int lengthBefore, int lengthAfter) {
         super.onTextChanged(text, start, lengthBefore, lengthAfter);
-        setDeleteIconVisible(hasFocus() && text.length() > 0, hasFocus());
+        setDeleteIconVisible(hasFocus() && text.length() > 0);
     }
 
     /**
@@ -132,7 +66,7 @@ public class SuperEditText extends AppCompatEditText {
     @Override
     protected void onFocusChanged(boolean focused, int direction, Rect previouslyFocusedRect) {
         super.onFocusChanged(focused, direction, previouslyFocusedRect);
-        setDeleteIconVisible(focused && length() > 0, focused);
+        setDeleteIconVisible(focused && length() > 0);
     }
 
     /**
@@ -162,21 +96,13 @@ public class SuperEditText extends AppCompatEditText {
 
     /**
      * 关注1
-     * 作用：判断是否显示删除图标 & 设置分割线颜色
+     * 作用：判断是否显示删除图标
      */
-    private void setDeleteIconVisible(boolean deleteVisible, boolean leftVisible) {
-        setCompoundDrawables(leftVisible ? icLeftClick : icLeftNoClick, null, deleteVisible ? icDelete : null, null);
-        color = leftVisible ? lineColorClick : lineColorNoClick;
+    private void setDeleteIconVisible(boolean deleteVisible) {
+        setCompoundDrawables(null, null, deleteVisible ? icDelete : null, null);
+        //设置图片和text之间的间距
+        setCompoundDrawablePadding(10);
         invalidate();
-    }
-
-    /**
-     * 作用：绘制分割线
-     */
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-        mPaint.setColor(color);
     }
 
     private OnDeleteClickListener ondeleteClickListener;

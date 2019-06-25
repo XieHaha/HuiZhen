@@ -17,7 +17,7 @@ import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.widgets.edittext.SuperEditText;
 import com.zyc.doctor.R;
-import com.zyc.doctor.ui.AbstractTextWatcher;
+import com.yht.frame.widgets.edittext.AbstractTextWatcher;
 import com.zyc.doctor.ui.main.MainActivity;
 
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;

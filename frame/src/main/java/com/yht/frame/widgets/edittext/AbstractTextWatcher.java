@@ -1,4 +1,4 @@
-package com.zyc.doctor.ui;
+package com.yht.frame.widgets.edittext;
 
 import android.text.Editable;
 import android.text.TextWatcher;
