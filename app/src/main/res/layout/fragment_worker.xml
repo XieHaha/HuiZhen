@@ -264,6 +264,7 @@
                 android:layout_marginEnd="16dp">
 
                 <RelativeLayout
+                    android:id="@+id/layout_transfer_apply"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:orientation="vertical"
@@ -286,7 +287,7 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/color_373d4d"
                         android:textSize="@dimen/text_18"
-                        android:text="@string/txt_reserve_check"
+                        android:text="@string/txt_transfer_apply"
                         android:textStyle="bold"
                         android:layout_marginTop="38dp"
                         android:layout_below="@id/image" />
@@ -296,11 +297,9 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/color_a1a8b3"
                         android:textSize="@dimen/text_13"
-                        android:text="@string/txt_remote_billing"
+                        android:text="@string/txt_transfer_receiver"
                         android:layout_marginTop="3dp"
                         android:layout_below="@id/text" />
-
-
                 </RelativeLayout>
 
                 <LinearLayout

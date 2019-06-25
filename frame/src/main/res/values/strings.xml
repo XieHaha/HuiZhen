@@ -203,6 +203,8 @@
     <!--转诊相关-->
     <string name="txt_reserve_transfer">预约转诊</string>
     <string name="txt_bilateral_transfer">双向转诊</string>
+    <string name="txt_transfer_apply">转诊申请</string>
+    <string name="txt_transfer_receiver">接收患者</string>
     <!--toast-->
     <string name="toast_public_current_no_network">当前无网络连接</string>
     <string name="toast_id_card_error">身份证号码格式错误</string>

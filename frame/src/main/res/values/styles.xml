@@ -39,6 +39,7 @@
     </style>
 
     <style name="normal_dialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowSoftInputMode">adjustPan</item>
         <item name="android:windowFrame">@null</item>
         <!-- 边框 -->
         <item name="android:windowIsFloating">true</item>
