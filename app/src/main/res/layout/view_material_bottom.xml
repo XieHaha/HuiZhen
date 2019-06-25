@@ -20,18 +20,6 @@
             android:textStyle="bold"
             android:text="@string/txt_past_medical_his" />
 
-        <TextView
-            android:id="@+id/tv_past_medical_his_clear"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/color_1491fc"
-            android:textSize="@dimen/text_15"
-            android:text="@string/txt_clear"
-            android:layout_alignParentEnd="true"
-            android:paddingEnd="20dp"
-            android:paddingBottom="19dp"
-            android:visibility="gone" />
-
         <View
             android:id="@+id/line"
             android:layout_width="match_parent"
@@ -65,7 +53,6 @@
                 android:src="@mipmap/ic_delete"
                 android:paddingStart="8dp" />
         </LinearLayout>
-
 
         <EditText
             android:id="@+id/et_past_medical_his"
@@ -117,18 +104,6 @@
             android:textSize="@dimen/text_16"
             android:textStyle="bold"
             android:text="@string/txt_family_medical_his" />
-
-        <TextView
-            android:id="@+id/tv_family_medical_his_clear"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/color_1491fc"
-            android:textSize="@dimen/text_15"
-            android:text="@string/txt_clear"
-            android:layout_alignParentEnd="true"
-            android:paddingEnd="20dp"
-            android:paddingBottom="19dp"
-            android:visibility="gone" />
 
         <View
             android:id="@+id/line1"

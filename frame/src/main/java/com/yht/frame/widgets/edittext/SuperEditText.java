@@ -9,6 +9,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 
 import com.yht.frame.R;
+import com.yht.frame.utils.BaseUtils;
 
 /**
  * @author Carson_Ho
@@ -101,7 +102,7 @@ public class SuperEditText extends AppCompatEditText {
     private void setDeleteIconVisible(boolean deleteVisible) {
         setCompoundDrawables(null, null, deleteVisible ? icDelete : null, null);
         //设置图片和text之间的间距
-        setCompoundDrawablePadding(10);
+        setCompoundDrawablePadding(BaseUtils.dp2px(getContext(),10));
         invalidate();
     }
 

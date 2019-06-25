@@ -18,9 +18,9 @@ import com.yht.frame.utils.ToastUtil;
 import com.yzq.zxinglibrary.android.CaptureActivity;
 import com.yzq.zxinglibrary.common.Constant;
 import com.zyc.doctor.R;
-import com.zyc.doctor.ui.auth.AddHospitalActivity;
 import com.zyc.doctor.ui.check.CheckHistoryActivity;
 import com.zyc.doctor.ui.check.ReservationCheckActivity;
+import com.zyc.doctor.ui.login.LoginOptionsActivity;
 import com.zyc.doctor.ui.personal.PersonalActivity;
 
 import java.util.Objects;
@@ -105,7 +105,7 @@ public class WorkerFragment extends BaseFragment {
             case R.id.layout_transfer:
                 break;
             case R.id.layout_transfer_apply:
-                Intent intent = new Intent(getContext(), AddHospitalActivity.class);
+                Intent intent = new Intent(getContext(), LoginOptionsActivity.class);
                 startActivity(intent);
                 break;
             case R.id.view_flipper:

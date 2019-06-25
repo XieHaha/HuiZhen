@@ -12,9 +12,9 @@ import android.widget.TextView;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.ToastUtil;
+import com.yht.frame.widgets.edittext.AbstractTextWatcher;
 import com.yht.frame.widgets.edittext.SuperEditText;
 import com.zyc.doctor.R;
-import com.yht.frame.widgets.edittext.AbstractTextWatcher;
 import com.zyc.doctor.ui.check.listener.OnCheckListener;
 import com.zyc.doctor.utils.text.BankCardTextWatcher;
 
@@ -39,32 +39,24 @@ public class MaterialFragment extends BaseFragment implements View.OnFocusChange
     SuperEditText tvIdCard;
     @BindView(R.id.et_phone)
     SuperEditText etPhone;
-    @BindView(R.id.tv_past_medical_his_clear)
-    TextView tvPastMedicalHisClear;
     @BindView(R.id.tv_past_medical_his_not)
     TextView tvPastMedicalHisNot;
     @BindView(R.id.et_past_medical_his)
     EditText etPastMedicalHis;
     @BindView(R.id.tv_past_medical_his_num)
     TextView tvPastMedicalHisNum;
-    @BindView(R.id.tv_family_medical_his_clear)
-    TextView tvFamilyMedicalHisClear;
     @BindView(R.id.tv_family_medical_his_not)
     TextView tvFamilyMedicalHisNot;
     @BindView(R.id.et_family_medical_his)
     EditText etFamilyMedicalHis;
     @BindView(R.id.tv_family_medical_his_num)
     TextView tvFamilyMedicalHisNum;
-    @BindView(R.id.tv_allergies_clear)
-    TextView tvAllergiesClear;
     @BindView(R.id.tv_allergies_not)
     TextView tvAllergiesNot;
     @BindView(R.id.et_allergies)
     EditText etAllergies;
     @BindView(R.id.tv_allergies_num)
     TextView tvAllergiesNum;
-    @BindView(R.id.tv_diagnosis_clear)
-    TextView tvDiagnosisClear;
     @BindView(R.id.et_diagnosis)
     EditText etDiagnosis;
     @BindView(R.id.tv_diagnosis_num)
@@ -104,10 +96,10 @@ public class MaterialFragment extends BaseFragment implements View.OnFocusChange
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-        etFamilyMedicalHis.setHorizontallyScrolling(false);
-        etFamilyMedicalHis.setMaxLines(Integer.MAX_VALUE);
         etPastMedicalHis.setHorizontallyScrolling(false);
         etPastMedicalHis.setMaxLines(Integer.MAX_VALUE);
+        etFamilyMedicalHis.setHorizontallyScrolling(false);
+        etFamilyMedicalHis.setMaxLines(Integer.MAX_VALUE);
         etAllergies.setHorizontallyScrolling(false);
         etAllergies.setMaxLines(Integer.MAX_VALUE);
         initPage();
@@ -152,12 +144,6 @@ public class MaterialFragment extends BaseFragment implements View.OnFocusChange
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 super.onTextChanged(s, start, before, count);
                 pastMedicalHis = s.toString();
-                if (TextUtils.isEmpty(pastMedicalHis)) {
-                    tvPastMedicalHisClear.setVisibility(View.GONE);
-                }
-                else {
-                    tvPastMedicalHisClear.setVisibility(View.VISIBLE);
-                }
                 tvPastMedicalHisNum.setText(String.format(getString(R.string.txt_calc_num), pastMedicalHis.length()));
             }
         });
@@ -166,12 +152,6 @@ public class MaterialFragment extends BaseFragment implements View.OnFocusChange
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 super.onTextChanged(s, start, before, count);
                 familyMedicalHis = s.toString();
-                if (TextUtils.isEmpty(familyMedicalHis)) {
-                    tvFamilyMedicalHisClear.setVisibility(View.GONE);
-                }
-                else {
-                    tvFamilyMedicalHisClear.setVisibility(View.VISIBLE);
-                }
                 tvFamilyMedicalHisNum.setText(
                         String.format(getString(R.string.txt_calc_num), familyMedicalHis.length()));
             }
@@ -181,12 +161,6 @@ public class MaterialFragment extends BaseFragment implements View.OnFocusChange
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 super.onTextChanged(s, start, before, count);
                 allergiesHis = s.toString();
-                if (TextUtils.isEmpty(allergiesHis)) {
-                    tvAllergiesClear.setVisibility(View.GONE);
-                }
-                else {
-                    tvAllergiesClear.setVisibility(View.VISIBLE);
-                }
                 tvAllergiesNum.setText(String.format(getString(R.string.txt_calc_num), allergiesHis.length()));
             }
         });
@@ -219,7 +193,6 @@ public class MaterialFragment extends BaseFragment implements View.OnFocusChange
         }
         else {
             etPastMedicalHis.setVisibility(View.INVISIBLE);
-            tvPastMedicalHisClear.setVisibility(View.GONE);
             layoutPastMedicalHis.setVisibility(View.VISIBLE);
             tvPastMedicalHisNum.setText(
                     String.format(getString(R.string.txt_calc_num), tvPastMedicalHisNot.getText().toString().length()));
@@ -238,7 +211,6 @@ public class MaterialFragment extends BaseFragment implements View.OnFocusChange
         }
         else {
             etFamilyMedicalHis.setVisibility(View.INVISIBLE);
-            tvFamilyMedicalHisClear.setVisibility(View.GONE);
             layoutFamilyMedicalHis.setVisibility(View.VISIBLE);
             tvFamilyMedicalHisNum.setText(String.format(getString(R.string.txt_calc_num),
                                                         tvFamilyMedicalHisNot.getText().toString().length()));
@@ -257,7 +229,6 @@ public class MaterialFragment extends BaseFragment implements View.OnFocusChange
         }
         else {
             etAllergies.setVisibility(View.INVISIBLE);
-            tvAllergiesClear.setVisibility(View.GONE);
             layoutAllergies.setVisibility(View.VISIBLE);
             tvAllergiesNum.setText(
                     String.format(getString(R.string.txt_calc_num), tvAllergiesNot.getText().toString().length()));
@@ -268,12 +239,6 @@ public class MaterialFragment extends BaseFragment implements View.OnFocusChange
      * 过敏史
      */
     private void initDiagnosis() {
-        if (TextUtils.isEmpty(diagnosisHis)) {
-            tvDiagnosisClear.setVisibility(View.GONE);
-        }
-        else {
-            tvDiagnosisClear.setVisibility(View.VISIBLE);
-        }
         tvDiagnosisNum.setText(String.format(getString(R.string.txt_calc_num), diagnosisHis.length()));
     }
 
@@ -319,23 +284,9 @@ public class MaterialFragment extends BaseFragment implements View.OnFocusChange
     }
 
     @OnClick({
-            R.id.tv_past_medical_his_clear, R.id.tv_family_medical_his_clear, R.id.tv_allergies_clear,
-            R.id.tv_diagnosis_clear, R.id.tv_material_next, R.id.iv_past_medical_his, R.id.iv_family_medical_his,
-            R.id.iv_allergies })
+            R.id.tv_material_next, R.id.iv_past_medical_his, R.id.iv_family_medical_his, R.id.iv_allergies })
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.tv_past_medical_his_clear:
-                etPastMedicalHis.setText("");
-                break;
-            case R.id.tv_family_medical_his_clear:
-                etFamilyMedicalHis.setText("");
-                break;
-            case R.id.tv_allergies_clear:
-                etAllergies.setText("");
-                break;
-            case R.id.tv_diagnosis_clear:
-                etDiagnosis.setText("");
-                break;
             case R.id.iv_past_medical_his:
                 initPastMedicalHis(true);
                 break;
