@@ -30,5 +30,15 @@
             android:layout_height="wrap_content" />
     </com.yht.frame.widgets.recyclerview.IndexBar>
 
+    <RelativeLayout
+        android:id="@+id/layout_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_50000000"
+        android:visibility="gone" />
+
+    <include
+        layout="@layout/view_patient_top"
+        android:visibility="gone" />
 
 </RelativeLayout>

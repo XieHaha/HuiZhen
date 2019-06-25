@@ -29,6 +29,15 @@ public class CustomItemDecoration extends RecyclerView.ItemDecoration {
     private Context mContext;
     private final Rect mBounds = new Rect();
     private String titleBar;
+    /**
+     * 是否有头部
+     * 默认有
+     */
+    private boolean HasHeader = true;
+
+    public void setHasHeader(boolean hasHeader) {
+        HasHeader = hasHeader;
+    }
 
     public void setDatas(List<PatientBean> mBeans, String tagsStr) {
         this.patientBeans = mBeans;
@@ -55,7 +64,13 @@ public class CustomItemDecoration extends RecyclerView.ItemDecoration {
             final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams)child.getLayoutParams();
             int position = params.getViewLayoutPosition();
             //第一条数据为头部，不需要titlebar，
-            int realPosition = position - 1;
+            int realPosition;
+            if (HasHeader) {
+                realPosition = position - 1;
+            }
+            else {
+                realPosition = position;
+            }
             if (patientBeans == null || patientBeans.size() == 0 || patientBeans.size() <= realPosition ||
                 realPosition < 0) {
                 continue;
@@ -110,7 +125,13 @@ public class CustomItemDecoration extends RecyclerView.ItemDecoration {
         //用来绘制悬浮框
         int position = ((LinearLayoutManager)(parent.getLayoutManager())).findFirstVisibleItemPosition();
         // 第一条数据是头部 不需要bar, 直接从第二条数据开始
-        int realPosition = position - 1;
+        int realPosition;
+        if (HasHeader) {
+            realPosition = position - 1;
+        }
+        else {
+            realPosition = position;
+        }
         if (patientBeans == null || patientBeans.size() == 0 || patientBeans.size() <= realPosition ||
             realPosition < 0) {
             return;
@@ -140,7 +161,13 @@ public class CustomItemDecoration extends RecyclerView.ItemDecoration {
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         int position = parent.getChildAdapterPosition(view);
         // 第一条数据是头部 不需要bar, 直接从第二条数据开始
-        int realPosition = position - 1;
+        int realPosition;
+        if (HasHeader) {
+            realPosition = position - 1;
+        }
+        else {
+            realPosition = position;
+        }
         if (patientBeans == null || patientBeans.size() == 0 || patientBeans.size() <= realPosition ||
             realPosition < 0) {
             super.getItemOffsets(outRect, view, parent, state);

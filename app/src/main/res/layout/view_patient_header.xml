@@ -8,29 +8,21 @@
     android:paddingTop="20dp"
     android:paddingBottom="20dp">
 
-    <LinearLayout
-        android:id="@+id/layout_search"
+    <TextView
+        android:id="@+id/tv_search_patient"
         android:layout_width="match_parent"
-        android:layout_height="38dp">
-
-        <com.yht.frame.widgets.edittext.SuperEditText
-            android:id="@+id/et_search_patient"
-            android:layout_width="match_parent"
-            android:layout_height="38dp"
-            android:hint="@string/txt_patient_hint"
-            android:textSize="@dimen/text_16"
-            android:textColorHint="@color/color_a1a8b3"
-            android:textColor="@color/color_373d4d"
-            android:imeOptions="actionDone"
-            android:singleLine="true"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:background="@drawable/corner4_f0f3fa_bg"
-            android:paddingStart="39dp"
-            android:paddingEnd="16dp"
-            app:hide_left_icon="true" />
-    </LinearLayout>
-
+        android:layout_height="38dp"
+        android:hint="@string/txt_patient_hint"
+        android:textSize="@dimen/text_16"
+        android:textColorHint="@color/color_a1a8b3"
+        android:textColor="@color/color_373d4d"
+        android:singleLine="true"
+        android:focusable="false"
+        android:gravity="center_vertical"
+        android:focusableInTouchMode="false"
+        android:background="@drawable/corner4_f0f3fa_bg"
+        android:paddingStart="39dp"
+        android:paddingEnd="16dp" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -38,17 +30,5 @@
         android:src="@mipmap/ic_search"
         android:layout_centerVertical="true"
         android:paddingStart="16dp" />
-
-    <TextView
-        android:id="@+id/et_search_cancel"
-        android:layout_width="wrap_content"
-        android:layout_height="38dp"
-        android:text="@string/txt_cancel"
-        android:textSize="16sp"
-        android:textColor="@color/color_1491fc"
-        android:layout_centerVertical="true"
-        android:gravity="center"
-        android:layout_alignParentEnd="true"
-        android:visibility="gone" />
 
 </RelativeLayout>
