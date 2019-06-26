@@ -11,9 +11,10 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -22,17 +23,13 @@ import com.yht.frame.api.DirHelper;
 import com.yht.frame.permission.Permission;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
-import com.yht.frame.widgets.recyclerview.FullListView;
+import com.yht.frame.widgets.view.ExpandableLayout;
 import com.zyc.doctor.R;
 import com.zyc.doctor.ZycApplication;
-import com.zyc.doctor.ui.adapter.CheckTypeListviewAdapter;
-import com.zyc.doctor.ui.check.SelectCheckTypeActivity;
-import com.zyc.doctor.ui.check.SelectCheckTypeByHospitalActivity;
 import com.zyc.doctor.ui.check.listener.OnCheckListener;
 import com.zyc.doctor.utils.glide.GlideHelper;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -43,23 +40,39 @@ import butterknife.OnClick;
  * @date 19/6/14 14:23
  * @des 预约转诊 确认提交
  */
-public class SubmitTransferFragment extends BaseFragment implements CheckTypeListviewAdapter.OnDeleteClickListener {
-    @BindView(R.id.tv_select)
-    TextView tvSelect;
-    @BindView(R.id.full_listview)
-    FullListView fullListView;
-    @BindView(R.id.layout_check_root)
-    LinearLayout layoutCheckRoot;
-    @BindView(R.id.rb_yes)
-    RadioButton rbYes;
-    @BindView(R.id.rb_no)
-    RadioButton rbNo;
+public class SubmitTransferFragment extends BaseFragment implements RadioGroup.OnCheckedChangeListener {
+    @BindView(R.id.rb_up)
+    RadioButton rbUp;
+    @BindView(R.id.rb_down)
+    RadioButton rbDown;
+    @BindView(R.id.rb_family_require)
+    RadioButton rbFamilyRequire;
+    @BindView(R.id.rb_rehabilitation)
+    RadioButton rbRehabilitation;
+    @BindView(R.id.rb_other)
+    RadioButton rbOther;
+    @BindView(R.id.et_other)
+    EditText etOther;
+    @BindView(R.id.layout_other)
+    ExpandableLayout layoutOther;
     @BindView(R.id.rb_self)
     RadioButton rbSelf;
-    @BindView(R.id.rb_medicare)
-    RadioButton rbMedicare;
     @BindView(R.id.rb_ncms)
     RadioButton rbNcms;
+    @BindView(R.id.rb_medicare)
+    RadioButton rbMedicare;
+    @BindView(R.id.tv_select)
+    TextView tvSelect;
+    @BindView(R.id.iv_receiving_doctor)
+    ImageView ivReceivingDoctor;
+    @BindView(R.id.tv_receiving_doctor_name)
+    TextView tvReceivingDoctorName;
+    @BindView(R.id.tv_receiving_doctor_title)
+    TextView tvReceivingDoctorTitle;
+    @BindView(R.id.tv_receiving_doctor_hospital_depart)
+    TextView tvReceivingDoctorHospitalDepart;
+    @BindView(R.id.layout_receiving_doctor)
+    RelativeLayout layoutReceivingDoctor;
     @BindView(R.id.iv_upload_one)
     ImageView ivUploadOne;
     @BindView(R.id.iv_delete_one)
@@ -68,31 +81,23 @@ public class SubmitTransferFragment extends BaseFragment implements CheckTypeLis
     RelativeLayout layoutUploadOne;
     @BindView(R.id.tv_submit_next)
     TextView tvSubmitNext;
-    @BindView(R.id.tv_hospital_name)
-    TextView tvHospitalName;
+    @BindView(R.id.group_transfer_type)
+    RadioGroup groupTransferType;
+    @BindView(R.id.group_transfer_purpose)
+    RadioGroup groupTransferPurpose;
+    @BindView(R.id.group_payment)
+    RadioGroup groupPayment;
     private File cameraTempFile;
     private Uri mCurrentPhotoUri;
     private String mCurrentPhotoPath;
     /**
-     * 已选择检查项目适配器
-     */
-    private CheckTypeListviewAdapter checkTypeListviewAdapter;
-    /**
-     * 检查项目数据
-     */
-    private List<String> checkTypeData;
-    /**
      * 根据检查项目选择医院
      */
     public static final int REQUEST_CODE_SELECT_HOSPITAL = 100;
-    /**
-     * 根据医院选择检查项目
-     */
-    public static final int REQUEST_CODE_SELECT_CHECK = 101;
 
     @Override
     public int getLayoutID() {
-        return R.layout.fragment_submit;
+        return R.layout.fragment_submit_transfer;
     }
 
     @Override
@@ -100,14 +105,12 @@ public class SubmitTransferFragment extends BaseFragment implements CheckTypeLis
         super.initData(savedInstanceState);
     }
 
-    /**
-     * 检查项目列表
-     */
-    private void initFullListview() {
-        checkTypeListviewAdapter = new CheckTypeListviewAdapter(getContext());
-        checkTypeListviewAdapter.setData(checkTypeData);
-        checkTypeListviewAdapter.setOnDeleteClickListener(this);
-        fullListView.setAdapter(checkTypeListviewAdapter);
+    @Override
+    public void initListener() {
+        super.initListener();
+        groupTransferType.setOnCheckedChangeListener(this);
+        groupTransferPurpose.setOnCheckedChangeListener(this);
+        groupPayment.setOnCheckedChangeListener(this);
     }
 
     /**
@@ -140,53 +143,28 @@ public class SubmitTransferFragment extends BaseFragment implements CheckTypeLis
      */
     private void selectHospitalByCheckItem(Intent data) {
         tvSelect.setVisibility(View.GONE);
-        layoutCheckRoot.setVisibility(View.VISIBLE);
-        tvHospitalName.setText("医院");
-        checkTypeData = new ArrayList<>();
-        checkTypeData.add("测试数据");
-        initFullListview();
-    }
-
-    /**
-     * 根据选择当前医院下的检查项目
-     *
-     * @param data
-     */
-    private void selectCheckItemByHospital(Intent data) {
-        checkTypeData.add("yige");
-        checkTypeData.add("22222");
-        checkTypeData.add("3333");
-        checkTypeListviewAdapter.setData(checkTypeData);
-        checkTypeListviewAdapter.notifyDataSetChanged();
     }
 
     /**
      * 全部删除已经选择的检查项目和医院
      */
     private void deleteAllSelectCheckType() {
-        checkTypeData.clear();
+        layoutOther.collapse();
         tvSelect.setVisibility(View.VISIBLE);
-        layoutCheckRoot.setVisibility(View.GONE);
     }
 
     @OnClick({
-            R.id.layout_select_check_type, R.id.tv_delete_all, R.id.layout_upload_one, R.id.iv_delete_one,
-            R.id.tv_submit_next, R.id.layout_add_hospital_check })
+            R.id.layout_select_receiving_doctor, R.id.iv_receiving_doctor_delete, R.id.iv_delete_one,
+            R.id.layout_upload_one, R.id.tv_submit_next })
     public void onViewClicked(View view) {
         Intent intent;
         switch (view.getId()) {
-            case R.id.layout_select_check_type:
+            case R.id.layout_select_receiving_doctor:
                 if (tvSelect.getVisibility() == View.VISIBLE) {
-                    intent = new Intent(getContext(), SelectCheckTypeActivity.class);
-                    startActivityForResult(intent, REQUEST_CODE_SELECT_HOSPITAL);
+                    //                    intent = new Intent(getContext(), SelectCheckTypeActivity.class);
+                    //                    startActivityForResult(intent, REQUEST_CODE_SELECT_HOSPITAL);
+                    layoutReceivingDoctor.setVisibility(View.VISIBLE);
                 }
-                break;
-            case R.id.tv_delete_all:
-                deleteAllSelectCheckType();
-                break;
-            case R.id.layout_add_hospital_check:
-                intent = new Intent(getContext(), SelectCheckTypeByHospitalActivity.class);
-                startActivityForResult(intent, REQUEST_CODE_SELECT_CHECK);
                 break;
             case R.id.layout_upload_one:
                 permissionHelper.request(new String[] { Permission.CAMERA, Permission.STORAGE_WRITE });
@@ -199,21 +177,56 @@ public class SubmitTransferFragment extends BaseFragment implements CheckTypeLis
                     checkListener.onStepThree();
                 }
                 break;
+            case R.id.iv_receiving_doctor_delete:
+                deleteAllSelectCheckType();
+                break;
             default:
                 break;
         }
     }
 
     /**
-     * 删除已选择检查项目
+     * RadioGroup选择
      *
-     * @param position
+     * @param group
+     * @param checkedId
      */
     @Override
-    public void onDelete(int position) {
-        checkTypeData.remove(position);
-        checkTypeListviewAdapter.setData(checkTypeData);
-        checkTypeListviewAdapter.notifyDataSetChanged();
+    public void onCheckedChanged(RadioGroup group, int checkedId) {
+        switch (group.getId()) {
+            case R.id.group_transfer_type:
+                break;
+            case R.id.group_transfer_purpose:
+                if (checkedId == rbOther.getId()) {
+                    layoutOther.expand();
+                }
+                else {
+                    layoutOther.collapse();
+                }
+                break;
+            case R.id.group_payment:
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+        switch (requestCode) {
+            case RC_PICK_CAMERA:
+                cameraTempFile = new File(mCurrentPhotoPath);
+                initImage(true);
+                break;
+            case REQUEST_CODE_SELECT_HOSPITAL:
+                break;
+            default:
+                break;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     /**
@@ -248,28 +261,6 @@ public class SubmitTransferFragment extends BaseFragment implements CheckTypeLis
         // 指定调用相机拍照后照片的储存路径
         intent.putExtra(MediaStore.EXTRA_OUTPUT, mCurrentPhotoUri);
         startActivityForResult(intent, RC_PICK_CAMERA);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode != Activity.RESULT_OK) {
-            return;
-        }
-        switch (requestCode) {
-            case RC_PICK_CAMERA:
-                cameraTempFile = new File(mCurrentPhotoPath);
-                initImage(true);
-                break;
-            case REQUEST_CODE_SELECT_HOSPITAL:
-                selectHospitalByCheckItem(data);
-                break;
-            case REQUEST_CODE_SELECT_CHECK:
-                selectCheckItemByHospital(data);
-                break;
-            default:
-                break;
-        }
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override

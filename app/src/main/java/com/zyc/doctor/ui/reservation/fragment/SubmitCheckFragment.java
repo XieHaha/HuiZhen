@@ -92,7 +92,7 @@ public class SubmitCheckFragment extends BaseFragment implements CheckTypeListvi
 
     @Override
     public int getLayoutID() {
-        return R.layout.fragment_submit;
+        return R.layout.fragment_submit_check;
     }
 
     @Override

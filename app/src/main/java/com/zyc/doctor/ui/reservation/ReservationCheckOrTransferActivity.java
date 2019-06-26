@@ -2,7 +2,6 @@ package com.zyc.doctor.ui.reservation;
 
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
@@ -14,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.yht.frame.data.CommonData;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.widgets.dialog.HintDialog;
 import com.zyc.doctor.R;
@@ -93,6 +93,10 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
      * 姓名 身份证
      */
     private String name, idCard;
+    /**
+     * 是否为转诊
+     */
+    private boolean istransfer;
 
     @Override
     protected boolean isInitBackBtn() {
@@ -107,10 +111,9 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-        findViewById(R.id.public_title_bar_back).setOnClickListener(this);
-        publicTitleBarMore.setVisibility(View.VISIBLE);
-        publicTitleBarMore.setText(R.string.txt_contact);
-        publicTitleBarMore.setOnClickListener(this);
+        if (getIntent() != null) {
+            istransfer = getIntent().getBooleanExtra(CommonData.KEY_CHECK_OR_TRANSFER, false);
+        }
         initTitlePage();
         initTab();
     }
@@ -119,6 +122,15 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
      * title处理
      */
     private void initTitlePage() {
+        //title
+        if (istransfer) {
+            publicTitleBarTitle.setText(R.string.txt_reserve_transfer);
+        }
+        //自定义返回键实践处理
+        findViewById(R.id.public_title_bar_back).setOnClickListener(this);
+        publicTitleBarMore.setVisibility(View.VISIBLE);
+        publicTitleBarMore.setText(R.string.txt_contact);
+        publicTitleBarMore.setOnClickListener(this);
         tvReservationBase.setText(R.string.txt_identify);
         tvReservationMaterial.setText(R.string.txt_material);
         tvReservationResult.setText(R.string.txt_sure_submit);
@@ -316,12 +328,21 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
 
     @Override
     public void onStepTwo() {
-        tabCheckResultView();
+        if (istransfer) {
+            tabTransferResultView();
+        }
+        else {
+            tabCheckResultView();
+        }
     }
 
     @Override
     public void onStepThree() {
-        startActivity(new Intent(this, CheckSuccessActivity.class));
+        Intent intent = new Intent(this, CheckSuccessActivity.class);
+        if (istransfer) {
+            intent.putExtra(CommonData.KEY_CHECK_OR_TRANSFER, true);
+        }
+        startActivity(intent);
         finish();
     }
 
@@ -342,18 +363,6 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
             return false;
         }
         return true;
-    }
-
-    /**
-     * 拨打电话（跳转到拨号界面，用户手动点击拨打）
-     *
-     * @param phoneNum 电话号码
-     */
-    public void callPhone(String phoneNum) {
-        Intent intent = new Intent(Intent.ACTION_DIAL);
-        Uri data = Uri.parse("tel:" + phoneNum);
-        intent.setData(data);
-        startActivity(intent);
     }
 
     @Override

@@ -196,6 +196,7 @@
     <string name="txt_diagnosis_hint">请针对患者病情填写初步诊断结果</string>
     <string name="txt_camera_people">拍照确认</string>
     <string name="txt_camera_people_hint">请按照图示，拍摄患者头像确认。</string>
+    <string name="txt_camera_people_transfer_hint">请按照图示，拍摄患者或家属头像确认订单。</string>
     <string name="txt_self_pay">自费</string>
     <string name="txt_medicare">医保</string>
     <string name="txt_self_medicare">新农合</string>
@@ -212,11 +213,17 @@
     <string name="txt_transfer_apply">转诊申请</string>
     <string name="txt_transfer_receiver">接收患者</string>
     <string name="txt_transfer_purpose">转诊目的</string>
+    <string name="txt_transfer_purpose_hint">请输入转诊目的</string>
     <string name="txt_transfer_again">重新转诊</string>
     <string name="txt_contact_doctor">联系接诊医生</string>
     <string name="txt_transfer_time">转诊时间</string>
     <string name="txt_transfer_type">转诊类型</string>
     <string name="txt_reserve_time">预约就诊\n时间</string>
+    <string name="txt_transfer_up">上转</string>
+    <string name="txt_transfer_down">下转</string>
+    <string name="txt_family_require">家属要求</string>
+    <string name="txt_rehabilitation">康复</string>
+    <string name="txt_other">其他</string>
     <!--toast-->
     <string name="toast_public_current_no_network">当前无网络连接</string>
     <string name="toast_id_card_error">身份证号码格式错误</string>

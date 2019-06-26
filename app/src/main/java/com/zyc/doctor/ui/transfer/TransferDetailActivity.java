@@ -7,6 +7,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.yht.frame.ui.BaseActivity;
+import com.yht.frame.widgets.dialog.HintDialog;
+import com.yht.frame.widgets.dialog.InputDialog;
 import com.zyc.doctor.R;
 
 import butterknife.BindView;
@@ -78,10 +80,27 @@ public class TransferDetailActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_transfer_again:
+                new InputDialog(this).Builder()
+                                     .setCancleBtnTxt("确认取消")
+                                     .setEnterBtnTxt("再想想")
+                                     .setEnterSelect(true)
+                                     .show();
                 break;
             case R.id.tv_contact_patient:
+                new HintDialog(this).setTitleString(getString(R.string.txt_hint))
+                                    .setContentString(getString(R.string.txt_contact_hotline))
+                                    .setEnterBtnTxt(getString(R.string.txt_call))
+                                    .setEnterSelect(true)
+                                    .setOnEnterClickListener(() -> callPhone(""))
+                                    .show();
                 break;
             case R.id.tv_contact_doctor:
+                new HintDialog(this).setTitleString(getString(R.string.txt_hint))
+                                    .setContentString(getString(R.string.txt_contact_hotline))
+                                    .setEnterBtnTxt(getString(R.string.txt_call))
+                                    .setEnterSelect(true)
+                                    .setOnEnterClickListener(() -> callPhone(""))
+                                    .show();
                 break;
             default:
                 break;
