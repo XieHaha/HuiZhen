@@ -17,9 +17,9 @@ import butterknife.OnClick;
 /**
  * @author 顿顿
  * @date 19/6/14 10:56
- * @des 预约转诊详情
+ * @des 预约转诊详情  我转诊给其他医生 (有两种状态  待接诊、已接诊)
  */
-public class TransferDetailActivity extends BaseActivity {
+public class TransferToDetailActivity extends BaseActivity {
     @BindView(R.id.iv_patient_img)
     ImageView ivPatientImg;
     @BindView(R.id.tv_patient_name)
@@ -68,7 +68,7 @@ public class TransferDetailActivity extends BaseActivity {
 
     @Override
     public int getLayoutID() {
-        return R.layout.act_transfer_detail;
+        return R.layout.act_transfer_to_detail;
     }
 
     @Override

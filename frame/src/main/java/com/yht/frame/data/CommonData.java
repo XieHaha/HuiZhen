@@ -13,6 +13,10 @@ public interface CommonData {
      */
     String KEY_CHECK_OR_TRANSFER = "key_check_or_transfer";
     /**
+     * 是否已接诊  true为已接诊  false待处理
+     */
+    String KEY_IS_RECEIVE_TRANSFER = "key_is_receive_transfer";
+    /**
      * 公用数据key
      */
     String KEY_PUBLIC_STRING = "key_public_string";

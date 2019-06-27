@@ -1,5 +1,6 @@
 package com.zyc.doctor.ui.transfer.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -13,6 +14,7 @@ import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.zyc.doctor.R;
 import com.zyc.doctor.ui.adapter.TransferWaitAdapter;
+import com.zyc.doctor.ui.transfer.TransferFromDetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +27,8 @@ import butterknife.BindView;
  * @des 转诊待处理
  */
 public class TransferWaitFragment extends BaseFragment
-        implements BaseQuickAdapter.RequestLoadMoreListener, SwipeRefreshLayout.OnRefreshListener {
+        implements BaseQuickAdapter.RequestLoadMoreListener, SwipeRefreshLayout.OnRefreshListener,
+                   BaseQuickAdapter.OnItemClickListener {
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.layout_refresh)
@@ -49,6 +52,7 @@ public class TransferWaitFragment extends BaseFragment
         layoutRefresh.setOnRefreshListener(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         transferWaitAdapter = new TransferWaitAdapter(R.layout.item_transfer_wait, data);
+        transferWaitAdapter.setOnItemClickListener(this);
         transferWaitAdapter.setLoadMoreView(new CustomLoadMoreView());
         transferWaitAdapter.setOnLoadMoreListener(this, recyclerView);
         recyclerView.setAdapter(transferWaitAdapter);
@@ -65,6 +69,12 @@ public class TransferWaitFragment extends BaseFragment
         }
         transferWaitAdapter.setNewData(data);
         transferWaitAdapter.loadMoreEnd();
+    }
+
+    @Override
+    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+        Intent intent = new Intent(getContext(), TransferFromDetailActivity.class);
+        startActivity(intent);
     }
 
     @Override

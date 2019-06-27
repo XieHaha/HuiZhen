@@ -10,7 +10,7 @@ import com.yht.frame.data.CommonData;
 import com.yht.frame.ui.BaseActivity;
 import com.zyc.doctor.R;
 import com.zyc.doctor.ui.reservation.ReservationCheckOrTransferActivity;
-import com.zyc.doctor.ui.transfer.TransferDetailActivity;
+import com.zyc.doctor.ui.transfer.TransferToDetailActivity;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -70,7 +70,7 @@ public class CheckSuccessActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.tv_detail:
                 if (isTransfer) {
-                    Intent intent = new Intent(this, TransferDetailActivity.class);
+                    Intent intent = new Intent(this, TransferToDetailActivity.class);
                     startActivity(intent);
                 }
                 else {

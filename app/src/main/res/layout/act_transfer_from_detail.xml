@@ -1,0 +1,942 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <include
+        layout="@layout/public_title"
+        android:id="@+id/title_bar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:scrollbars="none"
+        android:layout_height="match_parent"
+        android:layout_below="@id/title_bar"
+        android:layout_marginBottom="68dp"
+        android:background="@color/color_ffffff">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="15dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp">
+
+                <ImageView
+                    android:id="@+id/iv_patient_img"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:src="@mipmap/ic_default_header_r"
+                    android:layout_marginStart="12dp" />
+
+                <TextView
+                    android:id="@+id/tv_patient_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textColor="@color/color_373d4d"
+                    android:textSize="@dimen/text_20"
+                    tools:text="姓名"
+                    android:layout_toEndOf="@id/iv_patient_img"
+                    android:layout_marginStart="12dp" />
+
+
+                <TextView
+                    android:id="@+id/tv_patient_sex"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_373d4d"
+                    android:textSize="@dimen/text_14"
+                    tools:text="性别"
+                    android:layout_toEndOf="@id/iv_patient_img"
+                    android:layout_below="@id/tv_patient_name"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="11dp" />
+
+                <View
+                    android:id="@+id/line"
+                    android:layout_width="@dimen/app_hei_line"
+                    android:layout_height="12dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_toEndOf="@id/tv_patient_sex"
+                    android:layout_below="@id/tv_patient_name"
+                    android:background="#c5c8cc"
+                    android:layout_marginStart="8dp" />
+
+                <TextView
+                    android:id="@+id/tv_patient_age"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_373d4d"
+                    android:textSize="@dimen/text_14"
+                    tools:text="0岁"
+                    android:layout_toEndOf="@id/line"
+                    android:layout_below="@id/tv_patient_name"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="12dp" />
+
+
+                <ImageView
+                    android:id="@+id/iv_check_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:src="@mipmap/ic_wait_transfer" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/app_hei_line"
+                android:background="@color/color_ebedf0"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:paddingTop="18dp"
+                android:layout_height="wrap_content"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp">
+
+                <TextView
+                    android:id="@+id/text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:textStyle="bold"
+                    android:text="@string/txt_id_card_hint"
+                    android:paddingEnd="16dp" />
+
+                <com.yht.frame.widgets.edittext.SuperEditText
+                    android:id="@+id/tv_ic_card"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:layout_toEndOf="@id/text"
+                    android:textColor="@color/color_373d4d"
+                    tools:text="医生"
+                    android:background="@null"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false">
+
+                </com.yht.frame.widgets.edittext.SuperEditText>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/app_hei_line"
+                    android:background="@color/color_ebedf0"
+                    android:layout_below="@id/tv_ic_card"
+                    android:layout_marginTop="18dp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:paddingTop="18dp"
+                android:layout_height="wrap_content"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp">
+
+                <TextView
+                    android:id="@+id/text_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:textStyle="bold"
+                    android:text="@string/txt_info_phone"
+                    android:paddingEnd="32.5dp" />
+
+                <TextView
+                    android:id="@+id/tv_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:layout_toEndOf="@id/text_phone"
+                    android:textColor="@color/color_373d4d"
+                    tools:text="医生" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/app_hei_line"
+                    android:background="@color/color_ebedf0"
+                    android:layout_below="@id/tv_phone"
+                    android:layout_marginTop="18dp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:paddingTop="18dp"
+                android:layout_height="wrap_content"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp">
+
+                <TextView
+                    android:id="@+id/text_past"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:textStyle="bold"
+                    android:text="@string/txt_past_medical_his"
+                    android:paddingEnd="16dp" />
+
+                <TextView
+                    android:id="@+id/tv_past_medical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:layout_toEndOf="@id/text_past"
+                    android:textColor="@color/color_373d4d"
+                    tools:text="医生" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/app_hei_line"
+                    android:background="@color/color_ebedf0"
+                    android:layout_below="@id/tv_past_medical"
+                    android:layout_marginTop="18dp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:paddingTop="18dp"
+                android:layout_height="wrap_content"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp">
+
+                <TextView
+                    android:id="@+id/text_family"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:textStyle="bold"
+                    android:text="@string/txt_family_medical_his"
+                    android:paddingEnd="16dp" />
+
+                <TextView
+                    android:id="@+id/tv_family_medical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:layout_toEndOf="@id/text_family"
+                    android:textColor="@color/color_373d4d"
+                    tools:text="医生" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/app_hei_line"
+                    android:background="@color/color_ebedf0"
+                    android:layout_below="@id/tv_family_medical"
+                    android:layout_marginTop="18dp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:paddingTop="18dp"
+                android:layout_height="wrap_content"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp">
+
+                <TextView
+                    android:id="@+id/text_allergies"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:textStyle="bold"
+                    android:text="@string/txt_allergies"
+                    android:paddingEnd="32.5dp" />
+
+                <TextView
+                    android:id="@+id/tv_allergies"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:layout_toEndOf="@id/text_allergies"
+                    android:textColor="@color/color_373d4d"
+                    tools:text="医生" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/app_hei_line"
+                    android:background="@color/color_ebedf0"
+                    android:layout_below="@id/tv_allergies"
+                    android:layout_marginTop="18dp" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="@color/color_f8f9fa" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:paddingTop="18dp"
+                android:layout_height="wrap_content"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp">
+
+                <TextView
+                    android:id="@+id/text1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:textStyle="bold"
+                    android:text="@string/txt_transfer_time"
+                    android:paddingEnd="16dp" />
+
+                <TextView
+                    android:id="@+id/tv_transfer_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:layout_toEndOf="@id/text1"
+                    android:textColor="@color/color_373d4d"
+                    tools:text="医生" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/app_hei_line"
+                    android:background="@color/color_ebedf0"
+                    android:layout_below="@id/tv_transfer_time"
+                    android:layout_marginTop="18dp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp">
+
+                <TextView
+                    android:id="@+id/text6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:textStyle="bold"
+                    android:text="@string/txt_transfer_doctor"
+                    android:paddingEnd="16dp"
+                    android:layout_marginTop="18dp" />
+
+                <TextView
+                    android:id="@+id/tv_receiving_doctor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:layout_toEndOf="@id/text6"
+                    android:layout_marginTop="18dp"
+                    android:textColor="@color/color_373d4d"
+                    tools:text="医生" />
+
+                <LinearLayout
+                    android:id="@+id/layout_call"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:gravity="center"
+                    android:paddingBottom="18dp"
+                    android:paddingTop="18dp">
+
+                    <View
+                        android:layout_width="@dimen/app_hei_line"
+                        android:layout_height="20dp"
+                        android:background="@color/color_ebedf0" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/ic_call"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="20dp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/app_hei_line"
+                    android:background="@color/color_ebedf0"
+                    android:layout_below="@id/layout_call" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:paddingTop="18dp"
+                android:layout_height="wrap_content"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp">
+
+                <TextView
+                    android:id="@+id/text_7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:textStyle="bold"
+                    android:text="@string/txt_transfer_depart"
+                    android:paddingEnd="16dp" />
+
+                <TextView
+                    android:id="@+id/tv_transfer_depart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:layout_toEndOf="@id/text_7"
+                    android:textColor="@color/color_373d4d"
+                    tools:text="医生" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/app_hei_line"
+                    android:background="@color/color_ebedf0"
+                    android:layout_below="@id/tv_transfer_depart"
+                    android:layout_marginTop="18dp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:paddingTop="18dp"
+                android:layout_height="wrap_content"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp">
+
+                <TextView
+                    android:id="@+id/text_8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:textStyle="bold"
+                    android:text="@string/txt_transfer_hospital"
+                    android:paddingEnd="16dp" />
+
+                <TextView
+                    android:id="@+id/tv_transfer_hospital"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:layout_toEndOf="@id/text_8"
+                    android:textColor="@color/color_373d4d"
+                    tools:text="医生" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/app_hei_line"
+                    android:background="@color/color_ebedf0"
+                    android:layout_below="@id/tv_transfer_hospital"
+                    android:layout_marginTop="18dp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/layout_doctor_phone"
+                android:layout_width="match_parent"
+                android:paddingTop="18dp"
+                android:layout_height="wrap_content"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/text_81"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:textStyle="bold"
+                    android:text="@string/txt_doctor_phone"
+                    android:paddingEnd="16dp" />
+
+                <TextView
+                    android:id="@+id/tv_doctor_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:layout_toEndOf="@id/text_81"
+                    android:textColor="@color/color_373d4d"
+                    tools:text="医生" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/app_hei_line"
+                    android:background="@color/color_ebedf0"
+                    android:layout_below="@id/text_81"
+                    android:layout_marginTop="18dp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:paddingTop="18dp"
+                android:layout_height="wrap_content"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp">
+
+                <TextView
+                    android:id="@+id/text3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:textStyle="bold"
+                    android:text="@string/txt_transfer_type"
+                    android:paddingEnd="16dp" />
+
+                <TextView
+                    android:id="@+id/tv_transfer_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:layout_toEndOf="@id/text3"
+                    android:textColor="@color/color_373d4d"
+                    tools:text="医生" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/app_hei_line"
+                    android:background="@color/color_ebedf0"
+                    android:layout_below="@id/tv_transfer_type"
+                    android:layout_marginTop="18dp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:paddingTop="18dp"
+                android:layout_height="wrap_content"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp">
+
+                <TextView
+                    android:id="@+id/text4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:textStyle="bold"
+                    android:text="@string/txt_transfer_purpose"
+                    android:paddingEnd="16dp" />
+
+                <TextView
+                    android:id="@+id/tv_transfer_purpose"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:layout_toEndOf="@id/text4"
+                    android:textColor="@color/color_373d4d"
+                    tools:text="医生" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/app_hei_line"
+                    android:background="@color/color_ebedf0"
+                    android:layout_below="@id/tv_transfer_purpose"
+                    android:layout_marginTop="18dp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:paddingTop="18dp"
+                android:layout_height="wrap_content"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp">
+
+                <TextView
+                    android:id="@+id/text5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:textStyle="bold"
+                    android:text="@string/txt_payment"
+                    android:paddingEnd="16dp" />
+
+                <TextView
+                    android:id="@+id/tv_payment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:layout_toEndOf="@id/text5"
+                    android:textColor="@color/color_373d4d"
+                    tools:text="医生" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/app_hei_line"
+                    android:background="@color/color_ebedf0"
+                    android:layout_below="@id/tv_payment"
+                    android:layout_marginTop="18dp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:paddingTop="18dp"
+                android:layout_height="wrap_content"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp">
+
+                <TextView
+                    android:id="@+id/text2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:textStyle="bold"
+                    android:text="@string/txt_first_diagnosis"
+                    android:paddingEnd="16dp" />
+
+                <TextView
+                    android:id="@+id/tv_initiate_diagnosis"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:layout_toEndOf="@id/text2"
+                    android:textColor="@color/color_373d4d"
+                    tools:text="医生" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/app_hei_line"
+                    android:background="@color/color_ebedf0"
+                    android:layout_below="@id/tv_initiate_diagnosis"
+                    android:layout_marginTop="18dp" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="@color/color_f8f9fa" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:paddingTop="18dp"
+                android:layout_height="wrap_content"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp">
+
+                <TextView
+                    android:id="@+id/text9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:textStyle="bold"
+                    android:text="@string/txt_receiving_status"
+                    android:paddingEnd="16dp" />
+
+                <TextView
+                    android:id="@+id/tv_receiving_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:layout_toEndOf="@id/text9"
+                    android:textColor="@color/color_373d4d"
+                    tools:text="医生" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/app_hei_line"
+                    android:background="@color/color_ebedf0"
+                    android:layout_below="@id/tv_receiving_status"
+                    android:layout_marginTop="18dp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/layout_receiving_depart"
+                android:layout_width="match_parent"
+                android:paddingTop="18dp"
+                android:layout_height="wrap_content"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/text7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:textStyle="bold"
+                    android:text="@string/txt_receiving_depart"
+                    android:paddingEnd="16dp" />
+
+                <TextView
+                    android:id="@+id/tv_receiving_depart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:layout_toEndOf="@id/text7"
+                    android:textColor="@color/color_373d4d"
+                    tools:text="医生" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/app_hei_line"
+                    android:background="@color/color_ebedf0"
+                    android:layout_below="@id/tv_receiving_depart"
+                    android:layout_marginTop="18dp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/layout_receiving_hospital"
+                android:layout_width="match_parent"
+                android:paddingTop="18dp"
+                android:layout_height="wrap_content"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/text8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:textStyle="bold"
+                    android:text="@string/txt_receiving_hospital"
+                    android:paddingEnd="16dp" />
+
+                <TextView
+                    android:id="@+id/tv_receiving_hospital"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:layout_toEndOf="@id/text8"
+                    android:textColor="@color/color_373d4d"
+                    tools:text="医生" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/app_hei_line"
+                    android:background="@color/color_ebedf0"
+                    android:layout_below="@id/tv_receiving_hospital"
+                    android:layout_marginTop="18dp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/layout_reserve_time"
+                android:layout_width="match_parent"
+                android:paddingTop="18dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/text10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:textStyle="bold"
+                    android:text="@string/txt_reserve_time"
+                    android:paddingEnd="16dp" />
+
+                <TextView
+                    android:id="@+id/tv_reserve_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:layout_toEndOf="@id/text10"
+                    android:textColor="@color/color_373d4d"
+                    tools:text="医生" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/app_hei_line"
+                    android:background="@color/color_ebedf0"
+                    android:layout_below="@id/text10"
+                    android:layout_marginTop="18dp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/layout_notice"
+                android:layout_width="match_parent"
+                android:paddingTop="18dp"
+                android:layout_height="wrap_content"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/text12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:textStyle="bold"
+                    android:text="@string/txt_notice"
+                    android:paddingEnd="16dp" />
+
+                <TextView
+                    android:id="@+id/tv_transfer_notice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:layout_toEndOf="@id/text12"
+                    android:textColor="@color/color_373d4d"
+                    tools:text="医生" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/app_hei_line"
+                    android:background="@color/color_ebedf0"
+                    android:layout_below="@id/tv_transfer_notice"
+                    android:layout_marginTop="18dp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/layout_edit_transfer"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_1491fc"
+                    android:layout_centerInParent="true"
+                    android:textSize="@dimen/text_15"
+                    android:drawableStart="@mipmap/ic_edit"
+                    android:drawablePadding="4dp"
+                    android:gravity="center"
+                    android:text="@string/txt_edit_transfer" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:background="@color/color_f8f9fa" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/layout_received"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_height="68dp"
+        android:background="@color/color_ffffff"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
+
+        <TextView
+            android:id="@+id/tv_transfer_other"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="38dp"
+            android:background="@drawable/corner28_stroke1_1491fc"
+            android:text="@string/txt_transfer_other"
+            android:gravity="center"
+            android:textSize="@dimen/text_14"
+            android:textColor="@color/color_1491fc"
+            android:layout_marginEnd="10dp"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/tv_refuse"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="38dp"
+            android:background="@drawable/corner28_stroke1_1491fc"
+            android:text="@string/txt_refuse"
+            android:gravity="center"
+            android:textSize="@dimen/text_14"
+            android:textColor="@color/color_1491fc"
+            android:layout_marginEnd="10dp" />
+
+        <TextView
+            android:id="@+id/tv_received"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="38dp"
+            android:background="@drawable/corner28_1491fc_bg"
+            android:text="@string/txt_visiting"
+            android:textColor="@color/color_ffffff"
+            android:textSize="@dimen/text_14"
+            android:gravity="center" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_contact"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_height="68dp"
+        android:background="@color/color_ffffff"
+        android:gravity="center_vertical"
+        android:visibility="gone"
+        android:paddingStart="35dp"
+        android:paddingEnd="35dp">
+
+        <TextView
+            android:id="@+id/tv_contact_patient"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="38dp"
+            android:background="@drawable/corner28_stroke1_1491fc"
+            android:text="@string/txt_contact_patient"
+            android:gravity="center"
+            android:textSize="@dimen/text_14"
+            android:textColor="@color/color_1491fc"
+            android:layout_marginEnd="14dp"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/tv_contact_doctor"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="38dp"
+            android:background="@drawable/corner28_1491fc_bg"
+            android:text="@string/txt_contact_doctor"
+            android:gravity="center"
+            android:textSize="@dimen/text_14"
+            android:textColor="@color/color_ffffff"
+            android:layout_marginEnd="10dp" />
+
+    </LinearLayout>
+
+</RelativeLayout>

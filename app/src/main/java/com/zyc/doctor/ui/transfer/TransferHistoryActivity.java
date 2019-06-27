@@ -113,7 +113,7 @@ public class TransferHistoryActivity extends BaseActivity
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        startActivity(new Intent(this, TransferDetailActivity.class));
+        startActivity(new Intent(this, TransferToDetailActivity.class));
     }
 
     /**

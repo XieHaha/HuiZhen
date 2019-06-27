@@ -20,6 +20,7 @@
     <string name="title_add_check">添加检查项目</string>
     <string name="title_add_transfer">发起转诊(%s)</string>
     <string name="title_transfer_detail">预约转诊详情</string>
+    <string name="title_received_transfer_detail">已接诊详情</string>
     <string name="title_transfer_apply">转诊申请</string>
 
     <!--公用-->
@@ -34,6 +35,7 @@
     <string name="txt_exit">退出</string>
     <string name="txt_clear">清除</string>
     <string name="txt_add">添加</string>
+    <string name="txt_refuse">拒绝</string>
     <string name="txt_delete_all">全部删除</string>
     <string name="txt_next">下一步</string>
     <string name="txt_last">上一步</string>
@@ -52,6 +54,7 @@
     <string name="txt_yes">是</string>
     <string name="txt_no">否</string>
     <string name="txt_notice">注意事项</string>
+    <string name="txt_doctor_phone">医生手机\n号</string>
 
     <!--主页-->
     <string name="txt_message">消息</string>
@@ -188,6 +191,7 @@
     <string name="txt_contact_patient">联系患者</string>
     <string name="txt_patient_name_hint">患者姓名必须和身份证一致</string>
     <string name="txt_patient_id_card_hint">请填写患者身份证号码</string>
+    <string name="txt_id_card_hint">身份证号</string>
     <string name="txt_patient_id_card">身份证</string>
     <string name="txt_identify">确认身份</string>
     <string name="txt_material">完善资料</string>
@@ -219,6 +223,7 @@
     <string name="txt_transfer_purpose">转诊目的</string>
     <string name="txt_transfer_purpose_hint">请输入转诊目的</string>
     <string name="txt_transfer_again">重新转诊</string>
+    <string name="txt_transfer_other">转给他人</string>
     <string name="txt_contact_doctor">联系接诊医生</string>
     <string name="txt_transfer_time">转诊时间</string>
     <string name="txt_transfer_type">转诊类型</string>
@@ -234,9 +239,11 @@
     <string name="txt_reset_hospital_depart">重置医院科室</string>
 
     <!--转诊申请-->
+    <string name="txt_visiting">接诊</string>
     <string name="txt_received">已接收</string>
     <string name="txt_wait">待处理</string>
     <string name="txt_reserve_visit_time">预约就诊时间：</string>
+    <string name="txt_edit_transfer">变更接诊信息</string>
 
     <!--toast-->
     <string name="toast_public_current_no_network">当前无网络连接</string>

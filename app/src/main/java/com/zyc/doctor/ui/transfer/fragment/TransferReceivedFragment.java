@@ -1,5 +1,6 @@
 package com.zyc.doctor.ui.transfer.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -8,11 +9,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.yht.frame.data.CommonData;
 import com.yht.frame.data.bean.PatientBean;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.zyc.doctor.R;
 import com.zyc.doctor.ui.adapter.TransferReceivedAdapter;
+import com.zyc.doctor.ui.transfer.TransferFromDetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +28,8 @@ import butterknife.BindView;
  * @des 转诊已接收
  */
 public class TransferReceivedFragment extends BaseFragment
-        implements BaseQuickAdapter.RequestLoadMoreListener, SwipeRefreshLayout.OnRefreshListener {
+        implements BaseQuickAdapter.RequestLoadMoreListener, SwipeRefreshLayout.OnRefreshListener,
+                   BaseQuickAdapter.OnItemClickListener {
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.layout_refresh)
@@ -49,6 +53,7 @@ public class TransferReceivedFragment extends BaseFragment
         layoutRefresh.setOnRefreshListener(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         transferReceivedAdapter = new TransferReceivedAdapter(R.layout.item_received_patient, data);
+        transferReceivedAdapter.setOnItemClickListener(this);
         transferReceivedAdapter.setLoadMoreView(new CustomLoadMoreView());
         transferReceivedAdapter.setOnLoadMoreListener(this, recyclerView);
         recyclerView.setAdapter(transferReceivedAdapter);
@@ -65,6 +70,13 @@ public class TransferReceivedFragment extends BaseFragment
         }
         transferReceivedAdapter.setNewData(data);
         transferReceivedAdapter.loadMoreEnd();
+    }
+
+    @Override
+    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+        Intent intent = new Intent(getContext(), TransferFromDetailActivity.class);
+        intent.putExtra(CommonData.KEY_IS_RECEIVE_TRANSFER, true);
+        startActivity(intent);
     }
 
     @Override

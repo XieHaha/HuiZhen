@@ -182,7 +182,7 @@
             android:label="@string/title_add_transfer"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
-            android:name=".ui.transfer.TransferDetailActivity"
+            android:name=".ui.transfer.TransferToDetailActivity"
             android:screenOrientation="portrait"
             android:label="@string/title_transfer_detail"
             android:windowSoftInputMode="adjustResize|stateHidden" />
@@ -196,6 +196,10 @@
             android:screenOrientation="portrait"
             android:label="@string/title_transfer_apply"
             android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity android:name=".ui.transfer.TransferFromDetailActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/title_received_transfer_detail"
+            android:windowSoftInputMode="adjustResize|stateHidden"/>
 
         <!--环信消息点击事件处理-->
         <receiver
