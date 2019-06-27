@@ -186,6 +186,11 @@
             android:screenOrientation="portrait"
             android:label="@string/title_transfer_detail"
             android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".ui.transfer.SelectReceivingDoctorActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/txt_select_doctor"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
 
         <!--环信消息点击事件处理-->
         <receiver

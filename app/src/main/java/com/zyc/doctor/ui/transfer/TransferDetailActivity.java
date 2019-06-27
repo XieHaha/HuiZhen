@@ -87,20 +87,10 @@ public class TransferDetailActivity extends BaseActivity {
                                      .show();
                 break;
             case R.id.tv_contact_patient:
-                new HintDialog(this).setTitleString(getString(R.string.txt_hint))
-                                    .setContentString(getString(R.string.txt_contact_hotline))
-                                    .setEnterBtnTxt(getString(R.string.txt_call))
-                                    .setEnterSelect(true)
-                                    .setOnEnterClickListener(() -> callPhone(""))
-                                    .show();
+                new HintDialog(this).setPhone("").setOnEnterClickListener(() -> callPhone("")).show();
                 break;
             case R.id.tv_contact_doctor:
-                new HintDialog(this).setTitleString(getString(R.string.txt_hint))
-                                    .setContentString(getString(R.string.txt_contact_hotline))
-                                    .setEnterBtnTxt(getString(R.string.txt_call))
-                                    .setEnterSelect(true)
-                                    .setOnEnterClickListener(() -> callPhone(""))
-                                    .show();
+                new HintDialog(this).setPhone("").setOnEnterClickListener(() -> callPhone("")).show();
                 break;
             default:
                 break;

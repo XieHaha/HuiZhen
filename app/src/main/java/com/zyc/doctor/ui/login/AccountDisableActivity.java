@@ -24,11 +24,6 @@ public class AccountDisableActivity extends BaseActivity {
 
     @OnClick(R.id.tv_contact)
     public void onViewClicked() {
-        new HintDialog(this).setTitleString(getString(R.string.txt_hint))
-                            .setContentString(getString(R.string.txt_contact_hotline))
-                            .setEnterBtnTxt(getString(R.string.txt_call))
-                            .setEnterSelect(true)
-                            .setOnEnterClickListener(() -> callPhone(""))
-                            .show();
+        new HintDialog(this).setPhone("").setOnEnterClickListener(() -> callPhone("")).show();
     }
 }

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_receiving_doctor"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/color_ffffff"
+    android:paddingStart="20dp"
+    android:paddingEnd="15dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="20dp"
+    android:visibility="visible">
+
+    <ImageView
+        android:id="@+id/iv_receiving_doctor"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:src="@mipmap/ic_default_header_r" />
+
+    <TextView
+        android:id="@+id/tv_receiving_doctor_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/color_373d4d"
+        android:textStyle="bold"
+        android:textSize="@dimen/text_16"
+        tools:text="姓名"
+        android:layout_marginStart="12dp"
+        android:layout_toEndOf="@id/iv_receiving_doctor" />
+
+    <TextView
+        android:id="@+id/tv_receiving_doctor_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/color_a1a8b3"
+        android:textSize="@dimen/text_13"
+        tools:text="职位"
+        android:layout_marginStart="8dp"
+        android:layout_alignBottom="@id/tv_receiving_doctor_name"
+        android:layout_toEndOf="@id/tv_receiving_doctor_name" />
+
+    <TextView
+        android:id="@+id/tv_receiving_doctor_hospital_depart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/color_a1a8b3"
+        android:textSize="@dimen/text_13"
+        tools:text="医院  科室"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/tv_receiving_doctor_name"
+        android:layout_toEndOf="@id/iv_receiving_doctor" />
+
+    <ImageView
+        android:id="@+id/iv_receiving_doctor_call"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true"
+        android:padding="5dp"
+        android:src="@mipmap/ic_call" />
+
+</RelativeLayout>

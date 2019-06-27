@@ -42,10 +42,11 @@
     <string name="txt_none_patient">暂无患者</string>
     <string name="txt_none_recording">暂无记录</string>
     <string name="txt_none_upgrade">功能升级</string>
+    <string name="txt_none_doctor">无合作医生</string>
     <string name="txt_camera">拍照</string>
     <string name="txt_photo">从手机相册选择</string>
     <string name="txt_contact">联系我们</string>
-    <string name="txt_contact_hotline">您将要拨打医助热线：\n028&#8211;88888888</string>
+    <string name="txt_contact_hotline">您将要拨打医助热线：\n</string>
     <string name="txt_calc_num">%d/500</string>
     <string name="txt_yes">是</string>
     <string name="txt_no">否</string>
@@ -224,6 +225,10 @@
     <string name="txt_family_require">家属要求</string>
     <string name="txt_rehabilitation">康复</string>
     <string name="txt_other">其他</string>
+    <string name="txt_select_doctor">选择医生</string>
+    <string name="txt_select_doctor_hint">请输入医生姓名搜索</string>
+    <string name="txt_select_hospital_depart">请选择医院科室</string>
+    <string name="txt_reset_hospital_depart">重置医院科室</string>
     <!--toast-->
     <string name="toast_public_current_no_network">当前无网络连接</string>
     <string name="toast_id_card_error">身份证号码格式错误</string>

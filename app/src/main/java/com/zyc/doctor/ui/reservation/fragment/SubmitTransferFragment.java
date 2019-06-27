@@ -27,6 +27,7 @@ import com.yht.frame.widgets.view.ExpandableLayout;
 import com.zyc.doctor.R;
 import com.zyc.doctor.ZycApplication;
 import com.zyc.doctor.ui.check.listener.OnCheckListener;
+import com.zyc.doctor.ui.transfer.SelectReceivingDoctorActivity;
 import com.zyc.doctor.utils.glide.GlideHelper;
 
 import java.io.File;
@@ -91,9 +92,9 @@ public class SubmitTransferFragment extends BaseFragment implements RadioGroup.O
     private Uri mCurrentPhotoUri;
     private String mCurrentPhotoPath;
     /**
-     * 根据检查项目选择医院
+     * 选择接诊医生
      */
-    public static final int REQUEST_CODE_SELECT_HOSPITAL = 100;
+    public static final int REQUEST_CODE_SELECT_DOCTOR = 100;
 
     @Override
     public int getLayoutID() {
@@ -149,21 +150,20 @@ public class SubmitTransferFragment extends BaseFragment implements RadioGroup.O
      * 全部删除已经选择的检查项目和医院
      */
     private void deleteAllSelectCheckType() {
-        layoutOther.collapse();
         tvSelect.setVisibility(View.VISIBLE);
+        layoutReceivingDoctor.setVisibility(View.GONE);
     }
 
     @OnClick({
-            R.id.layout_select_receiving_doctor, R.id.iv_receiving_doctor_delete, R.id.iv_delete_one,
+            R.id.layout_select_receiving_doctor, R.id.iv_receiving_doctor_call, R.id.iv_delete_one,
             R.id.layout_upload_one, R.id.tv_submit_next })
     public void onViewClicked(View view) {
         Intent intent;
         switch (view.getId()) {
             case R.id.layout_select_receiving_doctor:
                 if (tvSelect.getVisibility() == View.VISIBLE) {
-                    //                    intent = new Intent(getContext(), SelectCheckTypeActivity.class);
-                    //                    startActivityForResult(intent, REQUEST_CODE_SELECT_HOSPITAL);
-                    layoutReceivingDoctor.setVisibility(View.VISIBLE);
+                    intent = new Intent(getContext(), SelectReceivingDoctorActivity.class);
+                    startActivityForResult(intent, REQUEST_CODE_SELECT_DOCTOR);
                 }
                 break;
             case R.id.layout_upload_one:
@@ -177,7 +177,7 @@ public class SubmitTransferFragment extends BaseFragment implements RadioGroup.O
                     checkListener.onStepThree();
                 }
                 break;
-            case R.id.iv_receiving_doctor_delete:
+            case R.id.iv_receiving_doctor_call:
                 deleteAllSelectCheckType();
                 break;
             default:
@@ -221,7 +221,9 @@ public class SubmitTransferFragment extends BaseFragment implements RadioGroup.O
                 cameraTempFile = new File(mCurrentPhotoPath);
                 initImage(true);
                 break;
-            case REQUEST_CODE_SELECT_HOSPITAL:
+            case REQUEST_CODE_SELECT_DOCTOR:
+                layoutReceivingDoctor.setVisibility(View.VISIBLE);
+                tvSelect.setVisibility(View.GONE);
                 break;
             default:
                 break;

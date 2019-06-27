@@ -17,6 +17,7 @@ import com.yht.frame.widgets.dialog.listener.OnEnterClickListener;
  * @author dundun
  */
 public class HintDialog extends Dialog implements OnClickListener {
+    private Context context;
     private TextView tvEnter, tvCancel, tvTitle, tvContent;
     /**
      * 初始值
@@ -30,6 +31,7 @@ public class HintDialog extends Dialog implements OnClickListener {
 
     public HintDialog(Context context) {
         super(context, R.style.normal_dialog);
+        this.context = context;
     }
 
     @Override
@@ -78,6 +80,14 @@ public class HintDialog extends Dialog implements OnClickListener {
     }
 
     /**
+     * @param titleStringId 标题
+     */
+    public HintDialog setTitleString(int titleStringId) {
+        titleString = context.getString(titleStringId);
+        return this;
+    }
+
+    /**
      * 设置提示语的文本
      *
      * @param contentString 内容
@@ -87,11 +97,21 @@ public class HintDialog extends Dialog implements OnClickListener {
         return this;
     }
 
+    public HintDialog setContentString(int contentStringId) {
+        contentString = context.getString(contentStringId);
+        return this;
+    }
+
     /**
      * 设置确定按钮的文本
      */
     public HintDialog setEnterBtnTxt(String str) {
         this.enterString = str;
+        return this;
+    }
+
+    public HintDialog setEnterBtnTxt(int enterStringId) {
+        enterString = context.getString(enterStringId);
         return this;
     }
 
@@ -108,6 +128,11 @@ public class HintDialog extends Dialog implements OnClickListener {
         return this;
     }
 
+    public HintDialog setCancleBtnTxt(int cancelStringId) {
+        cancelString = context.getString(cancelStringId);
+        return this;
+    }
+
     @Override
     public void show() {
         if (!isShow) {
@@ -119,6 +144,17 @@ public class HintDialog extends Dialog implements OnClickListener {
             tvCancel.setText(cancelString);
             isShow = true;
         }
+    }
+
+    /**
+     * 拨打电话封装
+     */
+    public HintDialog setPhone(String phone) {
+        setTitleString(R.string.txt_hint);
+        setContentString(R.string.txt_contact_hotline + phone);
+        setEnterBtnTxt(R.string.txt_call);
+        setEnterSelect(true);
+        return this;
     }
 
     private OnEnterClickListener onEnterClickListener = null;
