@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    android:background="@color/color_f8f9fa">
+
+    <include layout="@layout/public_title" />
+
+    <LinearLayout
+        android:id="@+id/layout_hospital"
+        android:layout_width="match_parent"
+        android:layout_height="59dp"
+        android:background="@color/color_ffffff"
+        android:gravity="center_vertical"
+        android:paddingStart="20dp"
+        android:layout_marginTop="10dp"
+        android:paddingEnd="20dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@string/txt_receiving_hospital"
+            android:textColor="@color/color_373d4d"
+            android:textSize="@dimen/text_16"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_hospital"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/txt_select_hint"
+            android:textColor="@color/txt_color_373d4d_a1a8b3_selector"
+            android:textSize="@dimen/text_16"
+            android:layout_marginEnd="11dp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_right" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/app_hei_line"
+        android:background="@color/color_ebedf0"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp" />
+
+    <LinearLayout
+        android:id="@+id/layout_time"
+        android:layout_width="match_parent"
+        android:layout_height="59dp"
+        android:background="@color/color_ffffff"
+        android:gravity="center_vertical"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@string/txt_reserve_visit_time"
+            android:textColor="@color/color_373d4d"
+            android:textSize="@dimen/text_16"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/txt_color_373d4d_a1a8b3_selector"
+            android:text="@string/txt_select_hint"
+            android:textSize="@dimen/text_16"
+            android:layout_marginEnd="11dp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_right" />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="19dp"
+        android:paddingStart="20dp"
+        android:paddingTop="19dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/color_ffffff">
+
+        <TextView
+            android:id="@+id/title3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_373d4d"
+            android:textSize="@dimen/text_16"
+            android:textStyle="bold"
+            android:text="@string/txt_notice" />
+
+        <TextView
+            android:id="@+id/tv_not_required"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_a1a8b3"
+            android:textSize="@dimen/text_13"
+            android:layout_toEndOf="@id/title3"
+            android:layout_marginStart="10dp"
+            android:text="@string/txt_not_required"
+            android:layout_alignBottom="@id/title3"
+            android:visibility="visible" />
+
+        <View
+            android:id="@+id/line3"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/app_hei_line"
+            android:background="@color/color_ebedf0"
+            android:layout_below="@id/title3"
+            android:layout_marginTop="19dp"
+            android:layout_marginBottom="12dp" />
+
+        <EditText
+            android:id="@+id/et_notice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="60dp"
+            android:layout_below="@id/line3"
+            android:background="@null"
+            android:hint="@string/txt_edit_transfer_hint"
+            android:textColorHint="@color/color_a1a8b3"
+            android:textSize="@dimen/text_16"
+            android:gravity="top"
+            android:singleLine="true"
+            android:imeOptions="actionDone"
+            android:textColor="@color/color_373d4d"
+            android:layout_marginEnd="20dp" />
+
+        <TextView
+            android:id="@+id/tv_notice_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_16"
+            android:textColor="#c5c8cc"
+            android:layout_below="@id/et_notice"
+            android:text="@string/txt_calc_num"
+            android:gravity="center_vertical"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_submit"
+        android:layout_width="match_parent"
+        android:layout_marginEnd="35dp"
+        android:layout_marginStart="35dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/selector_public_next"
+        android:text="@string/txt_submit"
+        android:gravity="center"
+        android:textSize="@dimen/text_16"
+        android:textColor="@color/color_ffffff" />
+
+</LinearLayout>

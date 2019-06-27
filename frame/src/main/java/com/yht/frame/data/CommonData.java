@@ -17,6 +17,18 @@ public interface CommonData {
      */
     String KEY_IS_RECEIVE_TRANSFER = "key_is_receive_transfer";
     /**
+     * 变更接诊信息  or  接诊
+     */
+    String KEY_RECEIVE_OR_EDIT_VISIT = "key_receive_or_edit_visit";
+    /**
+     * 接诊医院
+     */
+    String KEY_RECEIVE_HOSPITAL = "key_receive_hospital";
+    /**
+     * 预约就诊时间
+     */
+    String KEY_RESERVE_TIME = "key_reserve_time";
+    /**
      * 公用数据key
      */
     String KEY_PUBLIC_STRING = "key_public_string";

@@ -26,7 +26,7 @@ import com.zhihu.matisse.Matisse;
 import com.zyc.doctor.R;
 import com.zyc.doctor.ZycApplication;
 import com.zyc.doctor.ui.auth.SelectDepartActivity;
-import com.zyc.doctor.ui.auth.SelectHospitalActivity;
+import com.zyc.doctor.ui.auth.SelectHospitalByAuthActivity;
 import com.zyc.doctor.ui.auth.listener.OnStepListener;
 import com.zyc.doctor.ui.dialog.DownDialog;
 import com.zyc.doctor.ui.dialog.listener.OnMediaItemClickListener;
@@ -112,7 +112,7 @@ public class AuthBaseFragment extends BaseFragment implements OnMediaItemClickLi
                 new DownDialog(getContext()).setData(data).setOnMediaItemClickListener(this).show();
                 break;
             case R.id.layout_base_hospital:
-                intent = new Intent(getContext(), SelectHospitalActivity.class);
+                intent = new Intent(getContext(), SelectHospitalByAuthActivity.class);
                 startActivityForResult(intent, REQUEST_CODE_HOSPITAL);
                 break;
             case R.id.layout_base_depart:

@@ -27,9 +27,9 @@ import static com.zyc.doctor.ui.auth.fragment.AuthBaseFragment.REQUEST_CODE_HOSP
 /**
  * @author 顿顿
  * @date 19/6/4 17:53
- * @des 医院选择
+ * @des 医院选择 认证
  */
-public class SelectHospitalActivity extends BaseActivity implements BaseQuickAdapter.OnItemClickListener {
+public class SelectHospitalByAuthActivity extends BaseActivity implements BaseQuickAdapter.OnItemClickListener {
     @BindView(R.id.et_search_hospital)
     SuperEditText etSearchHospital;
     @BindView(R.id.rv_hospital)
@@ -48,7 +48,7 @@ public class SelectHospitalActivity extends BaseActivity implements BaseQuickAda
 
     @Override
     public int getLayoutID() {
-        return R.layout.act_select_hospital;
+        return R.layout.act_select_hospital_by_auth;
     }
 
     @Override

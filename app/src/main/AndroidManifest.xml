@@ -92,7 +92,7 @@
             android:label="@string/title_auth"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.auth.SelectHospitalActivity"
+            android:name=".ui.auth.SelectHospitalByAuthActivity"
             android:screenOrientation="portrait"
             android:label="@string/title_select_hospital"
             android:windowSoftInputMode="adjustPan|stateHidden" />
@@ -196,10 +196,26 @@
             android:screenOrientation="portrait"
             android:label="@string/title_transfer_apply"
             android:windowSoftInputMode="adjustResize|stateHidden" />
-        <activity android:name=".ui.transfer.TransferFromDetailActivity"
+        <activity
+            android:name=".ui.transfer.TransferFromDetailActivity"
             android:screenOrientation="portrait"
             android:label="@string/title_received_transfer_detail"
-            android:windowSoftInputMode="adjustResize|stateHidden"/>
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".ui.transfer.TransferEditActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/txt_visiting"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".ui.transfer.SelectHospitalByTransferActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/title_select_hospital"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".ui.transfer.TransferAgainActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/title_transfer_again"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
 
         <!--环信消息点击事件处理-->
         <receiver

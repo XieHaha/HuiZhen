@@ -20,6 +20,6 @@ public class HospitalSelectAdapter extends BaseQuickAdapter<String, BaseViewHold
 
     @Override
     protected void convert(BaseViewHolder helper, String item) {
-        helper.setText(R.id.tv_hospital_name, item);
+        helper.setText(R.id.tv_hospital_name, item).setText(R.id.tv_hospital_address, "地址");
     }
 }

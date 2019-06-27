@@ -1,5 +1,6 @@
 package com.zyc.doctor.ui.transfer;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
@@ -120,7 +121,6 @@ public class TransferFromDetailActivity extends BaseActivity {
      */
     private void initPage() {
         if (isReceive) {
-            layoutCall.setVisibility(View.VISIBLE);
             layoutDoctorPhone.setVisibility(View.VISIBLE);
             layoutReceivingDepart.setVisibility(View.VISIBLE);
             layoutReceivingHospital.setVisibility(View.VISIBLE);
@@ -128,6 +128,7 @@ public class TransferFromDetailActivity extends BaseActivity {
             layoutNotice.setVisibility(View.VISIBLE);
             layoutEditTransfer.setVisibility(View.VISIBLE);
             layoutContact.setVisibility(View.VISIBLE);
+            layoutCall.setVisibility(View.GONE);
             layoutReceived.setVisibility(View.GONE);
         }
     }
@@ -163,16 +164,26 @@ public class TransferFromDetailActivity extends BaseActivity {
             R.id.layout_call, R.id.layout_edit_transfer, R.id.tv_transfer_other, R.id.tv_refuse, R.id.tv_received,
             R.id.tv_contact_doctor, R.id.tv_contact_patient })
     public void onViewClicked(View view) {
+        Intent intent;
         switch (view.getId()) {
             case R.id.layout_call:
                 break;
             case R.id.layout_edit_transfer:
+                intent = new Intent(this, TransferEditActivity.class);
+                intent.putExtra(CommonData.KEY_RECEIVE_OR_EDIT_VISIT, true);
+                intent.putExtra(CommonData.KEY_RECEIVE_HOSPITAL, "接诊医院");
+                intent.putExtra(CommonData.KEY_RESERVE_TIME, "预约就诊时间");
+                startActivity(intent);
                 break;
             case R.id.tv_transfer_other:
+                intent = new Intent(this, TransferAgainActivity.class);
+                startActivity(intent);
                 break;
             case R.id.tv_refuse:
                 break;
             case R.id.tv_received:
+                intent = new Intent(this, TransferEditActivity.class);
+                startActivity(intent);
                 break;
             case R.id.tv_contact_patient:
                 break;
