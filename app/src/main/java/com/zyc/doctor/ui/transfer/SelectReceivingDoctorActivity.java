@@ -244,6 +244,7 @@ public class SelectReceivingDoctorActivity extends BaseActivity
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         if (adapter.getItem(position) instanceof PatientBean) {
+            hideSoftInputFromWindow(etSearchCheckType);
             setResult(RESULT_OK);
             finish();
         }

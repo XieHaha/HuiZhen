@@ -12,6 +12,8 @@
     <color name="color_dfe2e6">#DFE2E6</color>
     <!--一级文字-->
     <color name="color_373d4d">#373D4D</color>
+    <!--一级文字  少数-->
+    <color name="color_17242D">#17242D</color>
     <!--辅助文字-->
     <color name="color_6a6f80">#6A6F80</color>
     <!--提示文字-->
@@ -20,7 +22,6 @@
     <color name="color_ebedf0">#EBEDF0</color>
     <!--背景色-->
     <color name="color_f8f9fa">#F8F9FA</color>
-
 
 
     <color name="color_ffffff">#FFFFFF</color>

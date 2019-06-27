@@ -20,9 +20,9 @@ import com.yzq.zxinglibrary.android.CaptureActivity;
 import com.yzq.zxinglibrary.common.Constant;
 import com.zyc.doctor.R;
 import com.zyc.doctor.ui.check.CheckHistoryActivity;
-import com.zyc.doctor.ui.reservation.ReservationCheckOrTransferActivity;
-import com.zyc.doctor.ui.login.LoginOptionsActivity;
 import com.zyc.doctor.ui.personal.PersonalActivity;
+import com.zyc.doctor.ui.reservation.ReservationCheckOrTransferActivity;
+import com.zyc.doctor.ui.transfer.TransferApplyActivity;
 import com.zyc.doctor.ui.transfer.TransferHistoryActivity;
 
 import java.util.Objects;
@@ -109,7 +109,7 @@ public class WorkerFragment extends BaseFragment {
                 startActivity(new Intent(getContext(), TransferHistoryActivity.class));
                 break;
             case R.id.layout_transfer_apply:
-                intent = new Intent(getContext(), LoginOptionsActivity.class);
+                intent = new Intent(getContext(), TransferApplyActivity.class);
                 startActivity(intent);
                 break;
             case R.id.view_flipper:

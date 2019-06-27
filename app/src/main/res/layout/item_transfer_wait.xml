@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/color_f8f9fa"
+    android:paddingStart="12dp"
+    android:paddingEnd="12dp"
+    android:paddingTop="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/corner10_ffffff_bg"
+        android:padding="20dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv_transfer_img"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@mipmap/ic_default_header_r" />
+
+            <TextView
+                android:id="@+id/tv_transfer_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/iv_transfer_img"
+                android:layout_marginStart="12dp"
+                tools:text="姓名"
+                android:textSize="@dimen/text_16"
+                android:layout_centerVertical="true"
+                android:textColor="@color/color_373d4d"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/app_hei_line"
+            android:layout_marginTop="11dp"
+            android:background="@color/color_ebedf0" />
+
+        <LinearLayout
+            android:id="@+id/layout_transfer_purpose"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:paddingTop="13dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_373d4d"
+                android:textSize="@dimen/text_16"
+                android:textStyle="bold"
+                android:text="@string/txt_transfer_purpose" />
+
+            <TextView
+                android:id="@+id/tv_transfer_purpose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_373d4d"
+                android:textSize="@dimen/text_16"
+                android:layout_marginStart="16dp"
+                tools:text="测试测试" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_transfer_doctor"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_373d4d"
+                android:textSize="@dimen/text_16"
+                android:textStyle="bold"
+                android:text="@string/txt_transfer_doctor" />
+
+            <TextView
+                android:id="@+id/tv_transfer_doctor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_373d4d"
+                android:textSize="@dimen/text_16"
+                android:layout_marginStart="16dp"
+                tools:text="测试测试" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_transfer_depart"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_373d4d"
+                android:textSize="@dimen/text_16"
+                android:textStyle="bold"
+                android:text="@string/txt_transfer_depart" />
+
+            <TextView
+                android:id="@+id/tv_transfer_depart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_373d4d"
+                android:textSize="@dimen/text_16"
+                android:layout_marginStart="16dp"
+                tools:text="测试测试" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_transfer_hospital"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_373d4d"
+                android:textSize="@dimen/text_16"
+                android:textStyle="bold"
+                android:text="@string/txt_transfer_hospital" />
+
+            <TextView
+                android:id="@+id/tv_transfer_hospital"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_373d4d"
+                android:textSize="@dimen/text_16"
+                android:layout_marginStart="16dp"
+                tools:text="测试测试" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_transfer_time"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_373d4d"
+                android:textSize="@dimen/text_16"
+                android:textStyle="bold"
+                android:text="@string/txt_transfer_time" />
+
+            <TextView
+                android:id="@+id/txt_transfer_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_373d4d"
+                android:textSize="@dimen/text_16"
+                android:layout_marginStart="16dp"
+                tools:text="测试测试" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:src="@mipmap/ic_transfer_wait"
+        android:layout_marginTop="20dp"
+        android:visibility="visible" />
+
+</RelativeLayout>

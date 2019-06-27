@@ -2,6 +2,7 @@ package com.yht.frame.ui;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -11,6 +12,8 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -247,6 +250,22 @@ public abstract class BaseActivity<T> extends RxAppCompatActivity
             window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
                             WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
+    }
+
+    /**
+     * 隐藏软键盘
+     */
+    public void hideSoftInputFromWindow(EditText editText) {
+        InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+    }
+
+    /**
+     * 打开软键盘
+     */
+    public void showSoftInputFromWindow(EditText editText) {
+        InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.showSoftInput(editText, InputMethodManager.SHOW_FORCED);
     }
 
     /**

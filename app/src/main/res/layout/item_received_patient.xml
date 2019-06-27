@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="110dp"
+    android:orientation="vertical"
+    android:paddingStart="20dp"
+    android:paddingTop="18dp">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_6a6f80"
+            android:textSize="@dimen/text_13"
+            android:text="@string/txt_reserve_visit_time" />
+
+        <TextView
+            android:id="@+id/tv_reserve_visit_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_6a6f80"
+            android:textSize="@dimen/text_13"
+            tools:text="2019年6月27日16:12:34" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="13dp"
+        android:layout_marginEnd="30dp">
+
+        <ImageView
+            android:id="@+id/iv_receiving_doctor"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:src="@mipmap/ic_default_header_r" />
+
+        <TextView
+            android:id="@+id/tv_receiving_doctor_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_17242D"
+            android:textStyle="bold"
+            android:textSize="@dimen/text_16"
+            tools:text="姓名"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@id/iv_receiving_doctor" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_receiving_doctor_name"
+            android:layout_toEndOf="@id/iv_receiving_doctor"
+            android:gravity="center_vertical"
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="10dp">
+
+            <TextView
+                android:id="@+id/tv_receiving_doctor_sex"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_a1a8b3"
+                android:textSize="@dimen/text_13"
+                tools:text="性别"
+                android:layout_marginEnd="6dp" />
+
+            <View
+                android:layout_width="@dimen/app_hei_line"
+                android:layout_height="12dp"
+                android:background="@color/color_ebedf0" />
+
+            <TextView
+                android:id="@+id/tv_receiving_doctor_age"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_a1a8b3"
+                android:textSize="@dimen/text_13"
+                tools:text="年龄"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="48dp" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/iv_receiving_doctor_call"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:padding="10dp"
+            android:src="@mipmap/ic_call" />
+
+    </RelativeLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/app_hei_line"
+        android:background="@color/color_ebedf0"
+        android:layout_marginTop="18dp"
+        android:layout_marginStart="54dp" />
+
+</LinearLayout>

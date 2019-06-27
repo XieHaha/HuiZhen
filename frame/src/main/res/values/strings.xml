@@ -20,6 +20,7 @@
     <string name="title_add_check">添加检查项目</string>
     <string name="title_add_transfer">发起转诊(%s)</string>
     <string name="title_transfer_detail">预约转诊详情</string>
+    <string name="title_transfer_apply">转诊申请</string>
 
     <!--公用-->
     <string name="txt_app_name">会珍</string>
@@ -157,6 +158,9 @@
     <string name="txt_receiving_doctor">接诊医生</string>
     <string name="txt_receiving_hospital">接诊医院</string>
     <string name="txt_receiving_depart">接诊科室</string>
+    <string name="txt_transfer_doctor">转诊医生</string>
+    <string name="txt_transfer_hospital">转诊医院</string>
+    <string name="txt_transfer_depart">转诊科室</string>
     <string name="txt_receiving_status">接诊状态</string>
     <string name="txt_initiate_hospital">发起医院</string>
     <string name="txt_currency_income_project">检查项目</string>
@@ -211,7 +215,6 @@
     <string name="txt_add_hospital_check">添加同院检查项目</string>
     <string name="txt_reserve_transfer">预约转诊</string>
     <string name="txt_bilateral_transfer">双向转诊</string>
-    <string name="txt_transfer_apply">转诊申请</string>
     <string name="txt_transfer_receiver">接收患者</string>
     <string name="txt_transfer_purpose">转诊目的</string>
     <string name="txt_transfer_purpose_hint">请输入转诊目的</string>
@@ -229,6 +232,12 @@
     <string name="txt_select_doctor_hint">请输入医生姓名搜索</string>
     <string name="txt_select_hospital_depart">请选择医院科室</string>
     <string name="txt_reset_hospital_depart">重置医院科室</string>
+
+    <!--转诊申请-->
+    <string name="txt_received">已接收</string>
+    <string name="txt_wait">待处理</string>
+    <string name="txt_reserve_visit_time">预约就诊时间：</string>
+
     <!--toast-->
     <string name="toast_public_current_no_network">当前无网络连接</string>
     <string name="toast_id_card_error">身份证号码格式错误</string>

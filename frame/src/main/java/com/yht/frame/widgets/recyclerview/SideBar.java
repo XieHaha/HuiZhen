@@ -38,7 +38,7 @@ public class SideBar extends View {
     /**
      * value
      */
-    private String indexStr;
+    private String indexStr = "";
 
     public SideBar(Context context) {
         this(context, null);
