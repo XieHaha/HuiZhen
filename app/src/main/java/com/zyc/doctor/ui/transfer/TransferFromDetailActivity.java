@@ -13,6 +13,8 @@ import com.bumptech.glide.Glide;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
+import com.yht.frame.widgets.dialog.HintDialog;
+import com.yht.frame.widgets.dialog.InputDialog;
 import com.yht.frame.widgets.edittext.SuperEditText;
 import com.zyc.doctor.R;
 import com.zyc.doctor.utils.glide.GlideHelper;
@@ -180,14 +182,17 @@ public class TransferFromDetailActivity extends BaseActivity {
                 startActivity(intent);
                 break;
             case R.id.tv_refuse:
+                new InputDialog(this).Builder().setCancleBtnTxt("拒绝").setEnterBtnTxt("再想想").setEnterSelect(true).show();
                 break;
             case R.id.tv_received:
                 intent = new Intent(this, TransferEditActivity.class);
                 startActivity(intent);
                 break;
             case R.id.tv_contact_patient:
+                new HintDialog(this).setPhone("").setOnEnterClickListener(() -> callPhone("")).show();
                 break;
             case R.id.tv_contact_doctor:
+                new HintDialog(this).setPhone("").setOnEnterClickListener(() -> callPhone("")).show();
                 break;
             default:
                 break;

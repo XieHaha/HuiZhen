@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -82,6 +83,9 @@ public class SideBar extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
+        if (TextUtils.isEmpty(indexStr)) {
+            canvas.drawText("", 0, 0, mPaint);
+        }
         for (int i = 0; i < indexStr.length(); i++) {
             String textTag = indexStr.substring(i, i + 1);
             float xPos = (mWidth - mPaint.measureText(textTag)) / 2;

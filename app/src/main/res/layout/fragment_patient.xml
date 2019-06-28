@@ -8,6 +8,19 @@
         layout="@layout/public_patient_title"
         android:id="@+id/title_bar" />
 
+    <TextView
+        android:id="@+id/tv_none_patient"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_15"
+        android:textColor="@color/color_6a6f80"
+        android:text="@string/txt_none_patient"
+        android:drawableTop="@mipmap/pic_none_paient"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+        android:background="@color/color_ffffff" />
+
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerview"
         android:layout_width="match_parent"
@@ -40,5 +53,6 @@
     <include
         layout="@layout/view_patient_top"
         android:visibility="gone" />
+
 
 </RelativeLayout>

@@ -25,6 +25,7 @@ import com.yht.frame.widgets.edittext.SuperEditText;
 import com.yht.frame.widgets.recyclerview.IndexBar;
 import com.yht.frame.widgets.recyclerview.SideBar;
 import com.yht.frame.widgets.recyclerview.decoration.CustomItemDecoration;
+import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.zyc.doctor.R;
 import com.zyc.doctor.ui.adapter.PatientAdapter;
 
@@ -32,7 +33,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 
 /**
  * @author 顿顿
@@ -40,7 +43,8 @@ import butterknife.OnClick;
  * @des 患者列表
  */
 public class PatientFragment extends BaseFragment
-        implements BaseQuickAdapter.OnItemClickListener, BaseQuickAdapter.OnItemChildClickListener {
+        implements BaseQuickAdapter.OnItemClickListener, BaseQuickAdapter.OnItemChildClickListener,
+                   BaseQuickAdapter.RequestLoadMoreListener {
     @BindView(R.id.status_bar_fix)
     View statusBarFix;
     @BindView(R.id.public_main_title)
@@ -57,6 +61,8 @@ public class PatientFragment extends BaseFragment
     SuperEditText etSearchPatient;
     @BindView(R.id.layout_search)
     RelativeLayout layoutSearch;
+    @BindView(R.id.tv_none_patient)
+    TextView tvNonePatient;
     private View headerView;
     /**
      * 适配器
@@ -133,6 +139,9 @@ public class PatientFragment extends BaseFragment
         patientAdapter.addHeaderView(headerView);
         View footerView = LayoutInflater.from(getContext()).inflate(R.layout.view_bottom_space, null);
         patientAdapter.addFooterView(footerView);
+        patientAdapter.setLoadMoreView(new CustomLoadMoreView());
+        patientAdapter.setOnLoadMoreListener(this, recyclerview);
+        patientAdapter.loadMoreEnd();
         recyclerview.setAdapter(patientAdapter);
     }
 
@@ -147,6 +156,15 @@ public class PatientFragment extends BaseFragment
             PatientBean bean = new PatientBean();
             bean.setName(name);
             patientBeans.add(bean);
+        }
+        if (patientBeans != null && patientBeans.size() > 0) {
+            recyclerview.setVisibility(View.VISIBLE);
+            tvNonePatient.setVisibility(View.GONE);
+        }
+        else {
+            recyclerview.setVisibility(View.GONE);
+            tvNonePatient.setVisibility(View.VISIBLE);
+            tvNonePatient.setText(R.string.txt_none_patient);
         }
         //对数据源进行排序
         BaseUtils.sortData(patientBeans);
@@ -163,6 +181,17 @@ public class PatientFragment extends BaseFragment
             PatientBean bean = new PatientBean();
             bean.setName(name);
             searchPatientBeans.add(bean);
+        }
+        if (searchPatientBeans != null && searchPatientBeans.size() > 0) {
+            recyclerview.setVisibility(View.VISIBLE);
+            tvNonePatient.setVisibility(View.GONE);
+            layoutBg.setVisibility(View.VISIBLE);
+        }
+        else {
+            recyclerview.setVisibility(View.GONE);
+            layoutBg.setVisibility(View.GONE);
+            tvNonePatient.setVisibility(View.VISIBLE);
+            tvNonePatient.setText(R.string.txt_search_none_patient);
         }
         //对数据源进行排序
         BaseUtils.sortData(searchPatientBeans);
@@ -268,5 +297,9 @@ public class PatientFragment extends BaseFragment
         });
         layoutBg.startAnimation(alpha);
         layoutSearch.startAnimation(toUp);
+    }
+
+    @Override
+    public void onLoadMoreRequested() {
     }
 }

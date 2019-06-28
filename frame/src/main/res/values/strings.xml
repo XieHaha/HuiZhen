@@ -46,6 +46,7 @@
     <string name="txt_none_network">抱歉，好像网络出问题了</string>
     <string name="txt_none_message">暂无消息</string>
     <string name="txt_none_patient">暂无患者</string>
+    <string name="txt_search_none_patient">没找到该患者</string>
     <string name="txt_none_recording">暂无记录</string>
     <string name="txt_none_upgrade">功能升级</string>
     <string name="txt_none_doctor">无合作医生</string>
