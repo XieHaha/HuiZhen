@@ -50,14 +50,13 @@
         android:paddingTop="17dp"
         android:paddingBottom="17dp"
         android:background="@color/color_ffffff"
-        android:orientation="horizontal"
-        android:paddingStart="40dp"
-        android:paddingEnd="40dp">
+        android:orientation="horizontal">
 
         <com.yht.frame.widgets.picker.wheelview.view.WheelView
             android:id="@+id/year"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_weight="1.1"/>
 
         <com.yht.frame.widgets.picker.wheelview.view.WheelView
             android:id="@+id/month"
@@ -86,6 +85,7 @@
             android:id="@+id/second"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
     </LinearLayout>
 
 

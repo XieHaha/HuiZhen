@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.widgets.picker.builder.TimePickerBuilder;
-import com.yht.frame.widgets.picker.listener.CustomListener;
 import com.yht.frame.widgets.picker.view.TimePickerView;
 import com.zyc.doctor.R;
 
@@ -139,51 +138,36 @@ public class TransferEditActivity extends BaseActivity {
          */
         Calendar selectedDate = Calendar.getInstance();//系统当前时间
         Calendar startDate = Calendar.getInstance();
-        startDate.set(2014, 1, 23);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd-HH");
+        String time = simpleDateFormat.format(new Date());
+        String[] strings = time.split("-");
+        startDate.set(Integer.parseInt(strings[0]), Integer.parseInt(strings[1]) - 1, Integer.parseInt(strings[02]),
+                      Integer.parseInt(strings[3]) + 1, 0);
         Calendar endDate = Calendar.getInstance();
-        endDate.set(2027, 2, 28);
+        endDate.set(Integer.parseInt(strings[0]) + 1, 11 - Integer.parseInt(strings[1]), 31, 23, 0);
         //时间选择器 ，自定义布局
         timePickerView = new TimePickerBuilder(this, (date, v) -> {//选中事件回调
             tvTime.setText(getTime(date));
-        })
-                /*.setType(TimePickerView.Type.ALL)//default is all
-                .setCancelText("Cancel")
-                .setSubmitText("Sure")
-                .setContentTextSize(18)
-                .setTitleSize(20)
-                .setTitleText("Title")
-                .setTitleColor(Color.BLACK)
-               /*.setDividerColor(Color.WHITE)//设置分割线的颜色
-                .setTextColorCenter(Color.LTGRAY)//设置选中项的颜色
-                .setLineSpacingMultiplier(1.6f)//设置两横线之间的间隔倍数
-                .setTitleBgColor(Color.DKGRAY)//标题背景颜色 Night mode
-                .setBgColor(Color.BLACK)//滚轮背景颜色 Night mode
-                .setSubmitColor(Color.WHITE)
-                .setCancelColor(Color.WHITE)*/
-                /*.animGravity(Gravity.RIGHT)// default is center*/.setDate(selectedDate)
-                .setRangDate(startDate, endDate)
-                .setLayoutRes(R.layout.view_time_picker, new CustomListener() {
-                    @Override
-                    public void customLayout(View v) {
-                        final TextView tvSubmit = v.findViewById(R.id.tv_sure);
-                        TextView ivCancel = v.findViewById(R.id.tv_cancel);
-                        tvSubmit.setOnClickListener(v1 -> {
-                            timePickerView.returnData();
-                            timePickerView.dismiss();
-                        });
-                        ivCancel.setOnClickListener(v12 -> timePickerView.dismiss());
-                    }
-                })
-                .setType(new boolean[] { false, true, true, true, false, false })
-                .setLabel("年", "月", "日", "时", "分", "秒")
-                .setLineSpacingMultiplier(2.5f)
-                .setContentTextSize(18)
-                .setTextColorCenter(ContextCompat.getColor(this, R.color.color_373d4d))
-                .setTextColorOut(ContextCompat.getColor(this, R.color.color_a1a8b3))
-                .setTextXOffset(0, 0, 0, 0, 0, 0)
-                .isCenterLabel(false) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
-                .setDividerColor(ContextCompat.getColor(this, R.color.color_a1a8b3))
-                .build();
+        }).setRangDate(startDate, endDate)
+          .setLayoutRes(R.layout.view_time_picker, v -> {
+              final TextView tvSubmit = v.findViewById(R.id.tv_sure);
+              TextView ivCancel = v.findViewById(R.id.tv_cancel);
+              tvSubmit.setOnClickListener(v1 -> {
+                  timePickerView.returnData();
+                  timePickerView.dismiss();
+              });
+              ivCancel.setOnClickListener(v12 -> timePickerView.dismiss());
+          })
+          .setType(new boolean[] { false, true, true, true, false, false })
+          .setLabel("年", "月", "日", "时", "分", "秒")
+          .setLineSpacingMultiplier(2.5f)
+          .setContentTextSize(18)
+          .setTextColorCenter(ContextCompat.getColor(this, R.color.color_373d4d))
+          .setTextColorOut(ContextCompat.getColor(this, R.color.color_a1a8b3))
+          .setTextXOffset(0, 0, 0, 0, 0, 0)
+          .isCenterLabel(false) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
+          .setDividerColor(ContextCompat.getColor(this, R.color.color_a1a8b3))
+          .build();
         timePickerView.show();
     }
 
