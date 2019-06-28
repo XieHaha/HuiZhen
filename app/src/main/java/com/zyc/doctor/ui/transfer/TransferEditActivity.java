@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -12,12 +11,11 @@ import android.widget.TextView;
 
 import com.yht.frame.data.CommonData;
 import com.yht.frame.ui.BaseActivity;
-import com.yht.frame.widgets.picker.builder.TimePickerBuilder;
 import com.yht.frame.widgets.picker.view.TimePickerView;
 import com.zyc.doctor.R;
+import com.zyc.doctor.utils.TimePickerHelper;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 import butterknife.BindView;
@@ -127,53 +125,15 @@ public class TransferEditActivity extends BaseActivity {
     }
 
     private void initCustomTimePicker() {
-        /**
-         * @description
-         *
-         * 注意事项：
-         * 1.自定义布局中，id为 optionspicker 或者 timepicker 的布局以及其子控件必须要有，否则会报空指针.
-         * 具体可参考demo 里面的两个自定义layout布局。
-         * 2.因为系统Calendar的月份是从0-11的,所以如果是调用Calendar的set方法来设置时间,月份的范围也要是从0-11
-         * setRangDate方法控制起始终止时间(如果不设置范围，则使用默认时间1900-2100年，此段代码可注释)
-         */
-        Calendar selectedDate = Calendar.getInstance();//系统当前时间
-        Calendar startDate = Calendar.getInstance();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd-HH");
-        String time = simpleDateFormat.format(new Date());
-        String[] strings = time.split("-");
-        startDate.set(Integer.parseInt(strings[0]), Integer.parseInt(strings[1]) - 1, Integer.parseInt(strings[02]),
-                      Integer.parseInt(strings[3]) + 1, 0);
-        Calendar endDate = Calendar.getInstance();
-        endDate.set(Integer.parseInt(strings[0]) + 1, 11 - Integer.parseInt(strings[1]), 31, 23, 0);
-        //时间选择器 ，自定义布局
-        timePickerView = new TimePickerBuilder(this, (date, v) -> {//选中事件回调
+        TimePickerHelper.showTimePicker(this, date -> {
             tvTime.setText(getTime(date));
-        }).setRangDate(startDate, endDate)
-          .setLayoutRes(R.layout.view_time_picker, v -> {
-              final TextView tvSubmit = v.findViewById(R.id.tv_sure);
-              TextView ivCancel = v.findViewById(R.id.tv_cancel);
-              tvSubmit.setOnClickListener(v1 -> {
-                  timePickerView.returnData();
-                  timePickerView.dismiss();
-              });
-              ivCancel.setOnClickListener(v12 -> timePickerView.dismiss());
-          })
-          .setType(new boolean[] { false, true, true, true, false, false })
-          .setLabel("年", "月", "日", "时", "分", "秒")
-          .setLineSpacingMultiplier(2.5f)
-          .setContentTextSize(18)
-          .setTextColorCenter(ContextCompat.getColor(this, R.color.color_373d4d))
-          .setTextColorOut(ContextCompat.getColor(this, R.color.color_a1a8b3))
-          .setTextXOffset(0, 0, 0, 0, 0, 0)
-          .isCenterLabel(false) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
-          .setDividerColor(ContextCompat.getColor(this, R.color.color_a1a8b3))
-          .build();
-        timePickerView.show();
+            tvTime.setSelected(true);
+        });
     }
 
     private String getTime(Date date) {//可根据需要自行截取数据显示
         Log.d("getTime()", "choice date millis: " + date.getTime());
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         return format.format(date);
     }
 }
