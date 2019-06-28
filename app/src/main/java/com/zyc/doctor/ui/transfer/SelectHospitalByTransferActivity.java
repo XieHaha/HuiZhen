@@ -24,7 +24,8 @@ import butterknife.BindView;
  * @date 19/6/4 17:53
  * @des 医院选择 接诊
  */
-public class SelectHospitalByTransferActivity extends BaseActivity implements BaseQuickAdapter.OnItemClickListener {
+public class SelectHospitalByTransferActivity extends BaseActivity
+        implements BaseQuickAdapter.OnItemClickListener, BaseQuickAdapter.RequestLoadMoreListener {
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
     private HospitalSelectAdapter hospitalAdapter;
@@ -52,8 +53,9 @@ public class SelectHospitalByTransferActivity extends BaseActivity implements Ba
         hospitalAdapter = new HospitalSelectAdapter(R.layout.item_hospital, hospitals);
         hospitalAdapter.setOnItemClickListener(this);
         hospitalAdapter.setLoadMoreView(new CustomLoadMoreView());
-        recyclerView.setAdapter(hospitalAdapter);
+        hospitalAdapter.setOnLoadMoreListener(this, recyclerView);
         hospitalAdapter.loadMoreEnd();
+        recyclerView.setAdapter(hospitalAdapter);
     }
 
     @Override
@@ -62,5 +64,9 @@ public class SelectHospitalByTransferActivity extends BaseActivity implements Ba
         intent.putExtra(CommonData.KEY_HOSPITAL_BEAN, "已选择的医院");
         setResult(RESULT_OK, intent);
         finish();
+    }
+
+    @Override
+    public void onLoadMoreRequested() {
     }
 }
