@@ -39,6 +39,8 @@
     <string name="txt_add">添加</string>
     <string name="txt_refuse">拒绝</string>
     <string name="txt_submit">提交</string>
+    <string name="txt_agree">同意</string>
+    <string name="txt_disagree">不同意</string>
     <string name="txt_delete_all">全部删除</string>
     <string name="txt_next">下一步</string>
     <string name="txt_last">上一步</string>

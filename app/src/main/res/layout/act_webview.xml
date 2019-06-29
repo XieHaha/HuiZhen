@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <com.tencent.smtt.sdk.WebView
+        android:id="@+id/web_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="68dp" />
+
+    <LinearLayout
+        android:id="@+id/layout_bottom"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_height="68dp"
+        android:background="@color/color_ffffff"
+        android:gravity="center_vertical"
+        android:paddingStart="35dp"
+        android:paddingEnd="35dp">
+
+        <TextView
+            android:id="@+id/tv_disagree"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="42dp"
+            android:background="@drawable/corner28_stroke1_1491fc"
+            android:text="@string/txt_disagree"
+            android:gravity="center"
+            android:textSize="@dimen/text_16"
+            android:textColor="@color/color_1491fc"
+            android:layout_marginEnd="14dp" />
+
+        <TextView
+            android:id="@+id/tv_agree"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="42dp"
+            android:background="@drawable/corner28_1491fc_bg"
+            android:text="@string/txt_agree"
+            android:textColor="@color/color_ffffff"
+            android:textSize="@dimen/text_16"
+            android:gravity="center" />
+    </LinearLayout>
+
+
+</RelativeLayout>

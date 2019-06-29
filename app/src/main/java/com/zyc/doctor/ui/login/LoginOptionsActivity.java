@@ -19,9 +19,9 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.yht.frame.data.BaseData;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.LogUtils;
-import com.yht.frame.utils.ToastUtil;
 import com.zyc.doctor.R;
 import com.zyc.doctor.ZycApplication;
+import com.zyc.doctor.ui.WebViewActivity;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -103,7 +103,7 @@ public class LoginOptionsActivity extends BaseActivity {
         ClickableSpan clickSpan = new ClickableSpan() {
             @Override
             public void onClick(@NonNull View widget) {
-                ToastUtil.toast(LoginOptionsActivity.this, "跳转协议");
+                startActivity(new Intent(LoginOptionsActivity.this, WebViewActivity.class));
                 clearBackgroundColor(widget);
             }
 

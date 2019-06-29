@@ -46,7 +46,7 @@ public class MatisseUtils {
                .forResult(RC_PICK_IMG);
     }
 
-    public static void open(Fragment fragment,boolean isCapture) {
+    public static void open(Fragment fragment, boolean isCapture) {
         Matisse.from(fragment)
                // 选择 mime 的类型
                .choose(MimeType.ofImage())

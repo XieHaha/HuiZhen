@@ -221,6 +221,16 @@
             android:screenOrientation="portrait"
             android:label=""
             android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".ui.WebViewActivity"
+            android:screenOrientation="portrait"
+            android:label=""
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".ui.FileDisplayActivity"
+            android:screenOrientation="portrait"
+            android:label=""
+            android:windowSoftInputMode="adjustResize|stateHidden" />
 
         <!--环信消息点击事件处理-->
         <receiver

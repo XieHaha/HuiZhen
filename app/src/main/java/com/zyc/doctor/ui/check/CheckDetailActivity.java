@@ -7,9 +7,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.yht.frame.api.DirHelper;
 import com.yht.frame.ui.BaseActivity;
-import com.yht.frame.utils.ToastUtil;
 import com.zyc.doctor.R;
+import com.zyc.doctor.ui.FileDisplayActivity;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -128,10 +129,13 @@ public class CheckDetailActivity extends BaseActivity {
         int tag = (int)v.getTag();
         switch (tag) {
             case 0:
-                ToastUtil.toast(this, "第一个");
+                FileDisplayActivity.show(this, DirHelper.getPathFile() + "/appstore.txt", "TXT文件加载");
                 break;
             case 1:
-                ToastUtil.toast(this, "第二个");
+                FileDisplayActivity.show(this, DirHelper.getPathFile() + "/Android.pdf", "PDF文件加载");
+                break;
+            case 2:
+                FileDisplayActivity.show(this, DirHelper.getPathFile() + "/word.docx", "WORD文件加载");
                 break;
             default:
                 break;

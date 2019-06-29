@@ -60,7 +60,8 @@ public class SplashActivity extends BaseActivity implements DocAuthStatu {
         public boolean handleMessage(Message message) {
             tvTimeHint.setText(String.format(getString(R.string.txt_splash_time_hint), time));
             if (time <= 0) {
-                initPage();
+                //                initPage();
+                startLoginPage();
             }
             return true;
         }
@@ -97,18 +98,18 @@ public class SplashActivity extends BaseActivity implements DocAuthStatu {
         finish();
     }
 
-    private void initSplashImg() {
-        File file = new File(filePath);
-        Glide.with(this).load(file).into(ivBg);
-        initScheduledThread();
-    }
-
     /**
      * 页面初始化
      */
     private void initPage() {
         startActivity(new Intent(this, MainActivity.class));
         finish();
+    }
+
+    private void initSplashImg() {
+        File file = new File(filePath);
+        Glide.with(this).load(file).into(ivBg);
+        initScheduledThread();
     }
 
     private void initScheduledThread() {

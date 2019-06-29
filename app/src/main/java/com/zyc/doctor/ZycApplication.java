@@ -145,7 +145,7 @@ public class ZycApplication extends LitePalApplication {
     /**
      * app字体不随系统改变而改变
      *
-     * @return
+     * @return 字体
      */
     @Override
     public Resources getResources() {
