@@ -44,6 +44,7 @@ public class TransferHistoryActivity extends BaseActivity
     private TimeItemDecoration timeItemDecoration;
     private TransferHistoryAdapter transferHistoryAdapter;
     private List<PatientBean> transferList;
+    private List<String> titleBars;
 
     @Override
     protected boolean isInitBackBtn() {
@@ -90,18 +91,25 @@ public class TransferHistoryActivity extends BaseActivity
      */
     private void initData() {
         transferList = new ArrayList<>();
+        titleBars = new ArrayList<>();
         String[] names = {
                 "孙尚香", "安其拉", "白起", "不知火舞" };
-        for (String name : names) {
+        for (int i = 0; i < 4; i++) {
             PatientBean bean = new PatientBean();
-            bean.setName(name);
+            bean.setName(names[i]);
+            if (i > 1) {
+                titleBars.add("2019-06");
+                bean.setIndexTag("2019-06");
+            }
+            else {
+                titleBars.add("2019-07");
+                bean.setIndexTag("2019-07");
+            }
             transferList.add(bean);
         }
-        //对数据源进行排序
-        BaseUtils.sortData(transferList);
-        //返回一个包含所有Tag字母在内的字符串并赋值给tagsStr
+        //返回一个包含所有Tag字符串并赋值给tagsStr
         String tagsStr = BaseUtils.getTags(transferList);
-        timeItemDecoration.setDatas(transferList, tagsStr);
+        timeItemDecoration.setTitleBar(titleBars, tagsStr);
     }
 
     @OnClick(R.id.tv_check_next)

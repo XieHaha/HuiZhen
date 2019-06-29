@@ -11,7 +11,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.yht.frame.R;
-import com.yht.frame.data.bean.PatientBean;
 import com.yht.frame.utils.BaseUtils;
 
 import java.util.List;
@@ -22,7 +21,7 @@ import java.util.List;
  */
 public class TimeItemDecoration extends RecyclerView.ItemDecoration {
     private Paint mPaint;
-    private List<PatientBean> patientBeans;
+    private List<String> titleBars;
     private static final int DIVIDER_HEIGHT = 80;
     private Context mContext;
     private final Rect mBounds = new Rect();
@@ -33,8 +32,8 @@ public class TimeItemDecoration extends RecyclerView.ItemDecoration {
      */
     private boolean hasHeader;
 
-    public void setDatas(List<PatientBean> mBeans, String tagsStr) {
-        this.patientBeans = mBeans;
+    public void setTitleBar(List<String> titleBars, String tagsStr) {
+        this.titleBars = titleBars;
         this.titleBar = tagsStr;
     }
 
@@ -66,18 +65,17 @@ public class TimeItemDecoration extends RecyclerView.ItemDecoration {
             else {
                 realPosition = position;
             }
-            if (patientBeans == null || patientBeans.size() == 0 || patientBeans.size() <= realPosition ||
-                realPosition < 0) {
+            if (titleBars == null || titleBars.size() == 0 || titleBars.size() <= realPosition || realPosition < 0) {
                 continue;
             }
-            PatientBean bean = patientBeans.get(realPosition);
+            String bar = titleBars.get(realPosition);
             if (realPosition == 0) {
-                drawTitleBar(canvas, parent, child, bean, titleBar.indexOf(bean.getIndexTag()));
+                drawTitleBar(canvas, parent, child, bar, titleBar.indexOf(bar));
             }
             else {
                 //与上一条数据中的tag不同时，该显示bar了
-                if (!bean.getIndexTag().equals(patientBeans.get(realPosition - 1).getIndexTag())) {
-                    drawTitleBar(canvas, parent, child, bean, titleBar.indexOf(bean.getIndexTag()));
+                if (!bar.equals(titleBars.get(realPosition - 1))) {
+                    drawTitleBar(canvas, parent, child, bar, titleBar.indexOf(bar));
                 }
             }
         }
@@ -91,7 +89,7 @@ public class TimeItemDecoration extends RecyclerView.ItemDecoration {
      * @param parent RecyclerView
      * @param child  ItemView
      */
-    private void drawTitleBar(Canvas canvas, RecyclerView parent, View child, PatientBean bean, int position) {
+    private void drawTitleBar(Canvas canvas, RecyclerView parent, View child, String bar, int position) {
         //返回一个包含Decoration和Margin在内的Rect
         parent.getDecoratedBoundsWithMargins(child, mBounds);
         final int bottom = mBounds.top + Math.round(ViewCompat.getTranslationY(child)) + DIVIDER_HEIGHT;
@@ -99,7 +97,7 @@ public class TimeItemDecoration extends RecyclerView.ItemDecoration {
         mPaint.setColor(ContextCompat.getColor(mContext, R.color.color_6a6f80));
         Typeface font = Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD);
         mPaint.setTypeface(font);
-        canvas.drawText("2019-06-29", BaseUtils.dp2px(mContext, 52), bottom, mPaint);
+        canvas.drawText(bar, BaseUtils.dp2px(mContext, 52), bottom, mPaint);
     }
 
     /**
@@ -121,8 +119,7 @@ public class TimeItemDecoration extends RecyclerView.ItemDecoration {
         else {
             realPosition = position;
         }
-        if (patientBeans == null || patientBeans.size() == 0 || patientBeans.size() <= realPosition ||
-            realPosition < 0) {
+        if (titleBars == null || titleBars.size() == 0 || titleBars.size() <= realPosition || realPosition < 0) {
             super.getItemOffsets(outRect, view, parent, state);
             return;
         }
@@ -131,9 +128,7 @@ public class TimeItemDecoration extends RecyclerView.ItemDecoration {
         }
         else {
             //与上一条数据中的tag不同时，该显示bar了
-            if (!patientBeans.get(realPosition)
-                             .getIndexTag()
-                             .equals(patientBeans.get(realPosition - 1).getIndexTag())) {
+            if (!titleBars.get(realPosition).equals(titleBars.get(realPosition - 1))) {
                 outRect.set(0, DIVIDER_HEIGHT, 0, 0);
             }
         }

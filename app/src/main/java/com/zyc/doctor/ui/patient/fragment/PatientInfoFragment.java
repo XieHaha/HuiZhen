@@ -52,7 +52,7 @@ public class PatientInfoFragment extends BaseFragment
      * 诊疗记录（检查、转诊、远程）
      */
     private List<CheckBean> data;
-    private List<String> titleBar;
+    private List<String> titleBars;
 
     @Override
     public int getLayoutID() {
@@ -111,28 +111,28 @@ public class PatientInfoFragment extends BaseFragment
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         data = new ArrayList<>();
-        titleBar = new ArrayList<>();
+        titleBars = new ArrayList<>();
         for (int i = 0; i < 6; i++) {
             if (i < 2) {
                 CheckBean bean = new CheckBean();
                 bean.setItemType(CheckBean.CHECK);
                 bean.setTitle("全身检查");
                 bean.setTime("2019-06-29");
-                titleBar.add("2019-06-29");
+                titleBars.add("2019-06-29");
                 data.add(bean);
             }
             else if (i < 4) {
                 CheckBean bean = new CheckBean();
                 bean.setItemType(CheckBean.TRANSFER);
                 bean.setTime("2019-06-30");
-                titleBar.add("2019-06-30");
+                titleBars.add("2019-06-30");
                 data.add(bean);
             }
             else {
                 CheckBean bean = new CheckBean();
                 bean.setItemType(CheckBean.REMOTE);
                 bean.setTime("2019-06-31");
-                titleBar.add("2019-06-31");
+                titleBars.add("2019-06-31");
                 data.add(bean);
             }
         }
@@ -140,7 +140,7 @@ public class PatientInfoFragment extends BaseFragment
         patientInfoAdapter.loadMoreEnd();
         //返回一个包含所有Tag字母在内的字符串并赋值给tagsStr
         String tagsStr = BaseUtils.getTimeTags(data);
-        //        timeItemDecoration.setDatas(data, tagsStr);
+        timeItemDecoration.setTitleBar(titleBars, tagsStr);
     }
 
     @Override
