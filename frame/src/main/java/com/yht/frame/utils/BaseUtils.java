@@ -8,6 +8,7 @@ import android.util.TypedValue;
 
 import com.github.promeg.pinyinhelper.Pinyin;
 import com.yht.frame.data.BaseData;
+import com.yht.frame.data.bean.CheckBean;
 import com.yht.frame.data.bean.PatientBean;
 
 import java.io.BufferedInputStream;
@@ -250,6 +251,20 @@ public class BaseUtils {
         for (int i = 0; i < beans.size(); i++) {
             if (!builder.toString().contains(beans.get(i).getIndexTag())) {
                 builder.append(beans.get(i).getIndexTag());
+            }
+        }
+        return builder.toString();
+    }
+
+    /**
+     * @param beans 数据源
+     * @return tags 返回所有时间
+     */
+    public static String getTimeTags(List<CheckBean> beans) {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < beans.size(); i++) {
+            if (!builder.toString().contains(beans.get(i).getTime())) {
+                builder.append(beans.get(i).getTime());
             }
         }
         return builder.toString();

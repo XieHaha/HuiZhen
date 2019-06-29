@@ -4,12 +4,22 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.support.multidex.MultiDex;
+import android.text.TextUtils;
 
+import com.google.gson.Gson;
+import com.hyphenate.chat.EMOptions;
+import com.hyphenate.easeui.EaseUI;
+import com.hyphenate.easeui.domain.EaseAvatarOptions;
+import com.hyphenate.easeui.domain.EaseUser;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yht.frame.api.ApiManager;
 import com.yht.frame.api.CrashHandler;
+import com.yht.frame.data.CommonData;
+import com.yht.frame.data.bean.LoginSuccessBean;
 import com.yht.frame.http.retrofit.RetrofitManager;
+import com.yht.frame.utils.SharePreferenceUtil;
+import com.zyc.doctor.chat.HxHelper;
 
 import org.litepal.LitePal;
 import org.litepal.LitePalApplication;
@@ -25,6 +35,7 @@ import me.jessyan.autosize.unit.Subunits;
  */
 public class ZycApplication extends LitePalApplication {
     private static ZycApplication instance;
+    private LoginSuccessBean loginSuccessBean;
     /**
      * 微信api
      */
@@ -41,6 +52,8 @@ public class ZycApplication extends LitePalApplication {
         ApiManager.getInstance().init(this, true);
         //网络
         RetrofitManager.getInstance().init(BuildConfig.BASE_BASIC_URL);
+        //环信
+        initEase();
         //数据库
         LitePal.initialize(this);
         //日志捕捉
@@ -52,6 +65,59 @@ public class ZycApplication extends LitePalApplication {
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
         MultiDex.install(this);
+    }
+
+    /**
+     * 环信初始化
+     */
+    private void initEase() {
+        //环信初始化
+        EMOptions options = new EMOptions();
+        // 默认添加好友时，是不需要验证的，改成需要验证
+        options.setAcceptInvitationAlways(false);
+        EaseUI.getInstance().init(this, options);
+        //设置头像为圆形
+        EaseAvatarOptions avatarOpts = new EaseAvatarOptions();
+        //0：默认，1：圆形，2：矩形
+        avatarOpts.setAvatarShape(1);
+        EaseUI.getInstance().setAvatarOptions(avatarOpts);
+        //设置有关环信自定义的相关配置  titlebar、头像、名字处理
+        HxHelper.Opts opts = new HxHelper.Opts();
+        opts.setShowChatTitle(false);
+        HxHelper.getInstance().init(this);
+        EaseUI.getInstance().setUserProfileProvider((username, callback) -> {
+            LoginSuccessBean bean = getLoginSuccessBean();
+            //如果是当前用户，就设置自己的昵称和头像
+            if (null != bean && TextUtils.equals(bean.getDoctorId(), username)) {
+                EaseUser eu = new EaseUser(username);
+                eu.setNickname(bean.getName());
+                eu.setAvatar(bean.getPortraitUrl());
+                callback.onSuccess(eu);
+                return eu;
+            }
+            //否则交给HxHelper处理，从消息中获取昵称和头像
+            return HxHelper.getInstance().getUser(username, callback);
+        });
+    }
+
+    public LoginSuccessBean getLoginSuccessBean() {
+        String userStr = (String)SharePreferenceUtil.getObject(this, CommonData.KEY_LOGIN_SUCCESS_BEAN, "");
+        if (!TextUtils.isEmpty(userStr)) {
+            loginSuccessBean = new Gson().fromJson(userStr, LoginSuccessBean.class);
+        }
+        return loginSuccessBean;
+    }
+
+    public void setLoginSuccessBean(LoginSuccessBean loginSuccessBean) {
+        this.loginSuccessBean = loginSuccessBean;
+        SharePreferenceUtil.putObject(this, CommonData.KEY_LOGIN_SUCCESS_BEAN, loginSuccessBean);
+    }
+
+    /**
+     * 清楚登录数据
+     */
+    public void clearLoginSuccessBean() {
+        SharePreferenceUtil.remove(this, CommonData.KEY_LOGIN_SUCCESS_BEAN);
     }
 
     /**

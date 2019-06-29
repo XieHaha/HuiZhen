@@ -23,19 +23,17 @@ import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.widgets.edittext.AbstractTextWatcher;
 import com.yht.frame.widgets.edittext.SuperEditText;
 import com.yht.frame.widgets.recyclerview.IndexBar;
-import com.yht.frame.widgets.recyclerview.SideBar;
-import com.yht.frame.widgets.recyclerview.decoration.CustomItemDecoration;
+import com.yht.frame.widgets.recyclerview.decoration.SideBarItemDecoration;
 import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.zyc.doctor.R;
 import com.zyc.doctor.ui.adapter.PatientAdapter;
+import com.zyc.doctor.ui.patient.PatientPersonalActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 
 /**
  * @author 顿顿
@@ -52,7 +50,7 @@ public class PatientFragment extends BaseFragment
     @BindView(R.id.recyclerview)
     RecyclerView recyclerview;
     @BindView(R.id.side_bar)
-    SideBar sideBar;
+    com.yht.frame.widgets.recyclerview.SideBar sideBar;
     @BindView(R.id.index_bar)
     IndexBar indexBar;
     @BindView(R.id.layout_bg)
@@ -75,7 +73,7 @@ public class PatientFragment extends BaseFragment
     /**
      * 分隔线
      */
-    private CustomItemDecoration decoration;
+    private SideBarItemDecoration decoration;
     /**
      *
      */
@@ -100,7 +98,7 @@ public class PatientFragment extends BaseFragment
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         recyclerview.setLayoutManager(layoutManager = new LinearLayoutManager(getContext()));
-        recyclerview.addItemDecoration(decoration = new CustomItemDecoration(getContext()));
+        recyclerview.addItemDecoration(decoration = new SideBarItemDecoration(getContext()));
         initData();
         initAdapter();
     }
@@ -239,6 +237,8 @@ public class PatientFragment extends BaseFragment
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+        Intent intent = new Intent(getContext(), PatientPersonalActivity.class);
+        startActivity(intent);
     }
 
     @Override

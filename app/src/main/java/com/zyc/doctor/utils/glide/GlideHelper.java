@@ -33,8 +33,11 @@ public final class GlideHelper {
                       .priority(Priority.NORMAL);
     }
 
-    public static RequestOptions getOptionsP() {
-        return OPTIONS_P.centerCrop()
+    public static RequestOptions getOptionsP(int corner) {
+        //设置图片圆角角度
+        RoundedCorners roundedCorners = new RoundedCorners(corner);
+        return OPTIONS_P.optionalTransform(roundedCorners)
+                        .centerCrop()
                         .placeholder(R.mipmap.ic_launcher_round)
                         .error(R.mipmap.ic_launcher_round)
                         .priority(Priority.NORMAL);

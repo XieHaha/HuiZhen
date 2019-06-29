@@ -22,7 +22,7 @@ import java.util.List;
  * @author MQ
  * @date 2017/5/8
  */
-public class CustomItemDecoration extends RecyclerView.ItemDecoration {
+public class SideBarItemDecoration extends RecyclerView.ItemDecoration {
     private Paint mPaint;
     private List<PatientBean> patientBeans;
     private static final int DIVIDER_HEIGHT = 80;
@@ -44,7 +44,7 @@ public class CustomItemDecoration extends RecyclerView.ItemDecoration {
         this.titleBar = tagsStr;
     }
 
-    public CustomItemDecoration(Context mContext) {
+    public SideBarItemDecoration(Context mContext) {
         this.mContext = mContext;
         mPaint = new Paint();
         mPaint.setAntiAlias(true);

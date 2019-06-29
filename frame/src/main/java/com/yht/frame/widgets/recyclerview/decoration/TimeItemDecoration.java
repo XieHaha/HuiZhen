@@ -27,14 +27,20 @@ public class TimeItemDecoration extends RecyclerView.ItemDecoration {
     private Context mContext;
     private final Rect mBounds = new Rect();
     private String titleBar;
+    /**
+     * 是否有头部
+     * 默认没有
+     */
+    private boolean hasHeader;
 
     public void setDatas(List<PatientBean> mBeans, String tagsStr) {
         this.patientBeans = mBeans;
         this.titleBar = tagsStr;
     }
 
-    public TimeItemDecoration(Context mContext) {
+    public TimeItemDecoration(Context mContext, boolean hasHeader) {
         this.mContext = mContext;
+        this.hasHeader = hasHeader;
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mPaint.setDither(true);
@@ -53,16 +59,24 @@ public class TimeItemDecoration extends RecyclerView.ItemDecoration {
             final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams)child.getLayoutParams();
             int position = params.getViewLayoutPosition();
             //第一条数据为头部，不需要titlebar，
-            if (patientBeans == null || patientBeans.size() == 0 || patientBeans.size() <= position || position < 0) {
+            int realPosition;
+            if (hasHeader) {
+                realPosition = position - 1;
+            }
+            else {
+                realPosition = position;
+            }
+            if (patientBeans == null || patientBeans.size() == 0 || patientBeans.size() <= realPosition ||
+                realPosition < 0) {
                 continue;
             }
-            PatientBean bean = patientBeans.get(position);
-            if (position == 0) {
+            PatientBean bean = patientBeans.get(realPosition);
+            if (realPosition == 0) {
                 drawTitleBar(canvas, parent, child, bean, titleBar.indexOf(bean.getIndexTag()));
             }
             else {
                 //与上一条数据中的tag不同时，该显示bar了
-                if (!bean.getIndexTag().equals(patientBeans.get(position - 1).getIndexTag())) {
+                if (!bean.getIndexTag().equals(patientBeans.get(realPosition - 1).getIndexTag())) {
                     drawTitleBar(canvas, parent, child, bean, titleBar.indexOf(bean.getIndexTag()));
                 }
             }
@@ -85,7 +99,7 @@ public class TimeItemDecoration extends RecyclerView.ItemDecoration {
         mPaint.setColor(ContextCompat.getColor(mContext, R.color.color_6a6f80));
         Typeface font = Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD);
         mPaint.setTypeface(font);
-        canvas.drawText("2019-06-13", BaseUtils.dp2px(mContext, 52), bottom, mPaint);
+        canvas.drawText("2019-06-29", BaseUtils.dp2px(mContext, 52), bottom, mPaint);
     }
 
     /**
@@ -99,17 +113,27 @@ public class TimeItemDecoration extends RecyclerView.ItemDecoration {
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         int position = parent.getChildAdapterPosition(view);
-        // 第一条数据是头部 不需要bar, 直接从第二条数据开始
-        if (patientBeans == null || patientBeans.size() == 0 || patientBeans.size() <= position || position < 0) {
+        //第一条数据为头部，不需要titlebar，
+        int realPosition;
+        if (hasHeader) {
+            realPosition = position - 1;
+        }
+        else {
+            realPosition = position;
+        }
+        if (patientBeans == null || patientBeans.size() == 0 || patientBeans.size() <= realPosition ||
+            realPosition < 0) {
             super.getItemOffsets(outRect, view, parent, state);
             return;
         }
-        if (position == 0) {
+        if (realPosition == 0) {
             outRect.set(0, DIVIDER_HEIGHT, 0, 0);
         }
         else {
             //与上一条数据中的tag不同时，该显示bar了
-            if (!patientBeans.get(position).getIndexTag().equals(patientBeans.get(position - 1).getIndexTag())) {
+            if (!patientBeans.get(realPosition)
+                             .getIndexTag()
+                             .equals(patientBeans.get(realPosition - 1).getIndexTag())) {
                 outRect.set(0, DIVIDER_HEIGHT, 0, 0);
             }
         }

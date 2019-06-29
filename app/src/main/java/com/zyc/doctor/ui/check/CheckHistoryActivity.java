@@ -34,7 +34,7 @@ public class CheckHistoryActivity extends BaseActivity
         implements BaseQuickAdapter.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener,
                    BaseQuickAdapter.RequestLoadMoreListener {
     @BindView(R.id.recyclerview)
-    RecyclerView recyclerview;
+    RecyclerView recyclerView;
     @BindView(R.id.layout_refresh)
     SwipeRefreshLayout layoutRefresh;
     /**
@@ -59,9 +59,9 @@ public class CheckHistoryActivity extends BaseActivity
         super.initData(savedInstanceState);
         layoutRefresh.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light,
                                               android.R.color.holo_orange_light, android.R.color.holo_green_light);
-        timeItemDecoration = new TimeItemDecoration(this);
-        recyclerview.setLayoutManager(new LinearLayoutManager(this));
-        recyclerview.addItemDecoration(timeItemDecoration);
+        timeItemDecoration = new TimeItemDecoration(this,false);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.addItemDecoration(timeItemDecoration);
         initDatas();
         initAdapter();
     }
@@ -72,10 +72,10 @@ public class CheckHistoryActivity extends BaseActivity
     private void initAdapter() {
         checkHistoryAdapter = new CheckHistoryAdapter(R.layout.item_check_history, checkedList);
         checkHistoryAdapter.setLoadMoreView(new CustomLoadMoreView());
-        checkHistoryAdapter.setOnLoadMoreListener(this, recyclerview);
+        checkHistoryAdapter.setOnLoadMoreListener(this, recyclerView);
         checkHistoryAdapter.setOnItemClickListener(this);
         checkHistoryAdapter.loadMoreEnd();
-        recyclerview.setAdapter(checkHistoryAdapter);
+        recyclerView.setAdapter(checkHistoryAdapter);
     }
 
     @Override

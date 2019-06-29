@@ -48,6 +48,7 @@
     <string name="txt_none_patient">暂无患者</string>
     <string name="txt_search_none_patient">没找到该患者</string>
     <string name="txt_none_recording">暂无记录</string>
+    <string name="txt_none_medical_recording">暂无诊疗记录</string>
     <string name="txt_none_upgrade">功能升级</string>
     <string name="txt_none_doctor">无合作医生</string>
     <string name="txt_camera">拍照</string>
@@ -152,6 +153,11 @@
     <string name="txt_info_head_img">头像</string>
     <string name="txt_info_sex">性别</string>
     <string name="txt_info_phone">手机号</string>
+
+    <!--患者相关-->
+    <string name="txt_patient_info">患者资料</string>
+    <string name="txt_chat_online">在线聊天</string>
+
     <!--会珍币管理-->
     <string name="txt_currency_arrival">已到账</string>
     <string name="txt_currency_withdraw">提现金额</string>
@@ -162,15 +168,19 @@
     <string name="txt_currency_income_service_type">服务类型</string>
     <string name="txt_currency_income_patient_name">患者姓名</string>
     <string name="txt_initiate_doctor">发起医生</string>
-    <string name="txt_check_hospital">检查医院</string>
+    <string name="txt_initiate_depart">发起科室</string>
+    <string name="txt_initiate_hospital">发起医院</string>
+    <string name="txt_consultation_doctor">会诊医生</string>
+    <string name="txt_consultation_depart">会诊科室</string>
+    <string name="txt_consultation_hospital">会诊医院</string>
     <string name="txt_receiving_doctor">接诊医生</string>
     <string name="txt_receiving_hospital">接诊医院</string>
     <string name="txt_receiving_depart">接诊科室</string>
     <string name="txt_transfer_doctor">转诊医生</string>
     <string name="txt_transfer_hospital">转诊医院</string>
     <string name="txt_transfer_depart">转诊科室</string>
+    <string name="txt_check_hospital">检查医院</string>
     <string name="txt_receiving_status">接诊状态</string>
-    <string name="txt_initiate_hospital">发起医院</string>
     <string name="txt_currency_income_project">检查项目</string>
     <string name="txt_currency_income_time">初诊时间</string>
 
@@ -193,6 +203,7 @@
     <string name="txt_first_time">初诊时间</string>
     <string name="txt_first_diagnosis">初步诊断</string>
     <string name="txt_remote_billing">远程开单</string>
+    <string name="txt_remote_consultation">远程会诊</string>
     <string name="txt_contact_patient">联系患者</string>
     <string name="txt_patient_name_hint">患者姓名必须和身份证一致</string>
     <string name="txt_patient_id_card_hint">请填写患者身份证号码</string>

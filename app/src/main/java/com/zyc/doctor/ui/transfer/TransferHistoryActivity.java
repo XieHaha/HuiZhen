@@ -60,7 +60,7 @@ public class TransferHistoryActivity extends BaseActivity
         super.initData(savedInstanceState);
         layoutRefresh.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light,
                                               android.R.color.holo_orange_light, android.R.color.holo_green_light);
-        timeItemDecoration = new TimeItemDecoration(this);
+        timeItemDecoration = new TimeItemDecoration(this, false);
         recyclerview.setLayoutManager(new LinearLayoutManager(this));
         recyclerview.addItemDecoration(timeItemDecoration);
         initData();

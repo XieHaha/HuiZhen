@@ -32,6 +32,8 @@
     	</list>
     -->
     <list>
+        <mapping class="com.yht.frame.data.bean.PatientBean"></mapping>
+        <mapping class="com.yht.frame.data.bean.CooperateDocBean"></mapping>
     </list>
 
     <!--
