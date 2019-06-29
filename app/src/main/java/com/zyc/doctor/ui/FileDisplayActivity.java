@@ -6,9 +6,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.widget.TextView;
 
-import com.fanneng.android.web.file.FileReaderView;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.ui.BaseActivity;
+import com.yht.frame.widgets.view.FileReaderView;
 import com.zyc.doctor.R;
 
 import butterknife.BindView;

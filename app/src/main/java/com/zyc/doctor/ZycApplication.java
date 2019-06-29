@@ -1,6 +1,7 @@
 package com.zyc.doctor;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.support.multidex.MultiDex;
@@ -12,6 +13,8 @@ import com.hyphenate.easeui.EaseUI;
 import com.hyphenate.easeui.domain.EaseAvatarOptions;
 import com.hyphenate.easeui.domain.EaseUser;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.smtt.export.external.TbsCoreSettings;
+import com.tencent.smtt.sdk.QbSdk;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yht.frame.api.ApiManager;
 import com.yht.frame.api.CrashHandler;
@@ -20,9 +23,12 @@ import com.yht.frame.data.bean.LoginSuccessBean;
 import com.yht.frame.http.retrofit.RetrofitManager;
 import com.yht.frame.utils.SharePreferenceUtil;
 import com.zyc.doctor.chat.HxHelper;
+import com.zyc.doctor.service.PreLoadX5Service;
 
 import org.litepal.LitePal;
 import org.litepal.LitePalApplication;
+
+import java.util.HashMap;
 
 import me.jessyan.autosize.AutoSize;
 import me.jessyan.autosize.AutoSizeConfig;
@@ -52,6 +58,8 @@ public class ZycApplication extends LitePalApplication {
         ApiManager.getInstance().init(this, true);
         //网络
         RetrofitManager.getInstance().init(BuildConfig.BASE_BASIC_URL);
+        //启动预加载的服务
+        initX5();
         //环信
         initEase();
         //数据库
@@ -98,6 +106,14 @@ public class ZycApplication extends LitePalApplication {
             //否则交给HxHelper处理，从消息中获取昵称和头像
             return HxHelper.getInstance().getUser(username, callback);
         });
+    }
+
+    private void initX5() {
+        HashMap<String, Object> map = new HashMap<>(16);
+        map.put(TbsCoreSettings.TBS_SETTINGS_USE_SPEEDY_CLASSLOADER, true);
+        QbSdk.initTbsSettings(map);
+        Intent intent = new Intent(this, PreLoadX5Service.class);
+        startService(intent);
     }
 
     public LoginSuccessBean getLoginSuccessBean() {

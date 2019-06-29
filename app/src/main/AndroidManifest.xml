@@ -232,6 +232,14 @@
             android:label=""
             android:windowSoftInputMode="adjustResize|stateHidden" />
 
+        <!--腾讯X5-->
+        <service
+            android:name="com.tencent.smtt.export.external.DexClassLoaderProviderService"
+            android:label="dexopt"
+            android:process=":dexopt" />
+        <service android:name=".service.PreLoadX5Service" />
+        <!--腾讯X5-->
+
         <!--环信消息点击事件处理-->
         <receiver
             android:name=".chat.receive.EaseMsgClickBroadCastReceiver"
