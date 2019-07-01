@@ -98,20 +98,20 @@ public class PatientPersonalActivity extends BaseActivity implements OnPermissio
      * 碎片初始化
      */
     private void initFragment() {
-        //已接收
+        //患者信息
         PatientInfoFragment patientInfoFragment = new PatientInfoFragment();
         PatientInfoFragment patientInfoFragment1 = new PatientInfoFragment();
-        //待处理
+        //在线聊天
         EaseChatFragment easeChatFragment = new EaseChatFragment();
         //传入参数
         Bundle args = new Bundle();
         args.putInt(EaseConstant.EXTRA_CHAT_TYPE, EaseConstant.CHATTYPE_SINGLE);
-        args.putString(EaseConstant.EXTRA_USER_ID, "");
+        args.putString(EaseConstant.EXTRA_USER_ID, "18582317119_p");
         easeChatFragment.hideTitleBar();
         easeChatFragment.setArguments(args);
         List<Fragment> fragmentList = new ArrayList<>();
         fragmentList.add(patientInfoFragment);
-        fragmentList.add(patientInfoFragment1);
+        fragmentList.add(easeChatFragment);
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), fragmentList);
         viewPager.setAdapter(viewPagerAdapter);
         titleBar(true);

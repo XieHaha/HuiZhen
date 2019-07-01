@@ -11,11 +11,17 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.yht.frame.data.bean.PatientBean;
 import com.yht.frame.ui.BaseActivity;
 import com.zyc.doctor.R;
 import com.zyc.doctor.ui.main.fragment.MessageFragment;
 import com.zyc.doctor.ui.main.fragment.PatientFragment;
 import com.zyc.doctor.ui.main.fragment.WorkerFragment;
+
+import org.litepal.crud.DataSupport;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -64,6 +70,29 @@ public class MainActivity extends BaseActivity {
         //状态栏透明
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         initTab();
+        //测试数据 存储
+        savePatient();
+    }
+
+    List<PatientBean> patientBeans;
+
+    private void savePatient() {
+        patientBeans = new ArrayList<>();
+        //数据存储
+        for (int i = 0; i < 3; i++) {
+            if (i == 0) {
+                PatientBean bean = new PatientBean();
+                bean.setPatientId("18582317119_p");
+                bean.setName("测试名字1");
+            }
+            else {
+                PatientBean bean = new PatientBean();
+                bean.setPatientId("");
+                bean.setName("");
+            }
+        }
+        DataSupport.deleteAll(PatientBean.class);
+        DataSupport.saveAll(patientBeans);
     }
 
     @Override

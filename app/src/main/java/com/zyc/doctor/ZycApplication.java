@@ -19,6 +19,7 @@ import com.yht.frame.api.CrashHandler;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.bean.LoginSuccessBean;
 import com.yht.frame.http.retrofit.RetrofitManager;
+import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.LogUtils;
 import com.yht.frame.utils.SharePreferenceUtil;
 import com.zyc.doctor.chat.HxHelper;
@@ -83,7 +84,8 @@ public class ZycApplication extends LitePalApplication {
         //设置头像为圆形
         EaseAvatarOptions avatarOpts = new EaseAvatarOptions();
         //0：默认，1：圆形，2：矩形
-        avatarOpts.setAvatarShape(1);
+        avatarOpts.setAvatarShape(2);
+        avatarOpts.setAvatarRadius(BaseUtils.dp2px(this, 4));
         EaseUI.getInstance().setAvatarOptions(avatarOpts);
         //设置有关环信自定义的相关配置  titlebar、头像、名字处理
         HxHelper.Opts opts = new HxHelper.Opts();

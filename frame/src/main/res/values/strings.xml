@@ -88,9 +88,9 @@
 
     <!--登录-->
     <string name="txt_login_wechat">微信一键登录</string>
-    <string name="txt_login_phone">手机号登录/注册</string>
+    <string name="txt_login_phone">登录/注册</string>
     <string name="txt_login_protocol">登录即代表同意《会珍用户使用协议》</string>
-    <string name="txt_login_hint">未注册手机验证后自动注册</string>
+    <string name="txt_login_hint">未注册手机号登陆后将自动注册</string>
     <string name="txt_login_account_hint">手机号</string>
     <string name="txt_login_code_hint">短信验证码</string>
     <string name="txt_login_obtain_code">获取验证码</string>
