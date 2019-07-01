@@ -13,7 +13,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.bean.NotifyMessageBean;
 import com.yht.frame.ui.BaseFragment;
-import com.yht.frame.widgets.recyclerview.decoration.TimeItemDecoration;
 import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.zyc.doctor.R;
 import com.zyc.doctor.ui.adapter.NotifyMessageAdapter;
@@ -38,13 +37,8 @@ public class NotifyMessageFragment extends BaseFragment
     RecyclerView recyclerView;
     @BindView(R.id.tv_none_message)
     TextView tvNoneMessage;
-    /**
-     * 时间分隔
-     */
-    private TimeItemDecoration timeItemDecoration;
     private NotifyMessageAdapter notifyMessageAdapter;
     private List<NotifyMessageBean> messageList;
-    private List<String> titleBars;
 
     @Override
     public int getLayoutID() {
@@ -57,9 +51,7 @@ public class NotifyMessageFragment extends BaseFragment
         layoutRefresh.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light,
                                               android.R.color.holo_orange_light, android.R.color.holo_green_light);
         layoutRefresh.setOnRefreshListener(this);
-        timeItemDecoration = new TimeItemDecoration(getContext(), false);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.addItemDecoration(timeItemDecoration);
         initData();
         initAdapter();
     }
@@ -72,8 +64,8 @@ public class NotifyMessageFragment extends BaseFragment
         notifyMessageAdapter.setLoadMoreView(new CustomLoadMoreView());
         notifyMessageAdapter.setOnLoadMoreListener(this, recyclerView);
         notifyMessageAdapter.setOnItemClickListener(this);
-        notifyMessageAdapter.loadMoreEnd();
         recyclerView.setAdapter(notifyMessageAdapter);
+        notifyMessageAdapter.loadMoreEnd();
     }
 
     /**
@@ -81,21 +73,39 @@ public class NotifyMessageFragment extends BaseFragment
      */
     private void initData() {
         messageList = new ArrayList<>();
-        titleBars = new ArrayList<>();
-        String[] names = {
-                "孙尚香", "安其拉", "白起", "不知火舞" };
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 8; i++) {
             NotifyMessageBean bean = new NotifyMessageBean();
-            bean.setTitle(names[i]);
-            if (i > 1) {
-                titleBars.add("2019-06");
-                bean.setTime("2019-06");
+            if (i == 0) {
+                bean.setTime("1561969120000");
+                bean.setItemType(NotifyMessageBean.REPORT);
+            }
+            else if (i == 1) {
+                bean.setTime("1561969080000");
+                bean.setItemType(NotifyMessageBean.CURRENCY);
+            }
+            else if (i == 2) {
+                bean.setTime("1561969000000");
+                bean.setItemType(NotifyMessageBean.CURRENCY);
+            }
+            else if (i == 3) {
+                bean.setTime("1561962000000");
+                bean.setItemType(NotifyMessageBean.REPORT);
+            }
+            else if (i == 4) {
+                bean.setTime("1561879120000");
+                bean.setItemType(NotifyMessageBean.CURRENCY);
+            }
+            else if (i == 5) {
+                bean.setTime("1561819120000");
+                bean.setItemType(NotifyMessageBean.REPORT);
+            }
+            else if (i == 6) {
+                bean.setTime("1560819120000");
                 bean.setItemType(NotifyMessageBean.REPORT);
             }
             else {
-                titleBars.add("2019-07");
-                bean.setTime("2019-07");
-                bean.setItemType(NotifyMessageBean.CURRENCY);
+                bean.setTime("1520819120000");
+                bean.setItemType(NotifyMessageBean.REPORT);
             }
             messageList.add(bean);
         }

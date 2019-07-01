@@ -17,10 +17,6 @@ public class NotifyMessageBean implements MultiItemEntity {
      */
     public static final int CURRENCY = 2;
     /**
-     * 远程
-     */
-    public static final int REMOTE = 3;
-    /**
      * type
      */
     private int itemType;

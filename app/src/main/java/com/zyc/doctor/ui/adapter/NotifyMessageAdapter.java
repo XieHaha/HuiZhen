@@ -3,6 +3,7 @@ package com.zyc.doctor.ui.adapter;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.yht.frame.data.bean.NotifyMessageBean;
+import com.yht.frame.utils.TimeUtil;
 import com.zyc.doctor.R;
 
 import java.util.List;
@@ -22,6 +23,12 @@ public class NotifyMessageAdapter extends BaseMultiItemQuickAdapter<NotifyMessag
     @Override
     protected void convert(BaseViewHolder helper, NotifyMessageBean item) {
         switch (helper.getItemViewType()) {
+            case NotifyMessageBean.REPORT:
+                helper.setText(R.id.tv_time_bar, TimeUtil.getTimeString(Long.valueOf(item.getTime())));
+                break;
+            case NotifyMessageBean.CURRENCY:
+                helper.setText(R.id.tv_time_bar, TimeUtil.getTimeString(Long.valueOf(item.getTime())));
+                break;
             default:
                 break;
         }

@@ -16,8 +16,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:orientation="vertical"
-            android:layout_height="wrap_content"
-            android:paddingBottom="10dp">
+            android:layout_height="wrap_content">
 
             <RelativeLayout
                 android:id="@+id/layout_personal_base"
@@ -312,11 +311,8 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="70dp" />
-
+                android:layout_height="35dp" />
         </LinearLayout>
-
     </ScrollView>
-
 
 </LinearLayout>

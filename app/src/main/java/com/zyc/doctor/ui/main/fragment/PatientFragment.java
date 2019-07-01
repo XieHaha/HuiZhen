@@ -45,14 +45,14 @@ public class PatientFragment extends BaseFragment
                    BaseQuickAdapter.RequestLoadMoreListener {
     @BindView(R.id.status_bar_fix)
     View statusBarFix;
+    @BindView(R.id.index_bar)
+    IndexBar indexBar;
     @BindView(R.id.public_main_title)
     TextView publicMainTitle;
     @BindView(R.id.recyclerview)
     RecyclerView recyclerview;
     @BindView(R.id.side_bar)
     com.yht.frame.widgets.recyclerview.SideBar sideBar;
-    @BindView(R.id.index_bar)
-    IndexBar indexBar;
     @BindView(R.id.layout_bg)
     RelativeLayout layoutBg;
     @BindView(R.id.et_search_patient)
@@ -135,8 +135,6 @@ public class PatientFragment extends BaseFragment
         TextView searchText = headerView.findViewById(R.id.tv_search_patient);
         searchText.setOnClickListener(this);
         patientAdapter.addHeaderView(headerView);
-        View footerView = LayoutInflater.from(getContext()).inflate(R.layout.view_bottom_space, null);
-        patientAdapter.addFooterView(footerView);
         patientAdapter.setLoadMoreView(new CustomLoadMoreView());
         patientAdapter.setOnLoadMoreListener(this, recyclerview);
         patientAdapter.loadMoreEnd();
