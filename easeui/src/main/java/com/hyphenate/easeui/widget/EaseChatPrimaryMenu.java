@@ -1,6 +1,7 @@
 package com.hyphenate.easeui.widget;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -14,11 +15,13 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.hyphenate.easeui.R;
 import com.hyphenate.util.EMLog;
+import com.yht.frame.data.BaseData;
 
 /**
  * primary menu
@@ -28,6 +31,7 @@ public class EaseChatPrimaryMenu extends EaseChatPrimaryMenuBase implements OnCl
     private EditText editText;
     private View buttonSetModeKeyboard;
     private RelativeLayout edittext_layout;
+    private LinearLayout layoutChatStart;
     private View buttonSetModeVoice;
     private View buttonSend;
     private View buttonPressToSpeak;
@@ -67,7 +71,7 @@ public class EaseChatPrimaryMenu extends EaseChatPrimaryMenuBase implements OnCl
         faceChecked = (ImageView)findViewById(R.id.iv_face_checked);
         RelativeLayout faceLayout = (RelativeLayout)findViewById(R.id.rl_face);
         buttonMore = (Button)findViewById(R.id.btn_more);
-        edittext_layout.setBackgroundResource(R.drawable.ease_input_bar_bg_normal);
+//        edittext_layout.setBackgroundResource(R.drawable.ease_input_bar_bg_normal);
         buttonSend.setOnClickListener(this);
         buttonSetModeKeyboard.setOnClickListener(this);
         buttonSetModeVoice.setOnClickListener(this);
@@ -80,14 +84,14 @@ public class EaseChatPrimaryMenu extends EaseChatPrimaryMenuBase implements OnCl
             @Override
             public void onFocusChange(View v, boolean hasFocus)
             {
-                if (hasFocus)
-                {
-                    edittext_layout.setBackgroundResource(R.drawable.ease_input_bar_bg_active);
-                }
-                else
-                {
-                    edittext_layout.setBackgroundResource(R.drawable.ease_input_bar_bg_normal);
-                }
+//                if (hasFocus)
+//                {
+//                    edittext_layout.setBackgroundResource(R.drawable.ease_input_bar_bg_active);
+//                }
+//                else
+//                {
+//                    edittext_layout.setBackgroundResource(R.drawable.ease_input_bar_bg_normal);
+//                }
             }
         });
         // listen the text change
@@ -174,6 +178,18 @@ public class EaseChatPrimaryMenu extends EaseChatPrimaryMenuBase implements OnCl
                 return false;
             }
         });
+        //开始对话
+        layoutChatStart = findViewById(R.id.layout_chat_start);
+        layoutChatStart.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layoutChatStart.setVisibility(GONE);
+                //开始倒计时  通过广播来处理
+                Intent intent = new Intent(BaseData.BASE_START_TIMER_ACTION);
+                intent.setPackage(getContext().getPackageName());
+                getContext().sendBroadcast(intent);
+            }
+        });
     }
 
     /**
@@ -191,6 +207,7 @@ public class EaseChatPrimaryMenu extends EaseChatPrimaryMenuBase implements OnCl
      *
      * @param emojiContent
      */
+    @Override
     public void onEmojiconInputEvent(CharSequence emojiContent)
     {
         editText.append(emojiContent);
@@ -199,6 +216,7 @@ public class EaseChatPrimaryMenu extends EaseChatPrimaryMenuBase implements OnCl
     /**
      * delete emojicon
      */
+    @Override
     public void onEmojiconDeleteEvent()
     {
         if (!TextUtils.isEmpty(editText.getText()))
@@ -263,7 +281,7 @@ public class EaseChatPrimaryMenu extends EaseChatPrimaryMenuBase implements OnCl
         }
         else if (id == R.id.et_sendmessage)
         {
-            edittext_layout.setBackgroundResource(R.drawable.ease_input_bar_bg_active);
+//            edittext_layout.setBackgroundResource(R.drawable.ease_input_bar_bg_active);
             faceNormal.setVisibility(View.VISIBLE);
             faceChecked.setVisibility(View.INVISIBLE);
             if (listener != null) { listener.onEditTextClicked(); }

@@ -1,5 +1,9 @@
 package com.zyc.doctor.ui.patient;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,8 +15,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.hyphenate.easeui.EaseConstant;
+import com.yht.frame.data.BaseData;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
+import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.widgets.view.AbstractOnPageChangeListener;
 import com.yht.frame.widgets.view.ViewPrepared;
 import com.zyc.doctor.R;
@@ -49,6 +55,10 @@ public class PatientPersonalActivity extends BaseActivity {
      * 在线聊天
      */
     private EaseChatFragment easeChatFragment;
+    /**
+     * 开启聊天倒计时广播
+     */
+    private TimerReceiver timerReceiver;
 
     @Override
     protected boolean isInitBackBtn() {
@@ -71,6 +81,16 @@ public class PatientPersonalActivity extends BaseActivity {
         });
         publicTitleBarTitle.setText("患者姓名");
         initFragment();
+        initReceiver();
+    }
+
+    /**
+     * 动态广播注册
+     */
+    private void initReceiver() {
+        timerReceiver = new TimerReceiver();
+        IntentFilter filter = new IntentFilter(BaseData.BASE_START_TIMER_ACTION);
+        registerReceiver(timerReceiver, filter);
     }
 
     @Override
@@ -163,6 +183,24 @@ public class PatientPersonalActivity extends BaseActivity {
         //获取屏幕宽度
         int width = ScreenUtils.getScreenSize(this)[0];
         return (width - viewBar.getWidth() * 2) / 4;
+    }
+
+    /**
+     * 广播处理
+     */
+    public class TimerReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            ToastUtil.toast(PatientPersonalActivity.this, "收到广播开始倒计时");
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (timerReceiver != null) {
+            unregisterReceiver(timerReceiver);
+        }
     }
 
     @Override

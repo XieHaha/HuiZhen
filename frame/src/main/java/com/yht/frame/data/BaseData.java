@@ -39,14 +39,6 @@ public interface BaseData {
      */
     int BASE_MAX_RESEND_TIME = 60;
     /**
-     * 屏幕适配  默认宽度
-     */
-    int BASE_DEVICE_DEFAULT_WIDTH = 667;
-    /**
-     * requestCode
-     */
-    int BASE_PENDING_COUNT = 10000;
-    /**
      * 消息最大显示数字
      */
     int BASE_MEAASGE_DISPLAY_NUM = 99;
@@ -54,6 +46,10 @@ public interface BaseData {
      * 环信默认登录密码
      */
     String BASE_EASE_DEFAULT_PWD = "111111";
+    /**
+     * 计时器  开始
+     */
+    String BASE_START_TIMER_ACTION = "zyc.doctor.start.timer";
     /**
      * 适配华为  裁剪
      */

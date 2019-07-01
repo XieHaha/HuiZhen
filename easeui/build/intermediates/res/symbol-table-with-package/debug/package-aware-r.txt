@@ -1186,6 +1186,7 @@ drawable corner28_top_white_bg
 drawable corner2_cccccc_bg
 drawable corner2_ffffff_bg
 drawable corner2_stroke1_a1a8b3
+drawable corner4_1491fc_bg
 drawable corner4_black50_bg
 drawable corner4_dot
 drawable corner4_ebedf0_bg
@@ -1650,6 +1651,7 @@ id iv_unread_voice
 id iv_userhead
 id iv_voice
 id large_icon_uri
+id layout_chat_start
 id layout_edit
 id layout_root
 id left
@@ -2018,7 +2020,11 @@ mipmap ic_call
 mipmap ic_camera
 mipmap ic_cancel
 mipmap ic_chat_camera
+mipmap ic_chat_keyboard
+mipmap ic_chat_menu
 mipmap ic_chat_pic
+mipmap ic_chat_time
+mipmap ic_chat_voice
 mipmap ic_check
 mipmap ic_check_cancel
 mipmap ic_check_complete
@@ -2586,6 +2592,7 @@ string txt_camera_qr
 string txt_cancel
 string txt_cancel_result
 string txt_chat_online
+string txt_chat_start
 string txt_check_again
 string txt_check_hospital
 string txt_check_success_hint
