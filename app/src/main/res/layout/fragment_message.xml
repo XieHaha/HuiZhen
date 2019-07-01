@@ -3,29 +3,101 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include
-        layout="@layout/public_main_title"
-        android:id="@+id/title_bar" />
+    <View
+        android:id="@+id/status_bar_fix"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/color_ffffff" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerview"
+    <RelativeLayout
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_below="@id/status_bar_fix"
+        android:background="@color/color_ffffff">
+
+        <LinearLayout
+            android:id="@+id/layout_title"
+            android:layout_width="wrap_content"
+            android:minWidth="142dp"
+            android:layout_height="52dp">
+
+            <RelativeLayout
+                android:id="@+id/layout_left"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/tv_left"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="@string/txt_message"
+                    android:textColor="@color/txt_color_373d4d_17242d_selector"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:layout_width="6dp"
+                    android:layout_height="6dp"
+                    android:background="@drawable/circular_red_point_bg"
+                    android:layout_toEndOf="@id/tv_left"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginTop="10dp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/layout_right"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/tv_right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="@string/txt_notify"
+                    android:textColor="@color/txt_color_373d4d_17242d_selector"
+                    android:textStyle="bold"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:layout_width="6dp"
+                    android:layout_height="6dp"
+                    android:background="@drawable/circular_red_point_bg"
+                    android:layout_toEndOf="@id/tv_right"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginTop="10dp" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <View
+            android:id="@+id/view_bar"
+            android:layout_width="20dp"
+            android:layout_height="3dp"
+            android:background="@color/color_17242D"
+            android:layout_alignParentBottom="true" />
+
+        <TextView
+            android:id="@+id/tv_read_message"
+            android:layout_width="wrap_content"
+            android:layout_height="52dp"
+            android:textColor="@color/txt_main_color_selector"
+            android:textSize="@dimen/text_14"
+            android:gravity="center"
+            android:paddingEnd="16dp"
+            android:paddingStart="16dp"
+            android:layout_alignParentEnd="true"
+            android:text="@string/txt_message_status" />
+    </RelativeLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/title_bar">
-
-    </android.support.v7.widget.RecyclerView>
-
-
-    <TextView
-        android:id="@+id/tv_none_message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/text_15"
-        android:textColor="@color/color_6a6f80"
-        android:text="@string/txt_none_message"
-        android:drawableTop="@mipmap/pic_none_message"
-        android:gravity="center"
-        android:layout_centerInParent="true" />
+        android:layout_below="@id/title_bar" />
 
 
 </RelativeLayout>

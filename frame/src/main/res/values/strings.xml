@@ -27,6 +27,7 @@
 
     <!--公用-->
     <string name="txt_app_name">会珍</string>
+    <string name="txt_notify">通知</string>
     <string name="txt_hint">提示</string>
     <string name="txt_close">关闭</string>
     <string name="txt_cancel">取消</string>
@@ -63,6 +64,7 @@
     <string name="txt_notice">注意事项</string>
     <string name="txt_not_required">(非必填)</string>
     <string name="txt_doctor_phone">医生手机\n号</string>
+    <string name="txt_detail">查看详情</string>
 
     <!--主页-->
     <string name="txt_message">消息</string>
@@ -265,6 +267,14 @@
     <string name="txt_edit_transfer_hint">请输入转诊注意事项</string>
     <string name="txt_season">理由</string>
     <string name="txt_season_hint">请输入转诊理由</string>
+
+    <!--消息-->
+    <string name="txt_colon_patient">患者：</string>
+    <string name="txt_colon_check_hospital">检查医院：</string>
+    <string name="txt_colon_check_project">检查项目：</string>
+    <string name="txt_report_num_hint">你有%d个检查报告可查看</string>
+    <string name="txt_currency_hint">会珍币到账</string>
+    <string name="txt_currency_withdraw_hint">提现成功</string>
 
     <!--toast-->
     <string name="toast_public_current_no_network">当前无网络连接</string>
