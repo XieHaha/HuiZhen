@@ -5,6 +5,8 @@ import android.app.ProgressDialog;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
@@ -15,8 +17,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -46,9 +46,6 @@ import com.hyphenate.easeui.domain.EaseEmojicon;
 import com.hyphenate.easeui.domain.EaseUser;
 import com.hyphenate.easeui.model.EaseAtMessageHelper;
 import com.hyphenate.easeui.model.EaseDingMessageHelper;
-import com.hyphenate.easeui.permission.OnPermissionCallback;
-import com.hyphenate.easeui.permission.Permission;
-import com.hyphenate.easeui.permission.PermissionHelper;
 import com.hyphenate.easeui.ui.EaseBaiduMapActivity;
 import com.hyphenate.easeui.ui.EaseChatRoomListener;
 import com.hyphenate.easeui.ui.EaseGroupListener;
@@ -66,8 +63,11 @@ import com.hyphenate.easeui.widget.EaseVoiceRecorderView.EaseVoiceRecorderCallba
 import com.hyphenate.easeui.widget.chatrow.EaseCustomChatRowProvider;
 import com.hyphenate.exceptions.HyphenateException;
 import com.hyphenate.util.EMLog;
-import com.hyphenate.util.PathUtil;
+import com.yht.frame.api.DirHelper;
+import com.yht.frame.permission.Permission;
+import com.yht.frame.permission.PermissionHelper;
 import com.zyc.doctor.R;
+import com.zyc.doctor.ZycApplication;
 
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 
@@ -85,7 +85,7 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
  *
  * @author dundun
  */
-public class EaseChatFragment extends EaseBaseFragment implements EMMessageListener, OnPermissionCallback {
+public class EaseChatFragment extends EaseBaseFragment implements EMMessageListener {
     protected static final String TAG = "EaseChatFragment";
     protected static final int REQUEST_CODE_MAP = 1;
     protected static final int REQUEST_CODE_CAMERA = 2;
@@ -104,6 +104,8 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
     protected ClipboardManager clipboard;
     protected Handler handler = new Handler();
     protected File cameraFile;
+    private Uri mCurrentPhotoUri;
+    private String mCurrentPhotoPath;
     protected EaseVoiceRecorderView voiceRecorderView;
     protected SwipeRefreshLayout swipeRefreshLayout;
     protected ListView listView;
@@ -113,17 +115,16 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
     protected GroupListener groupListener;
     protected ChatRoomListener chatRoomListener;
     protected EMMessage contextMenuMessage;
-    static final int ITEM_TAKE_PICTURE = 1;
-    static final int ITEM_PICTURE = 2;
+    static final int ITEM_PICTURE = 1;
+    static final int ITEM_TAKE_PICTURE = 2;
     static final int ITEM_LOCATION = 3;
     protected int[] itemStrings = {
-            R.string.attach_take_pic, R.string.attach_picture, R.string.attach_location };
+            R.string.attach_picture, R.string.attach_take_pic };
     protected int[] itemdrawables = {
-            R.drawable.ease_chat_takepic_selector, R.drawable.ease_chat_image_selector,
-            R.drawable.ease_chat_location_selector };
+            R.mipmap.ic_chat_pic, R.mipmap.ic_chat_camera };
     //    protected int[] itemStrings = { R.string.attach_take_pic, R.string.attach_picture};
     //    protected int[] itemdrawables = { R.drawable.ease_chat_takepic_selector, R.drawable.ease_chat_image_selector };
-    protected int[] itemIds = { ITEM_TAKE_PICTURE, ITEM_PICTURE, ITEM_LOCATION };
+    protected int[] itemIds = { ITEM_PICTURE, ITEM_TAKE_PICTURE };
     private boolean isMessageListInited;
     protected MyItemClickListener extendMenuItemClickListener;
     protected boolean isRoaming = false;
@@ -480,10 +481,15 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == REQUEST_CODE_CAMERA) { // capture new image
-                if (cameraFile != null && cameraFile.exists()) { sendImageMessage(cameraFile.getAbsolutePath()); }
+            // capture new image
+            if (requestCode == REQUEST_CODE_CAMERA) {
+                if (cameraFile == null) {
+                    cameraFile = new File(mCurrentPhotoPath);
+                }
+                sendImageMessage(mCurrentPhotoPath);
             }
-            else if (requestCode == REQUEST_CODE_LOCAL) { // send local image
+            // send local image
+            else if (requestCode == REQUEST_CODE_LOCAL) {
                 if (data != null) {
                     Uri selectedImage = data.getData();
                     if (selectedImage != null) {
@@ -491,7 +497,8 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
                     }
                 }
             }
-            else if (requestCode == REQUEST_CODE_MAP) { // location
+            // location
+            else if (requestCode == REQUEST_CODE_MAP) {
                 double latitude = data.getDoubleExtra("latitude", 0);
                 double longitude = data.getDoubleExtra("longitude", 0);
                 String locationAddress = data.getStringExtra("address");
@@ -502,7 +509,8 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
                     Toast.makeText(getActivity(), R.string.unable_to_get_loaction, Toast.LENGTH_SHORT).show();
                 }
             }
-            else if (requestCode == REQUEST_CODE_DING_MSG) { // To send the ding-type msg.
+            // To send the ding-type msg.
+            else if (requestCode == REQUEST_CODE_DING_MSG) {
                 String msgContent = data.getStringExtra("msg");
                 EMLog.i(TAG, "To send the ding-type msg, content: " + msgContent);
                 // Send the ding-type msg.
@@ -670,17 +678,17 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
                 }
             }
             switch (itemId) {
-                case ITEM_TAKE_PICTURE:
-                    //                selectPicFromCamera();
-                    //动态申请权限
-                    permissionHelper.request(new String[] {
-                            Permission.CAMERA, Permission.STORAGE_WRITE });
-                    break;
                 case ITEM_PICTURE:
                     //                selectPicFromLocal();
                     //动态申请权限
                     permissionHelper.request(new String[] {
                             Permission.STORAGE_WRITE });
+                    break;
+                case ITEM_TAKE_PICTURE:
+                    //                selectPicFromCamera();
+                    //动态申请权限
+                    permissionHelper.request(new String[] {
+                            Permission.CAMERA, Permission.STORAGE_WRITE });
                     break;
                 case ITEM_LOCATION:
                     //                startActivityForResult(new Intent(getActivity(), EaseBaiduMapActivity.class), REQUEST_CODE_MAP);
@@ -692,92 +700,8 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
             }
         }
     }
+
     /***********************************8权限申请*********************/
-    /**
-     * 权限管理类
-     */
-    protected PermissionHelper permissionHelper;
-
-    private boolean isSamePermission(String o, String n) {
-        if (TextUtils.isEmpty(o) || TextUtils.isEmpty(n)) {
-            return false;
-        }
-        if (o.equals(n)) {
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-            @NonNull int[] grantResults) {
-        if (permissions == null) {
-            return;
-        }
-        permissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
-
-    @Override
-    public void onPermissionGranted(@NonNull String[] permissionName) {
-        if (permissionName == null || permissionName.length == 0) {
-            return;
-        }
-        if (isSamePermission(Permission.CAMERA, permissionName[0])) {
-            selectPicFromCamera();
-        }
-        else if (isSamePermission(Permission.STORAGE_WRITE, permissionName[0])) {
-            selectPicFromLocal();
-        }
-        else if (isSamePermission(Permission.FINE_LOCATION, permissionName[0])) {
-            startActivityForResult(new Intent(getActivity(), EaseBaiduMapActivity.class), REQUEST_CODE_MAP);
-        }
-        else if (isSamePermission(Permission.RECORD_AUDIO, permissionName[0])) {
-            if (onStartRecordCallBack != null) {
-                onStartRecordCallBack.callBack(true);
-            }
-        }
-    }
-
-    @Override
-    public void onPermissionDeclined(@NonNull String[] permissionName) {
-        for (String permission : permissionName) {
-            if (Permission.STORAGE_WRITE.equals(permission)) {
-                Toast.makeText(getContext(), R.string.dialog_no_storage_permission_tip, Toast.LENGTH_SHORT).show();
-                break;
-            }
-            if (Permission.CAMERA.equals(permission)) {
-                Toast.makeText(getContext(), R.string.dialog_no_camera_permission_tip, Toast.LENGTH_SHORT).show();
-                break;
-            }
-            if (Permission.RECORD_AUDIO.equals(permission)) {
-                Toast.makeText(getContext(), R.string.dialog_no_audio_permission_tip, Toast.LENGTH_SHORT).show();
-                if (onStartRecordCallBack != null) {
-                    onStartRecordCallBack.callBack(false);
-                }
-                break;
-            }
-            if (Permission.LOCATION.equals(permission)) {
-                Toast.makeText(getContext(), R.string.dialog_no_location_permission_tip, Toast.LENGTH_SHORT).show();
-                break;
-            }
-        }
-    }
-
-    @Override
-    public void onPermissionPreGranted(@NonNull String permissionsName) {
-        Log.d("test", "onPermissionPreGranted:" + permissionsName);
-    }
-
-    @Override
-    public void onPermissionNeedExplanation(@NonNull String permissionName) {
-        permissionHelper.requestAfterExplanation(permissionName);
-    }
-
-    @Override
-    public void onPermissionReallyDeclined(@NonNull String permissionName) {
-        Toast.makeText(getContext(), "权限错误", Toast.LENGTH_SHORT).show();
-    }
-
     @Override
     public void onNoPermissionNeeded(@NonNull Object permissionName) {
         if (permissionName instanceof String[]) {
@@ -1022,24 +946,52 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
             Toast.makeText(getActivity(), R.string.sd_card_does_not_exist, Toast.LENGTH_SHORT).show();
             return;
         }
-        cameraFile = new File(PathUtil.getInstance().getImagePath(),
-                              EMClient.getInstance().getCurrentUser() + System.currentTimeMillis() + ".jpg");
-        //noinspection ResultOfMethodCallIgnored
-        cameraFile.getParentFile().mkdirs();
-        //为了兼容Android 7.0+，使用FileProvider
-        Uri fileUri = null;
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-            //Android 7.0以下
-            fileUri = Uri.fromFile(cameraFile);
+        cameraFile = new File(DirHelper.getPathImage(), System.currentTimeMillis() + ".jpg");
+        if (cameraFile != null) {
+            mCurrentPhotoPath = cameraFile.getAbsolutePath();
+        }
+        //选择拍照
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // 指定调用相机拍照后照片的储存路径
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            mCurrentPhotoUri = FileProvider.getUriForFile(getContext(), ZycApplication.getInstance().getPackageName() +
+                                                                        ".fileprovider", cameraFile);
         }
         else {
-            //Android 7.0及以上
-            fileUri = FileProvider.getUriForFile(getActivity(),
-                                                 getActivity().getApplicationInfo().packageName + ".fileprovider",
-                                                 cameraFile);
+            mCurrentPhotoUri = Uri.fromFile(cameraFile);
         }
-        startActivityForResult(new Intent(MediaStore.ACTION_IMAGE_CAPTURE).putExtra(MediaStore.EXTRA_OUTPUT, fileUri),
-                               REQUEST_CODE_CAMERA);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            List<ResolveInfo> resInfoList = getContext().getPackageManager()
+                                                        .queryIntentActivities(intent,
+                                                                               PackageManager.MATCH_DEFAULT_ONLY);
+            for (ResolveInfo resolveInfo : resInfoList) {
+                String packageName = resolveInfo.activityInfo.packageName;
+                getContext().grantUriPermission(packageName, mCurrentPhotoUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION |
+                                                                               Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            }
+        }
+        // 指定调用相机拍照后照片的储存路径
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, mCurrentPhotoUri);
+        startActivityForResult(intent, REQUEST_CODE_CAMERA);
+        //        cameraFile = new File(PathUtil.getInstance().getImagePath(),
+        //                              EMClient.getInstance().getCurrentUser() + System.currentTimeMillis() + ".jpg");
+        //        //noinspection ResultOfMethodCallIgnored
+        //        cameraFile.getParentFile().mkdirs();
+        //为了兼容Android 7.0+，使用FileProvider
+        //        Uri fileUri = null;
+        //        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+        //            //Android 7.0以下
+        //            fileUri = Uri.fromFile(cameraFile);
+        //        }
+        //        else {
+        //            //Android 7.0及以上
+        //            fileUri = FileProvider.getUriForFile(getActivity(),
+        //                                                 getActivity().getApplicationInfo().packageName + ".fileprovider",
+        //                                                 cameraFile);
+        //        }
+        //        startActivityForResult(new Intent(MediaStore.ACTION_IMAGE_CAPTURE).putExtra(MediaStore.EXTRA_OUTPUT, fileUri),
+        //                               REQUEST_CODE_CAMERA);
         //        startActivityForResult(
         //                new Intent(MediaStore.ACTION_IMAGE_CAPTURE).putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(cameraFile)),
         //                REQUEST_CODE_CAMERA);

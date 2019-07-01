@@ -31,6 +31,10 @@ public class Permission {
     public static final String LOCATION[] = {
             Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION };
     /**
+     * 位置权限 精确位置
+     */
+    public static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
+    /**
      * 存储权限
      */
     public static final String STORAGE[] = {

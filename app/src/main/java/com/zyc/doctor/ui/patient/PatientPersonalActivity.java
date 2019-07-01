@@ -11,7 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.hyphenate.easeui.EaseConstant;
-import com.hyphenate.easeui.permission.OnPermissionCallback;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.widgets.view.AbstractOnPageChangeListener;
@@ -33,7 +32,7 @@ import me.jessyan.autosize.utils.ScreenUtils;
  * @date 19/6/27 14:17
  * @des
  */
-public class PatientPersonalActivity extends BaseActivity implements OnPermissionCallback {
+public class PatientPersonalActivity extends BaseActivity {
     @BindView(R.id.tv_left)
     TextView tvLeft;
     @BindView(R.id.tv_right)
@@ -46,6 +45,10 @@ public class PatientPersonalActivity extends BaseActivity implements OnPermissio
     ViewPager viewPager;
     @BindView(R.id.public_title_bar_title)
     TextView publicTitleBarTitle;
+    /**
+     * 在线聊天
+     */
+    private EaseChatFragment easeChatFragment;
 
     @Override
     protected boolean isInitBackBtn() {
@@ -102,7 +105,7 @@ public class PatientPersonalActivity extends BaseActivity implements OnPermissio
         PatientInfoFragment patientInfoFragment = new PatientInfoFragment();
         PatientInfoFragment patientInfoFragment1 = new PatientInfoFragment();
         //在线聊天
-        EaseChatFragment easeChatFragment = new EaseChatFragment();
+        easeChatFragment = new EaseChatFragment();
         //传入参数
         Bundle args = new Bundle();
         args.putInt(EaseConstant.EXTRA_CHAT_TYPE, EaseConstant.CHATTYPE_SINGLE);
@@ -160,5 +163,28 @@ public class PatientPersonalActivity extends BaseActivity implements OnPermissio
         //获取屏幕宽度
         int width = ScreenUtils.getScreenSize(this)[0];
         return (width - viewBar.getWidth() * 2) / 4;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+            @NonNull int[] grantResults) {
+        if (easeChatFragment != null) {
+            easeChatFragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+
+    @Override
+    public void onPermissionNeedExplanation(@NonNull String permissionName) {
+        if (easeChatFragment != null) {
+            easeChatFragment.onPermissionNeedExplanation(permissionName);
+        }
+    }
+
+    @Override
+    public void onNoPermissionNeeded(@NonNull Object permissionName) {
+        super.onNoPermissionNeeded(permissionName);
+        if (easeChatFragment != null) {
+            easeChatFragment.onNoPermissionNeeded(permissionName);
+        }
     }
 }

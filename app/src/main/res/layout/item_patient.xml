@@ -12,7 +12,7 @@
         android:id="@+id/iv_patient_img"
         android:layout_width="44dp"
         android:layout_height="44dp"
-        android:src="@mipmap/ic_default_header_c" />
+        android:src="@mipmap/ic_default_header_r" />
 
     <TextView
         android:id="@+id/tv_patient_name"

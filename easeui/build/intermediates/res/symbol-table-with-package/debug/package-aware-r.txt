@@ -2017,6 +2017,8 @@ mipmap ic_back_white
 mipmap ic_call
 mipmap ic_camera
 mipmap ic_cancel
+mipmap ic_chat_camera
+mipmap ic_chat_pic
 mipmap ic_check
 mipmap ic_check_cancel
 mipmap ic_check_complete

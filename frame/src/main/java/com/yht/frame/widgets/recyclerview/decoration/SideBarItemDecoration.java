@@ -109,7 +109,7 @@ public class SideBarItemDecoration extends RecyclerView.ItemDecoration {
         mPaint.setColor(ContextCompat.getColor(mContext, R.color.color_373d4d));
         Typeface font = Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD);
         mPaint.setTypeface(font);
-        canvas.drawText(bean.getIndexTag(), BaseUtils.dp2px(mContext, 30), bottom + BaseUtils.dp2px(mContext, 5),
+        canvas.drawText(bean.getIndexTag(), BaseUtils.dp2px(mContext, 30), bottom - BaseUtils.dp2px(mContext, 5),
                         mPaint);
     }
 
@@ -146,7 +146,7 @@ public class SideBarItemDecoration extends RecyclerView.ItemDecoration {
         mPaint.setTypeface(font);
         //悬浮窗字母位置
         canvas.drawText(patientBeans.get(realPosition).getIndexTag(), BaseUtils.dp2px(mContext, 30),
-                        bottom + BaseUtils.dp2px(mContext, 5), mPaint);
+                        bottom - BaseUtils.dp2px(mContext, 5), mPaint);
     }
 
     /**
