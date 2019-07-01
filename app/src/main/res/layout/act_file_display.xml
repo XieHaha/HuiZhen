@@ -7,7 +7,7 @@
 
     <include layout="@layout/public_title" />
 
-    <com.yht.frame.widgets.view.FileReaderView
+    <com.zyc.doctor.ui.x5.FileReaderView
         android:id="@+id/documentReaderView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

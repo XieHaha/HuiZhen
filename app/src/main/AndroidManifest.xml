@@ -227,7 +227,7 @@
             android:label=""
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
-            android:name=".ui.FileDisplayActivity"
+            android:name=".ui.x5.FileDisplayActivity"
             android:screenOrientation="portrait"
             android:label=""
             android:windowSoftInputMode="adjustResize|stateHidden" />

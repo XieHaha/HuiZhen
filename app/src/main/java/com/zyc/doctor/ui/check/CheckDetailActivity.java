@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.yht.frame.api.DirHelper;
 import com.yht.frame.ui.BaseActivity;
 import com.zyc.doctor.R;
-import com.zyc.doctor.ui.FileDisplayActivity;
+import com.zyc.doctor.ui.x5.FileDisplayActivity;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -129,13 +129,13 @@ public class CheckDetailActivity extends BaseActivity {
         int tag = (int)v.getTag();
         switch (tag) {
             case 0:
-                FileDisplayActivity.show(this, DirHelper.getPathFile() + "/log.txt", "TXT文件加载");
+                FileDisplayActivity.show(this, DirHelper.getPathFile() + "/appstore.txt", "TXT文件加载");
                 break;
             case 1:
-                FileDisplayActivity.show(this, DirHelper.getPathFile() + "/pdfdddd.pdf", "PDF文件加载");
+                FileDisplayActivity.show(this, DirHelper.getPathFile() + "/Android.pdf", "PDF文件加载");
                 break;
             case 2:
-                FileDisplayActivity.show(this, DirHelper.getPathFile() + "/aaaa.xlsx", "WORD文件加载");
+                FileDisplayActivity.show(this, DirHelper.getPathFile() + "/word.docx", "WORD文件加载");
                 break;
             default:
                 break;
