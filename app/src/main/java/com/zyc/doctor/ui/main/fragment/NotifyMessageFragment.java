@@ -109,9 +109,12 @@ public class NotifyMessageFragment extends BaseFragment
             }
             messageList.add(bean);
         }
-        //返回一个包含所有Tag字符串并赋值给tagsStr
-        //        String tagsStr = BaseUtils.getTags(messageList);
-        //        timeItemDecoration.setTitleBar(titleBars, tagsStr);
+        if (messageList != null && messageList.size() > 0) {
+            tvNoneMessage.setVisibility(View.GONE);
+        }
+        else {
+            tvNoneMessage.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

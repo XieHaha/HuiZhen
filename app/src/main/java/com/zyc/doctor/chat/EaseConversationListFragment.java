@@ -1,6 +1,5 @@
 package com.zyc.doctor.chat;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,7 +16,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.hyphenate.EMConnectionListener;
@@ -26,6 +24,7 @@ import com.hyphenate.EMError;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.easeui.widget.EaseConversationList;
+import com.zyc.doctor.R;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -57,7 +56,7 @@ public class EaseConversationListFragment extends EaseBaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(com.hyphenate.easeui.R.layout.ease_fragment_conversation_list, container, false);
+        return inflater.inflate(R.layout.ease_fragment_conversation_list, container, false);
     }
 
     @Override
@@ -68,18 +67,13 @@ public class EaseConversationListFragment extends EaseBaseFragment {
 
     @Override
     protected void initView() {
-        //获取状态栏高度，填充
-        View mStateBarFixer = getView().findViewById(com.hyphenate.easeui.R.id.status_bar_fix);
-        mStateBarFixer.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                                                                     getStateBarHeight(getActivity())));//填充状态栏
         inputMethodManager = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        conversationListView = (EaseConversationList)getView().findViewById(com.hyphenate.easeui.R.id.list);
-        query = (EditText)getView().findViewById(com.hyphenate.easeui.R.id.query);
-        tvHintTxt = getView().findViewById(com.hyphenate.easeui.R.id.fragment_conversation_hint);
-        ((TextView)(getView().findViewById(com.hyphenate.easeui.R.id.public_title_bar_title))).setText("消息列表");
+        conversationListView = (EaseConversationList)getView().findViewById(R.id.list);
+        query = (EditText)getView().findViewById(R.id.query);
+        tvHintTxt = getView().findViewById(R.id.tv_none_message);
         // button to clear content in search bar
-        clearSearch = (ImageButton)getView().findViewById(com.hyphenate.easeui.R.id.search_clear);
-        errorItemContainer = (FrameLayout)getView().findViewById(com.hyphenate.easeui.R.id.fl_error_item);
+        clearSearch = (ImageButton)getView().findViewById(R.id.search_clear);
+        errorItemContainer = (FrameLayout)getView().findViewById(R.id.fl_error_item);
     }
 
     @Override
@@ -113,21 +107,6 @@ public class EaseConversationListFragment extends EaseBaseFragment {
                 return false;
             }
         });
-    }
-
-    /**
-     * 获取状态栏高度,在页面还没有显示出来之前
-     *
-     * @param a
-     * @return
-     */
-    public static int getStateBarHeight(Activity a) {
-        int result = 0;
-        int resourceId = a.getResources().getIdentifier("status_bar_height", "dimen", "android");
-        if (resourceId > 0) {
-            result = a.getResources().getDimensionPixelSize(resourceId);
-        }
-        return result;
     }
 
     protected EMConnectionListener connectionListener = new EMConnectionListener() {
