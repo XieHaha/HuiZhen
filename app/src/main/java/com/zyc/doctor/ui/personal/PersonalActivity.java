@@ -33,8 +33,8 @@ import butterknife.OnClick;
 public class PersonalActivity extends BaseActivity implements BaseQuickAdapter.RequestLoadMoreListener {
     @BindView(R.id.recyclerview)
     RecyclerView recyclerview;
-    @BindView(R.id.public_title_bar_right_img)
-    ImageView publicTitleBarRightImg;
+    @BindView(R.id.public_title_bar_more)
+    TextView publicTitleBarMore;
     /**
      * 头部控件
      */
@@ -61,18 +61,10 @@ public class PersonalActivity extends BaseActivity implements BaseQuickAdapter.R
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-        publicTitleBarRightImg.setVisibility(View.VISIBLE);
+        publicTitleBarMore.setVisibility(View.VISIBLE);
+        publicTitleBarMore.setText(R.string.title_setting);
         data = new ArrayList<String>() {
             {
-                add("a");
-                add("a");
-                add("a");
-                add("a");
-                add("a");
-                add("a");
-                add("a");
-                add("a");
-                add("a");
                 add("a");
                 add("a");
                 add("a");
@@ -167,7 +159,7 @@ public class PersonalActivity extends BaseActivity implements BaseQuickAdapter.R
         }
     }
 
-    @OnClick({ R.id.public_title_bar_right_img })
+    @OnClick({ R.id.public_title_bar_more })
     public void onViewClicked() {
         startActivity(new Intent(this, SettingActivity.class));
     }

@@ -2735,6 +2735,8 @@ string txt_refuse
 string txt_rehabilitation
 string txt_remote_billing
 string txt_remote_consultation
+string txt_remote_login_error_hint
+string txt_remote_login_hint
 string txt_report
 string txt_report_num
 string txt_report_num_hint

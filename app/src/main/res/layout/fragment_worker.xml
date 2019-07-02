@@ -278,7 +278,7 @@
                         android:id="@+id/image"
                         android:layout_width="32dp"
                         android:layout_height="32dp"
-                        android:src="@mipmap/ic_check" />
+                        android:src="@mipmap/ic_transfer_apply" />
 
                     <TextView
                         android:id="@+id/text"
