@@ -8,6 +8,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 /**
@@ -28,7 +29,7 @@ public class ThreadPoolHelper {
 
     public static class Resource {
         private static final int THREAD_NUM = 5;
-        private ExecutorService executorSingle;
+        private ScheduledExecutorService executorSingle;
         private ExecutorService executorCached;
         private ExecutorService executorFixed;
 
@@ -59,6 +60,10 @@ public class ThreadPoolHelper {
             executorSingle.shutdown();
             executorCached.shutdown();
             executorFixed.shutdown();
+        }
+
+        public ScheduledExecutorService getExecutorSingle() {
+            return executorSingle;
         }
 
         public void execInSingle(Runnable r) {

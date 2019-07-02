@@ -38,6 +38,8 @@ public class BaseUtils {
     public static final String YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd HH:mm:ss";
     public static final String YYYY_MM_DD_HH_MM = "yyyy-MM-dd HH:mm";
     public static final String YYYY_MM_DD = "yyyy-MM-dd";
+    public static final String HH_MM_SS = "HH:mm:ss";
+    public static final String INIT_TIME = "00:00:00";
     private static final int BUFFER_SIZE = 1024 * 2;
 
     /**
@@ -320,5 +322,39 @@ public class BaseUtils {
             sex = "男";
         }
         return sex;
+    }
+
+    /**
+     * 将秒数转为   字符串时间模式   "hh:mm:ss"
+     *
+     * @param time
+     * @return
+     */
+    public static String getTimeMode(long time) {
+        if (time <= 0) { return INIT_TIME; }
+        long hour, min, sec;
+        String hourStr, minStr, secStr;
+        hour = time / 3600;
+        min = time % 3600 / 60;
+        sec = time % 3600 % 60;
+        if (hour < 10) {
+            hourStr = "0" + hour;
+        }
+        else {
+            hourStr = "" + hour;
+        }
+        if (min < 10) {
+            minStr = "0" + min;
+        }
+        else {
+            minStr = "" + min;
+        }
+        if (sec < 10) {
+            secStr = "0" + sec;
+        }
+        else {
+            secStr = "" + sec;
+        }
+        return hourStr + ":" + minStr + ":" + secStr;
     }
 }

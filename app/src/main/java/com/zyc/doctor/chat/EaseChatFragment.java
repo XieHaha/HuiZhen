@@ -27,6 +27,8 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hyphenate.EMMessageListener;
@@ -130,6 +132,11 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
     protected boolean isRoaming = false;
     private ExecutorService fetchQueue;
     private EaseChatPrimaryMenuBase.OnStartRecordCallBack onStartRecordCallBack;
+    /**
+     * 2019年7月2日11:02:28 添加倒计时布局
+     **/
+    private RelativeLayout layoutChatTime;
+    private TextView tvChatTime;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -152,10 +159,52 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
     }
 
     /**
+     * 倒计时布局
+     */
+    public void startTimer() {
+        layoutChatTime.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * 倒计时布局
+     */
+    public void endTimer() {
+        layoutChatTime.setVisibility(View.GONE);
+        inputMenu.getPrimaryMenu().setLayoutChatStartVisible(View.VISIBLE);
+    }
+
+    /**
+     * 剩余时间
+     *
+     * @param timeValue
+     */
+    public void setTimeValue(String timeValue) {
+        tvChatTime.setText(String.format(getString(R.string.txt_chat_time), timeValue));
+    }
+
+    private OnTimeLayoutClickListener onTimeLayoutClickListener;
+
+    public void setOnTimeLayoutClickListener(OnTimeLayoutClickListener onTimeLayoutClickListener) {
+        this.onTimeLayoutClickListener = onTimeLayoutClickListener;
+    }
+
+    public interface OnTimeLayoutClickListener {
+        void onTimeLayoutClick();
+    }
+
+    /**
      * init view
      */
     @Override
     protected void initView() {
+        //2019年7月2日11:03:15添加倒计时布局
+        tvChatTime = getView().findViewById(R.id.tv_chat_time);
+        layoutChatTime = getView().findViewById(R.id.layout_chat_time);
+        layoutChatTime.setOnClickListener(v -> {
+            if (onTimeLayoutClickListener != null) {
+                onTimeLayoutClickListener.onTimeLayoutClick();
+            }
+        });
         // hold to record voice
         //noinspection ConstantConditions
         voiceRecorderView = (EaseVoiceRecorderView)getView().findViewById(R.id.voice_recorder);

@@ -38,4 +38,24 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true" />
 
+    <RelativeLayout
+        android:id="@+id/layout_chat_time"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:background="#ccf2ff"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tv_chat_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_15"
+            android:textColor="@color/color_1491fc"
+            android:drawableLeft="@mipmap/ic_chat_time"
+            android:text="@string/txt_chat_time"
+            android:drawablePadding="5dp"
+            android:gravity="center"
+            android:layout_centerInParent="true" />
+    </RelativeLayout>
+
 </RelativeLayout>

@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_ffffff"
-    android:fitsSystemWindows="true"
-    android:orientation="vertical">
+    android:fitsSystemWindows="true">
 
     <include
         layout="@layout/public_title"
@@ -13,7 +12,8 @@
     <LinearLayout
         android:id="@+id/layout_button"
         android:layout_width="match_parent"
-        android:layout_height="41dp">
+        android:layout_height="41dp"
+        android:layout_below="@id/top_bar">
 
         <RelativeLayout
             android:id="@+id/layout_left"
@@ -70,17 +70,20 @@
         android:id="@+id/view_bar"
         android:layout_width="60dp"
         android:layout_height="2dp"
-        android:background="@color/color_1491fc" />
+        android:background="@color/color_1491fc"
+        android:layout_below="@id/layout_button" />
 
     <View
+        android:id="@+id/line"
         android:layout_width="match_parent"
         android:layout_height="@dimen/app_hei_line"
-        android:background="@color/color_ebedf0" />
+        android:background="@color/color_ebedf0"
+        android:layout_below="@id/view_bar" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_below="@id/line" />
 
-
-</LinearLayout>
+</RelativeLayout>

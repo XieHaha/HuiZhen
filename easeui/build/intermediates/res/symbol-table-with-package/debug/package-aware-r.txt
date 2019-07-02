@@ -1652,6 +1652,7 @@ id iv_userhead
 id iv_voice
 id large_icon_uri
 id layout_chat_start
+id layout_chat_time
 id layout_edit
 id layout_root
 id left
@@ -1842,6 +1843,7 @@ id top_toolbar
 id tvTitle
 id tv_ack
 id tv_cancel
+id tv_chat_time
 id tv_chatcontent
 id tv_delivered
 id tv_file_name
@@ -2593,6 +2595,7 @@ string txt_cancel
 string txt_cancel_result
 string txt_chat_online
 string txt_chat_start
+string txt_chat_time
 string txt_check_again
 string txt_check_hospital
 string txt_check_success_hint

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -18,7 +19,6 @@ import com.hyphenate.easeui.EaseConstant;
 import com.yht.frame.data.BaseData;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
-import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.widgets.view.AbstractOnPageChangeListener;
 import com.yht.frame.widgets.view.ViewPrepared;
 import com.zyc.doctor.R;
@@ -26,8 +26,13 @@ import com.zyc.doctor.chat.EaseChatFragment;
 import com.zyc.doctor.ui.adapter.ViewPagerAdapter;
 import com.zyc.doctor.ui.patient.fragment.PatientInfoFragment;
 
+import org.apache.commons.lang3.concurrent.BasicThreadFactory;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -36,9 +41,9 @@ import me.jessyan.autosize.utils.ScreenUtils;
 /**
  * @author 顿顿
  * @date 19/6/27 14:17
- * @des
+ * @des 患者页面（基础信息、聊天）
  */
-public class PatientPersonalActivity extends BaseActivity {
+public class PatientPersonalActivity extends BaseActivity implements EaseChatFragment.OnTimeLayoutClickListener {
     @BindView(R.id.tv_left)
     TextView tvLeft;
     @BindView(R.id.tv_right)
@@ -59,6 +64,27 @@ public class PatientPersonalActivity extends BaseActivity {
      * 开启聊天倒计时广播
      */
     private TimerReceiver timerReceiver;
+    private ScheduledExecutorService executorService;
+    /**
+     * 倒计时
+     */
+    private int time = 0;
+    /**
+     * 开启计时器
+     */
+    public static final int START = 10;
+    /**
+     * 更新计时器
+     */
+    public static final int UPDATE = 20;
+    /**
+     * 结束计时器
+     */
+    public static final int END = 30;
+    /**
+     * 等待时间
+     */
+    final long awaitTime = 3 * 1000;
 
     @Override
     protected boolean isInitBackBtn() {
@@ -69,6 +95,43 @@ public class PatientPersonalActivity extends BaseActivity {
     public int getLayoutID() {
         return R.layout.act_patient_personal;
     }
+
+    private Handler handler = new Handler(message -> {
+        switch (message.what) {
+            case START:
+                startChatTimer(24 * 60 * 60);
+                if (easeChatFragment != null) {
+                    easeChatFragment.startTimer();
+                }
+                break;
+            case UPDATE:
+                if (easeChatFragment != null) {
+                    easeChatFragment.setTimeValue(BaseUtils.getTimeMode(time));
+                }
+                break;
+            case END:
+                if (easeChatFragment != null) {
+                    easeChatFragment.endTimer();
+                }
+                try {
+                    // 发送结束通知
+                    executorService.shutdown();
+                    // (所有的任务都结束的时候，返回TRUE)
+                    if (!executorService.awaitTermination(awaitTime, TimeUnit.MILLISECONDS)) {
+                        // 超时的时候向线程池中所有的线程发出中断(interrupted)。
+                        executorService.shutdownNow();
+                    }
+                }
+                catch (InterruptedException e) {
+                    // awaitTermination方法被中断的时候也中止线程池中全部的线程的执行。
+                    executorService.shutdownNow();
+                }
+                break;
+            default:
+                break;
+        }
+        return true;
+    });
 
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
@@ -123,9 +186,9 @@ public class PatientPersonalActivity extends BaseActivity {
     private void initFragment() {
         //患者信息
         PatientInfoFragment patientInfoFragment = new PatientInfoFragment();
-        PatientInfoFragment patientInfoFragment1 = new PatientInfoFragment();
         //在线聊天
         easeChatFragment = new EaseChatFragment();
+        easeChatFragment.setOnTimeLayoutClickListener(this);
         //传入参数
         Bundle args = new Bundle();
         args.putInt(EaseConstant.EXTRA_CHAT_TYPE, EaseConstant.CHATTYPE_SINGLE);
@@ -186,12 +249,41 @@ public class PatientPersonalActivity extends BaseActivity {
     }
 
     /**
+     * 开启计时器
+     *
+     * @param remainingTime 剩余时间 (重新计时则忽略)
+     */
+    private void startChatTimer(int remainingTime) {
+        time = remainingTime;
+        executorService = new ScheduledThreadPoolExecutor(1, new BasicThreadFactory.Builder().namingPattern(
+                "yht-thread-pool-%d").daemon(true).build());
+        executorService.scheduleAtFixedRate(() -> {
+            time--;
+            if (time < 0) {
+                time = 0;
+                handler.sendEmptyMessage(END);
+            }
+            else {
+                handler.sendEmptyMessage(UPDATE);
+            }
+        }, 0, 1, TimeUnit.SECONDS);
+    }
+
+    /**
+     * 手动结束
+     */
+    @Override
+    public void onTimeLayoutClick() {
+        handler.sendEmptyMessage(END);
+    }
+
+    /**
      * 广播处理
      */
     public class TimerReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            ToastUtil.toast(PatientPersonalActivity.this, "收到广播开始倒计时");
+            handler.sendEmptyMessage(START);
         }
     }
 
@@ -201,6 +293,7 @@ public class PatientPersonalActivity extends BaseActivity {
         if (timerReceiver != null) {
             unregisterReceiver(timerReceiver);
         }
+        executorService.shutdownNow();
     }
 
     @Override
