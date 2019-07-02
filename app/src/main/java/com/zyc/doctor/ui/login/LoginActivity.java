@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -13,6 +12,7 @@ import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
 import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
+import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
@@ -39,8 +39,8 @@ import butterknife.OnClick;
  * @des
  */
 public class LoginActivity extends BaseActivity {
-    @BindView(R.id.tv_login_account)
-    SuperEditText tvLoginAccount;
+    @BindView(R.id.et_login_account)
+    SuperEditText etLoginAccount;
     @BindView(R.id.tv_login_obtain_code)
     TextView tvLoginObtainCode;
     @BindView(R.id.et_login_code)
@@ -51,7 +51,8 @@ public class LoginActivity extends BaseActivity {
     TextView tvLoginTitle;
     @BindView(R.id.tv_login_title_hint)
     TextView tvLoginTitleHint;
-    private String phone, verifyCode;
+    private ScheduledExecutorService executorService;
+    private String phone = "", verifyCode = "";
     /**
      * 登录 or绑定
      */
@@ -93,7 +94,7 @@ public class LoginActivity extends BaseActivity {
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-        mode = getIntent().getBooleanExtra(BaseData.BASE_HONOR_NAME, false);
+        mode = getIntent().getBooleanExtra(CommonData.KEY_PUBLIC, false);
         if (mode) {
             tvLoginTitle.setText(R.string.txt_login_bind_phone);
             tvLoginTitleHint.setText(R.string.txt_login_bind_phone_hint);
@@ -104,29 +105,38 @@ public class LoginActivity extends BaseActivity {
     @Override
     public void initListener() {
         super.initListener();
-        tvLoginAccount.addTextChangedListener(new AbstractTextWatcher() {
+        etLoginAccount.addTextChangedListener(new AbstractTextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!TextUtils.isEmpty(s) && s.length() == BaseData.BASE_PHONE_DEFAULT_LENGTH) {
+                phone = s.toString();
+                if (BaseUtils.isMobileNumber(phone)) {
                     tvLoginObtainCode.setSelected(true);
                 }
                 else {
                     tvLoginObtainCode.setSelected(false);
                 }
+                initNextButton();
             }
         });
         etLoginCode.addTextChangedListener(new AbstractTextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!TextUtils.isEmpty(phone) && !TextUtils.isEmpty(s) &&
-                    s.length() == BaseData.BASE_VERIFY_CODE_DEFAULT_LENGTH) {
-                    tvLoginNext.setSelected(true);
-                }
-                else {
-                    tvLoginNext.setSelected(false);
-                }
+                verifyCode = s.toString();
+                initNextButton();
             }
         });
+    }
+
+    /**
+     * 登录按钮
+     */
+    private void initNextButton() {
+        if (BaseUtils.isMobileNumber(phone) && verifyCode.length() == BaseData.BASE_VERIFY_CODE_DEFAULT_LENGTH) {
+            tvLoginNext.setSelected(true);
+        }
+        else {
+            tvLoginNext.setSelected(false);
+        }
     }
 
     /**
@@ -167,7 +177,7 @@ public class LoginActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_login_obtain_code:
-                phone = tvLoginAccount.getText().toString().trim();
+                phone = etLoginAccount.getText().toString().trim();
                 if (!BaseUtils.isMobileNumber(phone)) {
                     return;
                 }
@@ -189,12 +199,8 @@ public class LoginActivity extends BaseActivity {
             case GET_VERIFY_CODE:
                 isSendVerifyCode = true;
                 time = BaseData.BASE_MAX_RESEND_TIME;
-                final ScheduledExecutorService executorService = new ScheduledThreadPoolExecutor(1,
-                                                                                                 new BasicThreadFactory.Builder()
-                                                                                                         .namingPattern(
-                                                                                                                 "yht-thread-pool-%d")
-                                                                                                         .daemon(true)
-                                                                                                         .build());
+                executorService = new ScheduledThreadPoolExecutor(1, new BasicThreadFactory.Builder().namingPattern(
+                        "yht-thread-pool-%d").daemon(true).build());
                 executorService.scheduleAtFixedRate(() -> {
                     time--;
                     if (time < 0) {
@@ -210,6 +216,14 @@ public class LoginActivity extends BaseActivity {
                 break;
             default:
                 break;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (executorService != null) {
+            executorService.shutdownNow();
         }
     }
 }

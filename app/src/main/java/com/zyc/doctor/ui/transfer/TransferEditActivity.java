@@ -46,7 +46,7 @@ public class TransferEditActivity extends BaseActivity {
     /**
      * 接诊医院  预约就诊时间
      */
-    private String receiveHospital, reserveTime, noticeText;
+    private String receiveHospital = "", reserveTime = "", noticeText = "";
     /**
      * 选择医院
      */

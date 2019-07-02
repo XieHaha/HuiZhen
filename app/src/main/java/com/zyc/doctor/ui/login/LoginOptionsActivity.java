@@ -17,6 +17,8 @@ import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.yht.frame.data.BaseData;
+import com.yht.frame.data.BaseNetConfig;
+import com.yht.frame.data.CommonData;
 import com.yht.frame.ui.BaseActivity;
 import com.zyc.doctor.R;
 import com.zyc.doctor.ZycApplication;
@@ -58,6 +60,14 @@ public class LoginOptionsActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_login_wechat:
+                if (api.isWXAppInstalled()) {
+                    sendReq();
+                }
+                else {
+                    Intent intent = new Intent(LoginOptionsActivity.this, WebViewActivity.class);
+                    intent.putExtra(CommonData.KEY_PUBLIC, BaseNetConfig.BASE_WECHAT_DOWNLOAD_URL);
+                    startActivity(intent);
+                }
                 sendReq();
                 break;
             case R.id.tv_login_phone:
@@ -102,7 +112,10 @@ public class LoginOptionsActivity extends BaseActivity {
         ClickableSpan clickSpan = new ClickableSpan() {
             @Override
             public void onClick(@NonNull View widget) {
-                startActivity(new Intent(LoginOptionsActivity.this, WebViewActivity.class));
+                Intent intent = new Intent(LoginOptionsActivity.this, WebViewActivity.class);
+                intent.putExtra(CommonData.KEY_PUBLIC, BaseNetConfig.BASE_BASIC_USER_PROTOCOL_URL);
+                intent.putExtra(CommonData.KEY_IS_PROTOCOL, true);
+                startActivity(intent);
                 clearBackgroundColor(widget);
             }
 

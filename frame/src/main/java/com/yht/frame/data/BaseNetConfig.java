@@ -25,4 +25,8 @@ public interface BaseNetConfig {
      * 下载页面
      */
     String BASE_BASIC_DOWNLOAD_URL = "http://www.zychealth.com/downloadapp/index.html?doctorId=";
+    /**
+     * 微信下载页面
+     */
+    String BASE_WECHAT_DOWNLOAD_URL = "https://weixin.qq.com/";
 }

@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/app_title_bar_height"
-    android:background="@color/color_ffffff">
+    android:background="@color/color_ffffff"
+    android:id="@+id/layout_title_root">
 
     <ImageView
         android:id="@+id/public_title_bar_back"

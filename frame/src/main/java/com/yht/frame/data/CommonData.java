@@ -9,6 +9,10 @@ public interface CommonData {
      */
     String KEY_PUBLIC = "key_public";
     /**
+     * 公用数据key
+     */
+    String KEY_PUBLIC_STRING = "key_public_string";
+    /**
      * 检查或者转诊  true为转诊  false为检查
      */
     String KEY_CHECK_OR_TRANSFER = "key_check_or_transfer";
@@ -29,9 +33,17 @@ public interface CommonData {
      */
     String KEY_RESERVE_TIME = "key_reserve_time";
     /**
-     * 公用数据key
+     * 是否显示的是登录协议（登录协议页面不显示title）
      */
-    String KEY_PUBLIC_STRING = "key_public_string";
+    String KEY_IS_PROTOCOL="key_is_protocol";
+    /**
+     * 登录成功返回数据
+     */
+    String KEY_LOGIN_SUCCESS_BEAN = "key_login_success_bean";
+    /**
+     * 聊天id
+     */
+    String KEY_CHAT_ID = "key_chat_id";
     /**
      * 用户登录账户
      */
@@ -40,10 +52,6 @@ public interface CommonData {
      * 新增病例(or查看病例详情)
      */
     String KEY_ADD_NEW_HEALTH = "key_add_new_health";
-    /**
-     * 登录成功返回数据
-     */
-    String KEY_LOGIN_SUCCESS_BEAN = "key_login_success_bean";
     /**
      * 用户id 不区分医生患者
      */
@@ -80,10 +88,6 @@ public interface CommonData {
      * patient case detail bean
      */
     String PATIENT_CASE_DETAIL_BEAN = "Patient_Case_Detail_Bean";
-    /**
-     * 聊天id
-     */
-    String KEY_CHAT_ID = "key_chat_id";
     /**
      * 聊天name
      */
