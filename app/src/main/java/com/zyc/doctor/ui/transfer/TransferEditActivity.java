@@ -4,19 +4,17 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.util.Log;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.yht.frame.data.CommonData;
 import com.yht.frame.ui.BaseActivity;
-import com.yht.frame.widgets.picker.view.TimePickerView;
+import com.yht.frame.utils.BaseUtils;
+import com.yht.frame.widgets.edittext.AbstractTextWatcher;
 import com.zyc.doctor.R;
 import com.zyc.doctor.utils.TimePickerHelper;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -42,17 +40,13 @@ public class TransferEditActivity extends BaseActivity {
     @BindView(R.id.tv_not_required)
     TextView tvNotRequired;
     /**
-     * 时间选择器
-     */
-    private TimePickerView timePickerView;
-    /**
      * true 为变更接诊信息  false为接诊
      */
     private boolean isEditReceive;
     /**
      * 接诊医院  预约就诊时间
      */
-    private String receiveHospital, reserveTime;
+    private String receiveHospital, reserveTime, noticeText;
     /**
      * 选择医院
      */
@@ -81,6 +75,20 @@ public class TransferEditActivity extends BaseActivity {
         }
     }
 
+    @Override
+    public void initListener() {
+        super.initListener();
+        etNotice.addTextChangedListener(new AbstractTextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                super.onTextChanged(s, start, before, count);
+                noticeText = s.toString();
+                tvNoticeNum.setText(String.format(getString(R.string.txt_calc_num), noticeText.length()));
+                initNextButton();
+            }
+        });
+    }
+
     /**
      * 界面处理
      */
@@ -91,6 +99,18 @@ public class TransferEditActivity extends BaseActivity {
         tvHospital.setSelected(true);
         tvTime.setText(reserveTime);
         tvTime.setSelected(true);
+    }
+
+    /**
+     * 判断
+     */
+    private void initNextButton() {
+        if (!TextUtils.isEmpty(noticeText) && !TextUtils.isEmpty(receiveHospital) && !TextUtils.isEmpty(reserveTime)) {
+            tvSubmit.setSelected(true);
+        }
+        else {
+            tvSubmit.setSelected(false);
+        }
     }
 
     @OnClick({ R.id.layout_hospital, R.id.layout_time, R.id.tv_submit })
@@ -105,6 +125,11 @@ public class TransferEditActivity extends BaseActivity {
                 initCustomTimePicker();
                 break;
             case R.id.tv_submit:
+                if (tvSubmit.isSelected()) {
+                    finish();
+                }
+                break;
+            default:
                 break;
         }
     }
@@ -117,23 +142,20 @@ public class TransferEditActivity extends BaseActivity {
         }
         if (requestCode == REQUEST_CODE_HOSPITAL) {
             if (data != null) {
-                String hospital = data.getStringExtra(CommonData.KEY_HOSPITAL_BEAN);
-                tvHospital.setText(hospital);
+                receiveHospital = data.getStringExtra(CommonData.KEY_HOSPITAL_BEAN);
+                tvHospital.setText(receiveHospital);
                 tvHospital.setSelected(true);
+                initNextButton();
             }
         }
     }
 
     private void initCustomTimePicker() {
         TimePickerHelper.showTimePicker(this, date -> {
-            tvTime.setText(getTime(date));
+            reserveTime = BaseUtils.formatDate(date, BaseUtils.YYYY_MM_DD_HH_MM);
+            tvTime.setText(reserveTime);
             tvTime.setSelected(true);
+            initNextButton();
         });
-    }
-
-    private String getTime(Date date) {//可根据需要自行截取数据显示
-        Log.d("getTime()", "choice date millis: " + date.getTime());
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        return format.format(date);
     }
 }

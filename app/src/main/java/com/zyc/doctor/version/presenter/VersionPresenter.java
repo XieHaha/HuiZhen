@@ -71,7 +71,7 @@ public class VersionPresenter implements ConstantsVersionMode {
      * 断网时不检查更新，启动网络监听广播
      */
     public void updateVersionByNetwork() {
-        if (BaseUtils.isNetworkAvaliable(context)) {
+        if (BaseUtils.isNetworkAvailable(context)) {
             versionModel.getNewestVersion(new VersionModelListener.NewestVersionCallBack() {
                 @Override
                 public void result(VersionBean version) {

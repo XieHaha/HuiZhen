@@ -48,7 +48,7 @@ public class BaseUtils {
      * @param context
      * @return
      */
-    public static boolean isNetworkAvaliable(Context context) {
+    public static boolean isNetworkAvailable(Context context) {
         ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = cm.getActiveNetworkInfo();
         return null != networkInfo && networkInfo.isConnected();
@@ -64,31 +64,6 @@ public class BaseUtils {
 
     public static int px2dp(Context context, float pxValue) {
         return (int)(pxValue / context.getResources().getDisplayMetrics().density + 0.5f);
-    }
-
-    /**
-     * 字符串转换为java.util.Date<br>
-     * 支持格式为yyyy/MM/dd HH:mm:ss 如 '2002/1/1 17:55:00'<br>
-     * yyyy/MM/dd HH:mm:ss pm 如 '2002/1/1 17:55:00 pm'<br>
-     * yyyy-MM-dd HH:mm:ss 如 '2002-1-1 17:55:00' <br>
-     * yyyy-MM-dd HH:mm:ss am 如 '2002-1-1 17:55:00 am' <br>
-     *
-     * @param time String 字符串<br>
-     * @return Date 日期<br>
-     */
-    public static Date formatDate(String time) {
-        time = time.trim();
-        String formatter = "yyyy-MM-dd HH:mm:ss";
-        if ((time.indexOf("/") > -1) && (time.indexOf(" ") > -1)) {
-            formatter = "yyyy/MM/dd HH:mm:ss";
-        }
-        else if ((time.indexOf("/") > -1) && (time.indexOf("am") > -1) || (time.indexOf("pm") > -1)) {
-            formatter = "yyyy/MM/dd KK:mm:ss a";
-        }
-        else if ((time.indexOf("-") > -1) && (time.indexOf("am") > -1) || (time.indexOf("pm") > -1)) {
-            formatter = "yyyy-MM-dd KK:mm:ss a";
-        }
-        return formatDate(time, formatter);
     }
 
     /**
@@ -115,7 +90,21 @@ public class BaseUtils {
      */
     public static String formatDate(long time, String format) {
         if (format != null) {
-            return new SimpleDateFormat(format).format(new Date(time));
+            return new SimpleDateFormat(format,Locale.getDefault()).format(new Date(time));
+        }
+        return "";
+    }
+
+    /**
+     * 时间戳转为北京时间
+     *
+     * @param time
+     * @param format
+     * @return
+     */
+    public static String formatDate(Date time, String format) {
+        if (format != null) {
+            return new SimpleDateFormat(format,Locale.getDefault()).format(time);
         }
         return "";
     }

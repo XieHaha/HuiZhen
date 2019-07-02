@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -11,6 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yht.frame.ui.BaseActivity;
+import com.yht.frame.widgets.edittext.AbstractTextWatcher;
 import com.zyc.doctor.R;
 
 import butterknife.BindView;
@@ -43,6 +45,10 @@ public class TransferAgainActivity extends BaseActivity {
     @BindView(R.id.tv_submit)
     TextView tvSubmit;
     /**
+     * 理由
+     */
+    private String noticeText;
+    /**
      * 选择接诊医生
      */
     public static final int REQUEST_CODE_SELECT_DOCTOR = 100;
@@ -62,6 +68,33 @@ public class TransferAgainActivity extends BaseActivity {
         super.initData(savedInstanceState);
         ivReceivingDoctorCall.setImageResource(R.mipmap.ic_delete);
         if (getIntent() != null) {
+        }
+    }
+
+    @Override
+    public void initListener() {
+        super.initListener();
+        etNotice.addTextChangedListener(new AbstractTextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                super.onTextChanged(s, start, before, count);
+                noticeText = s.toString();
+                tvNoticeNum.setText(String.format(getString(R.string.txt_calc_num), noticeText.length()));
+                initNextButton();
+            }
+        });
+    }
+
+    /**
+     * 判断
+     */
+    private void initNextButton() {
+        //需要加上医生不为空
+        if (!TextUtils.isEmpty(noticeText)) {
+            tvSubmit.setSelected(true);
+        }
+        else {
+            tvSubmit.setSelected(false);
         }
     }
 
