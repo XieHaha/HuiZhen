@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.yht.frame.api.DirHelper;
+import com.yht.frame.data.CommonData;
 import com.yht.frame.ui.BaseActivity;
 import com.zyc.doctor.R;
 import com.zyc.doctor.ui.x5.FileDisplayActivity;
@@ -61,6 +62,12 @@ public class CheckDetailActivity extends BaseActivity {
     TextView tvCheckDiagnosisBottom;
     @BindView(R.id.layout_bottom)
     LinearLayout layoutBottom;
+    @BindView(R.id.layout_contact)
+    LinearLayout layoutContact;
+    /**
+     * 头部底部判断
+     */
+    private boolean isShowBottom;
 
     @Override
     protected boolean isInitBackBtn() {
@@ -75,7 +82,18 @@ public class CheckDetailActivity extends BaseActivity {
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-        layoutTop.setVisibility(View.GONE);
+        if (getIntent() != null) {
+            isShowBottom = getIntent().getBooleanExtra(CommonData.KEY_PUBLIC, false);
+        }
+        if (isShowBottom) {
+            layoutBottom.setVisibility(View.VISIBLE);
+            layoutTop.setVisibility(View.GONE);
+        }
+        else {
+            layoutBottom.setVisibility(View.GONE);
+            layoutContact.setVisibility(View.GONE);
+            layoutTop.setVisibility(View.VISIBLE);
+        }
         initCheckType();
         initCheckReport();
     }

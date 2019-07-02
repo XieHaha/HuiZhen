@@ -2548,6 +2548,9 @@ string title_month_income
 string title_patient
 string title_personal_info
 string title_received_transfer_detail
+string title_receiving_transfer_apply
+string title_receiving_transfer_detail
+string title_remote_detail
 string title_select_depart
 string title_select_hospital
 string title_setting
@@ -2607,9 +2610,14 @@ string txt_close
 string txt_colon_check_hospital
 string txt_colon_check_project
 string txt_colon_patient
+string txt_condition_description
+string txt_consultation_advice
 string txt_consultation_depart
 string txt_consultation_doctor
 string txt_consultation_hospital
+string txt_consultation_purpose
+string txt_consultation_status
+string txt_consultation_time
 string txt_contact
 string txt_contact_doctor
 string txt_contact_hotline
@@ -2655,6 +2663,7 @@ string txt_initiate_check
 string txt_initiate_depart
 string txt_initiate_doctor
 string txt_initiate_hospital
+string txt_initiate_time
 string txt_initiate_transfer
 string txt_last
 string txt_loading_again

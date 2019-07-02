@@ -293,7 +293,9 @@ public class PatientPersonalActivity extends BaseActivity implements EaseChatFra
         if (timerReceiver != null) {
             unregisterReceiver(timerReceiver);
         }
-        executorService.shutdownNow();
+        if (executorService != null) {
+            executorService.shutdownNow();
+        }
     }
 
     @Override

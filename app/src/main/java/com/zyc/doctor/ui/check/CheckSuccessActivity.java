@@ -75,6 +75,7 @@ public class CheckSuccessActivity extends BaseActivity {
                 }
                 else {
                     Intent intent = new Intent(this, CheckDetailActivity.class);
+                    intent.putExtra(CommonData.KEY_PUBLIC,true);
                     startActivity(intent);
                 }
                 finish();

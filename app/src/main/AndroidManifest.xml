@@ -199,7 +199,7 @@
         <activity
             android:name=".ui.transfer.TransferFromDetailActivity"
             android:screenOrientation="portrait"
-            android:label="@string/title_received_transfer_detail"
+            android:label="@string/title_receiving_transfer_apply"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.transfer.TransferEditActivity"
@@ -230,6 +230,16 @@
             android:name=".ui.x5.FileDisplayActivity"
             android:screenOrientation="portrait"
             android:label=""
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".ui.patient.TransferDetailActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/title_receiving_transfer_detail"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".ui.remote.RemoteDetailActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/title_remote_detail"
             android:windowSoftInputMode="adjustResize|stateHidden" />
 
         <!--腾讯X5-->

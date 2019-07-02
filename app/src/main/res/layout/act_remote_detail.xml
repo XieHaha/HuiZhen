@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <include
+        layout="@layout/public_title"
+        android:id="@+id/title_bar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:scrollbars="none"
+        android:layout_height="match_parent"
+        android:layout_below="@id/title_bar"
+        android:background="@color/color_ffffff"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="15dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="56dp">
+
+                <ImageView
+                    android:id="@+id/iv_patient_img"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:src="@mipmap/ic_default_header_r"
+                    android:layout_marginStart="12dp" />
+
+                <TextView
+                    android:id="@+id/tv_patient_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textColor="@color/color_373d4d"
+                    android:textSize="@dimen/text_20"
+                    tools:text="姓名"
+                    android:layout_toEndOf="@id/iv_patient_img"
+                    android:layout_marginStart="12dp" />
+
+                <TextView
+                    android:id="@+id/tv_patient_age"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_373d4d"
+                    android:textSize="@dimen/text_14"
+                    tools:text="0岁"
+                    android:layout_toEndOf="@id/iv_patient_img"
+                    android:layout_below="@id/tv_patient_name"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="12dp" />
+
+                <View
+                    android:id="@+id/line"
+                    android:layout_width="@dimen/app_hei_line"
+                    android:layout_height="12dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_toEndOf="@id/tv_patient_age"
+                    android:layout_below="@id/tv_patient_name"
+                    android:background="#c5c8cc"
+                    android:layout_marginStart="8dp" />
+
+                <TextView
+                    android:id="@+id/tv_patient_sex"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_373d4d"
+                    android:textSize="@dimen/text_14"
+                    tools:text="性别"
+                    android:layout_toEndOf="@id/line"
+                    android:layout_below="@id/tv_patient_name"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="11dp" />
+
+                <ImageView
+                    android:id="@+id/iv_check_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxHeight="56dp"
+                    android:layout_alignParentEnd="true"
+                    android:src="@mipmap/ic_check_complete" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/app_hei_line"
+                android:background="@color/color_ebedf0"
+                android:layout_marginTop="20dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:paddingTop="20dp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:textStyle="bold"
+                    android:text="@string/txt_initiate_time" />
+
+                <TextView
+                    android:id="@+id/tv_initiate_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:layout_marginTop="12dp"
+                    tools:text="时间">
+
+                </TextView>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/app_hei_line"
+                    android:background="@color/color_ebedf0"
+                    android:layout_marginTop="20dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:paddingTop="20dp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:textStyle="bold"
+                    android:text="@string/txt_initiate_doctor" />
+
+                <TextView
+                    android:id="@+id/tv_initiate_doctor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:layout_marginTop="12dp"
+                    tools:text="医生">
+
+                </TextView>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/app_hei_line"
+                    android:background="@color/color_ebedf0"
+                    android:layout_marginTop="20dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:paddingTop="20dp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:textStyle="bold"
+                    android:text="@string/txt_initiate_depart" />
+
+                <TextView
+                    android:id="@+id/tv_initiate_depart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:layout_marginTop="12dp"
+                    tools:text="医生">
+
+                </TextView>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/app_hei_line"
+                    android:background="@color/color_ebedf0"
+                    android:layout_marginTop="20dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:paddingTop="20dp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:textStyle="bold"
+                    android:text="@string/txt_initiate_hospital" />
+
+                <TextView
+                    android:id="@+id/tv_initiate_hospital"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:layout_marginTop="12dp"
+                    tools:text="医生">
+
+                </TextView>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/app_hei_line"
+                    android:background="@color/color_ebedf0"
+                    android:layout_marginTop="20dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:paddingTop="20dp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:textStyle="bold"
+                    android:text="@string/txt_condition_description" />
+
+                <TextView
+                    android:id="@+id/tv_condition_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:layout_marginTop="12dp"
+                    tools:text="医生">
+
+                </TextView>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/app_hei_line"
+                    android:background="@color/color_ebedf0"
+                    android:layout_marginTop="20dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:paddingTop="20dp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:textStyle="bold"
+                    android:text="@string/txt_first_diagnosis" />
+
+                <TextView
+                    android:id="@+id/tv_check_diagnosis_top"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:layout_marginTop="12dp"
+                    tools:text="没钱">
+
+                </TextView>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/app_hei_line"
+                    android:background="@color/color_ebedf0"
+                    android:layout_marginTop="20dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:paddingTop="20dp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:textStyle="bold"
+                    android:text="@string/txt_consultation_purpose" />
+
+                <TextView
+                    android:id="@+id/tv_consultation_purpose"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:layout_marginTop="12dp"
+                    tools:text="没钱">
+
+                </TextView>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/app_hei_line"
+                    android:background="@color/color_ebedf0"
+                    android:layout_marginTop="20dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:paddingTop="20dp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:textStyle="bold"
+                    android:text="@string/txt_consultation_status" />
+
+                <TextView
+                    android:id="@+id/tv_consultation_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:layout_marginTop="12dp"
+                    tools:text="没钱">
+
+                </TextView>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/app_hei_line"
+                    android:background="@color/color_ebedf0"
+                    android:layout_marginTop="20dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:paddingTop="20dp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:textStyle="bold"
+                    android:text="@string/txt_consultation_time" />
+
+                <TextView
+                    android:id="@+id/tv_consultation_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:layout_marginTop="12dp"
+                    tools:text="没钱">
+
+                </TextView>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/app_hei_line"
+                    android:background="@color/color_ebedf0"
+                    android:layout_marginTop="20dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:paddingTop="20dp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:textStyle="bold"
+                    android:text="@string/txt_consultation_advice" />
+
+                <TextView
+                    android:id="@+id/tv_consultation_advice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:layout_marginTop="12dp"
+                    tools:text="没钱">
+
+                </TextView>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/app_hei_line"
+                    android:background="@color/color_ebedf0"
+                    android:layout_marginTop="20dp" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

@@ -21,9 +21,12 @@
     <string name="title_add_transfer">发起转诊(%s)</string>
     <string name="title_transfer_detail">预约转诊详情</string>
     <string name="title_received_transfer_detail">已接诊详情</string>
+    <string name="title_receiving_transfer_apply">预约转诊申请</string>
+    <string name="title_receiving_transfer_detail">预约转诊详情</string>
     <string name="title_transfer_apply">转诊申请</string>
     <string name="title_edit_transfer">变更接诊信息</string>
     <string name="title_transfer_again">再次转诊</string>
+    <string name="title_remote_detail">远程会诊详情</string>
 
     <!--公用-->
     <string name="txt_app_name">会珍</string>
@@ -173,12 +176,17 @@
     <string name="txt_currency_withdraw_remark">备注</string>
     <string name="txt_currency_income_service_type">服务类型</string>
     <string name="txt_currency_income_patient_name">患者姓名</string>
+    <string name="txt_initiate_time">发起时间</string>
     <string name="txt_initiate_doctor">发起医生</string>
     <string name="txt_initiate_depart">发起科室</string>
     <string name="txt_initiate_hospital">发起医院</string>
     <string name="txt_consultation_doctor">会诊医生</string>
     <string name="txt_consultation_depart">会诊科室</string>
     <string name="txt_consultation_hospital">会诊医院</string>
+    <string name="txt_consultation_purpose">会诊目的</string>
+    <string name="txt_consultation_status">会诊状态</string>
+    <string name="txt_consultation_time">会诊时长</string>
+    <string name="txt_consultation_advice">会诊意见</string>
     <string name="txt_receiving_doctor">接诊医生</string>
     <string name="txt_receiving_hospital">接诊医院</string>
     <string name="txt_receiving_depart">接诊科室</string>
@@ -259,6 +267,9 @@
     <string name="txt_select_doctor_hint">请输入医生姓名搜索</string>
     <string name="txt_select_hospital_depart">请选择医院科室</string>
     <string name="txt_reset_hospital_depart">重置医院科室</string>
+
+    <!--远程相关-->
+    <string name="txt_condition_description">病情描述</string>
 
     <!--转诊申请-->
     <string name="txt_visiting">接诊</string>

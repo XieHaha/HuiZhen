@@ -21,8 +21,9 @@ import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.zyc.doctor.R;
 import com.zyc.doctor.ui.adapter.PatientInfoAdapter;
 import com.zyc.doctor.ui.check.CheckDetailActivity;
+import com.zyc.doctor.ui.patient.TransferDetailActivity;
+import com.zyc.doctor.ui.remote.RemoteDetailActivity;
 import com.zyc.doctor.ui.reservation.ReservationCheckOrTransferActivity;
-import com.zyc.doctor.ui.transfer.TransferFromDetailActivity;
 import com.zyc.doctor.utils.glide.GlideHelper;
 
 import java.util.ArrayList;
@@ -152,11 +153,10 @@ public class PatientInfoFragment extends BaseFragment
                 intent = new Intent(getContext(), CheckDetailActivity.class);
                 break;
             case CheckBean.TRANSFER:
-                intent = new Intent(getContext(), TransferFromDetailActivity.class);
-                intent.putExtra(CommonData.KEY_IS_RECEIVE_TRANSFER, true);
+                intent = new Intent(getContext(), TransferDetailActivity.class);
                 break;
             case CheckBean.REMOTE:
-                intent = new Intent(getContext(), TransferFromDetailActivity.class);
+                intent = new Intent(getContext(), RemoteDetailActivity.class);
                 break;
             default:
                 break;

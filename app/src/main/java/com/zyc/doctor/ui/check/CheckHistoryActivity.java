@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.bean.PatientBean;
 import com.yht.frame.ui.BaseActivity;
@@ -113,7 +114,9 @@ public class CheckHistoryActivity extends BaseActivity
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        startActivity(new Intent(this, CheckDetailActivity.class));
+        Intent intent = new Intent(this, CheckDetailActivity.class);
+        intent.putExtra(CommonData.KEY_PUBLIC, true);
+        startActivity(intent);
     }
 
     /**
