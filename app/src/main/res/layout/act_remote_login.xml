@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:background="@color/color_ffffff">
+
+    <ImageView
+        android:layout_width="84dp"
+        android:src="@mipmap/logo_icon"
+        android:layout_marginTop="166dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="84dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:text="@string/txt_app_name"
+        android:textColor="@color/color_373d4d"
+        android:textSize="@dimen/text_24"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="24dp"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/act_remote_hint"
+        android:layout_width="wrap_content"
+        android:text="@string/txt_remote_login_hint"
+        android:textColor="#213340"
+        android:textSize="@dimen/text_16"
+        android:gravity="center"
+        android:layout_marginStart="66dp"
+        android:layout_marginEnd="66dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="40dp"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/act_remote_sure"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:layout_marginTop="43dp"
+        android:background="@drawable/corner28_1491fc_bg"
+        android:layout_marginStart="35dp"
+        android:layout_marginEnd="35dp"
+        android:visibility="visible"
+        android:text="@string/txt_sure"
+        android:textColor="@color/color_ffffff"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/act_remote_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/corner28_stroke1_1491fc"
+        android:layout_marginStart="35dp"
+        android:layout_marginEnd="35dp"
+        android:gravity="center"
+        android:layout_marginTop="20dp"
+        android:visibility="visible"
+        android:text="@string/txt_cancel"
+        android:textColor="@color/color_1491fc"
+        android:textSize="16sp" />
+</LinearLayout>

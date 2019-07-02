@@ -241,6 +241,11 @@
             android:screenOrientation="portrait"
             android:label="@string/title_remote_detail"
             android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".ui.remote.RemoteLoginActivity"
+            android:screenOrientation="portrait"
+            android:label=""
+            android:windowSoftInputMode="adjustResize|stateHidden" />
 
         <!--腾讯X5-->
         <service
