@@ -3,6 +3,8 @@ package com.zyc.doctor.chat;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -37,8 +39,9 @@ import java.util.Map;
  *
  * @author dundun
  */
-public class EaseConversationListFragment extends EaseBaseFragment {
+public class EaseConversationListFragment extends EaseBaseFragment implements SwipeRefreshLayout.OnRefreshListener {
     private final static int MSG_REFRESH = 2;
+    private SwipeRefreshLayout layoutRefresh;
     protected EditText query;
     protected TextView tvHintTxt;
     protected ImageButton clearSearch;
@@ -46,6 +49,7 @@ public class EaseConversationListFragment extends EaseBaseFragment {
     protected List<EMConversation> conversationList = new ArrayList<EMConversation>();
     protected EaseConversationList conversationListView;
     protected FrameLayout errorItemContainer;
+    private View footerView;
     protected boolean isConflict;
     protected EMConversationListener convListener = new EMConversationListener() {
         @Override
@@ -68,6 +72,11 @@ public class EaseConversationListFragment extends EaseBaseFragment {
     @Override
     protected void initView() {
         inputMethodManager = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        layoutRefresh = getView().findViewById(R.id.refresh_layout);
+        layoutRefresh.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light,
+                                              android.R.color.holo_orange_light, android.R.color.holo_green_light);
+        layoutRefresh.setOnRefreshListener(this);
+        footerView = LayoutInflater.from(getContext()).inflate(R.layout.view_load_end, null);
         conversationListView = (EaseConversationList)getView().findViewById(R.id.list);
         query = (EditText)getView().findViewById(R.id.query);
         tvHintTxt = getView().findViewById(R.id.tv_none_message);
@@ -100,6 +109,7 @@ public class EaseConversationListFragment extends EaseBaseFragment {
             }
         }
         EMClient.getInstance().addConnectionListener(connectionListener);
+        conversationListView.addFooterView(footerView);
         conversationListView.setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -129,9 +139,9 @@ public class EaseConversationListFragment extends EaseBaseFragment {
     };
     private EaseConversationListItemClickListener listItemClickListener;
     private EaseConversationListItemLongClickListener listItemLongClickListener;
-    protected Handler handler = new Handler() {
+    protected Handler handler = new Handler(new Handler.Callback() {
         @Override
-        public void handleMessage(android.os.Message msg) {
+        public boolean handleMessage(Message msg) {
             switch (msg.what) {
                 case 0:
                     onConnectionDisconnected();
@@ -143,13 +153,15 @@ public class EaseConversationListFragment extends EaseBaseFragment {
                     conversationList.clear();
                     conversationList.addAll(loadConversationList());
                     conversationListView.refresh();
+                    layoutRefresh.setRefreshing(false);
                     break;
                 }
                 default:
                     break;
             }
+            return false;
         }
-    };
+    });
 
     /**
      * connected to server
@@ -276,6 +288,13 @@ public class EaseConversationListFragment extends EaseBaseFragment {
         super.onSaveInstanceState(outState);
         if (isConflict) {
             outState.putBoolean("isConflict", true);
+        }
+    }
+
+    @Override
+    public void onRefresh() {
+        if (!hidden) {
+            refresh();
         }
     }
 

@@ -9,15 +9,19 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
+import com.hyphenate.EMCallBack;
+import com.hyphenate.chat.EMClient;
 import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
+import com.yht.frame.utils.LogUtils;
+import com.yht.frame.utils.ToastUtil;
+import com.yht.frame.widgets.edittext.AbstractTextWatcher;
 import com.yht.frame.widgets.edittext.SuperEditText;
 import com.zyc.doctor.R;
-import com.yht.frame.widgets.edittext.AbstractTextWatcher;
 import com.zyc.doctor.ui.main.MainActivity;
 
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
@@ -132,6 +136,33 @@ public class LoginActivity extends BaseActivity {
         RequestUtils.getVerifyCode(this, phone, this);
     }
 
+    /**
+     * 登录环信聊天
+     */
+    private void loginEaseChat() {
+        EMClient.getInstance().login("15828456584_d", BaseData.BASE_EASE_DEFAULT_PWD, new EMCallBack() {
+            @Override
+            public void onSuccess() {
+                runOnUiThread(() -> {
+                    EMClient.getInstance().chatManager().loadAllConversations();
+                    LogUtils.d("test", getString(R.string.txt_login_ease_success));
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    finish();
+                });
+            }
+
+            @Override
+            public void onProgress(int progress, String status) {
+            }
+
+            @Override
+            public void onError(int code, String message) {
+                LogUtils.d("test", getString(R.string.txt_login_ease_error));
+                ToastUtil.toast(LoginActivity.this, R.string.txt_login_ease_error);
+            }
+        });
+    }
+
     @OnClick({ R.id.tv_login_obtain_code, R.id.tv_login_next })
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -144,8 +175,7 @@ public class LoginActivity extends BaseActivity {
                 onResponseSuccess(Tasks.GET_VERIFY_CODE, null);
                 break;
             case R.id.tv_login_next:
-                startActivity(new Intent(this, MainActivity.class));
-                finish();
+                loginEaseChat();
                 break;
             default:
                 break;

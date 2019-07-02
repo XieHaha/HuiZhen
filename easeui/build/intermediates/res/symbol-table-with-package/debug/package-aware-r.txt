@@ -1275,6 +1275,7 @@ drawable ease_input_bar_bg_normal
 drawable ease_location_msg
 drawable ease_login_error_icon
 drawable ease_mm_listitem
+drawable ease_mm_listitem_color
 drawable ease_mm_listitem_disable
 drawable ease_mm_listitem_grey
 drawable ease_mm_listitem_grey_normal
@@ -1752,6 +1753,7 @@ id radio
 id recording_hint
 id rectangle
 id recyclerview
+id refresh_layout
 id rfc822
 id right
 id right_icon
@@ -2013,6 +2015,7 @@ layout select_dialog_item_material
 layout select_dialog_multichoice_material
 layout select_dialog_singlechoice_material
 layout support_simple_spinner_dropdown_item
+layout view_load_end
 layout view_load_more
 layout view_time_picker
 layout wallet_test_layout
@@ -2625,6 +2628,8 @@ string txt_currency_withdraw_status
 string txt_currency_withdraw_time
 string txt_currency_withdraw_way
 string txt_delete_all
+string txt_delete_chat_item
+string txt_delete_chat_item_hint
 string txt_depart
 string txt_detail
 string txt_diagnosis_hint
@@ -2658,6 +2663,8 @@ string txt_login_account_hint
 string txt_login_bind_phone
 string txt_login_bind_phone_hint
 string txt_login_code_hint
+string txt_login_ease_error
+string txt_login_ease_success
 string txt_login_hint
 string txt_login_obtain_code
 string txt_login_phone

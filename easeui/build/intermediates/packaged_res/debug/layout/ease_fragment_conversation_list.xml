@@ -16,7 +16,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/fl_error_item"></FrameLayout>
+        android:id="@+id/fl_error_item" />
 
     <TextView
         android:id="@+id/tv_none_message"
@@ -28,14 +28,21 @@
         android:drawableTop="@mipmap/pic_none_message"
         android:gravity="center"
         android:layout_centerInParent="true"
-        android:visibility="gone" />
+        android:visibility="visible" />
 
-    <com.hyphenate.easeui.widget.EaseConversationList
-        android:id="@+id/list"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:divider="@null"
-        android:listSelector="@android:color/transparent"
-        hyphenate:cvsListPrimaryTextSize="16sp" />
+        android:layout_marginTop="10dp">
+
+        <com.hyphenate.easeui.widget.EaseConversationList
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@null"
+            android:background="@color/color_ffffff"
+            hyphenate:cvsListPrimaryTextSize="16sp" />
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </RelativeLayout>

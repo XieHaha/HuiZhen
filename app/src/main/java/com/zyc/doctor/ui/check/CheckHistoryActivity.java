@@ -60,6 +60,7 @@ public class CheckHistoryActivity extends BaseActivity
         super.initData(savedInstanceState);
         layoutRefresh.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light,
                                               android.R.color.holo_orange_light, android.R.color.holo_green_light);
+        layoutRefresh.setOnRefreshListener(this);
         timeItemDecoration = new TimeItemDecoration(this, false);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(timeItemDecoration);
@@ -77,12 +78,6 @@ public class CheckHistoryActivity extends BaseActivity
         checkHistoryAdapter.setOnItemClickListener(this);
         checkHistoryAdapter.loadMoreEnd();
         recyclerView.setAdapter(checkHistoryAdapter);
-    }
-
-    @Override
-    public void initListener() {
-        super.initListener();
-        layoutRefresh.setOnRefreshListener(this);
     }
 
     /**

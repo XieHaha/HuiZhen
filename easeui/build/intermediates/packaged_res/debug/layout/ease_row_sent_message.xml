@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:paddingTop="13dp" >
+    android:paddingTop="13dp">
 
     <TextView
         android:id="@+id/timestamp"
@@ -15,7 +15,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_chat_activity" >
+        android:layout_marginTop="@dimen/margin_chat_activity">
 
         <com.hyphenate.easeui.widget.EaseImageView
             android:id="@+id/iv_userhead"
@@ -33,8 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="11dp"
             android:layout_toLeftOf="@id/iv_userhead"
-            android:background="@drawable/corner4_1491fc_bg"
-            >
+            android:background="@drawable/corner4_1491fc_bg">
 
             <TextView
                 android:id="@+id/tv_chatcontent"
@@ -45,22 +44,22 @@
                 android:gravity="center|left"
                 android:paddingRight="6dp"
                 android:paddingLeft="6dp"
-                android:minHeight="38dp"
+                android:minHeight="40dp"
                 android:lineSpacingExtra="2dp"
-              	android:textColor="@color/color_ffffff"
+                android:textColor="@color/color_ffffff"
                 android:maxWidth="225.0dip"
                 android:textSize="18sp" />
         </RelativeLayout>
 
-       <!--  <TextView
-            android:id="@+id/tv_userid"
-            android:visibility="gone"
-            style="@style/chat_text_name_style"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="15dp"
-            android:layout_toLeftOf="@id/iv_userhead"
-            android:text="xxx" /> -->
+        <!--  <TextView
+             android:id="@+id/tv_userid"
+             android:visibility="gone"
+             style="@style/chat_text_name_style"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_marginRight="15dp"
+             android:layout_toLeftOf="@id/iv_userhead"
+             android:text="xxx" /> -->
 
         <ImageView
             android:id="@+id/msg_status"

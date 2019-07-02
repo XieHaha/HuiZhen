@@ -52,7 +52,6 @@ public class EaseConversationList extends ListView{
         primarySize = ta.getDimensionPixelSize(R.styleable.EaseConversationList_cvsListPrimaryTextSize, 0);
         secondarySize = ta.getDimensionPixelSize(R.styleable.EaseConversationList_cvsListSecondaryTextSize, 0);
         timeSize = ta.getDimension(R.styleable.EaseConversationList_cvsListTimeTextSize, 0);
-        
         ta.recycle();
         
     }

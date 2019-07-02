@@ -41,7 +41,7 @@
         android:layout_marginLeft="7dp"
         android:layout_marginTop="9dp"
         android:layout_toRightOf="@id/avatar_container"
-        android:textColor="@color/list_itease_primary_color"
+        android:textColor="@color/color_373d4d"
         android:textSize="16sp" />
 
     <TextView
@@ -51,7 +51,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="7dp"
         android:layout_marginTop="9dp"
-        android:textColor="@color/list_itease_secondary_color"
+        android:textColor="@color/color_a1a8b3"
         android:textSize="13sp" />
 
     <ImageView
@@ -93,7 +93,7 @@
         android:paddingLeft="7dp"
         android:paddingRight="7dp"
         android:paddingTop="7dp"
-        android:textColor="@color/list_itease_secondary_color"
-        android:textSize="14sp" />
+        android:textColor="@color/color_a1a8b3"
+        android:textSize="13sp" />
 
 </RelativeLayout>
