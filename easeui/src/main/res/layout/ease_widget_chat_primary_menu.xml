@@ -18,6 +18,7 @@
             android:layout_width="28dp"
             android:layout_height="28dp"
             android:layout_marginLeft="8dp"
+            android:layout_marginRight="4dp"
             android:background="@mipmap/ic_chat_voice"
             android:visibility="visible" />
 
@@ -26,6 +27,7 @@
             android:layout_width="28dp"
             android:layout_height="28dp"
             android:layout_marginLeft="8dp"
+            android:layout_marginRight="4dp"
             android:background="@mipmap/ic_chat_keyboard"
             android:visibility="gone" />
 
@@ -33,10 +35,8 @@
             android:id="@+id/btn_press_to_speak"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="6dp"
             android:layout_marginLeft="6dp"
             android:layout_marginRight="6dp"
-            android:layout_marginTop="6dp"
             android:layout_weight="1"
             android:background="@drawable/corner4_f0f3fa_bg"
             android:gravity="center"
@@ -56,7 +56,6 @@
             android:id="@+id/edittext_layout"
             android:layout_width="0dp"
             android:layout_height="37dp"
-            android:layout_marginBottom="3dp"
             android:layout_marginLeft="6dp"
             android:layout_marginRight="6dp"
             android:layout_weight="1"
@@ -110,18 +109,20 @@
             android:id="@+id/btn_more"
             android:layout_width="28dp"
             android:layout_height="28dp"
-            android:layout_marginLeft="8dp"
+            android:layout_marginLeft="4dp"
             android:layout_marginRight="8dp"
             android:background="@mipmap/ic_chat_menu" />
 
-        <Button
+        <TextView
             android:id="@+id/btn_send"
-            android:layout_width="wrap_content"
+            android:layout_width="42dp"
             android:layout_height="32dp"
-            android:layout_marginRight="4dp"
-            android:background="@drawable/ease_chat_send_btn_selector"
+            android:layout_marginRight="8dp"
+            android:layout_marginLeft="4dp"
+            android:gravity="center"
+            android:background="@drawable/corner4_1491fc_bg"
             android:text="@string/button_send"
-            android:textColor="#666666"
+            android:textColor="@color/color_ffffff"
             android:textSize="16sp"
             android:visibility="gone" />
     </LinearLayout>
