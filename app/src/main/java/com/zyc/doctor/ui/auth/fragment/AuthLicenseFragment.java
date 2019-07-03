@@ -90,7 +90,7 @@ public class AuthLicenseFragment extends BaseFragment implements OnMediaItemClic
                     ivUploadOne.setImageDrawable(null);
                     ivDeleteOne.setVisibility(View.GONE);
                     cameraTempFileOne = null;
-                    mCurrentPhotoUri = null;
+                    cutFileUriOne = null;
                     mCurrentPhotoPath = "";
                 }
                 break;
@@ -107,7 +107,7 @@ public class AuthLicenseFragment extends BaseFragment implements OnMediaItemClic
                     ivUploadTwo.setImageDrawable(null);
                     ivDeleteTwo.setVisibility(View.GONE);
                     cameraTempFileTwo = null;
-                    mCurrentPhotoUri = null;
+                    cutFileUriTwo = null;
                     mCurrentPhotoPath = "";
                 }
                 break;
@@ -231,7 +231,7 @@ public class AuthLicenseFragment extends BaseFragment implements OnMediaItemClic
      */
     private void startCutImg(Uri uri, Uri cutUri) {
         cutFileUriOne = cutUri;
-        startActivityForResult(getCutimgIntent(uri, cutUri), RC_CROP_IMG);
+        startActivityForResult(getCutImageIntent(uri, cutUri), RC_CROP_IMG);
     }
 
     @Override

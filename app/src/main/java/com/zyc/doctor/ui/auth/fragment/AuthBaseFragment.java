@@ -262,7 +262,7 @@ public class AuthBaseFragment extends BaseFragment
      */
     private void startCutImg(Uri uri, Uri cutUri) {
         cutFileUri = cutUri;
-        startActivityForResult(getCutimgIntent(uri, cutFileUri), RC_CROP_IMG);
+        startActivityForResult(getCutImageIntent(uri, cutFileUri), RC_CROP_IMG);
     }
 
     @Override

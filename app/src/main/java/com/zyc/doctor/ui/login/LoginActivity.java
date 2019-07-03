@@ -164,7 +164,7 @@ public class LoginActivity extends BaseActivity {
                 runOnUiThread(() -> {
                     EMClient.getInstance().chatManager().loadAllConversations();
                     LogUtils.d("test", getString(R.string.txt_login_ease_success));
-                    jumpAuth();
+                    jumpMain();
                 });
             }
 
@@ -192,8 +192,8 @@ public class LoginActivity extends BaseActivity {
      * 主页
      */
     private void jumpMain() {
-        startActivity(new Intent(this, MainActivity.class));
         setResult(RESULT_OK);
+
         finish();
     }
 

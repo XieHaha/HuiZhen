@@ -165,11 +165,11 @@ public abstract class BaseFragment extends Fragment
     /**
      * 裁剪图片
      *
-     * @param originUri
-     * @param cutFileUri
+     * @param originUri  裁剪前
+     * @param cutFileUri 裁剪后
      * @return
      */
-    public Intent getCutimgIntent(Uri originUri, Uri cutFileUri) {
+    public Intent getCutImageIntent(Uri originUri, Uri cutFileUri) {
         //系统裁剪
         Intent intent = new Intent("com.android.camera.action.CROP");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

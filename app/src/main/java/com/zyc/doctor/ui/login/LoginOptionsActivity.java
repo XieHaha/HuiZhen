@@ -28,6 +28,7 @@ import com.zyc.doctor.R;
 import com.zyc.doctor.ZycApplication;
 import com.zyc.doctor.ui.WebViewActivity;
 import com.zyc.doctor.ui.auth.AuthDoctorActivity;
+import com.zyc.doctor.ui.main.MainActivity;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -118,8 +119,8 @@ public class LoginOptionsActivity extends BaseActivity {
                 sendReq();
                 break;
             case R.id.tv_login_phone:
-                //                startActivity(new Intent(this, AuthDoctorActivity.class));
-                startActivityForResult(new Intent(this, LoginActivity.class), REQUEST_CODE_LOGIN_STATUS);
+                Intent intent = new Intent(this, LoginActivity.class);
+                startActivityForResult(intent, REQUEST_CODE_LOGIN_STATUS);
                 break;
             default:
                 break;
@@ -201,7 +202,9 @@ public class LoginOptionsActivity extends BaseActivity {
         }
         switch (requestCode) {
             case REQUEST_CODE_AUTH_STATUS:
+                break;
             case REQUEST_CODE_LOGIN_STATUS:
+                startActivity(new Intent(this, MainActivity.class));
                 finish();
                 break;
             default:
