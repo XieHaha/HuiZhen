@@ -1,5 +1,6 @@
 package com.zyc.doctor.ui.login;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -66,6 +67,10 @@ public class LoginActivity extends BaseActivity {
      * 是否获取过验证码
      */
     private boolean isSendVerifyCode = false;
+    /**
+     * 医生认证状态回调
+     */
+    private static final int REQUEST_CODE_AUTH_STATUS = 100;
 
     @Override
     protected boolean isInitBackBtn() {
@@ -180,8 +185,7 @@ public class LoginActivity extends BaseActivity {
      * 医生认证
      */
     private void jumpAuth() {
-        startActivity(new Intent(this, AuthDoctorActivity.class));
-        finish();
+        startActivityForResult(new Intent(this, AuthDoctorActivity.class), REQUEST_CODE_AUTH_STATUS);
     }
 
     /**
@@ -235,6 +239,17 @@ public class LoginActivity extends BaseActivity {
                 break;
             default:
                 break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+        if (requestCode == REQUEST_CODE_AUTH_STATUS) {
+            finish();
         }
     }
 

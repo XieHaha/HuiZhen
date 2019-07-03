@@ -10,8 +10,11 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -21,6 +24,8 @@ import com.yht.frame.data.CommonData;
 import com.yht.frame.permission.Permission;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
+import com.yht.frame.utils.ToastUtil;
+import com.yht.frame.widgets.edittext.AbstractTextWatcher;
 import com.yht.frame.widgets.edittext.SuperEditText;
 import com.zhihu.matisse.Matisse;
 import com.zyc.doctor.R;
@@ -46,7 +51,8 @@ import butterknife.OnClick;
  * @date 19/5/17 14:55
  * @des 认证基础信息
  */
-public class AuthBaseFragment extends BaseFragment implements OnMediaItemClickListener, OnTitleItemClickListener {
+public class AuthBaseFragment extends BaseFragment
+        implements OnMediaItemClickListener, OnTitleItemClickListener, RadioGroup.OnCheckedChangeListener {
     @BindView(R.id.layout_upload_img)
     RelativeLayout layoutUploadImg;
     @BindView(R.id.et_auth_base_name)
@@ -69,9 +75,15 @@ public class AuthBaseFragment extends BaseFragment implements OnMediaItemClickLi
     TextView tvAuthBaseNext;
     @BindView(R.id.iv_auth_base_img)
     ImageView ivAuthBaseImg;
+    @BindView(R.id.rb_male)
+    RadioButton rbMale;
+    @BindView(R.id.rb_female)
+    RadioButton rbFemale;
+    @BindView(R.id.rg_sex)
+    RadioGroup rgSex;
     private String name, hospital, depart, title;
     private Uri cutFileUri;
-    private File cameraTempFile;
+    private File cameraTempFile, cutFile;
     private Uri mCurrentPhotoUri;
     private String mCurrentPhotoPath;
     private List<String> titleDatas;
@@ -82,7 +94,7 @@ public class AuthBaseFragment extends BaseFragment implements OnMediaItemClickLi
     /**
      * 科室选择
      */
-    public static final int REQUEST_CODE_DEPART = REQUEST_CODE_HOSPITAL + 1;
+    public static final int REQUEST_CODE_DEPART = 200;
 
     @Override
     public int getLayoutID() {
@@ -102,6 +114,38 @@ public class AuthBaseFragment extends BaseFragment implements OnMediaItemClickLi
         };
     }
 
+    @Override
+    public void initListener() {
+        super.initListener();
+        etAuthBaseName.addTextChangedListener(new AbstractTextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                super.onTextChanged(s, start, before, count);
+                name = s.toString();
+                initNextButton();
+            }
+        });
+        rgSex.setOnCheckedChangeListener(this);
+    }
+
+    /**
+     * 判断
+     */
+    private void initNextButton() {
+        if (cutFile == null || TextUtils.isEmpty(name) || rgSex.getCheckedRadioButtonId() == -1 ||
+            TextUtils.isEmpty(hospital) || TextUtils.isEmpty(depart) || TextUtils.isEmpty(title)) {
+            tvAuthBaseNext.setSelected(false);
+        }
+        else {
+            tvAuthBaseNext.setSelected(true);
+        }
+    }
+
+    @Override
+    public void onCheckedChanged(RadioGroup group, int checkedId) {
+        initNextButton();
+    }
+
     @OnClick({
             R.id.layout_upload_img, R.id.layout_base_hospital, R.id.layout_base_depart, R.id.layout_base_title,
             R.id.tv_auth_base_next })
@@ -116,8 +160,13 @@ public class AuthBaseFragment extends BaseFragment implements OnMediaItemClickLi
                 startActivityForResult(intent, REQUEST_CODE_HOSPITAL);
                 break;
             case R.id.layout_base_depart:
-                intent = new Intent(getContext(), SelectDepartActivity.class);
-                startActivityForResult(intent, REQUEST_CODE_DEPART);
+                if (!TextUtils.isEmpty(hospital)) {
+                    intent = new Intent(getContext(), SelectDepartActivity.class);
+                    startActivityForResult(intent, REQUEST_CODE_DEPART);
+                }
+                else {
+                    ToastUtil.toast(getContext(), R.string.txt_select_hospital);
+                }
                 break;
             case R.id.layout_base_title:
                 new DownDialog(getContext()).setData(titleDatas)
@@ -126,7 +175,7 @@ public class AuthBaseFragment extends BaseFragment implements OnMediaItemClickLi
                                             .show();
                 break;
             case R.id.tv_auth_base_next:
-                if (onAuthStepListener != null) {
+                if (tvAuthBaseNext.isSelected() && onAuthStepListener != null) {
                     onAuthStepListener.onStepOne();
                 }
                 break;
@@ -164,6 +213,7 @@ public class AuthBaseFragment extends BaseFragment implements OnMediaItemClickLi
         title = titleDatas.get(position);
         tvAuthBaseTitle.setText(title);
         tvAuthBaseTitle.setSelected(true);
+        initNextButton();
     }
 
     /**
@@ -204,7 +254,6 @@ public class AuthBaseFragment extends BaseFragment implements OnMediaItemClickLi
         }
         // 指定调用相机拍照后照片的储存路径
         intent.putExtra(MediaStore.EXTRA_OUTPUT, mCurrentPhotoUri);
-        //        intent.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
         startActivityForResult(intent, RC_PICK_CAMERA);
     }
 
@@ -228,15 +277,15 @@ public class AuthBaseFragment extends BaseFragment implements OnMediaItemClickLi
                 if (null != paths && 0 != paths.size()) {
                     cameraTempFile = new File(paths.get(0));
                     String fileName = "corp" + System.currentTimeMillis() + ".jpg";
-                    File file = new File(DirHelper.getPathCache(), fileName);
-                    startCutImg(uris.get(0), Uri.fromFile(file));
+                    cutFile = new File(DirHelper.getPathCache(), fileName);
+                    startCutImg(uris.get(0), Uri.fromFile(cutFile));
                 }
                 break;
             case RC_PICK_CAMERA:
                 cameraTempFile = new File(mCurrentPhotoPath);
                 String fileName = "corp" + System.currentTimeMillis() + ".jpg";
-                File file = new File(DirHelper.getPathCache(), fileName);
-                startCutImg(mCurrentPhotoUri, Uri.fromFile(file));
+                cutFile = new File(DirHelper.getPathCache(), fileName);
+                startCutImg(mCurrentPhotoUri, Uri.fromFile(cutFile));
                 break;
             case RC_CROP_IMG:
                 //裁剪完成，上传图片
@@ -244,18 +293,21 @@ public class AuthBaseFragment extends BaseFragment implements OnMediaItemClickLi
                      .load(cutFileUri)
                      .apply(GlideHelper.getOptionsPic(BaseUtils.dp2px(getContext(), 4)))
                      .into(ivAuthBaseImg);
+                initNextButton();
                 break;
             //医院选择
             case REQUEST_CODE_HOSPITAL:
                 hospital = data.getStringExtra(CommonData.KEY_HOSPITAL_NAME);
                 tvAuthBaseHospital.setText(hospital);
                 tvAuthBaseHospital.setSelected(true);
+                initNextButton();
                 break;
             //科室选择
             case REQUEST_CODE_DEPART:
                 depart = data.getStringExtra(CommonData.KEY_DEPART_NAME);
                 tvAuthBaseDepart.setText(depart);
                 tvAuthBaseDepart.setSelected(true);
+                initNextButton();
                 break;
             default:
                 break;

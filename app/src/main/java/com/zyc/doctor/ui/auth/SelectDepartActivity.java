@@ -1,5 +1,6 @@
 package com.zyc.doctor.ui.auth;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
@@ -7,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.yht.frame.data.CommonData;
 import com.yht.frame.ui.BaseActivity;
 import com.zyc.doctor.R;
 import com.zyc.doctor.ui.adapter.DepartOneAdapter;
@@ -71,6 +73,8 @@ public class SelectDepartActivity extends BaseActivity implements BaseQuickAdapt
         departOneAdapter = new DepartOneAdapter(R.layout.item_depart, departOnes);
         departOneAdapter.setCurPosition(positionOne);
         departOneAdapter.setOnItemClickListener(this);
+        //默认第一个选中
+        departOneAdapter.setCurPosition(0);
         rvDepartOne.setAdapter(departOneAdapter);
         //二级科室
         rvDepartTwo.setLayoutManager(new LinearLayoutManager(this));
@@ -89,6 +93,10 @@ public class SelectDepartActivity extends BaseActivity implements BaseQuickAdapt
         else {
             positionTwo = position;
             departTwoAdapter.setCurPosition(position);
+            Intent intent = new Intent();
+            intent.putExtra(CommonData.KEY_DEPART_NAME, "科室名字");
+            setResult(RESULT_OK, intent);
+            finish();
         }
     }
 }

@@ -70,7 +70,68 @@ public class AuthLicenseFragment extends BaseFragment implements OnMediaItemClic
         return R.layout.fragment_auth_license;
     }
 
-    @OnClick({ R.id.layout_upload_one, R.id.layout_upload_two, R.id.tv_auth_license_last, R.id.tv_auth_license_submit })
+    /**
+     * 图片处理
+     *
+     * @param status
+     */
+    private void initImage(int type, boolean status) {
+        switch (type) {
+            case BASE_ONE:
+                if (status) {
+                    ivDeleteOne.setVisibility(View.VISIBLE);
+                    //裁剪完成，上传图片
+                    Glide.with(this)
+                         .load(mCurrentPhotoPath)
+                         .apply(GlideHelper.getOptionsPic(BaseUtils.dp2px(getContext(), 4)))
+                         .into(ivUploadOne);
+                }
+                else {
+                    ivUploadOne.setImageDrawable(null);
+                    ivDeleteOne.setVisibility(View.GONE);
+                    cameraTempFileOne = null;
+                    mCurrentPhotoUri = null;
+                    mCurrentPhotoPath = "";
+                }
+                break;
+            case BASE_TWO:
+                if (status) {
+                    ivDeleteTwo.setVisibility(View.VISIBLE);
+                    //裁剪完成，上传图片
+                    Glide.with(this)
+                         .load(mCurrentPhotoPath)
+                         .apply(GlideHelper.getOptionsPic(BaseUtils.dp2px(getContext(), 4)))
+                         .into(ivUploadTwo);
+                }
+                else {
+                    ivUploadTwo.setImageDrawable(null);
+                    ivDeleteTwo.setVisibility(View.GONE);
+                    cameraTempFileTwo = null;
+                    mCurrentPhotoUri = null;
+                    mCurrentPhotoPath = "";
+                }
+                break;
+            default:
+                break;
+        }
+        initNextButton();
+    }
+
+    /**
+     * 判断 下一步按钮
+     */
+    private void initNextButton() {
+        if (cutFileUriOne == null || cutFileUriTwo == null) {
+            tvAuthLicenseSubmit.setSelected(false);
+        }
+        else {
+            tvAuthLicenseSubmit.setSelected(true);
+        }
+    }
+
+    @OnClick({
+            R.id.layout_upload_one, R.id.layout_upload_two, R.id.tv_auth_license_last, R.id.tv_auth_license_submit,
+            R.id.iv_delete_one, R.id.iv_delete_two })
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.layout_upload_one:
@@ -90,6 +151,12 @@ public class AuthLicenseFragment extends BaseFragment implements OnMediaItemClic
                 if (onAuthStepListener != null) {
                     onAuthStepListener.onStepTwo(BASE_TWO);
                 }
+                break;
+            case R.id.iv_delete_one:
+                initImage(BASE_ONE, false);
+                break;
+            case R.id.iv_delete_two:
+                initImage(BASE_TWO, false);
                 break;
             default:
                 break;
@@ -210,19 +277,7 @@ public class AuthLicenseFragment extends BaseFragment implements OnMediaItemClic
                 }
                 break;
             case RC_CROP_IMG:
-                //裁剪完成，上传图片
-                if (type == BASE_ONE) {
-                    Glide.with(this)
-                         .load(cutFileUriOne)
-                         .apply(GlideHelper.getOptionsPic(BaseUtils.dp2px(getContext(), 2)))
-                         .into(ivUploadOne);
-                }
-                else {
-                    Glide.with(this)
-                         .load(cutFileUriTwo)
-                         .apply(GlideHelper.getOptionsPic(BaseUtils.dp2px(getContext(), 2)))
-                         .into(ivUploadTwo);
-                }
+                initImage(type, true);
                 break;
             default:
                 break;

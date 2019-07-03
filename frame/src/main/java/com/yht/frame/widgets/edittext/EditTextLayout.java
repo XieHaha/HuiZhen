@@ -49,7 +49,7 @@ public class EditTextLayout extends LinearLayout {
         mEdittext = new EditText(mContext);
         mEdittext.setTextColor(ContextCompat.getColor(context, R.color.color_373d4d));
         mEdittext.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-        mEdittext.setHint(R.string.txt_select_hospital);
+        mEdittext.setHint(R.string.txt_search_hospital);
         mEdittext.setHintTextColor(ContextCompat.getColor(context, R.color.color_a1a8b3));
         mEdittext.setBackground(null);
         //充满布局展示
@@ -85,7 +85,7 @@ public class EditTextLayout extends LinearLayout {
         });
     }
 
-    public EditText getmEdittext() {
+    public EditText getEditText() {
         return mEdittext;
     }
 

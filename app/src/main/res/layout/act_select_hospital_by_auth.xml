@@ -20,7 +20,7 @@
             android:id="@+id/et_search_hospital"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="@string/txt_select_hospital_hint"
+            android:hint="@string/txt_search_hospital_hint"
             android:textSize="@dimen/text_16"
             android:textColorHint="@color/color_a1a8b3"
             android:textColor="@color/color_373d4d"

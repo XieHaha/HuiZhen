@@ -1,5 +1,6 @@
 package com.zyc.doctor.ui.login;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -24,6 +25,7 @@ import com.yht.frame.utils.LogUtils;
 import com.zyc.doctor.R;
 import com.zyc.doctor.ZycApplication;
 import com.zyc.doctor.ui.WebViewActivity;
+import com.zyc.doctor.ui.auth.AuthDoctorActivity;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -44,6 +46,10 @@ public class LoginOptionsActivity extends BaseActivity {
      * IWXAPI 是第三方app和微信通信的openApi接口
      */
     private IWXAPI api;
+    /**
+     * 医生认证状态回调
+     */
+    private static final int REQUEST_CODE_AUTH_STATUS = 100;
 
     @Override
     public int getLayoutID() {
@@ -70,6 +76,13 @@ public class LoginOptionsActivity extends BaseActivity {
         if (getIntent() != null) {
             LogUtils.i("test", "code:" + getIntent().getStringExtra(CommonData.KEY_PUBLIC));
         }
+    }
+
+    /**
+     * 医生认证
+     */
+    private void jumpAuth() {
+        startActivityForResult(new Intent(this, AuthDoctorActivity.class), REQUEST_CODE_AUTH_STATUS);
     }
 
     @OnClick({ R.id.tv_login_wechat, R.id.tv_login_phone })
@@ -150,6 +163,17 @@ public class LoginOptionsActivity extends BaseActivity {
     private void clearBackgroundColor(View view) {
         if (view instanceof TextView) {
             ((TextView)view).setHighlightColor(ContextCompat.getColor(this, android.R.color.transparent));
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+        if (requestCode == REQUEST_CODE_AUTH_STATUS) {
+            finish();
         }
     }
 }

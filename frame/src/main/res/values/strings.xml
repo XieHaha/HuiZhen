@@ -123,9 +123,10 @@
     <string name="txt_title">职称</string>
     <string name="txt_contact_type">联系方式</string>
     <string name="txt_select_hint">请选择</string>
-    <string name="txt_select_hospital_hint">请输入医院名称搜索</string>
-    <string name="txt_select_hospital">请输入医院名称</string>
+    <string name="txt_search_hospital_hint">请输入医院名称搜索</string>
+    <string name="txt_search_hospital">请输入医院名称</string>
     <string name="txt_none_hospital">没有找到您的医院</string>
+    <string name="txt_select_hospital">请先选择医院</string>
     <string name="txt_add_hospital">添加医院</string>
     <string name="txt_title_chief_physician">主任医师</string>
     <string name="txt_title_deputy_chief_physician">副主任医师</string>

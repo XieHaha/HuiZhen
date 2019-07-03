@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.widgets.edittext.SuperEditText;
+import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.zyc.doctor.R;
 import com.zyc.doctor.ui.adapter.HospitalSelectAdapter;
 
@@ -29,7 +30,8 @@ import static com.zyc.doctor.ui.auth.fragment.AuthBaseFragment.REQUEST_CODE_HOSP
  * @date 19/6/4 17:53
  * @des 医院选择 认证
  */
-public class SelectHospitalByAuthActivity extends BaseActivity implements BaseQuickAdapter.OnItemClickListener {
+public class SelectHospitalByAuthActivity extends BaseActivity
+        implements BaseQuickAdapter.OnItemClickListener, BaseQuickAdapter.RequestLoadMoreListener {
     @BindView(R.id.et_search_hospital)
     SuperEditText etSearchHospital;
     @BindView(R.id.rv_hospital)
@@ -56,14 +58,18 @@ public class SelectHospitalByAuthActivity extends BaseActivity implements BaseQu
         super.initData(savedInstanceState);
         rvHospital.setLayoutManager(new LinearLayoutManager(this));
         hospitals = new ArrayList<>();
-        hospitals.add("a");
-        hospitals.add("a");
-        hospitals.add("a");
-        hospitals.add("a");
+        hospitals.add("医院a");
+        hospitals.add("医院b");
+        hospitals.add("医院c");
+        hospitals.add("医院d");
         hospitalAdapter = new HospitalSelectAdapter(R.layout.item_hospital, hospitals);
+        hospitalAdapter.setLoadMoreView(new CustomLoadMoreView());
+        hospitalAdapter.setOnLoadMoreListener(this, rvHospital);
+        hospitalAdapter.loadMoreEnd();
         hospitalAdapter.setOnItemClickListener(this);
         rvHospital.setAdapter(hospitalAdapter);
     }
+
 
     @OnClick(R.id.tv_add_hospital_next)
     public void onViewClicked() {
@@ -73,6 +79,13 @@ public class SelectHospitalByAuthActivity extends BaseActivity implements BaseQu
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+    }
+
+    /**
+     * 加载更多
+     */
+    @Override
+    public void onLoadMoreRequested() {
     }
 
     @Override

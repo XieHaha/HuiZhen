@@ -47,7 +47,7 @@ public class AddHospitalActivity extends BaseActivity {
     @Override
     public void initListener() {
         super.initListener();
-        etHospital.getmEdittext().addTextChangedListener(new AbstractTextWatcher() {
+        etHospital.getEditText().addTextChangedListener(new AbstractTextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 super.onTextChanged(s, start, before, count);
@@ -66,7 +66,8 @@ public class AddHospitalActivity extends BaseActivity {
         if (!publicTitleBarMore.isSelected()) {
             return;
         }
-        String hospitalName = etHospital.getmEdittext().getText().toString().trim();
+        hideSoftInputFromWindow(etHospital.getEditText());
+        String hospitalName = etHospital.getEditText().getText().toString().trim();
         Intent intent = new Intent();
         intent.putExtra(CommonData.KEY_HOSPITAL_NAME, hospitalName);
         setResult(RESULT_OK, intent);
