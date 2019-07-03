@@ -12,8 +12,10 @@ import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.yht.frame.data.BaseData;
+import com.yht.frame.data.CommonData;
 import com.yht.frame.utils.ToastUtil;
 import com.zyc.doctor.ZycApplication;
+import com.zyc.doctor.ui.login.LoginOptionsActivity;
 
 /**
  * @author dundun
@@ -53,6 +55,10 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
             case BaseResp.ErrCode.ERR_OK:
                 if (baseResp instanceof SendAuth.Resp) {
                     String code = ((SendAuth.Resp)baseResp).code;
+                    Intent intent = new Intent(this, LoginOptionsActivity.class);
+                    intent.putExtra(CommonData.KEY_PUBLIC, code);
+                    startActivity(intent);
+                    finish();
                 }
                 break;
             case BaseResp.ErrCode.ERR_AUTH_DENIED:

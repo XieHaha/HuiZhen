@@ -1,7 +1,5 @@
 package com.yht.frame.http.retrofit;
 
-import android.util.Log;
-
 import com.yht.frame.data.BaseNetConfig;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.Tasks;
@@ -50,7 +48,7 @@ public abstract class AbstractDataObserver<T> implements Observer<BaseResponse<T
             LogUtils.e(TAG, task + "   onError:" + e);
             if (e.getStackTrace() != null) {
                 for (StackTraceElement element : e.getStackTrace()) {
-                    Log.e(TAG, "onError element:" + element.toString());
+                    LogUtils.e(TAG, "onError element:" + element.toString());
                 }
             }
         }

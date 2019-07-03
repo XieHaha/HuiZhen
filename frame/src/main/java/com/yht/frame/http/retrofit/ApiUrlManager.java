@@ -39,7 +39,7 @@ public interface ApiUrlManager {
      * 首页广告
      *
      * @param info map参数
-     * @return
+     * @return 返回广告页链接
      */
     @POST("DPInternal/resource/splash")
     Observable<BaseResponse<String>> getSplash(@Body Map<String, String> info);
@@ -48,7 +48,7 @@ public interface ApiUrlManager {
      * 版本更新
      *
      * @param info map参数
-     * @return
+     * @return 返回值
      */
     @POST("app/version")
     Observable<BaseResponse<VersionBean>> getNewVersion(@Body Map<String, String> info);
@@ -57,7 +57,7 @@ public interface ApiUrlManager {
      * 获取验证码
      *
      * @param info map参数
-     * @return
+     * @return 返回值
      */
     @POST("msg/send")
     Observable<BaseResponse<String>> getVerifyCode(@Body Map<String, String> info);
@@ -66,7 +66,7 @@ public interface ApiUrlManager {
      * 登录
      *
      * @param info map参数
-     * @return
+     * @return 返回值
      */
     @POST("relog/relog")
     Observable<BaseResponse<LoginSuccessBean>> login(@Body Map<String, String> info);
@@ -74,7 +74,7 @@ public interface ApiUrlManager {
     /**
      * 获取所有商品
      *
-     * @return
+     * @return 返回值
      */
     @GET("product/type/all")
     Observable<BaseResponse<List<RegistrationTypeBean>>> getAllProduct();
@@ -82,8 +82,8 @@ public interface ApiUrlManager {
     /**
      * 获取患者申请列表
      *
-     * @param info
-     * @return
+     * @param info 参数
+     * @return 返回值
      */
     @POST("dp/patient/request")
     Observable<BaseResponse<List<PatientBean>>> getApplyPatientList(@Body Map<String, Object> info);
@@ -91,8 +91,8 @@ public interface ApiUrlManager {
     /**
      * 获取患者列表
      *
-     * @param info
-     * @return
+     * @param info 参数
+     * @return 返回值
      */
     @POST("dp/patient")
     Observable<BaseResponse<List<PatientBean>>> getPatientList(@Body Map<String, Object> info);
@@ -100,8 +100,8 @@ public interface ApiUrlManager {
     /**
      * 转诊记录   包括转入转出
      *
-     * @param info
-     * @return
+     * @param info 参数
+     * @return 返回值
      */
     @POST("trans/all/doctor/notes")
     Observable<BaseResponse<List<TransPatientBean>>> getTransferList(@Body Map<String, Object> info);
@@ -109,8 +109,8 @@ public interface ApiUrlManager {
     /**
      * 开单记录
      *
-     * @param info
-     * @return
+     * @param info 参数
+     * @return 返回值
      */
     @POST("order/doctor/orders/list")
     Observable<BaseResponse<List<RegistrationBean>>> getOrderList(@Body Map<String, Object> info);
@@ -118,8 +118,8 @@ public interface ApiUrlManager {
     /**
      * 获取合作医生列表
      *
-     * @param info
-     * @return
+     * @param info 参数
+     * @return 返回值
      */
     @POST("colleborate/doctorList")
     Observable<BaseResponse<List<CooperateDocBean>>> getCooperateList(@Body Map<String, Object> info);
@@ -127,8 +127,8 @@ public interface ApiUrlManager {
     /**
      * 合作医生申请
      *
-     * @param info
-     * @return
+     * @param info 参数
+     * @return 返回值
      */
     @POST("colleborate/applyRequest")
     Observable<BaseResponse<PatientBean>> applyCooperateDoc(@Body Map<String, Object> info);
@@ -136,8 +136,8 @@ public interface ApiUrlManager {
     /**
      * 处理医生申请合作（proCode为字符1（表示同意）或字符3（表示拒绝））  appliedId被申请人  applyId申请人
      *
-     * @param info
-     * @return
+     * @param info 参数
+     * @return 返回值
      */
     @POST("colleborate/applyProcess")
     Observable<BaseResponse<PatientBean>> dealDocApply(@Body Map<String, Object> info);
@@ -146,8 +146,8 @@ public interface ApiUrlManager {
      * 取消合作医生关系
      * * doctorId 为操作人id   doctorId2为被操作人id
      *
-     * @param info
-     * @return
+     * @param info 参数
+     * @return 返回值
      */
     @GET("colleborate/delete")
     Observable<BaseResponse<String>> cancelCooperateDoc(@QueryMap Map<String, Object> info);
@@ -155,8 +155,8 @@ public interface ApiUrlManager {
     /**
      * 获取申请合作医生列表
      *
-     * @param info
-     * @return
+     * @param info 参数
+     * @return 返回值
      */
     @POST("colleborate/applyList")
     Observable<BaseResponse<List<CooperateDocBean>>> getApplyCooperateList(@Body Map<String, Object> info);
@@ -164,9 +164,9 @@ public interface ApiUrlManager {
     /**
      * 上传图片
      *
-     * @param file
-     * @param type
-     * @return
+     * @param file 图片
+     * @param type 格式
+     * @return 返回值
      */
     @Multipart
     @POST("file/upload")
@@ -175,9 +175,9 @@ public interface ApiUrlManager {
     /**
      * 医生资质认证
      *
-     * @param files
-     * @param info
-     * @return
+     * @param files 图片
+     * @param info  参数
+     * @return 返回值
      */
     @Multipart
     @POST("doctor/info/qualifiy")
@@ -186,8 +186,8 @@ public interface ApiUrlManager {
     /**
      * 更改个人信息
      *
-     * @param info
-     * @return
+     * @param info 参数
+     * @return 返回值
      */
     @POST("doctor/info/update")
     Observable<BaseResponse<String>> updateUserInfo(@Body Map<String, Object> info);
@@ -195,8 +195,8 @@ public interface ApiUrlManager {
     /**
      * 获取转诊出去患者列表
      *
-     * @param info
-     * @return
+     * @param info 参数
+     * @return 返回值
      */
     @POST("trans/out/doctor/notes")
     Observable<BaseResponse<List<TransPatientBean>>> getTransferPatientToList(@Body Map<String, Object> info);
@@ -204,8 +204,8 @@ public interface ApiUrlManager {
     /**
      * 获取收到转诊患者列表
      *
-     * @param info
-     * @return
+     * @param info 参数
+     * @return 返回值
      */
     @POST("trans/in/doctor/notes")
     Observable<BaseResponse<List<TransPatientBean>>> getTransferPatientFromList(@Body Map<String, Object> info);
@@ -213,8 +213,8 @@ public interface ApiUrlManager {
     /**
      * 获取某个患者的转诊单
      *
-     * @param info
-     * @return
+     * @param info 参数
+     * @return 返回值
      */
     @POST("trans/doctor/patient/notes")
     Observable<BaseResponse<List<TransPatientBean>>> getTransferByPatient(@Body Map<String, Object> info);
@@ -222,8 +222,8 @@ public interface ApiUrlManager {
     /**
      * 获取当前医生给患者患者所有订单
      *
-     * @param info
-     * @return
+     * @param info 参数
+     * @return 返回值
      */
     @POST("order/doctor/patient/notes")
     Observable<BaseResponse<List<RegistrationBean>>> getPatientOrders(@Body Map<String, Object> info);
@@ -231,8 +231,8 @@ public interface ApiUrlManager {
     /**
      * 获取患者病例列表
      *
-     * @param info
-     * @return
+     * @param info 参数
+     * @return 返回值
      */
     @POST("case/doctor/query")
     Observable<BaseResponse<List<PatientCaseDetailBean>>> getPatientLimitCaseList(@Body Map<String, Object> info);
@@ -240,8 +240,8 @@ public interface ApiUrlManager {
     /**
      * 删除患者病例
      *
-     * @param info
-     * @return
+     * @param info 参数
+     * @return 返回值
      */
     @POST("case/delete")
     Observable<BaseResponse<String>> deletePatientCase(@Body Map<String, Object> info);
@@ -250,7 +250,7 @@ public interface ApiUrlManager {
      * 获取医生个人信息
      *
      * @param doctorId
-     * @return
+     * @return 返回值
      */
     @GET("doctor/info/{doctorId}")
     Observable<BaseResponse<CooperateDocBean>> getDocInfo(@Path("doctorId") String doctorId);
@@ -259,7 +259,7 @@ public interface ApiUrlManager {
      * 获取患者个人信息
      *
      * @param patientId
-     * @return
+     * @return 返回值
      */
     @GET("patient/info/{patientId}")
     Observable<BaseResponse<PatientBean>> getPatientInfo(@Path("patientId") String patientId);
@@ -267,8 +267,8 @@ public interface ApiUrlManager {
     /**
      * 获取转诊详情
      *
-     * @param info
-     * @return
+     * @param info 参数
+     * @return 返回值
      */
     @POST("trans/single/detail")
     Observable<BaseResponse<TransPatientBean>> getTransferDetailById(@Body Map<String, Integer> info);
@@ -276,8 +276,8 @@ public interface ApiUrlManager {
     /**
      * 医生转诊患者
      *
-     * @param info
-     * @return
+     * @param info 参数
+     * @return 返回值
      */
     @POST("trans/doctor/add/notes")
     Observable<BaseResponse<TransPatientBean>> addTransferPatient(@Body Map<String, Object> info);
@@ -285,8 +285,8 @@ public interface ApiUrlManager {
     /**
      * 取消转诊
      *
-     * @param info
-     * @return
+     * @param info 参数
+     * @return 返回值
      */
     @POST("trans/doctor/cancel/notes")
     Observable<BaseResponse<String>> cancelTransferPatient(@Body Map<String, Integer> info);
@@ -294,8 +294,8 @@ public interface ApiUrlManager {
     /**
      * 拒绝转诊
      *
-     * @param info
-     * @return
+     * @param info 参数
+     * @return 返回值
      */
     @POST("trans/doctor/refuse")
     Observable<BaseResponse<String>> refuseTransferPatient(@Body Map<String, Integer> info);
@@ -303,8 +303,8 @@ public interface ApiUrlManager {
     /**
      * 接受转诊
      *
-     * @param info
-     * @return
+     * @param info 参数
+     * @return 返回值
      */
     @POST("trans/doctor/receive")
     Observable<BaseResponse<String>> recvTransferPatient(@Body Map<String, Object> info);
@@ -312,8 +312,8 @@ public interface ApiUrlManager {
     /**
      * 根据医生id获取医院列表
      *
-     * @param info
-     * @return
+     * @param info 参数
+     * @return 返回值
      */
     @POST("hospital/doctor/relation/list")
     Observable<BaseResponse<List<HospitalBean>>> getHospitalListByDoctorId(@Body Map<String, Object> info);
@@ -321,8 +321,8 @@ public interface ApiUrlManager {
     /**
      * 获取合作医院下面的医生
      *
-     * @param info
-     * @return
+     * @param info 参数
+     * @return 返回值
      */
     @POST("hospital/doctor/relation/internal/doctor/list")
     Observable<BaseResponse<List<CooperateHospitalDocBean>>> getCooperateHospitalDoctorList(
@@ -331,8 +331,8 @@ public interface ApiUrlManager {
     /**
      * 根据医院id获取商品类型和类型下的商品详情
      *
-     * @param info
-     * @return
+     * @param info 参数
+     * @return 返回值
      */
     @POST("product/info/doctor/hospital/type/product")
     Observable<BaseResponse<List<HospitalProductTypeBean>>> getHospitalProductListByHospitalId(
@@ -341,8 +341,8 @@ public interface ApiUrlManager {
     /**
      * 新增订单
      *
-     * @param info
-     * @return
+     * @param info 参数
+     * @return 返回值
      */
     @POST("product/info/doctor/operator/add")
     Observable<BaseResponse<String>> addProductOrderNew(@Body Map<String, Object> info);
@@ -350,8 +350,8 @@ public interface ApiUrlManager {
     /**
      * 医生转诊患者
      *
-     * @param info
-     * @return
+     * @param info 参数
+     * @return 返回值
      */
     @POST("dp/trans/focus/doctor")
     Observable<BaseResponse<String>> addPatientByScanOrChangePatient(@Body Map<String, Object> info);
@@ -361,7 +361,7 @@ public interface ApiUrlManager {
      *
      * @param doctorId
      * @param patientId
-     * @return
+     * @return 返回值
      */
     @GET("dp/cancel/focus/{doctorId}/{patientId}")
     Observable<BaseResponse<String>> deletePatient(@Path("doctorId") String doctorId,
@@ -370,8 +370,8 @@ public interface ApiUrlManager {
     /**
      * 删除患者 （取消关注）
      *
-     * @param info
-     * @return
+     * @param info 参数
+     * @return 返回值
      */
     @POST("hospital/doctor/relation/list")
     Observable<BaseResponse<List<HospitalBean>>> getCooperateHospitalList(@Body Map<String, String> info);
@@ -379,8 +379,8 @@ public interface ApiUrlManager {
     /**
      * 获取病例详情
      *
-     * @param info
-     * @return
+     * @param info 参数
+     * @return 返回值
      */
     @POST("order/single")
     Observable<BaseResponse<RegistrationBean>> getDetailById(@Body Map<String, String> info);
@@ -389,7 +389,7 @@ public interface ApiUrlManager {
      * 获取患者综合病史接口
      *
      * @param patientId
-     * @return
+     * @return 返回值
      */
     @GET("patient/combine/{patientId}")
     Observable<BaseResponse<CombineBean>> getPatientCombine(@Path("patientId") String patientId);
@@ -397,8 +397,8 @@ public interface ApiUrlManager {
     /**
      * 新增患者病例
      *
-     * @param info
-     * @return
+     * @param info 参数
+     * @return 返回值
      */
     @POST("case/save")
     Observable<BaseResponse<PatientCaseDetailBean>> addPatientCase(@Body Map<String, Object> info);
@@ -406,8 +406,8 @@ public interface ApiUrlManager {
     /**
      * 更新患者病例
      *
-     * @param info
-     * @return
+     * @param info 参数
+     * @return 返回值
      */
     @POST("case/update")
     Observable<BaseResponse<String>> updatePatientCase(@Body Map<String, Object> info);
@@ -415,8 +415,8 @@ public interface ApiUrlManager {
     /**
      * 合作医生添加备注
      *
-     * @param info
-     * @return
+     * @param info 参数
+     * @return 返回值
      */
     @POST("colleborate/nickname")
     Observable<BaseResponse<String>> modifyNickName(@Body Map<String, Object> info);
@@ -425,8 +425,8 @@ public interface ApiUrlManager {
      * 患者备注设置
      * 医生发起的修改，from为’d’，修改的是显示病人的昵称；病人发起的修改，from为’p’，修改的是显示医生的昵称
      *
-     * @param info
-     * @return
+     * @param info 参数
+     * @return 返回值
      */
     @POST("dp/nickname")
     Observable<BaseResponse<String>> modifyNickNameByPatient(@Body Map<String, Object> info);
@@ -434,8 +434,8 @@ public interface ApiUrlManager {
     /**
      * 医生扫码添加患者
      *
-     * @param info
-     * @return
+     * @param info 参数
+     * @return 返回值
      */
     @POST("dp/scan/focus/patient")
     Observable<BaseResponse<PatientBean>> addPatientByScan(@Body Map<String, Object> info);
@@ -443,8 +443,8 @@ public interface ApiUrlManager {
     /**
      * 拒绝患者申请
      *
-     * @param info
-     * @return
+     * @param info 参数
+     * @return 返回值
      */
     @POST("dp/scan/against/patient")
     Observable<BaseResponse<String>> refusePatientApply(@Body Map<String, Object> info);
@@ -452,8 +452,8 @@ public interface ApiUrlManager {
     /**
      * 同意患者申请
      *
-     * @param info
-     * @return
+     * @param info 参数
+     * @return 返回值
      */
     @POST("dp/scan/agree/V2.0")
     Observable<BaseResponse<String>> agreePatientApply(@Body Map<String, Object> info);
@@ -462,7 +462,7 @@ public interface ApiUrlManager {
      * 文件下载
      *
      * @param url
-     * @return
+     * @return 返回值
      */
     @Streaming
     @GET

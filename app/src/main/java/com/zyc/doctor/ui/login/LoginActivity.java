@@ -22,6 +22,7 @@ import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.widgets.edittext.AbstractTextWatcher;
 import com.yht.frame.widgets.edittext.SuperEditText;
 import com.zyc.doctor.R;
+import com.zyc.doctor.ui.auth.AuthDoctorActivity;
 import com.zyc.doctor.ui.main.MainActivity;
 
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
@@ -150,14 +151,15 @@ public class LoginActivity extends BaseActivity {
      * 登录环信聊天
      */
     private void loginEaseChat() {
+        showLoadingView();
         EMClient.getInstance().login("15828456584_d", BaseData.BASE_EASE_DEFAULT_PWD, new EMCallBack() {
             @Override
             public void onSuccess() {
+                closeLoadingView();
                 runOnUiThread(() -> {
                     EMClient.getInstance().chatManager().loadAllConversations();
                     LogUtils.d("test", getString(R.string.txt_login_ease_success));
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                    finish();
+                    jumpAuth();
                 });
             }
 
@@ -167,10 +169,27 @@ public class LoginActivity extends BaseActivity {
 
             @Override
             public void onError(int code, String message) {
+                closeLoadingView();
                 LogUtils.d("test", getString(R.string.txt_login_ease_error));
                 ToastUtil.toast(LoginActivity.this, R.string.txt_login_ease_error);
             }
         });
+    }
+
+    /**
+     * 医生认证
+     */
+    private void jumpAuth() {
+        startActivity(new Intent(this, AuthDoctorActivity.class));
+        finish();
+    }
+
+    /**
+     * 主页
+     */
+    private void jumpMain() {
+        startActivity(new Intent(this, MainActivity.class));
+        finish();
     }
 
     @OnClick({ R.id.tv_login_obtain_code, R.id.tv_login_next })

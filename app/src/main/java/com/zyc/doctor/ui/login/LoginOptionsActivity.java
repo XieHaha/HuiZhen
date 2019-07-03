@@ -20,6 +20,7 @@ import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseNetConfig;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.ui.BaseActivity;
+import com.yht.frame.utils.LogUtils;
 import com.zyc.doctor.R;
 import com.zyc.doctor.ZycApplication;
 import com.zyc.doctor.ui.WebViewActivity;
@@ -50,10 +51,25 @@ public class LoginOptionsActivity extends BaseActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        weChatCallBack();
+    }
+
+    @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         registerToWeChat();
         spannableString(getString(R.string.txt_login_protocol));
+    }
+
+    /**
+     * 微信登录回调  请求服务器
+     */
+    private void weChatCallBack() {
+        if (getIntent() != null) {
+            LogUtils.i("test", "code:" + getIntent().getStringExtra(CommonData.KEY_PUBLIC));
+        }
     }
 
     @OnClick({ R.id.tv_login_wechat, R.id.tv_login_phone })
@@ -114,7 +130,6 @@ public class LoginOptionsActivity extends BaseActivity {
             public void onClick(@NonNull View widget) {
                 Intent intent = new Intent(LoginOptionsActivity.this, WebViewActivity.class);
                 intent.putExtra(CommonData.KEY_PUBLIC, BaseNetConfig.BASE_BASIC_USER_PROTOCOL_URL);
-                intent.putExtra(CommonData.KEY_IS_PROTOCOL, true);
                 startActivity(intent);
                 clearBackgroundColor(widget);
             }

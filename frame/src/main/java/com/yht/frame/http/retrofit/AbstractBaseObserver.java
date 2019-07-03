@@ -9,6 +9,8 @@ import com.yht.frame.data.Tasks;
 import com.yht.frame.http.listener.ResponseListener;
 import com.yht.frame.widgets.dialog.LoadingDialog;
 
+import java.util.Objects;
+
 import io.reactivex.disposables.Disposable;
 
 /**
@@ -23,14 +25,14 @@ public class AbstractBaseObserver<T> extends AbstractDataObserver<T> {
     private Context mContext;
     private Disposable d;
 
-    public AbstractBaseObserver(Context context, Boolean showDialog, Tasks task, ResponseListener listener) {
-        mContext = context;
-        mShowDialog = showDialog;
-        setParams(task, listener);
-    }
-
     public AbstractBaseObserver(Context context, Tasks task, ResponseListener listener) {
         this(context, false, task, listener);
+    }
+
+    private AbstractBaseObserver(Context context, Boolean showDialog, Tasks task, ResponseListener listener) {
+        mContext = context;
+        mShowDialog = showDialog;
+        super.setParams(task, listener);
     }
 
     @Override
@@ -43,7 +45,7 @@ public class AbstractBaseObserver<T> extends AbstractDataObserver<T> {
             }
         }
         else {
-            if (loadingDialog == null && mShowDialog == true) {
+            if (loadingDialog == null && mShowDialog) {
                 loadingDialog = new LoadingDialog(mContext);
                 loadingDialog.show();
             }
@@ -68,25 +70,23 @@ public class AbstractBaseObserver<T> extends AbstractDataObserver<T> {
         super.onComplete();
     }
 
-    public void hidDialog() {
-        if (loadingDialog != null && mShowDialog == true) { loadingDialog.dismiss(); }
+    private void hidDialog() {
+        if (loadingDialog != null && mShowDialog) { loadingDialog.dismiss(); }
         loadingDialog = null;
     }
 
     /**
      * 是否有网络连接，不管是wifi还是数据流量
      *
-     * @param context
-     * @return
+     * @return 网络
      */
-    public static boolean isConnected(Context context) {
+    private static boolean isConnected(Context context) {
         ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo info = cm.getActiveNetworkInfo();
+        NetworkInfo info = Objects.requireNonNull(cm).getActiveNetworkInfo();
         if (info == null) {
             return false;
         }
-        boolean available = info.isAvailable();
-        return available;
+        return info.isAvailable();
     }
 }
 
