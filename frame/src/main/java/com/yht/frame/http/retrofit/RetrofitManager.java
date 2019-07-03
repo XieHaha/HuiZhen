@@ -2,7 +2,6 @@ package com.yht.frame.http.retrofit;
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import com.yht.frame.data.BaseNetConfig;
-import com.yht.frame.http.HttpBase;
 
 import java.util.concurrent.TimeUnit;
 
@@ -62,7 +61,7 @@ public class RetrofitManager {
          */
         private void initRetrofit(String baseUrl) {
             retrofit = new Retrofit.Builder().client(okHttpClient)
-                                             .baseUrl(HttpBase.HTTP + baseUrl)
+                                             .baseUrl(baseUrl)
                                              .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                                              .addConverterFactory(GsonConverterFactory.create())
                                              .build();

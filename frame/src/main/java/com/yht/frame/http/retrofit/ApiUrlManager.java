@@ -36,6 +36,24 @@ import retrofit2.http.Url;
  */
 public interface ApiUrlManager {
     /**
+     * 微信登录
+     *
+     * @param info map参数
+     * @return 返回
+     */
+    @POST("wx/login")
+    Observable<BaseResponse<String>> weChatLogin(@Body Map<String, String> info);
+
+    /**
+     * 获取验证码
+     *
+     * @param info map参数
+     * @return 返回值
+     */
+    @POST("get-verify-code")
+    Observable<BaseResponse<String>> getVerifyCode(@Body Map<String, String> info);
+
+    /**
      * 首页广告
      *
      * @param info map参数
@@ -52,15 +70,6 @@ public interface ApiUrlManager {
      */
     @POST("app/version")
     Observable<BaseResponse<VersionBean>> getNewVersion(@Body Map<String, String> info);
-
-    /**
-     * 获取验证码
-     *
-     * @param info map参数
-     * @return 返回值
-     */
-    @POST("msg/send")
-    Observable<BaseResponse<String>> getVerifyCode(@Body Map<String, String> info);
 
     /**
      * 登录

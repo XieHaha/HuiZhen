@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextPaint;
+import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
@@ -20,8 +21,9 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseNetConfig;
 import com.yht.frame.data.CommonData;
+import com.yht.frame.data.Tasks;
+import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
-import com.yht.frame.utils.LogUtils;
 import com.zyc.doctor.R;
 import com.zyc.doctor.ZycApplication;
 import com.zyc.doctor.ui.WebViewActivity;
@@ -50,6 +52,10 @@ public class LoginOptionsActivity extends BaseActivity {
      * 医生认证状态回调
      */
     private static final int REQUEST_CODE_AUTH_STATUS = 100;
+    /**
+     * 账号登录状态
+     */
+    private static final int REQUEST_CODE_LOGIN_STATUS = 200;
 
     @Override
     public int getLayoutID() {
@@ -70,11 +76,23 @@ public class LoginOptionsActivity extends BaseActivity {
     }
 
     /**
+     * 微信登录
+     *
+     * @param code
+     */
+    private void weChatLogin(String code) {
+        RequestUtils.weChatLogin(this, code, BaseData.ADMIN, this);
+    }
+
+    /**
      * 微信登录回调  请求服务器
      */
     private void weChatCallBack() {
         if (getIntent() != null) {
-            LogUtils.i("test", "code:" + getIntent().getStringExtra(CommonData.KEY_PUBLIC));
+            String code = getIntent().getStringExtra(CommonData.KEY_PUBLIC);
+            if (!TextUtils.isEmpty(code)) {
+                weChatLogin(code);
+            }
         }
     }
 
@@ -101,8 +119,7 @@ public class LoginOptionsActivity extends BaseActivity {
                 break;
             case R.id.tv_login_phone:
                 //                startActivity(new Intent(this, AuthDoctorActivity.class));
-                startActivity(new Intent(this, LoginActivity.class));
-                finish();
+                startActivityForResult(new Intent(this, LoginActivity.class), REQUEST_CODE_LOGIN_STATUS);
                 break;
             default:
                 break;
@@ -167,13 +184,28 @@ public class LoginOptionsActivity extends BaseActivity {
     }
 
     @Override
+    public void onResponseSuccess(Tasks task, Object response) {
+        switch (task) {
+            case WE_CHAT_LOGIN:
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != Activity.RESULT_OK) {
             return;
         }
-        if (requestCode == REQUEST_CODE_AUTH_STATUS) {
-            finish();
+        switch (requestCode) {
+            case REQUEST_CODE_AUTH_STATUS:
+            case REQUEST_CODE_LOGIN_STATUS:
+                finish();
+                break;
+            default:
+                break;
         }
     }
 }

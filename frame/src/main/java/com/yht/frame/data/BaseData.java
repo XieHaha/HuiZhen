@@ -82,4 +82,8 @@ public interface BaseData {
      * state
      */
     String WECHAT_STATE = "huizhen_wechat_login";
+    /**
+     * 接口固定参数
+     */
+    String ADMIN = "ADMIN";
 }

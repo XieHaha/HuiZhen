@@ -82,7 +82,7 @@ public class AuthLicenseFragment extends BaseFragment implements OnMediaItemClic
                     ivDeleteOne.setVisibility(View.VISIBLE);
                     //裁剪完成，上传图片
                     Glide.with(this)
-                         .load(mCurrentPhotoPath)
+                         .load(cutFileUriOne)
                          .apply(GlideHelper.getOptionsPic(BaseUtils.dp2px(getContext(), 4)))
                          .into(ivUploadOne);
                 }
@@ -99,7 +99,7 @@ public class AuthLicenseFragment extends BaseFragment implements OnMediaItemClic
                     ivDeleteTwo.setVisibility(View.VISIBLE);
                     //裁剪完成，上传图片
                     Glide.with(this)
-                         .load(mCurrentPhotoPath)
+                         .load(cutFileUriTwo)
                          .apply(GlideHelper.getOptionsPic(BaseUtils.dp2px(getContext(), 4)))
                          .into(ivUploadTwo);
                 }
@@ -148,7 +148,7 @@ public class AuthLicenseFragment extends BaseFragment implements OnMediaItemClic
                 }
                 break;
             case R.id.tv_auth_license_submit:
-                if (onAuthStepListener != null) {
+                if (tvAuthLicenseSubmit.isSelected() && onAuthStepListener != null) {
                     onAuthStepListener.onStepTwo(BASE_TWO);
                 }
                 break;

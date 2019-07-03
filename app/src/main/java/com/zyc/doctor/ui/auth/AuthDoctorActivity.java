@@ -73,6 +73,10 @@ public class AuthDoctorActivity extends BaseActivity implements OnStepListener {
      * 当前碎片
      */
     private int curPage;
+    /**
+     * 当前审核状态
+     */
+    private int curAuthStatus = -1;
 
     @Override
     protected boolean isInitBackBtn() {
@@ -251,6 +255,7 @@ public class AuthDoctorActivity extends BaseActivity implements OnStepListener {
                 tabAuthBaseView();
                 break;
             case BASE_TWO:
+                curAuthStatus = 6;
                 tabAuthResultView();
                 break;
             default:
@@ -268,6 +273,9 @@ public class AuthDoctorActivity extends BaseActivity implements OnStepListener {
      * @return
      */
     private boolean finishPage() {
+        if (curAuthStatus == 6) {
+            return true;
+        }
         if (curPage == BASE_TWO) {
             curPage = 1;
             tabAuthLicenseView();

@@ -134,6 +134,13 @@ public class LoginActivity extends BaseActivity {
     }
 
     /**
+     * 获取验证码
+     */
+    private void getVerifyCode() {
+        RequestUtils.getVerifyCode(this, phone, BaseData.ADMIN, this);
+    }
+
+    /**
      * 登录按钮
      */
     private void initNextButton() {
@@ -143,13 +150,6 @@ public class LoginActivity extends BaseActivity {
         else {
             tvLoginNext.setSelected(false);
         }
-    }
-
-    /**
-     * 获取验证码
-     */
-    private void getVerifyCode() {
-        RequestUtils.getVerifyCode(this, phone, this);
     }
 
     /**
@@ -193,6 +193,7 @@ public class LoginActivity extends BaseActivity {
      */
     private void jumpMain() {
         startActivity(new Intent(this, MainActivity.class));
+        setResult(RESULT_OK);
         finish();
     }
 

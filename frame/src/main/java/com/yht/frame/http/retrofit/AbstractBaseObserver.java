@@ -29,7 +29,7 @@ public class AbstractBaseObserver<T> extends AbstractDataObserver<T> {
         this(context, false, task, listener);
     }
 
-    private AbstractBaseObserver(Context context, Boolean showDialog, Tasks task, ResponseListener listener) {
+    public AbstractBaseObserver(Context context, Boolean showDialog, Tasks task, ResponseListener listener) {
         mContext = context;
         mShowDialog = showDialog;
         super.setParams(task, listener);

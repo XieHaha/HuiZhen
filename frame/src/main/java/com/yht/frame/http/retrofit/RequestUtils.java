@@ -27,6 +27,27 @@ import okhttp3.RequestBody;
  * @author dundun
  */
 public class RequestUtils {
+    public static void weChatLogin(Context context, String code, String merchant, final ResponseListener listener) {
+        Map<String, String> params = new HashMap<>(16);
+        params.put("code", code);
+        params.put("merchant", merchant);
+        RetrofitManager.getApiUrlManager()
+                       .weChatLogin(params)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractBaseObserver<>(context, true, Tasks.WE_CHAT_LOGIN, listener));
+    }
+
+    public static void getVerifyCode(Context context, String phone, String merchant,
+            final ResponseListener<BaseResponse> listener) {
+        Map<String, String> params = new HashMap<>(16);
+        params.put("phone", phone);
+        params.put("merchant", merchant);
+        RetrofitManager.getApiUrlManager()
+                       .getVerifyCode(params)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractBaseObserver<>(context, Tasks.GET_VERIFY_CODE, listener));
+    }
+
     public static void getSplash(Context context, String client, String deviceSystem, String versionCode,
             final ResponseListener listener) {
         Map<String, String> params = new HashMap<>(16);
@@ -47,15 +68,6 @@ public class RequestUtils {
                        .getNewVersion(params)
                        .compose(RxJavaHelper.observableIO2Main(context))
                        .subscribe(new AbstractBaseObserver<>(context, Tasks.UPDATE_VERSION, listener));
-    }
-
-    public static void getVerifyCode(Context context, String phoneNum, final ResponseListener<BaseResponse> listener) {
-        Map<String, String> params = new HashMap<>(16);
-        params.put("phoneNum", phoneNum);
-        RetrofitManager.getApiUrlManager()
-                       .getVerifyCode(params)
-                       .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractBaseObserver<>(context, Tasks.GET_VERIFY_CODE, listener));
     }
 
     public static void login(Context context, String name, String password, String role,

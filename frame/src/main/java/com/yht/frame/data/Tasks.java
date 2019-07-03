@@ -6,6 +6,16 @@ package com.yht.frame.data;
  * @author dundun
  */
 public enum Tasks {
+
+    /**
+     * 微信登录
+     */
+    WE_CHAT_LOGIN,
+
+    /**
+     * 获取验证码
+     */
+    GET_VERIFY_CODE,
     /**
      * 获取环信appkey
      */
@@ -14,10 +24,6 @@ public enum Tasks {
      * 获取广告业
      */
     GET_SPLASH,
-    /**
-     * 获取验证码
-     */
-    GET_VERIFY_CODE,
     /**
      * 登录 注册
      */
