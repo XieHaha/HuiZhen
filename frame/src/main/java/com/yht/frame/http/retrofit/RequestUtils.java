@@ -48,6 +48,17 @@ public class RequestUtils {
                        .subscribe(new AbstractBaseObserver<>(context, Tasks.GET_VERIFY_CODE, listener));
     }
 
+    public static void login(Context context, String prepareId, String verifyCode,
+            final ResponseListener<BaseResponse> listener) {
+        Map<String, String> params = new HashMap<>(16);
+        params.put("prepareId", prepareId);
+        params.put("verifyCode", verifyCode);
+        RetrofitManager.getApiUrlManager()
+                       .login(params)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractBaseObserver<>(context, Tasks.LOGIN_AND_REGISTER, listener));
+    }
+
     public static void getSplash(Context context, String client, String deviceSystem, String versionCode,
             final ResponseListener listener) {
         Map<String, String> params = new HashMap<>(16);
@@ -68,18 +79,6 @@ public class RequestUtils {
                        .getNewVersion(params)
                        .compose(RxJavaHelper.observableIO2Main(context))
                        .subscribe(new AbstractBaseObserver<>(context, Tasks.UPDATE_VERSION, listener));
-    }
-
-    public static void login(Context context, String name, String password, String role,
-            final ResponseListener<BaseResponse> listener) {
-        Map<String, String> params = new HashMap<>(16);
-        params.put("phoneNum", name);
-        params.put("code", password);
-        params.put("role", role);
-        RetrofitManager.getApiUrlManager()
-                       .login(params)
-                       .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractBaseObserver<>(context, Tasks.LOGIN_AND_REGISTER, listener));
     }
 
     public static void getAllProduct(Context context, final ResponseListener<BaseResponse> listener) {

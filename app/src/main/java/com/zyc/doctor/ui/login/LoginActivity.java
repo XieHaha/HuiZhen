@@ -15,16 +15,15 @@ import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
+import com.yht.frame.data.base.VerifyCodeBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.LogUtils;
-import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.widgets.edittext.AbstractTextWatcher;
 import com.yht.frame.widgets.edittext.SuperEditText;
 import com.zyc.doctor.R;
 import com.zyc.doctor.ui.auth.AuthDoctorActivity;
-import com.zyc.doctor.ui.main.MainActivity;
 
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 
@@ -54,7 +53,11 @@ public class LoginActivity extends BaseActivity {
     @BindView(R.id.tv_login_title_hint)
     TextView tvLoginTitleHint;
     private ScheduledExecutorService executorService;
-    private String phone = "", verifyCode = "";
+    private String phone, verifyCode;
+    /**
+     * 获取验证码后得到的 校验值
+     */
+    private VerifyCodeBean verifyCodeBean;
     /**
      * 登录 or绑定
      */
@@ -141,10 +144,17 @@ public class LoginActivity extends BaseActivity {
     }
 
     /**
+     * 登录
+     */
+    private void login() {
+        RequestUtils.login(this, verifyCodeBean.getPrepare_id(), verifyCode, this);
+    }
+
+    /**
      * 登录按钮
      */
     private void initNextButton() {
-        if (BaseUtils.isMobileNumber(phone) && verifyCode.length() == BaseData.BASE_VERIFY_CODE_DEFAULT_LENGTH) {
+        if (BaseUtils.isMobileNumber(phone) && BaseUtils.isCorrectVerifyCode(verifyCode)) {
             tvLoginNext.setSelected(true);
         }
         else {
@@ -156,7 +166,6 @@ public class LoginActivity extends BaseActivity {
      * 登录环信聊天
      */
     private void loginEaseChat() {
-        showLoadingView();
         EMClient.getInstance().login("15828456584_d", BaseData.BASE_EASE_DEFAULT_PWD, new EMCallBack() {
             @Override
             public void onSuccess() {
@@ -176,7 +185,6 @@ public class LoginActivity extends BaseActivity {
             public void onError(int code, String message) {
                 closeLoadingView();
                 LogUtils.d("test", getString(R.string.txt_login_ease_error));
-                ToastUtil.toast(LoginActivity.this, R.string.txt_login_ease_error);
             }
         });
     }
@@ -193,8 +201,26 @@ public class LoginActivity extends BaseActivity {
      */
     private void jumpMain() {
         setResult(RESULT_OK);
-
         finish();
+    }
+
+    /**
+     * 验证码再次获取倒计时
+     */
+    private void startVerifyCodeTimer() {
+        time = BaseData.BASE_MAX_RESEND_TIME;
+        executorService = new ScheduledThreadPoolExecutor(1, new BasicThreadFactory.Builder().namingPattern(
+                "yht-thread-pool-%d").daemon(true).build());
+        executorService.scheduleAtFixedRate(() -> {
+            time--;
+            if (time < 0) {
+                time = 0;
+                executorService.shutdownNow();
+            }
+            else {
+                handler.sendEmptyMessage(0);
+            }
+        }, 0, 1, TimeUnit.SECONDS);
     }
 
     @OnClick({ R.id.tv_login_obtain_code, R.id.tv_login_next })
@@ -205,11 +231,11 @@ public class LoginActivity extends BaseActivity {
                 if (!BaseUtils.isMobileNumber(phone)) {
                     return;
                 }
-                //                getVerifyCode();
-                onResponseSuccess(Tasks.GET_VERIFY_CODE, null);
+                getVerifyCode();
                 break;
             case R.id.tv_login_next:
-                loginEaseChat();
+                showLoadingView();
+                login();
                 break;
             default:
                 break;
@@ -221,22 +247,14 @@ public class LoginActivity extends BaseActivity {
         super.onResponseSuccess(task, response);
         switch (task) {
             case GET_VERIFY_CODE:
+                verifyCodeBean = (VerifyCodeBean)response.getData();
+                //是否获取过验证码 标识符
                 isSendVerifyCode = true;
-                time = BaseData.BASE_MAX_RESEND_TIME;
-                executorService = new ScheduledThreadPoolExecutor(1, new BasicThreadFactory.Builder().namingPattern(
-                        "yht-thread-pool-%d").daemon(true).build());
-                executorService.scheduleAtFixedRate(() -> {
-                    time--;
-                    if (time < 0) {
-                        time = 0;
-                        executorService.shutdownNow();
-                    }
-                    else {
-                        handler.sendEmptyMessage(0);
-                    }
-                }, 0, 1, TimeUnit.SECONDS);
+                startVerifyCodeTimer();
                 break;
             case LOGIN_AND_REGISTER:
+                //登录成功后调用环信服务器
+                loginEaseChat();
                 break;
             default:
                 break;

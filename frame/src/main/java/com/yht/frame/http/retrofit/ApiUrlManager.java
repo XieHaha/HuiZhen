@@ -1,6 +1,7 @@
 package com.yht.frame.http.retrofit;
 
 import com.yht.frame.data.BaseResponse;
+import com.yht.frame.data.base.VerifyCodeBean;
 import com.yht.frame.data.bean.CombineBean;
 import com.yht.frame.data.bean.CooperateDocBean;
 import com.yht.frame.data.bean.CooperateHospitalDocBean;
@@ -51,7 +52,16 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @POST("get-verify-code")
-    Observable<BaseResponse<String>> getVerifyCode(@Body Map<String, String> info);
+    Observable<BaseResponse<VerifyCodeBean>> getVerifyCode(@Body Map<String, String> info);
+
+    /**
+     * 登录
+     *
+     * @param info map参数
+     * @return 返回值
+     */
+    @POST("confirm-verify-code")
+    Observable<BaseResponse<LoginSuccessBean>> login(@Body Map<String, String> info);
 
     /**
      * 首页广告
@@ -70,15 +80,6 @@ public interface ApiUrlManager {
      */
     @POST("app/version")
     Observable<BaseResponse<VersionBean>> getNewVersion(@Body Map<String, String> info);
-
-    /**
-     * 登录
-     *
-     * @param info map参数
-     * @return 返回值
-     */
-    @POST("relog/relog")
-    Observable<BaseResponse<LoginSuccessBean>> login(@Body Map<String, String> info);
 
     /**
      * 获取所有商品

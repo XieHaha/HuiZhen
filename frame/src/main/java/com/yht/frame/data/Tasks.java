@@ -17,6 +17,10 @@ public enum Tasks {
      */
     GET_VERIFY_CODE,
     /**
+     * 登录 注册
+     */
+    LOGIN_AND_REGISTER,
+    /**
      * 获取环信appkey
      */
     GET_EASE_APPKEY,
@@ -24,10 +28,6 @@ public enum Tasks {
      * 获取广告业
      */
     GET_SPLASH,
-    /**
-     * 登录 注册
-     */
-    LOGIN_AND_REGISTER,
     /**
      * 上传文件
      */

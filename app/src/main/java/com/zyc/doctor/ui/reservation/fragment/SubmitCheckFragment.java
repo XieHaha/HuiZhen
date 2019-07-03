@@ -103,7 +103,7 @@ public class SubmitCheckFragment extends BaseFragment implements CheckTypeListvi
     /**
      * 检查项目列表
      */
-    private void initFullListview() {
+    private void initFullListView() {
         checkTypeListviewAdapter = new CheckTypeListviewAdapter(getContext());
         checkTypeListviewAdapter.setData(checkTypeData);
         checkTypeListviewAdapter.setOnDeleteClickListener(this);
@@ -131,6 +131,7 @@ public class SubmitCheckFragment extends BaseFragment implements CheckTypeListvi
             mCurrentPhotoUri = null;
             mCurrentPhotoPath = "";
         }
+        initNextButton();
     }
 
     /**
@@ -144,7 +145,7 @@ public class SubmitCheckFragment extends BaseFragment implements CheckTypeListvi
         tvHospitalName.setText("医院");
         checkTypeData = new ArrayList<>();
         checkTypeData.add("测试数据");
-        initFullListview();
+        initFullListView();
     }
 
     /**
@@ -167,6 +168,19 @@ public class SubmitCheckFragment extends BaseFragment implements CheckTypeListvi
         checkTypeData.clear();
         tvSelect.setVisibility(View.VISIBLE);
         layoutCheckRoot.setVisibility(View.GONE);
+    }
+
+    /**
+     * next按钮可点击状态
+     */
+    private void initNextButton() {
+        //需要添加判断检查项目是否为空
+        if (cameraTempFile == null) {
+            tvSubmitNext.setSelected(false);
+        }
+        else {
+            tvSubmitNext.setSelected(true);
+        }
     }
 
     @OnClick({

@@ -20,22 +20,6 @@ public class BaseResponse<T> implements Serializable {
      * 响应实体类
      */
     T data;
-    /**
-     * 总页数
-     */
-    int totalPage;
-    /**
-     * 总数量
-     */
-    int totalSize;
-    /**
-     * 当前页码
-     */
-    int number;
-    /**
-     * 分页最大数据
-     */
-    int size;
 
     public int getCode() {
         return code;
@@ -44,38 +28,6 @@ public class BaseResponse<T> implements Serializable {
     public BaseResponse setCode(int code) {
         this.code = code;
         return this;
-    }
-
-    public int getTotalPage() {
-        return totalPage;
-    }
-
-    public void setTotalPage(int totalPage) {
-        this.totalPage = totalPage;
-    }
-
-    public int getTotalSize() {
-        return totalSize;
-    }
-
-    public void setTotalSize(int totalSize) {
-        this.totalSize = totalSize;
-    }
-
-    public int getNumber() {
-        return number;
-    }
-
-    public void setNumber(int number) {
-        this.number = number;
-    }
-
-    public int getSize() {
-        return size;
-    }
-
-    public void setSize(int size) {
-        this.size = size;
     }
 
     public String getMsg() {
@@ -100,6 +52,6 @@ public class BaseResponse<T> implements Serializable {
     @Override
     public String toString() {
         return "BaseResponse{" + "code=" + code + ", '" + (msg == null ? "msg为空" : "msg=" + msg) + '\'' + ", " +
-               (data == null ? "data为空" : "data=" + data.toString()) + '}';
+               (data == null ? "data为空" : "data=" + (data == null ? "null" : data.toString())) + '}';
     }
 }

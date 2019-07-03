@@ -90,7 +90,7 @@ public class BaseUtils {
      */
     public static String formatDate(long time, String format) {
         if (format != null) {
-            return new SimpleDateFormat(format,Locale.getDefault()).format(new Date(time));
+            return new SimpleDateFormat(format, Locale.getDefault()).format(new Date(time));
         }
         return "";
     }
@@ -104,7 +104,7 @@ public class BaseUtils {
      */
     public static String formatDate(Date time, String format) {
         if (format != null) {
-            return new SimpleDateFormat(format,Locale.getDefault()).format(time);
+            return new SimpleDateFormat(format, Locale.getDefault()).format(time);
         }
         return "";
     }
@@ -154,6 +154,19 @@ public class BaseUtils {
             if (phoneMatcher.matches()) {
                 return true;
             }
+        }
+        return false;
+    }
+
+    /**
+     * 判断验证码是否合规
+     *
+     * @param str
+     * @return
+     */
+    public static boolean isCorrectVerifyCode(String str) {
+        if (!TextUtils.isEmpty(str) && str.length() == BaseData.BASE_VERIFY_CODE_DEFAULT_LENGTH) {
+            return true;
         }
         return false;
     }
