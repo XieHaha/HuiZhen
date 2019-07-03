@@ -7,9 +7,7 @@ import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Pair;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -21,7 +19,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.hyphenate.EMConnectionListener;
-import com.hyphenate.EMConversationListener;
 import com.hyphenate.EMError;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
@@ -30,7 +27,6 @@ import com.zyc.doctor.R;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -51,12 +47,6 @@ public class EaseConversationListFragment extends EaseBaseFragment implements Sw
     protected FrameLayout errorItemContainer;
     private View footerView;
     protected boolean isConflict;
-    protected EMConversationListener convListener = new EMConversationListener() {
-        @Override
-        public void onCoversationUpdate() {
-            refresh();
-        }
-    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -77,12 +67,12 @@ public class EaseConversationListFragment extends EaseBaseFragment implements Sw
                                               android.R.color.holo_orange_light, android.R.color.holo_green_light);
         layoutRefresh.setOnRefreshListener(this);
         footerView = LayoutInflater.from(getContext()).inflate(R.layout.view_load_end, null);
-        conversationListView = (EaseConversationList)getView().findViewById(R.id.list);
-        query = (EditText)getView().findViewById(R.id.query);
+        conversationListView = getView().findViewById(R.id.list);
+        query = getView().findViewById(R.id.query);
         tvHintTxt = getView().findViewById(R.id.tv_none_message);
         // button to clear content in search bar
-        clearSearch = (ImageButton)getView().findViewById(R.id.search_clear);
-        errorItemContainer = (FrameLayout)getView().findViewById(R.id.fl_error_item);
+        clearSearch = getView().findViewById(R.id.search_clear);
+        errorItemContainer = getView().findViewById(R.id.fl_error_item);
     }
 
     @Override
@@ -110,12 +100,9 @@ public class EaseConversationListFragment extends EaseBaseFragment implements Sw
         }
         EMClient.getInstance().addConnectionListener(connectionListener);
         conversationListView.addFooterView(footerView);
-        conversationListView.setOnTouchListener(new OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                hideSoftKeyboard();
-                return false;
-            }
+        conversationListView.setOnTouchListener((v, event) -> {
+            hideSoftKeyboard();
+            return false;
         });
     }
 
@@ -194,22 +181,20 @@ public class EaseConversationListFragment extends EaseBaseFragment implements Sw
     protected List<EMConversation> loadConversationList() {
         // get all conversations
         Map<String, EMConversation> conversations = EMClient.getInstance().chatManager().getAllConversations();
-        List<Pair<Long, EMConversation>> sortList = new ArrayList<Pair<Long, EMConversation>>();
+        List<Pair<Long, EMConversation>> sortList = new ArrayList<>();
         if (conversations != null && conversations.size() > 0) {
             tvHintTxt.setVisibility(View.GONE);
+            conversationListView.setVisibility(View.VISIBLE);
         }
         else {
+            conversationListView.setVisibility(View.GONE);
             tvHintTxt.setVisibility(View.VISIBLE);
         }
-        /**
-         * lastMsgTime will change if there is new message during sorting
-         * so use synchronized to make sure timestamp of last message won't change.
-         */
+        //lastMsgTime will change if there is new message during sorting so use synchronized to make sure timestamp of last message won't change.
         synchronized (conversations) {
             for (EMConversation conversation : conversations.values()) {
                 if (conversation.getAllMessages().size() != 0) {
-                    sortList.add(
-                            new Pair<Long, EMConversation>(conversation.getLastMessage().getMsgTime(), conversation));
+                    sortList.add(new Pair<>(conversation.getLastMessage().getMsgTime(), conversation));
                 }
             }
         }
@@ -233,18 +218,15 @@ public class EaseConversationListFragment extends EaseBaseFragment implements Sw
      * @param conversationList
      */
     private void sortConversationByLastChatTime(List<Pair<Long, EMConversation>> conversationList) {
-        Collections.sort(conversationList, new Comparator<Pair<Long, EMConversation>>() {
-            @Override
-            public int compare(final Pair<Long, EMConversation> con1, final Pair<Long, EMConversation> con2) {
-                if (con1.first.equals(con2.first)) {
-                    return 0;
-                }
-                else if (con2.first.longValue() > con1.first.longValue()) {
-                    return 1;
-                }
-                else {
-                    return -1;
-                }
+        Collections.sort(conversationList, (con1, con2) -> {
+            if (con1.first.equals(con2.first)) {
+                return 0;
+            }
+            else if (con2.first.longValue() > con1.first.longValue()) {
+                return 1;
+            }
+            else {
+                return -1;
             }
         });
     }

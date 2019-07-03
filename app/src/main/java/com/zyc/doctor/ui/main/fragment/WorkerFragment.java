@@ -110,6 +110,7 @@ public class WorkerFragment extends BaseFragment {
                 break;
             case R.id.layout_transfer_apply:
                 intent = new Intent(getContext(), TransferApplyActivity.class);
+                intent.putExtra(CommonData.KEY_PUBLIC, true);
                 startActivity(intent);
                 break;
             case R.id.view_flipper:
@@ -124,6 +125,8 @@ public class WorkerFragment extends BaseFragment {
                 startActivity(intent);
                 break;
             case R.id.layout_accepted_transfer:
+                intent = new Intent(getContext(), TransferApplyActivity.class);
+                startActivity(intent);
                 break;
             default:
                 break;

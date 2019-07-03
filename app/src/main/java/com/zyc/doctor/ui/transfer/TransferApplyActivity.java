@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.yht.frame.data.CommonData;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.widgets.view.AbstractOnPageChangeListener;
@@ -62,7 +63,11 @@ public class TransferApplyActivity extends BaseActivity {
             viewBar.setLayoutParams(params);
             viewBar.setTranslationX(calcViewBarOffset());
         });
-        initFragment();
+        boolean index = false;
+        if (getIntent() != null) {
+            index = getIntent().getBooleanExtra(CommonData.KEY_PUBLIC, false);
+        }
+        initFragment(index);
     }
 
     @Override
@@ -91,8 +96,10 @@ public class TransferApplyActivity extends BaseActivity {
 
     /**
      * 碎片初始化
+     *
+     * @param index
      */
-    private void initFragment() {
+    private void initFragment(boolean index) {
         //已接收
         TransferReceivedFragment transferReceivedFragment = new TransferReceivedFragment();
         //待处理
@@ -102,7 +109,7 @@ public class TransferApplyActivity extends BaseActivity {
         fragmentList.add(transferWaitFragment);
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), fragmentList);
         viewPager.setAdapter(viewPagerAdapter);
-        titleBar(true);
+        titleBar(index);
     }
 
     @OnClick({ R.id.layout_left, R.id.layout_right })

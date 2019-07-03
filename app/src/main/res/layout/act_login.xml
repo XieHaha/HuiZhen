@@ -91,6 +91,7 @@
             app:hide_left_icon="true"
             android:layout_toStartOf="@id/tv_login_obtain_code"
             android:layout_marginEnd="13dp"
+            android:maxLength="6"
             android:inputType="number"
             android:background="@null"
             android:singleLine="true"
