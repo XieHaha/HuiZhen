@@ -20,7 +20,6 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="33dp"
         android:textColor="@color/color_6a6f80"
         android:textSize="@dimen/text_15"
         android:text="@string/txt_account_disable_hint"

@@ -11,6 +11,10 @@ public enum Tasks {
      * 微信登录
      */
     WE_CHAT_LOGIN,
+    /**
+     * 微信绑定
+     */
+    WE_CHAT_BIND,
 
     /**
      * 获取验证码

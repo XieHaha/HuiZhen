@@ -19,13 +19,12 @@ import java.util.Set;
  */
 public class SharePreferenceUtil {
     private Context mContext;
-    private String spKey, spValue;
     private SharedPreferences sp;
     private Editor spEditor;
     /**
      * 保存在手机里面的默认文件名
      */
-    private static final String FILE_NAME = "YHT";
+    private static final String FILE_NAME = "ZYC";
 
     public SharePreferenceUtil(Context mContext) {
         super();
@@ -98,11 +97,6 @@ public class SharePreferenceUtil {
         }
     }
 
-    @Override
-    public String toString() {
-        return "SharePreferenceUtil [mContext=" + mContext + ", spKey=" + spKey + ", spValue=" + spValue + "]";
-    }
-
     /**
      * 保存数据的方法，我们需要拿到保存数据的具体类型，然后根据类型调用不同的保存方法
      *
@@ -168,31 +162,6 @@ public class SharePreferenceUtil {
         return null;
     }
 
-    public static Boolean getBoolean(Context context, String key, Boolean defaultValue) {
-        SharedPreferences sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
-        return sp.getBoolean(key, defaultValue);
-    }
-
-    public static String getString(Context context, String key, String defaultValue) {
-        SharedPreferences sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
-        return sp.getString(key, defaultValue);
-    }
-
-    public static Integer getInt(Context context, String key, int defaultValue) {
-        SharedPreferences sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
-        return sp.getInt(key, defaultValue);
-    }
-
-    public static Float getFloat(Context context, String key, float defaultValue) {
-        SharedPreferences sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
-        return sp.getFloat(key, defaultValue);
-    }
-
-    public static Long getLong(Context context, String key, long defaultValue) {
-        SharedPreferences sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
-        return sp.getLong(key, defaultValue);
-    }
-
     /**
      * 移除某个key值已经对应的值
      *
@@ -226,7 +195,7 @@ public class SharePreferenceUtil {
      * @param key
      * @return
      */
-    public static boolean contains(Context context, String key) {
+    public boolean contains(Context context, String key) {
         SharedPreferences sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
         return sp.contains(key);
     }
@@ -237,7 +206,7 @@ public class SharePreferenceUtil {
      * @param context
      * @return
      */
-    public static Map<String, ?> getAll(Context context) {
+    public Map<String, ?> getAll(Context context) {
         SharedPreferences sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
         return sp.getAll();
     }

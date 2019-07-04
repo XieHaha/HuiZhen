@@ -125,7 +125,7 @@
 //     * @param type
 //     */
 //    private void jumpPageByType(Context context, int type, int id) {
-//        if (YihtApplication.getInstance().getLoginSuccessBean() == null) {
+//        if (YihtApplication.getInstance().getLoginBean() == null) {
 //            return;
 //        }
 //        Intent mainIntent, baseIntent;

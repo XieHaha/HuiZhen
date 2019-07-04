@@ -95,7 +95,7 @@ public class AuthDoctorActivity extends BaseActivity implements OnStepListener {
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         findViewById(R.id.public_title_bar_back).setOnClickListener(this);
-        curAuthStatus = loginSuccessBean.getApprovalStatus();
+        curAuthStatus = loginBean.getApprovalStatus();
         initTab();
     }
 

@@ -1,13 +1,13 @@
 package com.yht.frame.http.retrofit;
 
 import com.yht.frame.data.BaseResponse;
+import com.yht.frame.data.base.LoginBean;
 import com.yht.frame.data.base.VerifyCodeBean;
 import com.yht.frame.data.bean.CombineBean;
 import com.yht.frame.data.bean.CooperateDocBean;
 import com.yht.frame.data.bean.CooperateHospitalDocBean;
 import com.yht.frame.data.bean.HospitalBean;
 import com.yht.frame.data.bean.HospitalProductTypeBean;
-import com.yht.frame.data.base.LoginSuccessBean;
 import com.yht.frame.data.bean.PatientBean;
 import com.yht.frame.data.bean.PatientCaseDetailBean;
 import com.yht.frame.data.bean.RegistrationBean;
@@ -39,11 +39,20 @@ public interface ApiUrlManager {
     /**
      * 微信登录
      *
-     * @param info map参数
+     * @param info   map参数
      * @return 返回
      */
     @POST("wx/login")
-    Observable<BaseResponse<String>> weChatLogin(@Body Map<String, String> info);
+    Observable<BaseResponse<LoginBean>> weChatLogin(@Body Map<String, String> info);
+
+    /**
+     * 微信绑定手机号
+     *
+     * @param info map参数
+     * @return 返回
+     */
+    @POST("wx/bind")
+    Observable<BaseResponse<String>> weChatBind(@Body Map<String, String> info);
 
     /**
      * 获取验证码
@@ -61,7 +70,7 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @POST("confirm-verify-code")
-    Observable<BaseResponse<LoginSuccessBean>> login(@Body Map<String, String> info);
+    Observable<BaseResponse<LoginBean>> login(@Body Map<String, String> info);
 
     /**
      * 首页广告

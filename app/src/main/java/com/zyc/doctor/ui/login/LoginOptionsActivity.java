@@ -15,15 +15,22 @@ import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.TextView;
 
+import com.hyphenate.EMCallBack;
+import com.hyphenate.chat.EMClient;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseNetConfig;
+import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
+import com.yht.frame.data.DocAuthStatus;
 import com.yht.frame.data.Tasks;
+import com.yht.frame.data.base.LoginBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
+import com.yht.frame.utils.LogUtils;
+import com.yht.frame.utils.ToastUtil;
 import com.zyc.doctor.R;
 import com.zyc.doctor.ZycApplication;
 import com.zyc.doctor.ui.WebViewActivity;
@@ -50,13 +57,13 @@ public class LoginOptionsActivity extends BaseActivity {
      */
     private IWXAPI api;
     /**
-     * 医生认证状态回调
-     */
-    private static final int REQUEST_CODE_AUTH_STATUS = 100;
-    /**
      * 账号登录状态
      */
-    private static final int REQUEST_CODE_LOGIN_STATUS = 200;
+    private static final int REQUEST_CODE_LOGIN_STATUS = 100;
+    /**
+     * 认证状态
+     */
+    private static final int REQUEST_CODE_AUTH_STATUS = 200;
 
     @Override
     public int getLayoutID() {
@@ -86,22 +93,86 @@ public class LoginOptionsActivity extends BaseActivity {
     }
 
     /**
-     * 微信登录回调  请求服务器
-     */
-    private void weChatCallBack() {
-        if (getIntent() != null) {
-            String code = getIntent().getStringExtra(CommonData.KEY_PUBLIC);
-            if (!TextUtils.isEmpty(code)) {
-                weChatLogin(code);
-            }
-        }
-    }
-
-    /**
      * 医生认证
      */
     private void jumpAuth() {
         startActivityForResult(new Intent(this, AuthDoctorActivity.class), REQUEST_CODE_AUTH_STATUS);
+    }
+
+    /**
+     * 主页
+     */
+    private void jumpMain() {
+        startActivity(new Intent(this, MainActivity.class));
+        finish();
+    }
+
+    /**
+     * 微信登录 注册
+     */
+    private void registerToWeChat() {
+        // 通过WXAPIFactory工厂，获取IWXAPI的实例
+        api = WXAPIFactory.createWXAPI(this, BaseData.WE_CHAT_ID, true);
+        // 将应用的appId注册到微信
+        api.registerApp(BaseData.WE_CHAT_ID);
+        ZycApplication.iwxapi = api;
+    }
+
+    /**
+     * 调用微信登录授权
+     */
+    private void sendReq() {
+        final SendAuth.Req req = new SendAuth.Req();
+        //获取个人信息（作用域）
+        req.scope = BaseData.WE_CHAT_SCOPE;
+        req.state = BaseData.WE_CHAT_STATE;
+        //调用api接口，发送数据到微信
+        api.sendReq(req);
+    }
+
+    /**
+     * 微信登录回调  请求服务器
+     */
+    private void weChatCallBack() {
+        String code = sharePreferenceUtil.getString(CommonData.KEY_WECHAT_LOGIN_SUCCESS_BEAN);
+        if (!TextUtils.isEmpty(code)) {
+            weChatLogin(code);
+            //获取后就清除本地数据，防止二次请求
+            sharePreferenceUtil.clear(CommonData.KEY_WECHAT_LOGIN_SUCCESS_BEAN);
+        }
+    }
+
+    /**
+     * 登录环信聊天
+     */
+    private void loginEaseChat() {
+        EMClient.getInstance().login("15828456584_d", BaseData.BASE_EASE_DEFAULT_PWD, new EMCallBack() {
+            @Override
+            public void onSuccess() {
+                closeLoadingView();
+                runOnUiThread(() -> {
+                    EMClient.getInstance().chatManager().loadAllConversations();
+                    LogUtils.i("test", getString(R.string.txt_login_ease_success));
+                    if (loginBean.getApprovalStatus() == DocAuthStatus.AUTH_SUCCESS) {
+                        jumpMain();
+                    }
+                    else {
+                        jumpAuth();
+                    }
+                });
+            }
+
+            @Override
+            public void onProgress(int progress, String status) {
+            }
+
+            @Override
+            public void onError(int code, String message) {
+                closeLoadingView();
+                LogUtils.i("test", getString(R.string.txt_login_ease_error));
+                ToastUtil.toast(LoginOptionsActivity.this, R.string.txt_login_ease_error);
+            }
+        });
     }
 
     @OnClick({ R.id.tv_login_wechat, R.id.tv_login_phone })
@@ -112,11 +183,10 @@ public class LoginOptionsActivity extends BaseActivity {
                     sendReq();
                 }
                 else {
-                    Intent intent = new Intent(LoginOptionsActivity.this, WebViewActivity.class);
+                    Intent intent = new Intent(this, WebViewActivity.class);
                     intent.putExtra(CommonData.KEY_PUBLIC, BaseNetConfig.BASE_WE_CHAT_DOWNLOAD_URL);
                     startActivity(intent);
                 }
-                sendReq();
                 break;
             case R.id.tv_login_phone:
                 Intent intent = new Intent(this, LoginActivity.class);
@@ -127,24 +197,30 @@ public class LoginOptionsActivity extends BaseActivity {
         }
     }
 
-    /**
-     * 微信登录 注册
-     */
-    private void registerToWeChat() {
-        // 通过WXAPIFactory工厂，获取IWXAPI的实例
-        api = WXAPIFactory.createWXAPI(this, BaseData.WECHAT_ID, true);
-        // 将应用的appId注册到微信
-        api.registerApp(BaseData.WECHAT_ID);
-        ZycApplication.iwxapi = api;
+    @Override
+    public void onResponseSuccess(Tasks task, BaseResponse response) {
+        switch (task) {
+            case WE_CHAT_LOGIN:
+                //保存登录数据
+                loginBean = (LoginBean)response.getData();
+                ZycApplication.getInstance().setLoginSuccessBean(loginBean);
+                //登录成功后判断是否绑定过手机号，未绑定手机号跳转绑定页面，绑定后登陆环信
+                loginEaseChat();
+                break;
+            default:
+                break;
+        }
     }
 
-    private void sendReq() {
-        final SendAuth.Req req = new SendAuth.Req();
-        //获取个人信息（作用域）
-        req.scope = BaseData.WECHAT_SCOPE;
-        req.state = BaseData.WECHAT_STATE;
-        //调用api接口，发送数据到微信
-        api.sendReq(req);
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+        if (requestCode == REQUEST_CODE_LOGIN_STATUS) {
+            jumpMain();
+        }
     }
 
     /**
@@ -181,34 +257,6 @@ public class LoginOptionsActivity extends BaseActivity {
     private void clearBackgroundColor(View view) {
         if (view instanceof TextView) {
             ((TextView)view).setHighlightColor(ContextCompat.getColor(this, android.R.color.transparent));
-        }
-    }
-
-    @Override
-    public void onResponseSuccess(Tasks task, Object response) {
-        switch (task) {
-            case WE_CHAT_LOGIN:
-                break;
-            default:
-                break;
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode != Activity.RESULT_OK) {
-            return;
-        }
-        switch (requestCode) {
-            case REQUEST_CODE_AUTH_STATUS:
-                break;
-            case REQUEST_CODE_LOGIN_STATUS:
-                startActivity(new Intent(this, MainActivity.class));
-                finish();
-                break;
-            default:
-                break;
         }
     }
 }

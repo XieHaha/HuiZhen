@@ -20,7 +20,7 @@ public interface BaseNetConfig {
     /**
      * 设置默认超时时间
      */
-    int DEFAULT_TIME = 10;
+    int DEFAULT_TIME = 30;
     /**
      * 用户使用协议
      */

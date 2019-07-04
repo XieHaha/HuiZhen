@@ -35,11 +35,15 @@ public interface CommonData {
     /**
      * 是否显示的是登录协议（登录协议页面不显示title）
      */
-    String KEY_IS_PROTOCOL="key_is_protocol";
+    String KEY_IS_PROTOCOL = "key_is_protocol";
     /**
      * 登录成功返回数据
      */
     String KEY_LOGIN_SUCCESS_BEAN = "key_login_success_bean";
+    /**
+     * 微信登录成功返回数据
+     */
+    String KEY_WECHAT_LOGIN_SUCCESS_BEAN = "key_wechat_login_success_bean";
     /**
      * 聊天id
      */

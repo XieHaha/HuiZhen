@@ -12,7 +12,7 @@ public class EaseMsgClickBroadCastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         if ("ease.msg.android.intent.CLICK".equals(intent.getAction())) {
-            //            if (ZycApplication.getInstance().getLoginSuccessBean() == null) {
+            //            if (ZycApplication.getInstance().getLoginBean() == null) {
             //                return;
             //            }
             //            String chatId = intent.getStringExtra(CommonData.KEY_CHAT_ID);

@@ -4,7 +4,7 @@
 //
 //import com.hyphenate.chat.EMMessage;
 //import com.hyphenate.easeui.widget.chatrow.EaseCustomChatRowProvider;
-//import com.yht.frame.data.base.LoginSuccessBean;
+//import com.yht.frame.data.base.LoginBean;
 //
 ///**
 // * Created by dundun on 18/4/20.
@@ -12,7 +12,7 @@
 //public class ChatHelper implements EaseChatFragment.EaseChatFragmentHelper {
 //    @Override
 //    public void onSetMessageAttributes(EMMessage message) {
-//        LoginSuccessBean bean = YihtApplication.getInstance().getLoginSuccessBean();
+//        LoginBean bean = YihtApplication.getInstance().getLoginBean();
 //        if (null == bean) {
 //            return;
 //        }

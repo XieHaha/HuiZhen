@@ -7,7 +7,7 @@ import java.io.Serializable;
  *
  * @author DUNDUN
  */
-public class LoginSuccessBean implements Serializable {
+public class LoginBean implements Serializable {
     private static final long serialVersionUID = 1574016439324324068L;
     private String token;
     /**
@@ -20,6 +20,12 @@ public class LoginSuccessBean implements Serializable {
     private String doctorName;
     private String jobTitle;
     private String photo;
+    /**
+     * 微信登录
+     */
+    private String openid;
+    private String unionid;
+
 
     public String getToken() {
         return token;
@@ -85,9 +91,25 @@ public class LoginSuccessBean implements Serializable {
         this.photo = photo;
     }
 
+    public String getOpenid() {
+        return openid;
+    }
+
+    public void setOpenid(String openid) {
+        this.openid = openid;
+    }
+
+    public String getUnionid() {
+        return unionid;
+    }
+
+    public void setUnionid(String unionid) {
+        this.unionid = unionid;
+    }
+
     @Override
     public String toString() {
-        return "[LoginSuccessBean]->doctorCode:" + doctorCode + ",token:" + token + ",mobile:" + mobile +
+        return "[LoginBean]->doctorCode:" + doctorCode + ",token:" + token + ",mobile:" + mobile +
                ",doctorName:" + doctorName + ",jobTitle:" + jobTitle + ",photo:" + photo
                 //                + ",hospitalId:" + hospitalId
                 //                + ",communityRequired:" + communityRequired

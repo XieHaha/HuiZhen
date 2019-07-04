@@ -17,7 +17,7 @@ import com.yanzhenjie.nohttp.NoHttp;
 import com.yht.frame.api.ApiManager;
 import com.yht.frame.api.CrashHandler;
 import com.yht.frame.data.CommonData;
-import com.yht.frame.data.base.LoginSuccessBean;
+import com.yht.frame.data.base.LoginBean;
 import com.yht.frame.http.retrofit.RetrofitManager;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.LogUtils;
@@ -38,7 +38,7 @@ import me.jessyan.autosize.unit.Subunits;
  */
 public class ZycApplication extends LitePalApplication {
     private static ZycApplication instance;
-    private LoginSuccessBean loginSuccessBean;
+    private LoginBean loginSuccessBean;
     /**
      * 微信api
      */
@@ -92,7 +92,7 @@ public class ZycApplication extends LitePalApplication {
         opts.setShowChatTitle(false);
         HxHelper.getInstance().init(this);
         EaseUI.getInstance().setUserProfileProvider((username, callback) -> {
-            LoginSuccessBean bean = getLoginSuccessBean();
+            LoginBean bean = getLoginSuccessBean();
             //如果是当前用户，就设置自己的昵称和头像
             if (null != bean && TextUtils.equals(bean.getDoctorCode(), username)) {
                 EaseUser eu = new EaseUser(username);
@@ -130,15 +130,15 @@ public class ZycApplication extends LitePalApplication {
         //        startService(intent);
     }
 
-    public LoginSuccessBean getLoginSuccessBean() {
+    public LoginBean getLoginSuccessBean() {
         String userStr = (String)SharePreferenceUtil.getObject(this, CommonData.KEY_LOGIN_SUCCESS_BEAN, "");
         if (!TextUtils.isEmpty(userStr)) {
-            loginSuccessBean = new Gson().fromJson(userStr, LoginSuccessBean.class);
+            loginSuccessBean = new Gson().fromJson(userStr, LoginBean.class);
         }
         return loginSuccessBean;
     }
 
-    public void setLoginSuccessBean(LoginSuccessBean loginSuccessBean) {
+    public void setLoginSuccessBean(LoginBean loginSuccessBean) {
         this.loginSuccessBean = loginSuccessBean;
         SharePreferenceUtil.putObject(this, CommonData.KEY_LOGIN_SUCCESS_BEAN, loginSuccessBean);
     }

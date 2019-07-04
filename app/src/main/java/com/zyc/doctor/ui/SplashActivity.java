@@ -102,8 +102,8 @@ public class SplashActivity extends BaseActivity implements DocAuthStatus {
      * 页面初始化
      */
     private void initPage() {
-        if (loginSuccessBean != null) {
-            int checked = loginSuccessBean.getApprovalStatus();
+        if (loginBean != null) {
+            int checked = loginBean.getApprovalStatus();
             switch (checked) {
                 case AUTH_NONE:
                 case AUTH_WAITTING:

@@ -13,9 +13,9 @@ import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.yht.frame.data.BaseData;
 import com.yht.frame.data.CommonData;
+import com.yht.frame.utils.SharePreferenceUtil;
 import com.yht.frame.utils.ToastUtil;
 import com.zyc.doctor.ZycApplication;
-import com.zyc.doctor.ui.login.LoginOptionsActivity;
 
 /**
  * @author dundun
@@ -28,8 +28,8 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
         super.onCreate(savedInstanceState);
         iwxapi = ZycApplication.iwxapi;
         if (iwxapi == null) {
-            iwxapi = WXAPIFactory.createWXAPI(this, BaseData.WECHAT_ID, false);
-            iwxapi.registerApp(BaseData.WECHAT_ID);
+            iwxapi = WXAPIFactory.createWXAPI(this, BaseData.WE_CHAT_ID, false);
+            iwxapi.registerApp(BaseData.WE_CHAT_ID);
             ZycApplication.iwxapi = iwxapi;
         }
         boolean handleIntent = iwxapi.handleIntent(getIntent(), this);
@@ -55,9 +55,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
             case BaseResp.ErrCode.ERR_OK:
                 if (baseResp instanceof SendAuth.Resp) {
                     String code = ((SendAuth.Resp)baseResp).code;
-                    Intent intent = new Intent(this, LoginOptionsActivity.class);
-                    intent.putExtra(CommonData.KEY_PUBLIC, code);
-                    startActivity(intent);
+                    new SharePreferenceUtil(this).putString(CommonData.KEY_WECHAT_LOGIN_SUCCESS_BEAN, code);
                     finish();
                 }
                 break;

@@ -39,7 +39,7 @@ public class AbstractBaseObserver<T> extends AbstractDataObserver<T> {
     public void onSubscribe(Disposable d) {
         this.d = d;
         if (!isConnected(mContext)) {
-            Toast.makeText(mContext, "未连接网络", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, "网络无连接", Toast.LENGTH_SHORT).show();
             if (d.isDisposed()) {
                 d.dispose();
             }

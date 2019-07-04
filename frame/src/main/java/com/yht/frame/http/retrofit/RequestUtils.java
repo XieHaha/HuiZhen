@@ -5,7 +5,7 @@ import android.content.Context;
 import com.google.gson.JsonObject;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.Tasks;
-import com.yht.frame.data.base.LoginSuccessBean;
+import com.yht.frame.data.base.LoginBean;
 import com.yht.frame.data.bean.HospitalBean;
 import com.yht.frame.data.bean.HospitalProductBean;
 import com.yht.frame.data.bean.HospitalProductTypeBean;
@@ -34,6 +34,20 @@ public class RequestUtils {
                        .weChatLogin(params)
                        .compose(RxJavaHelper.observableIO2Main(context))
                        .subscribe(new AbstractBaseObserver<>(context, true, Tasks.WE_CHAT_LOGIN, listener));
+    }
+
+    public static void weChatBind(Context context, String openid, String unionid, String phone, String code,
+            String merchant, final ResponseListener listener) {
+        Map<String, String> params = new HashMap<>(16);
+        params.put("openid", openid);
+        params.put("unionid", unionid);
+        params.put("phone", phone);
+        params.put("code", code);
+        params.put("merchant", merchant);
+        RetrofitManager.getApiUrlManager()
+                       .weChatBind(params)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractBaseObserver<>(context, true, Tasks.WE_CHAT_BIND, listener));
     }
 
     public static void getVerifyCode(Context context, String phone, String merchant,
@@ -409,7 +423,7 @@ public class RequestUtils {
                                                              listener));
     }
 
-    public static void addProductOrderNew(Context context, String diagnosisInfo, LoginSuccessBean loginSuccessBean,
+    public static void addProductOrderNew(Context context, String diagnosisInfo, LoginBean loginSuccessBean,
             PatientBean patientBean, HospitalBean curHospital, HospitalProductBean curProduct,
             HospitalProductTypeBean curProductType, final ResponseListener<BaseResponse> listener) {
         Map<String, Object> params = new HashMap<>(20);

@@ -25,7 +25,7 @@ import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
-import com.yht.frame.data.base.LoginSuccessBean;
+import com.yht.frame.data.base.LoginBean;
 import com.yht.frame.http.listener.ResponseListener;
 import com.yht.frame.permission.OnPermissionCallback;
 import com.yht.frame.permission.Permission;
@@ -54,7 +54,7 @@ public abstract class BaseActivity<T> extends RxAppCompatActivity
     /**
      * 登录数据
      */
-    protected LoginSuccessBean loginSuccessBean;
+    protected LoginBean loginBean;
     /**
      * 轻量级存储
      */
@@ -89,7 +89,7 @@ public abstract class BaseActivity<T> extends RxAppCompatActivity
             setContentView(getLayoutView());
         }
         ButterKnife.bind(this);
-        loginSuccessBean = getLoginSuccessBean();
+        loginBean = getLoginBean();
         sharePreferenceUtil = new SharePreferenceUtil(this);
         /**
          * 权限管理类
@@ -227,12 +227,12 @@ public abstract class BaseActivity<T> extends RxAppCompatActivity
      *
      * @return
      */
-    public LoginSuccessBean getLoginSuccessBean() {
+    public LoginBean getLoginBean() {
         String userStr = (String)SharePreferenceUtil.getObject(this, CommonData.KEY_LOGIN_SUCCESS_BEAN, "");
         if (!TextUtils.isEmpty(userStr)) {
-            loginSuccessBean = new Gson().fromJson(userStr, LoginSuccessBean.class);
+            loginBean = new Gson().fromJson(userStr, LoginBean.class);
         }
-        return loginSuccessBean;
+        return loginBean;
     }
 
     /**

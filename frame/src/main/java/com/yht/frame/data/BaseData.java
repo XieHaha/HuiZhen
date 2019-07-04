@@ -73,21 +73,21 @@ public interface BaseData {
     /**
      * 微信登录APP_ID
      */
-    String WECHAT_ID = "wx06ffa935bd113f48";
+    String WE_CHAT_ID = "wx06ffa935bd113f48";
     /**
      * 微信登录APP_SECRET
      */
-    String WECHAT_SECRET = "fd5358444b736b8017ef9337c3210aad";
+    String WE_CHAT_SECRET = "c7299dcce25a5ff0487289370ba65dc0";
     /**
      * SCOPE
      */
-    String WECHAT_SCOPE = "snsapi_userinfo";
+    String WE_CHAT_SCOPE = "snsapi_userinfo";
     /**
      * state
      */
-    String WECHAT_STATE = "huizhen_wechat_login";
+    String WE_CHAT_STATE = "huizhen_wechat_login";
     /**
      * 接口固定参数
      */
-    String ADMIN = "ADMIN";
+    String ADMIN = "ANDROID";
 }
