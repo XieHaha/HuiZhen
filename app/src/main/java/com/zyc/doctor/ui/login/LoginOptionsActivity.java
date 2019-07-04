@@ -15,8 +15,6 @@ import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.TextView;
 
-import com.hyphenate.EMCallBack;
-import com.hyphenate.chat.EMClient;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -29,8 +27,6 @@ import com.yht.frame.data.Tasks;
 import com.yht.frame.data.base.LoginBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
-import com.yht.frame.utils.LogUtils;
-import com.yht.frame.utils.ToastUtil;
 import com.zyc.doctor.R;
 import com.zyc.doctor.ZycApplication;
 import com.zyc.doctor.ui.WebViewActivity;
@@ -61,9 +57,9 @@ public class LoginOptionsActivity extends BaseActivity {
      */
     private static final int REQUEST_CODE_LOGIN_STATUS = 100;
     /**
-     * 认证状态
+     * 绑定手机号
      */
-    private static final int REQUEST_CODE_AUTH_STATUS = 200;
+    private static final int REQUEST_CODE_BIND_STATUS = 200;
 
     @Override
     public int getLayoutID() {
@@ -92,11 +88,37 @@ public class LoginOptionsActivity extends BaseActivity {
         RequestUtils.weChatLogin(this, code, BaseData.ADMIN, this);
     }
 
+    private void jump() {
+        //判断是否绑定手机号
+        if (TextUtils.isEmpty(loginBean.getMobile())) {
+            Intent intent = new Intent(this, BindPhoneActivity.class);
+            intent.putExtra(CommonData.KEY_LOGIN_SUCCESS_BEAN, loginBean);
+            startActivityForResult(intent, REQUEST_CODE_BIND_STATUS);
+        }
+        else {
+            // 已绑定手机，需要存储登录信息
+            ZycApplication.getInstance().setLoginSuccessBean(loginBean);
+            //判断认证状态
+            switch (loginBean.getApprovalStatus()) {
+                case DocAuthStatus.AUTH_NONE:
+                case DocAuthStatus.AUTH_WAITTING:
+                case DocAuthStatus.AUTH_FAILD:
+                    jumpAuth();
+                    break;
+                case DocAuthStatus.AUTH_SUCCESS:
+                    jumpMain();
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
     /**
      * 医生认证
      */
     private void jumpAuth() {
-        startActivityForResult(new Intent(this, AuthDoctorActivity.class), REQUEST_CODE_AUTH_STATUS);
+        startActivity(new Intent(this, AuthDoctorActivity.class));
     }
 
     /**
@@ -142,48 +164,16 @@ public class LoginOptionsActivity extends BaseActivity {
         }
     }
 
-    /**
-     * 登录环信聊天
-     */
-    private void loginEaseChat() {
-        showLoadingView();
-        EMClient.getInstance().login("15828456584_d", BaseData.BASE_EASE_DEFAULT_PWD, new EMCallBack() {
-            @Override
-            public void onSuccess() {
-                closeLoadingView();
-                runOnUiThread(() -> {
-                    EMClient.getInstance().chatManager().loadAllConversations();
-                    LogUtils.i(TAG, getString(R.string.txt_login_ease_success));
-                    if (loginBean.getApprovalStatus() == DocAuthStatus.AUTH_SUCCESS) {
-                        jumpMain();
-                    }
-                    else {
-                        jumpAuth();
-                    }
-                });
-            }
-
-            @Override
-            public void onProgress(int progress, String status) {
-            }
-
-            @Override
-            public void onError(int code, String message) {
-                closeLoadingView();
-                LogUtils.i(TAG, getString(R.string.txt_login_ease_error));
-                ToastUtil.toast(LoginOptionsActivity.this, R.string.txt_login_ease_error);
-            }
-        });
-    }
-
     @OnClick({ R.id.tv_login_wechat, R.id.tv_login_phone })
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_login_wechat:
+                //判断手机是否安装微信
                 if (api.isWXAppInstalled()) {
                     sendReq();
                 }
                 else {
+                    //显示微信下载页面
                     Intent intent = new Intent(this, WebViewActivity.class);
                     intent.putExtra(CommonData.KEY_PUBLIC, BaseNetConfig.BASE_WE_CHAT_DOWNLOAD_URL);
                     startActivity(intent);
@@ -200,23 +190,10 @@ public class LoginOptionsActivity extends BaseActivity {
 
     @Override
     public void onResponseSuccess(Tasks task, BaseResponse response) {
-        switch (task) {
-            case WE_CHAT_LOGIN:
-                //保存登录数据
-                loginBean = (LoginBean)response.getData();
-                ZycApplication.getInstance().setLoginSuccessBean(loginBean);
-                //登录成功后判断是否绑定过手机号，未绑定手机号跳转绑定页面，绑定后登陆环信
-                if (TextUtils.isEmpty(loginBean.getMobile())) {
-                    Intent intent = new Intent(this, LoginActivity.class);
-                    intent.putExtra(CommonData.KEY_PUBLIC, true);
-                    startActivityForResult(intent, REQUEST_CODE_LOGIN_STATUS);
-                }
-                else {
-                    loginEaseChat();
-                }
-                break;
-            default:
-                break;
+        if (task == Tasks.WE_CHAT_LOGIN) {
+            //微信登录成功
+            loginBean = (LoginBean)response.getData();
+            jump();
         }
     }
 
@@ -226,8 +203,13 @@ public class LoginOptionsActivity extends BaseActivity {
         if (resultCode != Activity.RESULT_OK) {
             return;
         }
-        if (requestCode == REQUEST_CODE_LOGIN_STATUS) {
-            jumpMain();
+        switch (requestCode) {
+            case REQUEST_CODE_LOGIN_STATUS:
+            case REQUEST_CODE_BIND_STATUS:
+                jumpMain();
+                break;
+            default:
+                break;
         }
     }
 

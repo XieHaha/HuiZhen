@@ -73,6 +73,15 @@ public class RequestUtils {
                        .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.LOGIN_AND_REGISTER, listener));
     }
 
+    public static void uploadImg(Context context, File file, final ResponseListener<BaseResponse> listener) {
+        RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), reqFile);
+        RetrofitManager.getApiUrlManager()
+                       .uploadImg(body)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.UPLOAD_FILE, listener));
+    }
+
     public static void getSplash(Context context, String client, String deviceSystem, String versionCode,
             final ResponseListener listener) {
         Map<String, String> params = new HashMap<>(16);
@@ -209,16 +218,6 @@ public class RequestUtils {
                        .compose(RxJavaHelper.observableIO2Main(context))
                        .subscribe(
                                new AbstractLoadViewObserver<>(context, Tasks.GET_APPLY_COOPERATE_DOC_LIST, listener));
-    }
-
-    public static void uploadImg(Context context, File file, String type,
-            final ResponseListener<BaseResponse> listener) {
-        RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
-        MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), reqFile);
-        RetrofitManager.getApiUrlManager()
-                       .uploadImg(body, type)
-                       .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.UPLOAD_FILE, listener));
     }
 
     public static void qualifiyDoc(Context context, String doctorId, String name, String identityNumber, String title,

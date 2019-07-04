@@ -27,7 +27,6 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
-import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 import retrofit2.http.Streaming;
 import retrofit2.http.Url;
@@ -39,7 +38,7 @@ public interface ApiUrlManager {
     /**
      * 微信登录
      *
-     * @param info   map参数
+     * @param info map参数
      * @return 返回
      */
     @POST("wx/login")
@@ -52,7 +51,7 @@ public interface ApiUrlManager {
      * @return 返回
      */
     @POST("wx/bind")
-    Observable<BaseResponse<String>> weChatBind(@Body Map<String, String> info);
+    Observable<BaseResponse<LoginBean>> weChatBind(@Body Map<String, String> info);
 
     /**
      * 获取验证码
@@ -72,6 +71,16 @@ public interface ApiUrlManager {
     @POST("confirm-verify-code")
     Observable<BaseResponse<LoginBean>> login(@Body Map<String, String> info);
 
+    /**
+     * 上传图片
+     *
+     * @param file 图片
+     * @return 返回值
+     */
+    @Multipart
+    @POST("file/upload")
+    Observable<BaseResponse<String>> uploadImg(@Part MultipartBody.Part file);
+    /********************************分隔线*********************************/
     /**
      * 首页广告
      *
@@ -179,17 +188,6 @@ public interface ApiUrlManager {
      */
     @POST("colleborate/applyList")
     Observable<BaseResponse<List<CooperateDocBean>>> getApplyCooperateList(@Body Map<String, Object> info);
-
-    /**
-     * 上传图片
-     *
-     * @param file 图片
-     * @param type 格式
-     * @return 返回值
-     */
-    @Multipart
-    @POST("file/upload")
-    Observable<BaseResponse<String>> uploadImg(@Part MultipartBody.Part file, @Query("type") String type);
 
     /**
      * 医生资质认证

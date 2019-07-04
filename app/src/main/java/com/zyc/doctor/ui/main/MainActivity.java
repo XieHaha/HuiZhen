@@ -11,8 +11,13 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.hyphenate.EMCallBack;
+import com.hyphenate.chat.EMClient;
+import com.yht.frame.data.BaseData;
 import com.yht.frame.data.bean.PatientBean;
 import com.yht.frame.ui.BaseActivity;
+import com.yht.frame.utils.LogUtils;
+import com.yht.frame.utils.ToastUtil;
 import com.zyc.doctor.R;
 import com.zyc.doctor.ui.main.fragment.MessageFragment;
 import com.zyc.doctor.ui.main.fragment.PatientFragment;
@@ -70,6 +75,8 @@ public class MainActivity extends BaseActivity {
         //状态栏透明
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         initTab();
+        //环信登录
+        loginEaseChat();
         //测试数据 存储
         savePatient();
     }
@@ -110,6 +117,31 @@ public class MainActivity extends BaseActivity {
         fragmentManager = getSupportFragmentManager();
         transaction = fragmentManager.beginTransaction();
         tabWorkerView();
+    }
+
+    /**
+     * 登录环信聊天
+     */
+    private void loginEaseChat() {
+        EMClient.getInstance().login("15828456584_d", BaseData.BASE_EASE_DEFAULT_PWD, new EMCallBack() {
+            @Override
+            public void onSuccess() {
+                runOnUiThread(() -> {
+                    EMClient.getInstance().chatManager().loadAllConversations();
+                    LogUtils.i(TAG, getString(R.string.txt_login_ease_success));
+                });
+            }
+
+            @Override
+            public void onProgress(int progress, String status) {
+            }
+
+            @Override
+            public void onError(int code, String message) {
+                LogUtils.i(TAG, getString(R.string.txt_login_ease_error));
+                ToastUtil.toast(MainActivity.this, R.string.txt_login_ease_error);
+            }
+        });
     }
 
     @Override

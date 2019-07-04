@@ -1,14 +1,17 @@
 package com.zyc.doctor.ui.login;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.TextView;
 
 import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
-import com.yht.frame.data.DocAuthStatus;
+import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.base.LoginBean;
 import com.yht.frame.data.base.VerifyCodeBean;
@@ -36,7 +39,7 @@ import butterknife.OnClick;
  * @date 19/5/24 15:20
  * @des
  */
-public class LoginActivity extends BaseActivity {
+public class BindPhoneActivity extends BaseActivity {
     @BindView(R.id.et_login_account)
     SuperEditText etLoginAccount;
     @BindView(R.id.tv_login_obtain_code)
@@ -50,6 +53,10 @@ public class LoginActivity extends BaseActivity {
     @BindView(R.id.tv_login_title_hint)
     TextView tvLoginTitleHint;
     private ScheduledExecutorService executorService;
+    /**
+     * 临时数据
+     */
+    private LoginBean tempLoginBean;
     private String phone, verifyCode;
     /**
      * 获取验证码后得到的 校验值
@@ -71,7 +78,7 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public int getLayoutID() {
-        return R.layout.act_login;
+        return R.layout.act_bind_phone;
     }
 
     private Handler handler = new Handler(new Handler.Callback() {
@@ -88,6 +95,14 @@ public class LoginActivity extends BaseActivity {
             return true;
         }
     });
+
+    @Override
+    public void initData(@NonNull Bundle savedInstanceState) {
+        super.initData(savedInstanceState);
+        if (getIntent() != null) {
+            tempLoginBean = (LoginBean)getIntent().getSerializableExtra(CommonData.KEY_LOGIN_SUCCESS_BEAN);
+        }
+    }
 
     @Override
     public void initListener() {
@@ -122,10 +137,11 @@ public class LoginActivity extends BaseActivity {
     }
 
     /**
-     * 登录
+     * 微信绑定手机号
      */
-    private void login() {
-        RequestUtils.login(this, verifyCodeBean.getPrepare_id(), verifyCode, this);
+    private void weChatBind() {
+        RequestUtils.weChatBind(this, tempLoginBean.getOpenid(), tempLoginBean.getUnionid(), phone,
+                                verifyCodeBean.getPrepare_id(), verifyCode, BaseData.ADMIN, this);
     }
 
     /**
@@ -137,21 +153,6 @@ public class LoginActivity extends BaseActivity {
         }
         else {
             tvLoginNext.setSelected(false);
-        }
-    }
-
-    private void jump() {
-        switch (loginBean.getApprovalStatus()) {
-            case DocAuthStatus.AUTH_NONE:
-            case DocAuthStatus.AUTH_WAITTING:
-            case DocAuthStatus.AUTH_FAILD:
-                jumpAuth();
-                break;
-            case DocAuthStatus.AUTH_SUCCESS:
-                jumpMain();
-                break;
-            default:
-                break;
         }
     }
 
@@ -202,7 +203,7 @@ public class LoginActivity extends BaseActivity {
             case R.id.tv_login_next:
                 if (tvLoginNext.isSelected()) {
                     if (isSendVerifyCode) {
-                        login();
+                        weChatBind();
                     }
                     else {
                         ToastUtil.toast(this, R.string.txt_login_verify_code_error);
@@ -224,14 +225,30 @@ public class LoginActivity extends BaseActivity {
                 isSendVerifyCode = true;
                 startVerifyCodeTimer();
                 break;
-            case LOGIN_AND_REGISTER:
-                loginBean = (LoginBean)response.getData();
-                //存储登录结果
-                ZycApplication.getInstance().setLoginSuccessBean(loginBean);
-                jump();
+            case WE_CHAT_BIND:
+                //绑定成功后需要更新数据
+                LoginBean bean = (LoginBean)response.getData();
+                if (tempLoginBean != null) {
+                    tempLoginBean.setToken(bean.getToken());
+                    tempLoginBean.setApprovalStatus(bean.getApprovalStatus());
+                    tempLoginBean.setMobile(bean.getMobile());
+                }
+                //存储登录数据
+                ZycApplication.getInstance().setLoginSuccessBean(tempLoginBean);
+                //跳转医生认证
+                startActivity(new Intent(this, AuthDoctorActivity.class));
+                finish();
                 break;
             default:
                 break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != Activity.RESULT_OK) {
+            return;
         }
     }
 

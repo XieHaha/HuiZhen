@@ -25,6 +25,10 @@ public enum Tasks {
      */
     LOGIN_AND_REGISTER,
     /**
+     * 上传文件
+     */
+    UPLOAD_FILE,
+    /**
      * 获取环信appkey
      */
     GET_EASE_APPKEY,
@@ -32,10 +36,7 @@ public enum Tasks {
      * 获取广告业
      */
     GET_SPLASH,
-    /**
-     * 上传文件
-     */
-    UPLOAD_FILE,
+
     /**
      * 上传基本信息
      */

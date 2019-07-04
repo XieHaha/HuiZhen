@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.hyphenate.chat.EMClient;
 import com.yht.frame.data.DocAuthStatus;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.SharePreferenceUtil;
@@ -285,11 +284,8 @@ public class AuthDoctorActivity extends BaseActivity implements OnStepListener {
             tabAuthBaseView();
             return false;
         }
-        //返回登录页面 清除登录信息 退出环信等
-        //清除本地数据
+        //返回登录页面 清除登录信息
         SharePreferenceUtil.clear(this);
-        //退出环信
-        EMClient.getInstance().logout(true);
         return true;
     }
 

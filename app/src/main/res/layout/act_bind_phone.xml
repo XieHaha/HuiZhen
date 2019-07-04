@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    android:background="@color/color_ffffff">
+
+    <include layout="@layout/public_title" />
+
+    <TextView
+        android:id="@+id/tv_login_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="34dp"
+        android:layout_marginStart="35dp"
+        android:textColor="@color/color_373d4d"
+        android:textSize="@dimen/text_24"
+        android:text="@string/txt_login_bind_phone" />
+
+    <TextView
+        android:id="@+id/tv_login_title_hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginEnd="35dp"
+        android:textColor="@color/color_a1a8b3"
+        android:textSize="@dimen/text_15"
+        android:text="@string/txt_login_bind_phone_hint" />
+
+    <com.yht.frame.widgets.edittext.SuperEditText
+        android:id="@+id/et_login_account"
+        android:layout_width="match_parent"
+        android:layout_height="59dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginEnd="35dp"
+        android:layout_marginTop="64dp"
+        android:hint="@string/txt_login_account_hint"
+        android:textSize="@dimen/text_16"
+        android:textColorHint="@color/color_a1a8b3"
+        android:textColor="@color/color_373d4d"
+        app:hide_left_icon="true"
+        android:inputType="number"
+        android:maxLength="11"
+        android:imeOptions="actionNext"
+        android:singleLine="true"
+        android:background="@null" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/app_hei_line"
+        android:background="@color/color_ebedf0"
+        android:layout_marginStart="35dp"
+        android:layout_marginEnd="35dp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="35dp"
+        android:layout_marginEnd="35dp">
+
+        <TextView
+            android:id="@+id/tv_login_obtain_code"
+            android:layout_width="wrap_content"
+            android:minWidth="78dp"
+            android:layout_height="59dp"
+            android:gravity="center"
+            android:layout_centerVertical="true"
+            android:textColor="@color/txt_main_color_selector"
+            android:textSize="@dimen/text_16"
+            android:text="@string/txt_login_obtain_code"
+            android:layout_alignParentEnd="true" />
+
+        <View
+            android:layout_width="@dimen/app_hei_line"
+            android:layout_height="14dp"
+            android:background="@color/color_d8d8d8"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@id/tv_login_obtain_code"
+            android:layout_marginEnd="8dp" />
+
+        <com.yht.frame.widgets.edittext.SuperEditText
+            android:id="@+id/et_login_code"
+            android:layout_width="match_parent"
+            android:layout_height="59dp"
+            android:hint="@string/txt_login_code_hint"
+            android:textSize="@dimen/text_16"
+            android:textColorHint="@color/color_a1a8b3"
+            android:textColor="@color/color_373d4d"
+            app:hide_left_icon="true"
+            android:layout_toStartOf="@id/tv_login_obtain_code"
+            android:layout_marginEnd="13dp"
+            android:maxLength="6"
+            android:inputType="number"
+            android:background="@null"
+            android:singleLine="true"
+            android:imeOptions="actionDone" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/app_hei_line"
+        android:background="@color/color_ebedf0"
+        android:layout_marginStart="35dp"
+        android:layout_marginEnd="35dp" />
+
+    <TextView
+        android:id="@+id/tv_login_next"
+        android:layout_width="match_parent"
+        android:layout_marginEnd="35dp"
+        android:layout_marginStart="35dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/selector_public_next"
+        android:text="@string/txt_sure"
+        android:gravity="center"
+        android:textSize="@dimen/text_16"
+        android:textColor="@color/color_ffffff" />
+
+
+</LinearLayout>
