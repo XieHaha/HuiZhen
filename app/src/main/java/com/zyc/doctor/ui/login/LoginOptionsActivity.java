@@ -146,13 +146,14 @@ public class LoginOptionsActivity extends BaseActivity {
      * 登录环信聊天
      */
     private void loginEaseChat() {
+        showLoadingView();
         EMClient.getInstance().login("15828456584_d", BaseData.BASE_EASE_DEFAULT_PWD, new EMCallBack() {
             @Override
             public void onSuccess() {
                 closeLoadingView();
                 runOnUiThread(() -> {
                     EMClient.getInstance().chatManager().loadAllConversations();
-                    LogUtils.i("test", getString(R.string.txt_login_ease_success));
+                    LogUtils.i(TAG, getString(R.string.txt_login_ease_success));
                     if (loginBean.getApprovalStatus() == DocAuthStatus.AUTH_SUCCESS) {
                         jumpMain();
                     }
@@ -169,7 +170,7 @@ public class LoginOptionsActivity extends BaseActivity {
             @Override
             public void onError(int code, String message) {
                 closeLoadingView();
-                LogUtils.i("test", getString(R.string.txt_login_ease_error));
+                LogUtils.i(TAG, getString(R.string.txt_login_ease_error));
                 ToastUtil.toast(LoginOptionsActivity.this, R.string.txt_login_ease_error);
             }
         });
@@ -205,7 +206,14 @@ public class LoginOptionsActivity extends BaseActivity {
                 loginBean = (LoginBean)response.getData();
                 ZycApplication.getInstance().setLoginSuccessBean(loginBean);
                 //登录成功后判断是否绑定过手机号，未绑定手机号跳转绑定页面，绑定后登陆环信
-                loginEaseChat();
+                if (TextUtils.isEmpty(loginBean.getMobile())) {
+                    Intent intent = new Intent(this, LoginActivity.class);
+                    intent.putExtra(CommonData.KEY_PUBLIC, true);
+                    startActivityForResult(intent, REQUEST_CODE_LOGIN_STATUS);
+                }
+                else {
+                    loginEaseChat();
+                }
                 break;
             default:
                 break;

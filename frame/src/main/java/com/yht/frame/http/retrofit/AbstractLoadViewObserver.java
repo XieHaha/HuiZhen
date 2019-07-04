@@ -19,17 +19,17 @@ import io.reactivex.disposables.Disposable;
  * @param <T>
  * @author dundun
  */
-public class AbstractBaseObserver<T> extends AbstractDataObserver<T> {
+public class AbstractLoadViewObserver<T> extends AbstractDataObserver<T> {
     private boolean mShowDialog;
     private LoadingDialog loadingDialog;
     private Context mContext;
     private Disposable d;
 
-    public AbstractBaseObserver(Context context, Tasks task, ResponseListener listener) {
+    public AbstractLoadViewObserver(Context context, Tasks task, ResponseListener listener) {
         this(context, false, task, listener);
     }
 
-    public AbstractBaseObserver(Context context, Boolean showDialog, Tasks task, ResponseListener listener) {
+    public AbstractLoadViewObserver(Context context, Boolean showDialog, Tasks task, ResponseListener listener) {
         mContext = context;
         mShowDialog = showDialog;
         super.setParams(task, listener);

@@ -33,21 +33,22 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .weChatLogin(params)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractBaseObserver<>(context, true, Tasks.WE_CHAT_LOGIN, listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.WE_CHAT_LOGIN, listener));
     }
 
-    public static void weChatBind(Context context, String openid, String unionid, String phone, String code,
-            String merchant, final ResponseListener listener) {
+    public static void weChatBind(Context context, String openid, String unionid, String phone, String prepareId,
+            String code, String merchant, final ResponseListener listener) {
         Map<String, String> params = new HashMap<>(16);
         params.put("openid", openid);
         params.put("unionid", unionid);
         params.put("phone", phone);
-        params.put("code", code);
+        params.put("prepareId", prepareId);
+        params.put("verifyCode", code);
         params.put("merchant", merchant);
         RetrofitManager.getApiUrlManager()
                        .weChatBind(params)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractBaseObserver<>(context, true, Tasks.WE_CHAT_BIND, listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.WE_CHAT_BIND, listener));
     }
 
     public static void getVerifyCode(Context context, String phone, String merchant,
@@ -58,7 +59,7 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .getVerifyCode(params)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractBaseObserver<>(context, true, Tasks.GET_VERIFY_CODE, listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_VERIFY_CODE, listener));
     }
 
     public static void login(Context context, String prepareId, String verifyCode,
@@ -69,7 +70,7 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .login(params)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractBaseObserver<>(context, Tasks.LOGIN_AND_REGISTER, listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.LOGIN_AND_REGISTER, listener));
     }
 
     public static void getSplash(Context context, String client, String deviceSystem, String versionCode,
@@ -81,7 +82,7 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .getSplash(params)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractBaseObserver<>(context, Tasks.GET_SPLASH, listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_SPLASH, listener));
     }
 
     public static void getNewVersion(Context context, final ResponseListener listener) {
@@ -91,14 +92,14 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .getNewVersion(params)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractBaseObserver<>(context, Tasks.UPDATE_VERSION, listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.UPDATE_VERSION, listener));
     }
 
     public static void getAllProduct(Context context, final ResponseListener<BaseResponse> listener) {
         RetrofitManager.getApiUrlManager()
                        .getAllProduct()
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractBaseObserver<>(context, Tasks.GET_ALL_PRODUCT, listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_ALL_PRODUCT, listener));
     }
 
     public static void getApplyPatientList(Context context, String doctorId, int pageNo, int pageSize,
@@ -110,7 +111,7 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .getApplyPatientList(merchant)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractBaseObserver<>(context, Tasks.GET_APPLY_PATIENT_LIST, listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_APPLY_PATIENT_LIST, listener));
     }
 
     public static void getPatientList(Context context, String doctorId, int pageNo, int pageSize,
@@ -122,7 +123,7 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .getPatientList(merchant)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractBaseObserver<>(context, Tasks.GET_PATIENTS_LIST, listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_PATIENTS_LIST, listener));
     }
 
     public static void getTransferList(Context context, String doctorId, int pageNo, int pageSize,
@@ -134,7 +135,7 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .getTransferList(merchant)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractBaseObserver<>(context, Tasks.GET_TRANSFER_LIST, listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_TRANSFER_LIST, listener));
     }
 
     public static void getOrderList(Context context, String doctorId, int pageNo, int pageSize,
@@ -146,7 +147,7 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .getOrderList(merchant)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractBaseObserver<>(context, Tasks.GET_ORDER_LIST, listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_ORDER_LIST, listener));
     }
 
     public static void getCooperateList(Context context, String doctorId, int pageNo, int pageSize,
@@ -158,7 +159,7 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .getCooperateList(merchant)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractBaseObserver<>(context, Tasks.GET_COOPERATE_DOC_LIST, listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_COOPERATE_DOC_LIST, listener));
     }
 
     public static void applyCooperateDoc(Context context, String colleborateDoctorId, String doctorId,
@@ -170,7 +171,7 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .applyCooperateDoc(merchant)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractBaseObserver<>(context, Tasks.APPLY_COOPERATE_DOC, listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.APPLY_COOPERATE_DOC, listener));
     }
 
     public static void dealDocApply(Context context, String appliedId, String applyId, int proCode, int requestSource,
@@ -183,7 +184,7 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .dealDocApply(merchant)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractBaseObserver<>(context, Tasks.DEAL_DOC_APPLY, listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.DEAL_DOC_APPLY, listener));
     }
 
     public static void cancelCooperateDoc(Context context, String doctorId, String doctorId2,
@@ -194,7 +195,7 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .cancelCooperateDoc(merchant)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractBaseObserver<>(context, Tasks.CANCEL_COOPERATE_DOC, listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.CANCEL_COOPERATE_DOC, listener));
     }
 
     public static void getApplyCooperateList(Context context, String doctorId, int pageNo, int pageSize,
@@ -206,7 +207,8 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .getApplyCooperateList(merchant)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractBaseObserver<>(context, Tasks.GET_APPLY_COOPERATE_DOC_LIST, listener));
+                       .subscribe(
+                               new AbstractLoadViewObserver<>(context, Tasks.GET_APPLY_COOPERATE_DOC_LIST, listener));
     }
 
     public static void uploadImg(Context context, File file, String type,
@@ -216,7 +218,7 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .uploadImg(body, type)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractBaseObserver<>(context, Tasks.UPLOAD_FILE, listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.UPLOAD_FILE, listener));
     }
 
     public static void qualifiyDoc(Context context, String doctorId, String name, String identityNumber, String title,
@@ -241,7 +243,7 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .qualifiyDoc(file, merchant)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractBaseObserver<>(context, Tasks.QUALIFIY_DOC, listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.QUALIFIY_DOC, listener));
     }
 
     public static void updateUserInfo(Context context, String doctorId, int fieldId, JsonObject json,
@@ -253,7 +255,7 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .updateUserInfo(merchant)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractBaseObserver<>(context, Tasks.UPDATE_USER_INFO, listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.UPDATE_USER_INFO, listener));
     }
 
     public static void getTransferPatientToList(Context context, String doctorId, int pageNo, int pageSize,
@@ -265,7 +267,7 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .getTransferPatientToList(merchant)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractBaseObserver<>(context, Tasks.GET_PATIENTS_TO_LIST, listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_PATIENTS_TO_LIST, listener));
     }
 
     public static void getTransferPatientFromList(Context context, String doctorId, int pageNo, int pageSize,
@@ -277,7 +279,7 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .getTransferPatientFromList(merchant)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractBaseObserver<>(context, Tasks.GET_PATIENTS_FROM_LIST, listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_PATIENTS_FROM_LIST, listener));
     }
 
     public static void getTransferByPatient(Context context, String doctorId, String patientId, int pageNo,
@@ -292,7 +294,7 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .getTransferByPatient(merchant)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractBaseObserver<>(context, Tasks.GET_TRANSFER_BY_PATIENT, listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_TRANSFER_BY_PATIENT, listener));
     }
 
     public static void getPatientOrders(Context context, String doctorId, String patientId, int page, int pageSize,
@@ -306,7 +308,7 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .getPatientOrders(params)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractBaseObserver<>(context, Tasks.GET_PATIENT_ORDER_LIST, listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_PATIENT_ORDER_LIST, listener));
     }
 
     public static void getPatientLimitCaseList(Context context, String doctorId, String patientId,
@@ -317,7 +319,7 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .getPatientLimitCaseList(merchant)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractBaseObserver<>(context, Tasks.GET_PATIENT_LIMIT_CASE_LIST, listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_PATIENT_LIMIT_CASE_LIST, listener));
     }
 
     public static void deletePatientCase(Context context, String patientId, int fieldId, String caseCreatorId,
@@ -330,14 +332,14 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .deletePatientCase(merchant)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractBaseObserver<>(context, Tasks.DELETE_PATIENT_CASE, listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.DELETE_PATIENT_CASE, listener));
     }
 
     public static void getDocInfo(Context context, String doctorId, final ResponseListener<BaseResponse> listener) {
         RetrofitManager.getApiUrlManager()
                        .getDocInfo(doctorId)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractBaseObserver<>(context, Tasks.GET_DOC_INFO, listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_DOC_INFO, listener));
     }
 
     public static void getPatientInfo(Context context, String patientId,
@@ -345,7 +347,7 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .getPatientInfo(patientId)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractBaseObserver<>(context, Tasks.GET_PATIENT_INFO, listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_PATIENT_INFO, listener));
     }
 
     public static void getTransferDetailById(Context context, int transferId,
@@ -355,7 +357,7 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .getTransferDetailById(merchant)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractBaseObserver<>(context, Tasks.GET_TRANSFER_DETAIL_BY_ID, listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_TRANSFER_DETAIL_BY_ID, listener));
     }
 
     public static void cancelTransferPatient(Context context, int transferId,
@@ -365,7 +367,7 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .cancelTransferPatient(merchant)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractBaseObserver<>(context, Tasks.CANCEL_TRANSFER_PATIENT, listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.CANCEL_TRANSFER_PATIENT, listener));
     }
 
     public static void refuseTransferPatient(Context context, int transferId,
@@ -375,7 +377,7 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .refuseTransferPatient(merchant)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractBaseObserver<>(context, Tasks.REFUSE_TRANSFER_PATIENT, listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.REFUSE_TRANSFER_PATIENT, listener));
     }
 
     public static void recvTransferPatient(Context context, int transferId, String hospitalId,
@@ -386,7 +388,7 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .recvTransferPatient(merchant)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractBaseObserver<>(context, Tasks.RECV_TRANSFER_PATIENT, listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.RECV_TRANSFER_PATIENT, listener));
     }
 
     public static void getHospitalListByDoctorId(Context context, String doctorId,
@@ -396,7 +398,8 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .getHospitalListByDoctorId(params)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractBaseObserver<>(context, Tasks.GET_HOSPITAL_LIST_BY_DOCTORID, listener));
+                       .subscribe(
+                               new AbstractLoadViewObserver<>(context, Tasks.GET_HOSPITAL_LIST_BY_DOCTORID, listener));
     }
 
     public static void getCooperateHospitalDoctorList(Context context, String hospitalId, int pageNo, int pageSize,
@@ -408,8 +411,8 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .getCooperateHospitalDoctorList(merchant)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(
-                               new AbstractBaseObserver<>(context, Tasks.GET_COOPERATE_HOSPITAL_DOCTOR_LIST, listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_COOPERATE_HOSPITAL_DOCTOR_LIST,
+                                                                 listener));
     }
 
     public static void getHospitalProductListByHospitalId(Context context, String hospitalId,
@@ -419,8 +422,8 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .getHospitalProductListByHospitalId(params)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractBaseObserver<>(context, Tasks.GET_HOSPITAL_PRODUCT_LIST_BY_HOSPITALID,
-                                                             listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_HOSPITAL_PRODUCT_LIST_BY_HOSPITALID,
+                                                                 listener));
     }
 
     public static void addProductOrderNew(Context context, String diagnosisInfo, LoginBean loginSuccessBean,
@@ -446,7 +449,7 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .addProductOrderNew(params)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractBaseObserver<>(context, Tasks.ADD_PRODUCT_ORDER_NEW, listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.ADD_PRODUCT_ORDER_NEW, listener));
     }
 
     public static void addPatientByScanOrChangePatient(Context context, String doctorId, String fromDoctorId,
@@ -459,8 +462,8 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .addPatientByScanOrChangePatient(merchant)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractBaseObserver<>(context, Tasks.ADD_PATIENT_BY_SCAN_OR_CHANGE_PATIENT,
-                                                             listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.ADD_PATIENT_BY_SCAN_OR_CHANGE_PATIENT,
+                                                                 listener));
     }
 
     public static void deletePatient(Context context, String doctorId, String patientId,
@@ -468,7 +471,7 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .deletePatient(doctorId, patientId)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractBaseObserver<>(context, Tasks.DELETE_PATIENT, listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.DELETE_PATIENT, listener));
     }
 
     public static void getCooperateHospitalList(Context context, String doctorId,
@@ -478,7 +481,7 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .getCooperateHospitalList(merchant)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractBaseObserver<>(context, Tasks.GET_COOPERATE_HOSPITAL_LIST, listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_COOPERATE_HOSPITAL_LIST, listener));
     }
 
     public static void getDetailById(Context context, String fieldId, final ResponseListener<BaseResponse> listener) {
@@ -487,7 +490,7 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .getDetailById(merchant)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractBaseObserver<>(context, Tasks.GET_CASE_DETAIL_BY_ID, listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_CASE_DETAIL_BY_ID, listener));
     }
 
     public static void getPatientCombine(Context context, String patientId,
@@ -495,7 +498,7 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .getPatientCombine(patientId)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractBaseObserver<>(context, Tasks.GET_PATIENT_COMBINE, listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_PATIENT_COMBINE, listener));
     }
 
     public static void addPatientCase(Context context, Map<String, Object> params,
@@ -503,7 +506,7 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .addPatientCase(params)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractBaseObserver<>(context, Tasks.ADD_PATIENT_CASE, listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.ADD_PATIENT_CASE, listener));
     }
 
     public static void updatePatientCase(Context context, Map<String, Object> params,
@@ -511,7 +514,7 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .updatePatientCase(params)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractBaseObserver<>(context, Tasks.ADD_PATIENT_CASE, listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.ADD_PATIENT_CASE, listener));
     }
 
     public static void modifyNickName(Context context, String doctorId, String colleborateDoctorId, String nickname,
@@ -523,7 +526,7 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .modifyNickName(merchant)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractBaseObserver<>(context, Tasks.MODIFY_NICK_NAME, listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.MODIFY_NICK_NAME, listener));
     }
 
     public static void modifyNickNameByPatient(Context context, String doctorId, String patientId, String nickname,
@@ -536,7 +539,7 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .modifyNickNameByPatient(merchant)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractBaseObserver<>(context, Tasks.MODIFY_NICK_NAME_BY_PATIENT, listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.MODIFY_NICK_NAME_BY_PATIENT, listener));
     }
 
     public static void addPatientByScan(Context context, String doctorId, String patientId, int requestSource,
@@ -548,8 +551,8 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .addPatientByScan(merchant)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractBaseObserver<>(context, Tasks.ADD_PATIENT_BY_SCAN_OR_CHANGE_PATIENT,
-                                                             listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.ADD_PATIENT_BY_SCAN_OR_CHANGE_PATIENT,
+                                                                 listener));
     }
 
     public static void refusePatientApply(Context context, String doctorId, String patientId, int requestSource,
@@ -561,7 +564,7 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .refusePatientApply(merchant)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractBaseObserver<>(context, Tasks.REFUSE_PATIENT_APPLY, listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.REFUSE_PATIENT_APPLY, listener));
     }
 
     public static void agreePatientApply(Context context, String doctorId, String patientId, int requestSource,
@@ -575,7 +578,7 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .agreePatientApply(merchant)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractBaseObserver<>(context, Tasks.AGREE_PATIENT_APPLY, listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.AGREE_PATIENT_APPLY, listener));
     }
 }
 

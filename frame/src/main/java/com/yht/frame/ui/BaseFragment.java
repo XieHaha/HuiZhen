@@ -38,6 +38,7 @@ import butterknife.Unbinder;
  */
 public abstract class BaseFragment extends Fragment
         implements UiInterface, BaseData, OnPermissionCallback, ResponseListener<BaseResponse>, View.OnClickListener {
+    public static final String TAG = "ZYC";
     /**
      * 注解
      */

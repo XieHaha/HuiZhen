@@ -104,7 +104,6 @@ public class TimeUtil {
             return result;
         }
         catch (Exception e) {
-            LogUtils.e("time", e.getMessage());
             return "";
         }
     }

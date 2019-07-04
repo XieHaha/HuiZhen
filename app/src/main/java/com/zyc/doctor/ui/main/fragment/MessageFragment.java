@@ -278,7 +278,7 @@ public class MessageFragment extends BaseFragment
         public void onDisconnected(final int error) {
             getActivity().runOnUiThread(() -> {
                 if (error == EMError.USER_REMOVED) {
-                    LogUtils.e("test", "账号被删除");
+                    LogUtils.e(TAG, "账号被删除");
                 }
                 else if (error == EMError.USER_LOGIN_ANOTHER_DEVICE) {
                     ToastUtil.toast(getContext(), "账号在其他设备登录");

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.TextView;
 
@@ -111,6 +112,7 @@ public class LoginActivity extends BaseActivity {
         if (mode) {
             tvLoginTitle.setText(R.string.txt_login_bind_phone);
             tvLoginTitleHint.setText(R.string.txt_login_bind_phone_hint);
+            tvLoginTitleHint.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
             tvLoginNext.setText(R.string.txt_sure);
         }
     }
@@ -158,8 +160,8 @@ public class LoginActivity extends BaseActivity {
      * 微信绑定手机号
      */
     private void weChatBind() {
-        RequestUtils.weChatBind(this, loginBean.getOpenid(), loginBean.getUnionid(), phone, verifyCode, BaseData.ADMIN,
-                                this);
+        RequestUtils.weChatBind(this, loginBean.getOpenid(), loginBean.getUnionid(), phone,
+                                verifyCodeBean.getPrepare_id(), verifyCode, BaseData.ADMIN, this);
     }
 
     /**
@@ -178,13 +180,14 @@ public class LoginActivity extends BaseActivity {
      * 登录环信聊天
      */
     private void loginEaseChat() {
+        showLoadingView();
         EMClient.getInstance().login("15828456584_d", BaseData.BASE_EASE_DEFAULT_PWD, new EMCallBack() {
             @Override
             public void onSuccess() {
                 closeLoadingView();
                 runOnUiThread(() -> {
                     EMClient.getInstance().chatManager().loadAllConversations();
-                    LogUtils.i("test", getString(R.string.txt_login_ease_success));
+                    LogUtils.i(TAG, getString(R.string.txt_login_ease_success));
                     if (loginBean.getApprovalStatus() == DocAuthStatus.AUTH_SUCCESS) {
                         jumpMain();
                     }
@@ -201,7 +204,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onError(int code, String message) {
                 closeLoadingView();
-                LogUtils.i("test", getString(R.string.txt_login_ease_error));
+                LogUtils.i(TAG, getString(R.string.txt_login_ease_error));
                 ToastUtil.toast(LoginActivity.this, R.string.txt_login_ease_error);
             }
         });
@@ -254,7 +257,6 @@ public class LoginActivity extends BaseActivity {
             case R.id.tv_login_next:
                 if (tvLoginNext.isSelected()) {
                     if (isSendVerifyCode) {
-                        showLoadingView();
                         //绑定手机号
                         if (mode) {
                             weChatBind();
@@ -291,6 +293,10 @@ public class LoginActivity extends BaseActivity {
                 loginEaseChat();
                 break;
             case WE_CHAT_BIND:
+                //绑定成功后需要更新token
+                LoginBean bean = (LoginBean)response.getData();
+                loginBean.setToken(bean.getToken());
+                ZycApplication.getInstance().setLoginSuccessBean(loginBean);
                 break;
             default:
                 break;

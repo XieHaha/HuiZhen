@@ -47,6 +47,7 @@ import butterknife.ButterKnife;
  */
 public abstract class BaseActivity<T> extends RxAppCompatActivity
         implements UiInterface, BaseData, ResponseListener<BaseResponse>, View.OnClickListener, OnPermissionCallback {
+    public static final String TAG = "ZYC";
     /**
      * load view
      */
@@ -187,17 +188,14 @@ public abstract class BaseActivity<T> extends RxAppCompatActivity
      * @param cancel 是否可取消
      */
     public void showLoadingView(final boolean cancel) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (loadingView == null) {
-                    initLoadingView();
-                }
-                loadingView.setCancelable(cancel);
-                loadingView.setCanceledOnTouchOutside(cancel);
-                if (!loadingView.isShowing()) {
-                    loadingView.show();
-                }
+        runOnUiThread(() -> {
+            if (loadingView == null) {
+                initLoadingView();
+            }
+            loadingView.setCancelable(cancel);
+            loadingView.setCanceledOnTouchOutside(cancel);
+            if (!loadingView.isShowing()) {
+                loadingView.show();
             }
         });
     }
@@ -206,19 +204,16 @@ public abstract class BaseActivity<T> extends RxAppCompatActivity
      * 关闭进度条
      */
     public void closeLoadingView() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (loadingView == null) {
-                    return;
-                }
-                if (!loadingView.isShowing()) {
-                    return;
-                }
-                loadingView.setCancelable(true);
-                loadingView.setCanceledOnTouchOutside(true);
-                loadingView.dismiss();
+        runOnUiThread(() -> {
+            if (loadingView == null) {
+                return;
             }
+            if (!loadingView.isShowing()) {
+                return;
+            }
+            loadingView.setCancelable(true);
+            loadingView.setCanceledOnTouchOutside(true);
+            loadingView.dismiss();
         });
     }
 

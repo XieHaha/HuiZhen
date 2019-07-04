@@ -23,7 +23,7 @@ public class NotifyChangeListenerManager {
     }
 
     public static class NotifyChangeListenerServer implements INotifyChangeListenerServer {
-        private final String TAG = "notify-";
+        private final String TAG = "ZYC->notify";
         /**
          * 患者添加状态
          */

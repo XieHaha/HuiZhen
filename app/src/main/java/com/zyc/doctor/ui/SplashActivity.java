@@ -44,7 +44,6 @@ import butterknife.BindView;
  * @author DUNDUN
  */
 public class SplashActivity extends BaseActivity implements DocAuthStatus {
-    private static final String TAG = "SplashActivity";
     @BindView(R.id.iv_start)
     ImageView ivBg;
     @BindView(R.id.act_splash_time_hint)

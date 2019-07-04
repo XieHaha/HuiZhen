@@ -13,7 +13,6 @@ import android.view.View;
 
 import com.yht.frame.R;
 import com.yht.frame.utils.BaseUtils;
-import com.yht.frame.utils.LogUtils;
 
 /**
  * @author MQ
@@ -78,7 +77,6 @@ public class SideBar extends View {
         mWidth = w;
         singleHeight = marginTop;
         mHeight = singleHeight * indexStr.length();
-        LogUtils.i("test", "mWidth:" + mWidth + "  mHeight:" + mHeight + "  singleHeight:" + singleHeight);
     }
 
     @Override
