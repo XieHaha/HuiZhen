@@ -5,11 +5,10 @@ import android.content.Context;
 import com.google.gson.JsonObject;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.Tasks;
-import com.yht.frame.data.bean.CooperateDocBean;
+import com.yht.frame.data.base.LoginSuccessBean;
 import com.yht.frame.data.bean.HospitalBean;
 import com.yht.frame.data.bean.HospitalProductBean;
 import com.yht.frame.data.bean.HospitalProductTypeBean;
-import com.yht.frame.data.bean.LoginSuccessBean;
 import com.yht.frame.data.bean.PatientBean;
 import com.yht.frame.http.listener.ResponseListener;
 
@@ -45,7 +44,7 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .getVerifyCode(params)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractBaseObserver<>(context, Tasks.GET_VERIFY_CODE, listener));
+                       .subscribe(new AbstractBaseObserver<>(context, true, Tasks.GET_VERIFY_CODE, listener));
     }
 
     public static void login(Context context, String prepareId, String verifyCode,
@@ -376,35 +375,6 @@ public class RequestUtils {
                        .subscribe(new AbstractBaseObserver<>(context, Tasks.RECV_TRANSFER_PATIENT, listener));
     }
 
-    public static void addTransferPatient(Context context, String diagnosisInfo, PatientBean patientBean,
-            CooperateDocBean cooperateDocBean, LoginSuccessBean loginSuccessBean,
-            final ResponseListener<BaseResponse> listener) {
-        Map<String, Object> params = new HashMap<>(20);
-        params.put("fromDoctorDiagnosisInfo", diagnosisInfo);
-        params.put("fromDoctorDepartment", loginSuccessBean.getDepartment());
-        params.put("fromDoctorHospitalName", loginSuccessBean.getHospital());
-        params.put("fromDoctorId", loginSuccessBean.getDoctorId());
-        params.put("fromDoctorImage", loginSuccessBean.getPortraitUrl());
-        params.put("fromDoctorName", loginSuccessBean.getName());
-        params.put("fromDoctorTitle", loginSuccessBean.getTitle());
-        params.put("patientBirthdate", patientBean.getBirthDate());
-        params.put("patientId", patientBean.getPatientId());
-        params.put("patientIdentityNumber", patientBean.getIdentityNum());
-        params.put("patientImage", patientBean.getPatientImgUrl());
-        params.put("patientName", patientBean.getName());
-        params.put("patientSex", patientBean.getSex());
-        params.put("toDoctorDepartment", cooperateDocBean.getDepartment());
-        params.put("toDoctorHospitalName", cooperateDocBean.getHospital());
-        params.put("toDoctorId", cooperateDocBean.getDoctorId());
-        params.put("toDoctorImage", cooperateDocBean.getPortraitUrl());
-        params.put("toDoctorName", cooperateDocBean.getName());
-        params.put("toDoctorTitle", cooperateDocBean.getTitle());
-        RetrofitManager.getApiUrlManager()
-                       .addTransferPatient(params)
-                       .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractBaseObserver<>(context, Tasks.ADD_TRANSFER_PATIENT, listener));
-    }
-
     public static void getHospitalListByDoctorId(Context context, String doctorId,
             final ResponseListener<BaseResponse> listener) {
         Map<String, Object> params = new HashMap<>(16);
@@ -446,8 +416,8 @@ public class RequestUtils {
         params.put("diagnosisInfo", diagnosisInfo);
         params.put("productTypeId", curProductType.getProductTypeId());
         params.put("productTypeName", curProductType.getProductTypeName());
-        params.put("doctorId", loginSuccessBean.getDoctorId());
-        params.put("doctorName", loginSuccessBean.getName());
+        params.put("doctorId", loginSuccessBean.getDoctorCode());
+        params.put("doctorName", loginSuccessBean.getDoctorName());
         params.put("hospitalName", curHospital.getHospitalName());
         params.put("patientSex", patientBean.getSex());
         params.put("hospitalId", curHospital.getHospitalId());

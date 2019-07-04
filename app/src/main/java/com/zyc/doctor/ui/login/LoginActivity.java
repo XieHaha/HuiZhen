@@ -14,15 +14,19 @@ import com.hyphenate.chat.EMClient;
 import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
+import com.yht.frame.data.DocAuthStatus;
 import com.yht.frame.data.Tasks;
+import com.yht.frame.data.base.LoginSuccessBean;
 import com.yht.frame.data.base.VerifyCodeBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.LogUtils;
+import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.widgets.edittext.AbstractTextWatcher;
 import com.yht.frame.widgets.edittext.SuperEditText;
 import com.zyc.doctor.R;
+import com.zyc.doctor.ZycApplication;
 import com.zyc.doctor.ui.auth.AuthDoctorActivity;
 
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
@@ -172,8 +176,13 @@ public class LoginActivity extends BaseActivity {
                 closeLoadingView();
                 runOnUiThread(() -> {
                     EMClient.getInstance().chatManager().loadAllConversations();
-                    LogUtils.d("test", getString(R.string.txt_login_ease_success));
-                    jumpMain();
+                    LogUtils.i("test", getString(R.string.txt_login_ease_success));
+                    if (loginSuccessBean.getApprovalStatus() == DocAuthStatus.AUTH_SUCCESS) {
+                        jumpMain();
+                    }
+                    else {
+                        jumpAuth();
+                    }
                 });
             }
 
@@ -184,7 +193,8 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onError(int code, String message) {
                 closeLoadingView();
-                LogUtils.d("test", getString(R.string.txt_login_ease_error));
+                LogUtils.i("test", getString(R.string.txt_login_ease_error));
+                ToastUtil.toast(LoginActivity.this, R.string.txt_login_ease_error);
             }
         });
     }
@@ -234,8 +244,15 @@ public class LoginActivity extends BaseActivity {
                 getVerifyCode();
                 break;
             case R.id.tv_login_next:
-                showLoadingView();
-                login();
+                if (isSendVerifyCode) {
+                    if (tvLoginNext.isSelected()) {
+                        showLoadingView();
+                        login();
+                    }
+                }
+                else {
+                    ToastUtil.toast(this, R.string.txt_login_verify_code_error);
+                }
                 break;
             default:
                 break;
@@ -253,6 +270,9 @@ public class LoginActivity extends BaseActivity {
                 startVerifyCodeTimer();
                 break;
             case LOGIN_AND_REGISTER:
+                //保存登录数据
+                loginSuccessBean = (LoginSuccessBean)response.getData();
+                ZycApplication.getInstance().setLoginSuccessBean(loginSuccessBean);
                 //登录成功后调用环信服务器
                 loginEaseChat();
                 break;

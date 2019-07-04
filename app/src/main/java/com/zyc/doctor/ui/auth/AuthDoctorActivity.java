@@ -11,7 +11,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.hyphenate.chat.EMClient;
+import com.yht.frame.data.DocAuthStatus;
 import com.yht.frame.ui.BaseActivity;
+import com.yht.frame.utils.SharePreferenceUtil;
 import com.zyc.doctor.R;
 import com.zyc.doctor.ui.auth.fragment.AuthBaseFragment;
 import com.zyc.doctor.ui.auth.fragment.AuthLicenseFragment;
@@ -92,6 +95,7 @@ public class AuthDoctorActivity extends BaseActivity implements OnStepListener {
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         findViewById(R.id.public_title_bar_back).setOnClickListener(this);
+        curAuthStatus = loginSuccessBean.getApprovalStatus();
         initTab();
     }
 
@@ -100,8 +104,12 @@ public class AuthDoctorActivity extends BaseActivity implements OnStepListener {
      */
     private void initTab() {
         fragmentManager = getSupportFragmentManager();
-        transaction = fragmentManager.beginTransaction();
-        tabAuthBaseView();
+        if (curAuthStatus == DocAuthStatus.AUTH_NONE) {
+            tabAuthBaseView();
+        }
+        else {
+            tabAuthResultView(curAuthStatus);
+        }
     }
 
     private void tabAuthBaseView() {
@@ -136,12 +144,12 @@ public class AuthDoctorActivity extends BaseActivity implements OnStepListener {
         selectTab(BASE_ONE);
     }
 
-    private void tabAuthResultView() {
+    private void tabAuthResultView(int curAuthStatus) {
         transaction = fragmentManager.beginTransaction();
         hideAll(transaction);
         if (authResultFragment == null) {
             authResultFragment = new AuthResultFragment();
-            authResultFragment.setOnAuthStepListener(this);
+            authResultFragment.setCurAuthStatus(curAuthStatus);
             transaction.add(R.id.layout_frame_root, authResultFragment);
         }
         else {
@@ -255,8 +263,7 @@ public class AuthDoctorActivity extends BaseActivity implements OnStepListener {
                 tabAuthBaseView();
                 break;
             case BASE_TWO:
-                curAuthStatus = 6;
-                tabAuthResultView();
+                tabAuthResultView(DocAuthStatus.AUTH_WAITTING);
                 break;
             default:
                 break;
@@ -273,19 +280,16 @@ public class AuthDoctorActivity extends BaseActivity implements OnStepListener {
      * @return
      */
     private boolean finishPage() {
-        if (curAuthStatus == 6) {
-            return true;
-        }
-        if (curPage == BASE_TWO) {
-            curPage = 1;
-            tabAuthLicenseView();
-            return false;
-        }
-        else if (curPage == 1) {
+        if (curPage == 1) {
             curPage = 0;
             tabAuthBaseView();
             return false;
         }
+        //返回登录页面 清除登录信息 退出环信等
+        //清除本地数据
+        SharePreferenceUtil.clear(this);
+        //退出环信
+        EMClient.getInstance().logout(true);
         return true;
     }
 

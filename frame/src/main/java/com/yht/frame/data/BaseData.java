@@ -35,6 +35,10 @@ public interface BaseData {
      */
     int BASE_VERIFY_CODE_DEFAULT_LENGTH = 6;
     /**
+     * 广告页最长等待时间
+     */
+    int MAX_WAIT_TIME = 5;
+    /**
      * 验证码二次获取默认时间
      */
     int BASE_MAX_RESEND_TIME = 60;

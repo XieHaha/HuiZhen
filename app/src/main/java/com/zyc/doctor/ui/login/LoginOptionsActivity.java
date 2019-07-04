@@ -113,7 +113,7 @@ public class LoginOptionsActivity extends BaseActivity {
                 }
                 else {
                     Intent intent = new Intent(LoginOptionsActivity.this, WebViewActivity.class);
-                    intent.putExtra(CommonData.KEY_PUBLIC, BaseNetConfig.BASE_WECHAT_DOWNLOAD_URL);
+                    intent.putExtra(CommonData.KEY_PUBLIC, BaseNetConfig.BASE_WE_CHAT_DOWNLOAD_URL);
                     startActivity(intent);
                 }
                 sendReq();

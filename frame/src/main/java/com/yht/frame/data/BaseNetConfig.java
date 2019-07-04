@@ -8,11 +8,15 @@ public interface BaseNetConfig {
     /**
      * 请求成功编码
      */
-    int REQUEST_SUCCESS = 200;
+    int REQUEST_SUCCESS = 2000;
     /**
-     * 修改患者健康档案 无权限
+     * token错误或者失效
      */
-    int CODE_101 = 101;
+    int REQUEST_TOKEN_ERROR = 4001;
+    /**
+     * 微信未绑定
+     */
+    int REQUEST_WE_CHAT_BIND_ERROR = 4004;
     /**
      * 设置默认超时时间
      */
@@ -28,5 +32,5 @@ public interface BaseNetConfig {
     /**
      * 微信下载页面
      */
-    String BASE_WECHAT_DOWNLOAD_URL = "https://weixin.qq.com/";
+    String BASE_WE_CHAT_DOWNLOAD_URL = "https://weixin.qq.com/";
 }

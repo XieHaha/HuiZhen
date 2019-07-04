@@ -4,7 +4,7 @@
 //
 //import com.hyphenate.chat.EMMessage;
 //import com.hyphenate.easeui.widget.chatrow.EaseCustomChatRowProvider;
-//import com.yht.frame.data.bean.LoginSuccessBean;
+//import com.yht.frame.data.base.LoginSuccessBean;
 //
 ///**
 // * Created by dundun on 18/4/20.

@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -17,11 +18,14 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 import com.yht.frame.R;
 import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
+import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
+import com.yht.frame.data.base.LoginSuccessBean;
 import com.yht.frame.http.listener.ResponseListener;
 import com.yht.frame.permission.OnPermissionCallback;
 import com.yht.frame.permission.Permission;
@@ -47,6 +51,10 @@ public abstract class BaseActivity<T> extends RxAppCompatActivity
      * load view
      */
     private LoadingDialog loadingView;
+    /**
+     * 登录数据
+     */
+    protected LoginSuccessBean loginSuccessBean;
     /**
      * 轻量级存储
      */
@@ -81,13 +89,12 @@ public abstract class BaseActivity<T> extends RxAppCompatActivity
             setContentView(getLayoutView());
         }
         ButterKnife.bind(this);
+        loginSuccessBean = getLoginSuccessBean();
         sharePreferenceUtil = new SharePreferenceUtil(this);
         /**
          * 权限管理类
          */
         permissionHelper = PermissionHelper.getInstance(this);
-        permissionHelper.request(new String[] {
-                Permission.READ_PHONE_STATE, Permission.STORAGE_WRITE });
         init(savedInstanceState);
     }
 
@@ -108,7 +115,7 @@ public abstract class BaseActivity<T> extends RxAppCompatActivity
         if (isInitStatusBar()) {
             initStatusBar();
         }
-        initObject(savedInstanceState);
+        initView(savedInstanceState);
         initData(savedInstanceState);
         initListener();
     }
@@ -213,6 +220,19 @@ public abstract class BaseActivity<T> extends RxAppCompatActivity
                 loadingView.dismiss();
             }
         });
+    }
+
+    /**
+     * 初始化login数据
+     *
+     * @return
+     */
+    public LoginSuccessBean getLoginSuccessBean() {
+        String userStr = (String)SharePreferenceUtil.getObject(this, CommonData.KEY_LOGIN_SUCCESS_BEAN, "");
+        if (!TextUtils.isEmpty(userStr)) {
+            loginSuccessBean = new Gson().fromJson(userStr, LoginSuccessBean.class);
+        }
+        return loginSuccessBean;
     }
 
     /**
@@ -331,7 +351,8 @@ public abstract class BaseActivity<T> extends RxAppCompatActivity
     }
 
     @Override
-    public void initObject(@NonNull Bundle savedInstanceState) {
+    public void initView(@NonNull Bundle savedInstanceState) {
+        permissionHelper.request(new String[] { Permission.STORAGE_WRITE });
     }
 
     @Override

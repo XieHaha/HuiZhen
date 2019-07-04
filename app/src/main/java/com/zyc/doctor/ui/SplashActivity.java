@@ -19,12 +19,13 @@ import com.yht.frame.api.DirHelper;
 import com.yht.frame.api.FileTransferServer;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
-import com.yht.frame.data.DocAuthStatu;
+import com.yht.frame.data.DocAuthStatus;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.LogUtils;
 import com.zyc.doctor.R;
+import com.zyc.doctor.ui.auth.AuthDoctorActivity;
 import com.zyc.doctor.ui.login.LoginOptionsActivity;
 import com.zyc.doctor.ui.main.MainActivity;
 
@@ -42,7 +43,7 @@ import butterknife.BindView;
  *
  * @author DUNDUN
  */
-public class SplashActivity extends BaseActivity implements DocAuthStatu {
+public class SplashActivity extends BaseActivity implements DocAuthStatus {
     private static final String TAG = "SplashActivity";
     @BindView(R.id.iv_start)
     ImageView ivBg;
@@ -51,17 +52,12 @@ public class SplashActivity extends BaseActivity implements DocAuthStatu {
     private ScheduledExecutorService executorService;
     private final String filePath = DirHelper.getPathImage() + "/splash.png";
     private int time = 0;
-    /**
-     * 广告页最长等待时间
-     */
-    private static final int MAX_WAIT_TIME = 2;
     private Handler handler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message message) {
             tvTimeHint.setText(String.format(getString(R.string.txt_splash_time_hint), time));
             if (time <= 0) {
-                //                initPage();
-                startLoginPage();
+                initPage();
             }
             return true;
         }
@@ -73,6 +69,10 @@ public class SplashActivity extends BaseActivity implements DocAuthStatu {
     }
 
     @Override
+    public void initView(@NonNull Bundle savedInstanceState) {
+    }
+
+    @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         hideBottomUIMenu();
         if (isExist()) {
@@ -81,7 +81,7 @@ public class SplashActivity extends BaseActivity implements DocAuthStatu {
         else {
             initScheduledThread();
         }
-        getSplash();
+        //        getSplash();
     }
 
     @Override
@@ -102,8 +102,27 @@ public class SplashActivity extends BaseActivity implements DocAuthStatu {
      * 页面初始化
      */
     private void initPage() {
-        startActivity(new Intent(this, MainActivity.class));
-        finish();
+        if (loginSuccessBean != null) {
+            int checked = loginSuccessBean.getApprovalStatus();
+            switch (checked) {
+                case AUTH_NONE:
+                case AUTH_WAITTING:
+                case AUTH_FAILD:
+                    startActivity(new Intent(this, LoginOptionsActivity.class));
+                    startActivity(new Intent(this, AuthDoctorActivity.class));
+                    finish();
+                    break;
+                case AUTH_SUCCESS:
+                default:
+                    startActivity(new Intent(this, MainActivity.class));
+                    finish();
+                    overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_fade_out);
+                    break;
+            }
+        }
+        else {
+            startLoginPage();
+        }
     }
 
     private void initSplashImg() {

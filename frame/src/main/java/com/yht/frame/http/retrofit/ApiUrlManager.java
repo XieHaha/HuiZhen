@@ -7,7 +7,7 @@ import com.yht.frame.data.bean.CooperateDocBean;
 import com.yht.frame.data.bean.CooperateHospitalDocBean;
 import com.yht.frame.data.bean.HospitalBean;
 import com.yht.frame.data.bean.HospitalProductTypeBean;
-import com.yht.frame.data.bean.LoginSuccessBean;
+import com.yht.frame.data.base.LoginSuccessBean;
 import com.yht.frame.data.bean.PatientBean;
 import com.yht.frame.data.bean.PatientCaseDetailBean;
 import com.yht.frame.data.bean.RegistrationBean;

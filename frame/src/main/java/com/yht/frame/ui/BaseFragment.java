@@ -123,7 +123,7 @@ public abstract class BaseFragment extends Fragment
      */
     private void init(@NonNull View view, @NonNull Bundle savedInstanceState) {
         initView(view, savedInstanceState);
-        initObject(savedInstanceState);
+        initView(savedInstanceState);
         initData(savedInstanceState);
         initListener();
     }
@@ -217,7 +217,7 @@ public abstract class BaseFragment extends Fragment
     }
 
     @Override
-    public void initObject(@NonNull Bundle savedInstanceState) {
+    public void initView(@NonNull Bundle savedInstanceState) {
     }
 
     @Override

@@ -151,7 +151,7 @@ public class HintDialog extends Dialog implements OnClickListener {
      */
     public HintDialog setPhone(String phone) {
         setTitleString(R.string.txt_hint);
-        setContentString(R.string.txt_contact_hotline + phone);
+        setContentString(context.getString(R.string.txt_contact_hotline) + phone);
         setEnterBtnTxt(R.string.txt_call);
         setEnterSelect(true);
         return this;

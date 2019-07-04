@@ -17,7 +17,7 @@ import com.yanzhenjie.nohttp.NoHttp;
 import com.yht.frame.api.ApiManager;
 import com.yht.frame.api.CrashHandler;
 import com.yht.frame.data.CommonData;
-import com.yht.frame.data.bean.LoginSuccessBean;
+import com.yht.frame.data.base.LoginSuccessBean;
 import com.yht.frame.http.retrofit.RetrofitManager;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.LogUtils;
@@ -94,10 +94,10 @@ public class ZycApplication extends LitePalApplication {
         EaseUI.getInstance().setUserProfileProvider((username, callback) -> {
             LoginSuccessBean bean = getLoginSuccessBean();
             //如果是当前用户，就设置自己的昵称和头像
-            if (null != bean && TextUtils.equals(bean.getDoctorId(), username)) {
+            if (null != bean && TextUtils.equals(bean.getDoctorCode(), username)) {
                 EaseUser eu = new EaseUser(username);
-                eu.setNickname(bean.getName());
-                eu.setAvatar(bean.getPortraitUrl());
+                eu.setNickname(bean.getDoctorName());
+                eu.setAvatar(bean.getPhoto());
                 callback.onSuccess(eu);
                 return eu;
             }

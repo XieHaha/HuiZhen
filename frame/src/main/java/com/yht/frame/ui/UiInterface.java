@@ -27,7 +27,7 @@ public interface UiInterface {
     /**
      * 初始化类，调用顺序为2
      */
-    void initObject(@NonNull Bundle savedInstanceState);
+    void initView(@NonNull Bundle savedInstanceState);
 
     /**
      * 初始化数据，调用顺序为3

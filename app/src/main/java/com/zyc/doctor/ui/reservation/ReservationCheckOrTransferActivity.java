@@ -141,7 +141,6 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
      */
     private void initTab() {
         fragmentManager = getSupportFragmentManager();
-        transaction = fragmentManager.beginTransaction();
         tabReservationBaseView();
     }
 

@@ -99,6 +99,7 @@
     <string name="txt_login_obtain_code">获取验证码</string>
     <string name="txt_login_time">%ds</string>
     <string name="txt_login_phone_error">手机号不能为空</string>
+    <string name="txt_login_verify_code_error">请先获取验证码</string>
     <string name="txt_login">登录</string>
     <string name="txt_login_bind_phone">绑定手机号</string>
     <string name="txt_login_bind_phone_hint">根据国家法规对账号实名制的要求，进行下一步操作前，请绑定您的手机号。</string>
