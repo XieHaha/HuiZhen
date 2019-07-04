@@ -15,7 +15,7 @@ import com.yht.frame.data.BaseData;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.utils.SharePreferenceUtil;
 import com.yht.frame.utils.ToastUtil;
-import com.zyc.doctor.ZycApplication;
+import com.yht.yihuantong.ZycApplication;
 
 /**
  * @author dundun
