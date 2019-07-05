@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.yht.frame.data.CommonData;
+import com.yht.frame.data.base.HospitalBean;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.yht.yihuantong.R;
@@ -29,7 +30,7 @@ public class SelectHospitalByTransferActivity extends BaseActivity
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
     private HospitalSelectAdapter hospitalAdapter;
-    private List<String> hospitals;
+    private List<HospitalBean> hospitals;
 
     @Override
     protected boolean isInitBackBtn() {
@@ -46,10 +47,6 @@ public class SelectHospitalByTransferActivity extends BaseActivity
         super.initData(savedInstanceState);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         hospitals = new ArrayList<>();
-        hospitals.add("医院a");
-        hospitals.add("a");
-        hospitals.add("a");
-        hospitals.add("a");
         hospitalAdapter = new HospitalSelectAdapter(R.layout.item_hospital, hospitals);
         hospitalAdapter.setOnItemClickListener(this);
         hospitalAdapter.setLoadMoreView(new CustomLoadMoreView());

@@ -5,6 +5,7 @@ import android.widget.RelativeLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.yht.frame.data.base.HospitalDepartBean;
 import com.yht.yihuantong.R;
 
 import java.util.List;
@@ -14,15 +15,15 @@ import java.util.List;
  * @date 19/6/5 14:25
  * @des
  */
-public class DepartOneAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
+public class DepartOneAdapter extends BaseQuickAdapter<HospitalDepartBean, BaseViewHolder> {
     private int curPosition = -1;
 
-    public DepartOneAdapter(int layoutResId, @Nullable List<String> data) {
+    public DepartOneAdapter(int layoutResId, @Nullable List<HospitalDepartBean> data) {
         super(layoutResId, data);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, String item) {
+    protected void convert(BaseViewHolder helper, HospitalDepartBean item) {
         RelativeLayout relativeLayout = helper.getView(R.id.layout_depart);
         if (curPosition == helper.getAdapterPosition()) {
             relativeLayout.setSelected(true);
@@ -30,7 +31,7 @@ public class DepartOneAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
         else {
             relativeLayout.setSelected(false);
         }
-        helper.setText(R.id.tv_depart, item);
+        helper.setText(R.id.tv_depart, item.getDepartmentName());
     }
 
     public void setCurPosition(int curPosition) {

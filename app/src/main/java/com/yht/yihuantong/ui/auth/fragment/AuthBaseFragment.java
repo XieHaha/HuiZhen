@@ -24,6 +24,7 @@ import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.base.DoctorAuthBean;
+import com.yht.frame.data.base.HospitalBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.permission.Permission;
 import com.yht.frame.ui.BaseFragment;
@@ -89,7 +90,11 @@ public class AuthBaseFragment extends BaseFragment
      * 上传数据mondle
      */
     private DoctorAuthBean doctorAuthBean;
-    private String name, sex, hospital, depart, title, doctorPhoto;
+    /**
+     * 当前选中的医院
+     */
+    private HospitalBean curHospital;
+    private String name, sex, hospitalName, depart, title, doctorPhoto;
     private Uri cutFileUri;
     private File cameraTempFile, cutFile;
     private Uri mCurrentPhotoUri;
@@ -151,7 +156,7 @@ public class AuthBaseFragment extends BaseFragment
      */
     private void initNextButton() {
         if (TextUtils.isEmpty(doctorPhoto) || TextUtils.isEmpty(name) || rgSex.getCheckedRadioButtonId() == -1 ||
-            TextUtils.isEmpty(hospital) || TextUtils.isEmpty(depart) || TextUtils.isEmpty(title)) {
+            TextUtils.isEmpty(hospitalName) || TextUtils.isEmpty(depart) || TextUtils.isEmpty(title)) {
             tvAuthBaseNext.setSelected(false);
         }
         else {
@@ -178,8 +183,9 @@ public class AuthBaseFragment extends BaseFragment
                 startActivityForResult(intent, REQUEST_CODE_HOSPITAL);
                 break;
             case R.id.layout_base_depart:
-                if (!TextUtils.isEmpty(hospital)) {
+                if (curHospital != null) {
                     intent = new Intent(getContext(), SelectDepartActivity.class);
+                    intent.putExtra(CommonData.KEY_HOSPITAL_CODE, curHospital.getHospitalCode());
                     startActivityForResult(intent, REQUEST_CODE_DEPART);
                 }
                 else {
@@ -196,7 +202,7 @@ public class AuthBaseFragment extends BaseFragment
                 if (tvAuthBaseNext.isSelected() && onAuthStepListener != null) {
                     doctorAuthBean.setDoctorName(name);
                     doctorAuthBean.setDoctorPhoto(doctorPhoto);
-                    doctorAuthBean.setHospitalName(hospital);
+                    doctorAuthBean.setHospitalName(hospitalName);
                     doctorAuthBean.setJobTitle(title);
                     doctorAuthBean.setDepartmentId(depart);
                     doctorAuthBean.setDoctorSex(sex);
@@ -330,8 +336,9 @@ public class AuthBaseFragment extends BaseFragment
                 break;
             //医院选择
             case REQUEST_CODE_HOSPITAL:
-                hospital = data.getStringExtra(CommonData.KEY_HOSPITAL_NAME);
-                tvAuthBaseHospital.setText(hospital);
+                curHospital = (HospitalBean)data.getSerializableExtra(CommonData.KEY_HOSPITAL_BEAN);
+                hospitalName = curHospital.getHospitalName();
+                tvAuthBaseHospital.setText(hospitalName);
                 tvAuthBaseHospital.setSelected(true);
                 initNextButton();
                 break;

@@ -6,18 +6,24 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.yht.frame.data.BaseResponse;
+import com.yht.frame.data.CommonData;
+import com.yht.frame.data.Tasks;
+import com.yht.frame.data.base.HospitalBean;
+import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
+import com.yht.frame.widgets.edittext.AbstractTextWatcher;
 import com.yht.frame.widgets.edittext.SuperEditText;
 import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.adapter.HospitalSelectAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -41,7 +47,7 @@ public class SelectHospitalByAuthActivity extends BaseActivity
     @BindView(R.id.layout_none_hospital)
     LinearLayout layoutNoneHospital;
     private HospitalSelectAdapter hospitalAdapter;
-    private List<String> hospitals;
+    private List<HospitalBean> hospitals;
 
     @Override
     protected boolean isInitBackBtn() {
@@ -56,20 +62,44 @@ public class SelectHospitalByAuthActivity extends BaseActivity
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
+        getHospitalListByAuth();
         rvHospital.setLayoutManager(new LinearLayoutManager(this));
-        hospitals = new ArrayList<>();
-        hospitals.add("医院a");
-        hospitals.add("医院b");
-        hospitals.add("医院c");
-        hospitals.add("医院d");
         hospitalAdapter = new HospitalSelectAdapter(R.layout.item_hospital, hospitals);
-        hospitalAdapter.setLoadMoreView(new CustomLoadMoreView());
-        hospitalAdapter.setOnLoadMoreListener(this, rvHospital);
-        hospitalAdapter.loadMoreEnd();
         hospitalAdapter.setOnItemClickListener(this);
+        hospitalAdapter.setLoadMoreView(new CustomLoadMoreView());
+        hospitalAdapter.loadMoreEnd();
         rvHospital.setAdapter(hospitalAdapter);
     }
 
+    @Override
+    public void initListener() {
+        super.initListener();
+        etSearchHospital.addTextChangedListener(new AbstractTextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                super.onTextChanged(s, start, before, count);
+                searchHospital(s.toString());
+            }
+        });
+    }
+
+    /**
+     * 获取医院列表
+     */
+    private void getHospitalListByAuth() {
+        RequestUtils.getHospitalListByAuth(this, loginBean.getToken(), this);
+    }
+
+    private void searchHospital(String tag) {
+        if (TextUtils.isEmpty(tag)) {
+            layoutNoneHospital.setVisibility(View.GONE);
+            rvHospital.setVisibility(View.VISIBLE);
+        }
+        else {
+            layoutNoneHospital.setVisibility(View.VISIBLE);
+            rvHospital.setVisibility(View.GONE);
+        }
+    }
 
     @OnClick(R.id.tv_add_hospital_next)
     public void onViewClicked() {
@@ -79,6 +109,28 @@ public class SelectHospitalByAuthActivity extends BaseActivity
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+        Intent intent = new Intent();
+        intent.putExtra(CommonData.KEY_HOSPITAL_BEAN, hospitals.get(position));
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+
+    @Override
+    public void onResponseSuccess(Tasks task, BaseResponse response) {
+        super.onResponseSuccess(task, response);
+        if (task == Tasks.GET_HOSPITAL_LIST_BY_AUTH) {
+            hospitals = (List<HospitalBean>)response.getData();
+            if (hospitals != null && hospitals.size() > 0) {
+                layoutNoneHospital.setVisibility(View.GONE);
+                rvHospital.setVisibility(View.VISIBLE);
+                hospitalAdapter.setNewData(hospitals);
+                hospitalAdapter.loadMoreEnd();
+            }
+            else {
+                layoutNoneHospital.setVisibility(View.VISIBLE);
+                rvHospital.setVisibility(View.GONE);
+            }
+        }
     }
 
     /**

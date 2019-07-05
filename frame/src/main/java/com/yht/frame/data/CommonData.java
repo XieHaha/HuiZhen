@@ -153,6 +153,10 @@ public interface CommonData {
      */
     String KEY_HOSPITAL_NAME = "key_hospital_name";
     /**
+     * hospital CODE
+     */
+    String KEY_HOSPITAL_CODE = "key_hospital_code";
+    /**
      * depart name
      */
     String KEY_DEPART_NAME = "key_depart_name";

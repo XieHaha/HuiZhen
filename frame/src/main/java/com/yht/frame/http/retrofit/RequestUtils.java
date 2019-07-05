@@ -6,7 +6,7 @@ import com.google.gson.JsonObject;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.base.LoginBean;
-import com.yht.frame.data.bean.HospitalBean;
+import com.yht.frame.data.base.HospitalBean;
 import com.yht.frame.data.bean.HospitalProductBean;
 import com.yht.frame.data.bean.HospitalProductTypeBean;
 import com.yht.frame.data.bean.PatientBean;
@@ -83,6 +83,25 @@ public class RequestUtils {
                        .subscribe(new AbstractLoadViewObserver<>(context, Tasks.UPLOAD_FILE, listener));
     }
 
+    public static void getHospitalListByAuth(Context context, String token,
+            final ResponseListener<BaseResponse> listener) {
+        RetrofitManager.getApiUrlManager()
+                       .getHospitalListByAuth(token)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_HOSPITAL_LIST_BY_AUTH,
+                                                                 listener));
+    }
+
+    public static void getDepartTree(Context context, String hospitalCode, String token,
+            final ResponseListener<BaseResponse> listener) {
+        Map<String, String> params = new HashMap<>(16);
+        params.put("hospitalCode", hospitalCode);
+        RetrofitManager.getApiUrlManager()
+                       .getDepartTree(token, params)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_DEPART_LIST, listener));
+    }
+
     public static void getSplash(Context context, String client, String deviceSystem, String versionCode,
             final ResponseListener listener) {
         Map<String, String> params = new HashMap<>(16);
@@ -103,13 +122,6 @@ public class RequestUtils {
                        .getNewVersion(params)
                        .compose(RxJavaHelper.observableIO2Main(context))
                        .subscribe(new AbstractLoadViewObserver<>(context, Tasks.UPDATE_VERSION, listener));
-    }
-
-    public static void getAllProduct(Context context, final ResponseListener<BaseResponse> listener) {
-        RetrofitManager.getApiUrlManager()
-                       .getAllProduct()
-                       .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_ALL_PRODUCT, listener));
     }
 
     public static void getApplyPatientList(Context context, String doctorId, int pageNo, int pageSize,
@@ -437,7 +449,6 @@ public class RequestUtils {
         params.put("doctorName", loginSuccessBean.getDoctorName());
         params.put("hospitalName", curHospital.getHospitalName());
         params.put("patientSex", patientBean.getSex());
-        params.put("hospitalId", curHospital.getHospitalId());
         params.put("patientId", patientBean.getPatientId());
         params.put("patientName", patientBean.getName());
         params.put("patientBirthDate", patientBean.getBirthDate());

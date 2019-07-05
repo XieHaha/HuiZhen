@@ -1,17 +1,17 @@
 package com.yht.frame.http.retrofit;
 
 import com.yht.frame.data.BaseResponse;
+import com.yht.frame.data.base.HospitalBean;
+import com.yht.frame.data.base.HospitalDepartBean;
 import com.yht.frame.data.base.LoginBean;
 import com.yht.frame.data.base.VerifyCodeBean;
 import com.yht.frame.data.bean.CombineBean;
 import com.yht.frame.data.bean.CooperateDocBean;
 import com.yht.frame.data.bean.CooperateHospitalDocBean;
-import com.yht.frame.data.bean.HospitalBean;
 import com.yht.frame.data.bean.HospitalProductTypeBean;
 import com.yht.frame.data.bean.PatientBean;
 import com.yht.frame.data.bean.PatientCaseDetailBean;
 import com.yht.frame.data.bean.RegistrationBean;
-import com.yht.frame.data.bean.RegistrationTypeBean;
 import com.yht.frame.data.bean.TransPatientBean;
 import com.yht.frame.data.bean.VersionBean;
 
@@ -84,6 +84,26 @@ public interface ApiUrlManager {
     Observable<BaseResponse<String>> uploadImg(@Header("token") String token, @Part MultipartBody.Part file);
     /********************************分隔线*********************************/
     /**
+     * 获取医院列表 （医生认证模块）
+     *
+     * @param token token
+     * @return 返回值
+     */
+    @GET("/client/hospital/selectInput")
+    Observable<BaseResponse<List<HospitalBean>>> getHospitalListByAuth(@Header("token") String token);
+
+    /**
+     * 获取科室树
+     *
+     * @param token token
+     * @param info  map参数
+     * @return 返回值
+     */
+    @POST("/client/department/tree")
+    Observable<BaseResponse<List<HospitalDepartBean>>> getDepartTree(@Header("token") String token,
+            @Body Map<String, String> info);
+
+    /**
      * 首页广告
      *
      * @param info map参数
@@ -100,14 +120,6 @@ public interface ApiUrlManager {
      */
     @POST("app/version")
     Observable<BaseResponse<VersionBean>> getNewVersion(@Body Map<String, String> info);
-
-    /**
-     * 获取所有商品
-     *
-     * @return 返回值
-     */
-    @GET("product/type/all")
-    Observable<BaseResponse<List<RegistrationTypeBean>>> getAllProduct();
 
     /**
      * 获取患者申请列表

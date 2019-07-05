@@ -15,7 +15,6 @@ public enum Tasks {
      * 微信绑定
      */
     WE_CHAT_BIND,
-
     /**
      * 获取验证码
      */
@@ -28,6 +27,14 @@ public enum Tasks {
      * 上传文件
      */
     UPLOAD_FILE,
+    /**
+     * 获取医院列表
+     */
+    GET_HOSPITAL_LIST_BY_AUTH,
+    /**
+     * 根据医院code获取科室树
+     */
+    GET_DEPART_LIST,
     /**
      * 获取环信appkey
      */
@@ -205,10 +212,6 @@ public enum Tasks {
      * 新增订单
      */
     ADD_PRODUCT_ORDER_NEW,
-    /**
-     * 获取所有商品
-     */
-    GET_ALL_PRODUCT,
     /**
      * 获取患者综合病史
      */

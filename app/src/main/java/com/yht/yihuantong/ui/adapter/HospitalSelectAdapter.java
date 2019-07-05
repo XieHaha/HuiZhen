@@ -4,6 +4,7 @@ import android.support.annotation.Nullable;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.yht.frame.data.base.HospitalBean;
 import com.yht.yihuantong.R;
 
 import java.util.List;
@@ -13,13 +14,14 @@ import java.util.List;
  * @date 19/6/5 14:25
  * @des 医院搜索适配器
  */
-public class HospitalSelectAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
-    public HospitalSelectAdapter(int layoutResId, @Nullable List<String> data) {
+public class HospitalSelectAdapter extends BaseQuickAdapter<HospitalBean, BaseViewHolder> {
+    public HospitalSelectAdapter(int layoutResId, @Nullable List<HospitalBean> data) {
         super(layoutResId, data);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, String item) {
-        helper.setText(R.id.tv_hospital_name, item).setText(R.id.tv_hospital_address, "地址");
+    protected void convert(BaseViewHolder helper, HospitalBean item) {
+        helper.setText(R.id.tv_hospital_name, item.getHospitalName())
+              .setText(R.id.tv_hospital_address, item.getHospitalAddress());
     }
 }
