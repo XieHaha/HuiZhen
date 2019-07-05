@@ -129,6 +129,16 @@ public class RequestUtils {
                        .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_DOCTOR_AUTH, listener));
     }
 
+    public static void getDataByType(Context context, String token, String type,
+            final ResponseListener<BaseResponse> listener) {
+        Map<String, Object> params = new HashMap<>(16);
+        params.put("type", type);
+        RetrofitManager.getApiUrlManager()
+                       .getDataByType(token, params)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.DATA_JOB_TITLE, listener));
+    }
+
     /******************************以上为新接口 2019年7月5日14:03:44*************************************/
     public static void getSplash(Context context, String client, String deviceSystem, String versionCode,
             final ResponseListener listener) {

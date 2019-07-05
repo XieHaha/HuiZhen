@@ -23,10 +23,12 @@ import com.yht.frame.api.DirHelper;
 import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
+import com.yht.frame.data.DataDictionary;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.base.DoctorInfoBean;
 import com.yht.frame.data.base.HospitalBean;
 import com.yht.frame.data.base.HospitalDepartChildBean;
+import com.yht.frame.data.base.HospitalTitleBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.permission.Permission;
 import com.yht.frame.ui.BaseFragment;
@@ -93,16 +95,12 @@ public class AuthBaseFragment extends BaseFragment
      * 上传数据mondle
      */
     private DoctorInfoBean doctorInfoBean;
-    /**
-     * 当前选中的医院
-     */
-    private HospitalBean curHospital;
     private HospitalDepartChildBean curDepart;
     private Uri cutFileUri;
     private File cameraTempFile, cutFile;
     private Uri mCurrentPhotoUri;
     private String mCurrentPhotoPath;
-    private List<String> titleDatas;
+    private List<String> titleData;
     /**
      * 医院选择
      */
@@ -120,14 +118,7 @@ public class AuthBaseFragment extends BaseFragment
     @Override
     public void initView(View view, @NonNull Bundle savedInstanceState) {
         super.initView(view, savedInstanceState);
-        titleDatas = new ArrayList<String>() {
-            {
-                add(getString(R.string.txt_title_chief_physician));
-                add(getString(R.string.txt_title_deputy_chief_physician));
-                add(getString(R.string.txt_title_attending_physician));
-                add(getString(R.string.txt_title_hospitalization__physician));
-            }
-        };
+        getDoctorTitle();
         //不为空代表已经提交过认证信息
         if (doctorInfoBean != null) {
             initPage();
@@ -170,7 +161,7 @@ public class AuthBaseFragment extends BaseFragment
         }
         Glide.with(this)
              .load(ImageUrlUtil.append(doctorInfoBean.getDoctorPhoto()))
-             .apply(GlideHelper.getOptionsP(BaseUtils.dp2px(getContext(), 4)))
+             .apply(GlideHelper.getOptions(BaseUtils.dp2px(getContext(), 4)))
              .into(ivAuthBaseImg);
         initNextButton();
     }
@@ -182,6 +173,13 @@ public class AuthBaseFragment extends BaseFragment
      */
     private void uploadImage(File file) {
         RequestUtils.uploadImg(getContext(), loginBean.getToken(), file, this);
+    }
+
+    /**
+     * 获取职称
+     */
+    private void getDoctorTitle() {
+        RequestUtils.getDataByType(getContext(), loginBean.getToken(), DataDictionary.DATA_JOB_TITLE, this);
     }
 
     /**
@@ -228,9 +226,9 @@ public class AuthBaseFragment extends BaseFragment
                 startActivityForResult(intent, REQUEST_CODE_HOSPITAL);
                 break;
             case R.id.layout_base_depart:
-                if (curHospital != null) {
+                if (!TextUtils.isEmpty(doctorInfoBean.getDirectHospitalCode())) {
                     intent = new Intent(getContext(), SelectDepartActivity.class);
-                    intent.putExtra(CommonData.KEY_HOSPITAL_CODE, curHospital.getHospitalCode());
+                    intent.putExtra(CommonData.KEY_HOSPITAL_CODE, doctorInfoBean.getDirectHospitalCode());
                     startActivityForResult(intent, REQUEST_CODE_DEPART);
                 }
                 else {
@@ -238,8 +236,8 @@ public class AuthBaseFragment extends BaseFragment
                 }
                 break;
             case R.id.layout_base_title:
-                new DownDialog(getContext()).setData(titleDatas)
-                                            .setCurPosition(titleDatas.indexOf(doctorInfoBean.getJobTitle()))
+                new DownDialog(getContext()).setData(titleData)
+                                            .setCurPosition(titleData.indexOf(doctorInfoBean.getJobTitle()))
                                             .setOnTitleItemClickListener(this)
                                             .show();
                 break;
@@ -279,8 +277,8 @@ public class AuthBaseFragment extends BaseFragment
      */
     @Override
     public void onTitleItemClick(int position) {
-        doctorInfoBean.setJobTitle(titleDatas.get(position));
-        tvAuthBaseTitle.setText(titleDatas.get(position));
+        doctorInfoBean.setJobTitle(titleData.get(position));
+        tvAuthBaseTitle.setText(titleData.get(position));
         tvAuthBaseTitle.setSelected(true);
         initNextButton();
     }
@@ -288,14 +286,29 @@ public class AuthBaseFragment extends BaseFragment
     @Override
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
-        //图片上传成功
-        if (task == Tasks.UPLOAD_FILE) {
-            Glide.with(this)
-                 .load(cutFileUri)
-                 .apply(GlideHelper.getOptionsPic(BaseUtils.dp2px(getContext(), 4)))
-                 .into(ivAuthBaseImg);
-            doctorInfoBean.setDoctorPhoto((String)response.getData());
-            initNextButton();
+        switch (task) {
+            case UPLOAD_FILE:
+                //图片上传成功
+                if (task == Tasks.UPLOAD_FILE) {
+                    Glide.with(this)
+                         .load(cutFileUri)
+                         .apply(GlideHelper.getOptions(BaseUtils.dp2px(getContext(), 4)))
+                         .into(ivAuthBaseImg);
+                    doctorInfoBean.setDoctorPhoto((String)response.getData());
+                    initNextButton();
+                }
+                break;
+            case DATA_JOB_TITLE:
+                ArrayList<HospitalTitleBean> list = (ArrayList<HospitalTitleBean>)response.getData();
+                titleData = new ArrayList<>();
+                if (list != null && list.size() > 0) {
+                    for (HospitalTitleBean bean : list) {
+                        titleData.add(bean.getName());
+                    }
+                }
+                break;
+            default:
+                break;
         }
     }
 
@@ -375,9 +388,10 @@ public class AuthBaseFragment extends BaseFragment
                 break;
             //医院选择
             case REQUEST_CODE_HOSPITAL:
-                curHospital = (HospitalBean)data.getSerializableExtra(CommonData.KEY_HOSPITAL_BEAN);
-                doctorInfoBean.setDirectHospitalName(curHospital.getHospitalName());
-                tvAuthBaseHospital.setText(curHospital.getHospitalName());
+                HospitalBean bean = (HospitalBean)data.getSerializableExtra(CommonData.KEY_HOSPITAL_BEAN);
+                doctorInfoBean.setDirectHospitalName(bean.getHospitalName());
+                doctorInfoBean.setDirectHospitalCode(bean.getHospitalCode());
+                tvAuthBaseHospital.setText(bean.getHospitalName());
                 tvAuthBaseHospital.setSelected(true);
                 initNextButton();
                 break;

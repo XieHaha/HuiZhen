@@ -26,8 +26,10 @@ public final class GlideHelper {
      */
     private static final RequestOptions OPTIONS_HOSPITAL_PIC = new RequestOptions();
 
-    public static RequestOptions getOptions() {
-        return OPTIONS.centerCrop()
+    public static RequestOptions getOptions(int corner) {
+        //设置图片圆角角度
+        RoundedCorners roundedCorners = new RoundedCorners(corner);
+        return OPTIONS.optionalTransform(roundedCorners)
                       .placeholder(R.mipmap.ic_default_header_r)
                       .error(R.mipmap.ic_default_header_r)
                       .priority(Priority.NORMAL);

@@ -60,6 +60,7 @@
                 <ImageView
                     android:id="@+id/iv_upload_one"
                     android:layout_width="match_parent"
+                    android:scaleType="centerCrop"
                     android:layout_height="match_parent" />
 
                 <ImageView
@@ -89,7 +90,8 @@
                 <ImageView
                     android:id="@+id/iv_upload_two"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop" />
 
                 <ImageView
                     android:id="@+id/iv_delete_two"

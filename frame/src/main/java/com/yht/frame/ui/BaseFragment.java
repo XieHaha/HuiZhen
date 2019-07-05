@@ -278,6 +278,7 @@ public abstract class BaseFragment extends Fragment
 
     @Override
     public void onResponseCode(Tasks task, BaseResponse response) {
+        ToastUtil.toast(getActivity(), response.getMsg());
     }
 
     @Override

@@ -42,6 +42,10 @@ WE_CHAT_LOGIN,
      */
     GET_DOCTOR_AUTH,
     /**
+     * 数据字典
+     */
+    DATA_JOB_TITLE,
+    /**
      * 获取环信appkey
      */
     GET_EASE_APPKEY,

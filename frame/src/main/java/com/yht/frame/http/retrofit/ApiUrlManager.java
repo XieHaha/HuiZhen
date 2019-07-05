@@ -1,14 +1,15 @@
 package com.yht.frame.http.retrofit;
 
 import com.yht.frame.data.BaseResponse;
+import com.yht.frame.data.base.CooperateHospitalBean;
 import com.yht.frame.data.base.DoctorInfoBean;
 import com.yht.frame.data.base.HospitalBean;
 import com.yht.frame.data.base.HospitalDepartBean;
+import com.yht.frame.data.base.HospitalTitleBean;
 import com.yht.frame.data.base.LoginBean;
 import com.yht.frame.data.base.VerifyCodeBean;
 import com.yht.frame.data.bean.CombineBean;
 import com.yht.frame.data.bean.CooperateDocBean;
-import com.yht.frame.data.base.CooperateHospitalBean;
 import com.yht.frame.data.bean.HospitalProductTypeBean;
 import com.yht.frame.data.bean.PatientBean;
 import com.yht.frame.data.bean.PatientCaseDetailBean;
@@ -83,7 +84,7 @@ public interface ApiUrlManager {
     @Multipart
     @POST("/file/upload_file")
     Observable<BaseResponse<String>> uploadImg(@Header("token") String token, @Part MultipartBody.Part file);
-    /********************************分隔线*********************************/
+
     /**
      * 获取医院列表 （医生认证模块）
      *
@@ -125,6 +126,16 @@ public interface ApiUrlManager {
     Observable<BaseResponse<DoctorInfoBean>> getDoctorAuth(@Header("token") String token,
             @Path("mobile") String mobile);
 
+    /**
+     * 获取指定类型的字典数据
+     *
+     * @param token token
+     * @param info  参数
+     * @return 返回值
+     */
+    @GET("/dm/query-by-type")
+    Observable<BaseResponse<List<HospitalTitleBean>>> getDataByType(@Header("token") String token, @QueryMap Map<String, Object> info);
+    /********************************分隔线*********************************/
     /**
      * 首页广告
      *

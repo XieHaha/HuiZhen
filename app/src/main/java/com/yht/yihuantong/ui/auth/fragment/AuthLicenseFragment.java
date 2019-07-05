@@ -6,9 +6,11 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -29,6 +31,7 @@ import com.yht.yihuantong.ui.auth.listener.OnAuthStepListener;
 import com.yht.yihuantong.ui.dialog.DownDialog;
 import com.yht.yihuantong.ui.dialog.listener.OnMediaItemClickListener;
 import com.yht.yihuantong.utils.glide.GlideHelper;
+import com.yht.yihuantong.utils.glide.ImageUrlUtil;
 import com.yht.yihuantong.utils.glide.MatisseUtils;
 import com.zhihu.matisse.Matisse;
 
@@ -63,31 +66,29 @@ public class AuthLicenseFragment extends BaseFragment implements OnMediaItemClic
     /**
      * 上传数据mondle
      */
-    private DoctorInfoBean doctorAuthBean;
-    /**
-     * 裁剪后的uri
-     */
-    private Uri cutFileUriFront, cutFileUriBack;
+    private DoctorInfoBean doctorInfoBean;
     /**
      * 裁剪前的uri
      */
     private Uri mCurrentPhotoUri;
     /**
-     * 裁剪后的file文件
-     */
-    private File cutFileFront, cutFileBack;
-    /**
-     * 上传图片后的url
-     */
-    private String fileFrontUrl, fileBackUrl;
-    /**
      * 区分两处证件
      */
     private int type = -1;
+    private String mCurrentPhotoPath;
+    private File frontFile, backFile;
 
     @Override
     public int getLayoutID() {
         return R.layout.fragment_auth_license;
+    }
+
+    @Override
+    public void initData(@NonNull Bundle savedInstanceState) {
+        super.initData(savedInstanceState);
+        if (doctorInfoBean != null && !TextUtils.isEmpty(doctorInfoBean.getCertFront())) {
+            initPage();
+        }
     }
 
     /**
@@ -99,8 +100,25 @@ public class AuthLicenseFragment extends BaseFragment implements OnMediaItemClic
         RequestUtils.uploadImg(getContext(), loginBean.getToken(), file, this);
     }
 
-    public void setDoctorAuthBean(DoctorInfoBean doctorAuthBean) {
-        this.doctorAuthBean = doctorAuthBean;
+    public void setDoctorAuthBean(DoctorInfoBean doctorInfoBean) {
+        this.doctorInfoBean = doctorInfoBean;
+    }
+
+    /**
+     * 数据回填
+     */
+    private void initPage() {
+        Glide.with(this)
+             .load(ImageUrlUtil.append(doctorInfoBean.getCertFront()))
+             .apply(GlideHelper.getOptionsPic(BaseUtils.dp2px(getContext(), 4)))
+             .into(ivUploadOne);
+        Glide.with(this)
+             .load(ImageUrlUtil.append(doctorInfoBean.getCertBack()))
+             .apply(GlideHelper.getOptionsPic(BaseUtils.dp2px(getContext(), 4)))
+             .into(ivUploadTwo);
+        ivDeleteOne.setVisibility(View.VISIBLE);
+        ivDeleteTwo.setVisibility(View.VISIBLE);
+        initNextButton();
     }
 
     /**
@@ -115,15 +133,14 @@ public class AuthLicenseFragment extends BaseFragment implements OnMediaItemClic
                     ivDeleteOne.setVisibility(View.VISIBLE);
                     //裁剪完成，上传图片
                     Glide.with(this)
-                         .load(cutFileUriFront)
+                         .load(frontFile)
                          .apply(GlideHelper.getOptionsPic(BaseUtils.dp2px(getContext(), 4)))
                          .into(ivUploadOne);
                 }
                 else {
                     ivUploadOne.setImageDrawable(null);
                     ivDeleteOne.setVisibility(View.GONE);
-                    cutFileFront = null;
-                    cutFileUriFront = null;
+                    frontFile = null;
                 }
                 break;
             case BASE_TWO:
@@ -131,15 +148,14 @@ public class AuthLicenseFragment extends BaseFragment implements OnMediaItemClic
                     ivDeleteTwo.setVisibility(View.VISIBLE);
                     //裁剪完成，上传图片
                     Glide.with(this)
-                         .load(cutFileUriBack)
+                         .load(backFile)
                          .apply(GlideHelper.getOptionsPic(BaseUtils.dp2px(getContext(), 4)))
                          .into(ivUploadTwo);
                 }
                 else {
                     ivUploadTwo.setImageDrawable(null);
                     ivDeleteTwo.setVisibility(View.GONE);
-                    cutFileBack = null;
-                    cutFileUriBack = null;
+                    backFile = null;
                 }
                 break;
             default:
@@ -152,7 +168,7 @@ public class AuthLicenseFragment extends BaseFragment implements OnMediaItemClic
      * 判断 下一步按钮
      */
     private void initNextButton() {
-        if (cutFileUriFront == null || cutFileUriBack == null) {
+        if (TextUtils.isEmpty(doctorInfoBean.getCertFront()) || TextUtils.isEmpty(doctorInfoBean.getCertBack())) {
             tvAuthLicenseSubmit.setSelected(false);
         }
         else {
@@ -180,9 +196,7 @@ public class AuthLicenseFragment extends BaseFragment implements OnMediaItemClic
                 break;
             case R.id.tv_auth_license_submit:
                 if (tvAuthLicenseSubmit.isSelected() && onAuthStepListener != null) {
-                    doctorAuthBean.setCertFront(fileFrontUrl);
-                    doctorAuthBean.setCertBack(fileBackUrl);
-                    onAuthStepListener.onAuthTwo(BASE_TWO, doctorAuthBean);
+                    onAuthStepListener.onAuthTwo(BASE_TWO, doctorInfoBean);
                 }
                 break;
             case R.id.iv_delete_one:
@@ -217,12 +231,16 @@ public class AuthLicenseFragment extends BaseFragment implements OnMediaItemClic
         MatisseUtils.open(this, false);
     }
 
+    File tempFile;
+
     /**
      * 打开相机
      */
     private void openCamera() {
-        File tempFile;
         tempFile = new File(DirHelper.getPathImage(), System.currentTimeMillis() + ".jpg");
+        if (tempFile != null) {
+            mCurrentPhotoPath = tempFile.getAbsolutePath();
+        }
         //选择拍照
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // 指定调用相机拍照后照片的储存路径
@@ -244,18 +262,15 @@ public class AuthLicenseFragment extends BaseFragment implements OnMediaItemClic
                                                                                Intent.FLAG_GRANT_READ_URI_PERMISSION);
             }
         }
+        if (type == BASE_ONE) {
+            frontFile = tempFile;
+        }
+        else {
+            backFile = tempFile;
+        }
         // 指定调用相机拍照后照片的储存路径
         intent.putExtra(MediaStore.EXTRA_OUTPUT, mCurrentPhotoUri);
-        intent.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
         startActivityForResult(intent, RC_PICK_CAMERA);
-    }
-
-    /**
-     * 图片裁剪
-     */
-    private void startCutImg(Uri uri, Uri cutUri) {
-        cutFileUriFront = cutUri;
-        startActivityForResult(getCutImageIntent(uri, cutUri), RC_CROP_IMG);
     }
 
     @Override
@@ -263,10 +278,10 @@ public class AuthLicenseFragment extends BaseFragment implements OnMediaItemClic
         super.onResponseSuccess(task, response);
         if (task == Tasks.UPLOAD_FILE) {
             if (type == BASE_ONE) {
-                fileFrontUrl = (String)response.getData();
+                doctorInfoBean.setCertFront((String)response.getData());
             }
             else {
-                fileBackUrl = (String)response.getData();
+                doctorInfoBean.setCertBack((String)response.getData());
             }
             initImage(type, true);
         }
@@ -279,43 +294,26 @@ public class AuthLicenseFragment extends BaseFragment implements OnMediaItemClic
         }
         switch (requestCode) {
             case RC_PICK_IMG:
-                List<Uri> uris = Matisse.obtainResult(data);
                 List<String> paths = Matisse.obtainPathResult(data);
                 if (null != paths && 0 != paths.size()) {
                     if (type == BASE_ONE) {
-                        String fileName = "corp" + System.currentTimeMillis() + ".jpg";
-                        cutFileFront = new File(DirHelper.getPathCache(), fileName);
-                        cutFileUriFront = Uri.fromFile(cutFileFront);
-                        startCutImg(uris.get(0), cutFileUriFront);
+                        frontFile = new File(paths.get(0));
+                        uploadImage(frontFile);
                     }
                     else {
-                        String fileName = "corp" + System.currentTimeMillis() + ".jpg";
-                        cutFileBack = new File(DirHelper.getPathCache(), fileName);
-                        cutFileUriBack = Uri.fromFile(cutFileBack);
-                        startCutImg(uris.get(0), cutFileUriBack);
+                        backFile = new File(paths.get(0));
+                        uploadImage(backFile);
                     }
                 }
                 break;
             case RC_PICK_CAMERA:
                 if (type == BASE_ONE) {
-                    String fileName = "corp" + System.currentTimeMillis() + ".jpg";
-                    cutFileFront = new File(DirHelper.getPathCache(), fileName);
-                    cutFileUriFront = Uri.fromFile(cutFileFront);
-                    startCutImg(mCurrentPhotoUri, cutFileUriFront);
+                    frontFile = new File(mCurrentPhotoPath);
+                    uploadImage(frontFile);
                 }
                 else {
-                    String fileName = "corp" + System.currentTimeMillis() + ".jpg";
-                    cutFileBack = new File(DirHelper.getPathCache(), fileName);
-                    cutFileUriBack = Uri.fromFile(cutFileBack);
-                    startCutImg(mCurrentPhotoUri, cutFileUriBack);
-                }
-                break;
-            case RC_CROP_IMG:
-                if (type == BASE_ONE) {
-                    uploadImage(cutFileFront);
-                }
-                else {
-                    uploadImage(cutFileBack);
+                    backFile = new File(mCurrentPhotoPath);
+                    uploadImage(backFile);
                 }
                 break;
             default:
