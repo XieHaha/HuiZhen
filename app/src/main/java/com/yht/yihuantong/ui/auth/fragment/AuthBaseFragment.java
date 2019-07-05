@@ -20,11 +20,13 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.yht.frame.api.DirHelper;
+import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
-import com.yht.frame.data.base.DoctorAuthBean;
+import com.yht.frame.data.base.DoctorInfoBean;
 import com.yht.frame.data.base.HospitalBean;
+import com.yht.frame.data.base.HospitalDepartChildBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.permission.Permission;
 import com.yht.frame.ui.BaseFragment;
@@ -41,6 +43,7 @@ import com.yht.yihuantong.ui.dialog.DownDialog;
 import com.yht.yihuantong.ui.dialog.listener.OnMediaItemClickListener;
 import com.yht.yihuantong.ui.dialog.listener.OnTitleItemClickListener;
 import com.yht.yihuantong.utils.glide.GlideHelper;
+import com.yht.yihuantong.utils.glide.ImageUrlUtil;
 import com.yht.yihuantong.utils.glide.MatisseUtils;
 import com.zhihu.matisse.Matisse;
 
@@ -89,12 +92,12 @@ public class AuthBaseFragment extends BaseFragment
     /**
      * 上传数据mondle
      */
-    private DoctorAuthBean doctorAuthBean;
+    private DoctorInfoBean doctorInfoBean;
     /**
      * 当前选中的医院
      */
     private HospitalBean curHospital;
-    private String name, sex, hospitalName, depart, title, doctorPhoto;
+    private HospitalDepartChildBean curDepart;
     private Uri cutFileUri;
     private File cameraTempFile, cutFile;
     private Uri mCurrentPhotoUri;
@@ -125,7 +128,13 @@ public class AuthBaseFragment extends BaseFragment
                 add(getString(R.string.txt_title_hospitalization__physician));
             }
         };
-        doctorAuthBean = new DoctorAuthBean();
+        //不为空代表已经提交过认证信息
+        if (doctorInfoBean != null) {
+            initPage();
+        }
+        else {
+            doctorInfoBean = new DoctorInfoBean();
+        }
     }
 
     @Override
@@ -135,11 +144,35 @@ public class AuthBaseFragment extends BaseFragment
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 super.onTextChanged(s, start, before, count);
-                name = s.toString();
+                doctorInfoBean.setDoctorName(s.toString());
                 initNextButton();
             }
         });
         rgSex.setOnCheckedChangeListener(this);
+    }
+
+    /**
+     * 数据回填
+     */
+    private void initPage() {
+        etAuthBaseName.setText(doctorInfoBean.getDoctorName());
+        tvAuthBaseHospital.setText(doctorInfoBean.getDirectHospitalName());
+        tvAuthBaseHospital.setSelected(true);
+        tvAuthBaseDepart.setText(doctorInfoBean.getDirectDepartmentName());
+        tvAuthBaseDepart.setSelected(true);
+        tvAuthBaseTitle.setText(doctorInfoBean.getJobTitle());
+        tvAuthBaseTitle.setSelected(true);
+        if (doctorInfoBean.getDoctorSex() == BaseData.BASE_ONE) {
+            rbMale.setChecked(true);
+        }
+        else {
+            rbFemale.setChecked(true);
+        }
+        Glide.with(this)
+             .load(ImageUrlUtil.append(doctorInfoBean.getDoctorPhoto()))
+             .apply(GlideHelper.getOptionsP(BaseUtils.dp2px(getContext(), 4)))
+             .into(ivAuthBaseImg);
+        initNextButton();
     }
 
     /**
@@ -155,8 +188,10 @@ public class AuthBaseFragment extends BaseFragment
      * 判断
      */
     private void initNextButton() {
-        if (TextUtils.isEmpty(doctorPhoto) || TextUtils.isEmpty(name) || rgSex.getCheckedRadioButtonId() == -1 ||
-            TextUtils.isEmpty(hospitalName) || TextUtils.isEmpty(depart) || TextUtils.isEmpty(title)) {
+        if (TextUtils.isEmpty(doctorInfoBean.getDoctorPhoto()) || TextUtils.isEmpty(doctorInfoBean.getDoctorName()) ||
+            TextUtils.isEmpty(doctorInfoBean.getDirectHospitalName()) ||
+            TextUtils.isEmpty(doctorInfoBean.getJobTitle()) || doctorInfoBean.getDoctorSex() == 0 ||
+            doctorInfoBean.getDirectDepartmentId() == 0) {
             tvAuthBaseNext.setSelected(false);
         }
         else {
@@ -164,8 +199,18 @@ public class AuthBaseFragment extends BaseFragment
         }
     }
 
+    public void setDoctorInfoBean(DoctorInfoBean doctorInfoBean) {
+        this.doctorInfoBean = doctorInfoBean;
+    }
+
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
+        if (checkedId == rbMale.getId()) {
+            doctorInfoBean.setDoctorSex(BaseData.BASE_MALE);
+        }
+        else {
+            doctorInfoBean.setDoctorSex(BaseData.BASE_FEMALE);
+        }
         initNextButton();
     }
 
@@ -194,19 +239,13 @@ public class AuthBaseFragment extends BaseFragment
                 break;
             case R.id.layout_base_title:
                 new DownDialog(getContext()).setData(titleDatas)
-                                            .setCurPosition(titleDatas.indexOf(title))
+                                            .setCurPosition(titleDatas.indexOf(doctorInfoBean.getJobTitle()))
                                             .setOnTitleItemClickListener(this)
                                             .show();
                 break;
             case R.id.tv_auth_base_next:
                 if (tvAuthBaseNext.isSelected() && onAuthStepListener != null) {
-                    doctorAuthBean.setDoctorName(name);
-                    doctorAuthBean.setDoctorPhoto(doctorPhoto);
-                    doctorAuthBean.setHospitalName(hospitalName);
-                    doctorAuthBean.setJobTitle(title);
-                    doctorAuthBean.setDepartmentId(depart);
-                    doctorAuthBean.setDoctorSex(sex);
-                    onAuthStepListener.onAuthOne(doctorAuthBean);
+                    onAuthStepListener.onAuthOne(doctorInfoBean);
                 }
                 break;
             default:
@@ -240,8 +279,8 @@ public class AuthBaseFragment extends BaseFragment
      */
     @Override
     public void onTitleItemClick(int position) {
-        title = titleDatas.get(position);
-        tvAuthBaseTitle.setText(title);
+        doctorInfoBean.setJobTitle(titleDatas.get(position));
+        tvAuthBaseTitle.setText(titleDatas.get(position));
         tvAuthBaseTitle.setSelected(true);
         initNextButton();
     }
@@ -255,7 +294,7 @@ public class AuthBaseFragment extends BaseFragment
                  .load(cutFileUri)
                  .apply(GlideHelper.getOptionsPic(BaseUtils.dp2px(getContext(), 4)))
                  .into(ivAuthBaseImg);
-            doctorPhoto = (String)response.getData();
+            doctorInfoBean.setDoctorPhoto((String)response.getData());
             initNextButton();
         }
     }
@@ -337,15 +376,16 @@ public class AuthBaseFragment extends BaseFragment
             //医院选择
             case REQUEST_CODE_HOSPITAL:
                 curHospital = (HospitalBean)data.getSerializableExtra(CommonData.KEY_HOSPITAL_BEAN);
-                hospitalName = curHospital.getHospitalName();
-                tvAuthBaseHospital.setText(hospitalName);
+                doctorInfoBean.setDirectHospitalName(curHospital.getHospitalName());
+                tvAuthBaseHospital.setText(curHospital.getHospitalName());
                 tvAuthBaseHospital.setSelected(true);
                 initNextButton();
                 break;
             //科室选择
             case REQUEST_CODE_DEPART:
-                depart = data.getStringExtra(CommonData.KEY_DEPART_NAME);
-                tvAuthBaseDepart.setText(depart);
+                curDepart = (HospitalDepartChildBean)data.getSerializableExtra(CommonData.KEY_DEPART_BEAN);
+                doctorInfoBean.setDirectDepartmentId(curDepart.getDepartmentId());
+                tvAuthBaseDepart.setText(curDepart.getDepartmentName());
                 tvAuthBaseDepart.setSelected(true);
                 initNextButton();
                 break;

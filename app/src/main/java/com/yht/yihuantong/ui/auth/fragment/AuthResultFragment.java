@@ -1,7 +1,5 @@
 package com.yht.yihuantong.ui.auth.fragment;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
@@ -12,6 +10,7 @@ import com.yht.frame.data.DocAuthStatus;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.ui.auth.listener.OnAuthStepListener;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -46,11 +45,15 @@ public class AuthResultFragment extends BaseFragment {
     public void initView(View view, @NonNull Bundle savedInstanceState) {
         super.initView(view, savedInstanceState);
         if (curAuthStatus == DocAuthStatus.AUTH_FAILD) {
+            tvAuthResultStatus.setText(R.string.txt_review_failure);
+            tvAuthResultTxt.setText(R.string.txt_review_failure_hint);
             tvAuthResultSubmit.setVisibility(View.VISIBLE);
             tvAuthResultContact.setSelected(false);
             ivAuthResultImage.setImageResource(R.mipmap.pic_auth_fail);
         }
         else {
+            tvAuthResultStatus.setText(R.string.txt_review);
+            tvAuthResultTxt.setText(R.string.txt_review_hint);
             tvAuthResultContact.setSelected(true);
             tvAuthResultSubmit.setVisibility(View.GONE);
             ivAuthResultImage.setImageResource(R.mipmap.pic_auth_waiting);
@@ -70,21 +73,18 @@ public class AuthResultFragment extends BaseFragment {
                                             .show();
                 break;
             case R.id.tv_auth_result_submit:
+                if (onAuthStepListener != null) {
+                    onAuthStepListener.onAuthThree();
+                }
                 break;
             default:
                 break;
         }
     }
 
-    /**
-     * 拨打电话（跳转到拨号界面，用户手动点击拨打）
-     *
-     * @param phoneNum 电话号码
-     */
-    public void callPhone(String phoneNum) {
-        Intent intent = new Intent(Intent.ACTION_DIAL);
-        Uri data = Uri.parse("tel:" + phoneNum);
-        intent.setData(data);
-        startActivity(intent);
+    private OnAuthStepListener onAuthStepListener;
+
+    public void setOnAuthStepListener(OnAuthStepListener onAuthStepListener) {
+        this.onAuthStepListener = onAuthStepListener;
     }
 }

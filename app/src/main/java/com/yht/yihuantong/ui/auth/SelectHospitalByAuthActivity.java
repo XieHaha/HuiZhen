@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.yht.frame.api.LitePalHelper;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
@@ -47,7 +48,14 @@ public class SelectHospitalByAuthActivity extends BaseActivity
     @BindView(R.id.layout_none_hospital)
     LinearLayout layoutNoneHospital;
     private HospitalSelectAdapter hospitalAdapter;
+    /**
+     * 所有医院
+     */
     private List<HospitalBean> hospitals;
+    /**
+     * 搜索结果
+     */
+    private List<HospitalBean> searchHospitals;
 
     @Override
     protected boolean isInitBackBtn() {
@@ -78,7 +86,15 @@ public class SelectHospitalByAuthActivity extends BaseActivity
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 super.onTextChanged(s, start, before, count);
-                searchHospital(s.toString());
+                String tag = s.toString();
+                if (TextUtils.isEmpty(tag)) {
+                    layoutNoneHospital.setVisibility(View.GONE);
+                    rvHospital.setVisibility(View.VISIBLE);
+                    hospitalAdapter.setNewData(hospitals);
+                }
+                else {
+                    searchHospital(tag);
+                }
             }
         });
     }
@@ -90,14 +106,21 @@ public class SelectHospitalByAuthActivity extends BaseActivity
         RequestUtils.getHospitalListByAuth(this, loginBean.getToken(), this);
     }
 
+    /**
+     * 模糊搜索
+     *
+     * @param tag
+     */
     private void searchHospital(String tag) {
-        if (TextUtils.isEmpty(tag)) {
-            layoutNoneHospital.setVisibility(View.GONE);
+        searchHospitals = LitePalHelper.findHospitals(tag);
+        if (searchHospitals != null && searchHospitals.size() > 0) {
             rvHospital.setVisibility(View.VISIBLE);
+            layoutNoneHospital.setVisibility(View.GONE);
+            hospitalAdapter.setNewData(searchHospitals);
         }
         else {
-            layoutNoneHospital.setVisibility(View.VISIBLE);
             rvHospital.setVisibility(View.GONE);
+            layoutNoneHospital.setVisibility(View.VISIBLE);
         }
     }
 
@@ -120,6 +143,8 @@ public class SelectHospitalByAuthActivity extends BaseActivity
         super.onResponseSuccess(task, response);
         if (task == Tasks.GET_HOSPITAL_LIST_BY_AUTH) {
             hospitals = (List<HospitalBean>)response.getData();
+            //更新数据库
+            new LitePalHelper().updateAll(hospitals, HospitalBean.class);
             if (hospitals != null && hospitals.size() > 0) {
                 layoutNoneHospital.setVisibility(View.GONE);
                 rvHospital.setVisibility(View.VISIBLE);

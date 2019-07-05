@@ -5,12 +5,10 @@ package com.yht.frame.data;
  *
  * @author dundun
  */
-public enum Tasks {
-
-    /**
-     * 微信登录
-     */
-    WE_CHAT_LOGIN,
+public enum Tasks {/**
+ * 微信登录
+ */
+WE_CHAT_LOGIN,
     /**
      * 微信绑定
      */
@@ -36,6 +34,14 @@ public enum Tasks {
      */
     GET_DEPART_LIST,
     /**
+     * 提交医生认证资料
+     */
+    SUBMIT_DOCTOR_AUTH,
+    /**
+     * 获取医生认证资料
+     */
+    GET_DOCTOR_AUTH,
+    /**
      * 获取环信appkey
      */
     GET_EASE_APPKEY,
@@ -43,7 +49,6 @@ public enum Tasks {
      * 获取广告业
      */
     GET_SPLASH,
-
     /**
      * 上传基本信息
      */
@@ -239,6 +244,5 @@ public enum Tasks {
     /**
      * 当前医生给患者开的订单记录
      */
-    GET_PATIENT_ORDER_LIST,
-}
+    GET_PATIENT_ORDER_LIST,}
 

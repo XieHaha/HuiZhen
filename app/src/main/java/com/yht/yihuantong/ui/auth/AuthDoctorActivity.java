@@ -11,11 +11,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.DocAuthStatus;
-import com.yht.frame.data.base.DoctorAuthBean;
+import com.yht.frame.data.Tasks;
+import com.yht.frame.data.base.DoctorInfoBean;
+import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.SharePreferenceUtil;
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.ZycApplication;
 import com.yht.yihuantong.ui.auth.fragment.AuthBaseFragment;
 import com.yht.yihuantong.ui.auth.fragment.AuthLicenseFragment;
 import com.yht.yihuantong.ui.auth.fragment.AuthResultFragment;
@@ -73,6 +77,10 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
      */
     private AuthResultFragment authResultFragment;
     /**
+     * 认证数据
+     */
+    private DoctorInfoBean doctorAuthBean;
+    /**
      * 当前碎片
      */
     private int curPage;
@@ -100,6 +108,20 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
     }
 
     /**
+     * 提交医生认证
+     */
+    private void submitDoctorAuth() {
+        RequestUtils.submitDoctorAuth(this, doctorAuthBean, loginBean.getToken(), loginBean.getMobile(), this);
+    }
+
+    /**
+     * 获取已提交的认证信息
+     */
+    private void getDoctorAuth() {
+        RequestUtils.getDoctorAuth(this, loginBean.getToken(), loginBean.getMobile(), this);
+    }
+
+    /**
      * 初始化tabs
      */
     private void initTab() {
@@ -124,6 +146,7 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
             transaction.show(authBaseFragment);
             authBaseFragment.onResume();
         }
+        authBaseFragment.setDoctorInfoBean(doctorAuthBean);
         transaction.commitAllowingStateLoss();
         selectTab(BASE_ZERO);
     }
@@ -140,6 +163,7 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
             transaction.show(authLicenseFragment);
             authLicenseFragment.onResume();
         }
+        authLicenseFragment.setDoctorAuthBean(doctorAuthBean);
         transaction.commitAllowingStateLoss();
         selectTab(BASE_ONE);
     }
@@ -149,6 +173,7 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
         hideAll(transaction);
         if (authResultFragment == null) {
             authResultFragment = new AuthResultFragment();
+            authResultFragment.setOnAuthStepListener(this);
             authResultFragment.setCurAuthStatus(curAuthStatus);
             transaction.add(R.id.layout_frame_root, authResultFragment);
         }
@@ -190,8 +215,13 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
                 //1
                 tvAuthLicense.setSelected(false);
                 viewAuthLicenseLeft.setSelected(false);
+                viewAuthLicenseRight.setSelected(false);
                 ivAuthLicense.setImageResource(R.mipmap.ic_step_def);
                 tvAuthLicense.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+                //2
+                layoutAuthResult.setSelected(false);
+                ivAuthResult.setImageResource(R.mipmap.ic_step_def);
+                tvAuthResult.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
                 break;
             case BASE_ONE:
                 curPage = BASE_ONE;
@@ -212,7 +242,14 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
                 break;
             case BASE_TWO:
                 curPage = BASE_TWO;
+                //0
+                viewAuthBase.setSelected(true);
+                tvAuthBase.setSelected(true);
+                tvAuthBase.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+                ivAuthBase.setImageResource(R.mipmap.ic_step_finish);
                 //1
+                tvAuthLicense.setSelected(true);
+                viewAuthLicenseLeft.setSelected(true);
                 viewAuthLicenseRight.setSelected(true);
                 tvAuthLicense.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
                 ivAuthLicense.setImageResource(R.mipmap.ic_step_finish);
@@ -222,17 +259,6 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
                 tvAuthResult.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
                 break;
             default:
-                curPage = BASE_ZERO;
-                //0
-                tvAuthBase.setSelected(true);
-                viewAuthBase.setSelected(false);
-                ivAuthBase.setImageResource(R.mipmap.ic_step_sel);
-                tvAuthBase.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-                //1
-                tvAuthLicense.setSelected(false);
-                viewAuthLicenseLeft.setSelected(false);
-                ivAuthLicense.setImageResource(R.mipmap.ic_step_def);
-                tvAuthLicense.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
                 break;
         }
     }
@@ -252,16 +278,45 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
     }
 
     @Override
-    public void onAuthOne(DoctorAuthBean doctorAuthBean) {
-
+    public void onResponseSuccess(Tasks task, BaseResponse response) {
+        super.onResponseSuccess(task, response);
+        switch (task) {
+            case SUBMIT_DOCTOR_AUTH:
+                //提交成功后需要更新本地认证状态
+                loginBean.setApprovalStatus(DocAuthStatus.AUTH_WAITTING);
+                ZycApplication.getInstance().setLoginSuccessBean(loginBean);
+                //跳转到认证结果
+                tabAuthResultView(DocAuthStatus.AUTH_WAITTING);
+                break;
+            case GET_DOCTOR_AUTH:
+                doctorAuthBean = (DoctorInfoBean)response.getData();
+                tabAuthBaseView();
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
-    public void onAuthTwo(int type) {
+    public void onAuthOne(DoctorInfoBean bean) {
+        this.doctorAuthBean = bean;
+        tabAuthLicenseView();
+    }
+
+    @Override
+    public void onAuthTwo(int type, DoctorInfoBean bean) {
+        if (type == BASE_ONE) {
+            tabAuthBaseView();
+        }
+        else {
+            doctorAuthBean = bean;
+            submitDoctorAuth();
+        }
     }
 
     @Override
     public void onAuthThree() {
+        getDoctorAuth();
     }
 
     /**

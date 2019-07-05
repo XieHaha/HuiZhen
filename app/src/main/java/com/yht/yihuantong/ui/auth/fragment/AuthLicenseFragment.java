@@ -16,6 +16,10 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.yht.frame.api.DirHelper;
+import com.yht.frame.data.BaseResponse;
+import com.yht.frame.data.Tasks;
+import com.yht.frame.data.base.DoctorInfoBean;
+import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.permission.Permission;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
@@ -56,10 +60,26 @@ public class AuthLicenseFragment extends BaseFragment implements OnMediaItemClic
     TextView tvAuthLicenseLast;
     @BindView(R.id.tv_auth_license_submit)
     TextView tvAuthLicenseSubmit;
-    private Uri cutFileUriOne, cutFileUriTwo;
-    private File cameraTempFileOne, cameraTempFileTwo;
+    /**
+     * 上传数据mondle
+     */
+    private DoctorInfoBean doctorAuthBean;
+    /**
+     * 裁剪后的uri
+     */
+    private Uri cutFileUriFront, cutFileUriBack;
+    /**
+     * 裁剪前的uri
+     */
     private Uri mCurrentPhotoUri;
-    private String mCurrentPhotoPath;
+    /**
+     * 裁剪后的file文件
+     */
+    private File cutFileFront, cutFileBack;
+    /**
+     * 上传图片后的url
+     */
+    private String fileFrontUrl, fileBackUrl;
     /**
      * 区分两处证件
      */
@@ -68,6 +88,19 @@ public class AuthLicenseFragment extends BaseFragment implements OnMediaItemClic
     @Override
     public int getLayoutID() {
         return R.layout.fragment_auth_license;
+    }
+
+    /**
+     * 上传图片
+     *
+     * @param file
+     */
+    private void uploadImage(File file) {
+        RequestUtils.uploadImg(getContext(), loginBean.getToken(), file, this);
+    }
+
+    public void setDoctorAuthBean(DoctorInfoBean doctorAuthBean) {
+        this.doctorAuthBean = doctorAuthBean;
     }
 
     /**
@@ -82,16 +115,15 @@ public class AuthLicenseFragment extends BaseFragment implements OnMediaItemClic
                     ivDeleteOne.setVisibility(View.VISIBLE);
                     //裁剪完成，上传图片
                     Glide.with(this)
-                         .load(cutFileUriOne)
+                         .load(cutFileUriFront)
                          .apply(GlideHelper.getOptionsPic(BaseUtils.dp2px(getContext(), 4)))
                          .into(ivUploadOne);
                 }
                 else {
                     ivUploadOne.setImageDrawable(null);
                     ivDeleteOne.setVisibility(View.GONE);
-                    cameraTempFileOne = null;
-                    cutFileUriOne = null;
-                    mCurrentPhotoPath = "";
+                    cutFileFront = null;
+                    cutFileUriFront = null;
                 }
                 break;
             case BASE_TWO:
@@ -99,16 +131,15 @@ public class AuthLicenseFragment extends BaseFragment implements OnMediaItemClic
                     ivDeleteTwo.setVisibility(View.VISIBLE);
                     //裁剪完成，上传图片
                     Glide.with(this)
-                         .load(cutFileUriTwo)
+                         .load(cutFileUriBack)
                          .apply(GlideHelper.getOptionsPic(BaseUtils.dp2px(getContext(), 4)))
                          .into(ivUploadTwo);
                 }
                 else {
                     ivUploadTwo.setImageDrawable(null);
                     ivDeleteTwo.setVisibility(View.GONE);
-                    cameraTempFileTwo = null;
-                    cutFileUriTwo = null;
-                    mCurrentPhotoPath = "";
+                    cutFileBack = null;
+                    cutFileUriBack = null;
                 }
                 break;
             default:
@@ -121,7 +152,7 @@ public class AuthLicenseFragment extends BaseFragment implements OnMediaItemClic
      * 判断 下一步按钮
      */
     private void initNextButton() {
-        if (cutFileUriOne == null || cutFileUriTwo == null) {
+        if (cutFileUriFront == null || cutFileUriBack == null) {
             tvAuthLicenseSubmit.setSelected(false);
         }
         else {
@@ -144,12 +175,14 @@ public class AuthLicenseFragment extends BaseFragment implements OnMediaItemClic
                 break;
             case R.id.tv_auth_license_last:
                 if (onAuthStepListener != null) {
-                    onAuthStepListener.onAuthTwo(BASE_ONE);
+                    onAuthStepListener.onAuthTwo(BASE_ONE, null);
                 }
                 break;
             case R.id.tv_auth_license_submit:
                 if (tvAuthLicenseSubmit.isSelected() && onAuthStepListener != null) {
-                    onAuthStepListener.onAuthTwo(BASE_TWO);
+                    doctorAuthBean.setCertFront(fileFrontUrl);
+                    doctorAuthBean.setCertBack(fileBackUrl);
+                    onAuthStepListener.onAuthTwo(BASE_TWO, doctorAuthBean);
                 }
                 break;
             case R.id.iv_delete_one:
@@ -190,9 +223,6 @@ public class AuthLicenseFragment extends BaseFragment implements OnMediaItemClic
     private void openCamera() {
         File tempFile;
         tempFile = new File(DirHelper.getPathImage(), System.currentTimeMillis() + ".jpg");
-        if (tempFile != null) {
-            mCurrentPhotoPath = tempFile.getAbsolutePath();
-        }
         //选择拍照
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // 指定调用相机拍照后照片的储存路径
@@ -214,12 +244,6 @@ public class AuthLicenseFragment extends BaseFragment implements OnMediaItemClic
                                                                                Intent.FLAG_GRANT_READ_URI_PERMISSION);
             }
         }
-        if (type == BASE_ONE) {
-            cameraTempFileOne = tempFile;
-        }
-        else {
-            cameraTempFileTwo = tempFile;
-        }
         // 指定调用相机拍照后照片的储存路径
         intent.putExtra(MediaStore.EXTRA_OUTPUT, mCurrentPhotoUri);
         intent.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
@@ -230,8 +254,22 @@ public class AuthLicenseFragment extends BaseFragment implements OnMediaItemClic
      * 图片裁剪
      */
     private void startCutImg(Uri uri, Uri cutUri) {
-        cutFileUriOne = cutUri;
+        cutFileUriFront = cutUri;
         startActivityForResult(getCutImageIntent(uri, cutUri), RC_CROP_IMG);
+    }
+
+    @Override
+    public void onResponseSuccess(Tasks task, BaseResponse response) {
+        super.onResponseSuccess(task, response);
+        if (task == Tasks.UPLOAD_FILE) {
+            if (type == BASE_ONE) {
+                fileFrontUrl = (String)response.getData();
+            }
+            else {
+                fileBackUrl = (String)response.getData();
+            }
+            initImage(type, true);
+        }
     }
 
     @Override
@@ -245,39 +283,40 @@ public class AuthLicenseFragment extends BaseFragment implements OnMediaItemClic
                 List<String> paths = Matisse.obtainPathResult(data);
                 if (null != paths && 0 != paths.size()) {
                     if (type == BASE_ONE) {
-                        cameraTempFileOne = new File(paths.get(0));
                         String fileName = "corp" + System.currentTimeMillis() + ".jpg";
-                        File file = new File(DirHelper.getPathCache(), fileName);
-                        cutFileUriOne = Uri.fromFile(file);
-                        startCutImg(uris.get(0), cutFileUriOne);
+                        cutFileFront = new File(DirHelper.getPathCache(), fileName);
+                        cutFileUriFront = Uri.fromFile(cutFileFront);
+                        startCutImg(uris.get(0), cutFileUriFront);
                     }
                     else {
-                        cameraTempFileTwo = new File(paths.get(0));
                         String fileName = "corp" + System.currentTimeMillis() + ".jpg";
-                        File file = new File(DirHelper.getPathCache(), fileName);
-                        cutFileUriTwo = Uri.fromFile(file);
-                        startCutImg(uris.get(0), cutFileUriTwo);
+                        cutFileBack = new File(DirHelper.getPathCache(), fileName);
+                        cutFileUriBack = Uri.fromFile(cutFileBack);
+                        startCutImg(uris.get(0), cutFileUriBack);
                     }
                 }
                 break;
             case RC_PICK_CAMERA:
                 if (type == BASE_ONE) {
-                    cameraTempFileOne = new File(mCurrentPhotoPath);
                     String fileName = "corp" + System.currentTimeMillis() + ".jpg";
-                    File file = new File(DirHelper.getPathCache(), fileName);
-                    cutFileUriOne = Uri.fromFile(file);
-                    startCutImg(mCurrentPhotoUri, cutFileUriOne);
+                    cutFileFront = new File(DirHelper.getPathCache(), fileName);
+                    cutFileUriFront = Uri.fromFile(cutFileFront);
+                    startCutImg(mCurrentPhotoUri, cutFileUriFront);
                 }
                 else {
-                    cameraTempFileTwo = new File(mCurrentPhotoPath);
                     String fileName = "corp" + System.currentTimeMillis() + ".jpg";
-                    File file = new File(DirHelper.getPathCache(), fileName);
-                    cutFileUriTwo = Uri.fromFile(file);
-                    startCutImg(mCurrentPhotoUri, cutFileUriTwo);
+                    cutFileBack = new File(DirHelper.getPathCache(), fileName);
+                    cutFileUriBack = Uri.fromFile(cutFileBack);
+                    startCutImg(mCurrentPhotoUri, cutFileUriBack);
                 }
                 break;
             case RC_CROP_IMG:
-                initImage(type, true);
+                if (type == BASE_ONE) {
+                    uploadImage(cutFileFront);
+                }
+                else {
+                    uploadImage(cutFileBack);
+                }
                 break;
             default:
                 break;

@@ -92,7 +92,8 @@ public class SelectDepartActivity extends BaseActivity implements BaseQuickAdapt
      * @param position
      */
     private void setDepartChild(int position) {
-        departTwoAdapter.setNewData(departs.get(position).getChildList());
+        departChilds = departs.get(position).getChildList();
+        departTwoAdapter.setNewData(departChilds);
     }
 
     @Override
@@ -106,7 +107,7 @@ public class SelectDepartActivity extends BaseActivity implements BaseQuickAdapt
             positionTwo = position;
             departTwoAdapter.setCurPosition(position);
             Intent intent = new Intent();
-            intent.putExtra(CommonData.KEY_DEPART_NAME, "科室名字");
+            intent.putExtra(CommonData.KEY_DEPART_BEAN, departChilds.get(position));
             setResult(RESULT_OK, intent);
             finish();
         }

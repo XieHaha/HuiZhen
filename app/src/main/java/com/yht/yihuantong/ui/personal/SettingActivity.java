@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.yht.frame.data.BaseData;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.LogUtils;
 import com.yht.frame.widgets.dialog.HintDialog;
@@ -91,5 +92,8 @@ public class SettingActivity extends BaseActivity {
      * 退出登录
      */
     private void exit() {
+        Intent intent = new Intent(BaseData.BASE_SIGN_OUT_ACTION);
+        intent.setPackage(getPackageName());
+        sendBroadcast(intent);
     }
 }

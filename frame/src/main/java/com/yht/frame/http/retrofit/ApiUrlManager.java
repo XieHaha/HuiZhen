@@ -1,13 +1,14 @@
 package com.yht.frame.http.retrofit;
 
 import com.yht.frame.data.BaseResponse;
+import com.yht.frame.data.base.DoctorInfoBean;
 import com.yht.frame.data.base.HospitalBean;
 import com.yht.frame.data.base.HospitalDepartBean;
 import com.yht.frame.data.base.LoginBean;
 import com.yht.frame.data.base.VerifyCodeBean;
 import com.yht.frame.data.bean.CombineBean;
 import com.yht.frame.data.bean.CooperateDocBean;
-import com.yht.frame.data.bean.CooperateHospitalDocBean;
+import com.yht.frame.data.base.CooperateHospitalBean;
 import com.yht.frame.data.bean.HospitalProductTypeBean;
 import com.yht.frame.data.bean.PatientBean;
 import com.yht.frame.data.bean.PatientCaseDetailBean;
@@ -102,6 +103,27 @@ public interface ApiUrlManager {
     @POST("/client/department/tree")
     Observable<BaseResponse<List<HospitalDepartBean>>> getDepartTree(@Header("token") String token,
             @Body Map<String, String> info);
+
+    /**
+     * 提交医生认证数据
+     *
+     * @param token token
+     * @param info  map参数
+     * @return 返回值
+     */
+    @POST("/client/doctor/auth")
+    Observable<BaseResponse<String>> submitDoctorAuth(@Header("token") String token, @Body Map<String, Object> info);
+
+    /**
+     * 获取已提交认证信息
+     *
+     * @param token  token
+     * @param mobile 手机号
+     * @return 返回值
+     */
+    @GET("/client/doctor/model/{mobile}")
+    Observable<BaseResponse<DoctorInfoBean>> getDoctorAuth(@Header("token") String token,
+            @Path("mobile") String mobile);
 
     /**
      * 首页广告
@@ -356,7 +378,7 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @POST("hospital/doctor/relation/internal/doctor/list")
-    Observable<BaseResponse<List<CooperateHospitalDocBean>>> getCooperateHospitalDoctorList(
+    Observable<BaseResponse<List<CooperateHospitalBean>>> getCooperateHospitalDoctorList(
             @Body Map<String, Object> info);
 
     /**

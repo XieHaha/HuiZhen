@@ -6,16 +6,11 @@ import android.content.Intent;
 
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
-import com.yht.frame.data.bean.CooperateDocBean;
-import com.yht.frame.data.bean.PatientBean;
 import com.yht.frame.ui.AppManager;
 import com.yht.frame.utils.SharePreferenceUtil;
-import com.yht.yihuantong.ui.login.LoginActivity;
-
-import org.litepal.crud.DataSupport;
+import com.yht.yihuantong.ui.login.LoginOptionsActivity;
 
 import java.util.Map;
-
 
 /**
  * @author 顿顿
@@ -28,10 +23,10 @@ public class LoginOutBroadcastReceiver extends BroadcastReceiver {
         //清除本地数据
         SharePreferenceUtil.clear(context);
         //清除数据库数据
-        DataSupport.deleteAll(PatientBean.class);
-        DataSupport.deleteAll(CooperateDocBean.class);
+        //        DataSupport.deleteAll(PatientBean.class);
+        //        DataSupport.deleteAll(CooperateDocBean.class);
         //极光推送
-//        JPushInterface.deleteAlias(context, 100);
+        //        JPushInterface.deleteAlias(context, 100);
         //删除环信会话列表
         Map<String, EMConversation> conversations = EMClient.getInstance().chatManager().getAllConversations();
         //删除和某个user会话，如果需要保留聊天记录，传false
@@ -41,7 +36,7 @@ public class LoginOutBroadcastReceiver extends BroadcastReceiver {
         //退出环信
         EMClient.getInstance().logout(true);
         AppManager.getInstance().finishAllActivity();
-        Intent intent1 = new Intent(context, LoginActivity.class);
+        Intent intent1 = new Intent(context, LoginOptionsActivity.class);
         intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent1);
     }

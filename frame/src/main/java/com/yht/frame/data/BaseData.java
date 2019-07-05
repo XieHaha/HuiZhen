@@ -19,6 +19,14 @@ public interface BaseData {
      */
     int BASE_TWO = 2;
     /**
+     * 男
+     */
+    int BASE_MALE = 1;
+    /**
+     * 女
+     */
+    int BASE_FEMALE = 2;
+    /**
      * 昵称的最大长度
      */
     int BASE_NICK_NAME_LENGTH = 20;
@@ -70,6 +78,10 @@ public interface BaseData {
      * 图片类型
      */
     String BASE_IMAGE_TYPE = "image/bmp&&image/gif&&image/jpeg&&image/png";
+    /**
+     * 登出广播
+     */
+    String BASE_SIGN_OUT_ACTION = "zyc.doctor.logout.action";
     /**
      * 微信登录APP_ID
      */

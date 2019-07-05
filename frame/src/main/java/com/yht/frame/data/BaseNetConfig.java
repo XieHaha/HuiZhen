@@ -33,4 +33,8 @@ public interface BaseNetConfig {
      * 微信下载页面
      */
     String BASE_WE_CHAT_DOWNLOAD_URL = "https://weixin.qq.com/";
+    /**
+     * 图片基础链接
+     */
+    String BASE_URL_IMAGE = "/file/download_file?filePath=";
 }

@@ -12,24 +12,24 @@ public final class GlideHelper {
     /**
      * 医生
      */
-    public static final RequestOptions OPTIONS = new RequestOptions();
+    private static final RequestOptions OPTIONS = new RequestOptions();
     /**
      * 患者
      */
-    public static final RequestOptions OPTIONS_P = new RequestOptions();
+    private static final RequestOptions OPTIONS_P = new RequestOptions();
     /**
      * 图片
      */
-    public static final RequestOptions OPTIONS_PIC = new RequestOptions();
+    private static final RequestOptions OPTIONS_PIC = new RequestOptions();
     /**
      * 图片
      */
-    public static final RequestOptions OPTIONS_HOSPITAL_PIC = new RequestOptions();
+    private static final RequestOptions OPTIONS_HOSPITAL_PIC = new RequestOptions();
 
     public static RequestOptions getOptions() {
         return OPTIONS.centerCrop()
-                      .placeholder(R.mipmap.ic_launcher_round)
-                      .error(R.mipmap.ic_launcher_round)
+                      .placeholder(R.mipmap.ic_default_header_r)
+                      .error(R.mipmap.ic_default_header_r)
                       .priority(Priority.NORMAL);
     }
 
@@ -38,8 +38,8 @@ public final class GlideHelper {
         RoundedCorners roundedCorners = new RoundedCorners(corner);
         return OPTIONS_P.optionalTransform(roundedCorners)
                         .centerCrop()
-                        .placeholder(R.mipmap.ic_launcher_round)
-                        .error(R.mipmap.ic_launcher_round)
+                        .placeholder(R.mipmap.ic_default_header_r)
+                        .error(R.mipmap.ic_default_header_r)
                         .priority(Priority.NORMAL);
     }
 
@@ -47,15 +47,11 @@ public final class GlideHelper {
         //设置图片圆角角度
         RoundedCorners roundedCorners = new RoundedCorners(corner);
         return OPTIONS_PIC.optionalTransform(roundedCorners)
-                          .placeholder(R.mipmap.ic_launcher_round)
-                          .error(R.mipmap.ic_launcher_round)
                           .priority(Priority.NORMAL);
     }
 
     public static RequestOptions getOptionsHospitalPic() {
         return OPTIONS_HOSPITAL_PIC.centerCrop()
-                                   .placeholder(R.mipmap.ic_launcher_round)
-                                   .error(R.mipmap.ic_launcher_round)
                                    .priority(Priority.NORMAL);
     }
 }

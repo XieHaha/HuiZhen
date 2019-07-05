@@ -11,6 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:text="@string/txt_cancel"
+        android:singleLine="true"
+        android:ellipsize="end"
         android:textColor="@color/txt_color_373d4d_1491fc_selector"
         android:textSize="@dimen/text_16"
         android:gravity="center_vertical"

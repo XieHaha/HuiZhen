@@ -5,6 +5,7 @@ import android.content.Context;
 import com.google.gson.JsonObject;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.Tasks;
+import com.yht.frame.data.base.DoctorInfoBean;
 import com.yht.frame.data.base.LoginBean;
 import com.yht.frame.data.base.HospitalBean;
 import com.yht.frame.data.bean.HospitalProductBean;
@@ -102,6 +103,33 @@ public class RequestUtils {
                        .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_DEPART_LIST, listener));
     }
 
+    public static void submitDoctorAuth(Context context, DoctorInfoBean bean, String token, String phone,
+            final ResponseListener<BaseResponse> listener) {
+        Map<String, Object> params = new HashMap<>(16);
+        params.put("certFront", bean.getCertFront());
+        params.put("certBack", bean.getCertBack());
+        params.put("doctorName", bean.getDoctorName());
+        params.put("doctorPhone", phone);
+        params.put("doctorPhoto", bean.getDoctorPhoto());
+        params.put("hospitalName", bean.getDirectHospitalName());
+        params.put("jobTitle", bean.getJobTitle());
+        params.put("departmentId", bean.getDirectDepartmentId());
+        params.put("doctorSex", bean.getDoctorSex());
+        RetrofitManager.getApiUrlManager()
+                       .submitDoctorAuth(token, params)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.SUBMIT_DOCTOR_AUTH, listener));
+    }
+
+    public static void getDoctorAuth(Context context, String token, String phone,
+            final ResponseListener<BaseResponse> listener) {
+        RetrofitManager.getApiUrlManager()
+                       .getDoctorAuth(token, phone)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_DOCTOR_AUTH, listener));
+    }
+
+    /******************************以上为新接口 2019年7月5日14:03:44*************************************/
     public static void getSplash(Context context, String client, String deviceSystem, String versionCode,
             final ResponseListener listener) {
         Map<String, String> params = new HashMap<>(16);
