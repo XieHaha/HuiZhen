@@ -183,6 +183,22 @@ public class AuthBaseFragment extends BaseFragment
     }
 
     /**
+     * 科室数据
+     */
+    private void initDepartData(boolean status) {
+        if (status) {
+            doctorInfoBean.setDirectDepartmentId(curDepart.getDepartmentId());
+            tvAuthBaseDepart.setText(curDepart.getDepartmentName());
+            tvAuthBaseDepart.setSelected(true);
+        }
+        else {
+            doctorInfoBean.setDirectDepartmentId(0);
+            tvAuthBaseDepart.setText(R.string.txt_select_hint);
+            tvAuthBaseDepart.setSelected(false);
+        }
+    }
+
+    /**
      * 判断
      */
     private void initNextButton() {
@@ -393,14 +409,13 @@ public class AuthBaseFragment extends BaseFragment
                 doctorInfoBean.setDirectHospitalCode(bean.getHospitalCode());
                 tvAuthBaseHospital.setText(bean.getHospitalName());
                 tvAuthBaseHospital.setSelected(true);
-                initNextButton();
+                //重新选择医院后  需初始化科室
+                initDepartData(false);
                 break;
             //科室选择
             case REQUEST_CODE_DEPART:
                 curDepart = (HospitalDepartChildBean)data.getSerializableExtra(CommonData.KEY_DEPART_BEAN);
-                doctorInfoBean.setDirectDepartmentId(curDepart.getDepartmentId());
-                tvAuthBaseDepart.setText(curDepart.getDepartmentName());
-                tvAuthBaseDepart.setSelected(true);
+                initDepartData(true);
                 initNextButton();
                 break;
             default:
