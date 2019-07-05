@@ -223,7 +223,7 @@ public abstract class BaseActivity<T> extends RxAppCompatActivity
      * @return
      */
     public LoginBean getLoginBean() {
-        String userStr = (String)SharePreferenceUtil.getObject(this, CommonData.KEY_LOGIN_SUCCESS_BEAN, "");
+        String userStr = (String)SharePreferenceUtil.getObject(this, CommonData.KEY_LOGIN_BEAN, "");
         if (!TextUtils.isEmpty(userStr)) {
             loginBean = new Gson().fromJson(userStr, LoginBean.class);
         }

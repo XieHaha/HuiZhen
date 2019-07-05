@@ -27,6 +27,7 @@ import okio.BufferedSource;
 public class LogInterceptor implements Interceptor {
     private static final String TAG = "ZYC->HTTP";
     private static final Charset UTF8 = Charset.forName("UTF-8");
+    private String fileType = "multipart";
 
     @Override
     public Response intercept(Chain chain) throws IOException {
@@ -50,7 +51,7 @@ public class LogInterceptor implements Interceptor {
             if (contentType != null) {
                 charset = contentType.charset(UTF8);
             }
-            if (isPlaintext(buffer)) {
+            if (isPlaintext(buffer) && !fileType.equals(contentType.type())) {
                 LogUtils.i(TAG, "params:" + buffer.readString(charset));
             }
             else {

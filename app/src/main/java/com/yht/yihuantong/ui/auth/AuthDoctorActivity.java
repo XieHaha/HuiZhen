@@ -12,13 +12,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.yht.frame.data.DocAuthStatus;
+import com.yht.frame.data.base.DoctorAuthBean;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.SharePreferenceUtil;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.auth.fragment.AuthBaseFragment;
 import com.yht.yihuantong.ui.auth.fragment.AuthLicenseFragment;
 import com.yht.yihuantong.ui.auth.fragment.AuthResultFragment;
-import com.yht.yihuantong.ui.auth.listener.OnStepListener;
+import com.yht.yihuantong.ui.auth.listener.OnAuthStepListener;
 
 import butterknife.BindView;
 
@@ -27,7 +28,7 @@ import butterknife.BindView;
  * @date 19/6/3 16:24
  * @des 医生认证
  */
-public class AuthDoctorActivity extends BaseActivity implements OnStepListener {
+public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListener {
     @BindView(R.id.iv_base)
     ImageView ivAuthBase;
     @BindView(R.id.tv_base)
@@ -251,26 +252,16 @@ public class AuthDoctorActivity extends BaseActivity implements OnStepListener {
     }
 
     @Override
-    public void onStepOne() {
-        tabAuthLicenseView();
+    public void onAuthOne(DoctorAuthBean doctorAuthBean) {
+
     }
 
     @Override
-    public void onStepTwo(int type) {
-        switch (type) {
-            case BASE_ONE:
-                tabAuthBaseView();
-                break;
-            case BASE_TWO:
-                tabAuthResultView(DocAuthStatus.AUTH_WAITTING);
-                break;
-            default:
-                break;
-        }
+    public void onAuthTwo(int type) {
     }
 
     @Override
-    public void onStepThree() {
+    public void onAuthThree() {
     }
 
     /**

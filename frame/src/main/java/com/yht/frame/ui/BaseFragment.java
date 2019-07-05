@@ -18,13 +18,17 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import com.google.gson.Gson;
 import com.yht.frame.R;
 import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
+import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
+import com.yht.frame.data.base.LoginBean;
 import com.yht.frame.http.listener.ResponseListener;
 import com.yht.frame.permission.OnPermissionCallback;
 import com.yht.frame.permission.PermissionHelper;
+import com.yht.frame.utils.SharePreferenceUtil;
 import com.yht.frame.utils.ToastUtil;
 
 import java.util.ArrayList;
@@ -47,6 +51,10 @@ public abstract class BaseFragment extends Fragment
      * 动态权限
      */
     public PermissionHelper permissionHelper;
+    /**
+     * 登录数据
+     */
+    protected LoginBean loginBean;
     /**
      * 选择图片
      */
@@ -86,6 +94,7 @@ public abstract class BaseFragment extends Fragment
                 add(getString(R.string.txt_photo));
             }
         };
+        loginBean = getLoginBean();
         init(view, savedInstanceState);
         return view;
     }
@@ -93,6 +102,19 @@ public abstract class BaseFragment extends Fragment
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+    }
+
+    /**
+     * 初始化login数据
+     *
+     * @return
+     */
+    public LoginBean getLoginBean() {
+        String userStr = (String)SharePreferenceUtil.getObject(getActivity(), CommonData.KEY_LOGIN_BEAN, "");
+        if (!TextUtils.isEmpty(userStr)) {
+            loginBean = new Gson().fromJson(userStr, LoginBean.class);
+        }
+        return loginBean;
     }
 
     /**

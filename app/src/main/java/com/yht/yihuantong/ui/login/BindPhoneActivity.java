@@ -100,7 +100,7 @@ public class BindPhoneActivity extends BaseActivity {
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         if (getIntent() != null) {
-            tempLoginBean = (LoginBean)getIntent().getSerializableExtra(CommonData.KEY_LOGIN_SUCCESS_BEAN);
+            tempLoginBean = (LoginBean)getIntent().getSerializableExtra(CommonData.KEY_LOGIN_BEAN);
         }
     }
 

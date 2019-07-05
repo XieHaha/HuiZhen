@@ -23,6 +23,7 @@ import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
@@ -41,7 +42,7 @@ public interface ApiUrlManager {
      * @param info map参数
      * @return 返回
      */
-    @POST("wx/login")
+    @POST("/client/wx/login")
     Observable<BaseResponse<LoginBean>> weChatLogin(@Body Map<String, String> info);
 
     /**
@@ -50,7 +51,7 @@ public interface ApiUrlManager {
      * @param info map参数
      * @return 返回
      */
-    @POST("wx/bind")
+    @POST("/client/wx/bind")
     Observable<BaseResponse<LoginBean>> weChatBind(@Body Map<String, String> info);
 
     /**
@@ -59,7 +60,7 @@ public interface ApiUrlManager {
      * @param info map参数
      * @return 返回值
      */
-    @POST("get-verify-code")
+    @POST("/client/get-verify-code")
     Observable<BaseResponse<VerifyCodeBean>> getVerifyCode(@Body Map<String, String> info);
 
     /**
@@ -68,18 +69,19 @@ public interface ApiUrlManager {
      * @param info map参数
      * @return 返回值
      */
-    @POST("confirm-verify-code")
+    @POST("/client/confirm-verify-code")
     Observable<BaseResponse<LoginBean>> login(@Body Map<String, String> info);
 
     /**
      * 上传图片
      *
-     * @param file 图片
+     * @param token token
+     * @param file  图片
      * @return 返回值
      */
     @Multipart
-    @POST("file/upload")
-    Observable<BaseResponse<String>> uploadImg(@Part MultipartBody.Part file);
+    @POST("/file/upload_file")
+    Observable<BaseResponse<String>> uploadImg(@Header("token") String token, @Part MultipartBody.Part file);
     /********************************分隔线*********************************/
     /**
      * 首页广告

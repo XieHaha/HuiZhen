@@ -92,7 +92,7 @@ public class LoginOptionsActivity extends BaseActivity {
         //判断是否绑定手机号
         if (TextUtils.isEmpty(loginBean.getMobile())) {
             Intent intent = new Intent(this, BindPhoneActivity.class);
-            intent.putExtra(CommonData.KEY_LOGIN_SUCCESS_BEAN, loginBean);
+            intent.putExtra(CommonData.KEY_LOGIN_BEAN, loginBean);
             startActivityForResult(intent, REQUEST_CODE_BIND_STATUS);
         }
         else {

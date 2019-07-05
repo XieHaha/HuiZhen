@@ -39,7 +39,7 @@ public interface CommonData {
     /**
      * 登录成功返回数据
      */
-    String KEY_LOGIN_SUCCESS_BEAN = "key_login_success_bean";
+    String KEY_LOGIN_BEAN = "key_login_success_bean";
     /**
      * 微信登录成功返回数据
      */

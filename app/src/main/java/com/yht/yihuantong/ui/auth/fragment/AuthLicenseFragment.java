@@ -21,7 +21,7 @@ import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ZycApplication;
-import com.yht.yihuantong.ui.auth.listener.OnStepListener;
+import com.yht.yihuantong.ui.auth.listener.OnAuthStepListener;
 import com.yht.yihuantong.ui.dialog.DownDialog;
 import com.yht.yihuantong.ui.dialog.listener.OnMediaItemClickListener;
 import com.yht.yihuantong.utils.glide.GlideHelper;
@@ -144,12 +144,12 @@ public class AuthLicenseFragment extends BaseFragment implements OnMediaItemClic
                 break;
             case R.id.tv_auth_license_last:
                 if (onAuthStepListener != null) {
-                    onAuthStepListener.onStepTwo(BASE_ONE);
+                    onAuthStepListener.onAuthTwo(BASE_ONE);
                 }
                 break;
             case R.id.tv_auth_license_submit:
                 if (tvAuthLicenseSubmit.isSelected() && onAuthStepListener != null) {
-                    onAuthStepListener.onStepTwo(BASE_TWO);
+                    onAuthStepListener.onAuthTwo(BASE_TWO);
                 }
                 break;
             case R.id.iv_delete_one:
@@ -297,9 +297,9 @@ public class AuthLicenseFragment extends BaseFragment implements OnMediaItemClic
         }
     }
 
-    private OnStepListener onAuthStepListener;
+    private OnAuthStepListener onAuthStepListener;
 
-    public void setOnAuthStepListener(OnStepListener onAuthStepListener) {
+    public void setOnAuthStepListener(OnAuthStepListener onAuthStepListener) {
         this.onAuthStepListener = onAuthStepListener;
     }
 }

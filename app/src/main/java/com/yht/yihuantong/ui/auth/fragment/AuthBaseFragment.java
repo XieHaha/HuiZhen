@@ -20,7 +20,11 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.yht.frame.api.DirHelper;
+import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
+import com.yht.frame.data.Tasks;
+import com.yht.frame.data.base.DoctorAuthBean;
+import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.permission.Permission;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
@@ -31,7 +35,7 @@ import com.yht.yihuantong.R;
 import com.yht.yihuantong.ZycApplication;
 import com.yht.yihuantong.ui.auth.SelectDepartActivity;
 import com.yht.yihuantong.ui.auth.SelectHospitalByAuthActivity;
-import com.yht.yihuantong.ui.auth.listener.OnStepListener;
+import com.yht.yihuantong.ui.auth.listener.OnAuthStepListener;
 import com.yht.yihuantong.ui.dialog.DownDialog;
 import com.yht.yihuantong.ui.dialog.listener.OnMediaItemClickListener;
 import com.yht.yihuantong.ui.dialog.listener.OnTitleItemClickListener;
@@ -81,7 +85,11 @@ public class AuthBaseFragment extends BaseFragment
     RadioButton rbFemale;
     @BindView(R.id.rg_sex)
     RadioGroup rgSex;
-    private String name, hospital, depart, title;
+    /**
+     * 上传数据mondle
+     */
+    private DoctorAuthBean doctorAuthBean;
+    private String name, sex, hospital, depart, title, doctorPhoto;
     private Uri cutFileUri;
     private File cameraTempFile, cutFile;
     private Uri mCurrentPhotoUri;
@@ -112,6 +120,7 @@ public class AuthBaseFragment extends BaseFragment
                 add(getString(R.string.txt_title_hospitalization__physician));
             }
         };
+        doctorAuthBean = new DoctorAuthBean();
     }
 
     @Override
@@ -129,10 +138,19 @@ public class AuthBaseFragment extends BaseFragment
     }
 
     /**
+     * 上传图片
+     *
+     * @param file
+     */
+    private void uploadImage(File file) {
+        RequestUtils.uploadImg(getContext(), loginBean.getToken(), file, this);
+    }
+
+    /**
      * 判断
      */
     private void initNextButton() {
-        if (cutFile == null || TextUtils.isEmpty(name) || rgSex.getCheckedRadioButtonId() == -1 ||
+        if (TextUtils.isEmpty(doctorPhoto) || TextUtils.isEmpty(name) || rgSex.getCheckedRadioButtonId() == -1 ||
             TextUtils.isEmpty(hospital) || TextUtils.isEmpty(depart) || TextUtils.isEmpty(title)) {
             tvAuthBaseNext.setSelected(false);
         }
@@ -176,7 +194,13 @@ public class AuthBaseFragment extends BaseFragment
                 break;
             case R.id.tv_auth_base_next:
                 if (tvAuthBaseNext.isSelected() && onAuthStepListener != null) {
-                    onAuthStepListener.onStepOne();
+                    doctorAuthBean.setDoctorName(name);
+                    doctorAuthBean.setDoctorPhoto(doctorPhoto);
+                    doctorAuthBean.setHospitalName(hospital);
+                    doctorAuthBean.setJobTitle(title);
+                    doctorAuthBean.setDepartmentId(depart);
+                    doctorAuthBean.setDoctorSex(sex);
+                    onAuthStepListener.onAuthOne(doctorAuthBean);
                 }
                 break;
             default:
@@ -214,6 +238,20 @@ public class AuthBaseFragment extends BaseFragment
         tvAuthBaseTitle.setText(title);
         tvAuthBaseTitle.setSelected(true);
         initNextButton();
+    }
+
+    @Override
+    public void onResponseSuccess(Tasks task, BaseResponse response) {
+        super.onResponseSuccess(task, response);
+        //图片上传成功
+        if (task == Tasks.UPLOAD_FILE) {
+            Glide.with(this)
+                 .load(cutFileUri)
+                 .apply(GlideHelper.getOptionsPic(BaseUtils.dp2px(getContext(), 4)))
+                 .into(ivAuthBaseImg);
+            doctorPhoto = (String)response.getData();
+            initNextButton();
+        }
     }
 
     /**
@@ -288,12 +326,7 @@ public class AuthBaseFragment extends BaseFragment
                 startCutImg(mCurrentPhotoUri, Uri.fromFile(cutFile));
                 break;
             case RC_CROP_IMG:
-                //裁剪完成，上传图片
-                Glide.with(this)
-                     .load(cutFileUri)
-                     .apply(GlideHelper.getOptionsPic(BaseUtils.dp2px(getContext(), 4)))
-                     .into(ivAuthBaseImg);
-                initNextButton();
+                uploadImage(cutFile);
                 break;
             //医院选择
             case REQUEST_CODE_HOSPITAL:
@@ -327,9 +360,9 @@ public class AuthBaseFragment extends BaseFragment
         }
     }
 
-    private OnStepListener onAuthStepListener;
+    private OnAuthStepListener onAuthStepListener;
 
-    public void setOnAuthStepListener(OnStepListener onAuthStepListener) {
+    public void setOnAuthStepListener(OnAuthStepListener onAuthStepListener) {
         this.onAuthStepListener = onAuthStepListener;
     }
 }

@@ -122,7 +122,7 @@ public class ZycApplication extends LitePalApplication {
     }
 
     public LoginBean getLoginSuccessBean() {
-        String userStr = (String)SharePreferenceUtil.getObject(this, CommonData.KEY_LOGIN_SUCCESS_BEAN, "");
+        String userStr = (String)SharePreferenceUtil.getObject(this, CommonData.KEY_LOGIN_BEAN, "");
         if (!TextUtils.isEmpty(userStr)) {
             loginSuccessBean = new Gson().fromJson(userStr, LoginBean.class);
         }
@@ -131,14 +131,14 @@ public class ZycApplication extends LitePalApplication {
 
     public void setLoginSuccessBean(LoginBean loginSuccessBean) {
         this.loginSuccessBean = loginSuccessBean;
-        SharePreferenceUtil.putObject(this, CommonData.KEY_LOGIN_SUCCESS_BEAN, loginSuccessBean);
+        SharePreferenceUtil.putObject(this, CommonData.KEY_LOGIN_BEAN, loginSuccessBean);
     }
 
     /**
      * 清楚登录数据
      */
     public void clearLoginSuccessBean() {
-        SharePreferenceUtil.remove(this, CommonData.KEY_LOGIN_SUCCESS_BEAN);
+        SharePreferenceUtil.remove(this, CommonData.KEY_LOGIN_BEAN);
     }
 
     /**

@@ -73,11 +73,12 @@ public class RequestUtils {
                        .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.LOGIN_AND_REGISTER, listener));
     }
 
-    public static void uploadImg(Context context, File file, final ResponseListener<BaseResponse> listener) {
+    public static void uploadImg(Context context, String token, File file,
+            final ResponseListener<BaseResponse> listener) {
         RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
         MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), reqFile);
         RetrofitManager.getApiUrlManager()
-                       .uploadImg(body)
+                       .uploadImg(token, body)
                        .compose(RxJavaHelper.observableIO2Main(context))
                        .subscribe(new AbstractLoadViewObserver<>(context, Tasks.UPLOAD_FILE, listener));
     }
@@ -578,6 +579,12 @@ public class RequestUtils {
                        .agreePatientApply(merchant)
                        .compose(RxJavaHelper.observableIO2Main(context))
                        .subscribe(new AbstractLoadViewObserver<>(context, Tasks.AGREE_PATIENT_APPLY, listener));
+    }
+
+    private static Map<String, String> addHeader(String token) {
+        Map<String, String> header = new HashMap<>(16);
+        header.put("token", token);
+        return header;
     }
 }
 
