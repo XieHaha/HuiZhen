@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.DocAuthStatus;
 import com.yht.frame.data.Tasks;
-import com.yht.frame.data.base.DoctorInfoBean;
+import com.yht.frame.data.base.DoctorAuthBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.SharePreferenceUtil;
@@ -79,7 +79,7 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
     /**
      * 认证数据
      */
-    private DoctorInfoBean doctorAuthBean;
+    private DoctorAuthBean doctorAuthBean;
     /**
      * 当前碎片
      */
@@ -130,7 +130,7 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
             tabAuthBaseView();
         }
         else {
-            tabAuthResultView(curAuthStatus);
+            tabAuthResultView();
         }
     }
 
@@ -146,7 +146,7 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
             transaction.show(authBaseFragment);
             authBaseFragment.onResume();
         }
-        authBaseFragment.setDoctorInfoBean(doctorAuthBean);
+        authBaseFragment.setDoctorAuthBean(doctorAuthBean);
         transaction.commitAllowingStateLoss();
         selectTab(BASE_ZERO);
     }
@@ -168,13 +168,12 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
         selectTab(BASE_ONE);
     }
 
-    private void tabAuthResultView(int curAuthStatus) {
+    private void tabAuthResultView() {
         transaction = fragmentManager.beginTransaction();
         hideAll(transaction);
         if (authResultFragment == null) {
             authResultFragment = new AuthResultFragment();
             authResultFragment.setOnAuthStepListener(this);
-            authResultFragment.setCurAuthStatus(curAuthStatus);
             transaction.add(R.id.layout_frame_root, authResultFragment);
         }
         else {
@@ -286,10 +285,10 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
                 loginBean.setApprovalStatus(DocAuthStatus.AUTH_WAITTING);
                 ZycApplication.getInstance().setLoginSuccessBean(loginBean);
                 //跳转到认证结果
-                tabAuthResultView(DocAuthStatus.AUTH_WAITTING);
+                tabAuthResultView();
                 break;
             case GET_DOCTOR_AUTH:
-                doctorAuthBean = (DoctorInfoBean)response.getData();
+                doctorAuthBean = (DoctorAuthBean)response.getData();
                 tabAuthBaseView();
                 break;
             default:
@@ -298,13 +297,13 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
     }
 
     @Override
-    public void onAuthOne(DoctorInfoBean bean) {
+    public void onAuthOne(DoctorAuthBean bean) {
         this.doctorAuthBean = bean;
         tabAuthLicenseView();
     }
 
     @Override
-    public void onAuthTwo(int type, DoctorInfoBean bean) {
+    public void onAuthTwo(int type, DoctorAuthBean bean) {
         if (type == BASE_ONE) {
             tabAuthBaseView();
         }

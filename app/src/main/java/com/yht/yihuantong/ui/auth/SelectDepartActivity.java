@@ -83,6 +83,7 @@ public class SelectDepartActivity extends BaseActivity implements BaseQuickAdapt
      * 获取科室树
      */
     private void getDepartTree() {
+        //如果是用户自己添加的医院，code可以为空
         RequestUtils.getDepartTree(this, hospitalCode, loginBean.getToken(), this);
     }
 

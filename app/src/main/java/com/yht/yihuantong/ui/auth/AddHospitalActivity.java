@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.yht.frame.data.CommonData;
+import com.yht.frame.data.base.HospitalBean;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.widgets.edittext.AbstractTextWatcher;
 import com.yht.frame.widgets.edittext.EditTextLayout;
@@ -68,8 +69,10 @@ public class AddHospitalActivity extends BaseActivity {
         }
         hideSoftInputFromWindow(etHospital.getEditText());
         String hospitalName = etHospital.getEditText().getText().toString().trim();
+        HospitalBean bean = new HospitalBean();
+        bean.setHospitalName(hospitalName);
         Intent intent = new Intent();
-        intent.putExtra(CommonData.KEY_HOSPITAL_NAME, hospitalName);
+        intent.putExtra(CommonData.KEY_HOSPITAL_BEAN, bean);
         setResult(RESULT_OK, intent);
         finish();
     }

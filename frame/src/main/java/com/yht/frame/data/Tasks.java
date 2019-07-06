@@ -42,6 +42,10 @@ WE_CHAT_LOGIN,
      */
     GET_DOCTOR_AUTH,
     /**
+     * 获取医生个人详情
+     */
+    GET_DOCTOR_INFO,
+    /**
      * 数据字典
      */
     DATA_JOB_TITLE,

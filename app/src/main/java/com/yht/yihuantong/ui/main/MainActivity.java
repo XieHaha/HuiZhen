@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
 import com.yht.frame.data.BaseData;
+import com.yht.frame.data.CommonData;
 import com.yht.frame.data.bean.PatientBean;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.LogUtils;
@@ -123,13 +124,18 @@ public class MainActivity extends BaseActivity {
      * 登录环信聊天
      */
     private void loginEaseChat() {
+        boolean isLogin = false;
+        if (getIntent() != null) {
+            isLogin = getIntent().getBooleanExtra(CommonData.KEY_EASE_LOGIN_STATUS, false);
+        }
+        //避免重复登录
+        if (isLogin) {
+            return;
+        }
         EMClient.getInstance().login("15828456584_d", BaseData.BASE_EASE_DEFAULT_PWD, new EMCallBack() {
             @Override
             public void onSuccess() {
-                runOnUiThread(() -> {
-                    EMClient.getInstance().chatManager().loadAllConversations();
-                    LogUtils.i(TAG, getString(R.string.txt_login_ease_success));
-                });
+                runOnUiThread(() -> LogUtils.i(TAG, getString(R.string.txt_login_ease_success)));
             }
 
             @Override

@@ -88,13 +88,13 @@ public abstract class BaseFragment extends Fragment
         }
         unbinder = ButterKnife.bind(this, view);
         permissionHelper = PermissionHelper.getInstance(getActivity());
+        loginBean = getLoginBean();
         data = new ArrayList<String>() {
             {
                 add(getString(R.string.txt_camera));
                 add(getString(R.string.txt_photo));
             }
         };
-        loginBean = getLoginBean();
         init(view, savedInstanceState);
         return view;
     }
@@ -138,7 +138,6 @@ public abstract class BaseFragment extends Fragment
     /**
      * 方法回调顺序
      * 1.initView
-     * 2.initClss
      * 3.initData
      * 4.initListener
      *

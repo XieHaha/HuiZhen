@@ -34,10 +34,7 @@
                     android:layout_height="26dp"
                     android:textColor="@color/color_fd8134"
                     android:textSize="@dimen/text_14"
-                    android:background="@drawable/corner15_stroke1_fd8134"
-                    android:text="科室"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp"
+                    tools:text="科室"
                     android:gravity="center" />
 
                 <TextView
@@ -46,7 +43,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/color_6a6f80"
                     android:textSize="@dimen/text_15"
-                    android:text="医院"
+                    tools:text="医院"
                     android:layout_below="@id/tv_personal_depart"
                     android:layout_marginTop="9dp" />
 
@@ -78,7 +75,7 @@
                             android:layout_height="wrap_content"
                             android:textColor="@color/color_373d4d"
                             android:textSize="@dimen/text_20"
-                            android:text="0"
+                            android:text="@string/txt_max_num"
                             android:textStyle="bold" />
 
                         <TextView
@@ -105,7 +102,7 @@
                             android:layout_height="wrap_content"
                             android:textColor="@color/color_373d4d"
                             android:textSize="@dimen/text_20"
-                            android:text="0"
+                            android:text="@string/txt_max_num"
                             android:textStyle="bold" />
 
                         <TextView
@@ -132,7 +129,7 @@
                             android:layout_height="wrap_content"
                             android:textColor="@color/color_373d4d"
                             android:textSize="@dimen/text_20"
-                            android:text="0"
+                            android:text="@string/txt_max_num"
                             android:textStyle="bold" />
 
                         <TextView

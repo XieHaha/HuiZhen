@@ -1,6 +1,6 @@
 package com.yht.yihuantong.ui.auth.listener;
 
-import com.yht.frame.data.base.DoctorInfoBean;
+import com.yht.frame.data.base.DoctorAuthBean;
 
 /**
  * @author 顿顿
@@ -13,7 +13,7 @@ public interface OnAuthStepListener {
      *
      * @param doctorAuthBean 回传数据
      */
-    void onAuthOne(DoctorInfoBean doctorAuthBean);
+    void onAuthOne(DoctorAuthBean doctorAuthBean);
 
     /**
      * 执照
@@ -21,7 +21,7 @@ public interface OnAuthStepListener {
      * @param type           (意图  上一步or提交)
      * @param doctorAuthBean 回传数据
      */
-    void onAuthTwo(int type, DoctorInfoBean doctorAuthBean);
+    void onAuthTwo(int type, DoctorAuthBean doctorAuthBean);
 
     /**
      * 重新认证

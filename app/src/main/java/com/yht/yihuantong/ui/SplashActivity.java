@@ -113,7 +113,9 @@ public class SplashActivity extends BaseActivity implements DocAuthStatus {
                     break;
                 case AUTH_SUCCESS:
                 default:
-                    startActivity(new Intent(this, MainActivity.class));
+                    Intent intent = new Intent(this, MainActivity.class);
+                    intent.putExtra(CommonData.KEY_EASE_LOGIN_STATUS, true);
+                    startActivity(intent);
                     finish();
                     overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_fade_out);
                     break;

@@ -1,7 +1,5 @@
 package com.yht.yihuantong.ui.auth.fragment;
 
-import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -31,10 +29,6 @@ public class AuthResultFragment extends BaseFragment {
     TextView tvAuthResultContact;
     @BindView(R.id.tv_auth_result_submit)
     TextView tvAuthResultSubmit;
-    /**
-     * 当前认证状态
-     */
-    private int curAuthStatus;
 
     @Override
     public int getLayoutID() {
@@ -42,8 +36,14 @@ public class AuthResultFragment extends BaseFragment {
     }
 
     @Override
-    public void initView(View view, @NonNull Bundle savedInstanceState) {
-        super.initView(view, savedInstanceState);
+    public void onResume() {
+        super.onResume();
+        loginBean = getLoginBean();
+        initAuthStatus();
+    }
+
+    private void initAuthStatus() {
+        int curAuthStatus = loginBean.getApprovalStatus();
         if (curAuthStatus == DocAuthStatus.AUTH_FAILD) {
             tvAuthResultStatus.setText(R.string.txt_review_failure);
             tvAuthResultTxt.setText(R.string.txt_review_failure_hint);
@@ -58,10 +58,6 @@ public class AuthResultFragment extends BaseFragment {
             tvAuthResultSubmit.setVisibility(View.GONE);
             ivAuthResultImage.setImageResource(R.mipmap.pic_auth_waiting);
         }
-    }
-
-    public void setCurAuthStatus(int curAuthStatus) {
-        this.curAuthStatus = curAuthStatus;
     }
 
     @OnClick({ R.id.tv_auth_result_contact, R.id.tv_auth_result_submit })

@@ -20,7 +20,7 @@ import com.bumptech.glide.Glide;
 import com.yht.frame.api.DirHelper;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.Tasks;
-import com.yht.frame.data.base.DoctorInfoBean;
+import com.yht.frame.data.base.DoctorAuthBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.permission.Permission;
 import com.yht.frame.ui.BaseFragment;
@@ -66,7 +66,7 @@ public class AuthLicenseFragment extends BaseFragment implements OnMediaItemClic
     /**
      * 上传数据mondle
      */
-    private DoctorInfoBean doctorInfoBean;
+    private DoctorAuthBean doctorAuthBean;
     /**
      * 裁剪前的uri
      */
@@ -86,7 +86,7 @@ public class AuthLicenseFragment extends BaseFragment implements OnMediaItemClic
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-        if (doctorInfoBean != null && !TextUtils.isEmpty(doctorInfoBean.getCertFront())) {
+        if (doctorAuthBean != null && !TextUtils.isEmpty(doctorAuthBean.getCertFront())) {
             initPage();
         }
     }
@@ -100,8 +100,8 @@ public class AuthLicenseFragment extends BaseFragment implements OnMediaItemClic
         RequestUtils.uploadImg(getContext(), loginBean.getToken(), file, this);
     }
 
-    public void setDoctorAuthBean(DoctorInfoBean doctorInfoBean) {
-        this.doctorInfoBean = doctorInfoBean;
+    public void setDoctorAuthBean(DoctorAuthBean doctorInfoBean) {
+        this.doctorAuthBean = doctorInfoBean;
     }
 
     /**
@@ -109,11 +109,11 @@ public class AuthLicenseFragment extends BaseFragment implements OnMediaItemClic
      */
     private void initPage() {
         Glide.with(this)
-             .load(ImageUrlUtil.append(doctorInfoBean.getCertFront()))
+             .load(ImageUrlUtil.append(doctorAuthBean.getCertFront()))
              .apply(GlideHelper.getOptionsPic(BaseUtils.dp2px(getContext(), 4)))
              .into(ivUploadOne);
         Glide.with(this)
-             .load(ImageUrlUtil.append(doctorInfoBean.getCertBack()))
+             .load(ImageUrlUtil.append(doctorAuthBean.getCertBack()))
              .apply(GlideHelper.getOptionsPic(BaseUtils.dp2px(getContext(), 4)))
              .into(ivUploadTwo);
         ivDeleteOne.setVisibility(View.VISIBLE);
@@ -168,7 +168,7 @@ public class AuthLicenseFragment extends BaseFragment implements OnMediaItemClic
      * 判断 下一步按钮
      */
     private void initNextButton() {
-        if (TextUtils.isEmpty(doctorInfoBean.getCertFront()) || TextUtils.isEmpty(doctorInfoBean.getCertBack())) {
+        if (TextUtils.isEmpty(doctorAuthBean.getCertFront()) || TextUtils.isEmpty(doctorAuthBean.getCertBack())) {
             tvAuthLicenseSubmit.setSelected(false);
         }
         else {
@@ -196,7 +196,7 @@ public class AuthLicenseFragment extends BaseFragment implements OnMediaItemClic
                 break;
             case R.id.tv_auth_license_submit:
                 if (tvAuthLicenseSubmit.isSelected() && onAuthStepListener != null) {
-                    onAuthStepListener.onAuthTwo(BASE_TWO, doctorInfoBean);
+                    onAuthStepListener.onAuthTwo(BASE_TWO, doctorAuthBean);
                 }
                 break;
             case R.id.iv_delete_one:
@@ -278,10 +278,10 @@ public class AuthLicenseFragment extends BaseFragment implements OnMediaItemClic
         super.onResponseSuccess(task, response);
         if (task == Tasks.UPLOAD_FILE) {
             if (type == BASE_ONE) {
-                doctorInfoBean.setCertFront((String)response.getData());
+                doctorAuthBean.setCertFront((String)response.getData());
             }
             else {
-                doctorInfoBean.setCertBack((String)response.getData());
+                doctorAuthBean.setCertBack((String)response.getData());
             }
             initImage(type, true);
         }

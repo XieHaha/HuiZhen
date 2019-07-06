@@ -12,10 +12,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
+import com.bumptech.glide.Glide;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.permission.Permission;
 import com.yht.frame.ui.BaseFragment;
+import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.ToastUtil;
+import com.yht.yihuantong.utils.glide.GlideHelper;
+import com.yht.yihuantong.utils.glide.ImageUrlUtil;
 import com.yzq.zxinglibrary.android.CaptureActivity;
 import com.yzq.zxinglibrary.common.Constant;
 import com.yht.yihuantong.R;
@@ -71,9 +75,20 @@ public class WorkerFragment extends BaseFragment {
         super.initView(view, savedInstanceState);
         statusBarFix.setLayoutParams(
                 new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getStateBarHeight(getActivity())));
-        publicMainTitle.setText("医生");
         publicMainTitleScan.setVisibility(View.VISIBLE);
         initFlipper();
+    }
+
+    @Override
+    public void initData(@NonNull Bundle savedInstanceState) {
+        super.initData(savedInstanceState);
+        publicMainTitle.setText(loginBean.getDoctorName());
+        tvPersonalDepart.setText(loginBean.getDoctorCode());
+        tvPersonalHospital.setText(loginBean.getDoctorCode());
+        Glide.with(this)
+             .load(ImageUrlUtil.append(loginBean.getPhoto()))
+             .apply(GlideHelper.getOptions(BaseUtils.dp2px(getContext(), 4)))
+             .into(ivPersonalImage);
     }
 
     /**

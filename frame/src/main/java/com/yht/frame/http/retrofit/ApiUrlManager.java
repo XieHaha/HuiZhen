@@ -2,6 +2,7 @@ package com.yht.frame.http.retrofit;
 
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.base.CooperateHospitalBean;
+import com.yht.frame.data.base.DoctorAuthBean;
 import com.yht.frame.data.base.DoctorInfoBean;
 import com.yht.frame.data.base.HospitalBean;
 import com.yht.frame.data.base.HospitalDepartBean;
@@ -122,15 +123,25 @@ public interface ApiUrlManager {
      * @param mobile 手机号
      * @return 返回值
      */
+    @GET("/client/doctor/authInfo/{mobile}")
+    Observable<BaseResponse<DoctorAuthBean>> getDoctorAuth(@Header("token") String token,
+            @Path("mobile") String mobile);
+    /**
+     * 获取医生个人详情
+     *
+     * @param token  token
+     * @param mobile 手机号
+     * @return 返回值
+     */
     @GET("/client/doctor/model/{mobile}")
-    Observable<BaseResponse<DoctorInfoBean>> getDoctorAuth(@Header("token") String token,
+    Observable<BaseResponse<DoctorInfoBean>> getDoctorInfo(@Header("token") String token,
             @Path("mobile") String mobile);
 
     /**
      * 获取指定类型的字典数据
      *
      * @param token token
-     * @param info  参数
+     * @param info  参数 比如jobTitle、depart等
      * @return 返回值
      */
     @GET("/dm/query-by-type")

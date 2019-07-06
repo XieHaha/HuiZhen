@@ -13,6 +13,10 @@ public interface CommonData {
      */
     String KEY_PUBLIC_STRING = "key_public_string";
     /**
+     * 环信登录状态
+     */
+    String KEY_EASE_LOGIN_STATUS = "key_ease_login_status";
+    /**
      * 检查或者转诊  true为转诊  false为检查
      */
     String KEY_CHECK_OR_TRANSFER = "key_check_or_transfer";

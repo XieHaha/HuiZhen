@@ -20,10 +20,7 @@
             android:layout_height="26dp"
             android:textColor="@color/color_fd8134"
             android:textSize="@dimen/text_14"
-            android:background="@drawable/corner15_stroke1_fd8134"
-            android:text="科室"
-            android:paddingEnd="12dp"
-            android:paddingStart="12dp"
+            tools:text="科室"
             android:gravity="center" />
 
         <TextView
@@ -32,7 +29,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/color_373d4d"
             android:textSize="@dimen/text_14"
-            android:text="医院"
+            tools:text="医院"
             android:layout_below="@id/tv_personal_depart"
             android:layout_marginTop="10dp" />
 
