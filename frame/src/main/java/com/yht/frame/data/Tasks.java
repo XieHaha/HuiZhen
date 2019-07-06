@@ -50,6 +50,34 @@ WE_CHAT_LOGIN,
      */
     DATA_JOB_TITLE,
     /**
+     * 取医生基本信息+收入信息
+     */
+    GET_DOCTOR_INFO_AND_BALANCE_INFO,
+    /**
+     * 取医生收入信息+列表
+     */
+    GET_DOCTOR_BALANCE_INFO,
+    /**
+     * 医生提现信息
+     */
+    GET_DOCTOR_WITHDRAW,
+    /**
+     * 医生一个月提现信息
+     */
+    GET_DOCTOR_WITHDRAW_BY_MONTH,
+    /**
+     * 医生收入明细（列表 包含提现）
+     */
+    GET_DOCTOR_INCOME_LIST,
+    /**
+     * 医生收入明细（列表/不包含提现）
+     */
+    GET_DOCTOR_INCOME_WITHOUT_LIST,
+    /**
+     * 医生某月收入明细信息 (列表)
+     */
+    GET_DOCTOR_INCOME_BY_MONTH_LIST,
+    /**
      * 获取环信appkey
      */
     GET_EASE_APPKEY,

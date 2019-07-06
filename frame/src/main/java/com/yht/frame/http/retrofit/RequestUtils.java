@@ -147,6 +147,84 @@ public class RequestUtils {
                        .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.DATA_JOB_TITLE, listener));
     }
 
+    public static void getDoctorInfoAndBalanceInfo(Context context, String token,
+            final ResponseListener<BaseResponse> listener) {
+        RetrofitManager.getApiUrlManager()
+                       .getDoctorInfoAndBalanceInfo(token)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_DOCTOR_INFO_AND_BALANCE_INFO,
+                                                                 listener));
+    }
+
+    public static void getDoctorBalanceInfo(Context context, String doctorOrderTranId, String token,
+            final ResponseListener<BaseResponse> listener) {
+        Map<String, String> params = new HashMap<>(16);
+        params.put("doctorOrderTranId", doctorOrderTranId);
+        RetrofitManager.getApiUrlManager()
+                       .getDoctorBalanceInfo(token, params)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(
+                               new AbstractLoadViewObserver<>(context, true, Tasks.GET_DOCTOR_BALANCE_INFO, listener));
+    }
+
+    public static void getDoctorWithdraw(Context context, String doctorOrderTranId, String token,
+            final ResponseListener<BaseResponse> listener) {
+        Map<String, String> params = new HashMap<>(16);
+        params.put("doctorOrderTranId", doctorOrderTranId);
+        RetrofitManager.getApiUrlManager()
+                       .getDoctorWithdraw(token, params)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_DOCTOR_WITHDRAW, listener));
+    }
+
+    public static void getDoctorWithdrawByMonth(Context context, String queryMonth, String token,
+            final ResponseListener<BaseResponse> listener) {
+        Map<String, String> params = new HashMap<>(16);
+        params.put("query_month", queryMonth);
+        RetrofitManager.getApiUrlManager()
+                       .getDoctorWithdrawByMonth(token, params)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_DOCTOR_WITHDRAW_BY_MONTH,
+                                                                 listener));
+    }
+
+    public static void getDoctorIncomeList(Context context, String pageSize, String startPage, String token,
+            final ResponseListener<BaseResponse> listener) {
+        Map<String, String> params = new HashMap<>(16);
+        params.put("start_page", startPage);
+        params.put("page_size", pageSize);
+        RetrofitManager.getApiUrlManager()
+                       .getDoctorIncomeList(token, params)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(
+                               new AbstractLoadViewObserver<>(context, true, Tasks.GET_DOCTOR_INCOME_LIST, listener));
+    }
+
+    public static void getDoctorIncomeWithOutList(Context context, String pageSize, String startPage, String token,
+            final ResponseListener<BaseResponse> listener) {
+        Map<String, String> params = new HashMap<>(16);
+        params.put("start_page", startPage);
+        params.put("page_size", pageSize);
+        RetrofitManager.getApiUrlManager()
+                       .getDoctorIncomeWithOutList(token, params)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_DOCTOR_INCOME_WITHOUT_LIST,
+                                                                 listener));
+    }
+
+    public static void getDoctorIncomeByMonthList(Context context, String queryMonth, String pageSize, String startPage,
+            String token, final ResponseListener<BaseResponse> listener) {
+        Map<String, String> params = new HashMap<>(16);
+        params.put("query_month", queryMonth);
+        params.put("start_page", startPage);
+        params.put("page_size", pageSize);
+        RetrofitManager.getApiUrlManager()
+                       .getDoctorIncomeByMonthList(token, params)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_DOCTOR_INCOME_BY_MONTH_LIST,
+                                                                 listener));
+    }
+
     /******************************以上为新接口 2019年7月5日14:03:44*************************************/
     public static void getSplash(Context context, String client, String deviceSystem, String versionCode,
             final ResponseListener listener) {

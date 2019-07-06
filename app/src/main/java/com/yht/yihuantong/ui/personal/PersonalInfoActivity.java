@@ -1,10 +1,16 @@
 package com.yht.yihuantong.ui.personal;
 
+import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.yht.frame.ui.BaseActivity;
+import com.yht.frame.utils.BaseUtils;
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.utils.glide.GlideHelper;
+import com.yht.yihuantong.utils.glide.ImageUrlUtil;
 
 import butterknife.BindView;
 
@@ -37,5 +43,20 @@ public class PersonalInfoActivity extends BaseActivity {
     @Override
     public int getLayoutID() {
         return R.layout.act_personal_info;
+    }
+
+    @Override
+    public void initData(@NonNull Bundle savedInstanceState) {
+        super.initData(savedInstanceState);
+        tvInfoName.setText(loginBean.getDoctorCode());
+        tvInfoSex.setText(loginBean.getDoctorCode());
+        tvInfoPhone.setText(loginBean.getDoctorCode());
+        tvInfoTitle.setText(loginBean.getDoctorCode());
+        tvInfoDepart.setText(loginBean.getDoctorCode());
+        tvInfoHospital.setText(loginBean.getDoctorCode());
+        Glide.with(this)
+             .load(ImageUrlUtil.append(loginBean.getPhoto()))
+             .apply(GlideHelper.getOptions(BaseUtils.dp2px(this, 4)))
+             .into(ivInfoImg);
     }
 }

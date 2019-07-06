@@ -100,7 +100,7 @@ public class AuthBaseFragment extends BaseFragment
     private File cameraTempFile, cutFile;
     private Uri mCurrentPhotoUri;
     private String mCurrentPhotoPath;
-    private List<String> titleData;
+    private List<String> titleData = new ArrayList<>();
     /**
      * 医院选择
      */

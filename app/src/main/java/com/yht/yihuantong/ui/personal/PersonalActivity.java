@@ -11,15 +11,20 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
+import com.yht.frame.data.Tasks;
 import com.yht.frame.ui.BaseActivity;
+import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.adapter.CurrencyIncomeAdapter;
 import com.yht.yihuantong.ui.currency.CurrencyActivity;
+import com.yht.yihuantong.utils.glide.GlideHelper;
+import com.yht.yihuantong.utils.glide.ImageUrlUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -35,6 +40,8 @@ public class PersonalActivity extends BaseActivity implements BaseQuickAdapter.R
     RecyclerView recyclerview;
     @BindView(R.id.public_title_bar_more)
     TextView publicTitleBarMore;
+    @BindView(R.id.public_title_bar_title)
+    TextView publicTitleBarTitle;
     /**
      * 头部控件
      */
@@ -59,20 +66,10 @@ public class PersonalActivity extends BaseActivity implements BaseQuickAdapter.R
     }
 
     @Override
-    public void initData(@NonNull Bundle savedInstanceState) {
-        super.initData(savedInstanceState);
+    public void initView(@NonNull Bundle savedInstanceState) {
+        super.initView(savedInstanceState);
         publicTitleBarMore.setVisibility(View.VISIBLE);
         publicTitleBarMore.setText(R.string.title_setting);
-        data = new ArrayList<String>() {
-            {
-                add("a");
-                add("a");
-                add("a");
-                add("a");
-                add("a");
-                add("a");
-            }
-        };
         currencyIncomeAdapter = new CurrencyIncomeAdapter(R.layout.item_income, data);
         View view = getLayoutInflater().inflate(R.layout.view_personal_header, null);
         initHeaderView(view);
@@ -82,6 +79,12 @@ public class PersonalActivity extends BaseActivity implements BaseQuickAdapter.R
         currencyIncomeAdapter.loadMoreEnd();
         recyclerview.setLayoutManager(new LinearLayoutManager(this));
         recyclerview.setAdapter(currencyIncomeAdapter);
+    }
+
+    @Override
+    public void initData(@NonNull Bundle savedInstanceState) {
+        super.initData(savedInstanceState);
+        getDoctorBalanceInfo();
     }
 
     /**
@@ -106,7 +109,21 @@ public class PersonalActivity extends BaseActivity implements BaseQuickAdapter.R
         layoutTotalIncome.setOnClickListener(this);
         layoutMonthIncome.setOnClickListener(this);
         layoutPersonalBase.setOnClickListener(this);
+        initBase();
         initAmountDisplay();
+    }
+
+    /**
+     * 基础信息展示
+     */
+    private void initBase() {
+        publicTitleBarTitle.setText(loginBean.getDoctorName());
+        tvPersonalDepart.setText(loginBean.getDoctorCode());
+        tvPersonalHospital.setText(loginBean.getDoctorCode());
+        Glide.with(this)
+             .load(ImageUrlUtil.append(loginBean.getPhoto()))
+             .apply(GlideHelper.getOptions(BaseUtils.dp2px(this, 4)))
+             .into(ivPersonalImage);
     }
 
     /**
@@ -130,6 +147,13 @@ public class PersonalActivity extends BaseActivity implements BaseQuickAdapter.R
             tvMonthTotal.setText(String.format(getString(R.string.txt_personal_month_income), "1000"));
             tvMonthTotalIncome.setText("100");
         }
+    }
+
+    /**
+     * 医生收入信息 预约检查+预约转诊+远程会珍
+     */
+    private void getDoctorBalanceInfo() {
+        //        RequestUtils.getDoctorBalanceInfo(this, loginBean.getToken(), this);
     }
 
     @Override
@@ -162,6 +186,17 @@ public class PersonalActivity extends BaseActivity implements BaseQuickAdapter.R
     @OnClick({ R.id.public_title_bar_more })
     public void onViewClicked() {
         startActivity(new Intent(this, SettingActivity.class));
+    }
+
+    @Override
+    public void onResponseSuccess(Tasks task, BaseResponse response) {
+        super.onResponseSuccess(task, response);
+        switch (task) {
+            case GET_DOCTOR_BALANCE_INFO:
+                break;
+            default:
+                break;
+        }
     }
 
     /**

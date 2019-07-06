@@ -126,6 +126,7 @@ public interface ApiUrlManager {
     @GET("/client/doctor/authInfo/{mobile}")
     Observable<BaseResponse<DoctorAuthBean>> getDoctorAuth(@Header("token") String token,
             @Path("mobile") String mobile);
+
     /**
      * 获取医生个人详情
      *
@@ -145,7 +146,81 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @GET("/dm/query-by-type")
-    Observable<BaseResponse<List<HospitalTitleBean>>> getDataByType(@Header("token") String token, @QueryMap Map<String, Object> info);
+    Observable<BaseResponse<List<HospitalTitleBean>>> getDataByType(@Header("token") String token,
+            @QueryMap Map<String, Object> info);
+
+    /**
+     * 医生基本信息加收入信息(总收入 已到账 余额 本月收入 本月已到账)
+     *
+     * @param token token
+     * @return 返回值
+     */
+    @GET("/client/doctorcenter/doctor_balance_info")
+    Observable<BaseResponse<List<HospitalTitleBean>>> getDoctorInfoAndBalanceInfo(@Header("token") String token);
+
+    /**
+     * 医生收入信息 (预约检查+预约转诊+远程会珍)
+     *
+     * @param info  map参数
+     * @param token token
+     * @return 返回值
+     */
+    @GET("/client/doctorcenter/doctor_income")
+    Observable<BaseResponse<List<HospitalTitleBean>>> getDoctorBalanceInfo(@Header("token") String token,
+            @Body Map<String, String> info);
+
+    /**
+     * 医生提现信息
+     *
+     * @param info  map参数
+     * @param token token
+     * @return 返回值
+     */
+    @GET("/client/doctorcenter/doctor_cash")
+    Observable<BaseResponse<List<HospitalTitleBean>>> getDoctorWithdraw(@Header("token") String token,
+            @Body Map<String, String> info);
+
+    /**
+     * 医生某月收入汇总 (纯收入(不包含提现) 预约检查+预约转诊+远程会珍)
+     *
+     * @param info  map参数
+     * @param token token
+     * @return 返回值
+     */
+    @GET("/client/doctorcenter/doctor_cash_by_month")
+    Observable<BaseResponse<List<HospitalTitleBean>>> getDoctorWithdrawByMonth(@Header("token") String token,
+            @Body Map<String, String> info);
+
+    /**
+     * 医生收入明细信息 (医生提现+预约检查+预约转诊+远程会珍)
+     *
+     * @param info  map参数
+     * @param token token
+     * @return 返回值
+     */
+    @GET("/client/doctorcenter/doctor_tran_list")
+    Observable<BaseResponse<List<HospitalTitleBean>>> getDoctorIncomeList(@Header("token") String token,
+            @Body Map<String, String> info);
+    /**
+     * 医生收入明细信息 (不包含提现)
+     *
+     * @param info  map参数
+     * @param token token
+     * @return 返回值
+     */
+    @GET("/client/doctorcenter/doctor_tran_list_only_income")
+    Observable<BaseResponse<List<HospitalTitleBean>>> getDoctorIncomeWithOutList(@Header("token") String token,
+            @Body Map<String, String> info);
+    /**
+     * 医生某月收入明细信息 (纯收入(不包含提现) 预约检查+预约转诊+远程会珍)
+     *
+     * @param info  map参数
+     * @param token token
+     * @return 返回值
+     */
+    @GET("/client/doctorcenter/doctor_tran_list_by_month")
+    Observable<BaseResponse<List<HospitalTitleBean>>> getDoctorIncomeByMonthList(@Header("token") String token,
+            @Body Map<String, String> info);
     /********************************分隔线*********************************/
     /**
      * 首页广告
