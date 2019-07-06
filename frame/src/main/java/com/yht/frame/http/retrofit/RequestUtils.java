@@ -225,6 +225,29 @@ public class RequestUtils {
                                                                  listener));
     }
 
+    public static void getPatientListByDoctorCode(Context context, String code, String token,
+            final ResponseListener<BaseResponse> listener) {
+        Map<String, String> params = new HashMap<>(16);
+        params.put("code ", code);
+        RetrofitManager.getApiUrlManager()
+                       .getPatientListByDoctorCode(token, params)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_PATIENT_LIST_BY_DOCTOR_CODE,
+                                                                 listener));
+    }
+
+    public static void getPatientDetailByPatientCode(Context context, String code, String token,
+            final ResponseListener<BaseResponse> listener) {
+        Map<String, String> params = new HashMap<>(16);
+        params.put("code ", code);
+        RetrofitManager.getApiUrlManager()
+                       .getPatientDetailByPatientCode(token, params)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(
+                               new AbstractLoadViewObserver<>(context, true, Tasks.GET_PATIENT_DETAIL_BY_PATIENT_CODE,
+                                                              listener));
+    }
+
     /******************************以上为新接口 2019年7月5日14:03:44*************************************/
     public static void getSplash(Context context, String client, String deviceSystem, String versionCode,
             final ResponseListener listener) {

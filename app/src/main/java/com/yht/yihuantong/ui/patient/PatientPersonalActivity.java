@@ -17,6 +17,8 @@ import android.widget.TextView;
 
 import com.hyphenate.easeui.EaseConstant;
 import com.yht.frame.data.BaseData;
+import com.yht.frame.data.CommonData;
+import com.yht.frame.data.bean.PatientBean;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.widgets.view.AbstractOnPageChangeListener;
@@ -64,6 +66,7 @@ public class PatientPersonalActivity extends BaseActivity implements EaseChatFra
      * 开启聊天倒计时广播
      */
     private TimerReceiver timerReceiver;
+    private PatientBean patientBean;
     private ScheduledExecutorService executorService;
     /**
      * 倒计时
@@ -134,6 +137,17 @@ public class PatientPersonalActivity extends BaseActivity implements EaseChatFra
     });
 
     @Override
+    public void initView(@NonNull Bundle savedInstanceState) {
+        super.initView(savedInstanceState);
+        if (getIntent() != null) {
+            patientBean = (PatientBean)getIntent().getSerializableExtra(CommonData.KEY_PATIENT_BEAN);
+        }
+        if (patientBean != null) {
+            publicTitleBarTitle.setText("患者姓名");
+        }
+    }
+
+    @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         new ViewPrepared().asyncPrepare(tvLeft, (w, h) -> {
@@ -142,7 +156,6 @@ public class PatientPersonalActivity extends BaseActivity implements EaseChatFra
             viewBar.setLayoutParams(params);
             viewBar.setTranslationX(calcViewBarOffset());
         });
-        publicTitleBarTitle.setText("患者姓名");
         initFragment();
         initReceiver();
     }
@@ -186,6 +199,7 @@ public class PatientPersonalActivity extends BaseActivity implements EaseChatFra
     private void initFragment() {
         //患者信息
         PatientInfoFragment patientInfoFragment = new PatientInfoFragment();
+        patientInfoFragment.setPatientCode(patientBean.getPatientId());
         //在线聊天
         easeChatFragment = new EaseChatFragment();
         easeChatFragment.setOnTimeLayoutClickListener(this);

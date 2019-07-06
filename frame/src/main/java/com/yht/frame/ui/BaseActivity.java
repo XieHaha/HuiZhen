@@ -45,7 +45,7 @@ import butterknife.ButterKnife;
  *
  * @author DUNDUN
  */
-public abstract class BaseActivity<T> extends RxAppCompatActivity
+public abstract class BaseActivity extends RxAppCompatActivity
         implements UiInterface, BaseData, ResponseListener<BaseResponse>, View.OnClickListener, OnPermissionCallback {
     public static final String TAG = "ZYC";
     /**

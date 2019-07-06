@@ -17,7 +17,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.yht.frame.data.BaseResponse;
+import com.yht.frame.data.CommonData;
+import com.yht.frame.data.Tasks;
 import com.yht.frame.data.bean.PatientBean;
+import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.widgets.edittext.AbstractTextWatcher;
@@ -75,7 +79,7 @@ public class PatientFragment extends BaseFragment
      */
     private SideBarItemDecoration decoration;
     /**
-     *
+     * 所有患者数据
      */
     private List<PatientBean> patientBeans = new ArrayList<>();
     private List<PatientBean> searchPatientBeans = new ArrayList<>();
@@ -99,7 +103,7 @@ public class PatientFragment extends BaseFragment
         super.initData(savedInstanceState);
         recyclerview.setLayoutManager(layoutManager = new LinearLayoutManager(getContext()));
         recyclerview.addItemDecoration(decoration = new SideBarItemDecoration(getContext()));
-        initData();
+        getPatients();
         initAdapter();
     }
 
@@ -139,6 +143,10 @@ public class PatientFragment extends BaseFragment
         patientAdapter.setOnLoadMoreListener(this, recyclerview);
         patientAdapter.loadMoreEnd();
         recyclerview.setAdapter(patientAdapter);
+    }
+
+    private void getPatients() {
+        RequestUtils.getPatientListByDoctorCode(getContext(), loginBean.getDoctorCode(), loginBean.getToken(), this);
     }
 
     private void initData() {
@@ -236,6 +244,7 @@ public class PatientFragment extends BaseFragment
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         Intent intent = new Intent(getContext(), PatientPersonalActivity.class);
+        intent.putExtra(CommonData.KEY_PATIENT_BEAN, patientBeans.get(position));
         startActivity(intent);
     }
 
@@ -245,6 +254,17 @@ public class PatientFragment extends BaseFragment
         Uri data = Uri.parse("tel:15828456584");
         intent.setData(data);
         startActivity(intent);
+    }
+
+    @Override
+    public void onResponseSuccess(Tasks task, BaseResponse response) {
+        super.onResponseSuccess(task, response);
+        switch (task) {
+            case GET_PATIENT_LIST_BY_DOCTOR_CODE:
+                break;
+            default:
+                break;
+        }
     }
 
     /**

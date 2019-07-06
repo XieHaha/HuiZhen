@@ -12,8 +12,11 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
+import com.yht.frame.data.Tasks;
 import com.yht.frame.data.bean.CheckBean;
+import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.widgets.recyclerview.decoration.TimeItemDecoration;
@@ -50,6 +53,10 @@ public class PatientInfoFragment extends BaseFragment
      */
     private TimeItemDecoration timeItemDecoration;
     /**
+     * 当前患者code
+     */
+    private String patientCode;
+    /**
      * 诊疗记录（检查、转诊、远程）
      */
     private List<CheckBean> data;
@@ -61,11 +68,56 @@ public class PatientInfoFragment extends BaseFragment
     }
 
     @Override
-    public void initView(View view, @NonNull Bundle savedInstanceState) {
-        super.initView(view, savedInstanceState);
+    public void initView(@NonNull Bundle savedInstanceState) {
+        super.initView(savedInstanceState);
         initHeaderView();
         initAdapter();
         initPage();
+    }
+
+    @Override
+    public void initData(@NonNull Bundle savedInstanceState) {
+        super.initData(savedInstanceState);
+        getPatientDetail();
+        data = new ArrayList<>();
+        titleBars = new ArrayList<>();
+        for (int i = 0; i < 6; i++) {
+            if (i < 2) {
+                CheckBean bean = new CheckBean();
+                bean.setItemType(CheckBean.CHECK);
+                bean.setTitle("全身检查");
+                bean.setTime("2019-06-29");
+                titleBars.add("2019-06-29");
+                data.add(bean);
+            }
+            else if (i < 4) {
+                CheckBean bean = new CheckBean();
+                bean.setItemType(CheckBean.TRANSFER);
+                bean.setTime("2019-06-30");
+                titleBars.add("2019-06-30");
+                data.add(bean);
+            }
+            else {
+                CheckBean bean = new CheckBean();
+                bean.setItemType(CheckBean.REMOTE);
+                bean.setTime("2019-06-31");
+                titleBars.add("2019-06-31");
+                data.add(bean);
+            }
+        }
+        patientInfoAdapter.setNewData(data);
+        patientInfoAdapter.loadMoreEnd();
+        //返回一个包含所有Tag字母在内的字符串并赋值给tagsStr
+        String tagsStr = BaseUtils.getTimeTags(data);
+        timeItemDecoration.setTitleBar(titleBars, tagsStr);
+    }
+
+    private void getPatientDetail() {
+        RequestUtils.getPatientDetailByPatientCode(getContext(), patientCode, loginBean.getToken(), this);
+    }
+
+    public void setPatientCode(String patientCode) {
+        this.patientCode = patientCode;
     }
 
     /**
@@ -109,42 +161,6 @@ public class PatientInfoFragment extends BaseFragment
     }
 
     @Override
-    public void initData(@NonNull Bundle savedInstanceState) {
-        super.initData(savedInstanceState);
-        data = new ArrayList<>();
-        titleBars = new ArrayList<>();
-        for (int i = 0; i < 6; i++) {
-            if (i < 2) {
-                CheckBean bean = new CheckBean();
-                bean.setItemType(CheckBean.CHECK);
-                bean.setTitle("全身检查");
-                bean.setTime("2019-06-29");
-                titleBars.add("2019-06-29");
-                data.add(bean);
-            }
-            else if (i < 4) {
-                CheckBean bean = new CheckBean();
-                bean.setItemType(CheckBean.TRANSFER);
-                bean.setTime("2019-06-30");
-                titleBars.add("2019-06-30");
-                data.add(bean);
-            }
-            else {
-                CheckBean bean = new CheckBean();
-                bean.setItemType(CheckBean.REMOTE);
-                bean.setTime("2019-06-31");
-                titleBars.add("2019-06-31");
-                data.add(bean);
-            }
-        }
-        patientInfoAdapter.setNewData(data);
-        patientInfoAdapter.loadMoreEnd();
-        //返回一个包含所有Tag字母在内的字符串并赋值给tagsStr
-        String tagsStr = BaseUtils.getTimeTags(data);
-        timeItemDecoration.setTitleBar(titleBars, tagsStr);
-    }
-
-    @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         Intent intent = null;
         CheckBean bean = data.get(position);
@@ -164,10 +180,6 @@ public class PatientInfoFragment extends BaseFragment
         startActivity(intent);
     }
 
-    @Override
-    public void onLoadMoreRequested() {
-    }
-
     @OnClick({ R.id.tv_reserve_check, R.id.tv_reserve_transfer })
     public void onViewClicked(View view) {
         Intent intent;
@@ -184,5 +196,20 @@ public class PatientInfoFragment extends BaseFragment
             default:
                 break;
         }
+    }
+
+    @Override
+    public void onResponseSuccess(Tasks task, BaseResponse response) {
+        super.onResponseSuccess(task, response);
+        switch (task) {
+            case GET_PATIENT_DETAIL_BY_PATIENT_CODE:
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onLoadMoreRequested() {
     }
 }

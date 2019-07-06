@@ -78,6 +78,14 @@ WE_CHAT_LOGIN,
      */
     GET_DOCTOR_INCOME_BY_MONTH_LIST,
     /**
+     * 根据医生编码获取患者列表信息
+     */
+    GET_PATIENT_LIST_BY_DOCTOR_CODE,
+    /**
+     * 根据患者编码获取患者信息
+     */
+    GET_PATIENT_DETAIL_BY_PATIENT_CODE,
+    /**
      * 获取环信appkey
      */
     GET_EASE_APPKEY,

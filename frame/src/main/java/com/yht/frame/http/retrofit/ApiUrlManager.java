@@ -201,6 +201,7 @@ public interface ApiUrlManager {
     @GET("/client/doctorcenter/doctor_tran_list")
     Observable<BaseResponse<List<HospitalTitleBean>>> getDoctorIncomeList(@Header("token") String token,
             @Body Map<String, String> info);
+
     /**
      * 医生收入明细信息 (不包含提现)
      *
@@ -211,6 +212,7 @@ public interface ApiUrlManager {
     @GET("/client/doctorcenter/doctor_tran_list_only_income")
     Observable<BaseResponse<List<HospitalTitleBean>>> getDoctorIncomeWithOutList(@Header("token") String token,
             @Body Map<String, String> info);
+
     /**
      * 医生某月收入明细信息 (纯收入(不包含提现) 预约检查+预约转诊+远程会珍)
      *
@@ -220,6 +222,28 @@ public interface ApiUrlManager {
      */
     @GET("/client/doctorcenter/doctor_tran_list_by_month")
     Observable<BaseResponse<List<HospitalTitleBean>>> getDoctorIncomeByMonthList(@Header("token") String token,
+            @Body Map<String, String> info);
+
+    /**
+     * 根据医生编码获取患者列表信息
+     *
+     * @param info  map参数
+     * @param token token
+     * @return 返回值
+     */
+    @GET("/client/patient/getbydoccode")
+    Observable<BaseResponse<List<PatientBean>>> getPatientListByDoctorCode(@Header("token") String token,
+            @Body Map<String, String> info);
+
+    /**
+     * 根据患者编码获取患者信息
+     *
+     * @param info  map参数
+     * @param token token
+     * @return 返回值
+     */
+    @GET("/client/patient/getbypatcode")
+    Observable<BaseResponse<List<PatientBean>>> getPatientDetailByPatientCode(@Header("token") String token,
             @Body Map<String, String> info);
     /********************************分隔线*********************************/
     /**
