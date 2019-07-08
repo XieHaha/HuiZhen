@@ -118,8 +118,8 @@ public class PersonalActivity extends BaseActivity implements BaseQuickAdapter.R
      */
     private void initBase() {
         publicTitleBarTitle.setText(loginBean.getDoctorName());
-        tvPersonalDepart.setText(loginBean.getDoctorCode());
-        tvPersonalHospital.setText(loginBean.getDoctorCode());
+        tvPersonalDepart.setText(loginBean.getDepartmentName());
+        tvPersonalHospital.setText(loginBean.getHospitalName());
         Glide.with(this)
              .load(ImageUrlUtil.append(loginBean.getPhoto()))
              .apply(GlideHelper.getOptions(BaseUtils.dp2px(this, 4)))

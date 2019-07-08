@@ -18,6 +18,7 @@ import com.yanzhenjie.nohttp.Headers;
 import com.yanzhenjie.nohttp.download.DownloadListener;
 import com.yht.frame.api.DirHelper;
 import com.yht.frame.api.FileTransferServer;
+import com.yht.frame.data.bean.NormImage;
 import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.widgets.imagePreview.options.PreviewOptions;
 import com.yht.frame.widgets.imagePreview.transformer.CustomTransformer;
@@ -26,6 +27,7 @@ import com.yht.frame.widgets.imagePreview.utils.NavigaterPageIndex;
 import com.yht.frame.widgets.imagePreview.view.ImageLoadingView;
 import com.yht.frame.widgets.imagePreview.view.ImagePreviewView;
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.utils.ImageUrlUtil;
 
 import java.util.ArrayList;
 
@@ -38,7 +40,7 @@ public class ImagePreviewActivity extends Activity implements ViewPager.OnPageCh
     /**
      * 图片对象
      */
-    private ArrayList<String> urls;
+    private ArrayList<NormImage> urls;
     private ArrayList<ImagePreviewView> imgPreViews = new ArrayList<>();
     private ViewPager imgViewPager;
     private ImageView btnSaveImage;
@@ -106,7 +108,7 @@ public class ImagePreviewActivity extends Activity implements ViewPager.OnPageCh
         setContentView(R.layout.activity_image_view);
         Intent intent = getIntent();
         if (intent != null) {
-            urls = intent.getStringArrayListExtra(INTENT_URLS);
+            urls = (ArrayList<NormImage>)intent.getSerializableExtra(INTENT_URLS);
             currentIndex = intent.getIntExtra(INTENT_POSITION, 0);
         }
         mLoadingView = findViewById(R.id.act_image_view_loading);
@@ -125,7 +127,7 @@ public class ImagePreviewActivity extends Activity implements ViewPager.OnPageCh
         imgViewPager.setAdapter(new TouchImageAdapter());
         imgViewPager.setCurrentItem(currentIndex);
         btnSaveImage.setOnClickListener(v -> {
-            String imageUri = urls.get(currentIndex);
+            String imageUri = ImageUrlUtil.append(urls.get(currentIndex).getImageUrl());
             String fileName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
             if (CacheUtils.getInstance(getBaseContext()).saveImageFileToDisk(imageUri)) {
                 Toast.makeText(ImagePreviewActivity.this,
@@ -212,7 +214,8 @@ public class ImagePreviewActivity extends Activity implements ViewPager.OnPageCh
         @Override
         public View instantiateItem(final ViewGroup container, final int position) {
             currentPreviceView = imgPreViews.get(position);
-            currentPreviceView.loadingImageAsync(urls.get(position), position);
+            currentPreviceView.loadingImageAsync(urls.get(position).getImagePath(),
+                                                 ImageUrlUtil.append(urls.get(position).getImageUrl()), position);
             container.addView(currentPreviceView, LinearLayout.LayoutParams.MATCH_PARENT,
                               LinearLayout.LayoutParams.MATCH_PARENT);
             return currentPreviceView;

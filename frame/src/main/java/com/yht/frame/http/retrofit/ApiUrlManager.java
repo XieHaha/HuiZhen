@@ -31,6 +31,7 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 import retrofit2.http.Streaming;
 import retrofit2.http.Url;
@@ -147,7 +148,7 @@ public interface ApiUrlManager {
      */
     @GET("/dm/query-by-type")
     Observable<BaseResponse<List<HospitalTitleBean>>> getDataByType(@Header("token") String token,
-            @QueryMap Map<String, Object> info);
+            @Query("type") String info);
 
     /**
      * 医生基本信息加收入信息(总收入 已到账 余额 本月收入 本月已到账)
@@ -167,7 +168,7 @@ public interface ApiUrlManager {
      */
     @GET("/client/doctorcenter/doctor_income")
     Observable<BaseResponse<List<HospitalTitleBean>>> getDoctorBalanceInfo(@Header("token") String token,
-            @Body Map<String, String> info);
+            @Query("doctorOrderTranId") String info);
 
     /**
      * 医生提现信息
@@ -178,7 +179,7 @@ public interface ApiUrlManager {
      */
     @GET("/client/doctorcenter/doctor_cash")
     Observable<BaseResponse<List<HospitalTitleBean>>> getDoctorWithdraw(@Header("token") String token,
-            @Body Map<String, String> info);
+            @Query("doctorOrderTranId") String info);
 
     /**
      * 医生某月收入汇总 (纯收入(不包含提现) 预约检查+预约转诊+远程会珍)
@@ -189,7 +190,7 @@ public interface ApiUrlManager {
      */
     @GET("/client/doctorcenter/doctor_cash_by_month")
     Observable<BaseResponse<List<HospitalTitleBean>>> getDoctorWithdrawByMonth(@Header("token") String token,
-            @Body Map<String, String> info);
+            @Query("query_month") String info);
 
     /**
      * 医生收入明细信息 (医生提现+预约检查+预约转诊+远程会珍)
@@ -200,7 +201,7 @@ public interface ApiUrlManager {
      */
     @GET("/client/doctorcenter/doctor_tran_list")
     Observable<BaseResponse<List<HospitalTitleBean>>> getDoctorIncomeList(@Header("token") String token,
-            @Body Map<String, String> info);
+            @QueryMap Map<String, String> info);
 
     /**
      * 医生收入明细信息 (不包含提现)
@@ -211,7 +212,7 @@ public interface ApiUrlManager {
      */
     @GET("/client/doctorcenter/doctor_tran_list_only_income")
     Observable<BaseResponse<List<HospitalTitleBean>>> getDoctorIncomeWithOutList(@Header("token") String token,
-            @Body Map<String, String> info);
+            @QueryMap Map<String, String> info);
 
     /**
      * 医生某月收入明细信息 (纯收入(不包含提现) 预约检查+预约转诊+远程会珍)
@@ -222,7 +223,7 @@ public interface ApiUrlManager {
      */
     @GET("/client/doctorcenter/doctor_tran_list_by_month")
     Observable<BaseResponse<List<HospitalTitleBean>>> getDoctorIncomeByMonthList(@Header("token") String token,
-            @Body Map<String, String> info);
+            @QueryMap Map<String, String> info);
 
     /**
      * 根据医生编码获取患者列表信息
@@ -233,7 +234,7 @@ public interface ApiUrlManager {
      */
     @GET("/client/patient/getbydoccode")
     Observable<BaseResponse<List<PatientBean>>> getPatientListByDoctorCode(@Header("token") String token,
-            @Body Map<String, String> info);
+            @Query("code") String info);
 
     /**
      * 根据患者编码获取患者信息
@@ -244,7 +245,7 @@ public interface ApiUrlManager {
      */
     @GET("/client/patient/getbypatcode")
     Observable<BaseResponse<List<PatientBean>>> getPatientDetailByPatientCode(@Header("token") String token,
-            @Body Map<String, String> info);
+            @Query("code") String info);
     /********************************分隔线*********************************/
     /**
      * 首页广告

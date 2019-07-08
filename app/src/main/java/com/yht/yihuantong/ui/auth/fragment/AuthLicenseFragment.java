@@ -22,6 +22,7 @@ import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.base.DoctorAuthBean;
+import com.yht.frame.data.bean.NormImage;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.permission.Permission;
 import com.yht.frame.ui.BaseFragment;
@@ -29,11 +30,11 @@ import com.yht.frame.utils.LogUtils;
 import com.yht.frame.utils.ScalingUtils;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ZycApplication;
+import com.yht.yihuantong.ui.ImagePreviewActivity;
 import com.yht.yihuantong.ui.adapter.AddImageAdapter;
 import com.yht.yihuantong.ui.auth.listener.OnAuthStepListener;
 import com.yht.yihuantong.ui.dialog.DownDialog;
 import com.yht.yihuantong.ui.dialog.listener.OnMediaItemClickListener;
-import com.yht.yihuantong.utils.ImageUrlUtil;
 import com.yht.yihuantong.utils.MatisseUtils;
 import com.zhihu.matisse.Matisse;
 
@@ -72,7 +73,7 @@ public class AuthLicenseFragment extends BaseFragment
     private Uri mCurrentPhotoUri;
     private String mCurrentPhotoPath;
     private File frontFile, backFile;
-    private ArrayList<String> imagePaths;
+    private ArrayList<NormImage> imagePaths;
 
     @Override
     public int getLayoutID() {
@@ -98,7 +99,7 @@ public class AuthLicenseFragment extends BaseFragment
         else {
             //占位图
             imagePaths = new ArrayList<>();
-            imagePaths.add("");
+            imagePaths.add(new NormImage());
             addImageAdapter.setNewData(imagePaths);
         }
     }
@@ -130,13 +131,17 @@ public class AuthLicenseFragment extends BaseFragment
     private void initPage() {
         imagePaths = new ArrayList<>();
         if (!TextUtils.isEmpty(doctorAuthBean.getCertFront())) {
-            imagePaths.add(ImageUrlUtil.append(doctorAuthBean.getCertFront()));
+            NormImage normImage = new NormImage();
+            normImage.setImageUrl(doctorAuthBean.getCertFront());
+            imagePaths.add(normImage);
         }
         if (!TextUtils.isEmpty(doctorAuthBean.getCertBack())) {
-            imagePaths.add(ImageUrlUtil.append(doctorAuthBean.getCertBack()));
+            NormImage normImage = new NormImage();
+            normImage.setImageUrl(doctorAuthBean.getCertBack());
+            imagePaths.add(normImage);
         }
         if (imagePaths.size() == 1) {
-            imagePaths.add("");
+            imagePaths.add(new NormImage());
         }
         addImageAdapter.setNewData(imagePaths);
         initNextButton();
@@ -157,12 +162,14 @@ public class AuthLicenseFragment extends BaseFragment
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        if (!TextUtils.isEmpty(imagePaths.get(position))) {
+        if (!TextUtils.isEmpty(imagePaths.get(position).getImagePath()) ||
+            !TextUtils.isEmpty(imagePaths.get(position).getImageUrl())) {
             //查看大图
-            //            Intent intent = new Intent(getContext(), ImagePreviewActivity.class);
-            //            intent.putExtra(ImagePreviewActivity.INTENT_URLS, imagePaths);
-            //            startActivity(intent);
-            //            getActivity().overridePendingTransition(R.anim.anim_fade_in, R.anim.keep);
+            Intent intent = new Intent(getContext(), ImagePreviewActivity.class);
+            intent.putExtra(ImagePreviewActivity.INTENT_URLS, imagePaths);
+            intent.putExtra(ImagePreviewActivity.INTENT_POSITION, position);
+            startActivity(intent);
+            getActivity().overridePendingTransition(R.anim.anim_fade_in, R.anim.keep);
         }
         else {
             new DownDialog(getContext()).setData(data).setOnMediaItemClickListener(this).show();
@@ -173,14 +180,15 @@ public class AuthLicenseFragment extends BaseFragment
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
         if (position == BaseData.BASE_ONE) {
             //设置占位图
-            imagePaths.set(position, "");
+            imagePaths.set(position, new NormImage());
         }
         else {
             //先移除
             imagePaths.remove(imagePaths.get(position));
-            if (!TextUtils.isEmpty(imagePaths.get(position))) {
+            if (!TextUtils.isEmpty(imagePaths.get(position).getImagePath()) ||
+                !TextUtils.isEmpty(imagePaths.get(position).getImageUrl())) {
                 //占位图
-                imagePaths.add("");
+                imagePaths.add(new NormImage());
             }
         }
         addImageAdapter.setNewData(imagePaths);
@@ -197,6 +205,17 @@ public class AuthLicenseFragment extends BaseFragment
                 break;
             case R.id.tv_auth_license_submit:
                 if (tvAuthLicenseSubmit.isSelected() && onAuthStepListener != null) {
+                    for (int i = 0; i < imagePaths.size(); i++) {
+                        String url = imagePaths.get(i).getImageUrl();
+                        if (!TextUtils.isEmpty(url)) {
+                            if (i == BASE_ZERO) {
+                                doctorAuthBean.setCertFront(url);
+                            }
+                            else if (i == BASE_ONE) {
+                                doctorAuthBean.setCertBack(url);
+                            }
+                        }
+                    }
                     onAuthStepListener.onAuthTwo(BASE_TWO, doctorAuthBean);
                 }
                 break;
@@ -266,9 +285,14 @@ public class AuthLicenseFragment extends BaseFragment
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
         if (task == Tasks.UPLOAD_FILE) {
+            String url = (String)response.getData();
             if (imagePaths.size() == BaseData.BASE_ONE) {
+                imagePaths.get(0).setImageUrl(url);
                 //占位
-                imagePaths.add("");
+                imagePaths.add(new NormImage());
+            }
+            else {
+                imagePaths.get(1).setImageUrl(url);
             }
             addImageAdapter.setNewData(imagePaths);
             initNextButton();
@@ -284,12 +308,16 @@ public class AuthLicenseFragment extends BaseFragment
             case RC_PICK_IMG:
                 List<String> paths = Matisse.obtainPathResult(data);
                 if (null != paths && 0 != paths.size()) {
-                    imagePaths.set(imagePaths.size() - 1, paths.get(0));
+                    NormImage normImage = new NormImage();
+                    normImage.setImagePath(paths.get(0));
+                    imagePaths.set(imagePaths.size() - 1, normImage);
                     uploadImage(new File(paths.get(0)));
                 }
                 break;
             case RC_PICK_CAMERA:
-                imagePaths.set(imagePaths.size() - 1, mCurrentPhotoPath);
+                NormImage normImage = new NormImage();
+                normImage.setImagePath(mCurrentPhotoPath);
+                imagePaths.set(imagePaths.size() - 1, normImage);
                 uploadImage(new File(mCurrentPhotoPath));
                 break;
             default:

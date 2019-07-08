@@ -5,10 +5,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.graphics.RectF;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -36,6 +38,7 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.yht.frame.R;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.glide.GlideHelper;
+import com.yht.frame.widgets.imagePreview.utils.CacheUtils;
 
 /**
  * @author Kyle
@@ -137,37 +140,37 @@ public class ImagePreviewView extends AppCompatImageView {
         isBreak = false;
     }
 
-    public void loadingImageAsync(final String imgPath, final int position) {
+    public void loadingImageAsync(final String imgPath, final String bigUrl, final int position) {
         if (!isBreak) {
             if (TextUtils.isEmpty(imgPath)) {
-                //                loadState = CacheUtils.getInstance(getContext()).getCacheState(bigUrl, bigUrl);
-                //                switch (loadState) {
-                //                    case 0:
-                //                    case 2:
-                //                        //URL相同，都为空，请求大图，显示默认背景
-                //                        if (!isBigLoaded) {
-                //                            setScaleType(ScaleType.MATRIX);
-                //                            Drawable smallDrawable = ContextCompat.getDrawable(getContext(), R.mipmap.icon_loading_img);
-                //                            setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.icon_loading_img));
-                //                            loadImgAsync(bigUrl, smallDrawable);
-                //                        }
-                //                        break;
-                //                    case 1:
-                //                        //URL不同，小图不空大图为空，请求大图，不显示默认背景
-                //                        if (!isBigLoaded) {
-                //                            setScaleType(ScaleType.CENTER_INSIDE);
-                //                            Bitmap bitmap = CacheUtils.getInstance(getContext()).getBitmapFromImageLoaderCache(bigUrl);
-                //                            Drawable smallDrawable = new BitmapDrawable(getResources(), bitmap);
-                //                            setImageBitmap(bitmap);
-                //                            loadImgAsync(bigUrl, smallDrawable);
-                //                        }
-                //                        break;
-                //                    default://有大图缓存
-                //                        setScaleType(ScaleType.FIT_CENTER);
-                //                        Drawable drawable = new BitmapDrawable(getResources(), CacheUtils.getInstance(getContext())
-                //                                                                                         .getBitmapFromCache(bigUrl));
-                //                        loadImgAsync(bigUrl, drawable);
-                //                }
+                loadState = CacheUtils.getInstance(getContext()).getCacheState(bigUrl, bigUrl);
+                switch (loadState) {
+                    case 0:
+                    case 2:
+                        //URL相同，都为空，请求大图，显示默认背景
+                        if (!isBigLoaded) {
+                            setScaleType(ScaleType.MATRIX);
+                            Drawable smallDrawable = ContextCompat.getDrawable(getContext(), R.mipmap.icon_loading_img);
+                            setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.icon_loading_img));
+                            loadImgAsync(bigUrl, smallDrawable);
+                        }
+                        break;
+                    case 1:
+                        //URL不同，小图不空大图为空，请求大图，不显示默认背景
+                        if (!isBigLoaded) {
+                            setScaleType(ScaleType.CENTER_INSIDE);
+                            Bitmap bitmap = CacheUtils.getInstance(getContext()).getBitmapFromImageLoaderCache(bigUrl);
+                            Drawable smallDrawable = new BitmapDrawable(getResources(), bitmap);
+                            setImageBitmap(bitmap);
+                            loadImgAsync(bigUrl, smallDrawable);
+                        }
+                        break;
+                    default://有大图缓存
+                        setScaleType(ScaleType.FIT_CENTER);
+                        Drawable drawable = new BitmapDrawable(getResources(), CacheUtils.getInstance(getContext())
+                                                                                         .getBitmapFromCache(bigUrl));
+                        loadImgAsync(bigUrl, drawable);
+                }
             }
             else {
                 loadImaLocal(imgPath);

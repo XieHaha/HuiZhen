@@ -139,10 +139,8 @@ public class RequestUtils {
 
     public static void getDataByType(Context context, String token, String type,
             final ResponseListener<BaseResponse> listener) {
-        Map<String, Object> params = new HashMap<>(16);
-        params.put("type", type);
         RetrofitManager.getApiUrlManager()
-                       .getDataByType(token, params)
+                       .getDataByType(token, type)
                        .compose(RxJavaHelper.observableIO2Main(context))
                        .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.DATA_JOB_TITLE, listener));
     }
@@ -158,10 +156,8 @@ public class RequestUtils {
 
     public static void getDoctorBalanceInfo(Context context, String doctorOrderTranId, String token,
             final ResponseListener<BaseResponse> listener) {
-        Map<String, String> params = new HashMap<>(16);
-        params.put("doctorOrderTranId", doctorOrderTranId);
         RetrofitManager.getApiUrlManager()
-                       .getDoctorBalanceInfo(token, params)
+                       .getDoctorBalanceInfo(token, doctorOrderTranId)
                        .compose(RxJavaHelper.observableIO2Main(context))
                        .subscribe(
                                new AbstractLoadViewObserver<>(context, true, Tasks.GET_DOCTOR_BALANCE_INFO, listener));
@@ -169,20 +165,16 @@ public class RequestUtils {
 
     public static void getDoctorWithdraw(Context context, String doctorOrderTranId, String token,
             final ResponseListener<BaseResponse> listener) {
-        Map<String, String> params = new HashMap<>(16);
-        params.put("doctorOrderTranId", doctorOrderTranId);
         RetrofitManager.getApiUrlManager()
-                       .getDoctorWithdraw(token, params)
+                       .getDoctorWithdraw(token, doctorOrderTranId)
                        .compose(RxJavaHelper.observableIO2Main(context))
                        .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_DOCTOR_WITHDRAW, listener));
     }
 
     public static void getDoctorWithdrawByMonth(Context context, String queryMonth, String token,
             final ResponseListener<BaseResponse> listener) {
-        Map<String, String> params = new HashMap<>(16);
-        params.put("query_month", queryMonth);
         RetrofitManager.getApiUrlManager()
-                       .getDoctorWithdrawByMonth(token, params)
+                       .getDoctorWithdrawByMonth(token, queryMonth)
                        .compose(RxJavaHelper.observableIO2Main(context))
                        .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_DOCTOR_WITHDRAW_BY_MONTH,
                                                                  listener));
@@ -227,10 +219,8 @@ public class RequestUtils {
 
     public static void getPatientListByDoctorCode(Context context, String code, String token,
             final ResponseListener<BaseResponse> listener) {
-        Map<String, String> params = new HashMap<>(16);
-        params.put("code ", code);
         RetrofitManager.getApiUrlManager()
-                       .getPatientListByDoctorCode(token, params)
+                       .getPatientListByDoctorCode(token, code)
                        .compose(RxJavaHelper.observableIO2Main(context))
                        .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_PATIENT_LIST_BY_DOCTOR_CODE,
                                                                  listener));
@@ -238,10 +228,8 @@ public class RequestUtils {
 
     public static void getPatientDetailByPatientCode(Context context, String code, String token,
             final ResponseListener<BaseResponse> listener) {
-        Map<String, String> params = new HashMap<>(16);
-        params.put("code ", code);
         RetrofitManager.getApiUrlManager()
-                       .getPatientDetailByPatientCode(token, params)
+                       .getPatientDetailByPatientCode(token, code)
                        .compose(RxJavaHelper.observableIO2Main(context))
                        .subscribe(
                                new AbstractLoadViewObserver<>(context, true, Tasks.GET_PATIENT_DETAIL_BY_PATIENT_CODE,

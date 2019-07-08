@@ -46,7 +46,7 @@ public class AuthResultFragment extends BaseFragment {
         int curAuthStatus = loginBean.getApprovalStatus();
         if (curAuthStatus == DocAuthStatus.AUTH_FAILD) {
             tvAuthResultStatus.setText(R.string.txt_review_failure);
-            tvAuthResultTxt.setText(R.string.txt_review_failure_hint);
+            tvAuthResultTxt.setText(loginBean.getRejectReason());
             tvAuthResultSubmit.setVisibility(View.VISIBLE);
             tvAuthResultContact.setSelected(false);
             ivAuthResultImage.setImageResource(R.mipmap.pic_auth_fail);

@@ -20,12 +20,18 @@ public class LoginBean implements Serializable {
     private String doctorName;
     private String jobTitle;
     private String photo;
+    private String hospitalCode;
+    private String hospitalName;
+    private String departmentName;
+    /**
+     * 认证失败原因
+     */
+    private String rejectReason;
     /**
      * 微信登录
      */
     private String openid;
     private String unionid;
-
 
     public String getToken() {
         return token;
@@ -91,6 +97,38 @@ public class LoginBean implements Serializable {
         this.photo = photo;
     }
 
+    public String getHospitalCode() {
+        return hospitalCode;
+    }
+
+    public void setHospitalCode(String hospitalCode) {
+        this.hospitalCode = hospitalCode;
+    }
+
+    public String getHospitalName() {
+        return hospitalName;
+    }
+
+    public void setHospitalName(String hospitalName) {
+        this.hospitalName = hospitalName;
+    }
+
+    public String getDepartmentName() {
+        return departmentName;
+    }
+
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
+    }
+
+    public String getRejectReason() {
+        return rejectReason;
+    }
+
+    public void setRejectReason(String rejectReason) {
+        this.rejectReason = rejectReason;
+    }
+
     public String getOpenid() {
         return openid;
     }
@@ -109,8 +147,8 @@ public class LoginBean implements Serializable {
 
     @Override
     public String toString() {
-        return "[LoginBean]->doctorCode:" + doctorCode + ",token:" + token + ",mobile:" + mobile +
-               ",doctorName:" + doctorName + ",jobTitle:" + jobTitle + ",photo:" + photo
+        return "[LoginBean]->doctorCode:" + doctorCode + ",token:" + token + ",mobile:" + mobile + ",doctorName:" +
+               doctorName + ",jobTitle:" + jobTitle + ",photo:" + photo
                 //                + ",hospitalId:" + hospitalId
                 //                + ",communityRequired:" + communityRequired
                 //                + ",communityId:" + communityId
