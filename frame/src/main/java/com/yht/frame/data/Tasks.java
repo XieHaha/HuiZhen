@@ -54,9 +54,9 @@ WE_CHAT_LOGIN,
      */
     GET_DOCTOR_INFO_AND_BALANCE_INFO,
     /**
-     * 取医生收入信息+列表
+     * 取医生收入详情
      */
-    GET_DOCTOR_BALANCE_INFO,
+    GET_DOCTOR_INCOME_DETAIL,
     /**
      * 医生提现信息
      */

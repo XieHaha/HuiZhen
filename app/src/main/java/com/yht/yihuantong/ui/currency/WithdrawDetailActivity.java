@@ -4,6 +4,11 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.widget.TextView;
 
+import com.yht.frame.data.BaseResponse;
+import com.yht.frame.data.CommonData;
+import com.yht.frame.data.Tasks;
+import com.yht.frame.data.base.WithDrawDetailBean;
+import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.yihuantong.R;
 
@@ -25,6 +30,20 @@ public class WithdrawDetailActivity extends BaseActivity {
     TextView tvWithdrawStatus;
     @BindView(R.id.tv_withdraw_remark)
     TextView tvWithdrawRemark;
+    /**
+     * 提现详情
+     */
+    private WithDrawDetailBean withDrawDetailBean;
+    /**
+     * 订单id
+     */
+    private int doctorOrderTranId;
+    /**
+     * 临时token
+     *
+     * @return
+     */
+    final String token = "P1wDQpcrTx45XddRgbg6Kt+fSTJ6DDAce3H85a1p04lUcZRXC9MkRKGiC+Hk5cd8HvIintOVLGeRlt\\/DePjJ3DyMDcxmbdfurLDWNb4lXPFrWwhBoTdjSEntlFn5YPDcRCVzZezbHiOJkOBR8pnxYiYTP3DifKa+psssJ4Nruxg=";
 
     @Override
     protected boolean isInitBackBtn() {
@@ -39,5 +58,35 @@ public class WithdrawDetailActivity extends BaseActivity {
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
+        if (getIntent() != null) {
+            doctorOrderTranId = getIntent().getIntExtra(CommonData.KEY_DOCTOR_CURRENCY_ID, 0);
+        }
+        getDoctorWithdraw();
+    }
+
+    private void initPage() {
+        if (withDrawDetailBean != null) {
+            tvWithdrawPrice.setText(withDrawDetailBean.getMedCoin());
+            tvWithdrawTime.setText(withDrawDetailBean.getCreateAt());
+            tvWithdrawWay.setText(withDrawDetailBean.getTransferTypeShow());
+            tvWithdrawStatus.setText(withDrawDetailBean.getStatus());
+            tvWithdrawRemark.setText(withDrawDetailBean.getRemark());
+        }
+    }
+
+    /**
+     * 提现详情
+     */
+    private void getDoctorWithdraw() {
+        RequestUtils.getDoctorWithdraw(this, doctorOrderTranId, token, this);
+    }
+
+    @Override
+    public void onResponseSuccess(Tasks task, BaseResponse response) {
+        super.onResponseSuccess(task, response);
+        if (task == Tasks.GET_DOCTOR_WITHDRAW) {
+            withDrawDetailBean = (WithDrawDetailBean)response.getData();
+            initPage();
+        }
     }
 }

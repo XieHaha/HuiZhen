@@ -8,11 +8,17 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.yht.frame.data.BaseData;
+import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
+import com.yht.frame.data.Tasks;
+import com.yht.frame.data.base.DoctorCurrencyBean;
+import com.yht.frame.data.base.DoctorCurrencyDetailBean;
+import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.yht.yihuantong.R;
-import com.yht.yihuantong.ui.adapter.CurrencyIncomeAdapter;
+import com.yht.yihuantong.ui.adapter.CurrencyDetailAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,15 +35,33 @@ public class CurrencyActivity extends BaseActivity implements BaseQuickAdapter.R
     TextView publicTitleBarTitle;
     @BindView(R.id.recyclerview)
     RecyclerView recyclerview;
+    @BindView(R.id.tv_arrived)
+    TextView tvArrived;
+    @BindView(R.id.tv_total)
+    TextView tvTotal;
+    private DoctorCurrencyBean doctorCurrencyBean;
     /**
      * 适配器
      */
-    private CurrencyIncomeAdapter currencyIncomeAdapter;
+    private CurrencyDetailAdapter currencyIncomeAdapter;
     /**
      * 收入列表
      */
-    private List<String> data;
-    private String title;
+    private List<DoctorCurrencyDetailBean> doctorCurrencyDetailBeans = new ArrayList<>();
+    /**
+     * 查询所有
+     */
+    private boolean showAll;
+    /**
+     * 页码 默认第一页
+     */
+    private int page = 1;
+    /**
+     * 临时token
+     *
+     * @return
+     */
+    final String token = "P1wDQpcrTx45XddRgbg6Kt+fSTJ6DDAce3H85a1p04lUcZRXC9MkRKGiC+Hk5cd8HvIintOVLGeRlt\\/DePjJ3DyMDcxmbdfurLDWNb4lXPFrWwhBoTdjSEntlFn5YPDcRCVzZezbHiOJkOBR8pnxYiYTP3DifKa+psssJ4Nruxg=";
 
     @Override
     protected boolean isInitBackBtn() {
@@ -50,35 +74,86 @@ public class CurrencyActivity extends BaseActivity implements BaseQuickAdapter.R
     }
 
     @Override
-    public void initData(@NonNull Bundle savedInstanceState) {
-        super.initData(savedInstanceState);
-        if (getIntent() != null) {
-            title = getIntent().getStringExtra(CommonData.KEY_PUBLIC);
-            publicTitleBarTitle.setText(title);
-        }
-        data = new ArrayList<String>() {
-            {
-                add("a");
-                add("a");
-                add("a");
-                add("a");
-                add("a");
-                add("a");
-                add("a");
-                add("a");
-            }
-        };
-        currencyIncomeAdapter = new CurrencyIncomeAdapter(R.layout.item_income, data);
+    public void initView(@NonNull Bundle savedInstanceState) {
+        super.initView(savedInstanceState);
+        currencyIncomeAdapter = new CurrencyDetailAdapter(R.layout.item_income, doctorCurrencyDetailBeans);
         View view = getLayoutInflater().inflate(R.layout.view_space, null);
         currencyIncomeAdapter.addHeaderView(view);
         currencyIncomeAdapter.setLoadMoreView(new CustomLoadMoreView());
         currencyIncomeAdapter.setOnLoadMoreListener(this, recyclerview);
-        currencyIncomeAdapter.loadMoreEnd();
         recyclerview.setLayoutManager(new LinearLayoutManager(this));
         recyclerview.setAdapter(currencyIncomeAdapter);
     }
 
     @Override
+    public void initData(@NonNull Bundle savedInstanceState) {
+        super.initData(savedInstanceState);
+        if (getIntent() != null) {
+            showAll = getIntent().getBooleanExtra(CommonData.KEY_SHOW_ALL, false);
+            doctorCurrencyBean = (DoctorCurrencyBean)getIntent().getSerializableExtra(
+                    CommonData.KEY_DOCTOR_CURRENCY_BEAN);
+        }
+        if (showAll) {
+            publicTitleBarTitle.setText(R.string.title_total_income);
+            tvArrived.setText(doctorCurrencyBean.getArrived());
+            tvTotal.setText(String.format(getString(R.string.txt_expected_income), doctorCurrencyBean.getTotal()));
+            getDoctorIncomeWithOutList();
+        }
+        else {
+            publicTitleBarTitle.setText(R.string.title_month_income);
+            tvArrived.setText(doctorCurrencyBean.getCurMonthArrived());
+            tvTotal.setText(
+                    String.format(getString(R.string.txt_expected_income), doctorCurrencyBean.getCurMonthTotal()));
+            getDoctorIncomeByMonthList();
+        }
+    }
+
+    /**
+     * 医生所有收入明细列表
+     */
+    private void getDoctorIncomeWithOutList() {
+        RequestUtils.getDoctorIncomeWithOutList(this, token, BaseData.BASE_PAGE_DATA_NUM, page, this);
+    }
+
+    /**
+     * 医生当前月收入明细列表
+     */
+    private void getDoctorIncomeByMonthList() {
+        RequestUtils.getDoctorIncomeByMonthList(this, token, 1, BaseData.BASE_PAGE_DATA_NUM, page, this);
+    }
+
+    @Override
+    public void onResponseSuccess(Tasks task, BaseResponse response) {
+        super.onResponseSuccess(task, response);
+        switch (task) {
+            case GET_DOCTOR_INCOME_WITHOUT_LIST:
+            case GET_DOCTOR_INCOME_BY_MONTH_LIST:
+                List<DoctorCurrencyDetailBean> list = (List<DoctorCurrencyDetailBean>)response.getData();
+                if (page == BaseData.BASE_ONE) {
+                    doctorCurrencyDetailBeans.clear();
+                }
+                doctorCurrencyDetailBeans.addAll(list);
+                currencyIncomeAdapter.setNewData(doctorCurrencyDetailBeans);
+                if (list.size() < BaseData.BASE_PAGE_DATA_NUM) {
+                    currencyIncomeAdapter.loadMoreEnd();
+                }
+                else {
+                    currencyIncomeAdapter.loadMoreComplete();
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
     public void onLoadMoreRequested() {
+        page++;
+        if (showAll) {
+            getDoctorIncomeWithOutList();
+        }
+        else {
+            getDoctorIncomeByMonthList();
+        }
     }
 }

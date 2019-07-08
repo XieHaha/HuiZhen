@@ -149,14 +149,14 @@
 
         <TextView
             android:id="@+id/tv_withdraw_remark"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/color_373d4d"
             android:textSize="@dimen/text_16"
             android:layout_gravity="center_horizontal"
-            tools:text="2019-06-112019-06-112019-06-112019-06-112019-06-112019-06-112019-06-112019-06-112019-06-112019-06-112019-06-112019-06-112019-06-112019-06-11"
+            tools:text="2019年7月8日21:02:14"
             android:layout_marginEnd="20dp"
-            android:gravity="right" />
+            android:gravity="end" />
 
     </LinearLayout>
 

@@ -57,6 +57,18 @@ public interface CommonData {
      */
     String KEY_SHOW_CURRENCY = "key_show_currency";
     /**
+     * 是否查询所有收入详情
+     */
+    String KEY_SHOW_ALL = "key_show_all";
+    /**
+     * 收入详情bean
+     */
+    String KEY_DOCTOR_CURRENCY_BEAN = "key_doctor_currency_bean";
+    /**
+     * 收入详情bean 单条id
+     */
+    String KEY_DOCTOR_CURRENCY_ID = "key_doctor_currency_id";
+    /**
      * 用户登录账户
      */
     String KEY_USER_PHONE = "key_user_phone";

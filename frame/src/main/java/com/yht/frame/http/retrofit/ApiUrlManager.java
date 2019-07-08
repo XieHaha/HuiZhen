@@ -3,15 +3,19 @@ package com.yht.frame.http.retrofit;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.base.CooperateHospitalBean;
 import com.yht.frame.data.base.DoctorAuthBean;
+import com.yht.frame.data.base.DoctorCurrencyBean;
+import com.yht.frame.data.base.DoctorCurrencyDetailBean;
 import com.yht.frame.data.base.DoctorInfoBean;
 import com.yht.frame.data.base.HospitalBean;
 import com.yht.frame.data.base.HospitalDepartBean;
 import com.yht.frame.data.base.HospitalTitleBean;
+import com.yht.frame.data.base.IncomeDetailBean;
 import com.yht.frame.data.base.LoginBean;
 import com.yht.frame.data.base.PatientBean;
 import com.yht.frame.data.base.PatientDetailBean;
 import com.yht.frame.data.base.PatientOrderBean;
 import com.yht.frame.data.base.VerifyCodeBean;
+import com.yht.frame.data.base.WithDrawDetailBean;
 import com.yht.frame.data.bean.CombineBean;
 import com.yht.frame.data.bean.CooperateDocBean;
 import com.yht.frame.data.bean.HospitalProductTypeBean;
@@ -159,7 +163,7 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @GET("/client/doctorcenter/doctor_balance_info")
-    Observable<BaseResponse<List<HospitalTitleBean>>> getDoctorInfoAndBalanceInfo(@Header("token") String token);
+    Observable<BaseResponse<DoctorCurrencyBean>> getDoctorInfoAndBalanceInfo(@Header("token") String token);
 
     /**
      * 医生收入信息 (预约检查+预约转诊+远程会珍)
@@ -169,8 +173,8 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @GET("/client/doctorcenter/doctor_income")
-    Observable<BaseResponse<List<HospitalTitleBean>>> getDoctorBalanceInfo(@Header("token") String token,
-            @Query("doctorOrderTranId") String info);
+    Observable<BaseResponse<IncomeDetailBean>> getDoctorIncomeDetail(@Header("token") String token,
+            @Query("doctorOrderTranId") int info);
 
     /**
      * 医生提现信息
@@ -180,8 +184,8 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @GET("/client/doctorcenter/doctor_cash")
-    Observable<BaseResponse<List<HospitalTitleBean>>> getDoctorWithdraw(@Header("token") String token,
-            @Query("doctorOrderTranId") String info);
+    Observable<BaseResponse<WithDrawDetailBean>> getDoctorWithdraw(@Header("token") String token,
+            @Query("doctorOrderTranId") int info);
 
     /**
      * 医生某月收入汇总 (纯收入(不包含提现) 预约检查+预约转诊+远程会珍)
@@ -202,7 +206,7 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @GET("/client/doctorcenter/doctor_tran_list")
-    Observable<BaseResponse<List<HospitalTitleBean>>> getDoctorIncomeList(@Header("token") String token,
+    Observable<BaseResponse<List<DoctorCurrencyDetailBean>>> getDoctorIncomeList(@Header("token") String token,
             @QueryMap Map<String, Integer> info);
 
     /**
@@ -213,8 +217,8 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @GET("/client/doctorcenter/doctor_tran_list_only_income")
-    Observable<BaseResponse<List<HospitalTitleBean>>> getDoctorIncomeWithOutList(@Header("token") String token,
-            @QueryMap Map<String, String> info);
+    Observable<BaseResponse<List<DoctorCurrencyDetailBean>>> getDoctorIncomeWithOutList(@Header("token") String token,
+            @QueryMap Map<String, Object> info);
 
     /**
      * 医生某月收入明细信息 (纯收入(不包含提现) 预约检查+预约转诊+远程会珍)
@@ -224,8 +228,8 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @GET("/client/doctorcenter/doctor_tran_list_by_month")
-    Observable<BaseResponse<List<HospitalTitleBean>>> getDoctorIncomeByMonthList(@Header("token") String token,
-            @QueryMap Map<String, String> info);
+    Observable<BaseResponse<List<DoctorCurrencyDetailBean>>> getDoctorIncomeByMonthList(@Header("token") String token,
+            @QueryMap Map<String, Integer> info);
 
     /**
      * 根据医生编码获取患者列表信息

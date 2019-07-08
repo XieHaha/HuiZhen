@@ -13,18 +13,26 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
+import com.yht.frame.data.CurrencyDetailType;
 import com.yht.frame.data.Tasks;
+import com.yht.frame.data.base.DoctorCurrencyBean;
+import com.yht.frame.data.base.DoctorCurrencyDetailBean;
+import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.yht.yihuantong.R;
-import com.yht.yihuantong.ui.adapter.CurrencyIncomeAdapter;
+import com.yht.yihuantong.ui.adapter.CurrencyDetailAdapter;
 import com.yht.yihuantong.ui.currency.CurrencyActivity;
+import com.yht.yihuantong.ui.currency.IncomeDetailActivity;
+import com.yht.yihuantong.ui.currency.WithdrawDetailActivity;
 import com.yht.yihuantong.utils.ImageUrlUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -35,7 +43,8 @@ import butterknife.OnClick;
  * @date 19/6/10 11:01
  * @des 个人中心
  */
-public class PersonalActivity extends BaseActivity implements BaseQuickAdapter.RequestLoadMoreListener {
+public class PersonalActivity extends BaseActivity
+        implements BaseQuickAdapter.RequestLoadMoreListener, BaseQuickAdapter.OnItemClickListener, CurrencyDetailType {
     @BindView(R.id.recyclerview)
     RecyclerView recyclerview;
     @BindView(R.id.public_title_bar_more)
@@ -52,8 +61,15 @@ public class PersonalActivity extends BaseActivity implements BaseQuickAdapter.R
     /**
      * 历史记录
      */
-    private CurrencyIncomeAdapter currencyIncomeAdapter;
-    private List<String> data;
+    private CurrencyDetailAdapter currencyDetailAdapter;
+    /**
+     * 资金统计
+     */
+    private DoctorCurrencyBean doctorCurrencyBean;
+    /**
+     * 资金明细
+     */
+    private List<DoctorCurrencyDetailBean> doctorCurrencyDetailBeans = new ArrayList<>();
     /**
      * 页码 默认第一页
      */
@@ -62,6 +78,12 @@ public class PersonalActivity extends BaseActivity implements BaseQuickAdapter.R
      * 是否显示金额
      */
     private boolean show;
+    /**
+     * 临时token
+     *
+     * @return
+     */
+    final String token = "P1wDQpcrTx45XddRgbg6Kt+fSTJ6DDAce3H85a1p04lUcZRXC9MkRKGiC+Hk5cd8HvIintOVLGeRlt\\/DePjJ3DyMDcxmbdfurLDWNb4lXPFrWwhBoTdjSEntlFn5YPDcRCVzZezbHiOJkOBR8pnxYiYTP3DifKa+psssJ4Nruxg=";
 
     @Override
     protected boolean isInitBackBtn() {
@@ -78,21 +100,23 @@ public class PersonalActivity extends BaseActivity implements BaseQuickAdapter.R
         super.initView(savedInstanceState);
         publicTitleBarMore.setVisibility(View.VISIBLE);
         publicTitleBarMore.setText(R.string.title_setting);
-        currencyIncomeAdapter = new CurrencyIncomeAdapter(R.layout.item_income, data);
+        currencyDetailAdapter = new CurrencyDetailAdapter(R.layout.item_income, doctorCurrencyDetailBeans);
         View view = getLayoutInflater().inflate(R.layout.view_personal_header, null);
         initHeaderView(view);
-        currencyIncomeAdapter.addHeaderView(view);
-        currencyIncomeAdapter.setLoadMoreView(new CustomLoadMoreView());
-        currencyIncomeAdapter.setOnLoadMoreListener(this, recyclerview);
-        currencyIncomeAdapter.loadMoreEnd();
+        currencyDetailAdapter.addHeaderView(view);
+        currencyDetailAdapter.setOnItemClickListener(this);
+        currencyDetailAdapter.setLoadMoreView(new CustomLoadMoreView());
+        currencyDetailAdapter.setOnLoadMoreListener(this, recyclerview);
+        currencyDetailAdapter.loadMoreEnd();
         recyclerview.setLayoutManager(new LinearLayoutManager(this));
-        recyclerview.setAdapter(currencyIncomeAdapter);
+        recyclerview.setAdapter(currencyDetailAdapter);
     }
 
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-        getDoctorBalanceInfo();
+        getDoctorInfoAndBalanceInfo();
+        getDoctorIncomeList();
     }
 
     /**
@@ -118,9 +142,6 @@ public class PersonalActivity extends BaseActivity implements BaseQuickAdapter.R
         layoutMonthIncome.setOnClickListener(this);
         layoutPersonalBase.setOnClickListener(this);
         initBase();
-        //获取本地
-        show = sharePreferenceUtil.getBoolean(CommonData.KEY_SHOW_CURRENCY);
-        initAmountDisplay();
     }
 
     /**
@@ -140,13 +161,16 @@ public class PersonalActivity extends BaseActivity implements BaseQuickAdapter.R
      * 金额显示与隐藏处理
      */
     private void initAmountDisplay() {
+        //获取本地
+        show = sharePreferenceUtil.getBoolean(CommonData.KEY_SHOW_CURRENCY);
         if (show) {
             ivBalanceTab.setSelected(true);
-            tvBalance.setText("100");
-            tvTotal.setText(String.format(getString(R.string.txt_personal_all_income), "1000"));
-            tvTotalIncome.setText("100");
-            tvMonthTotal.setText(String.format(getString(R.string.txt_personal_month_income), "1000"));
-            tvMonthTotalIncome.setText("100");
+            tvBalance.setText(doctorCurrencyBean.getBalance());
+            tvTotal.setText(String.format(getString(R.string.txt_personal_all_income), doctorCurrencyBean.getTotal()));
+            tvTotalIncome.setText(doctorCurrencyBean.getArrived());
+            tvMonthTotal.setText(String.format(getString(R.string.txt_personal_month_income),
+                                               doctorCurrencyBean.getCurMonthTotal()));
+            tvMonthTotalIncome.setText(doctorCurrencyBean.getCurMonthArrived());
         }
         else {
             ivBalanceTab.setSelected(false);
@@ -162,9 +186,38 @@ public class PersonalActivity extends BaseActivity implements BaseQuickAdapter.R
     /**
      * 医生收入信息 预约检查+预约转诊+远程会珍
      */
-    private void getDoctorBalanceInfo() {
-        //        RequestUtils.getDoctorBalanceInfo(this, loginBean.getToken(), this);
-        //        RequestUtils.getDoctorIncomeList(this, BaseData.BASE_PAGE_DATA_NUM, page, loginBean.getToken(), this);
+    private void getDoctorInfoAndBalanceInfo() {
+        RequestUtils.getDoctorInfoAndBalanceInfo(this, token, this);
+    }
+
+    /**
+     * 医生收入明细列表
+     */
+    private void getDoctorIncomeList() {
+        RequestUtils.getDoctorIncomeList(this, token, BaseData.BASE_PAGE_DATA_NUM, page, this);
+    }
+
+    @Override
+    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+        Intent intent;
+        DoctorCurrencyDetailBean bean = doctorCurrencyDetailBeans.get(position);
+        int type = bean.getServiceFlag();
+        switch (type) {
+            case CURRENCY_DETAIL_TYPE_WITHDRAW:
+                intent = new Intent(this, WithdrawDetailActivity.class);
+                intent.putExtra(CommonData.KEY_DOCTOR_CURRENCY_ID, bean.getDoctorOrderTranId());
+                startActivity(intent);
+                break;
+            case CURRENCY_DETAIL_TYPE_CHECK:
+            case CURRENCY_DETAIL_TYPE_TRANSFER:
+            case CURRENCY_DETAIL_TYPE_REMOTE:
+                intent = new Intent(this, IncomeDetailActivity.class);
+                intent.putExtra(CommonData.KEY_DOCTOR_CURRENCY_ID, bean.getDoctorOrderTranId());
+                startActivity(intent);
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
@@ -178,12 +231,13 @@ public class PersonalActivity extends BaseActivity implements BaseQuickAdapter.R
                 break;
             case R.id.layout_total_income:
                 intent = new Intent(this, CurrencyActivity.class);
-                intent.putExtra(CommonData.KEY_PUBLIC, getString(R.string.title_total_income));
+                intent.putExtra(CommonData.KEY_DOCTOR_CURRENCY_BEAN, doctorCurrencyBean);
+                intent.putExtra(CommonData.KEY_SHOW_ALL, true);
                 startActivity(intent);
                 break;
             case R.id.layout_month_income:
                 intent = new Intent(this, CurrencyActivity.class);
-                intent.putExtra(CommonData.KEY_PUBLIC, getString(R.string.title_month_income));
+                intent.putExtra(CommonData.KEY_DOCTOR_CURRENCY_BEAN, doctorCurrencyBean);
                 startActivity(intent);
                 break;
             case R.id.layout_personal_base:
@@ -204,7 +258,23 @@ public class PersonalActivity extends BaseActivity implements BaseQuickAdapter.R
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
         switch (task) {
-            case GET_DOCTOR_BALANCE_INFO:
+            case GET_DOCTOR_INFO_AND_BALANCE_INFO:
+                doctorCurrencyBean = (DoctorCurrencyBean)response.getData();
+                initAmountDisplay();
+                break;
+            case GET_DOCTOR_INCOME_LIST:
+                List<DoctorCurrencyDetailBean> list = (List<DoctorCurrencyDetailBean>)response.getData();
+                if (page == BaseData.BASE_ONE) {
+                    doctorCurrencyDetailBeans.clear();
+                }
+                doctorCurrencyDetailBeans.addAll(list);
+                currencyDetailAdapter.setNewData(doctorCurrencyDetailBeans);
+                if (list.size() < BaseData.BASE_PAGE_DATA_NUM) {
+                    currencyDetailAdapter.loadMoreEnd();
+                }
+                else {
+                    currencyDetailAdapter.loadMoreComplete();
+                }
                 break;
             default:
                 break;

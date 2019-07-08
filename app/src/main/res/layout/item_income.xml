@@ -13,6 +13,7 @@
     android:layout_marginEnd="16dp">
 
     <ImageView
+        android:id="@+id/iv_currency_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@mipmap/ic_check" />
@@ -25,6 +26,7 @@
         android:layout_weight="1">
 
         <TextView
+            android:id="@+id/tv_currency_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_16"
@@ -32,6 +34,7 @@
             tools:text="预约检查" />
 
         <TextView
+            android:id="@+id/tv_currency_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_13"
@@ -42,6 +45,7 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/tv_currency_arrived"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/text_16"
@@ -51,6 +55,7 @@
         android:textStyle="bold" />
 
     <TextView
+        android:id="@+id/tv_currency_total"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/text_16"

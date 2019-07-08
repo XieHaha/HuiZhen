@@ -154,16 +154,16 @@ public class RequestUtils {
                                                                  listener));
     }
 
-    public static void getDoctorBalanceInfo(Context context, String doctorOrderTranId, String token,
+    public static void getDoctorIncomeDetail(Context context, int doctorOrderTranId, String token,
             final ResponseListener<BaseResponse> listener) {
         RetrofitManager.getApiUrlManager()
-                       .getDoctorBalanceInfo(token, doctorOrderTranId)
+                       .getDoctorIncomeDetail(token, doctorOrderTranId)
                        .compose(RxJavaHelper.observableIO2Main(context))
                        .subscribe(
-                               new AbstractLoadViewObserver<>(context, true, Tasks.GET_DOCTOR_BALANCE_INFO, listener));
+                               new AbstractLoadViewObserver<>(context, true, Tasks.GET_DOCTOR_INCOME_DETAIL, listener));
     }
 
-    public static void getDoctorWithdraw(Context context, String doctorOrderTranId, String token,
+    public static void getDoctorWithdraw(Context context, int doctorOrderTranId, String token,
             final ResponseListener<BaseResponse> listener) {
         RetrofitManager.getApiUrlManager()
                        .getDoctorWithdraw(token, doctorOrderTranId)
@@ -180,7 +180,7 @@ public class RequestUtils {
                                                                  listener));
     }
 
-    public static void getDoctorIncomeList(Context context, int pageSize, int startPage, String token,
+    public static void getDoctorIncomeList(Context context, String token, int pageSize, int startPage,
             final ResponseListener<BaseResponse> listener) {
         Map<String, Integer> params = new HashMap<>(16);
         params.put("start_page", startPage);
@@ -192,9 +192,9 @@ public class RequestUtils {
                                new AbstractLoadViewObserver<>(context, true, Tasks.GET_DOCTOR_INCOME_LIST, listener));
     }
 
-    public static void getDoctorIncomeWithOutList(Context context, String pageSize, String startPage, String token,
+    public static void getDoctorIncomeWithOutList(Context context, String token, int pageSize, int startPage,
             final ResponseListener<BaseResponse> listener) {
-        Map<String, String> params = new HashMap<>(16);
+        Map<String, Object> params = new HashMap<>(16);
         params.put("start_page", startPage);
         params.put("page_size", pageSize);
         RetrofitManager.getApiUrlManager()
@@ -204,9 +204,9 @@ public class RequestUtils {
                                                                  listener));
     }
 
-    public static void getDoctorIncomeByMonthList(Context context, String queryMonth, String pageSize, String startPage,
-            String token, final ResponseListener<BaseResponse> listener) {
-        Map<String, String> params = new HashMap<>(16);
+    public static void getDoctorIncomeByMonthList(Context context, String token, int queryMonth, int pageSize,
+            int startPage, final ResponseListener<BaseResponse> listener) {
+        Map<String, Integer> params = new HashMap<>(16);
         params.put("query_month", queryMonth);
         params.put("start_page", startPage);
         params.put("page_size", pageSize);

@@ -19,6 +19,7 @@
         android:text="@string/txt_currency_arrival" />
 
     <TextView
+        android:id="@+id/tv_arrived"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="7dp"
@@ -27,29 +28,16 @@
         tools:text="1000"
         android:textStyle="bold" />
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/tv_total"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/color_373d4d"
+        android:textSize="@dimen/text_13"
         android:layout_marginTop="7dp"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:layout_marginBottom="19dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/color_373d4d"
-            android:textSize="@dimen/text_13"
-            tools:text="预期收入  " />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/color_373d4d"
-            android:textSize="@dimen/text_13"
-            tools:text="1000"
-            android:textStyle="bold" />
-    </LinearLayout>
+        tools:text="1000"
+        android:textStyle="bold"
+        android:layout_marginBottom="19dp" />
 
     <View
         android:layout_width="match_parent"

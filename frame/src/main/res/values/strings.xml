@@ -150,9 +150,10 @@
     <string name="txt_personal_balance">我的余额</string>
     <string name="txt_personal_total">累计已到账</string>
     <string name="txt_personal_month_total">本月已到账</string>
-    <string name="txt_personal_estimate_income">预计收入&#160;%s</string>
+    <string name="txt_personal_estimate_income">预计收入&#160;%d</string>
     <string name="txt_personal_all_income">总收入&#160;%s</string>
     <string name="txt_personal_month_income">本月收入&#160;%s</string>
+    <string name="txt_expected_income">预期收入&#160;%s</string>
     <string name="txt_personal_history">历史记录</string>
     <string name="txt_set_message">新消息通知</string>
     <string name="txt_set_about">关于会珍</string>

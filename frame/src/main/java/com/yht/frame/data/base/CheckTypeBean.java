@@ -13,6 +13,11 @@ public class CheckTypeBean implements Serializable {
     private String name;
     private String report;
 
+    /**龙建军返回数据*******/
+    private int amount;
+    private String examName;
+    private String isArrived;
+
     public int getStatus() {
         return status;
     }
@@ -35,5 +40,29 @@ public class CheckTypeBean implements Serializable {
 
     public void setReport(String report) {
         this.report = report;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
+    public String getExamName() {
+        return examName;
+    }
+
+    public void setExamName(String examName) {
+        this.examName = examName;
+    }
+
+    public String getIsArrived() {
+        return isArrived;
+    }
+
+    public void setIsArrived(String isArrived) {
+        this.isArrived = isArrived;
     }
 }
