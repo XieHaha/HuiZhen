@@ -17,7 +17,7 @@ import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.base.PatientDetailBean;
-import com.yht.frame.data.bean.CheckBean;
+import com.yht.frame.data.base.PatientOrderBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
@@ -25,7 +25,7 @@ import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.frame.widgets.recyclerview.decoration.TimeItemDecoration;
 import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.yht.yihuantong.R;
-import com.yht.yihuantong.ui.adapter.PatientInfoAdapter;
+import com.yht.yihuantong.ui.adapter.PatientOrderAdapter;
 import com.yht.yihuantong.ui.check.CheckDetailActivity;
 import com.yht.yihuantong.ui.patient.TransferDetailActivity;
 import com.yht.yihuantong.ui.remote.RemoteDetailActivity;
@@ -49,7 +49,7 @@ public class PatientInfoFragment extends BaseFragment
     private TextView tvName, tvAge, tvSex, tvPastMedical, familyMedical, tvAllergies, tvNoneRecord;
     private ImageView ivHeadImg;
     private View headerView;
-    private PatientInfoAdapter patientInfoAdapter;
+    private PatientOrderAdapter patientOrderAdapter;
     /**
      * 时间分隔
      */
@@ -62,7 +62,7 @@ public class PatientInfoFragment extends BaseFragment
     /**
      * 诊疗记录（检查、转诊、远程）
      */
-    private List<CheckBean> data;
+    private List<PatientOrderBean> patientOrderBeans = new ArrayList<>();
     private List<String> titleBars;
     /**
      * 页码
@@ -86,43 +86,18 @@ public class PatientInfoFragment extends BaseFragment
         super.initData(savedInstanceState);
         getPatientDetail();
         getPatientOrderList();
-        data = new ArrayList<>();
-        titleBars = new ArrayList<>();
-        for (int i = 0; i < 6; i++) {
-            if (i < 2) {
-                CheckBean bean = new CheckBean();
-                bean.setItemType(CheckBean.CHECK);
-                bean.setTitle("全身检查");
-                bean.setTime("2019-06-29");
-                titleBars.add("2019-06-29");
-                data.add(bean);
-            }
-            else if (i < 4) {
-                CheckBean bean = new CheckBean();
-                bean.setItemType(CheckBean.TRANSFER);
-                bean.setTime("2019-06-30");
-                titleBars.add("2019-06-30");
-                data.add(bean);
-            }
-            else {
-                CheckBean bean = new CheckBean();
-                bean.setItemType(CheckBean.REMOTE);
-                bean.setTime("2019-06-31");
-                titleBars.add("2019-06-31");
-                data.add(bean);
-            }
-        }
-        patientInfoAdapter.setNewData(data);
-        patientInfoAdapter.loadMoreEnd();
-        //返回一个包含所有Tag字母在内的字符串并赋值给tagsStr
-        String tagsStr = BaseUtils.getTimeTags(data);
-        timeItemDecoration.setTitleBar(titleBars, tagsStr);
     }
 
+    /**
+     * 获取患者详情
+     */
     private void getPatientDetail() {
         RequestUtils.getPatientDetailByPatientCode(getContext(), patientCode, loginBean.getToken(), this);
     }
 
+    /**
+     * 获取患者订单记录
+     */
     private void getPatientOrderList() {
         RequestUtils.getPatientOrderListByPatientCode(getContext(), patientCode, loginBean.getToken(),
                                                       BaseData.BASE_PAGE_DATA_NUM, page, this);
@@ -151,12 +126,12 @@ public class PatientInfoFragment extends BaseFragment
         timeItemDecoration = new TimeItemDecoration(getContext(), true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.addItemDecoration(timeItemDecoration);
-        patientInfoAdapter = new PatientInfoAdapter(data);
-        patientInfoAdapter.setOnItemClickListener(this);
-        patientInfoAdapter.setLoadMoreView(new CustomLoadMoreView());
-        patientInfoAdapter.setOnLoadMoreListener(this, recyclerView);
-        patientInfoAdapter.addHeaderView(headerView);
-        recyclerView.setAdapter(patientInfoAdapter);
+        patientOrderAdapter = new PatientOrderAdapter(patientOrderBeans);
+        patientOrderAdapter.setOnItemClickListener(this);
+        patientOrderAdapter.setLoadMoreView(new CustomLoadMoreView());
+        patientOrderAdapter.setOnLoadMoreListener(this, recyclerView);
+        patientOrderAdapter.addHeaderView(headerView);
+        recyclerView.setAdapter(patientOrderAdapter);
     }
 
     /**
@@ -177,19 +152,32 @@ public class PatientInfoFragment extends BaseFragment
              .into(ivHeadImg);
     }
 
+    /**
+     * 订单分组排序
+     */
+    private void sortOrderList() {
+        titleBars = new ArrayList<>();
+        for (PatientOrderBean bean : patientOrderBeans) {
+            titleBars.add(bean.getTime());
+        }
+        //返回一个包含所有Tag字母在内的字符串并赋值给tagsStr
+        //        String tagsStr = BaseUtils.getTimeTags(patientOrderBeans);
+        //        timeItemDecoration.setTitleBar(titleBars, tagsStr);
+    }
+
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         Intent intent = null;
-        CheckBean bean = data.get(position);
+        PatientOrderBean bean = patientOrderBeans.get(position);
         switch (bean.getItemType()) {
-            case CheckBean.CHECK:
+            case PatientOrderBean.CHECK:
                 intent = new Intent(getContext(), CheckDetailActivity.class);
                 break;
-            case CheckBean.TRANSFER:
-                intent = new Intent(getContext(), TransferDetailActivity.class);
-                break;
-            case CheckBean.REMOTE:
+            case PatientOrderBean.REMOTE:
                 intent = new Intent(getContext(), RemoteDetailActivity.class);
+                break;
+            case PatientOrderBean.TRANSFER:
+                intent = new Intent(getContext(), TransferDetailActivity.class);
                 break;
             default:
                 break;
@@ -224,6 +212,20 @@ public class PatientInfoFragment extends BaseFragment
                 initPatientBaseInfo();
                 break;
             case GET_PATIENT_ORDER_LIST_BY_PATIENT_CODE:
+                List<PatientOrderBean> list = (List<PatientOrderBean>)response.getData();
+                if (page == BASE_ONE) {
+                    patientOrderBeans.clear();
+                }
+                patientOrderBeans.addAll(list);
+                sortOrderList();
+                patientOrderAdapter.setNewData(patientOrderBeans);
+                //数据不足10条  已加载完成
+                if (list != null && list.size() < BASE_PAGE_DATA_NUM) {
+                    patientOrderAdapter.loadMoreEnd();
+                }
+                else {
+                    patientOrderAdapter.loadMoreComplete();
+                }
                 break;
             default:
                 break;
@@ -232,5 +234,7 @@ public class PatientInfoFragment extends BaseFragment
 
     @Override
     public void onLoadMoreRequested() {
+        page++;
+        getPatientOrderList();
     }
 }

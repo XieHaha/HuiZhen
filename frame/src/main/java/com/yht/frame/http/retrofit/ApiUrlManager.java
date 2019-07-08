@@ -10,6 +10,7 @@ import com.yht.frame.data.base.HospitalTitleBean;
 import com.yht.frame.data.base.LoginBean;
 import com.yht.frame.data.base.PatientBean;
 import com.yht.frame.data.base.PatientDetailBean;
+import com.yht.frame.data.base.PatientOrderBean;
 import com.yht.frame.data.base.VerifyCodeBean;
 import com.yht.frame.data.bean.CombineBean;
 import com.yht.frame.data.bean.CooperateDocBean;
@@ -249,15 +250,15 @@ public interface ApiUrlManager {
             @Query("code") String info);
 
     /**
-     * 根据患者编码获取患者信息
+     * 根据患者编码获取患者订单记录
      *
      * @param info  map参数
      * @param token token
      * @return 返回值
      */
     @GET("/order/query-patient-order")
-    Observable<BaseResponse<PatientDetailBean>> getPatientOrderListByPatientCode(@Header("token") String token,
-            @Body Map<String, Object> info);
+    Observable<BaseResponse<List<PatientOrderBean>>> getPatientOrderListByPatientCode(@Header("token") String token,
+            @QueryMap Map<String, Object> info);
     /********************************分隔线*********************************/
     /**
      * 首页广告

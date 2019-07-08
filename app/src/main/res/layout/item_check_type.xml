@@ -32,5 +32,5 @@
         android:layout_height="wrap_content"
         android:src="@mipmap/ic_tag_cancel"
         android:layout_marginStart="5dp"
-        android:visibility="gone" />
+        android:visibility="visible" />
 </LinearLayout>

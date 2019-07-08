@@ -53,6 +53,10 @@ public interface CommonData {
      */
     String KEY_CHAT_ID = "key_chat_id";
     /**
+     * 金额是否显示
+     */
+    String KEY_SHOW_CURRENCY = "key_show_currency";
+    /**
      * 用户登录账户
      */
     String KEY_USER_PHONE = "key_user_phone";

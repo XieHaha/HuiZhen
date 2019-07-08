@@ -16,14 +16,13 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
-import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
+import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.adapter.CurrencyIncomeAdapter;
 import com.yht.yihuantong.ui.currency.CurrencyActivity;
-import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.yihuantong.utils.ImageUrlUtil;
 
 import java.util.List;
@@ -55,6 +54,14 @@ public class PersonalActivity extends BaseActivity implements BaseQuickAdapter.R
      */
     private CurrencyIncomeAdapter currencyIncomeAdapter;
     private List<String> data;
+    /**
+     * 页码 默认第一页
+     */
+    private int page = 1;
+    /**
+     * 是否显示金额
+     */
+    private boolean show;
 
     @Override
     protected boolean isInitBackBtn() {
@@ -111,6 +118,8 @@ public class PersonalActivity extends BaseActivity implements BaseQuickAdapter.R
         layoutMonthIncome.setOnClickListener(this);
         layoutPersonalBase.setOnClickListener(this);
         initBase();
+        //获取本地
+        show = sharePreferenceUtil.getBoolean(CommonData.KEY_SHOW_CURRENCY);
         initAmountDisplay();
     }
 
@@ -131,7 +140,15 @@ public class PersonalActivity extends BaseActivity implements BaseQuickAdapter.R
      * 金额显示与隐藏处理
      */
     private void initAmountDisplay() {
-        if (ivBalanceTab.isSelected()) {
+        if (show) {
+            ivBalanceTab.setSelected(true);
+            tvBalance.setText("100");
+            tvTotal.setText(String.format(getString(R.string.txt_personal_all_income), "1000"));
+            tvTotalIncome.setText("100");
+            tvMonthTotal.setText(String.format(getString(R.string.txt_personal_month_income), "1000"));
+            tvMonthTotalIncome.setText("100");
+        }
+        else {
             ivBalanceTab.setSelected(false);
             tvBalance.setText(R.string.txt_star);
             tvTotal.setText(String.format(getString(R.string.txt_personal_all_income), getString(R.string.txt_star)));
@@ -140,14 +157,6 @@ public class PersonalActivity extends BaseActivity implements BaseQuickAdapter.R
                     String.format(getString(R.string.txt_personal_month_income), getString(R.string.txt_star)));
             tvMonthTotalIncome.setText(R.string.txt_star);
         }
-        else {
-            ivBalanceTab.setSelected(true);
-            tvBalance.setText("100");
-            tvTotal.setText(String.format(getString(R.string.txt_personal_all_income), "1000"));
-            tvTotalIncome.setText("100");
-            tvMonthTotal.setText(String.format(getString(R.string.txt_personal_month_income), "1000"));
-            tvMonthTotalIncome.setText("100");
-        }
     }
 
     /**
@@ -155,7 +164,7 @@ public class PersonalActivity extends BaseActivity implements BaseQuickAdapter.R
      */
     private void getDoctorBalanceInfo() {
         //        RequestUtils.getDoctorBalanceInfo(this, loginBean.getToken(), this);
-        RequestUtils.getDoctorIncomeList(this, 10, 1, loginBean.getToken(), this);
+        //        RequestUtils.getDoctorIncomeList(this, BaseData.BASE_PAGE_DATA_NUM, page, loginBean.getToken(), this);
     }
 
     @Override
@@ -164,6 +173,7 @@ public class PersonalActivity extends BaseActivity implements BaseQuickAdapter.R
         Intent intent;
         switch (v.getId()) {
             case R.id.iv_balance_tab:
+                sharePreferenceUtil.putBoolean(CommonData.KEY_SHOW_CURRENCY, !show);
                 initAmountDisplay();
                 break;
             case R.id.layout_total_income:

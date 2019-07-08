@@ -36,16 +36,31 @@
                 android:textColor="@color/color_373d4d"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/tv_check_hospital"
+
+            <LinearLayout
                 android:layout_width="wrap_content"
+                android:orientation="horizontal"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/iv_check_img"
                 android:layout_below="@id/tv_check_name"
                 android:layout_marginStart="12dp"
-                tools:text="服务医院：医院"
-                android:textSize="@dimen/text_13"
-                android:textColor="@color/color_a1a8b3" />
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/txt_colon_check_hospital"
+                    android:textSize="@dimen/text_13"
+                    android:textColor="@color/color_a1a8b3" />
+
+                <TextView
+                    android:id="@+id/tv_check_hospital"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="医院"
+                    android:textSize="@dimen/text_13"
+                    android:textColor="@color/color_a1a8b3" />
+            </LinearLayout>
         </RelativeLayout>
 
         <View
