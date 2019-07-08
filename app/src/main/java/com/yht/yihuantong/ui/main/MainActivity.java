@@ -15,7 +15,7 @@ import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
 import com.yht.frame.data.BaseData;
 import com.yht.frame.data.CommonData;
-import com.yht.frame.data.bean.PatientBean;
+import com.yht.frame.data.base.PatientBean;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.LogUtils;
 import com.yht.frame.utils.ToastUtil;
@@ -90,12 +90,12 @@ public class MainActivity extends BaseActivity {
         for (int i = 0; i < 3; i++) {
             if (i == 0) {
                 PatientBean bean = new PatientBean();
-                bean.setPatientId("18408245131_d");
+                //                bean.setPatientId("18408245131_d");
                 bean.setName("测试名字1");
             }
             else {
                 PatientBean bean = new PatientBean();
-                bean.setPatientId("");
+                //                bean.setPatientId("");
                 bean.setName("");
             }
         }

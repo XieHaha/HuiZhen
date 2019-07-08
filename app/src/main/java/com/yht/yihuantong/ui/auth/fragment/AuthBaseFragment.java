@@ -153,7 +153,7 @@ public class AuthBaseFragment extends BaseFragment
         tvAuthBaseDepart.setSelected(true);
         tvAuthBaseTitle.setText(doctorAuthBean.getJobTitle());
         tvAuthBaseTitle.setSelected(true);
-        if (doctorAuthBean.getDoctorSex() == BaseData.BASE_ONE) {
+        if (doctorAuthBean.getDoctorSex() == BaseData.BASE_MALE) {
             rbMale.setChecked(true);
         }
         else {

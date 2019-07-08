@@ -99,6 +99,7 @@ public class SideBar extends View {
 
     public void setIndexStr(String indexStr) {
         this.indexStr = indexStr;
+        invalidate();
     }
 
     private int curPosition = -1;

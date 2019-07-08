@@ -9,7 +9,7 @@ import android.util.TypedValue;
 import com.github.promeg.pinyinhelper.Pinyin;
 import com.yht.frame.data.BaseData;
 import com.yht.frame.data.bean.CheckBean;
-import com.yht.frame.data.bean.PatientBean;
+import com.yht.frame.data.base.PatientBean;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;

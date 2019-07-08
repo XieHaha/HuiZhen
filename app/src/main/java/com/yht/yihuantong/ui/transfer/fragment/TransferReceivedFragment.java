@@ -10,7 +10,7 @@ import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.yht.frame.data.CommonData;
-import com.yht.frame.data.bean.PatientBean;
+import com.yht.frame.data.base.PatientBean;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.yht.yihuantong.R;

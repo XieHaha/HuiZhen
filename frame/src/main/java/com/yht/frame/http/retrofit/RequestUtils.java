@@ -10,7 +10,7 @@ import com.yht.frame.data.base.HospitalBean;
 import com.yht.frame.data.base.LoginBean;
 import com.yht.frame.data.bean.HospitalProductBean;
 import com.yht.frame.data.bean.HospitalProductTypeBean;
-import com.yht.frame.data.bean.PatientBean;
+import com.yht.frame.data.base.PatientBean;
 import com.yht.frame.http.listener.ResponseListener;
 
 import java.io.File;
@@ -180,9 +180,9 @@ public class RequestUtils {
                                                                  listener));
     }
 
-    public static void getDoctorIncomeList(Context context, String pageSize, String startPage, String token,
+    public static void getDoctorIncomeList(Context context, int pageSize, int startPage, String token,
             final ResponseListener<BaseResponse> listener) {
-        Map<String, String> params = new HashMap<>(16);
+        Map<String, Integer> params = new HashMap<>(16);
         params.put("start_page", startPage);
         params.put("page_size", pageSize);
         RetrofitManager.getApiUrlManager()
@@ -234,6 +234,20 @@ public class RequestUtils {
                        .subscribe(
                                new AbstractLoadViewObserver<>(context, true, Tasks.GET_PATIENT_DETAIL_BY_PATIENT_CODE,
                                                               listener));
+    }
+
+    public static void getPatientOrderListByPatientCode(Context context, String patientCode, String token, int pageSize,
+            int startPage, final ResponseListener<BaseResponse> listener) {
+        Map<String, Object> params = new HashMap<>(16);
+        params.put("patientCode", patientCode);
+        params.put("pageSize", pageSize);
+        params.put("startPage", startPage);
+        RetrofitManager.getApiUrlManager()
+                       .getPatientOrderListByPatientCode(token, params)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, true,
+                                                                 Tasks.GET_PATIENT_ORDER_LIST_BY_PATIENT_CODE,
+                                                                 listener));
     }
 
     /******************************以上为新接口 2019年7月5日14:03:44*************************************/
@@ -583,10 +597,7 @@ public class RequestUtils {
         params.put("doctorId", loginSuccessBean.getDoctorCode());
         params.put("doctorName", loginSuccessBean.getDoctorName());
         params.put("hospitalName", curHospital.getHospitalName());
-        params.put("patientSex", patientBean.getSex());
-        params.put("patientId", patientBean.getPatientId());
         params.put("patientName", patientBean.getName());
-        params.put("patientBirthDate", patientBean.getBirthDate());
         params.put("productDescription", curProduct.getProductDescription());
         params.put("productId", curProduct.getProductId());
         params.put("productName", curProduct.getProductName());

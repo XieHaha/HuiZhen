@@ -6,6 +6,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.yht.frame.data.BaseData;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.yihuantong.R;
@@ -48,12 +49,13 @@ public class PersonalInfoActivity extends BaseActivity {
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-        tvInfoName.setText(loginBean.getDoctorCode());
-        tvInfoSex.setText(loginBean.getDoctorCode());
-        tvInfoPhone.setText(loginBean.getDoctorCode());
-        tvInfoTitle.setText(loginBean.getDoctorCode());
-        tvInfoDepart.setText(loginBean.getDoctorCode());
-        tvInfoHospital.setText(loginBean.getDoctorCode());
+        tvInfoName.setText(loginBean.getDoctorName());
+        tvInfoSex.setText(
+                loginBean.getSex() == BaseData.BASE_MALE ? getString(R.string.txt_sex_male) : getString(R.string.txt_sex_female));
+        tvInfoPhone.setText(loginBean.getMobile());
+        tvInfoTitle.setText(loginBean.getJobTitle());
+        tvInfoDepart.setText(loginBean.getDepartmentName());
+        tvInfoHospital.setText(loginBean.getHospitalName());
         Glide.with(this)
              .load(ImageUrlUtil.append(loginBean.getPhoto()))
              .apply(GlideHelper.getOptions(BaseUtils.dp2px(this, 4)))

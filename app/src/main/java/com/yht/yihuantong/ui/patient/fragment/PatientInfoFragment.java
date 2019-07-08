@@ -12,13 +12,16 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
+import com.yht.frame.data.base.PatientDetailBean;
 import com.yht.frame.data.bean.CheckBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
+import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.frame.widgets.recyclerview.decoration.TimeItemDecoration;
 import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.yht.yihuantong.R;
@@ -27,7 +30,6 @@ import com.yht.yihuantong.ui.check.CheckDetailActivity;
 import com.yht.yihuantong.ui.patient.TransferDetailActivity;
 import com.yht.yihuantong.ui.remote.RemoteDetailActivity;
 import com.yht.yihuantong.ui.reservation.ReservationCheckOrTransferActivity;
-import com.yht.frame.utils.glide.GlideHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +54,7 @@ public class PatientInfoFragment extends BaseFragment
      * 时间分隔
      */
     private TimeItemDecoration timeItemDecoration;
+    private PatientDetailBean patientDetailBean;
     /**
      * 当前患者code
      */
@@ -61,6 +64,10 @@ public class PatientInfoFragment extends BaseFragment
      */
     private List<CheckBean> data;
     private List<String> titleBars;
+    /**
+     * 页码
+     */
+    private int page = 1;
 
     @Override
     public int getLayoutID() {
@@ -72,13 +79,13 @@ public class PatientInfoFragment extends BaseFragment
         super.initView(savedInstanceState);
         initHeaderView();
         initAdapter();
-        initPage();
     }
 
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         getPatientDetail();
+        getPatientOrderList();
         data = new ArrayList<>();
         titleBars = new ArrayList<>();
         for (int i = 0; i < 6; i++) {
@@ -116,6 +123,11 @@ public class PatientInfoFragment extends BaseFragment
         RequestUtils.getPatientDetailByPatientCode(getContext(), patientCode, loginBean.getToken(), this);
     }
 
+    private void getPatientOrderList() {
+        RequestUtils.getPatientOrderListByPatientCode(getContext(), patientCode, loginBean.getToken(),
+                                                      BaseData.BASE_PAGE_DATA_NUM, page, this);
+    }
+
     public void setPatientCode(String patientCode) {
         this.patientCode = patientCode;
     }
@@ -148,16 +160,21 @@ public class PatientInfoFragment extends BaseFragment
     }
 
     /**
-     * 页面数据
+     * 患者基础数据
      */
-    private void initPage() {
-        tvName.setText("姓名");
-        tvAge.setText("111");
-        tvSex.setText("男");
-        tvPastMedical.setText("既往病史既往病史既往病史既往病史既往病史既往病史既往病史既往病史既往病史既往病史");
-        familyMedical.setText("无");
-        tvAllergies.setText("无");
-        Glide.with(this).load("").apply(GlideHelper.getOptionsP(BaseUtils.dp2px(getContext(), 4))).into(ivHeadImg);
+    private void initPatientBaseInfo() {
+        tvName.setText(patientDetailBean.getName());
+        tvAge.setText(String.valueOf(patientDetailBean.getAge()));
+        tvSex.setText(patientDetailBean.getSex() == BaseData.BASE_MALE
+                      ? getString(R.string.txt_sex_male)
+                      : getString(R.string.txt_sex_female));
+        tvPastMedical.setText(patientDetailBean.getPast());
+        familyMedical.setText(patientDetailBean.getFamily());
+        tvAllergies.setText(patientDetailBean.getAllergy());
+        Glide.with(this)
+             .load(patientDetailBean.getWxPhoto())
+             .apply(GlideHelper.getOptionsP(BaseUtils.dp2px(getContext(), 4)))
+             .into(ivHeadImg);
     }
 
     @Override
@@ -203,6 +220,10 @@ public class PatientInfoFragment extends BaseFragment
         super.onResponseSuccess(task, response);
         switch (task) {
             case GET_PATIENT_DETAIL_BY_PATIENT_CODE:
+                patientDetailBean = (PatientDetailBean)response.getData();
+                initPatientBaseInfo();
+                break;
+            case GET_PATIENT_ORDER_LIST_BY_PATIENT_CODE:
                 break;
             default:
                 break;

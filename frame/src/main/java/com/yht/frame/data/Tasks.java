@@ -86,6 +86,10 @@ WE_CHAT_LOGIN,
      */
     GET_PATIENT_DETAIL_BY_PATIENT_CODE,
     /**
+     * 根据患者编码获取患者订单列表（远程、检查、转诊）
+     */
+    GET_PATIENT_ORDER_LIST_BY_PATIENT_CODE,
+    /**
      * 获取环信appkey
      */
     GET_EASE_APPKEY,

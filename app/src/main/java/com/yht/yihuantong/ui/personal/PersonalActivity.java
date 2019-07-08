@@ -16,6 +16,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
+import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
@@ -154,6 +155,7 @@ public class PersonalActivity extends BaseActivity implements BaseQuickAdapter.R
      */
     private void getDoctorBalanceInfo() {
         //        RequestUtils.getDoctorBalanceInfo(this, loginBean.getToken(), this);
+        RequestUtils.getDoctorIncomeList(this, 10, 1, loginBean.getToken(), this);
     }
 
     @Override

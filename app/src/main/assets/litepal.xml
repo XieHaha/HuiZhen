@@ -32,7 +32,7 @@
     	</list>
     -->
     <list>
-        <mapping class="com.yht.frame.data.bean.PatientBean" />
+        <mapping class="com.yht.frame.data.base.PatientBean" />
         <mapping class="com.yht.frame.data.bean.CooperateDocBean" />
         <mapping class="com.yht.frame.data.base.HospitalBean" />
     </list>

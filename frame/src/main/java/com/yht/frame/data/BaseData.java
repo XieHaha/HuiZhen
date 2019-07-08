@@ -27,6 +27,10 @@ public interface BaseData {
      */
     int BASE_FEMALE = 2;
     /**
+     * 列表单页请求数据
+     */
+    int BASE_PAGE_DATA_NUM = 10;
+    /**
      * 昵称的最大长度
      */
     int BASE_NICK_NAME_LENGTH = 20;

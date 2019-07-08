@@ -18,7 +18,7 @@ import android.widget.TextView;
 import com.hyphenate.easeui.EaseConstant;
 import com.yht.frame.data.BaseData;
 import com.yht.frame.data.CommonData;
-import com.yht.frame.data.bean.PatientBean;
+import com.yht.frame.data.base.PatientBean;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.widgets.view.AbstractOnPageChangeListener;
@@ -199,7 +199,7 @@ public class PatientPersonalActivity extends BaseActivity implements EaseChatFra
     private void initFragment() {
         //患者信息
         PatientInfoFragment patientInfoFragment = new PatientInfoFragment();
-        patientInfoFragment.setPatientCode(patientBean.getPatientId());
+        patientInfoFragment.setPatientCode(patientBean.getCode());
         //在线聊天
         easeChatFragment = new EaseChatFragment();
         easeChatFragment.setOnTimeLayoutClickListener(this);

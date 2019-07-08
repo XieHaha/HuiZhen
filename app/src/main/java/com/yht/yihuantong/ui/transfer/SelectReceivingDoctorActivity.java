@@ -13,7 +13,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.yht.frame.data.base.HospitalBean;
 import com.yht.frame.data.base.HospitalDepartBean;
 import com.yht.frame.data.base.HospitalDepartChildBean;
-import com.yht.frame.data.bean.PatientBean;
+import com.yht.frame.data.base.PatientBean;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.widgets.edittext.AbstractTextWatcher;
 import com.yht.frame.widgets.edittext.SuperEditText;

@@ -15,7 +15,7 @@
     <string name="title_withdraw_detail">提现详情</string>
     <string name="title_income_detail">收入详情</string>
     <string name="title_message">消息</string>
-    <string name="title_patient">患者(%s)</string>
+    <string name="title_patient">患者(%d)</string>
     <string name="title_camera">扫一扫</string>
     <string name="title_add_check">添加检查项目</string>
     <string name="title_add_transfer">发起转诊(%s)</string>

@@ -8,11 +8,12 @@ import com.yht.frame.data.base.HospitalBean;
 import com.yht.frame.data.base.HospitalDepartBean;
 import com.yht.frame.data.base.HospitalTitleBean;
 import com.yht.frame.data.base.LoginBean;
+import com.yht.frame.data.base.PatientBean;
+import com.yht.frame.data.base.PatientDetailBean;
 import com.yht.frame.data.base.VerifyCodeBean;
 import com.yht.frame.data.bean.CombineBean;
 import com.yht.frame.data.bean.CooperateDocBean;
 import com.yht.frame.data.bean.HospitalProductTypeBean;
-import com.yht.frame.data.bean.PatientBean;
 import com.yht.frame.data.bean.PatientCaseDetailBean;
 import com.yht.frame.data.bean.RegistrationBean;
 import com.yht.frame.data.bean.TransPatientBean;
@@ -201,7 +202,7 @@ public interface ApiUrlManager {
      */
     @GET("/client/doctorcenter/doctor_tran_list")
     Observable<BaseResponse<List<HospitalTitleBean>>> getDoctorIncomeList(@Header("token") String token,
-            @QueryMap Map<String, String> info);
+            @QueryMap Map<String, Integer> info);
 
     /**
      * 医生收入明细信息 (不包含提现)
@@ -244,8 +245,19 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @GET("/client/patient/getbypatcode")
-    Observable<BaseResponse<List<PatientBean>>> getPatientDetailByPatientCode(@Header("token") String token,
+    Observable<BaseResponse<PatientDetailBean>> getPatientDetailByPatientCode(@Header("token") String token,
             @Query("code") String info);
+
+    /**
+     * 根据患者编码获取患者信息
+     *
+     * @param info  map参数
+     * @param token token
+     * @return 返回值
+     */
+    @GET("/order/query-patient-order")
+    Observable<BaseResponse<PatientDetailBean>> getPatientOrderListByPatientCode(@Header("token") String token,
+            @Body Map<String, Object> info);
     /********************************分隔线*********************************/
     /**
      * 首页广告
