@@ -1,4 +1,4 @@
-package com.yht.yihuantong.utils.glide;
+package com.yht.yihuantong.utils;
 
 import android.app.Activity;
 import android.content.pm.ActivityInfo;

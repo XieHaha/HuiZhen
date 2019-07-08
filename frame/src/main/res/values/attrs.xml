@@ -53,4 +53,16 @@
         <attr name="wheelview_dividerColor" format="color"/>
         <attr name="wheelview_lineSpacingMultiplier" format="float"/>
     </declare-styleable>
+
+    <declare-styleable name="NavigaterPageIndex">
+        <attr name="paddingBottom" format="dimension" />
+        <attr name="indexPadding" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="ImageLoadingView">
+        <attr name="pointRadius" format="dimension" />
+        <attr name="pointColor" format="color" />
+        <attr name="loadingVIewRadius" format="dimension" />
+        <attr name="loadingSpeed" format="integer" />
+    </declare-styleable>
 </resources>

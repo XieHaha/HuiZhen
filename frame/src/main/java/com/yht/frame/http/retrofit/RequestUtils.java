@@ -81,7 +81,7 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .uploadImg(token, body)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.UPLOAD_FILE, listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.UPLOAD_FILE, listener));
     }
 
     public static void getHospitalListByAuth(Context context, String token,

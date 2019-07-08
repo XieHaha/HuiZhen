@@ -29,7 +29,7 @@ import com.yht.yihuantong.ui.adapter.CheckTypeListviewAdapter;
 import com.yht.yihuantong.ui.check.SelectCheckTypeActivity;
 import com.yht.yihuantong.ui.check.SelectCheckTypeByHospitalActivity;
 import com.yht.yihuantong.ui.check.listener.OnCheckListener;
-import com.yht.yihuantong.utils.glide.GlideHelper;
+import com.yht.frame.utils.glide.GlideHelper;
 
 import java.io.File;
 import java.util.ArrayList;

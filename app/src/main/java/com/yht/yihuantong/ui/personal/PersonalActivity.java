@@ -22,8 +22,8 @@ import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.adapter.CurrencyIncomeAdapter;
 import com.yht.yihuantong.ui.currency.CurrencyActivity;
-import com.yht.yihuantong.utils.glide.GlideHelper;
-import com.yht.yihuantong.utils.glide.ImageUrlUtil;
+import com.yht.frame.utils.glide.GlideHelper;
+import com.yht.yihuantong.utils.ImageUrlUtil;
 
 import java.util.List;
 

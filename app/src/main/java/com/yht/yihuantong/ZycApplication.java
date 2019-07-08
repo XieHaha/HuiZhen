@@ -21,6 +21,7 @@ import com.yht.frame.data.base.LoginBean;
 import com.yht.frame.http.retrofit.RetrofitManager;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.SharePreferenceUtil;
+import com.yht.frame.widgets.imagePreview.ImageLoadUtil;
 import com.yht.yihuantong.chat.HxHelper;
 
 import org.litepal.LitePal;
@@ -58,6 +59,8 @@ public class ZycApplication extends LitePalApplication {
         initX5();
         //环信
         initEase();
+        //图片预览
+        initImageLoader();
         //数据库
         LitePal.initialize(this);
         //日志捕捉
@@ -103,6 +106,13 @@ public class ZycApplication extends LitePalApplication {
             //否则交给HxHelper处理，从消息中获取昵称和头像
             return HxHelper.getInstance().getUser(username, callback);
         });
+    }
+
+    /**
+     * ImageLoader 参数化配置
+     */
+    private void initImageLoader() {
+        ImageLoadUtil.getInstance().initImageLoader(getApplicationContext());
     }
 
     private void initX5() {

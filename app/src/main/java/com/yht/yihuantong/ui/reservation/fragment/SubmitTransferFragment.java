@@ -28,7 +28,7 @@ import com.yht.yihuantong.R;
 import com.yht.yihuantong.ZycApplication;
 import com.yht.yihuantong.ui.check.listener.OnCheckListener;
 import com.yht.yihuantong.ui.transfer.SelectReceivingDoctorActivity;
-import com.yht.yihuantong.utils.glide.GlideHelper;
+import com.yht.frame.utils.glide.GlideHelper;
 
 import java.io.File;
 import java.util.List;

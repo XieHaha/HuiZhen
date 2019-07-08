@@ -44,9 +44,9 @@ import com.yht.yihuantong.ui.auth.listener.OnAuthStepListener;
 import com.yht.yihuantong.ui.dialog.DownDialog;
 import com.yht.yihuantong.ui.dialog.listener.OnMediaItemClickListener;
 import com.yht.yihuantong.ui.dialog.listener.OnTitleItemClickListener;
-import com.yht.yihuantong.utils.glide.GlideHelper;
-import com.yht.yihuantong.utils.glide.ImageUrlUtil;
-import com.yht.yihuantong.utils.glide.MatisseUtils;
+import com.yht.frame.utils.glide.GlideHelper;
+import com.yht.yihuantong.utils.ImageUrlUtil;
+import com.yht.yihuantong.utils.MatisseUtils;
 import com.zhihu.matisse.Matisse;
 
 import java.io.File;

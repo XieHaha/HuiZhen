@@ -10,32 +10,35 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.yht.frame.api.DirHelper;
+import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.base.DoctorAuthBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.permission.Permission;
 import com.yht.frame.ui.BaseFragment;
-import com.yht.frame.utils.BaseUtils;
+import com.yht.frame.utils.LogUtils;
+import com.yht.frame.utils.ScalingUtils;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ZycApplication;
+import com.yht.yihuantong.ui.adapter.AddImageAdapter;
 import com.yht.yihuantong.ui.auth.listener.OnAuthStepListener;
 import com.yht.yihuantong.ui.dialog.DownDialog;
 import com.yht.yihuantong.ui.dialog.listener.OnMediaItemClickListener;
-import com.yht.yihuantong.utils.glide.GlideHelper;
-import com.yht.yihuantong.utils.glide.ImageUrlUtil;
-import com.yht.yihuantong.utils.glide.MatisseUtils;
+import com.yht.yihuantong.utils.ImageUrlUtil;
+import com.yht.yihuantong.utils.MatisseUtils;
 import com.zhihu.matisse.Matisse;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -46,23 +49,19 @@ import butterknife.OnClick;
  * @date 19/5/17 14:55
  * @des 认证执照信息
  */
-public class AuthLicenseFragment extends BaseFragment implements OnMediaItemClickListener {
-    @BindView(R.id.iv_upload_one)
-    ImageView ivUploadOne;
-    @BindView(R.id.iv_delete_one)
-    ImageView ivDeleteOne;
-    @BindView(R.id.layout_upload_one)
-    RelativeLayout layoutUploadOne;
-    @BindView(R.id.iv_upload_two)
-    ImageView ivUploadTwo;
-    @BindView(R.id.iv_delete_two)
-    ImageView ivDeleteTwo;
-    @BindView(R.id.layout_upload_two)
-    RelativeLayout layoutUploadTwo;
+public class AuthLicenseFragment extends BaseFragment
+        implements OnMediaItemClickListener, BaseQuickAdapter.OnItemClickListener,
+                   BaseQuickAdapter.OnItemChildClickListener {
     @BindView(R.id.tv_auth_license_last)
     TextView tvAuthLicenseLast;
     @BindView(R.id.tv_auth_license_submit)
     TextView tvAuthLicenseSubmit;
+    @BindView(R.id.recycler_view)
+    RecyclerView recyclerView;
+    /**
+     * 照片adapter
+     */
+    private AddImageAdapter addImageAdapter;
     /**
      * 上传数据mondle
      */
@@ -71,12 +70,9 @@ public class AuthLicenseFragment extends BaseFragment implements OnMediaItemClic
      * 裁剪前的uri
      */
     private Uri mCurrentPhotoUri;
-    /**
-     * 区分两处证件
-     */
-    private int type = -1;
     private String mCurrentPhotoPath;
     private File frontFile, backFile;
+    private ArrayList<String> imagePaths;
 
     @Override
     public int getLayoutID() {
@@ -84,10 +80,26 @@ public class AuthLicenseFragment extends BaseFragment implements OnMediaItemClic
     }
 
     @Override
+    public void initView(@NonNull Bundle savedInstanceState) {
+        super.initView(savedInstanceState);
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        addImageAdapter = new AddImageAdapter(R.layout.item_add_image, imagePaths);
+        addImageAdapter.setOnItemClickListener(this);
+        addImageAdapter.setOnItemChildClickListener(this);
+        recyclerView.setAdapter(addImageAdapter);
+    }
+
+    @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         if (doctorAuthBean != null && !TextUtils.isEmpty(doctorAuthBean.getCertFront())) {
             initPage();
+        }
+        else {
+            //占位图
+            imagePaths = new ArrayList<>();
+            imagePaths.add("");
+            addImageAdapter.setNewData(imagePaths);
         }
     }
 
@@ -97,9 +109,17 @@ public class AuthLicenseFragment extends BaseFragment implements OnMediaItemClic
      * @param file
      */
     private void uploadImage(File file) {
+        LogUtils.i(TAG, "size:" + file.length());
+        ScalingUtils.resizePic(getContext(), file.getAbsolutePath());
+        LogUtils.i(TAG, "compress size:" + file.length());
         RequestUtils.uploadImg(getContext(), loginBean.getToken(), file, this);
     }
 
+    /**
+     * 回填数据
+     *
+     * @param doctorInfoBean
+     */
     public void setDoctorAuthBean(DoctorAuthBean doctorInfoBean) {
         this.doctorAuthBean = doctorInfoBean;
     }
@@ -108,59 +128,17 @@ public class AuthLicenseFragment extends BaseFragment implements OnMediaItemClic
      * 数据回填
      */
     private void initPage() {
-        Glide.with(this)
-             .load(ImageUrlUtil.append(doctorAuthBean.getCertFront()))
-             .apply(GlideHelper.getOptionsPic(BaseUtils.dp2px(getContext(), 4)))
-             .into(ivUploadOne);
-        Glide.with(this)
-             .load(ImageUrlUtil.append(doctorAuthBean.getCertBack()))
-             .apply(GlideHelper.getOptionsPic(BaseUtils.dp2px(getContext(), 4)))
-             .into(ivUploadTwo);
-        ivDeleteOne.setVisibility(View.VISIBLE);
-        ivDeleteTwo.setVisibility(View.VISIBLE);
-        initNextButton();
-    }
-
-    /**
-     * 图片处理
-     *
-     * @param status
-     */
-    private void initImage(int type, boolean status) {
-        switch (type) {
-            case BASE_ONE:
-                if (status) {
-                    ivDeleteOne.setVisibility(View.VISIBLE);
-                    //裁剪完成，上传图片
-                    Glide.with(this)
-                         .load(frontFile)
-                         .apply(GlideHelper.getOptionsPic(BaseUtils.dp2px(getContext(), 4)))
-                         .into(ivUploadOne);
-                }
-                else {
-                    ivUploadOne.setImageDrawable(null);
-                    ivDeleteOne.setVisibility(View.GONE);
-                    frontFile = null;
-                }
-                break;
-            case BASE_TWO:
-                if (status) {
-                    ivDeleteTwo.setVisibility(View.VISIBLE);
-                    //裁剪完成，上传图片
-                    Glide.with(this)
-                         .load(backFile)
-                         .apply(GlideHelper.getOptionsPic(BaseUtils.dp2px(getContext(), 4)))
-                         .into(ivUploadTwo);
-                }
-                else {
-                    ivUploadTwo.setImageDrawable(null);
-                    ivDeleteTwo.setVisibility(View.GONE);
-                    backFile = null;
-                }
-                break;
-            default:
-                break;
+        imagePaths = new ArrayList<>();
+        if (!TextUtils.isEmpty(doctorAuthBean.getCertFront())) {
+            imagePaths.add(ImageUrlUtil.append(doctorAuthBean.getCertFront()));
         }
+        if (!TextUtils.isEmpty(doctorAuthBean.getCertBack())) {
+            imagePaths.add(ImageUrlUtil.append(doctorAuthBean.getCertBack()));
+        }
+        if (imagePaths.size() == 1) {
+            imagePaths.add("");
+        }
+        addImageAdapter.setNewData(imagePaths);
         initNextButton();
     }
 
@@ -168,27 +146,50 @@ public class AuthLicenseFragment extends BaseFragment implements OnMediaItemClic
      * 判断 下一步按钮
      */
     private void initNextButton() {
-        if (TextUtils.isEmpty(doctorAuthBean.getCertFront()) || TextUtils.isEmpty(doctorAuthBean.getCertBack())) {
-            tvAuthLicenseSubmit.setSelected(false);
+        //等于2表示里面至少有一张真实图片(可能存在占位图)
+        if (imagePaths.size() == BaseData.BASE_TWO) {
+            tvAuthLicenseSubmit.setSelected(true);
         }
         else {
-            tvAuthLicenseSubmit.setSelected(true);
+            tvAuthLicenseSubmit.setSelected(false);
         }
     }
 
-    @OnClick({
-            R.id.layout_upload_one, R.id.layout_upload_two, R.id.tv_auth_license_last, R.id.tv_auth_license_submit,
-            R.id.iv_delete_one, R.id.iv_delete_two })
+    @Override
+    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+        if (!TextUtils.isEmpty(imagePaths.get(position))) {
+            //查看大图
+            //            Intent intent = new Intent(getContext(), ImagePreviewActivity.class);
+            //            intent.putExtra(ImagePreviewActivity.INTENT_URLS, imagePaths);
+            //            startActivity(intent);
+            //            getActivity().overridePendingTransition(R.anim.anim_fade_in, R.anim.keep);
+        }
+        else {
+            new DownDialog(getContext()).setData(data).setOnMediaItemClickListener(this).show();
+        }
+    }
+
+    @Override
+    public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+        if (position == BaseData.BASE_ONE) {
+            //设置占位图
+            imagePaths.set(position, "");
+        }
+        else {
+            //先移除
+            imagePaths.remove(imagePaths.get(position));
+            if (!TextUtils.isEmpty(imagePaths.get(position))) {
+                //占位图
+                imagePaths.add("");
+            }
+        }
+        addImageAdapter.setNewData(imagePaths);
+        initNextButton();
+    }
+
+    @OnClick({ R.id.tv_auth_license_last, R.id.tv_auth_license_submit })
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.layout_upload_one:
-                type = BASE_ONE;
-                new DownDialog(getContext()).setData(data).setOnMediaItemClickListener(this).show();
-                break;
-            case R.id.layout_upload_two:
-                type = BASE_TWO;
-                new DownDialog(getContext()).setData(data).setOnMediaItemClickListener(this).show();
-                break;
             case R.id.tv_auth_license_last:
                 if (onAuthStepListener != null) {
                     onAuthStepListener.onAuthTwo(BASE_ONE, null);
@@ -198,12 +199,6 @@ public class AuthLicenseFragment extends BaseFragment implements OnMediaItemClic
                 if (tvAuthLicenseSubmit.isSelected() && onAuthStepListener != null) {
                     onAuthStepListener.onAuthTwo(BASE_TWO, doctorAuthBean);
                 }
-                break;
-            case R.id.iv_delete_one:
-                initImage(BASE_ONE, false);
-                break;
-            case R.id.iv_delete_two:
-                initImage(BASE_TWO, false);
                 break;
             default:
                 break;
@@ -262,12 +257,6 @@ public class AuthLicenseFragment extends BaseFragment implements OnMediaItemClic
                                                                                Intent.FLAG_GRANT_READ_URI_PERMISSION);
             }
         }
-        if (type == BASE_ONE) {
-            frontFile = tempFile;
-        }
-        else {
-            backFile = tempFile;
-        }
         // 指定调用相机拍照后照片的储存路径
         intent.putExtra(MediaStore.EXTRA_OUTPUT, mCurrentPhotoUri);
         startActivityForResult(intent, RC_PICK_CAMERA);
@@ -277,13 +266,12 @@ public class AuthLicenseFragment extends BaseFragment implements OnMediaItemClic
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
         if (task == Tasks.UPLOAD_FILE) {
-            if (type == BASE_ONE) {
-                doctorAuthBean.setCertFront((String)response.getData());
+            if (imagePaths.size() == BaseData.BASE_ONE) {
+                //占位
+                imagePaths.add("");
             }
-            else {
-                doctorAuthBean.setCertBack((String)response.getData());
-            }
-            initImage(type, true);
+            addImageAdapter.setNewData(imagePaths);
+            initNextButton();
         }
     }
 
@@ -296,25 +284,13 @@ public class AuthLicenseFragment extends BaseFragment implements OnMediaItemClic
             case RC_PICK_IMG:
                 List<String> paths = Matisse.obtainPathResult(data);
                 if (null != paths && 0 != paths.size()) {
-                    if (type == BASE_ONE) {
-                        frontFile = new File(paths.get(0));
-                        uploadImage(frontFile);
-                    }
-                    else {
-                        backFile = new File(paths.get(0));
-                        uploadImage(backFile);
-                    }
+                    imagePaths.set(imagePaths.size() - 1, paths.get(0));
+                    uploadImage(new File(paths.get(0)));
                 }
                 break;
             case RC_PICK_CAMERA:
-                if (type == BASE_ONE) {
-                    frontFile = new File(mCurrentPhotoPath);
-                    uploadImage(frontFile);
-                }
-                else {
-                    backFile = new File(mCurrentPhotoPath);
-                    uploadImage(backFile);
-                }
+                imagePaths.set(imagePaths.size() - 1, mCurrentPhotoPath);
+                uploadImage(new File(mCurrentPhotoPath));
                 break;
             default:
                 break;

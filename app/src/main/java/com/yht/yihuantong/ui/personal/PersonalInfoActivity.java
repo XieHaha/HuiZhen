@@ -9,8 +9,8 @@ import com.bumptech.glide.Glide;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.yihuantong.R;
-import com.yht.yihuantong.utils.glide.GlideHelper;
-import com.yht.yihuantong.utils.glide.ImageUrlUtil;
+import com.yht.frame.utils.glide.GlideHelper;
+import com.yht.yihuantong.utils.ImageUrlUtil;
 
 import butterknife.BindView;
 

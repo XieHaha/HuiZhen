@@ -252,6 +252,11 @@
             android:screenOrientation="portrait"
             android:label=""
             android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".ui.ImagePreviewActivity"
+            android:screenOrientation="portrait"
+            android:label=""
+            android:windowSoftInputMode="adjustResize|stateHidden" />
 
         <!--腾讯X5-->
         <service

@@ -27,7 +27,7 @@ import com.yht.yihuantong.ui.check.CheckDetailActivity;
 import com.yht.yihuantong.ui.patient.TransferDetailActivity;
 import com.yht.yihuantong.ui.remote.RemoteDetailActivity;
 import com.yht.yihuantong.ui.reservation.ReservationCheckOrTransferActivity;
-import com.yht.yihuantong.utils.glide.GlideHelper;
+import com.yht.frame.utils.glide.GlideHelper;
 
 import java.util.ArrayList;
 import java.util.List;

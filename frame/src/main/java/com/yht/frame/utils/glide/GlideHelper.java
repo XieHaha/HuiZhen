@@ -1,4 +1,4 @@
-package com.yht.yihuantong.utils.glide;
+package com.yht.frame.utils.glide;
 
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;

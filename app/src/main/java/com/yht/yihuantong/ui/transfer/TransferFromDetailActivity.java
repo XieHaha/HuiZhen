@@ -17,7 +17,7 @@ import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.frame.widgets.dialog.InputDialog;
 import com.yht.frame.widgets.edittext.SuperEditText;
 import com.yht.yihuantong.R;
-import com.yht.yihuantong.utils.glide.GlideHelper;
+import com.yht.frame.utils.glide.GlideHelper;
 
 import butterknife.BindView;
 import butterknife.OnClick;

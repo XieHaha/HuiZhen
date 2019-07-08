@@ -1,4 +1,4 @@
-package com.yht.yihuantong.utils.glide;
+package com.yht.yihuantong.utils;
 
 import com.yht.frame.data.BaseNetConfig;
 import com.yht.yihuantong.BuildConfig;
