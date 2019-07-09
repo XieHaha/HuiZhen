@@ -225,7 +225,7 @@ public class SubmitTransferFragment extends BaseFragment implements RadioGroup.O
                 break;
             case R.id.tv_submit_next:
                 if (checkListener != null) {
-                    checkListener.onStepThree();
+                    checkListener.onTransferStepThree();
                 }
                 break;
             case R.id.iv_receiving_doctor_call:

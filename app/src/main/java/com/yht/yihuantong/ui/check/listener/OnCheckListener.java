@@ -1,5 +1,6 @@
 package com.yht.yihuantong.ui.check.listener;
 
+import com.yht.frame.data.base.ReserveCheckBean;
 import com.yht.frame.data.base.ReserveTransferBean;
 
 /**
@@ -11,15 +12,30 @@ public interface OnCheckListener {
     /**
      * @param bean 基础信息
      */
-    void onStepOne(ReserveTransferBean bean);
+    void onTransferStepOne(ReserveTransferBean bean);
 
     /**
      * @param bean 包含病例等信息
      */
-    void onStepTwo(ReserveTransferBean bean);
+    void onTransferStepTwo(ReserveTransferBean bean);
 
     /**
      * 结果
      */
-    void onStepThree();
+    void onTransferStepThree();
+
+    /**
+     * @param bean 基础信息
+     */
+    void onCheckStepOne(ReserveCheckBean bean);
+
+    /**
+     * @param bean 包含病例等信息
+     */
+    void onCheckStepTwo(ReserveCheckBean bean);
+
+    /**
+     * 结果
+     */
+    void onCheckStepThree();
 }

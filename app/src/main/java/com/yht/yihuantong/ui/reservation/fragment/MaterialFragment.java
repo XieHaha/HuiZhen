@@ -7,6 +7,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.yht.frame.data.BaseData;
+import com.yht.frame.data.base.ReserveCheckBean;
 import com.yht.frame.data.base.ReserveTransferBean;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
@@ -70,15 +71,20 @@ public class MaterialFragment extends BaseFragment implements View.OnFocusChange
     @BindView(R.id.layout_allergies)
     LinearLayout layoutAllergies;
     /**
-     * 当前预约数据
+     * 当前预约转诊数据
      */
     private ReserveTransferBean reverseTransferBean;
+    /**
+     * 当前预约检查数据
+     */
+    private ReserveCheckBean reserveCheckBean;
     /**
      * 基础信息
      */
     private String name, idCard, age, phone;
     private int sex;
     private String pastMedicalHis = "", familyMedicalHis = "", allergiesHis = "", diagnosisHis = "";
+    private boolean istransfer;
     /**
      * 二次编辑 是否清空所有已填数据
      */
@@ -95,9 +101,18 @@ public class MaterialFragment extends BaseFragment implements View.OnFocusChange
         initPatientBaseData();
     }
 
+    public void setIstransfer(boolean istransfer) {
+        this.istransfer = istransfer;
+    }
+
     public void setReverseTransferBean(ReserveTransferBean bean) {
-        clearAll(bean);
+        clearAllTransferData(bean);
         this.reverseTransferBean = bean;
+    }
+
+    public void setReserveCheckBean(ReserveCheckBean bean) {
+        clearAllCheckData(bean);
+        this.reserveCheckBean = bean;
     }
 
     @Override
@@ -117,6 +132,15 @@ public class MaterialFragment extends BaseFragment implements View.OnFocusChange
             familyMedicalHis = "";
             allergiesHis = "";
         }
+        if (istransfer) {
+            initTransferData();
+        }
+        else {
+            initCheckData();
+        }
+    }
+
+    private void initTransferData() {
         if (reverseTransferBean != null) {
             BankCardTextWatcher.bind(tvIdCard, this);
             if (!TextUtils.isEmpty(reverseTransferBean.getPatientCode())) {
@@ -154,16 +178,74 @@ public class MaterialFragment extends BaseFragment implements View.OnFocusChange
         }
     }
 
+    private void initCheckData() {
+        if (reserveCheckBean != null) {
+            BankCardTextWatcher.bind(tvIdCard, this);
+            if (!TextUtils.isEmpty(reserveCheckBean.getPatientCode())) {
+                //老用户
+                editStatus(false);
+                age = String.valueOf(reserveCheckBean.getAge());
+                sex = reserveCheckBean.getSex();
+                phone = reserveCheckBean.getPhone();
+                etPhone.setText(phone);
+                pastMedicalHis = reserveCheckBean.getPastHistory();
+                familyMedicalHis = reserveCheckBean.getFamilyHistory();
+                allergiesHis = reserveCheckBean.getAllergyHistory();
+            }
+            else {
+                //新用户
+                editStatus(true);
+                age = BaseUtils.getAgeByCard(reserveCheckBean.getIdCardNo());
+                sex = BaseUtils.getSexByCard(reserveCheckBean.getIdCardNo());
+            }
+            tvName.setText(reserveCheckBean.getPatientName());
+            tvIdCard.setText(reserveCheckBean.getIdCardNo());
+            etAge.setText(age);
+            if (sex == BaseData.BASE_ONE) {
+                rbMale.setChecked(true);
+            }
+            else {
+                rbFemale.setChecked(true);
+            }
+            //既往病史
+            initPastMedicalHis(!TextUtils.isEmpty(pastMedicalHis));
+            //家族病史
+            initFamilyMedicalHis(!TextUtils.isEmpty(familyMedicalHis));
+            //过敏史
+            initAllergies(!TextUtils.isEmpty(allergiesHis));
+        }
+    }
+
     /**
      * 涉及到数据回填逻辑，如果更改了患者，需要清空原有已填写数据
      */
-    private void clearAll(ReserveTransferBean bean) {
+    private void clearAllTransferData(ReserveTransferBean bean) {
         if (reverseTransferBean == null || bean == null) {
             clearAll = false;
         }
         else {
             if (reverseTransferBean.getPatientName().equals(bean.getPatientName()) &&
                 reverseTransferBean.getPatientIdCardNo().equals(bean.getPatientIdCardNo())) {
+                //都相等 说明未改变用户
+                clearAll = false;
+            }
+            else {
+                //有不相等的 说明患者已经更改，需要清除原有已填写数据
+                clearAll = true;
+            }
+        }
+    }
+
+    /**
+     * 涉及到数据回填逻辑，如果更改了患者，需要清空原有已填写数据
+     */
+    private void clearAllCheckData(ReserveCheckBean bean) {
+        if (reserveCheckBean == null || bean == null) {
+            clearAll = false;
+        }
+        else {
+            if (reserveCheckBean.getPatientName().equals(bean.getPatientName()) &&
+                reserveCheckBean.getIdCardNo().equals(bean.getIdCardNo())) {
                 //都相等 说明未改变用户
                 clearAll = false;
             }
@@ -339,14 +421,26 @@ public class MaterialFragment extends BaseFragment implements View.OnFocusChange
                 break;
             case R.id.tv_material_next:
                 if (tvMaterialNext.isSelected() && checkListener != null) {
-                    //数据回填
-                    reverseTransferBean.setPatientAge(Integer.valueOf(age));
-                    reverseTransferBean.setPatientMobile(phone);
-                    reverseTransferBean.setPastHistory(pastMedicalHis);
-                    reverseTransferBean.setFamilyHistory(familyMedicalHis);
-                    reverseTransferBean.setAllergyHistory(allergiesHis);
-                    reverseTransferBean.setInitResult(diagnosisHis);
-                    checkListener.onStepTwo(reverseTransferBean);
+                    if (istransfer) {
+                        //数据回填
+                        reverseTransferBean.setPatientAge(Integer.valueOf(age));
+                        reverseTransferBean.setPatientMobile(phone);
+                        reverseTransferBean.setPastHistory(pastMedicalHis);
+                        reverseTransferBean.setFamilyHistory(familyMedicalHis);
+                        reverseTransferBean.setAllergyHistory(allergiesHis);
+                        reverseTransferBean.setInitResult(diagnosisHis);
+                        checkListener.onTransferStepTwo(reverseTransferBean);
+                    }
+                    else {
+                        //数据回填
+                        reserveCheckBean.setAge(Integer.valueOf(age));
+                        reserveCheckBean.setPhone(phone);
+                        reserveCheckBean.setPastHistory(pastMedicalHis);
+                        reserveCheckBean.setFamilyHistory(familyMedicalHis);
+                        reserveCheckBean.setAllergyHistory(allergiesHis);
+                        reserveCheckBean.setInitResult(diagnosisHis);
+                        checkListener.onCheckStepTwo(reserveCheckBean);
+                    }
                 }
                 break;
             default:

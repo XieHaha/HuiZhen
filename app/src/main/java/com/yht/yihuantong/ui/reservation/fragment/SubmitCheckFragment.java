@@ -210,7 +210,7 @@ public class SubmitCheckFragment extends BaseFragment implements CheckTypeListvi
                 break;
             case R.id.tv_submit_next:
                 if (checkListener != null) {
-                    checkListener.onStepThree();
+                    checkListener.onTransferStepThree();
                 }
                 break;
             default:

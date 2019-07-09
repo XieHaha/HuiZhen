@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.yht.frame.data.CommonData;
+import com.yht.frame.data.base.ReserveCheckBean;
 import com.yht.frame.data.base.ReserveTransferBean;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.widgets.dialog.HintDialog;
@@ -87,9 +88,13 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
      */
     private SubmitTransferFragment submitTransferFragment;
     /**
-     * 当前预约数据
+     * 当前预约转诊数据
      */
     private ReserveTransferBean reverseTransferBean;
+    /**
+     * 当前预约检查数据
+     */
+    private ReserveCheckBean reserveCheckBean;
     /**
      * 当前碎片
      */
@@ -167,13 +172,16 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
         hideAll(transaction);
         if (materialFragment == null) {
             materialFragment = new MaterialFragment();
+            materialFragment.setIstransfer(istransfer);
             materialFragment.setOnCheckListener(this);
             materialFragment.setReverseTransferBean(reverseTransferBean);
+            materialFragment.setReserveCheckBean(reserveCheckBean);
             transaction.add(R.id.layout_frame_root, materialFragment);
         }
         else {
             transaction.show(materialFragment);
             materialFragment.setReverseTransferBean(reverseTransferBean);
+            materialFragment.setReserveCheckBean(reserveCheckBean);
             materialFragment.onResume();
         }
         transaction.commitAllowingStateLoss();
@@ -318,28 +326,40 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
     }
 
     @Override
-    public void onStepOne(ReserveTransferBean bean) {
+    public void onTransferStepOne(ReserveTransferBean bean) {
         reverseTransferBean = bean;
         tabReservationLicenseView();
     }
 
     @Override
-    public void onStepTwo(ReserveTransferBean bean) {
+    public void onTransferStepTwo(ReserveTransferBean bean) {
         reverseTransferBean = bean;
-        if (istransfer) {
-            tabTransferResultView();
-        }
-        else {
-            tabCheckResultView();
-        }
+        tabTransferResultView();
     }
 
     @Override
-    public void onStepThree() {
+    public void onTransferStepThree() {
         Intent intent = new Intent(this, CheckSuccessActivity.class);
-        if (istransfer) {
-            intent.putExtra(CommonData.KEY_CHECK_OR_TRANSFER, true);
-        }
+        intent.putExtra(CommonData.KEY_CHECK_OR_TRANSFER, true);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    public void onCheckStepOne(ReserveCheckBean bean) {
+        reserveCheckBean = bean;
+        tabReservationLicenseView();
+    }
+
+    @Override
+    public void onCheckStepTwo(ReserveCheckBean bean) {
+        reserveCheckBean = bean;
+        tabCheckResultView();
+    }
+
+    @Override
+    public void onCheckStepThree() {
+        Intent intent = new Intent(this, CheckSuccessActivity.class);
         startActivity(intent);
         finish();
     }

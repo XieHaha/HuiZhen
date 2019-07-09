@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.base.PatientDetailBean;
+import com.yht.frame.data.base.ReserveCheckBean;
 import com.yht.frame.data.base.ReserveTransferBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseFragment;
@@ -44,6 +45,10 @@ public class IdentifyFragment extends BaseFragment implements View.OnFocusChange
      * 当前预约转诊信息
      */
     private ReserveTransferBean reverseTransferBean;
+    /**
+     * 当前预约检查信息
+     */
+    private ReserveCheckBean reserveCheckBean;
     /**
      * 是否为转诊
      */
@@ -135,10 +140,18 @@ public class IdentifyFragment extends BaseFragment implements View.OnFocusChange
                 //新用户
                 if (patientDetailBean == null) {
                     if (checkListener != null) {
-                        reverseTransferBean = new ReserveTransferBean();
-                        reverseTransferBean.setPatientName(name);
-                        reverseTransferBean.setPatientIdCardNo(idCard);
-                        checkListener.onStepOne(reverseTransferBean);
+                        if (istransfer) {
+                            reverseTransferBean = new ReserveTransferBean();
+                            reverseTransferBean.setPatientName(name);
+                            reverseTransferBean.setPatientIdCardNo(idCard);
+                            checkListener.onTransferStepOne(reverseTransferBean);
+                        }
+                        else {
+                            reserveCheckBean = new ReserveCheckBean();
+                            reserveCheckBean.setPatientName(name);
+                            reserveCheckBean.setIdCardNo(idCard);
+                            checkListener.onCheckStepOne(reserveCheckBean);
+                        }
                     }
                 }
                 else {
@@ -146,8 +159,15 @@ public class IdentifyFragment extends BaseFragment implements View.OnFocusChange
                         ToastUtil.toast(getContext(), R.string.txt_identity_information_error);
                     }
                     else {
-                        //校验患者是否有存在的待处理转诊单
-                        getPatientExistTransfer();
+                        if (istransfer) {
+                            //校验患者是否有存在的待处理转诊单
+                            getPatientExistTransfer();
+                        }
+                        else {
+                            if (checkListener != null) {
+                                checkData();
+                            }
+                        }
                     }
                 }
                 break;
@@ -158,24 +178,49 @@ public class IdentifyFragment extends BaseFragment implements View.OnFocusChange
                 }
                 else {
                     if (checkListener != null) {
-                        reverseTransferBean = new ReserveTransferBean();
-                        reverseTransferBean.setPatientName(name);
-                        reverseTransferBean.setPatientIdCardNo(idCard);
-                        reverseTransferBean.setPatientCode(patientDetailBean.getCode());
-                        reverseTransferBean.setPatientMobile(patientDetailBean.getMobile());
-                        reverseTransferBean.setPatientAge(patientDetailBean.getAge());
-                        reverseTransferBean.setSex(patientDetailBean.getSex());
-                        reverseTransferBean.setConfirmPhoto(patientDetailBean.getWxPhoto());
-                        reverseTransferBean.setPastHistory(patientDetailBean.getPast());
-                        reverseTransferBean.setFamilyHistory(patientDetailBean.getFamily());
-                        reverseTransferBean.setAllergyHistory(patientDetailBean.getAllergy());
-                        checkListener.onStepOne(reverseTransferBean);
+                        transferData();
                     }
                 }
                 break;
             default:
                 break;
         }
+    }
+
+    /**
+     * 检查数据
+     */
+    private void checkData() {
+        reserveCheckBean = new ReserveCheckBean();
+        reserveCheckBean.setPatientName(name);
+        reserveCheckBean.setIdCardNo(idCard);
+        reserveCheckBean.setPatientCode(patientDetailBean.getCode());
+        reserveCheckBean.setPhone(patientDetailBean.getMobile());
+        reserveCheckBean.setAge(patientDetailBean.getAge());
+        reserveCheckBean.setSex(patientDetailBean.getSex());
+        reserveCheckBean.setConfirmPhoto(patientDetailBean.getWxPhoto());
+        reserveCheckBean.setPastHistory(patientDetailBean.getPast());
+        reserveCheckBean.setFamilyHistory(patientDetailBean.getFamily());
+        reserveCheckBean.setAllergyHistory(patientDetailBean.getAllergy());
+        checkListener.onCheckStepOne(reserveCheckBean);
+    }
+
+    /**
+     * 转诊数据
+     */
+    private void transferData() {
+        reverseTransferBean = new ReserveTransferBean();
+        reverseTransferBean.setPatientName(name);
+        reverseTransferBean.setPatientIdCardNo(idCard);
+        reverseTransferBean.setPatientCode(patientDetailBean.getCode());
+        reverseTransferBean.setPatientMobile(patientDetailBean.getMobile());
+        reverseTransferBean.setPatientAge(patientDetailBean.getAge());
+        reverseTransferBean.setSex(patientDetailBean.getSex());
+        reverseTransferBean.setConfirmPhoto(patientDetailBean.getWxPhoto());
+        reverseTransferBean.setPastHistory(patientDetailBean.getPast());
+        reverseTransferBean.setFamilyHistory(patientDetailBean.getFamily());
+        reverseTransferBean.setAllergyHistory(patientDetailBean.getAllergy());
+        checkListener.onTransferStepOne(reverseTransferBean);
     }
 
     @Override
