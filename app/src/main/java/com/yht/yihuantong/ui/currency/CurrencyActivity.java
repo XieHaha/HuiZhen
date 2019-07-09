@@ -1,5 +1,6 @@
 package com.yht.yihuantong.ui.currency;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,6 +12,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
+import com.yht.frame.data.CurrencyDetailType;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.base.DoctorCurrencyBean;
 import com.yht.frame.data.base.DoctorCurrencyDetailBean;
@@ -30,7 +32,8 @@ import butterknife.BindView;
  * @date 19/6/10 15:33
  * @des 会珍币管理
  */
-public class CurrencyActivity extends BaseActivity implements BaseQuickAdapter.RequestLoadMoreListener {
+public class CurrencyActivity extends BaseActivity
+        implements BaseQuickAdapter.RequestLoadMoreListener, BaseQuickAdapter.OnItemClickListener, CurrencyDetailType {
     @BindView(R.id.public_title_bar_title)
     TextView publicTitleBarTitle;
     @BindView(R.id.recyclerview)
@@ -56,12 +59,6 @@ public class CurrencyActivity extends BaseActivity implements BaseQuickAdapter.R
      * 页码 默认第一页
      */
     private int page = 1;
-    /**
-     * 临时token
-     *
-     * @return
-     */
-    final String token = "P1wDQpcrTx45XddRgbg6Kt+fSTJ6DDAce3H85a1p04lUcZRXC9MkRKGiC+Hk5cd8HvIintOVLGeRlt\\/DePjJ3DyMDcxmbdfurLDWNb4lXPFrWwhBoTdjSEntlFn5YPDcRCVzZezbHiOJkOBR8pnxYiYTP3DifKa+psssJ4Nruxg=";
 
     @Override
     protected boolean isInitBackBtn() {
@@ -78,6 +75,7 @@ public class CurrencyActivity extends BaseActivity implements BaseQuickAdapter.R
         super.initView(savedInstanceState);
         currencyIncomeAdapter = new CurrencyDetailAdapter(R.layout.item_income, doctorCurrencyDetailBeans);
         View view = getLayoutInflater().inflate(R.layout.view_space, null);
+        currencyIncomeAdapter.setOnItemClickListener(this);
         currencyIncomeAdapter.addHeaderView(view);
         currencyIncomeAdapter.setLoadMoreView(new CustomLoadMoreView());
         currencyIncomeAdapter.setOnLoadMoreListener(this, recyclerview);
@@ -120,6 +118,29 @@ public class CurrencyActivity extends BaseActivity implements BaseQuickAdapter.R
      */
     private void getDoctorIncomeByMonthList() {
         RequestUtils.getDoctorIncomeByMonthList(this, token, 1, BaseData.BASE_PAGE_DATA_NUM, page, this);
+    }
+
+    @Override
+    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+        Intent intent;
+        DoctorCurrencyDetailBean bean = doctorCurrencyDetailBeans.get(position);
+        int type = bean.getServiceFlag();
+        switch (type) {
+            case CURRENCY_DETAIL_TYPE_WITHDRAW:
+                intent = new Intent(this, WithdrawDetailActivity.class);
+                intent.putExtra(CommonData.KEY_DOCTOR_CURRENCY_ID, bean.getDoctorOrderTranId());
+                startActivity(intent);
+                break;
+            case CURRENCY_DETAIL_TYPE_CHECK:
+            case CURRENCY_DETAIL_TYPE_TRANSFER:
+            case CURRENCY_DETAIL_TYPE_REMOTE:
+                intent = new Intent(this, IncomeDetailActivity.class);
+                intent.putExtra(CommonData.KEY_DOCTOR_CURRENCY_ID, bean.getDoctorOrderTranId());
+                startActivity(intent);
+                break;
+            default:
+                break;
+        }
     }
 
     @Override

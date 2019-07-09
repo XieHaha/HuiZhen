@@ -100,6 +100,7 @@ public class PatientFragment extends BaseFragment
     @Override
     public void initView(View view, @NonNull Bundle savedInstanceState) {
         super.initView(view, savedInstanceState);
+        publicMainTitle.setText(String.format(getString(R.string.title_patient), patientBeans.size()));
         statusBarFix.setLayoutParams(
                 new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getStateBarHeight(getActivity())));
         layoutRefresh.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light,

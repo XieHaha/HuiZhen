@@ -38,12 +38,6 @@ public class WithdrawDetailActivity extends BaseActivity {
      * 订单id
      */
     private int doctorOrderTranId;
-    /**
-     * 临时token
-     *
-     * @return
-     */
-    final String token = "P1wDQpcrTx45XddRgbg6Kt+fSTJ6DDAce3H85a1p04lUcZRXC9MkRKGiC+Hk5cd8HvIintOVLGeRlt\\/DePjJ3DyMDcxmbdfurLDWNb4lXPFrWwhBoTdjSEntlFn5YPDcRCVzZezbHiOJkOBR8pnxYiYTP3DifKa+psssJ4Nruxg=";
 
     @Override
     protected boolean isInitBackBtn() {

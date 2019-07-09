@@ -69,7 +69,8 @@
     <string name="txt_doctor_phone">医生手机\n号</string>
     <string name="txt_detail">查看详情</string>
     <string name="txt_max_num">9999+</string>
-    <string name="toast_load_image_error">图片加载失败</string>
+    <string name="txt_plus">+%s</string>
+    <string name="txt_space">%s&#160;&#160;</string>
 
     <!--主页-->
     <string name="txt_message">消息</string>
@@ -300,6 +301,7 @@
     <string name="toast_public_current_no_network">当前无网络连接</string>
     <string name="toast_id_card_error">身份证号码格式错误</string>
     <string name="toast_phone_error">手机号码格式错误</string>
+    <string name="toast_load_image_error">图片加载失败</string>
 
     <!--loadview-->
     <string name="brvah_loading">加载中&#8230;</string>

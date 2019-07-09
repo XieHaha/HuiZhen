@@ -12,9 +12,10 @@ public class CheckTypeBean implements Serializable {
     private int status;
     private String name;
     private String report;
-
-    /**龙建军返回数据*******/
-    private int amount;
+    /**
+     * 龙建军返回数据
+     *******/
+    private String amount;
     private String examName;
     private String isArrived;
 
@@ -42,11 +43,11 @@ public class CheckTypeBean implements Serializable {
         this.report = report;
     }
 
-    public int getAmount() {
+    public String getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(String amount) {
         this.amount = amount;
     }
 

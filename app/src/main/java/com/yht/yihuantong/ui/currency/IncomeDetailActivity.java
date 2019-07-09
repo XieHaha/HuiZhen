@@ -1,7 +1,12 @@
 package com.yht.yihuantong.ui.currency;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ImageSpan;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -49,17 +54,14 @@ public class IncomeDetailActivity extends BaseActivity implements CurrencyDetail
     TextView tvHospitalTitle;
     @BindView(R.id.tv_doctor_title)
     TextView tvDoctorTitle;
+    @BindView(R.id.view_line)
+    View viewLine;
+    private Bitmap bitmapCancel, bitmapNoreach, bitmapReach;
     private IncomeDetailBean incomeDetailBean;
     /**
      * 订单id
      */
     private int doctorOrderTranId;
-    /**
-     * 临时token
-     *
-     * @return
-     */
-    final String token = "P1wDQpcrTx45XddRgbg6Kt+fSTJ6DDAce3H85a1p04lUcZRXC9MkRKGiC+Hk5cd8HvIintOVLGeRlt\\/DePjJ3DyMDcxmbdfurLDWNb4lXPFrWwhBoTdjSEntlFn5YPDcRCVzZezbHiOJkOBR8pnxYiYTP3DifKa+psssJ4Nruxg=";
 
     @Override
     protected boolean isInitBackBtn() {
@@ -77,7 +79,14 @@ public class IncomeDetailActivity extends BaseActivity implements CurrencyDetail
         if (getIntent() != null) {
             doctorOrderTranId = getIntent().getIntExtra(CommonData.KEY_DOCTOR_CURRENCY_ID, 0);
         }
+        initBitmap();
         getDoctorIncomeDetail();
+    }
+
+    private void initBitmap() {
+        bitmapCancel = BitmapFactory.decodeResource(getApplication().getResources(), R.mipmap.ic_tag_cancel);
+        bitmapNoreach = BitmapFactory.decodeResource(getApplication().getResources(), R.mipmap.ic_tag_noreach);
+        bitmapReach = BitmapFactory.decodeResource(getApplication().getResources(), R.mipmap.ic_tag_reach);
     }
 
     private void initPage() {
@@ -103,6 +112,7 @@ public class IncomeDetailActivity extends BaseActivity implements CurrencyDetail
                     tvServiceType.setText(R.string.txt_reserve_transfer);
                     layoutDoctor.setVisibility(View.VISIBLE);
                     layoutProjectChecked.setVisibility(View.GONE);
+                    viewLine.setVisibility(View.GONE);
                     break;
                 case CURRENCY_DETAIL_TYPE_REMOTE:
                     tvHospitalTitle.setText(R.string.txt_initiate_hospital);
@@ -110,6 +120,7 @@ public class IncomeDetailActivity extends BaseActivity implements CurrencyDetail
                     tvServiceType.setText(R.string.txt_remote_consultation);
                     layoutDoctor.setVisibility(View.VISIBLE);
                     layoutProjectChecked.setVisibility(View.GONE);
+                    viewLine.setVisibility(View.GONE);
                     break;
                 default:
                     break;
@@ -123,11 +134,17 @@ public class IncomeDetailActivity extends BaseActivity implements CurrencyDetail
     private void addCheckType() {
         ArrayList<CheckTypeBean> list = incomeDetailBean.getExamList();
         if (list != null && list.size() > 0) {
+            viewLine.setVisibility(View.VISIBLE);
             layoutProjectChecked.setVisibility(View.VISIBLE);
             for (int i = 0; i < list.size(); i++) {
-                View view = getLayoutInflater().inflate(R.layout.item_check_type, null);
-                TextView textView = view.findViewById(R.id.tv_check_type_name);
-                textView.setText(list.get(i).getExamName());
+                CheckTypeBean bean = list.get(i);
+                View view = getLayoutInflater().inflate(R.layout.item_check_by_detail, null);
+                TextView tvType = view.findViewById(R.id.tv_check_type);
+                tvType.setText(String.format(getString(R.string.txt_space), bean.getExamName()));
+                //空格占位
+                tvType.append(appendImage(bean.getIsArrived(), bean.getExamName()));
+                TextView tvPrice = view.findViewById(R.id.tv_check_price);
+                tvPrice.setText(String.format(getString(R.string.txt_plus), bean.getAmount()));
                 view.setTag(i);
                 view.setOnClickListener(this);
                 layoutProjectChecked.addView(view);
@@ -135,6 +152,7 @@ public class IncomeDetailActivity extends BaseActivity implements CurrencyDetail
         }
         else {
             layoutProjectChecked.setVisibility(View.GONE);
+            viewLine.setVisibility(View.GONE);
         }
     }
 
@@ -151,6 +169,39 @@ public class IncomeDetailActivity extends BaseActivity implements CurrencyDetail
         if (task == Tasks.GET_DOCTOR_INCOME_DETAIL) {
             incomeDetailBean = (IncomeDetailBean)response.getData();
             initPage();
+        }
+    }
+
+    private SpannableString appendImage(String status, String showText) {
+        ImageSpan imgSpan;
+        if (status.contains("已取消")) {
+            imgSpan = new ImageSpan(this, bitmapCancel);
+        }
+        else if (status.contains("未到账")) {
+            imgSpan = new ImageSpan(this, bitmapNoreach);
+        }
+        else {
+            imgSpan = new ImageSpan(this, bitmapReach);
+        }
+        SpannableString spanString = new SpannableString(showText);
+        spanString.setSpan(imgSpan, 0, showText.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return spanString;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (bitmapReach != null) {
+            bitmapReach.recycle();
+            bitmapReach = null;
+        }
+        if (bitmapNoreach != null) {
+            bitmapNoreach.recycle();
+            bitmapNoreach = null;
+        }
+        if (bitmapCancel != null) {
+            bitmapCancel.recycle();
+            bitmapCancel = null;
         }
     }
 }
