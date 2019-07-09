@@ -19,15 +19,16 @@ import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.utils.glide.GlideHelper;
-import com.yht.yihuantong.utils.ImageUrlUtil;
-import com.yzq.zxinglibrary.android.CaptureActivity;
-import com.yzq.zxinglibrary.common.Constant;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.check.CheckHistoryActivity;
 import com.yht.yihuantong.ui.personal.PersonalActivity;
 import com.yht.yihuantong.ui.reservation.ReservationCheckOrTransferActivity;
+import com.yht.yihuantong.ui.transfer.SelectReceivingDoctorActivity;
 import com.yht.yihuantong.ui.transfer.TransferApplyActivity;
 import com.yht.yihuantong.ui.transfer.TransferHistoryActivity;
+import com.yht.yihuantong.utils.ImageUrlUtil;
+import com.yzq.zxinglibrary.android.CaptureActivity;
+import com.yzq.zxinglibrary.common.Constant;
 
 import java.util.Objects;
 
@@ -131,6 +132,8 @@ public class WorkerFragment extends BaseFragment {
                 startActivity(intent);
                 break;
             case R.id.view_flipper:
+                intent = new Intent(getContext(), SelectReceivingDoctorActivity.class);
+                startActivity(intent);
                 break;
             case R.id.layout_initiate_check:
                 startActivity(new Intent(getContext(), CheckHistoryActivity.class));

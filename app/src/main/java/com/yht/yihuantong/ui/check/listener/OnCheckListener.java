@@ -1,5 +1,7 @@
 package com.yht.yihuantong.ui.check.listener;
 
+import com.yht.frame.data.base.ReserveTransferBean;
+
 /**
  * @author 顿顿
  * @date 19/6/4 10:22
@@ -7,17 +9,14 @@ package com.yht.yihuantong.ui.check.listener;
  */
 public interface OnCheckListener {
     /**
-     * 基础信息
-     *
-     * @param name
-     * @param idCard
+     * @param bean 基础信息
      */
-    void onStepOne(String name, String idCard);
+    void onStepOne(ReserveTransferBean bean);
 
     /**
-     * 执照
+     * @param bean 包含病例等信息
      */
-    void onStepTwo();
+    void onStepTwo(ReserveTransferBean bean);
 
     /**
      * 结果

@@ -72,7 +72,7 @@ public class WithdrawDetailActivity extends BaseActivity {
      * 提现详情
      */
     private void getDoctorWithdraw() {
-        RequestUtils.getDoctorWithdraw(this, doctorOrderTranId, token, this);
+        RequestUtils.getDoctorWithdraw(this, doctorOrderTranId, loginBean.getToken(), this);
     }
 
     @Override

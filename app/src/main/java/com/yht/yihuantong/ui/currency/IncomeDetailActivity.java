@@ -160,7 +160,7 @@ public class IncomeDetailActivity extends BaseActivity implements CurrencyDetail
      * 提现详情
      */
     private void getDoctorIncomeDetail() {
-        RequestUtils.getDoctorIncomeDetail(this, doctorOrderTranId, token, this);
+        RequestUtils.getDoctorIncomeDetail(this, doctorOrderTranId, loginBean.getToken(), this);
     }
 
     @Override

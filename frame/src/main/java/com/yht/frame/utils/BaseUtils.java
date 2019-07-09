@@ -309,19 +309,19 @@ public class BaseUtils {
     /**
      * 根据身份证号判断性别
      *
-     * @param idCard
+     * @param idCard  男1  女2
      * @return
      */
-    public static String getSexByCard(String idCard) {
+    public static int getSexByCard(String idCard) {
         if (TextUtils.isEmpty(idCard) || idCard.length() != BaseData.BASE_ID_CARD_LENGTH) {
-            return "";
+            return 0;
         }
-        String sex;
+        int sex;
         if (Integer.parseInt(idCard.substring(16).substring(0, 1)) % 2 == 0) {
-            sex = "女";
+            sex = 2;
         }
         else {
-            sex = "男";
+            sex = 1;
         }
         return sex;
     }

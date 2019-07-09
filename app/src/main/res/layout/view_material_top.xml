@@ -119,7 +119,7 @@
             android:textColorHint="@color/color_a1a8b3"
             android:textColor="@color/color_373d4d"
             android:inputType="number"
-            android:maxLength="5"
+            android:maxLength="3"
             android:imeOptions="actionNext"
             android:singleLine="true"
             android:background="@null"

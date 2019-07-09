@@ -11,6 +11,7 @@ public class PatientDetailBean extends PatientBean implements Serializable {
     private static final long serialVersionUID = 8725266403231208068L;
     private int age;
     private int sex;
+    private String idCard;
     private String past;
     private String family;
     private String allergy;
@@ -29,6 +30,14 @@ public class PatientDetailBean extends PatientBean implements Serializable {
 
     public void setSex(int sex) {
         this.sex = sex;
+    }
+
+    public String getIdCard() {
+        return idCard;
+    }
+
+    public void setIdCard(String idCard) {
+        this.idCard = idCard;
     }
 
     public String getPast() {

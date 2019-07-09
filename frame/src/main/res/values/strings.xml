@@ -274,6 +274,8 @@
     <string name="txt_select_doctor_hint">请输入医生姓名搜索</string>
     <string name="txt_select_hospital_depart">请选择医院科室</string>
     <string name="txt_reset_hospital_depart">重置医院科室</string>
+    <string name="txt_identity_information_error">姓名和身份证号码不符，如有疑问请点击右上角"联系我们"</string>
+    <string name="txt_patient_exist_transfer">该患者还有未完成的转诊单，不能发起转诊。</string>
 
     <!--远程相关-->
     <string name="txt_condition_description">病情描述</string>

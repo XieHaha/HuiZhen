@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.yht.frame.data.CommonData;
+import com.yht.frame.data.base.ReserveTransferBean;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.yihuantong.R;
@@ -86,13 +87,13 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
      */
     private SubmitTransferFragment submitTransferFragment;
     /**
+     * 当前预约数据
+     */
+    private ReserveTransferBean reverseTransferBean;
+    /**
      * 当前碎片
      */
     private int curPage;
-    /**
-     * 姓名 身份证
-     */
-    private String name, idCard;
     /**
      * 是否为转诊
      */
@@ -149,6 +150,7 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
         hideAll(transaction);
         if (identifyFragment == null) {
             identifyFragment = new IdentifyFragment();
+            identifyFragment.setIstransfer(istransfer);
             identifyFragment.setOnCheckListener(this);
             transaction.add(R.id.layout_frame_root, identifyFragment);
         }
@@ -166,12 +168,12 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
         if (materialFragment == null) {
             materialFragment = new MaterialFragment();
             materialFragment.setOnCheckListener(this);
-            materialFragment.setValue(name, idCard);
+            materialFragment.setReverseTransferBean(reverseTransferBean);
             transaction.add(R.id.layout_frame_root, materialFragment);
         }
         else {
             transaction.show(materialFragment);
-            materialFragment.setValue(name, idCard);
+            materialFragment.setReverseTransferBean(reverseTransferBean);
             materialFragment.onResume();
         }
         transaction.commitAllowingStateLoss();
@@ -206,10 +208,12 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
         if (submitTransferFragment == null) {
             submitTransferFragment = new SubmitTransferFragment();
             submitTransferFragment.setOnCheckListener(this);
+            submitTransferFragment.setReverseTransferBean(reverseTransferBean);
             transaction.add(R.id.layout_frame_root, submitTransferFragment);
         }
         else {
             transaction.show(submitTransferFragment);
+            submitTransferFragment.setReverseTransferBean(reverseTransferBean);
             submitTransferFragment.onResume();
         }
         transaction.commitAllowingStateLoss();
@@ -314,14 +318,14 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
     }
 
     @Override
-    public void onStepOne(String name, String idCard) {
-        this.name = name;
-        this.idCard = idCard;
+    public void onStepOne(ReserveTransferBean bean) {
+        reverseTransferBean = bean;
         tabReservationLicenseView();
     }
 
     @Override
-    public void onStepTwo() {
+    public void onStepTwo(ReserveTransferBean bean) {
+        reverseTransferBean = bean;
         if (istransfer) {
             tabTransferResultView();
         }

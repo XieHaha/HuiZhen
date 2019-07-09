@@ -181,14 +181,14 @@ public class PersonalActivity extends BaseActivity
      * 医生收入信息 预约检查+预约转诊+远程会珍
      */
     private void getDoctorInfoAndBalanceInfo() {
-        RequestUtils.getDoctorInfoAndBalanceInfo(this, token, this);
+        RequestUtils.getDoctorInfoAndBalanceInfo(this, loginBean.getToken(), this);
     }
 
     /**
      * 医生收入明细列表
      */
     private void getDoctorIncomeList() {
-        RequestUtils.getDoctorIncomeList(this, token, BaseData.BASE_PAGE_DATA_NUM, page, this);
+        RequestUtils.getDoctorIncomeList(this, loginBean.getToken(), BaseData.BASE_PAGE_DATA_NUM, page, this);
     }
 
     @Override

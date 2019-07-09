@@ -26,9 +26,13 @@ WE_CHAT_LOGIN,
      */
     UPLOAD_FILE,
     /**
-     * 获取医院列表
+     * 获取医院列表 (认证模块)
      */
     GET_HOSPITAL_LIST_BY_AUTH,
+    /**
+     * 获取医院列表（预约检查、转诊模块）
+     */
+    GET_HOSPITAL_LIST_BY_RESERVE,
     /**
      * 根据医院code获取科室树
      */
@@ -89,6 +93,14 @@ WE_CHAT_LOGIN,
      * 根据患者编码获取患者订单列表（远程、检查、转诊）
      */
     GET_PATIENT_ORDER_LIST_BY_PATIENT_CODE,
+    /**
+     * 患者身份校验
+     */
+    VERIFY_PATIENT,
+    /**
+     * 查询患者是否存在未完成的转诊单
+     */
+    GET_PATIENT_EXIST_TRANSFER,
     /**
      * 获取环信appkey
      */

@@ -110,14 +110,14 @@ public class CurrencyActivity extends BaseActivity
      * 医生所有收入明细列表
      */
     private void getDoctorIncomeWithOutList() {
-        RequestUtils.getDoctorIncomeWithOutList(this, token, BaseData.BASE_PAGE_DATA_NUM, page, this);
+        RequestUtils.getDoctorIncomeWithOutList(this, loginBean.getToken(), BaseData.BASE_PAGE_DATA_NUM, page, this);
     }
 
     /**
      * 医生当前月收入明细列表
      */
     private void getDoctorIncomeByMonthList() {
-        RequestUtils.getDoctorIncomeByMonthList(this, token, 1, BaseData.BASE_PAGE_DATA_NUM, page, this);
+        RequestUtils.getDoctorIncomeByMonthList(this, loginBean.getToken(), 1, BaseData.BASE_PAGE_DATA_NUM, page, this);
     }
 
     @Override

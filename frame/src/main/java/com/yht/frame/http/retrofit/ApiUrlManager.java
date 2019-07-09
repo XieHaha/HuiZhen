@@ -103,6 +103,17 @@ public interface ApiUrlManager {
     Observable<BaseResponse<List<HospitalBean>>> getHospitalListByAuth(@Header("token") String token);
 
     /**
+     * 获取医院列表 （可以进行预约检查、转诊的医院数据）
+     *
+     * @param token       token
+     * @param serviceCode serviceCode
+     * @return 返回值
+     */
+    @GET("/client/hospital/validSelectInput/{serviceCode}")
+    Observable<BaseResponse<List<HospitalBean>>> getHospitalListByReverse(@Header("token") String token,
+            @Path("serviceCode") String serviceCode);
+
+    /**
      * 获取科室树
      *
      * @param token token
@@ -263,6 +274,28 @@ public interface ApiUrlManager {
     @GET("/order/query-patient-order")
     Observable<BaseResponse<List<PatientOrderBean>>> getPatientOrderListByPatientCode(@Header("token") String token,
             @QueryMap Map<String, Object> info);
+
+    /**
+     * 患者验证（根据身份证号、姓名验证是否匹配）
+     *
+     * @param info  map参数
+     * @param token token
+     * @return 返回值
+     */
+    @GET("/client/patient/getpatbyidcardname")
+    Observable<BaseResponse<PatientDetailBean>> verifyPatient(@Header("token") String token,
+            @QueryMap Map<String, String> info);
+
+    /**
+     * 查询患者是否存在未完成的转诊单
+     *
+     * @param info  map参数
+     * @param token token
+     * @return 返回值
+     */
+    @GET("/order-transfer/exist")
+    Observable<BaseResponse<Boolean>> getPatientExistTransfer(@Header("token") String token,
+            @Query("patientCode") String info);
     /********************************分隔线*********************************/
     /**
      * 首页广告

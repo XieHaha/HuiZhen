@@ -6,14 +6,19 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
+import com.yht.frame.data.BaseResponse;
+import com.yht.frame.data.Tasks;
+import com.yht.frame.data.base.PatientDetailBean;
+import com.yht.frame.data.base.ReserveTransferBean;
+import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.ToastUtil;
+import com.yht.frame.widgets.edittext.AbstractTextWatcher;
 import com.yht.frame.widgets.edittext.SuperEditText;
 import com.yht.yihuantong.R;
-import com.yht.frame.widgets.edittext.AbstractTextWatcher;
-import com.yht.yihuantong.utils.text.BankCardTextWatcher;
 import com.yht.yihuantong.ui.check.listener.OnCheckListener;
+import com.yht.yihuantong.utils.text.BankCardTextWatcher;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -31,6 +36,18 @@ public class IdentifyFragment extends BaseFragment implements View.OnFocusChange
     @BindView(R.id.tv_identify_next)
     TextView tvIdentifyNext;
     private String name, idCard;
+    /**
+     * 当前患者
+     */
+    private PatientDetailBean patientDetailBean;
+    /**
+     * 当前预约转诊信息
+     */
+    private ReserveTransferBean reverseTransferBean;
+    /**
+     * 是否为转诊
+     */
+    private boolean istransfer;
 
     @Override
     public int getLayoutID() {
@@ -61,10 +78,28 @@ public class IdentifyFragment extends BaseFragment implements View.OnFocusChange
         });
     }
 
+    public void setIstransfer(boolean istransfer) {
+        this.istransfer = istransfer;
+    }
+
+    /**
+     * 患者验证
+     */
+    private void verifyPatient() {
+        RequestUtils.verifyPatient(getContext(), loginBean.getToken(), idCard, this);
+    }
+
+    /**
+     * 查询患者是否存在未完成的转诊单
+     */
+    private void getPatientExistTransfer() {
+        RequestUtils.getPatientExistTransfer(getContext(), loginBean.getToken(), patientDetailBean.getCode(), this);
+    }
+
     @OnClick(R.id.tv_identify_next)
     public void onViewClicked() {
-        if (checkListener != null) {
-            checkListener.onStepOne(name, idCard);
+        if (tvIdentifyNext.isSelected()) {
+            verifyPatient();
         }
     }
 
@@ -83,11 +118,63 @@ public class IdentifyFragment extends BaseFragment implements View.OnFocusChange
      */
     public void onCardTextChanged(CharSequence s, int start, int before, int count) {
         idCard = s.toString().replace(" ", "");
-        if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(s) && BaseUtils.isCardNum(idCard)) {
+        if (!TextUtils.isEmpty(name) && BaseUtils.isCardNum(idCard)) {
             tvIdentifyNext.setSelected(true);
         }
         else {
             tvIdentifyNext.setSelected(false);
+        }
+    }
+
+    @Override
+    public void onResponseSuccess(Tasks task, BaseResponse response) {
+        super.onResponseSuccess(task, response);
+        switch (task) {
+            case VERIFY_PATIENT:
+                patientDetailBean = (PatientDetailBean)response.getData();
+                //新用户
+                if (patientDetailBean == null) {
+                    if (checkListener != null) {
+                        reverseTransferBean = new ReserveTransferBean();
+                        reverseTransferBean.setPatientName(name);
+                        reverseTransferBean.setPatientIdCardNo(idCard);
+                        checkListener.onStepOne(reverseTransferBean);
+                    }
+                }
+                else {
+                    if (!name.equals(patientDetailBean.getName())) {
+                        ToastUtil.toast(getContext(), R.string.txt_identity_information_error);
+                    }
+                    else {
+                        //校验患者是否有存在的待处理转诊单
+                        getPatientExistTransfer();
+                    }
+                }
+                break;
+            case GET_PATIENT_EXIST_TRANSFER:
+                boolean exist = (boolean)response.getData();
+                if (exist) {
+                    ToastUtil.toast(getContext(), R.string.txt_patient_exist_transfer);
+                }
+                else {
+                    if (checkListener != null) {
+                        reverseTransferBean = new ReserveTransferBean();
+                        reverseTransferBean.setPatientName(name);
+                        reverseTransferBean.setPatientIdCardNo(idCard);
+                        reverseTransferBean.setPatientCode(patientDetailBean.getCode());
+                        reverseTransferBean.setPatientMobile(patientDetailBean.getMobile());
+                        reverseTransferBean.setPatientAge(patientDetailBean.getAge());
+                        reverseTransferBean.setSex(patientDetailBean.getSex());
+                        reverseTransferBean.setConfirmPhoto(patientDetailBean.getWxPhoto());
+                        reverseTransferBean.setPastHistory(patientDetailBean.getPast());
+                        reverseTransferBean.setFamilyHistory(patientDetailBean.getFamily());
+                        reverseTransferBean.setAllergyHistory(patientDetailBean.getAllergy());
+                        checkListener.onStepOne(reverseTransferBean);
+                    }
+                }
+                break;
+            default:
+                break;
         }
     }
 

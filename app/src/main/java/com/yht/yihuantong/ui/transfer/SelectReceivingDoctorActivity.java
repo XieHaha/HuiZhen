@@ -2,6 +2,7 @@ package com.yht.yihuantong.ui.transfer;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
@@ -10,13 +11,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.yht.frame.data.BaseResponse;
+import com.yht.frame.data.Tasks;
 import com.yht.frame.data.base.HospitalBean;
 import com.yht.frame.data.base.HospitalDepartBean;
 import com.yht.frame.data.base.HospitalDepartChildBean;
 import com.yht.frame.data.base.PatientBean;
+import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.widgets.edittext.AbstractTextWatcher;
 import com.yht.frame.widgets.edittext.SuperEditText;
+import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.yht.frame.widgets.view.ExpandableLayout;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.adapter.DepartOneAdapter;
@@ -86,19 +91,20 @@ public class SelectReceivingDoctorActivity extends BaseActivity
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-        //        //科室医院列表
-        //        selectRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        //        departOneAdapter = new DepartOneAdapter(R.layout.item_depart, departOne);
-        //        departOneAdapter.setOnItemClickListener(this);
-        //        selectRecyclerView.setAdapter(departOneAdapter);
-        //        //医生列表
-        //        searchRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        //        doctorAdapter = new DoctorAdapter(R.layout.item_doctor, doctors);
-        //        doctorAdapter.setLoadMoreView(new CustomLoadMoreView());
-        //        doctorAdapter.setOnLoadMoreListener(this, searchRecyclerView);
-        //        doctorAdapter.setOnItemClickListener(this);
-        //        doctorAdapter.setOnItemChildClickListener(this);
-        //        searchRecyclerView.setAdapter(doctorAdapter);
+        //科室医院列表
+        selectRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        departOneAdapter = new DepartOneAdapter(R.layout.item_depart, departOne);
+        departOneAdapter.setOnItemClickListener(this);
+        selectRecyclerView.setAdapter(departOneAdapter);
+        //医生列表
+        searchRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        doctorAdapter = new DoctorAdapter(R.layout.item_doctor, doctors);
+        doctorAdapter.setLoadMoreView(new CustomLoadMoreView());
+        doctorAdapter.setOnLoadMoreListener(this, searchRecyclerView);
+        doctorAdapter.setOnItemClickListener(this);
+        doctorAdapter.setOnItemChildClickListener(this);
+        searchRecyclerView.setAdapter(doctorAdapter);
+        getHospitalListByReverse();
     }
 
     @Override
@@ -115,6 +121,10 @@ public class SelectReceivingDoctorActivity extends BaseActivity
                 }
             }
         });
+    }
+
+    private void getHospitalListByReverse() {
+        RequestUtils.getHospitalListByReverse(this, loginBean.getToken(), "", this);
     }
 
     /**
@@ -273,6 +283,17 @@ public class SelectReceivingDoctorActivity extends BaseActivity
 
     @Override
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+    }
+
+    @Override
+    public void onResponseSuccess(Tasks task, BaseResponse response) {
+        super.onResponseSuccess(task, response);
+        switch (task) {
+            case GET_HOSPITAL_LIST_BY_RESERVE:
+                break;
+            default:
+                break;
+        }
     }
 
     @Override

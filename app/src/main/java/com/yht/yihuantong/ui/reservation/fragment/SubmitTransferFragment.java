@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.yht.frame.api.DirHelper;
+import com.yht.frame.data.base.ReserveTransferBean;
 import com.yht.frame.permission.Permission;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
@@ -92,6 +93,14 @@ public class SubmitTransferFragment extends BaseFragment implements RadioGroup.O
     private Uri mCurrentPhotoUri;
     private String mCurrentPhotoPath;
     /**
+     * 当前预约数据
+     */
+    private ReserveTransferBean reverseTransferBean;
+    /**
+     * 二次编辑 是否清空所有已填数据
+     */
+    private boolean clearAll;
+    /**
      * 选择接诊医生
      */
     public static final int REQUEST_CODE_SELECT_DOCTOR = 100;
@@ -99,6 +108,12 @@ public class SubmitTransferFragment extends BaseFragment implements RadioGroup.O
     @Override
     public int getLayoutID() {
         return R.layout.fragment_submit_transfer;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        initPageData();
     }
 
     @Override
@@ -112,6 +127,42 @@ public class SubmitTransferFragment extends BaseFragment implements RadioGroup.O
         groupTransferType.setOnCheckedChangeListener(this);
         groupTransferPurpose.setOnCheckedChangeListener(this);
         groupPayment.setOnCheckedChangeListener(this);
+    }
+
+    /**
+     * 页面逻辑
+     */
+    private void initPageData() {
+        if (clearAll) {
+            rbUp.setChecked(true);
+            rbFamilyRequire.setChecked(true);
+            rbSelf.setChecked(true);
+        }
+    }
+
+    public void setReverseTransferBean(ReserveTransferBean bean) {
+        clearAll(bean);
+        this.reverseTransferBean = bean;
+    }
+
+    /**
+     * 涉及到数据回填逻辑，如果更改了患者，需要清空原有已填写数据
+     */
+    private void clearAll(ReserveTransferBean bean) {
+        if (reverseTransferBean == null || bean == null) {
+            clearAll = false;
+        }
+        else {
+            if (reverseTransferBean.getPatientName().equals(bean.getPatientName()) &&
+                reverseTransferBean.getPatientIdCardNo().equals(bean.getPatientIdCardNo())) {
+                //都相等 说明未改变用户
+                clearAll = false;
+            }
+            else {
+                //有不相等的 说明患者已经更改，需要清除原有已填写数据
+                clearAll = true;
+            }
+        }
     }
 
     /**

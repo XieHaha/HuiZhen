@@ -1,13 +1,13 @@
 package com.yht.yihuantong.ui.reservation.fragment;
 
-import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import com.yht.frame.data.BaseData;
+import com.yht.frame.data.base.ReserveTransferBean;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.ToastUtil;
@@ -70,10 +70,19 @@ public class MaterialFragment extends BaseFragment implements View.OnFocusChange
     @BindView(R.id.layout_allergies)
     LinearLayout layoutAllergies;
     /**
+     * 当前预约数据
+     */
+    private ReserveTransferBean reverseTransferBean;
+    /**
      * 基础信息
      */
-    private String name, idCard, age, sex, phone;
+    private String name, idCard, age, phone;
+    private int sex;
     private String pastMedicalHis = "", familyMedicalHis = "", allergiesHis = "", diagnosisHis = "";
+    /**
+     * 二次编辑 是否清空所有已填数据
+     */
+    private boolean clearAll;
 
     @Override
     public int getLayoutID() {
@@ -83,41 +92,109 @@ public class MaterialFragment extends BaseFragment implements View.OnFocusChange
     @Override
     public void onResume() {
         super.onResume();
-        initNameAndCard();
-        initAge();
-        initSex();
+        initPatientBaseData();
     }
 
-    public void setValue(String name, String idCard) {
-        this.name = name;
-        this.idCard = idCard;
-    }
-
-    @Override
-    public void initData(@NonNull Bundle savedInstanceState) {
-        super.initData(savedInstanceState);
-        initPage();
+    public void setReverseTransferBean(ReserveTransferBean bean) {
+        clearAll(bean);
+        this.reverseTransferBean = bean;
     }
 
     @Override
     public void initListener() {
         super.initListener();
+        initEditListener();
     }
 
     /**
-     * 基础页面处理
+     * 姓名和身份证处理  老用户获取，新用户根据身份证计算
      */
-    private void initPage() {
-        initEdit();
-        //既往病史
-        initPastMedicalHis(false);
-        //家族病史
-        initFamilyMedicalHis(false);
-        //过敏史
-        initAllergies(false);
+    private void initPatientBaseData() {
+        if (clearAll) {
+            etPhone.setText("");
+            etDiagnosis.setText("");
+            pastMedicalHis = "";
+            familyMedicalHis = "";
+            allergiesHis = "";
+        }
+        if (reverseTransferBean != null) {
+            BankCardTextWatcher.bind(tvIdCard, this);
+            if (!TextUtils.isEmpty(reverseTransferBean.getPatientCode())) {
+                //老用户
+                editStatus(false);
+                age = String.valueOf(reverseTransferBean.getPatientAge());
+                sex = reverseTransferBean.getSex();
+                phone = reverseTransferBean.getPatientMobile();
+                etPhone.setText(phone);
+                pastMedicalHis = reverseTransferBean.getPastHistory();
+                familyMedicalHis = reverseTransferBean.getFamilyHistory();
+                allergiesHis = reverseTransferBean.getAllergyHistory();
+            }
+            else {
+                //新用户
+                editStatus(true);
+                age = BaseUtils.getAgeByCard(reverseTransferBean.getPatientIdCardNo());
+                sex = BaseUtils.getSexByCard(reverseTransferBean.getPatientIdCardNo());
+            }
+            tvName.setText(reverseTransferBean.getPatientName());
+            tvIdCard.setText(reverseTransferBean.getPatientIdCardNo());
+            etAge.setText(age);
+            if (sex == BaseData.BASE_ONE) {
+                rbMale.setChecked(true);
+            }
+            else {
+                rbFemale.setChecked(true);
+            }
+            //既往病史
+            initPastMedicalHis(!TextUtils.isEmpty(pastMedicalHis));
+            //家族病史
+            initFamilyMedicalHis(!TextUtils.isEmpty(familyMedicalHis));
+            //过敏史
+            initAllergies(!TextUtils.isEmpty(allergiesHis));
+        }
     }
 
-    private void initEdit() {
+    /**
+     * 涉及到数据回填逻辑，如果更改了患者，需要清空原有已填写数据
+     */
+    private void clearAll(ReserveTransferBean bean) {
+        if (reverseTransferBean == null || bean == null) {
+            clearAll = false;
+        }
+        else {
+            if (reverseTransferBean.getPatientName().equals(bean.getPatientName()) &&
+                reverseTransferBean.getPatientIdCardNo().equals(bean.getPatientIdCardNo())) {
+                //都相等 说明未改变用户
+                clearAll = false;
+            }
+            else {
+                //有不相等的 说明患者已经更改，需要清除原有已填写数据
+                clearAll = true;
+            }
+        }
+    }
+
+    /**
+     * @param mode 是否可以编辑基本信息
+     */
+    private void editStatus(boolean mode) {
+        etPhone.setFocusable(mode);
+        etPhone.setFocusableInTouchMode(mode);
+        etAge.setFocusable(mode);
+        etAge.setFocusableInTouchMode(mode);
+        rbFemale.setClickable(mode);
+        rbMale.setClickable(mode);
+    }
+
+    private void initEditListener() {
+        etAge.addTextChangedListener(new AbstractTextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                super.onTextChanged(s, start, before, count);
+                age = s.toString();
+                initNextButton();
+            }
+        });
         etPhone.setOnFocusChangeListener(this);
         etPhone.addTextChangedListener(new AbstractTextWatcher() {
             @Override
@@ -125,12 +202,7 @@ public class MaterialFragment extends BaseFragment implements View.OnFocusChange
                 super.onTextChanged(s, start, before, count);
                 phone = s.toString();
                 //判断手机号和诊断史
-                if (BaseUtils.isMobileNumber(phone) && !TextUtils.isEmpty(diagnosisHis)) {
-                    tvMaterialNext.setSelected(true);
-                }
-                else {
-                    tvMaterialNext.setSelected(false);
-                }
+                initNextButton();
             }
         });
         etPastMedicalHis.addTextChangedListener(new AbstractTextWatcher() {
@@ -163,13 +235,7 @@ public class MaterialFragment extends BaseFragment implements View.OnFocusChange
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 super.onTextChanged(s, start, before, count);
                 diagnosisHis = s.toString();
-                //判断手机号和诊断史
-                if (BaseUtils.isMobileNumber(phone) && !TextUtils.isEmpty(diagnosisHis)) {
-                    tvMaterialNext.setSelected(true);
-                }
-                else {
-                    tvMaterialNext.setSelected(false);
-                }
+                initNextButton();
                 initDiagnosis();
             }
         });
@@ -230,41 +296,22 @@ public class MaterialFragment extends BaseFragment implements View.OnFocusChange
     }
 
     /**
-     * 过敏史
+     * 诊断内容
      */
     private void initDiagnosis() {
         tvDiagnosisNum.setText(String.format(getString(R.string.txt_calc_num), diagnosisHis.length()));
     }
 
     /**
-     * 姓名和身份证处理
+     * next
      */
-    private void initNameAndCard() {
-        BankCardTextWatcher.bind(tvIdCard, this);
-        if (tvName != null && tvIdCard != null) {
-            tvName.setText(name);
-            tvIdCard.setText(idCard);
-        }
-    }
-
-    /**
-     * 老用户获取，新用户根据身份证计算
-     */
-    private void initAge() {
-        age = BaseUtils.getAgeByCard(idCard);
-        etAge.setText(age);
-    }
-
-    /**
-     * 老用户获取，新用户根据身份证计算
-     */
-    private void initSex() {
-        sex = BaseUtils.getSexByCard(idCard);
-        if (getString(R.string.txt_sex_female).equals(sex)) {
-            rbFemale.setChecked(true);
+    private void initNextButton() {
+        //判断手机号和诊断史
+        if (!BaseUtils.isMobileNumber(phone) && !TextUtils.isEmpty(diagnosisHis) && !TextUtils.isEmpty(age)) {
+            tvMaterialNext.setSelected(true);
         }
         else {
-            rbMale.setChecked(true);
+            tvMaterialNext.setSelected(false);
         }
     }
 
@@ -291,8 +338,15 @@ public class MaterialFragment extends BaseFragment implements View.OnFocusChange
                 initAllergies(true);
                 break;
             case R.id.tv_material_next:
-                if (checkListener != null) {
-                    checkListener.onStepTwo();
+                if (tvMaterialNext.isSelected() && checkListener != null) {
+                    //数据回填
+                    reverseTransferBean.setPatientAge(Integer.valueOf(age));
+                    reverseTransferBean.setPatientMobile(phone);
+                    reverseTransferBean.setPastHistory(pastMedicalHis);
+                    reverseTransferBean.setFamilyHistory(familyMedicalHis);
+                    reverseTransferBean.setAllergyHistory(allergiesHis);
+                    reverseTransferBean.setInitResult(diagnosisHis);
+                    checkListener.onStepTwo(reverseTransferBean);
                 }
                 break;
             default:

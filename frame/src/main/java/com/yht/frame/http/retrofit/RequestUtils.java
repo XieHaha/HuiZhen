@@ -93,6 +93,15 @@ public class RequestUtils {
                                                                  listener));
     }
 
+    public static void getHospitalListByReverse(Context context, String token, String serviceCode,
+            final ResponseListener<BaseResponse> listener) {
+        RetrofitManager.getApiUrlManager()
+                       .getHospitalListByReverse(token, serviceCode)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_HOSPITAL_LIST_BY_RESERVE,
+                                                                 listener));
+    }
+
     public static void getDepartTree(Context context, String hospitalCode, String token,
             final ResponseListener<BaseResponse> listener) {
         Map<String, String> params = new HashMap<>(16);
@@ -247,6 +256,25 @@ public class RequestUtils {
                        .compose(RxJavaHelper.observableIO2Main(context))
                        .subscribe(new AbstractLoadViewObserver<>(context, true,
                                                                  Tasks.GET_PATIENT_ORDER_LIST_BY_PATIENT_CODE,
+                                                                 listener));
+    }
+
+    public static void verifyPatient(Context context, String token, String idCard,
+            final ResponseListener<BaseResponse> listener) {
+        Map<String, String> params = new HashMap<>(16);
+        params.put("idCard", idCard);
+        RetrofitManager.getApiUrlManager()
+                       .verifyPatient(token, params)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.VERIFY_PATIENT, listener));
+    }
+
+    public static void getPatientExistTransfer(Context context, String token, String patientCode,
+            final ResponseListener<BaseResponse> listener) {
+        RetrofitManager.getApiUrlManager()
+                       .getPatientExistTransfer(token, patientCode)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_PATIENT_EXIST_TRANSFER,
                                                                  listener));
     }
 
