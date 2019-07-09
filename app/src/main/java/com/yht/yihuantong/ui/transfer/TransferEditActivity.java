@@ -6,13 +6,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.yht.frame.data.CommonData;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.widgets.edittext.AbstractTextWatcher;
+import com.yht.frame.widgets.edittext.MultiLineEditText;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.utils.TimePickerHelper;
 
@@ -30,7 +30,7 @@ public class TransferEditActivity extends BaseActivity {
     @BindView(R.id.tv_time)
     TextView tvTime;
     @BindView(R.id.et_notice)
-    EditText etNotice;
+    MultiLineEditText etNotice;
     @BindView(R.id.tv_notice_num)
     TextView tvNoticeNum;
     @BindView(R.id.tv_submit)

@@ -291,7 +291,7 @@
                 android:textColor="@color/color_a1a8b3"
                 android:textSize="@dimen/text_13"
                 android:layout_marginTop="12dp"
-                android:text="@string/txt_camera_people_hint" />
+                android:text="@string/txt_camera_people_transfer_hint" />
         </LinearLayout>
 
         <TextView

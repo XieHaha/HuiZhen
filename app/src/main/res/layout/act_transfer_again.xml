@@ -79,7 +79,7 @@
             android:layout_marginTop="19dp"
             android:layout_marginBottom="12dp" />
 
-        <EditText
+        <MultiAutoCompleteTextView
             android:id="@+id/et_notice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -90,7 +90,6 @@
             android:textColorHint="@color/color_a1a8b3"
             android:textSize="@dimen/text_16"
             android:gravity="top"
-            android:singleLine="true"
             android:imeOptions="actionDone"
             android:textColor="@color/color_373d4d"
             android:layout_marginEnd="20dp" />

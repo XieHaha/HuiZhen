@@ -77,8 +77,7 @@ public class TransferApplyActivity extends BaseActivity {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 int offset = calcViewBarOffset();
-                viewBar.setTranslationX((position * viewBar.getWidth() + offset + position * offset * 2) +
-                                        (positionOffset * (offset * 2 + viewBar.getWidth())));
+                move(position, offset, positionOffset);
             }
 
             @Override
@@ -155,5 +154,10 @@ public class TransferApplyActivity extends BaseActivity {
         //获取屏幕宽度
         int width = ScreenUtils.getScreenSize(this)[0];
         return (width - viewBar.getWidth() * 2) / 4;
+    }
+
+    private void move(int position, int offset, float positionOffset) {
+        viewBar.setTranslationX((position * viewBar.getWidth() + offset + position * offset * 2) +
+                                (positionOffset * (offset * 2 + viewBar.getWidth())));
     }
 }

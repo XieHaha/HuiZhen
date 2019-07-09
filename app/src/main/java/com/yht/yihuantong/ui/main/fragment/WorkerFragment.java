@@ -118,29 +118,29 @@ public class WorkerFragment extends BaseFragment {
                 startActivity(new Intent(getContext(), PersonalActivity.class));
                 break;
             case R.id.layout_check:
-                startActivity(new Intent(getContext(), CheckHistoryActivity.class));
+                intent = new Intent(getContext(), ReservationCheckOrTransferActivity.class);
+                startActivity(intent);
                 break;
             case R.id.layout_transfer:
-                startActivity(new Intent(getContext(), TransferHistoryActivity.class));
+                intent = new Intent(getContext(), ReservationCheckOrTransferActivity.class);
+                intent.putExtra(CommonData.KEY_CHECK_OR_TRANSFER, true);
+                startActivity(intent);
                 break;
             case R.id.layout_transfer_apply:
                 intent = new Intent(getContext(), TransferApplyActivity.class);
-                intent.putExtra(CommonData.KEY_PUBLIC, true);
                 startActivity(intent);
                 break;
             case R.id.view_flipper:
                 break;
             case R.id.layout_initiate_check:
-                intent = new Intent(getContext(), ReservationCheckOrTransferActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(getContext(), CheckHistoryActivity.class));
                 break;
             case R.id.layout_initiate_transfer:
-                intent = new Intent(getContext(), ReservationCheckOrTransferActivity.class);
-                intent.putExtra(CommonData.KEY_CHECK_OR_TRANSFER, true);
-                startActivity(intent);
+                startActivity(new Intent(getContext(), TransferHistoryActivity.class));
                 break;
             case R.id.layout_accepted_transfer:
                 intent = new Intent(getContext(), TransferApplyActivity.class);
+                intent.putExtra(CommonData.KEY_PUBLIC, true);
                 startActivity(intent);
                 break;
             default:

@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -13,6 +12,7 @@ import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.widgets.edittext.AbstractTextWatcher;
+import com.yht.frame.widgets.edittext.MultiLineEditText;
 import com.yht.frame.widgets.edittext.SuperEditText;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.check.listener.OnCheckListener;
@@ -42,23 +42,23 @@ public class MaterialFragment extends BaseFragment implements View.OnFocusChange
     @BindView(R.id.tv_past_medical_his_not)
     TextView tvPastMedicalHisNot;
     @BindView(R.id.et_past_medical_his)
-    EditText etPastMedicalHis;
+    MultiLineEditText etPastMedicalHis;
     @BindView(R.id.tv_past_medical_his_num)
     TextView tvPastMedicalHisNum;
     @BindView(R.id.tv_family_medical_his_not)
     TextView tvFamilyMedicalHisNot;
     @BindView(R.id.et_family_medical_his)
-    EditText etFamilyMedicalHis;
+    MultiLineEditText etFamilyMedicalHis;
     @BindView(R.id.tv_family_medical_his_num)
     TextView tvFamilyMedicalHisNum;
     @BindView(R.id.tv_allergies_not)
     TextView tvAllergiesNot;
     @BindView(R.id.et_allergies)
-    EditText etAllergies;
+    MultiLineEditText etAllergies;
     @BindView(R.id.tv_allergies_num)
     TextView tvAllergiesNum;
     @BindView(R.id.et_diagnosis)
-    EditText etDiagnosis;
+    MultiLineEditText etDiagnosis;
     @BindView(R.id.tv_diagnosis_num)
     TextView tvDiagnosisNum;
     @BindView(R.id.tv_material_next)
@@ -96,12 +96,6 @@ public class MaterialFragment extends BaseFragment implements View.OnFocusChange
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-        etPastMedicalHis.setHorizontallyScrolling(false);
-        etPastMedicalHis.setMaxLines(Integer.MAX_VALUE);
-        etFamilyMedicalHis.setHorizontallyScrolling(false);
-        etFamilyMedicalHis.setMaxLines(Integer.MAX_VALUE);
-        etAllergies.setHorizontallyScrolling(false);
-        etAllergies.setMaxLines(Integer.MAX_VALUE);
         initPage();
     }
 

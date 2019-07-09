@@ -174,11 +174,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="20dp"
                 android:hint="@string/txt_select_hint"
+                android:layout_marginStart="60dp"
                 android:textSize="@dimen/text_16"
                 android:textColor="@color/txt_color_373d4d_a1a8b3_selector"
                 android:drawableEnd="@mipmap/ic_right"
                 android:drawablePadding="11dp"
-                android:gravity="center"
+                android:gravity="end"
                 android:layout_alignParentEnd="true" />
 
             <View

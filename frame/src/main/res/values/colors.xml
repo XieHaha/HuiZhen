@@ -2,6 +2,7 @@
 <resources>
     <color name="color_50000000">#50000000</color>
     <color name="color_33ffffff">#33FFFFFF</color>
+    <color name="color_10ffffff">#10FFFFFF</color>
     <color name="color_00000000">#00000000</color>
     <!-- app主题色-->
     <color name="color_1491fc">#1491FC</color>

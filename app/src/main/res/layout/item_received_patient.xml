@@ -25,6 +25,7 @@
             android:textColor="@color/color_6a6f80"
             android:textSize="@dimen/text_13"
             android:text="：" />
+
         <TextView
             android:id="@+id/tv_reserve_visit_time"
             android:layout_width="wrap_content"
@@ -50,7 +51,7 @@
             android:id="@+id/tv_receiving_doctor_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/color_17242D"
+            android:textColor="@color/color_373d4d"
             android:textStyle="bold"
             android:textSize="@dimen/text_16"
             tools:text="姓名"

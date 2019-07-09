@@ -19,132 +19,143 @@
             android:layout_height="wrap_content">
 
             <RelativeLayout
-                android:id="@+id/layout_personal_base"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:background="@drawable/corner8_ffffff_bg"
-                android:padding="20dp">
-
-                <TextView
-                    android:id="@+id/tv_personal_depart"
-                    android:layout_width="wrap_content"
-                    android:layout_height="26dp"
-                    android:textColor="@color/color_fd8134"
-                    android:textSize="@dimen/text_14"
-                    tools:text="科室"
-                    android:gravity="center" />
-
-                <TextView
-                    android:id="@+id/tv_personal_hospital"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/color_6a6f80"
-                    android:textSize="@dimen/text_15"
-                    tools:text="医院"
-                    android:layout_below="@id/tv_personal_depart"
-                    android:layout_marginTop="9dp" />
+                android:layout_height="224dp">
 
                 <ImageView
-                    android:id="@+id/iv_personal_image"
-                    android:layout_width="56dp"
-                    android:layout_height="56dp"
-                    android:layout_alignParentEnd="true"
-                    android:src="@mipmap/ic_default_header_r" />
-
-                <LinearLayout
                     android:layout_width="match_parent"
-                    android:orientation="horizontal"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    android:src="@mipmap/pic_home_bg" />
+
+                <RelativeLayout
+                    android:id="@+id/layout_personal_base"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="40dp"
-                    android:layout_below="@id/iv_personal_image">
+                    android:layout_marginTop="14dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:padding="20dp">
 
-                    <LinearLayout
-                        android:id="@+id/layout_initiate_check"
+                    <TextView
+                        android:id="@+id/tv_personal_depart"
+                        android:layout_width="wrap_content"
+                        android:layout_height="26dp"
+                        android:textColor="@color/color_fd8134"
+                        android:textSize="@dimen/text_14"
+                        tools:text="科室"
+                        android:gravity="center" />
+
+                    <TextView
+                        android:id="@+id/tv_personal_hospital"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:layout_marginStart="10dp">
+                        android:textColor="@color/color_6a6f80"
+                        android:textSize="@dimen/text_15"
+                        tools:text="医院"
+                        android:layout_below="@id/tv_personal_depart"
+                        android:layout_marginTop="9dp" />
 
-                        <TextView
-                            android:id="@+id/tv_initiate_check_num"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/color_373d4d"
-                            android:textSize="@dimen/text_20"
-                            android:text="@string/txt_max_num"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/color_a1a8b3"
-                            android:textSize="@dimen/text_13"
-                            android:text="@string/txt_initiate_check"
-                            android:layout_marginTop="2dp" />
-
-                    </LinearLayout>
+                    <ImageView
+                        android:id="@+id/iv_personal_image"
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        android:layout_alignParentEnd="true"
+                        android:src="@mipmap/ic_default_header_r" />
 
                     <LinearLayout
-                        android:id="@+id/layout_initiate_transfer"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:gravity="center">
+                        android:layout_marginTop="40dp"
+                        android:layout_below="@id/iv_personal_image">
 
-                        <TextView
-                            android:id="@+id/tv_initiate_transfer_num"
+                        <LinearLayout
+                            android:id="@+id/layout_initiate_check"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/color_373d4d"
-                            android:textSize="@dimen/text_20"
-                            android:text="@string/txt_max_num"
-                            android:textStyle="bold" />
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:layout_marginStart="10dp">
 
-                        <TextView
+                            <TextView
+                                android:id="@+id/tv_initiate_check_num"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/color_373d4d"
+                                android:textSize="@dimen/text_20"
+                                android:text="@string/txt_min_num"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/color_a1a8b3"
+                                android:textSize="@dimen/text_13"
+                                android:text="@string/txt_initiate_check"
+                                android:layout_marginTop="2dp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/layout_initiate_transfer"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:gravity="center">
+
+                            <TextView
+                                android:id="@+id/tv_initiate_transfer_num"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/color_373d4d"
+                                android:textSize="@dimen/text_20"
+                                android:text="@string/txt_min_num"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/color_a1a8b3"
+                                android:textSize="@dimen/text_13"
+                                android:text="@string/txt_initiate_transfer"
+                                android:layout_marginTop="2dp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/layout_accepted_transfer"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/color_a1a8b3"
-                            android:textSize="@dimen/text_13"
-                            android:text="@string/txt_initiate_transfer"
-                            android:layout_marginTop="2dp" />
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:layout_marginEnd="10dp">
+
+                            <TextView
+                                android:id="@+id/tv_accepted_transfer_num"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/color_373d4d"
+                                android:textSize="@dimen/text_20"
+                                android:text="@string/txt_min_num"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/color_a1a8b3"
+                                android:textSize="@dimen/text_13"
+                                android:text="@string/txt_my_accepted_transfer"
+                                android:layout_marginTop="2dp" />
+
+                        </LinearLayout>
 
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:id="@+id/layout_accepted_transfer"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:layout_marginEnd="10dp">
-
-                        <TextView
-                            android:id="@+id/tv_accepted_transfer_num"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/color_373d4d"
-                            android:textSize="@dimen/text_20"
-                            android:text="@string/txt_max_num"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/color_a1a8b3"
-                            android:textSize="@dimen/text_13"
-                            android:text="@string/txt_my_accepted_transfer"
-                            android:layout_marginTop="2dp" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
+                </RelativeLayout>
             </RelativeLayout>
+
 
             <ViewFlipper
                 android:id="@+id/view_flipper"
@@ -164,7 +175,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textSize="@dimen/text_20"
+                android:textSize="@dimen/text_18"
                 android:textColor="@color/color_373d4d"
                 android:text="@string/txt_my_consulting_room"
                 android:layout_marginTop="28dp"
@@ -199,7 +210,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/color_373d4d"
-                        android:textSize="@dimen/text_18"
+                        android:textSize="@dimen/text_16"
                         android:text="@string/txt_reserve_check"
                         android:textStyle="bold"
                         android:layout_marginTop="38dp" />
@@ -235,7 +246,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/color_373d4d"
-                        android:textSize="@dimen/text_18"
+                        android:textSize="@dimen/text_16"
                         android:text="@string/txt_reserve_transfer"
                         android:textStyle="bold"
                         android:layout_marginTop="38dp" />
@@ -282,7 +293,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/color_373d4d"
-                        android:textSize="@dimen/text_18"
+                        android:textSize="@dimen/text_16"
                         android:text="@string/title_transfer_apply"
                         android:textStyle="bold"
                         android:layout_marginTop="38dp"
@@ -303,7 +314,14 @@
                     android:layout_weight="1"
                     android:orientation="vertical"
                     android:layout_height="match_parent"
-                    android:background="@drawable/corner4_dot" />
+                    android:gravity="center"
+                    android:background="@drawable/corner4_dot">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/ic_home_more" />
+                </LinearLayout>
             </LinearLayout>
 
             <View
