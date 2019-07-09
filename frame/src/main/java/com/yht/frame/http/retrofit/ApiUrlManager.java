@@ -8,6 +8,7 @@ import com.yht.frame.data.base.DoctorCurrencyDetailBean;
 import com.yht.frame.data.base.DoctorInfoBean;
 import com.yht.frame.data.base.HospitalBean;
 import com.yht.frame.data.base.HospitalDepartBean;
+import com.yht.frame.data.base.HospitalDepartChildBean;
 import com.yht.frame.data.base.HospitalTitleBean;
 import com.yht.frame.data.base.IncomeDetailBean;
 import com.yht.frame.data.base.LoginBean;
@@ -103,15 +104,47 @@ public interface ApiUrlManager {
     Observable<BaseResponse<List<HospitalBean>>> getHospitalListByAuth(@Header("token") String token);
 
     /**
-     * 获取医院列表 （可以进行预约检查、转诊的医院数据）
+     * 获取当前医生有预约转诊权限的合作医院。
      *
-     * @param token       token
-     * @param serviceCode serviceCode
+     * @param token token
      * @return 返回值
      */
-    @GET("/client/hospital/validSelectInput/{serviceCode}")
-    Observable<BaseResponse<List<HospitalBean>>> getHospitalListByReverse(@Header("token") String token,
-            @Path("serviceCode") String serviceCode);
+    @GET("/client/hospital/zzHospital")
+    Observable<BaseResponse<List<HospitalBean>>> getHospitalListByReverse(@Header("token") String token);
+
+    /**
+     * 获取当前医生有预约转诊权限的合作医院下面的一级科室
+     *
+     * @param token        token
+     * @param hospitalCode code
+     * @return 返回值
+     */
+    @GET("/client/department/first/{hospitalCode}")
+    Observable<BaseResponse<List<HospitalDepartBean>>> getDepartOneListByReverse(@Header("token") String token,
+            @Path("hospitalCode") String hospitalCode);
+
+    /**
+     * 获取当前医生有预约转诊权限的合作医院下面的二级级科室
+     *
+     * @param token        token
+     * @param hospitalCode code
+     * @param pid          pid
+     * @return 返回值
+     */
+    @GET("/client/department/second/{hospitalCode}/{pid}")
+    Observable<BaseResponse<List<HospitalDepartChildBean>>> getDepartTwoListByReverse(@Header("token") String token,
+            @Path("hospitalCode") String hospitalCode, @Path("pid") int pid);
+
+    /**
+     * 获取当前医生有预约转诊权限的合作医院下面的医生
+     *
+     * @param token token
+     * @param info  code
+     * @return 返回值
+     */
+    @POST("/client/doctor/zzDoctors")
+    Observable<BaseResponse<List<HospitalBean>>> getDoctorListByReverse(@Header("token") String token,
+            @Body Map<String, Object> info);
 
     /**
      * 获取科室树

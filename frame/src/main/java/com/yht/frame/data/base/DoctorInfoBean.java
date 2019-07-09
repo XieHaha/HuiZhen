@@ -31,6 +31,9 @@ public class DoctorInfoBean implements Serializable {
     private String directHospitalCode;
     private String directDepartmentName;
     private List<CooperateHospitalBean> cooperateDepartmentList;
+    //2019年7月9日20:12:00
+    private String departmentName;
+    private String hospitalName;
 
     public String getCertBack() {
         return certBack;
@@ -174,5 +177,21 @@ public class DoctorInfoBean implements Serializable {
 
     public void setCooperateDepartmentList(List<CooperateHospitalBean> cooperateDepartmentList) {
         this.cooperateDepartmentList = cooperateDepartmentList;
+    }
+
+    public String getDepartmentName() {
+        return departmentName;
+    }
+
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
+    }
+
+    public String getHospitalName() {
+        return hospitalName;
+    }
+
+    public void setHospitalName(String hospitalName) {
+        this.hospitalName = hospitalName;
     }
 }

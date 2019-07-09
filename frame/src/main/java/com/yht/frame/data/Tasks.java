@@ -30,9 +30,21 @@ WE_CHAT_LOGIN,
      */
     GET_HOSPITAL_LIST_BY_AUTH,
     /**
-     * 获取医院列表（预约检查、转诊模块）
+     * 获取当前医生有预约转诊权限的合作医院。
      */
     GET_HOSPITAL_LIST_BY_RESERVE,
+    /**
+     * 获取当前医生有预约转诊权限的合作医院下面的一级级科室。
+     */
+    GET_DEPART_ONE_LIST_BY_REVERSE,
+    /**
+     * 获取当前医生有预约转诊权限的合作医院下面的二级级科室。
+     */
+    GET_DEPART_TWO_LIST_BY_REVERSE,
+    /**
+     * 获取当前医生有预约转诊权限的合作医院下面的医生
+     */
+    GET_DOCTOR_LIST_BY_REVERSE,
     /**
      * 根据医院code获取科室树
      */

@@ -15,6 +15,10 @@ public class HospitalDepartBean implements Serializable {
     private String departmentName;
     private String createAt;
     private ArrayList<HospitalDepartChildBean> childList;
+    //2019年7月9日19:32:02 提交预约转诊添加字段
+    private String hospitalCode;
+    private String hospitalName;
+    private int pid;
 
     public int getDepartmentId() {
         return departmentId;
@@ -54,5 +58,29 @@ public class HospitalDepartBean implements Serializable {
 
     public void setChildList(ArrayList<HospitalDepartChildBean> childList) {
         this.childList = childList;
+    }
+
+    public String getHospitalCode() {
+        return hospitalCode;
+    }
+
+    public void setHospitalCode(String hospitalCode) {
+        this.hospitalCode = hospitalCode;
+    }
+
+    public String getHospitalName() {
+        return hospitalName;
+    }
+
+    public void setHospitalName(String hospitalName) {
+        this.hospitalName = hospitalName;
+    }
+
+    public int getPid() {
+        return pid;
+    }
+
+    public void setPid(int pid) {
+        this.pid = pid;
     }
 }
