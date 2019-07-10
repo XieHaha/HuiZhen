@@ -17,7 +17,7 @@
     <string name="title_message">消息</string>
     <string name="title_patient">患者(%d)</string>
     <string name="title_camera">扫一扫</string>
-    <string name="title_add_check">添加检查项目</string>
+    <string name="title_add_check">添加服务项目</string>
     <string name="title_add_transfer">发起转诊(%d)</string>
     <string name="title_transfer_detail">预约转诊详情</string>
     <string name="title_received_transfer_detail">已接诊详情</string>
@@ -81,7 +81,7 @@
     <string name="txt_message_status">全部已读</string>
     <string name="txt_my_patient">我的患者</string>
     <string name="txt_my_consulting_room">我的诊疗室</string>
-    <string name="txt_initiate_check">发起检查</string>
+    <string name="txt_initiate_check">发起服务</string>
     <string name="txt_initiate_transfer">发起转诊</string>
     <string name="txt_my_accepted_transfer">已接收转诊</string>
 
@@ -200,9 +200,9 @@
     <string name="txt_transfer_doctor">转诊医生</string>
     <string name="txt_transfer_hospital">转诊医院</string>
     <string name="txt_transfer_depart">转诊科室</string>
-    <string name="txt_check_hospital">检查医院</string>
+    <string name="txt_check_hospital">服务医院</string>
     <string name="txt_receiving_status">接诊状态</string>
-    <string name="txt_currency_income_project">检查项目</string>
+    <string name="txt_currency_income_project">服务项目</string>
     <string name="txt_currency_income_time">初诊时间</string>
 
     <!--版本更新-->
@@ -212,8 +212,8 @@
     <string name="txt_version_install">立即安装</string>
 
     <!--检查相关  转诊相关-->
-    <string name="txt_reserve_check">预约检查</string>
-    <string name="txt_reserve_check_detail">预约检查详情</string>
+    <string name="txt_reserve_check">预约服务</string>
+    <string name="txt_reserve_check_detail">预约服务详情</string>
     <string name="txt_pregnancy">是否备孕</string>
     <string name="txt_payment">缴费类型</string>
     <string name="txt_status">状态</string>
@@ -248,12 +248,12 @@
     <string name="txt_self_medicare">新农合</string>
     <string name="txt_check_success_hint">恭喜你，提交成功。\n医院将尽快确认预约，与患者联系。</string>
     <string name="txt_transfer_success_hint">恭喜你，提交成功。\n医院将尽快与患者联系确认预约。</string>
-    <string name="txt_look_check_detail">查看检查详情</string>
+    <string name="txt_look_check_detail">查看服务详情</string>
     <string name="txt_look_transfer_detail">查看转诊详情</string>
-    <string name="txt_check_again">继续预约检查</string>
+    <string name="txt_check_again">继续预约服务</string>
     <string name="txt_transfer_again_add">继续预约转诊</string>
-    <string name="txt_add_check_hint">请输入检查名称搜索</string>
-    <string name="txt_add_hospital_check">添加同院检查项目</string>
+    <string name="txt_add_check_hint">请输入服务名称搜索</string>
+    <string name="txt_add_hospital_check">添加同院服务项目</string>
     <string name="txt_reserve_transfer">预约转诊</string>
     <string name="txt_bilateral_transfer">双向转诊</string>
     <string name="txt_transfer_receiver">接收患者</string>
@@ -277,6 +277,10 @@
     <string name="txt_reset_hospital_depart">重置医院科室</string>
     <string name="txt_identity_information_error">姓名和身份证号码不符，如有疑问请点击右上角"联系我们"</string>
     <string name="txt_patient_exist_transfer">该患者还有未完成的转诊单，不能发起转诊。</string>
+    <string name="txt_reject_transfer_reason_hint">请输入拒绝接诊理由</string>
+    <string name="txt_cancel_transfer_reason_hint">请输入取消转诊理由</string>
+    <string name="txt_sure_cancel">确认取消</string>
+    <string name="txt_think_again">再想想</string>
 
     <!--远程相关-->
     <string name="txt_condition_description">病情描述</string>
@@ -295,8 +299,8 @@
 
     <!--消息-->
     <string name="txt_colon_patient">患者：</string>
-    <string name="txt_colon_check_hospital">检查医院：</string>
-    <string name="txt_colon_check_project">检查项目：</string>
+    <string name="txt_colon_check_hospital">服务医院：</string>
+    <string name="txt_colon_check_project">服务项目：</string>
     <string name="txt_report_num_hint">你有%d个检查报告可查看</string>
     <string name="txt_currency_hint">会珍币到账</string>
     <string name="txt_currency_withdraw_hint">提现成功</string>

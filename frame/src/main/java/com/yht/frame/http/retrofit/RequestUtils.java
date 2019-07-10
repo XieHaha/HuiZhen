@@ -3,6 +3,7 @@ package com.yht.frame.http.retrofit;
 import android.content.Context;
 
 import com.google.gson.JsonObject;
+import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.base.DoctorAuthBean;
@@ -100,6 +101,15 @@ public class RequestUtils {
                        .getHospitalListByReverse(token)
                        .compose(RxJavaHelper.observableIO2Main(context))
                        .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_HOSPITAL_LIST_BY_RESERVE,
+                                                                 listener));
+    }
+
+    public static void getHospitalListByDoctor(Context context, String token,
+            final ResponseListener<BaseResponse> listener) {
+        RetrofitManager.getApiUrlManager()
+                       .getHospitalListByDoctor(token)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_HOSPITAL_LIST_BY_DOCTOR,
                                                                  listener));
     }
 
@@ -358,6 +368,20 @@ public class RequestUtils {
                                                                  listener));
     }
 
+    public static void updateReserveTransferOrder(Context context, String token, String receiveHospitalCode,
+            String orderNo, String appointAt, String note, final ResponseListener<BaseResponse> listener) {
+        Map<String, String> params = new HashMap<>(16);
+        params.put("appointAt", appointAt);
+        params.put("orderNo", orderNo);
+        params.put("receiveHospitalCode", receiveHospitalCode);
+        params.put("note", note);
+        RetrofitManager.getApiUrlManager()
+                       .updateReserveTransferOrder(token, params)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.UPDATE_RESERVE_TRANSFER_ORDER,
+                                                                 listener));
+    }
+
     public static void rejectReserveTransferOrder(Context context, String token, String rejectReason, String orderNo,
             final ResponseListener<BaseResponse> listener) {
         Map<String, String> params = new HashMap<>(16);
@@ -367,6 +391,19 @@ public class RequestUtils {
                        .rejectReserveTransferOrder(token, params)
                        .compose(RxJavaHelper.observableIO2Main(context))
                        .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.REJECT_RESERVE_TRANSFER_ORDER,
+                                                                 listener));
+    }
+
+    public static void transferAgainOtherDoctor(Context context, String token, String orderNo, String targetDoctorCode,
+            String transferReason, final ResponseListener<BaseResponse> listener) {
+        Map<String, String> params = new HashMap<>(16);
+        params.put("orderNo", orderNo);
+        params.put("targetDoctorCode", targetDoctorCode);
+        params.put("transferReason", transferReason);
+        RetrofitManager.getApiUrlManager()
+                       .transferAgainOtherDoctor(token, params)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.TRANSFER_AGAIN_OTHER_DOCTOR,
                                                                  listener));
     }
 
@@ -399,6 +436,14 @@ public class RequestUtils {
             final ResponseListener<BaseResponse> listener) {
         RetrofitManager.getApiUrlManager()
                        .getTransferOrderDetail(token, orderNo)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_TRANSFER_ORDER_DETAIL,
+                                                                 listener));
+    }
+
+    public static void getVersion(Context context, String token, final ResponseListener<BaseResponse> listener) {
+        RetrofitManager.getApiUrlManager()
+                       .getVersion(token, BaseData.ADMIN)
                        .compose(RxJavaHelper.observableIO2Main(context))
                        .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_TRANSFER_ORDER_DETAIL,
                                                                  listener));

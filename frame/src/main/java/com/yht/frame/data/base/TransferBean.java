@@ -27,6 +27,7 @@ public class TransferBean implements Serializable {
     private String targetDoctorName;
     private String targetHospitalDepartmentName;
     private String targetHospitalName;
+    private String targetHospitalCode;
     /**
      * 预约就诊时间
      */
@@ -38,6 +39,7 @@ public class TransferBean implements Serializable {
     private String sourceDoctorName;
     private String sourceHospitalDepartmentName;
     private String sourceHospitalName;
+    private String sourceHospitalCode;
     /**
      * 详情数据
      */
@@ -293,5 +295,21 @@ public class TransferBean implements Serializable {
 
     public void setCancelReason(String cancelReason) {
         this.cancelReason = cancelReason;
+    }
+
+    public String getTargetHospitalCode() {
+        return targetHospitalCode;
+    }
+
+    public void setTargetHospitalCode(String targetHospitalCode) {
+        this.targetHospitalCode = targetHospitalCode;
+    }
+
+    public String getSourceHospitalCode() {
+        return sourceHospitalCode;
+    }
+
+    public void setSourceHospitalCode(String sourceHospitalCode) {
+        this.sourceHospitalCode = sourceHospitalCode;
     }
 }

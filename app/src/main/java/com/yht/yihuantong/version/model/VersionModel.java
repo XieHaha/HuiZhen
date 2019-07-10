@@ -22,18 +22,20 @@ import java.util.ArrayList;
 public class VersionModel extends AbstractResponseAdapter<BaseResponse> implements VersionModelListener {
     private static final String TAG = "VersionModel";
     private Context context;
+    private String token;
     private NewestVersionCallBack callBack;
     private DownloadAPKCallBack downloadAPKCallBack;
 
-    public VersionModel(Context context) {
+    public VersionModel(Context context, String token) {
         this.context = context;
+        this.token = token;
     }
 
     @Override
     public void getNewestVersion(NewestVersionCallBack callBack) {
         this.callBack = callBack;
         //获取最新版本
-        RequestUtils.getNewVersion(context, this);
+        RequestUtils.getVersion(context, token, this);
     }
 
     @Override

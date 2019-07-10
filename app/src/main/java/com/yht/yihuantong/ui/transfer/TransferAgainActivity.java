@@ -10,7 +10,16 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.yht.frame.data.BaseResponse;
+import com.yht.frame.data.CommonData;
+import com.yht.frame.data.Tasks;
+import com.yht.frame.data.base.DoctorInfoBean;
+import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
+import com.yht.frame.utils.BaseUtils;
+import com.yht.frame.utils.ToastUtil;
+import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.frame.widgets.edittext.AbstractTextWatcher;
 import com.yht.frame.widgets.edittext.MultiLineEditText;
 import com.yht.yihuantong.R;
@@ -45,9 +54,17 @@ public class TransferAgainActivity extends BaseActivity {
     @BindView(R.id.tv_submit)
     TextView tvSubmit;
     /**
+     * 当前选中的医生
+     */
+    private DoctorInfoBean curReceiveDoctor;
+    /**
      * 理由
      */
     private String noticeText;
+    /**
+     * 订单编号
+     */
+    private String orderNo;
     /**
      * 选择接诊医生
      */
@@ -68,6 +85,7 @@ public class TransferAgainActivity extends BaseActivity {
         super.initData(savedInstanceState);
         ivReceivingDoctorCall.setImageResource(R.mipmap.ic_delete);
         if (getIntent() != null) {
+            orderNo = getIntent().getStringExtra(CommonData.KEY_TRANSFER_ORDER_ID);
         }
     }
 
@@ -86,11 +104,38 @@ public class TransferAgainActivity extends BaseActivity {
     }
 
     /**
-     * 判断
+     * 再次转诊
+     */
+    private void transferAgainOtherDoctor() {
+        RequestUtils.transferAgainOtherDoctor(this, loginBean.getToken(), orderNo, curReceiveDoctor.getDoctorCode(),
+                                              noticeText, this);
+    }
+
+    /**
+     * 接诊医生
+     */
+    private void initReceiveDoctor() {
+        tvSelect.setVisibility(View.GONE);
+        layoutReceivingDoctor.setVisibility(View.VISIBLE);
+        if (curReceiveDoctor != null) {
+            Glide.with(this)
+                 .load(curReceiveDoctor.getPhoto())
+                 .apply(GlideHelper.getOptions(BaseUtils.dp2px(this, 4)))
+                 .into(ivReceivingDoctor);
+            tvReceivingDoctorName.setText(curReceiveDoctor.getDoctorName());
+            tvReceivingDoctorTitle.setText(curReceiveDoctor.getJobTitle());
+            tvReceivingDoctorHospitalDepart.setText(
+                    curReceiveDoctor.getHospitalName() + "  " + curReceiveDoctor.getDepartmentName());
+            ivReceivingDoctorCall.setImageResource(R.mipmap.ic_delete);
+        }
+        initNextButton();
+    }
+
+    /**
+     * next
      */
     private void initNextButton() {
-        //需要加上医生不为空
-        if (!TextUtils.isEmpty(noticeText)) {
+        if (curReceiveDoctor != null && !TextUtils.isEmpty(noticeText)) {
             tvSubmit.setSelected(true);
         }
         else {
@@ -109,13 +154,28 @@ public class TransferAgainActivity extends BaseActivity {
                 }
                 break;
             case R.id.iv_receiving_doctor_call:
+                curReceiveDoctor = null;
                 tvSelect.setVisibility(View.VISIBLE);
                 layoutReceivingDoctor.setVisibility(View.GONE);
+                initNextButton();
                 break;
             case R.id.tv_submit:
+                if (tvSubmit.isSelected()) {
+                    transferAgainOtherDoctor();
+                }
                 break;
             default:
                 break;
+        }
+    }
+
+    @Override
+    public void onResponseSuccess(Tasks task, BaseResponse response) {
+        super.onResponseSuccess(task, response);
+        if (task == Tasks.TRANSFER_AGAIN_OTHER_DOCTOR) {
+            ToastUtil.toast(this, response.getMsg());
+            setResult(RESULT_OK);
+            finish();
         }
     }
 
@@ -126,8 +186,10 @@ public class TransferAgainActivity extends BaseActivity {
             return;
         }
         if (requestCode == REQUEST_CODE_SELECT_DOCTOR) {
-            tvSelect.setVisibility(View.GONE);
-            layoutReceivingDoctor.setVisibility(View.VISIBLE);
+            if (data != null) {
+                curReceiveDoctor = (DoctorInfoBean)data.getSerializableExtra(CommonData.KEY_DOCTOR_BEAN);
+            }
+            initReceiveDoctor();
         }
     }
 }

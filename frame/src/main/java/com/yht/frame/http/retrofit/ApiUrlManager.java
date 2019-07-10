@@ -114,6 +114,15 @@ public interface ApiUrlManager {
     Observable<BaseResponse<List<HospitalBean>>> getHospitalListByReverse(@Header("token") String token);
 
     /**
+     * 获取当前医生可进行转诊的医院列表。
+     *
+     * @param token token
+     * @return 返回值
+     */
+    @GET("/client/hospital/validSelectInput")
+    Observable<BaseResponse<List<HospitalBean>>> getHospitalListByDoctor(@Header("token") String token);
+
+    /**
      * 获取当前医生有预约转诊权限的合作医院下面的一级科室
      *
      * @param token        token
@@ -339,7 +348,7 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @POST("/order-transfer/add")
-    Observable<BaseResponse<Boolean>> addReserveTransferOrder(@Header("token") String token,
+    Observable<BaseResponse<String>> addReserveTransferOrder(@Header("token") String token,
             @Body Map<String, Object> info);
 
     /**
@@ -350,7 +359,7 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @POST("/order-transfer/cancel")
-    Observable<BaseResponse<Boolean>> cancelReserveTransferOrder(@Header("token") String token,
+    Observable<BaseResponse<String>> cancelReserveTransferOrder(@Header("token") String token,
             @Body Map<String, String> info);
 
     /**
@@ -361,7 +370,18 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @POST("/order-transfer/receive")
-    Observable<BaseResponse<Boolean>> receiveReserveTransferOrder(@Header("token") String token,
+    Observable<BaseResponse<String>> receiveReserveTransferOrder(@Header("token") String token,
+            @Body Map<String, String> info);
+
+    /**
+     * 变更接诊信息
+     *
+     * @param info  map参数
+     * @param token token
+     * @return 返回值
+     */
+    @POST("/order-transfer/updateReceiveInfo")
+    Observable<BaseResponse<String>> updateReserveTransferOrder(@Header("token") String token,
             @Body Map<String, String> info);
 
     /**
@@ -372,7 +392,18 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @POST("/order-transfer/reject")
-    Observable<BaseResponse<Boolean>> rejectReserveTransferOrder(@Header("token") String token,
+    Observable<BaseResponse<String>> rejectReserveTransferOrder(@Header("token") String token,
+            @Body Map<String, String> info);
+
+    /**
+     * 再次转诊给其他医生
+     *
+     * @param info  map参数
+     * @param token token
+     * @return 返回值
+     */
+    @POST("/order-transfer/transferAgain")
+    Observable<BaseResponse<String>> transferAgainOtherDoctor(@Header("token") String token,
             @Body Map<String, String> info);
 
     /**
@@ -407,6 +438,17 @@ public interface ApiUrlManager {
     @GET("/order-transfer/detail/get")
     Observable<BaseResponse<TransferBean>> getTransferOrderDetail(@Header("token") String token,
             @Query("orderNo") String info);
+
+    /**
+     * 版本更新
+     *
+     * @param info  map参数
+     * @param token token
+     * @return 返回值
+     */
+    @GET("/version/current-version")
+    Observable<BaseResponse<TransferBean>> getVersion(@Header("token") String token,
+            @Query("device") String info);
     /********************************分隔线*********************************/
     /**
      * 首页广告

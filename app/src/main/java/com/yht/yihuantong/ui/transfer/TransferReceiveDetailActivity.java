@@ -1,5 +1,6 @@
 package com.yht.yihuantong.ui.transfer;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,6 +20,7 @@ import com.yht.frame.data.base.TransferBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
+import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.frame.widgets.dialog.InputDialog;
@@ -107,6 +109,18 @@ public class TransferReceiveDetailActivity extends BaseActivity implements Trans
      * 拒绝转诊原因
      */
     private String rejectReason;
+    /**
+     * 变更接诊信息
+     */
+    public static final int REQUEST_CODE_UPDATE_TRANSFER = 100;
+    /**
+     * 接诊
+     */
+    public static final int REQUEST_CODE_RECEIVE_TRANSFER = 200;
+    /**
+     * 再次转诊
+     */
+    public static final int REQUEST_CODE_TRANSFER_AGAIN = 300;
 
     @Override
     protected boolean isInitBackBtn() {
@@ -133,14 +147,6 @@ public class TransferReceiveDetailActivity extends BaseActivity implements Trans
      */
     private void getTransferOrderDetail() {
         RequestUtils.getTransferOrderDetail(this, loginBean.getToken(), transferBean.getOrderNo(), this);
-    }
-
-    /**
-     * 接受转诊
-     */
-    private void receiveReserveTransferOrder() {
-        RequestUtils.receiveReserveTransferOrder(this, loginBean.getToken(), transferBean.getTargetHospitalName(),
-                                                 transferBean.getOrderNo(), "", "", this);
     }
 
     /**
@@ -243,16 +249,17 @@ public class TransferReceiveDetailActivity extends BaseActivity implements Trans
             case R.id.layout_edit_transfer:
                 intent = new Intent(this, TransferEditActivity.class);
                 intent.putExtra(CommonData.KEY_RECEIVE_OR_EDIT_VISIT, true);
-                intent.putExtra(CommonData.KEY_RECEIVE_HOSPITAL, transferBean.getTargetHospitalName());
-                intent.putExtra(CommonData.KEY_RESERVE_TIME, transferBean.getAppointAt());
-                startActivity(intent);
+                intent.putExtra(CommonData.KEY_TRANSFER_ORDER_BEAN, transferBean);
+                startActivityForResult(intent, REQUEST_CODE_UPDATE_TRANSFER);
                 break;
             case R.id.tv_transfer_other:
                 intent = new Intent(this, TransferAgainActivity.class);
-                startActivity(intent);
+                intent.putExtra(CommonData.KEY_TRANSFER_ORDER_ID, transferBean.getOrderNo());
+                startActivityForResult(intent, REQUEST_CODE_TRANSFER_AGAIN);
                 break;
             case R.id.tv_refuse:
                 new InputDialog(this).Builder()
+                                     .setEditHintText(getString(R.string.txt_reject_transfer_reason_hint))
                                      .setEnterBtnTxt(getString(R.string.txt_refuse))
                                      .setEnterSelect(true)
                                      .setOnEnterClickListener(() -> {
@@ -265,7 +272,8 @@ public class TransferReceiveDetailActivity extends BaseActivity implements Trans
                 break;
             case R.id.tv_received:
                 intent = new Intent(this, TransferEditActivity.class);
-                startActivity(intent);
+                intent.putExtra(CommonData.KEY_TRANSFER_ORDER_BEAN, transferBean);
+                startActivityForResult(intent, REQUEST_CODE_RECEIVE_TRANSFER);
                 break;
             case R.id.tv_contact_patient:
                 new HintDialog(this).setPhone(transferBean.getPatientMobile())
@@ -292,9 +300,31 @@ public class TransferReceiveDetailActivity extends BaseActivity implements Trans
                 break;
             case RECEIVE_RESERVE_TRANSFER_ORDER:
             case REJECT_RESERVE_TRANSFER_ORDER:
+                ToastUtil.toast(this, response.getMsg());
                 //通知列表刷新
                 setResult(RESULT_OK);
+                finish();
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+        switch (requestCode) {
+            case REQUEST_CODE_UPDATE_TRANSFER:
+            case REQUEST_CODE_RECEIVE_TRANSFER:
+                setResult(RESULT_OK);
                 getTransferOrderDetail();
+                break;
+            case REQUEST_CODE_TRANSFER_AGAIN:
+                setResult(RESULT_OK);
+                finish();
                 break;
             default:
                 break;

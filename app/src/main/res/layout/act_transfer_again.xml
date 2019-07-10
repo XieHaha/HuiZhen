@@ -79,7 +79,7 @@
             android:layout_marginTop="19dp"
             android:layout_marginBottom="12dp" />
 
-        <MultiAutoCompleteTextView
+        <com.yht.frame.widgets.edittext.MultiLineEditText
             android:id="@+id/et_notice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

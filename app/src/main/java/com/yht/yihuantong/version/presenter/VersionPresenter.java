@@ -44,13 +44,15 @@ public class VersionPresenter implements ConstantsVersionMode {
     private NotificationManager manager;
     private PendingIntent pendingIntent;
     private String url = null;
+    private String token;
     /**
      * 文件大小
      */
     private long fileSize;
 
-    public VersionPresenter(Context context) {
+    public VersionPresenter(Context context, String token) {
         this.context = context;
+        this.token = token;
     }
 
     public void init() {
@@ -62,7 +64,7 @@ public class VersionPresenter implements ConstantsVersionMode {
                .setSmallIcon(R.mipmap.ic_launcher_round);
         pendingIntent = PendingIntent.getActivity(context, UPDATE_VERSION_RESULT, new Intent(),
                                                   PendingIntent.FLAG_UPDATE_CURRENT);
-        versionModel = new VersionModel(context);
+        versionModel = new VersionModel(context, token);
         updateVersionByNetwork();
     }
 

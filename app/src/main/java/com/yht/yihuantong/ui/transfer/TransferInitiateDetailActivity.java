@@ -214,9 +214,11 @@ public class TransferInitiateDetailActivity extends BaseActivity implements Tran
             case R.id.tv_transfer_again:
                 if (TRANSFER_STATUS_WAIT == transferBean.getReceiveStatus()) {
                     new InputDialog(this).Builder()
-                                         .setCancleBtnTxt("确认取消")
-                                         .setEnterBtnTxt("再想想")
+                                         .setEditHintText(getString(R.string.txt_cancel_transfer_reason_hint))
+                                         .setCancleBtnTxt(getString(R.string.txt_sure_cancel))
+                                         .setEnterBtnTxt(getString(R.string.txt_think_again))
                                          .setEnterSelect(true)
+                                         .setLeft(true)
                                          .setOnCancelClickListener(() -> {
                                          })
                                          .setResultListener(result -> {

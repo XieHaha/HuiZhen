@@ -28,12 +28,17 @@ public class InputDialog implements View.OnClickListener {
      * 初始值
      */
     private String titleString = "提示", enterString = "确定", cancelString = "取消";
+    private String editHintText = "请输入";
     private EditText etContent;
     /**
      * 确认按钮颜色控制
      */
     private boolean enterSelect = false;
     private Dialog dialog;
+    /**
+     * 区分左右事件
+     */
+    private boolean isLeft = false;
 
     public InputDialog(Context context) {
         this.context = context;
@@ -81,6 +86,16 @@ public class InputDialog implements View.OnClickListener {
         return this;
     }
 
+    public InputDialog setEditHintText(String editHintText) {
+        this.editHintText = editHintText;
+        return this;
+    }
+
+    public InputDialog setLeft(boolean left) {
+        isLeft = left;
+        return this;
+    }
+
     private ResultListener resultListener;
 
     /**
@@ -110,7 +125,7 @@ public class InputDialog implements View.OnClickListener {
             if (onEnterClickListener != null) {
                 onEnterClickListener.onEnter();
             }
-            if (resultListener != null) {
+            if (resultListener != null && !isLeft) {
                 String string = etContent.getText().toString();
                 if (TextUtils.isEmpty(string)) {
                     ToastUtil.toast(context, "请输入取消原因");
@@ -127,7 +142,7 @@ public class InputDialog implements View.OnClickListener {
             if (onCancelClickListener != null) {
                 onCancelClickListener.onCancel();
             }
-            if (resultListener != null) {
+            if (resultListener != null && isLeft) {
                 String string = etContent.getText().toString();
                 if (TextUtils.isEmpty(string)) {
                     ToastUtil.toast(context, "请输入取消原因");
@@ -137,12 +152,14 @@ public class InputDialog implements View.OnClickListener {
                     resultListener.onResult(string);
                 }
             }
+            hideSoftInputFromWindow(etContent);
             dismiss();
         }
     }
 
     public void show() {
         showIMEOtherWay(etContent);
+        etContent.setHint(editHintText);
         tvTitle.setText(titleString);
         tvEnter.setText(enterString);
         tvEnter.setSelected(enterSelect);

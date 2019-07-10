@@ -155,6 +155,7 @@ public class SelectReceivingDoctorActivity extends BaseActivity
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (!TextUtils.isEmpty(s)) {
                     searchDoctor(s.toString());
+                    selectEnd();
                 }
                 else {
                     doctorAdapter.setNewData(new ArrayList<>());
@@ -201,9 +202,11 @@ public class SelectReceivingDoctorActivity extends BaseActivity
      * 选择结束后操作
      */
     private void selectEnd() {
-        layoutExpand.collapse();
-        tvSelect.setSelected(false);
-        layoutBg.setVisibility(View.GONE);
+        if (tvSelect.isSelected()) {
+            layoutExpand.collapse();
+            tvSelect.setSelected(false);
+            layoutBg.setVisibility(View.GONE);
+        }
     }
 
     /**

@@ -34,6 +34,10 @@ WE_CHAT_LOGIN,
      */
     GET_HOSPITAL_LIST_BY_RESERVE,
     /**
+     * 获取当前医生可进行转诊的医院列表。
+     */
+    GET_HOSPITAL_LIST_BY_DOCTOR,
+    /**
      * 获取当前医生有预约转诊权限的合作医院下面的一级级科室。
      */
     GET_DEPART_ONE_LIST_BY_REVERSE,
@@ -126,9 +130,17 @@ WE_CHAT_LOGIN,
      */
     RECEIVE_RESERVE_TRANSFER_ORDER,
     /**
+     * 变更接诊信息
+     */
+    UPDATE_RESERVE_TRANSFER_ORDER,
+    /**
      * 拒绝预约转诊订单
      */
     REJECT_RESERVE_TRANSFER_ORDER,
+    /**
+     * 拒绝预约转诊订单
+     */
+    TRANSFER_AGAIN_OTHER_DOCTOR,
     /**
      * 查询发起的转诊记录
      */

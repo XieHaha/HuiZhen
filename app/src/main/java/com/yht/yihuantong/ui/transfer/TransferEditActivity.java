@@ -8,7 +8,12 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
+import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
+import com.yht.frame.data.Tasks;
+import com.yht.frame.data.base.HospitalBean;
+import com.yht.frame.data.base.TransferBean;
+import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.widgets.edittext.AbstractTextWatcher;
@@ -43,10 +48,11 @@ public class TransferEditActivity extends BaseActivity {
      * true 为变更接诊信息  false为接诊
      */
     private boolean isEditReceive;
+    private TransferBean transferBean;
     /**
      * 接诊医院  预约就诊时间
      */
-    private String receiveHospital = "", reserveTime = "", noticeText = "";
+    private String receiveHospital = "", reserveTime = "", noticeText = "", hospitalCode = "";
     /**
      * 选择医院
      */
@@ -67,9 +73,11 @@ public class TransferEditActivity extends BaseActivity {
         super.initData(savedInstanceState);
         if (getIntent() != null) {
             isEditReceive = getIntent().getBooleanExtra(CommonData.KEY_RECEIVE_OR_EDIT_VISIT, false);
+            transferBean = (TransferBean)getIntent().getSerializableExtra(CommonData.KEY_TRANSFER_ORDER_BEAN);
             if (isEditReceive) {
-                receiveHospital = getIntent().getStringExtra(CommonData.KEY_RECEIVE_HOSPITAL);
-                reserveTime = getIntent().getStringExtra(CommonData.KEY_RESERVE_TIME);
+                receiveHospital = transferBean.getTargetHospitalName();
+                reserveTime = transferBean.getAppointAt();
+                hospitalCode = transferBean.getTargetHospitalCode();
                 initPage();
             }
         }
@@ -87,6 +95,22 @@ public class TransferEditActivity extends BaseActivity {
                 initNextButton();
             }
         });
+    }
+
+    /**
+     * 接受转诊
+     */
+    private void receiveReserveTransferOrder() {
+        RequestUtils.receiveReserveTransferOrder(this, loginBean.getToken(), hospitalCode, transferBean.getOrderNo(),
+                                                 reserveTime, noticeText, this);
+    }
+
+    /**
+     * 变更接诊信息
+     */
+    private void updateReserveTransferOrder() {
+        RequestUtils.updateReserveTransferOrder(this, loginBean.getToken(), hospitalCode, transferBean.getOrderNo(),
+                                                reserveTime, noticeText, this);
     }
 
     /**
@@ -122,12 +146,37 @@ public class TransferEditActivity extends BaseActivity {
                 startActivityForResult(intent, REQUEST_CODE_HOSPITAL);
                 break;
             case R.id.layout_time:
+                hideSoftInputFromWindow(etNotice);
                 initCustomTimePicker();
                 break;
             case R.id.tv_submit:
                 if (tvSubmit.isSelected()) {
-                    finish();
+                    if (isEditReceive) {
+                        updateReserveTransferOrder();
+                    }
+                    else {
+                        receiveReserveTransferOrder();
+                    }
                 }
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onResponseSuccess(Tasks task, BaseResponse response) {
+        super.onResponseSuccess(task, response);
+        switch (task) {
+            case RECEIVE_RESERVE_TRANSFER_ORDER:
+                //通知刷新
+                setResult(RESULT_OK);
+                finish();
+                break;
+            case UPDATE_RESERVE_TRANSFER_ORDER:
+                //通知刷新
+                setResult(RESULT_OK);
+                finish();
                 break;
             default:
                 break;
@@ -142,7 +191,9 @@ public class TransferEditActivity extends BaseActivity {
         }
         if (requestCode == REQUEST_CODE_HOSPITAL) {
             if (data != null) {
-                receiveHospital = data.getStringExtra(CommonData.KEY_HOSPITAL_BEAN);
+                HospitalBean bean = (HospitalBean)data.getSerializableExtra(CommonData.KEY_HOSPITAL_BEAN);
+                hospitalCode = bean.getHospitalCode();
+                receiveHospital = bean.getHospitalName();
                 tvHospital.setText(receiveHospital);
                 tvHospital.setSelected(true);
                 initNextButton();
