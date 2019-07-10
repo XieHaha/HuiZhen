@@ -170,11 +170,14 @@ public class MaterialFragment extends BaseFragment implements View.OnFocusChange
                 rbFemale.setChecked(true);
             }
             //既往病史
-            initPastMedicalHis(!TextUtils.isEmpty(pastMedicalHis));
+            initPastMedicalHis(!TextUtils.isEmpty(pastMedicalHis) &&
+                               (!getString(R.string.txt_past_medical_his_not).equals(pastMedicalHis)));
             //家族病史
-            initFamilyMedicalHis(!TextUtils.isEmpty(familyMedicalHis));
+            initFamilyMedicalHis(!TextUtils.isEmpty(familyMedicalHis) &&
+                                 (!getString(R.string.txt_family_medical_his_not).equals(familyMedicalHis)));
             //过敏史
-            initAllergies(!TextUtils.isEmpty(allergiesHis));
+            initAllergies(
+                    !TextUtils.isEmpty(allergiesHis) && (!getString(R.string.txt_allergies_not).equals(allergiesHis)));
         }
     }
 
@@ -208,11 +211,14 @@ public class MaterialFragment extends BaseFragment implements View.OnFocusChange
                 rbFemale.setChecked(true);
             }
             //既往病史
-            initPastMedicalHis(!TextUtils.isEmpty(pastMedicalHis));
+            initPastMedicalHis(!TextUtils.isEmpty(pastMedicalHis) &&
+                               (!getString(R.string.txt_past_medical_his_not).equals(pastMedicalHis)));
             //家族病史
-            initFamilyMedicalHis(!TextUtils.isEmpty(familyMedicalHis));
+            initFamilyMedicalHis(!TextUtils.isEmpty(familyMedicalHis) &&
+                                 (!getString(R.string.txt_family_medical_his_not).equals(familyMedicalHis)));
             //过敏史
-            initAllergies(!TextUtils.isEmpty(allergiesHis));
+            initAllergies(
+                    !TextUtils.isEmpty(allergiesHis) && (!getString(R.string.txt_allergies_not).equals(allergiesHis)));
         }
     }
 
@@ -293,6 +299,7 @@ public class MaterialFragment extends BaseFragment implements View.OnFocusChange
                 super.onTextChanged(s, start, before, count);
                 pastMedicalHis = s.toString();
                 tvPastMedicalHisNum.setText(String.format(getString(R.string.txt_calc_num), pastMedicalHis.length()));
+                initNextButton();
             }
         });
         etFamilyMedicalHis.addTextChangedListener(new AbstractTextWatcher() {
@@ -302,6 +309,7 @@ public class MaterialFragment extends BaseFragment implements View.OnFocusChange
                 familyMedicalHis = s.toString();
                 tvFamilyMedicalHisNum.setText(
                         String.format(getString(R.string.txt_calc_num), familyMedicalHis.length()));
+                initNextButton();
             }
         });
         etAllergies.addTextChangedListener(new AbstractTextWatcher() {
@@ -310,6 +318,7 @@ public class MaterialFragment extends BaseFragment implements View.OnFocusChange
                 super.onTextChanged(s, start, before, count);
                 allergiesHis = s.toString();
                 tvAllergiesNum.setText(String.format(getString(R.string.txt_calc_num), allergiesHis.length()));
+                initNextButton();
             }
         });
         etDiagnosis.addTextChangedListener(new AbstractTextWatcher() {
@@ -388,8 +397,12 @@ public class MaterialFragment extends BaseFragment implements View.OnFocusChange
      * next
      */
     private void initNextButton() {
+        boolean past = etPastMedicalHis.getVisibility() != View.VISIBLE || !TextUtils.isEmpty(pastMedicalHis);
+        boolean family = etFamilyMedicalHis.getVisibility() != View.VISIBLE || !TextUtils.isEmpty(familyMedicalHis);
+        boolean allergies = etAllergies.getVisibility() != View.VISIBLE || !TextUtils.isEmpty(allergiesHis);
         //判断手机号和诊断史
-        if (BaseUtils.isMobileNumber(phone) && !TextUtils.isEmpty(diagnosisHis) && !TextUtils.isEmpty(age)) {
+        if (BaseUtils.isMobileNumber(phone) && !TextUtils.isEmpty(diagnosisHis) && !TextUtils.isEmpty(age) && past &&
+            family && allergies) {
             tvMaterialNext.setSelected(true);
         }
         else {
@@ -425,9 +438,24 @@ public class MaterialFragment extends BaseFragment implements View.OnFocusChange
                         //数据回填
                         reverseTransferBean.setPatientAge(Integer.valueOf(age));
                         reverseTransferBean.setPatientMobile(phone);
-                        reverseTransferBean.setPastHistory(pastMedicalHis);
-                        reverseTransferBean.setFamilyHistory(familyMedicalHis);
-                        reverseTransferBean.setAllergyHistory(allergiesHis);
+                        if (TextUtils.isEmpty(pastMedicalHis)) {
+                            reverseTransferBean.setPastHistory(getString(R.string.txt_past_medical_his_not));
+                        }
+                        else {
+                            reverseTransferBean.setPastHistory(pastMedicalHis);
+                        }
+                        if (TextUtils.isEmpty(familyMedicalHis)) {
+                            reverseTransferBean.setFamilyHistory(getString(R.string.txt_family_medical_his_not));
+                        }
+                        else {
+                            reverseTransferBean.setFamilyHistory(familyMedicalHis);
+                        }
+                        if (TextUtils.isEmpty(allergiesHis)) {
+                            reverseTransferBean.setAllergyHistory(getString(R.string.txt_allergies_not));
+                        }
+                        else {
+                            reverseTransferBean.setAllergyHistory(allergiesHis);
+                        }
                         reverseTransferBean.setInitResult(diagnosisHis);
                         checkListener.onTransferStepTwo(reverseTransferBean);
                     }
@@ -435,9 +463,24 @@ public class MaterialFragment extends BaseFragment implements View.OnFocusChange
                         //数据回填
                         reserveCheckBean.setAge(Integer.valueOf(age));
                         reserveCheckBean.setPhone(phone);
-                        reserveCheckBean.setPastHistory(pastMedicalHis);
-                        reserveCheckBean.setFamilyHistory(familyMedicalHis);
-                        reserveCheckBean.setAllergyHistory(allergiesHis);
+                        if (TextUtils.isEmpty(pastMedicalHis)) {
+                            reserveCheckBean.setPastHistory(getString(R.string.txt_past_medical_his_not));
+                        }
+                        else {
+                            reserveCheckBean.setPastHistory(pastMedicalHis);
+                        }
+                        if (TextUtils.isEmpty(familyMedicalHis)) {
+                            reserveCheckBean.setFamilyHistory(getString(R.string.txt_family_medical_his_not));
+                        }
+                        else {
+                            reserveCheckBean.setFamilyHistory(familyMedicalHis);
+                        }
+                        if (TextUtils.isEmpty(allergiesHis)) {
+                            reserveCheckBean.setAllergyHistory(getString(R.string.txt_allergies_not));
+                        }
+                        else {
+                            reserveCheckBean.setAllergyHistory(allergiesHis);
+                        }
                         reserveCheckBean.setInitResult(diagnosisHis);
                         checkListener.onCheckStepTwo(reserveCheckBean);
                     }

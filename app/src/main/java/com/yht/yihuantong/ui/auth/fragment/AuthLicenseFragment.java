@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,6 +21,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.yht.frame.api.DirHelper;
 import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
+import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.base.DoctorAuthBean;
 import com.yht.frame.data.bean.NormImage;
@@ -78,6 +80,20 @@ public class AuthLicenseFragment extends BaseFragment
     @Override
     public int getLayoutID() {
         return R.layout.fragment_auth_license;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putString(CommonData.KEY_PUBLIC, mCurrentPhotoPath);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if (savedInstanceState != null) {
+            mCurrentPhotoPath = savedInstanceState.getString(CommonData.KEY_PUBLIC);
+        }
     }
 
     @Override

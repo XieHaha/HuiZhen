@@ -251,7 +251,7 @@
     <string name="txt_look_check_detail">查看检查详情</string>
     <string name="txt_look_transfer_detail">查看转诊详情</string>
     <string name="txt_check_again">继续预约检查</string>
-    <string name="txt_transfer_again_add">继续预约检查</string>
+    <string name="txt_transfer_again_add">继续预约转诊</string>
     <string name="txt_add_check_hint">请输入检查名称搜索</string>
     <string name="txt_add_hospital_check">添加同院检查项目</string>
     <string name="txt_reserve_transfer">预约转诊</string>

@@ -22,7 +22,7 @@ import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.yihuantong.R;
-import com.yht.yihuantong.ui.check.CheckSuccessActivity;
+import com.yht.yihuantong.ui.check.ReservationSuccessActivity;
 import com.yht.yihuantong.ui.check.listener.OnCheckListener;
 import com.yht.yihuantong.ui.reservation.fragment.IdentifyFragment;
 import com.yht.yihuantong.ui.reservation.fragment.MaterialFragment;
@@ -367,7 +367,7 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
 
     @Override
     public void onCheckStepThree() {
-        Intent intent = new Intent(this, CheckSuccessActivity.class);
+        Intent intent = new Intent(this, ReservationSuccessActivity.class);
         startActivity(intent);
         finish();
     }
@@ -377,7 +377,7 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
         super.onResponseSuccess(task, response);
         switch (task) {
             case ADD_RESERVE_TRANSFER_ORDER:
-                Intent intent = new Intent(this, CheckSuccessActivity.class);
+                Intent intent = new Intent(this, ReservationSuccessActivity.class);
                 intent.putExtra(CommonData.KEY_CHECK_OR_TRANSFER, true);
                 startActivity(intent);
                 finish();

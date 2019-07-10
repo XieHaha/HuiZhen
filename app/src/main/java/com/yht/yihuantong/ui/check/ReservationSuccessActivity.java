@@ -20,7 +20,7 @@ import butterknife.OnClick;
  * @date 19/6/17 15:06
  * @des 预约检查、转诊成功
  */
-public class CheckSuccessActivity extends BaseActivity {
+public class ReservationSuccessActivity extends BaseActivity {
     @BindView(R.id.public_title_bar_title)
     TextView publicTitleBarTitle;
     @BindView(R.id.tv_success_hint)
@@ -75,7 +75,7 @@ public class CheckSuccessActivity extends BaseActivity {
                 }
                 else {
                     Intent intent = new Intent(this, CheckDetailActivity.class);
-                    intent.putExtra(CommonData.KEY_PUBLIC,true);
+                    intent.putExtra(CommonData.KEY_PUBLIC, true);
                     startActivity(intent);
                 }
                 finish();

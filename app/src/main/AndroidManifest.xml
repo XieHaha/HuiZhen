@@ -163,7 +163,7 @@
             android:label="@string/txt_reserve_check"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
-            android:name=".ui.check.CheckSuccessActivity"
+            android:name=".ui.check.ReservationSuccessActivity"
             android:screenOrientation="portrait"
             android:label="@string/txt_reserve_check"
             android:windowSoftInputMode="adjustResize|stateHidden" />
