@@ -123,7 +123,7 @@ public class TransferReceiveDetailActivity extends BaseActivity implements Trans
      * 获取详情
      */
     private void getTransferOrderDetail() {
-        RequestUtils.getTransferOrderDetail(this, loginBean.getToken(), transferBean.getAppointAt(), this);
+        RequestUtils.getTransferOrderDetail(this, loginBean.getToken(), transferBean.getOrderNo(), this);
     }
 
     /**

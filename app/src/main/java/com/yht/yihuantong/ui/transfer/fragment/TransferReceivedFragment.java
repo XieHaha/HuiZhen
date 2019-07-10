@@ -103,7 +103,7 @@ public class TransferReceivedFragment extends BaseFragment
     @Override
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
-        if (task == Tasks.GET_INITIATE_TRANSFER_ORDER_LIST) {
+        if (task == Tasks.GET_TRANSFER_STATUS_ORDER_LIST) {
             List<TransferBean> list = (List<TransferBean>)response.getData();
             if (page == BaseData.BASE_ONE) {
                 transferBeans.clear();

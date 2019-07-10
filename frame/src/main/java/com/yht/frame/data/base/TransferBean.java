@@ -53,6 +53,7 @@ public class TransferBean implements Serializable {
     private String targetDoctorMobile;
     private String note;
     private String rejectReason;
+    private String cancelReason;
 
     public String getOrderNo() {
         return orderNo;
@@ -284,5 +285,13 @@ public class TransferBean implements Serializable {
 
     public void setRejectReason(String rejectReason) {
         this.rejectReason = rejectReason;
+    }
+
+    public String getCancelReason() {
+        return cancelReason;
+    }
+
+    public void setCancelReason(String cancelReason) {
+        this.cancelReason = cancelReason;
     }
 }

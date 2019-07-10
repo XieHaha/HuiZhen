@@ -391,8 +391,8 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .getTransferStatusOrderList(token, params)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_TRANSFER_STATUS_ORDER_LIST,
-                                                                 listener));
+                       .subscribe(
+                               new AbstractLoadViewObserver<>(context, Tasks.GET_TRANSFER_STATUS_ORDER_LIST, listener));
     }
 
     public static void getTransferOrderDetail(Context context, String token, String orderNo,

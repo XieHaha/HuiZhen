@@ -6,6 +6,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.yht.frame.data.BaseData;
 import com.yht.frame.data.base.TransferBean;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.glide.GlideHelper;
@@ -28,11 +29,13 @@ public class TransferReceivedAdapter extends BaseQuickAdapter<TransferBean, Base
     protected void convert(BaseViewHolder helper, TransferBean item) {
         Glide.with(mContext)
              .load(ImageUrlUtil.append(item.getConfirmPhoto()))
-             .apply(GlideHelper.getOptionsPic(BaseUtils.dp2px(mContext, 4)))
+             .apply(GlideHelper.getOptions(BaseUtils.dp2px(mContext, 4)))
              .into((ImageView)helper.getView(R.id.iv_receiving));
         helper.setText(R.id.tv_reserve_visit_time, item.getAppointAt())
               .setText(R.id.tv_receiving_name, item.getPatientName())
-              .setText(R.id.tv_receiving_sex, item.getPatientSex())
+              .setText(R.id.tv_receiving_sex, item.getSex() == BaseData.BASE_ONE
+                                              ? mContext.getString(R.string.txt_sex_male)
+                                              : mContext.getString(R.string.txt_sex_female))
               .setText(R.id.tv_receiving_age, String.valueOf(item.getPatientAge()))
               .addOnClickListener(R.id.iv_receiving_call);
     }

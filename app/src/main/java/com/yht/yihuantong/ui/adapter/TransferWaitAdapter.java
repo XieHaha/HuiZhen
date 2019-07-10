@@ -28,8 +28,8 @@ public class TransferWaitAdapter extends BaseQuickAdapter<TransferBean, BaseView
     protected void convert(BaseViewHolder helper, TransferBean item) {
         Glide.with(mContext)
              .load(ImageUrlUtil.append(item.getConfirmPhoto()))
-             .apply(GlideHelper.getOptionsPic(BaseUtils.dp2px(mContext, 4)))
-             .into((ImageView)helper.getView(R.id.iv_upload));
+             .apply(GlideHelper.getOptions(BaseUtils.dp2px(mContext, 4)))
+             .into((ImageView)helper.getView(R.id.iv_transfer_img));
         helper.setText(R.id.txt_transfer_time, item.getTransferDate())
               .setText(R.id.tv_transfer_name, item.getPatientName())
               .setText(R.id.tv_transfer_purpose, item.getTransferTarget())

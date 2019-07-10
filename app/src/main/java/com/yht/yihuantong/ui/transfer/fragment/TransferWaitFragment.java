@@ -12,6 +12,7 @@ import android.view.View;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
+import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.TransferOrderStatus;
 import com.yht.frame.data.base.TransferBean;
@@ -22,6 +23,7 @@ import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.adapter.TransferWaitAdapter;
 import com.yht.yihuantong.ui.transfer.TransferReceiveDetailActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -42,7 +44,7 @@ public class TransferWaitFragment extends BaseFragment
     /**
      * 待处理转诊患者订单
      */
-    private List<TransferBean> transferBeans;
+    private List<TransferBean> transferBeans = new ArrayList<>();
     /**
      * 页码
      */
@@ -84,13 +86,14 @@ public class TransferWaitFragment extends BaseFragment
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         Intent intent = new Intent(getContext(), TransferReceiveDetailActivity.class);
+        intent.putExtra(CommonData.KEY_TRANSFER_ORDER_BEAN, transferBeans.get(position));
         startActivityForResult(intent, REQUEST_CODE_UPDATE);
     }
 
     @Override
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
-        if (task == Tasks.GET_INITIATE_TRANSFER_ORDER_LIST) {
+        if (task == Tasks.GET_TRANSFER_STATUS_ORDER_LIST) {
             List<TransferBean> list = (List<TransferBean>)response.getData();
             if (page == BaseData.BASE_ONE) {
                 transferBeans.clear();
