@@ -118,6 +118,10 @@ WE_CHAT_LOGIN,
      */
     GET_PATIENT_EXIST_TRANSFER,
     /**
+     * 新增预约检查订单
+     */
+    ADD_RESERVE_CHECK_ORDER,
+    /**
      * 新增预约转诊订单
      */
     ADD_RESERVE_TRANSFER_ORDER,

@@ -318,10 +318,10 @@ public class TransferReceiveDetailActivity extends BaseActivity implements Trans
         }
         switch (requestCode) {
             case REQUEST_CODE_UPDATE_TRANSFER:
-            case REQUEST_CODE_RECEIVE_TRANSFER:
                 setResult(RESULT_OK);
                 getTransferOrderDetail();
                 break;
+            case REQUEST_CODE_RECEIVE_TRANSFER:
             case REQUEST_CODE_TRANSFER_AGAIN:
                 setResult(RESULT_OK);
                 finish();

@@ -317,6 +317,30 @@ public class RequestUtils {
                                                                  listener));
     }
 
+    public static void addReserveCheckOrder(Context context, String token, ReserveTransferBean bean,
+            final ResponseListener<BaseResponse> listener) {
+        Map<String, Object> params = new HashMap<>(16);
+        params.put("allergyHistory", bean.getAllergyHistory());
+        params.put("confirmPhoto", bean.getConfirmPhoto());
+        params.put("familyHistory", bean.getFamilyHistory());
+        params.put("initResult", bean.getInitResult());
+        params.put("pastHistory", bean.getPastHistory());
+        params.put("patientAge", bean.getPatientAge());
+        params.put("patientCode", bean.getPatientCode());
+        params.put("patientIdCardNo", bean.getPatientIdCardNo());
+        params.put("patientMobile", bean.getPatientMobile());
+        params.put("patientName", bean.getPatientName());
+        params.put("payType", bean.getPayType());
+        params.put("receiveDoctorCode", bean.getReceiveDoctorCode());
+        params.put("sex", bean.getSex());
+        params.put("transferTarget", bean.getTransferTarget());
+        params.put("transferType", bean.getTransferType());
+        RetrofitManager.getApiUrlManager()
+                       .addReserveCheckOrder(token, params)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.ADD_RESERVE_CHECK_ORDER,
+                                                                 listener));
+    }
     public static void addReserveTransferOrder(Context context, String token, ReserveTransferBean bean,
             final ResponseListener<BaseResponse> listener) {
         Map<String, Object> params = new HashMap<>(16);

@@ -133,6 +133,12 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
     private void addReserveTransferOrder() {
         RequestUtils.addReserveTransferOrder(this, loginBean.getToken(), reverseTransferBean, this);
     }
+    /**
+     * 新增预约检查订单
+     */
+    private void addReserveCheckOrder() {
+        RequestUtils.addReserveCheckOrder(this, loginBean.getToken(), reverseTransferBean, this);
+    }
 
     /**
      * title处理

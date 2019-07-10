@@ -341,6 +341,16 @@ public interface ApiUrlManager {
             @Query("patientCode") String info);
 
     /**
+     * 新增预约检查订单
+     *
+     * @param info  map参数
+     * @param token token
+     * @return 返回值
+     */
+    @POST("/order-check/create")
+    Observable<BaseResponse<String>> addReserveCheckOrder(@Header("token") String token,
+            @Body Map<String, Object> info);
+    /**
      * 新增预约转诊订单
      *
      * @param info  map参数
