@@ -143,7 +143,7 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @POST("/client/doctor/zzDoctors")
-    Observable<BaseResponse<List<HospitalBean>>> getDoctorListByReverse(@Header("token") String token,
+    Observable<BaseResponse<List<DoctorInfoBean>>> getDoctorListByReverse(@Header("token") String token,
             @Body Map<String, Object> info);
 
     /**
@@ -329,6 +329,17 @@ public interface ApiUrlManager {
     @GET("/order-transfer/exist")
     Observable<BaseResponse<Boolean>> getPatientExistTransfer(@Header("token") String token,
             @Query("patientCode") String info);
+
+    /**
+     * 新增预约转诊订单
+     *
+     * @param info  map参数
+     * @param token token
+     * @return 返回值
+     */
+    @POST("/order-transfer/add")
+    Observable<BaseResponse<Boolean>> addReserveTransferOrder(@Header("token") String token,
+            @Body Map<String, Object> info);
     /********************************分隔线*********************************/
     /**
      * 首页广告

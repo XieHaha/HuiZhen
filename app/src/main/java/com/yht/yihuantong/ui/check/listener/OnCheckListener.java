@@ -22,7 +22,7 @@ public interface OnCheckListener {
     /**
      * 结果
      */
-    void onTransferStepThree();
+    void onTransferStepThree(ReserveTransferBean bean);
 
     /**
      * @param bean 基础信息

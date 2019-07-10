@@ -8,6 +8,7 @@ import com.yht.frame.data.Tasks;
 import com.yht.frame.data.base.DoctorAuthBean;
 import com.yht.frame.data.base.HospitalBean;
 import com.yht.frame.data.base.LoginBean;
+import com.yht.frame.data.base.ReserveTransferBean;
 import com.yht.frame.data.bean.HospitalProductBean;
 import com.yht.frame.data.bean.HospitalProductTypeBean;
 import com.yht.frame.data.base.PatientBean;
@@ -303,6 +304,31 @@ public class RequestUtils {
                        .getPatientExistTransfer(token, patientCode)
                        .compose(RxJavaHelper.observableIO2Main(context))
                        .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_PATIENT_EXIST_TRANSFER,
+                                                                 listener));
+    }
+
+    public static void addReserveTransferOrder(Context context, String token, ReserveTransferBean bean,
+            final ResponseListener<BaseResponse> listener) {
+        Map<String, Object> params = new HashMap<>(16);
+        params.put("allergyHistory", bean.getAllergyHistory());
+        params.put("confirmPhoto", bean.getConfirmPhoto());
+        params.put("familyHistory", bean.getFamilyHistory());
+        params.put("initResult", bean.getInitResult());
+        params.put("pastHistory", bean.getPastHistory());
+        params.put("patientAge", bean.getPatientAge());
+        params.put("patientCode", bean.getPatientCode());
+        params.put("patientIdCardNo", bean.getPatientIdCardNo());
+        params.put("patientMobile", bean.getPatientMobile());
+        params.put("patientName", bean.getPatientName());
+        params.put("payType", bean.getPayType());
+        params.put("receiveDoctorCode", bean.getReceiveDoctorCode());
+        params.put("sex", bean.getSex());
+        params.put("transferTarget", bean.getTransferTarget());
+        params.put("transferType", bean.getTransferType());
+        RetrofitManager.getApiUrlManager()
+                       .addReserveTransferOrder(token, params)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.ADD_RESERVE_TRANSFER_ORDER,
                                                                  listener));
     }
 

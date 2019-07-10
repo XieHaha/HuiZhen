@@ -1,5 +1,6 @@
 package com.yht.yihuantong.ui.transfer;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
+import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.base.DoctorInfoBean;
 import com.yht.frame.data.base.HospitalBean;
@@ -20,6 +22,7 @@ import com.yht.frame.data.base.HospitalDepartBean;
 import com.yht.frame.data.base.HospitalDepartChildBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
+import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.frame.widgets.edittext.AbstractTextWatcher;
 import com.yht.frame.widgets.edittext.SuperEditText;
 import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
@@ -55,19 +58,19 @@ public class SelectReceivingDoctorActivity extends BaseActivity
     @BindView(R.id.layout_bg)
     RelativeLayout layoutBg;
     @BindView(R.id.tv_one)
-    TextView tvOne;
+    TextView tvHospitalTitle;
     @BindView(R.id.tv_two)
-    TextView tvTwo;
+    TextView tvDepartOneTitle;
     @BindView(R.id.tv_three)
-    TextView tvThree;
+    TextView tvDepartTwoTitle;
     @BindView(R.id.et_search_check_type)
     SuperEditText etSearchCheckType;
     @BindView(R.id.view1)
-    View view1;
+    View viewHospitalBar;
     @BindView(R.id.view2)
-    View view2;
+    View viewDepartOneBar;
     @BindView(R.id.view3)
-    View view3;
+    View viewDepartTwoBar;
     @BindView(R.id.layout_none_doctor)
     LinearLayout layoutNoneDoctor;
     /**
@@ -84,7 +87,7 @@ public class SelectReceivingDoctorActivity extends BaseActivity
     private List<HospitalBean> hospitals;
     private List<HospitalDepartBean> departOne;
     private List<HospitalDepartChildBean> departTwo;
-    private List<DoctorInfoBean> doctors;
+    private List<DoctorInfoBean> doctors = new ArrayList<>();
     private List<String> data;
     /**
      * 当前选中的医院
@@ -98,6 +101,14 @@ public class SelectReceivingDoctorActivity extends BaseActivity
      * 当前选中的二级科室
      */
     private HospitalDepartChildBean curHospitalDepartChildBean;
+    /**
+     * 一级科室选中
+     */
+    private int curDepartOnePosition = -1;
+    /**
+     * 二级科室选中
+     */
+    private int curDepartTwoPosition = -1;
     /**
      * 当前选择列表  0为医院 1为大科室  2为小科室
      */
@@ -146,7 +157,9 @@ public class SelectReceivingDoctorActivity extends BaseActivity
                     searchDoctor(s.toString());
                 }
                 else {
-                    init();
+                    doctorAdapter.setNewData(new ArrayList<>());
+                    tvSelect.setVisibility(View.VISIBLE);
+                    //                    layoutNoneDoctor.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -185,51 +198,49 @@ public class SelectReceivingDoctorActivity extends BaseActivity
     }
 
     /**
-     * 恢复到最初状态
+     * 选择结束后操作
      */
-    private void init() {
+    private void selectEnd() {
         layoutExpand.collapse();
-        tvSelect.setVisibility(View.VISIBLE);
         tvSelect.setSelected(false);
         layoutBg.setVisibility(View.GONE);
-        searchRecyclerView.setVisibility(View.GONE);
     }
 
     /**
      * 医院数据处理
      */
     private void initHospital() {
-        tvOne.setSelected(true);
-        view1.setVisibility(View.VISIBLE);
+        tvHospitalTitle.setSelected(true);
+        viewHospitalBar.setVisibility(View.VISIBLE);
         //
-        tvTwo.setVisibility(View.INVISIBLE);
-        view2.setVisibility(View.GONE);
-        tvThree.setVisibility(View.INVISIBLE);
-        view3.setVisibility(View.GONE);
+        tvDepartOneTitle.setVisibility(View.INVISIBLE);
+        viewDepartOneBar.setVisibility(View.GONE);
+        tvDepartTwoTitle.setVisibility(View.INVISIBLE);
+        viewDepartTwoBar.setVisibility(View.GONE);
     }
 
     /**
      * 一级科室数据处理
      */
     private void initDepartOne() {
-        tvOne.setText(curHospital.getHospitalName());
-        tvOne.setSelected(false);
-        view1.setVisibility(View.GONE);
-        view2.setVisibility(View.VISIBLE);
-        tvTwo.setVisibility(View.VISIBLE);
-        tvTwo.setSelected(true);
+        tvHospitalTitle.setText(curHospital.getHospitalName());
+        tvHospitalTitle.setSelected(false);
+        viewHospitalBar.setVisibility(View.GONE);
+        viewDepartOneBar.setVisibility(View.VISIBLE);
+        tvDepartOneTitle.setVisibility(View.VISIBLE);
+        tvDepartOneTitle.setSelected(true);
     }
 
     /**
      * 二级科室数据处理
      */
     private void initDepartTwo() {
-        tvTwo.setText(curHospitalDepartBean.getDepartmentName());
-        tvTwo.setSelected(false);
-        view2.setVisibility(View.GONE);
-        tvThree.setVisibility(View.VISIBLE);
-        view3.setVisibility(View.VISIBLE);
-        tvThree.setSelected(true);
+        tvDepartOneTitle.setText(curHospitalDepartBean.getDepartmentName());
+        tvDepartOneTitle.setSelected(false);
+        viewDepartOneBar.setVisibility(View.GONE);
+        tvDepartTwoTitle.setVisibility(View.VISIBLE);
+        viewDepartTwoBar.setVisibility(View.VISIBLE);
+        tvDepartTwoTitle.setSelected(true);
     }
 
     /**
@@ -252,21 +263,21 @@ public class SelectReceivingDoctorActivity extends BaseActivity
                     layoutExpand.collapse();
                 }
                 else {
-                    initHospital();
                     layoutBg.setVisibility(View.VISIBLE);
                     tvSelect.setSelected(true);
                     layoutExpand.expand();
                 }
                 break;
             case R.id.tv_reset:
+                curType = 0;
                 tvSelect.setText(R.string.txt_select_hospital_depart);
                 data = new ArrayList<>();
                 for (HospitalBean bean : hospitals) {
                     data.add(bean.getHospitalName());
                 }
                 reserveTransferSelectDoctorAdapter.setNewData(data);
+                doctorAdapter.setNewData(new ArrayList<>());
                 initHospital();
-                init();
                 break;
             default:
                 break;
@@ -277,7 +288,9 @@ public class SelectReceivingDoctorActivity extends BaseActivity
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         if (adapter.getItem(position) instanceof DoctorInfoBean) {
             hideSoftInputFromWindow(etSearchCheckType);
-            setResult(RESULT_OK);
+            Intent intent = new Intent();
+            intent.putExtra(CommonData.KEY_DOCTOR_BEAN, doctors.get(position));
+            setResult(RESULT_OK, intent);
             finish();
         }
         else {
@@ -289,15 +302,18 @@ public class SelectReceivingDoctorActivity extends BaseActivity
                     getDepartOneListByReverse();
                     break;
                 case 1:
-                    curType = 2;
+                    curDepartOnePosition = position;
+                    reserveTransferSelectDoctorAdapter.setCurPosition(curDepartOnePosition);
                     if (position != 0) {
-                        curHospitalDepartBean = departOne.get(position);
+                        curType = 2;
+                        curHospitalDepartBean = departOne.get(position - 1);
                         tvSelect.setText(
                                 curHospital.getHospitalName() + "-" + curHospitalDepartBean.getDepartmentName());
                         getDepartTwoListByReverse();
                     }
                     else {
-                        init();
+                        //选择的全部一级科室
+                        selectEnd();
                         tvSelect.setText(curHospital.getHospitalName() + "-全部科室");
                         Map<String, Object> params = new HashMap<>(16);
                         params.put("hospitalCode", curHospital.getHospitalCode());
@@ -305,18 +321,21 @@ public class SelectReceivingDoctorActivity extends BaseActivity
                     }
                     break;
                 case 2:
-                    init();
+                    curDepartTwoPosition = position;
+                    reserveTransferSelectDoctorAdapter.setCurPosition(curDepartTwoPosition);
+                    selectEnd();
                     Map<String, Object> params = new HashMap<>(16);
                     params.put("hospitalCode", curHospital.getHospitalCode());
+                    params.put("pid", curHospitalDepartBean.getDepartmentId());
                     if (position != 0) {
-                        curHospitalDepartChildBean = departTwo.get(position);
-                        params.put("pid", curHospitalDepartChildBean.getDepartmentId());
+                        curHospitalDepartChildBean = departTwo.get(position - 1);
+                        params.put("id", curHospitalDepartChildBean.getDepartmentId());
                         tvSelect.setText(
                                 curHospital.getHospitalName() + "-" + curHospitalDepartBean.getDepartmentName() + "-" +
                                 curHospitalDepartChildBean.getDepartmentName());
                     }
                     else {
-                        params.put("pid", curHospitalDepartBean.getDepartmentId());
+                        //选择全部的二级科室
                         tvSelect.setText(
                                 curHospital.getHospitalName() + "-" + curHospitalDepartBean.getDepartmentName() +
                                 "-全部子科室");
@@ -331,6 +350,10 @@ public class SelectReceivingDoctorActivity extends BaseActivity
 
     @Override
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+        DoctorInfoBean bean = doctors.get(position);
+        new HintDialog(this).setPhone(bean.getDoctorPhone())
+                            .setOnEnterClickListener(() -> callPhone(bean.getDoctorPhone()))
+                            .show();
     }
 
     @Override
@@ -367,10 +390,20 @@ public class SelectReceivingDoctorActivity extends BaseActivity
                 initDepartTwo();
                 break;
             case GET_DOCTOR_LIST_BY_REVERSE:
-                doctors = (List<DoctorInfoBean>)response.getData();
-                searchRecyclerView.setVisibility(View.VISIBLE);
+                List<DoctorInfoBean> list = (List<DoctorInfoBean>)response.getData();
+                if (page == BaseData.BASE_ONE) {
+                    doctors.clear();
+                }
+                doctors.addAll(list);
+                if (doctors.size() == 0) {
+                    //                    layoutNoneDoctor.setVisibility(View.VISIBLE);
+                }
+                else {
+                    //                    layoutNoneDoctor.setVisibility(View.GONE);
+                    searchRecyclerView.setVisibility(View.VISIBLE);
+                }
                 doctorAdapter.setNewData(doctors);
-                if (doctors != null && doctors.size() >= BaseData.BASE_PAGE_DATA_NUM) {
+                if (list.size() >= BaseData.BASE_PAGE_DATA_NUM) {
                     doctorAdapter.loadMoreComplete();
                 }
                 else {
@@ -384,5 +417,6 @@ public class SelectReceivingDoctorActivity extends BaseActivity
 
     @Override
     public void onLoadMoreRequested() {
+        page++;
     }
 }

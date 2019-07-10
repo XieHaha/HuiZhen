@@ -114,6 +114,10 @@ WE_CHAT_LOGIN,
      */
     GET_PATIENT_EXIST_TRANSFER,
     /**
+     * 新增预约转诊订单
+     */
+    ADD_RESERVE_TRANSFER_ORDER,
+    /**
      * 获取环信appkey
      */
     GET_EASE_APPKEY,

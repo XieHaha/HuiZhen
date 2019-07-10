@@ -34,6 +34,7 @@ public class DoctorInfoBean implements Serializable {
     //2019年7月9日20:12:00
     private String departmentName;
     private String hospitalName;
+    private String photo;
 
     public String getCertBack() {
         return certBack;
@@ -193,5 +194,13 @@ public class DoctorInfoBean implements Serializable {
 
     public void setHospitalName(String hospitalName) {
         this.hospitalName = hospitalName;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 }

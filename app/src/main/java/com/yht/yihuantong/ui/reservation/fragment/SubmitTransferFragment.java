@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -20,16 +21,24 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.yht.frame.api.DirHelper;
+import com.yht.frame.data.BaseData;
+import com.yht.frame.data.BaseResponse;
+import com.yht.frame.data.CommonData;
+import com.yht.frame.data.Tasks;
+import com.yht.frame.data.base.DoctorInfoBean;
 import com.yht.frame.data.base.ReserveTransferBean;
+import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.permission.Permission;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
+import com.yht.frame.utils.ScalingUtils;
+import com.yht.frame.utils.glide.GlideHelper;
+import com.yht.frame.widgets.edittext.AbstractTextWatcher;
 import com.yht.frame.widgets.view.ExpandableLayout;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ZycApplication;
 import com.yht.yihuantong.ui.check.listener.OnCheckListener;
 import com.yht.yihuantong.ui.transfer.SelectReceivingDoctorActivity;
-import com.yht.frame.utils.glide.GlideHelper;
 
 import java.io.File;
 import java.util.List;
@@ -73,6 +82,8 @@ public class SubmitTransferFragment extends BaseFragment implements RadioGroup.O
     TextView tvReceivingDoctorTitle;
     @BindView(R.id.tv_receiving_doctor_hospital_depart)
     TextView tvReceivingDoctorHospitalDepart;
+    @BindView(R.id.iv_receiving_doctor_call)
+    ImageView ivReceivingDoctorDelete;
     @BindView(R.id.layout_receiving_doctor)
     RelativeLayout layoutReceivingDoctor;
     @BindView(R.id.iv_upload_one)
@@ -93,9 +104,22 @@ public class SubmitTransferFragment extends BaseFragment implements RadioGroup.O
     private Uri mCurrentPhotoUri;
     private String mCurrentPhotoPath;
     /**
-     * 当前预约数据
+     * 当前预约转诊数据
      */
     private ReserveTransferBean reverseTransferBean;
+    private DoctorInfoBean curReceiveDoctor;
+    /**
+     * 拍照确认图片url
+     */
+    private String confirmImageUrl;
+    /**
+     * 转诊目的其他原因
+     */
+    private String otherString;
+    /**
+     * 缴费类型、转诊目的、转诊类型
+     */
+    private int payTypeId, transferPurposeId, transferTypeId;
     /**
      * 二次编辑 是否清空所有已填数据
      */
@@ -127,6 +151,24 @@ public class SubmitTransferFragment extends BaseFragment implements RadioGroup.O
         groupTransferType.setOnCheckedChangeListener(this);
         groupTransferPurpose.setOnCheckedChangeListener(this);
         groupPayment.setOnCheckedChangeListener(this);
+        etOther.addTextChangedListener(new AbstractTextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                super.onTextChanged(s, start, before, count);
+                otherString = s.toString();
+                initNextButton();
+            }
+        });
+    }
+
+    /**
+     * 上传图片
+     *
+     * @param file
+     */
+    private void uploadImage(File file) {
+        ScalingUtils.resizePic(getContext(), file.getAbsolutePath());
+        RequestUtils.uploadImg(getContext(), loginBean.getToken(), file, this);
     }
 
     /**
@@ -184,25 +226,53 @@ public class SubmitTransferFragment extends BaseFragment implements RadioGroup.O
             ivDeleteOne.setVisibility(View.GONE);
             cameraTempFile = null;
             mCurrentPhotoUri = null;
+            confirmImageUrl = "";
             mCurrentPhotoPath = "";
         }
+        initNextButton();
     }
 
     /**
-     * 根据检查项目匹配医院回调
-     *
-     * @param data
+     * 接诊医生回调
      */
-    private void selectHospitalByCheckItem(Intent data) {
+    private void initReceiveDoctor() {
+        layoutReceivingDoctor.setVisibility(View.VISIBLE);
         tvSelect.setVisibility(View.GONE);
+        if (curReceiveDoctor != null) {
+            Glide.with(this)
+                 .load(curReceiveDoctor.getPhoto())
+                 .apply(GlideHelper.getOptions(BaseUtils.dp2px(getContext(), 4)))
+                 .into(ivReceivingDoctor);
+            tvReceivingDoctorName.setText(curReceiveDoctor.getDoctorName());
+            tvReceivingDoctorTitle.setText(curReceiveDoctor.getJobTitle());
+            tvReceivingDoctorHospitalDepart.setText(
+                    curReceiveDoctor.getHospitalName() + "  " + curReceiveDoctor.getDepartmentName());
+            ivReceivingDoctorDelete.setImageResource(R.mipmap.ic_delete);
+        }
+        initNextButton();
     }
 
     /**
      * 全部删除已经选择的检查项目和医院
      */
     private void deleteAllSelectCheckType() {
+        curReceiveDoctor = null;
         tvSelect.setVisibility(View.VISIBLE);
         layoutReceivingDoctor.setVisibility(View.GONE);
+        initNextButton();
+    }
+
+    /**
+     * next
+     */
+    private void initNextButton() {
+        boolean other = rbOther.getId() != transferPurposeId || !TextUtils.isEmpty(otherString);
+        if (curReceiveDoctor != null && !TextUtils.isEmpty(confirmImageUrl) && other) {
+            tvSubmitNext.setSelected(true);
+        }
+        else {
+            tvSubmitNext.setSelected(false);
+        }
     }
 
     @OnClick({
@@ -224,8 +294,33 @@ public class SubmitTransferFragment extends BaseFragment implements RadioGroup.O
                 initImage(false);
                 break;
             case R.id.tv_submit_next:
-                if (checkListener != null) {
-                    checkListener.onTransferStepThree();
+                if (tvSubmitNext.isSelected() && checkListener != null) {
+                    reverseTransferBean.setReceiveDoctorCode(curReceiveDoctor.getDoctorCode());
+                    //转诊类型
+                    reverseTransferBean.setTransferType(
+                            transferTypeId == rbUp.getId() ? BaseData.BASE_ZERO : BaseData.BASE_ONE);
+                    //转诊目的
+                    if (transferPurposeId == rbFamilyRequire.getId()) {
+                        reverseTransferBean.setTransferTarget(getString(R.string.txt_family_require));
+                    }
+                    else if (transferPurposeId == rbRehabilitation.getId()) {
+                        reverseTransferBean.setTransferTarget(getString(R.string.txt_rehabilitation));
+                    }
+                    else {
+                        reverseTransferBean.setTransferTarget(otherString);
+                    }
+                    //缴费类型
+                    if (payTypeId == rbSelf.getId()) {
+                        reverseTransferBean.setPayType(BaseData.BASE_ZERO);
+                    }
+                    else if (payTypeId == rbMedicare.getId()) {
+                        reverseTransferBean.setPayType(BaseData.BASE_ONE);
+                    }
+                    else {
+                        reverseTransferBean.setPayType(BaseData.BASE_TWO);
+                    }
+                    reverseTransferBean.setConfirmPhoto(confirmImageUrl);
+                    checkListener.onTransferStepThree(reverseTransferBean);
                 }
                 break;
             case R.id.iv_receiving_doctor_call:
@@ -246,19 +341,32 @@ public class SubmitTransferFragment extends BaseFragment implements RadioGroup.O
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         switch (group.getId()) {
             case R.id.group_transfer_type:
+                transferTypeId = checkedId;
                 break;
             case R.id.group_transfer_purpose:
+                transferPurposeId = checkedId;
                 if (checkedId == rbOther.getId()) {
                     layoutOther.expand();
                 }
                 else {
                     layoutOther.collapse();
                 }
+                initNextButton();
                 break;
             case R.id.group_payment:
+                payTypeId = checkedId;
                 break;
             default:
                 break;
+        }
+    }
+
+    @Override
+    public void onResponseSuccess(Tasks task, BaseResponse response) {
+        super.onResponseSuccess(task, response);
+        if (task == Tasks.UPLOAD_FILE) {
+            confirmImageUrl = (String)response.getData();
+            initImage(true);
         }
     }
 
@@ -270,11 +378,13 @@ public class SubmitTransferFragment extends BaseFragment implements RadioGroup.O
         switch (requestCode) {
             case RC_PICK_CAMERA:
                 cameraTempFile = new File(mCurrentPhotoPath);
-                initImage(true);
+                uploadImage(cameraTempFile);
                 break;
             case REQUEST_CODE_SELECT_DOCTOR:
-                layoutReceivingDoctor.setVisibility(View.VISIBLE);
-                tvSelect.setVisibility(View.GONE);
+                if (data != null) {
+                    curReceiveDoctor = (DoctorInfoBean)data.getSerializableExtra(CommonData.KEY_DOCTOR_BEAN);
+                }
+                initReceiveDoctor();
                 break;
             default:
                 break;

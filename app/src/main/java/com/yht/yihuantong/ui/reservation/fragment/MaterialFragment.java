@@ -389,7 +389,7 @@ public class MaterialFragment extends BaseFragment implements View.OnFocusChange
      */
     private void initNextButton() {
         //判断手机号和诊断史
-        if (!BaseUtils.isMobileNumber(phone) && !TextUtils.isEmpty(diagnosisHis) && !TextUtils.isEmpty(age)) {
+        if (BaseUtils.isMobileNumber(phone) && !TextUtils.isEmpty(diagnosisHis) && !TextUtils.isEmpty(age)) {
             tvMaterialNext.setSelected(true);
         }
         else {

@@ -13,9 +13,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
+import com.yht.frame.data.Tasks;
 import com.yht.frame.data.base.ReserveCheckBean;
 import com.yht.frame.data.base.ReserveTransferBean;
+import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.yihuantong.R;
@@ -102,7 +105,7 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
     /**
      * 是否为转诊
      */
-    private boolean istransfer;
+    private boolean isTransfer;
 
     @Override
     protected boolean isInitBackBtn() {
@@ -118,10 +121,17 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         if (getIntent() != null) {
-            istransfer = getIntent().getBooleanExtra(CommonData.KEY_CHECK_OR_TRANSFER, false);
+            isTransfer = getIntent().getBooleanExtra(CommonData.KEY_CHECK_OR_TRANSFER, false);
         }
         initTitlePage();
         initTab();
+    }
+
+    /**
+     * 新增预约转诊订单
+     */
+    private void addReserveTransferOrder() {
+        RequestUtils.addReserveTransferOrder(this, loginBean.getToken(), reverseTransferBean, this);
     }
 
     /**
@@ -129,7 +139,7 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
      */
     private void initTitlePage() {
         //title
-        if (istransfer) {
+        if (isTransfer) {
             publicTitleBarTitle.setText(R.string.txt_reserve_transfer);
         }
         //自定义返回键实践处理
@@ -155,7 +165,7 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
         hideAll(transaction);
         if (identifyFragment == null) {
             identifyFragment = new IdentifyFragment();
-            identifyFragment.setIstransfer(istransfer);
+            identifyFragment.setIstransfer(isTransfer);
             identifyFragment.setOnCheckListener(this);
             transaction.add(R.id.layout_frame_root, identifyFragment);
         }
@@ -172,7 +182,7 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
         hideAll(transaction);
         if (materialFragment == null) {
             materialFragment = new MaterialFragment();
-            materialFragment.setIstransfer(istransfer);
+            materialFragment.setIstransfer(isTransfer);
             materialFragment.setOnCheckListener(this);
             materialFragment.setReverseTransferBean(reverseTransferBean);
             materialFragment.setReserveCheckBean(reserveCheckBean);
@@ -338,11 +348,9 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
     }
 
     @Override
-    public void onTransferStepThree() {
-        Intent intent = new Intent(this, CheckSuccessActivity.class);
-        intent.putExtra(CommonData.KEY_CHECK_OR_TRANSFER, true);
-        startActivity(intent);
-        finish();
+    public void onTransferStepThree(ReserveTransferBean bean) {
+        reverseTransferBean = bean;
+        addReserveTransferOrder();
     }
 
     @Override
@@ -362,6 +370,21 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
         Intent intent = new Intent(this, CheckSuccessActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void onResponseSuccess(Tasks task, BaseResponse response) {
+        super.onResponseSuccess(task, response);
+        switch (task) {
+            case ADD_RESERVE_TRANSFER_ORDER:
+                Intent intent = new Intent(this, CheckSuccessActivity.class);
+                intent.putExtra(CommonData.KEY_CHECK_OR_TRANSFER, true);
+                startActivity(intent);
+                finish();
+                break;
+            default:
+                break;
+        }
     }
 
     /**
