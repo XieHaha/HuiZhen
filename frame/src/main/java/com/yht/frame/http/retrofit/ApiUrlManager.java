@@ -15,6 +15,7 @@ import com.yht.frame.data.base.LoginBean;
 import com.yht.frame.data.base.PatientBean;
 import com.yht.frame.data.base.PatientDetailBean;
 import com.yht.frame.data.base.PatientOrderBean;
+import com.yht.frame.data.base.TransferBean;
 import com.yht.frame.data.base.VerifyCodeBean;
 import com.yht.frame.data.base.WithDrawDetailBean;
 import com.yht.frame.data.bean.CombineBean;
@@ -340,6 +341,72 @@ public interface ApiUrlManager {
     @POST("/order-transfer/add")
     Observable<BaseResponse<Boolean>> addReserveTransferOrder(@Header("token") String token,
             @Body Map<String, Object> info);
+
+    /**
+     * 取消预约转诊订单
+     *
+     * @param info  map参数
+     * @param token token
+     * @return 返回值
+     */
+    @POST("/order-transfer/cancel")
+    Observable<BaseResponse<Boolean>> cancelReserveTransferOrder(@Header("token") String token,
+            @Body Map<String, String> info);
+
+    /**
+     * 接受预约转诊订单
+     *
+     * @param info  map参数
+     * @param token token
+     * @return 返回值
+     */
+    @POST("/order-transfer/receive")
+    Observable<BaseResponse<Boolean>> receiveReserveTransferOrder(@Header("token") String token,
+            @Body Map<String, String> info);
+
+    /**
+     * 拒绝预约转诊订单
+     *
+     * @param info  map参数
+     * @param token token
+     * @return 返回值
+     */
+    @POST("/order-transfer/reject")
+    Observable<BaseResponse<Boolean>> rejectReserveTransferOrder(@Header("token") String token,
+            @Body Map<String, String> info);
+
+    /**
+     * 查询发起的转诊记录
+     *
+     * @param info  map参数
+     * @param token token
+     * @return 返回值
+     */
+    @GET("/order-transfer/initiate/list")
+    Observable<BaseResponse<List<TransferBean>>> getInitiateTransferOrderList(@Header("token") String token,
+            @QueryMap Map<String, Integer> info);
+
+    /**
+     * 查询转诊记录  根据状态
+     *
+     * @param info  map参数
+     * @param token token
+     * @return 返回值
+     */
+    @GET("/order-transfer/status/list")
+    Observable<BaseResponse<List<TransferBean>>> getTransferStatusOrderList(@Header("token") String token,
+            @QueryMap Map<String, Integer> info);
+
+    /**
+     * 查询转诊详情
+     *
+     * @param info  map参数
+     * @param token token
+     * @return 返回值
+     */
+    @GET("/order-transfer/detail/get")
+    Observable<BaseResponse<TransferBean>> getTransferOrderDetail(@Header("token") String token,
+            @Query("orderNo") String info);
     /********************************分隔线*********************************/
     /**
      * 首页广告

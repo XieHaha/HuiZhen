@@ -40,7 +40,7 @@ public class CheckHistoryAdapter extends BaseQuickAdapter<PatientBean, BaseViewH
             helper.setVisible(R.id.iv_check_status_out, false);
         }
         if (helper.getAdapterPosition() == 2) {
-            helper.setImageResource(R.id.iv_check_status_out, R.mipmap.ic_check_cancel);
+            helper.setImageResource(R.id.iv_check_status_out, R.mipmap.ic_status_cancel);
             helper.setVisible(R.id.iv_check_status_out, true);
         }
         else {

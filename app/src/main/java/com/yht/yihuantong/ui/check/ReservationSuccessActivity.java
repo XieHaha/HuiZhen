@@ -10,7 +10,7 @@ import com.yht.frame.data.CommonData;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.reservation.ReservationCheckOrTransferActivity;
-import com.yht.yihuantong.ui.transfer.TransferToDetailActivity;
+import com.yht.yihuantong.ui.transfer.TransferInitiateDetailActivity;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -70,7 +70,7 @@ public class ReservationSuccessActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.tv_detail:
                 if (isTransfer) {
-                    Intent intent = new Intent(this, TransferToDetailActivity.class);
+                    Intent intent = new Intent(this, TransferInitiateDetailActivity.class);
                     startActivity(intent);
                 }
                 else {

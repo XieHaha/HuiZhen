@@ -18,7 +18,7 @@
     <string name="title_patient">患者(%d)</string>
     <string name="title_camera">扫一扫</string>
     <string name="title_add_check">添加检查项目</string>
-    <string name="title_add_transfer">发起转诊(%s)</string>
+    <string name="title_add_transfer">发起转诊(%d)</string>
     <string name="title_transfer_detail">预约转诊详情</string>
     <string name="title_received_transfer_detail">已接诊详情</string>
     <string name="title_receiving_transfer_apply">预约转诊申请</string>
@@ -260,6 +260,7 @@
     <string name="txt_transfer_purpose">转诊目的</string>
     <string name="txt_transfer_purpose_hint">请输入转诊目的</string>
     <string name="txt_transfer_again">重新转诊</string>
+    <string name="txt_transfer_cancel">取消转诊</string>
     <string name="txt_transfer_other">转给他人</string>
     <string name="txt_contact_doctor">联系接诊医生</string>
     <string name="txt_transfer_time">转诊时间</string>
@@ -299,6 +300,13 @@
     <string name="txt_report_num_hint">你有%d个检查报告可查看</string>
     <string name="txt_currency_hint">会珍币到账</string>
     <string name="txt_currency_withdraw_hint">提现成功</string>
+
+    <!--状态-->
+    <string name="txt_status_wait">待接诊</string>
+    <string name="txt_status_received">已接诊</string>
+    <string name="txt_status_transfer">已转诊</string>
+    <string name="txt_status_cancel">已取消</string>
+    <string name="txt_status_reject">已拒绝</string>
 
     <!--toast-->
     <string name="toast_public_current_no_network">当前无网络连接</string>

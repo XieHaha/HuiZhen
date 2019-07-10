@@ -30,9 +30,9 @@ import me.jessyan.autosize.utils.ScreenUtils;
 /**
  * @author 顿顿
  * @date 19/6/27 14:17
- * @des
+ * @des 我收到的转诊
  */
-public class TransferApplyActivity extends BaseActivity {
+public class TransferReceiveListActivity extends BaseActivity {
     @BindView(R.id.tv_left)
     TextView tvLeft;
     @BindView(R.id.tv_right)

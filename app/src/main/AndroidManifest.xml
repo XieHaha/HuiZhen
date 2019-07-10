@@ -178,12 +178,12 @@
             android:label=""
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
-            android:name=".ui.transfer.TransferHistoryActivity"
+            android:name=".ui.transfer.TransferInitiateListActivity"
             android:screenOrientation="portrait"
             android:label="@string/title_add_transfer"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
-            android:name=".ui.transfer.TransferToDetailActivity"
+            android:name=".ui.transfer.TransferInitiateDetailActivity"
             android:screenOrientation="portrait"
             android:label="@string/title_transfer_detail"
             android:windowSoftInputMode="adjustResize|stateHidden" />
@@ -193,12 +193,12 @@
             android:label="@string/txt_select_doctor"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
-            android:name=".ui.transfer.TransferApplyActivity"
+            android:name=".ui.transfer.TransferReceiveListActivity"
             android:screenOrientation="portrait"
             android:label="@string/title_transfer_apply"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
-            android:name=".ui.transfer.TransferFromDetailActivity"
+            android:name=".ui.transfer.TransferReceiveDetailActivity"
             android:screenOrientation="portrait"
             android:label="@string/title_receiving_transfer_apply"
             android:windowSoftInputMode="adjustResize|stateHidden" />

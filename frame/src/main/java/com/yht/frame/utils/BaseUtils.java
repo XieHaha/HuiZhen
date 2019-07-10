@@ -10,6 +10,7 @@ import com.github.promeg.pinyinhelper.Pinyin;
 import com.yht.frame.data.BaseData;
 import com.yht.frame.data.base.PatientOrderBean;
 import com.yht.frame.data.base.PatientBean;
+import com.yht.frame.data.base.TransferBean;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -255,6 +256,19 @@ public class BaseUtils {
         for (int i = 0; i < beans.size(); i++) {
             if (!builder.toString().contains(beans.get(i).getIndexTag())) {
                 builder.append(beans.get(i).getIndexTag());
+            }
+        }
+        return builder.toString();
+    }
+    /**
+     * @param beans 数据源
+     * @return tags 返回一个包含所有Tag字母在内的字符串
+     */
+    public static String getTransferTimeTags(List<TransferBean> beans) {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < beans.size(); i++) {
+            if (!builder.toString().contains(beans.get(i).getTransferDate())) {
+                builder.append(beans.get(i).getTransferDate());
             }
         }
         return builder.toString();

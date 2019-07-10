@@ -332,6 +332,78 @@ public class RequestUtils {
                                                                  listener));
     }
 
+    public static void cancelReserveTransferOrder(Context context, String token, String cancelReason, String orderNo,
+            final ResponseListener<BaseResponse> listener) {
+        Map<String, String> params = new HashMap<>(16);
+        params.put("cancelReason", cancelReason);
+        params.put("orderNo", orderNo);
+        RetrofitManager.getApiUrlManager()
+                       .cancelReserveTransferOrder(token, params)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.CANCEL_RESERVE_TRANSFER_ORDER,
+                                                                 listener));
+    }
+
+    public static void receiveReserveTransferOrder(Context context, String token, String receiveHospitalCode,
+            String orderNo, String appointAt, String note, final ResponseListener<BaseResponse> listener) {
+        Map<String, String> params = new HashMap<>(16);
+        params.put("appointAt", appointAt);
+        params.put("orderNo", orderNo);
+        params.put("receiveHospitalCode", receiveHospitalCode);
+        params.put("note", note);
+        RetrofitManager.getApiUrlManager()
+                       .receiveReserveTransferOrder(token, params)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.RECEIVE_RESERVE_TRANSFER_ORDER,
+                                                                 listener));
+    }
+
+    public static void rejectReserveTransferOrder(Context context, String token, String rejectReason, String orderNo,
+            final ResponseListener<BaseResponse> listener) {
+        Map<String, String> params = new HashMap<>(16);
+        params.put("orderNo", orderNo);
+        params.put("rejectReason", rejectReason);
+        RetrofitManager.getApiUrlManager()
+                       .rejectReserveTransferOrder(token, params)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.REJECT_RESERVE_TRANSFER_ORDER,
+                                                                 listener));
+    }
+
+    public static void getInitiateTransferOrderList(Context context, String token, int pageSize, int startPage,
+            final ResponseListener<BaseResponse> listener) {
+        Map<String, Integer> params = new HashMap<>(16);
+        params.put("pageSize", pageSize);
+        params.put("startPage", startPage);
+        RetrofitManager.getApiUrlManager()
+                       .getInitiateTransferOrderList(token, params)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_INITIATE_TRANSFER_ORDER_LIST,
+                                                                 listener));
+    }
+
+    public static void getTransferStatusOrderList(Context context, String token, int receiveStatus, int pageSize,
+            int startPage, final ResponseListener<BaseResponse> listener) {
+        Map<String, Integer> params = new HashMap<>(16);
+        params.put("receiveStatus", receiveStatus);
+        params.put("pageSize", pageSize);
+        params.put("startPage", startPage);
+        RetrofitManager.getApiUrlManager()
+                       .getTransferStatusOrderList(token, params)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_TRANSFER_STATUS_ORDER_LIST,
+                                                                 listener));
+    }
+
+    public static void getTransferOrderDetail(Context context, String token, String orderNo,
+            final ResponseListener<BaseResponse> listener) {
+        RetrofitManager.getApiUrlManager()
+                       .getTransferOrderDetail(token, orderNo)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_TRANSFER_ORDER_DETAIL,
+                                                                 listener));
+    }
+
     /******************************以上为新接口 2019年7月5日14:03:44*************************************/
     public static void getSplash(Context context, String client, String deviceSystem, String versionCode,
             final ResponseListener listener) {

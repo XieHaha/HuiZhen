@@ -24,8 +24,8 @@ import com.yht.yihuantong.ui.check.CheckHistoryActivity;
 import com.yht.yihuantong.ui.personal.PersonalActivity;
 import com.yht.yihuantong.ui.reservation.ReservationCheckOrTransferActivity;
 import com.yht.yihuantong.ui.transfer.SelectReceivingDoctorActivity;
-import com.yht.yihuantong.ui.transfer.TransferApplyActivity;
-import com.yht.yihuantong.ui.transfer.TransferHistoryActivity;
+import com.yht.yihuantong.ui.transfer.TransferInitiateListActivity;
+import com.yht.yihuantong.ui.transfer.TransferReceiveListActivity;
 import com.yht.yihuantong.utils.ImageUrlUtil;
 import com.yzq.zxinglibrary.android.CaptureActivity;
 import com.yzq.zxinglibrary.common.Constant;
@@ -128,7 +128,7 @@ public class WorkerFragment extends BaseFragment {
                 startActivity(intent);
                 break;
             case R.id.layout_transfer_apply:
-                intent = new Intent(getContext(), TransferApplyActivity.class);
+                intent = new Intent(getContext(), TransferReceiveListActivity.class);
                 startActivity(intent);
                 break;
             case R.id.view_flipper:
@@ -139,10 +139,10 @@ public class WorkerFragment extends BaseFragment {
                 startActivity(new Intent(getContext(), CheckHistoryActivity.class));
                 break;
             case R.id.layout_initiate_transfer:
-                startActivity(new Intent(getContext(), TransferHistoryActivity.class));
+                startActivity(new Intent(getContext(), TransferInitiateListActivity.class));
                 break;
             case R.id.layout_accepted_transfer:
-                intent = new Intent(getContext(), TransferApplyActivity.class);
+                intent = new Intent(getContext(), TransferReceiveListActivity.class);
                 intent.putExtra(CommonData.KEY_PUBLIC, true);
                 startActivity(intent);
                 break;

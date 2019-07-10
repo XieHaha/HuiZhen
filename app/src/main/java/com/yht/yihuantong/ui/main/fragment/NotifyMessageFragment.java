@@ -16,7 +16,7 @@ import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.adapter.NotifyMessageAdapter;
-import com.yht.yihuantong.ui.transfer.TransferToDetailActivity;
+import com.yht.yihuantong.ui.transfer.TransferInitiateDetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -119,7 +119,7 @@ public class NotifyMessageFragment extends BaseFragment
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        startActivity(new Intent(getContext(), TransferToDetailActivity.class));
+        startActivity(new Intent(getContext(), TransferInitiateDetailActivity.class));
     }
 
     /**

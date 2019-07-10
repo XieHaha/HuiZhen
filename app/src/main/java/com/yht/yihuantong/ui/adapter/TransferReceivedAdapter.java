@@ -1,12 +1,16 @@
 package com.yht.yihuantong.ui.adapter;
 
 import android.support.annotation.Nullable;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.yht.frame.data.base.PatientBean;
+import com.yht.frame.data.base.TransferBean;
 import com.yht.frame.utils.BaseUtils;
+import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.utils.ImageUrlUtil;
 
 import java.util.List;
 
@@ -15,17 +19,21 @@ import java.util.List;
  * @date 19/6/5 14:25
  * @des 已接收转诊
  */
-public class TransferReceivedAdapter extends BaseQuickAdapter<PatientBean, BaseViewHolder> {
-    public TransferReceivedAdapter(int layoutResId, @Nullable List<PatientBean> data) {
+public class TransferReceivedAdapter extends BaseQuickAdapter<TransferBean, BaseViewHolder> {
+    public TransferReceivedAdapter(int layoutResId, @Nullable List<TransferBean> data) {
         super(layoutResId, data);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, PatientBean item) {
-        helper.setText(R.id.tv_reserve_visit_time,
-                       BaseUtils.formatDate(System.currentTimeMillis(), BaseUtils.YYYY_MM_DD_HH_MM_SS))
-              .setText(R.id.tv_receiving_doctor_name, item.getName())
-              .setText(R.id.tv_receiving_doctor_sex, "男")
-              .setText(R.id.tv_receiving_doctor_age, "20");
+    protected void convert(BaseViewHolder helper, TransferBean item) {
+        Glide.with(mContext)
+             .load(ImageUrlUtil.append(item.getConfirmPhoto()))
+             .apply(GlideHelper.getOptionsPic(BaseUtils.dp2px(mContext, 4)))
+             .into((ImageView)helper.getView(R.id.iv_receiving));
+        helper.setText(R.id.tv_reserve_visit_time, item.getAppointAt())
+              .setText(R.id.tv_receiving_name, item.getPatientName())
+              .setText(R.id.tv_receiving_sex, item.getPatientSex())
+              .setText(R.id.tv_receiving_age, String.valueOf(item.getPatientAge()))
+              .addOnClickListener(R.id.iv_receiving_call);
     }
 }

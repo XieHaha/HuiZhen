@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -11,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.yht.frame.R;
+import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.widgets.dialog.listener.OnCancelClickListener;
 import com.yht.frame.widgets.dialog.listener.OnEnterClickListener;
 
@@ -79,6 +81,8 @@ public class InputDialog implements View.OnClickListener {
         return this;
     }
 
+    private ResultListener resultListener;
+
     /**
      * 获取密码输入内容
      *
@@ -86,6 +90,7 @@ public class InputDialog implements View.OnClickListener {
      * @return
      */
     public InputDialog setResultListener(final ResultListener watcher) {
+        resultListener = watcher;
         return this;
     }
 
@@ -105,28 +110,29 @@ public class InputDialog implements View.OnClickListener {
             if (onEnterClickListener != null) {
                 onEnterClickListener.onEnter();
             }
+            hideSoftInputFromWindow(etContent);
             dismiss();
         }
         else if (v == tvCancel) {
             if (onCancelClickListener != null) {
                 onCancelClickListener.onCancel();
             }
+            if (resultListener != null) {
+                String string = etContent.getText().toString();
+                if (TextUtils.isEmpty(string)) {
+                    ToastUtil.toast(context, "请输入取消原因");
+                    return;
+                }
+                else {
+                    resultListener.onResult(string);
+                }
+            }
             dismiss();
         }
     }
 
     public void show() {
-        //显示键盘
-        if (android.os.Build.VERSION.SDK_INT < 14) {
-            InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
-            if (etContent != null) {
-                imm.showSoftInput(etContent, InputMethodManager.SHOW_IMPLICIT);
-            }
-        }
-        else {
-            showIMEOtherWay(etContent);
-        }
+        showIMEOtherWay(etContent);
         tvTitle.setText(titleString);
         tvEnter.setText(enterString);
         tvEnter.setSelected(enterSelect);
@@ -152,6 +158,15 @@ public class InputDialog implements View.OnClickListener {
 
     public void dismiss() {
         dialog.dismiss();
+    }
+
+    /**
+     * 隐藏软键盘
+     */
+    public void hideSoftInputFromWindow(EditText editText) {
+        InputMethodManager inputMethodManager = (InputMethodManager)context.getSystemService(
+                Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(editText.getWindowToken(), 0);
     }
 
     public interface ResultListener {

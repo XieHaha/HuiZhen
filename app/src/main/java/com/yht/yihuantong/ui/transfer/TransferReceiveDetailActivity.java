@@ -11,13 +11,16 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.yht.frame.data.CommonData;
+import com.yht.frame.data.TransferOrderStatus;
+import com.yht.frame.data.base.TransferBean;
+import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
+import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.frame.widgets.dialog.InputDialog;
 import com.yht.frame.widgets.edittext.SuperEditText;
 import com.yht.yihuantong.R;
-import com.yht.frame.utils.glide.GlideHelper;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -27,7 +30,7 @@ import butterknife.OnClick;
  * @date 19/6/14 10:56
  * @des 预约转诊详情 其他医生转诊给我的 (有四种状态  已取消、待接诊、被拒绝、已接诊)
  */
-public class TransferFromDetailActivity extends BaseActivity {
+public class TransferReceiveDetailActivity extends BaseActivity implements TransferOrderStatus {
     @BindView(R.id.iv_patient_img)
     ImageView ivPatientImg;
     @BindView(R.id.tv_patient_name)
@@ -94,10 +97,7 @@ public class TransferFromDetailActivity extends BaseActivity {
     LinearLayout layoutReceived;
     @BindView(R.id.layout_contact)
     LinearLayout layoutContact;
-    /**
-     * 是否已接诊
-     */
-    private boolean isReceive;
+    private TransferBean transferBean;
 
     @Override
     protected boolean isInitBackBtn() {
@@ -113,16 +113,24 @@ public class TransferFromDetailActivity extends BaseActivity {
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         if (getIntent() != null) {
-            isReceive = getIntent().getBooleanExtra(CommonData.KEY_IS_RECEIVE_TRANSFER, false);
+            transferBean = (TransferBean)getIntent().getSerializableExtra(CommonData.KEY_TRANSFER_ORDER_BEAN);
         }
+        getTransferOrderDetail();
         initPage();
+    }
+
+    /**
+     * 获取详情
+     */
+    private void getTransferOrderDetail() {
+        RequestUtils.getTransferOrderDetail(this, loginBean.getToken(), transferBean.getAppointAt(), this);
     }
 
     /**
      * 界面逻辑处理（已接诊、待处理）
      */
     private void initPage() {
-        if (isReceive) {
+        if (transferBean.getReceiveStatus() == TRANSFER_STATUS_RECEIVED) {
             layoutDoctorPhone.setVisibility(View.VISIBLE);
             layoutReceivingDepart.setVisibility(View.VISIBLE);
             layoutReceivingHospital.setVisibility(View.VISIBLE);
@@ -142,7 +150,7 @@ public class TransferFromDetailActivity extends BaseActivity {
         tvReserveTime.setText("");
         tvTransferNotice.setText("");
         Glide.with(this).load("").apply(GlideHelper.getOptionsPic(BaseUtils.dp2px(this, 4))).into(ivPatientImg);
-        ivCheckStatus.setImageResource(R.mipmap.ic_received_transfer);
+        ivCheckStatus.setImageResource(R.mipmap.ic_status_received);
         tvPatientName.setText("");
         tvPhone.setText("");
         tvPatientSex.setText("");
@@ -182,7 +190,12 @@ public class TransferFromDetailActivity extends BaseActivity {
                 startActivity(intent);
                 break;
             case R.id.tv_refuse:
-                new InputDialog(this).Builder().setCancleBtnTxt("拒绝").setEnterBtnTxt("再想想").setEnterSelect(true).show();
+                new InputDialog(this).Builder()
+                                     .setEnterBtnTxt(getString(R.string.txt_refuse))
+                                     .setEnterSelect(true)
+                                     .setOnEnterClickListener(() -> {
+                                     })
+                                     .show();
                 break;
             case R.id.tv_received:
                 intent = new Intent(this, TransferEditActivity.class);

@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.yht.frame.data.CheckStatus;
+import com.yht.frame.data.CheckTypeStatus;
 import com.yht.frame.data.OrderStatus;
 import com.yht.frame.data.base.CheckTypeBean;
 import com.yht.frame.data.base.PatientOrderBean;
@@ -23,7 +23,7 @@ import java.util.List;
  * @des 患者订单记录
  */
 public class PatientOrderAdapter extends BaseMultiItemQuickAdapter<PatientOrderBean, BaseViewHolder>
-        implements CheckStatus, OrderStatus {
+        implements CheckTypeStatus, OrderStatus {
     /**
      * @param data A new list is created out of this one to avoid mutable list
      */
@@ -69,14 +69,14 @@ public class PatientOrderAdapter extends BaseMultiItemQuickAdapter<PatientOrderB
                 helper.setVisible(R.id.iv_check_status_in, true);
                 break;
             case ORDER_STATUS_COMPLETE:
-                helper.setImageResource(R.id.iv_check_status_out, R.mipmap.ic_check_complete);
+                helper.setImageResource(R.id.iv_check_status_out, R.mipmap.ic_status_complete);
                 helper.setVisible(R.id.iv_check_status_out, true);
                 helper.setVisible(R.id.iv_check_status_in, false);
                 break;
             case ORDER_STATUS_CANCEL:
                 helper.setVisible(R.id.iv_check_status_out, true);
                 helper.setVisible(R.id.iv_check_status_in, false);
-                helper.setImageResource(R.id.iv_check_status_out, R.mipmap.ic_check_cancel);
+                helper.setImageResource(R.id.iv_check_status_out, R.mipmap.ic_status_cancel);
                 break;
             default:
                 break;

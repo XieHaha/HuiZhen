@@ -69,29 +69,13 @@ public interface CommonData {
      */
     String KEY_DOCTOR_CURRENCY_ID = "key_doctor_currency_id";
     /**
-     * 用户登录账户
+     * 转诊订单
      */
-    String KEY_USER_PHONE = "key_user_phone";
+    String KEY_TRANSFER_ORDER_BEAN = "key_transfer_order_bean";
     /**
-     * 新增病例(or查看病例详情)
+     * 转诊订单id
      */
-    String KEY_ADD_NEW_HEALTH = "key_add_new_health";
-    /**
-     * 用户id 不区分医生患者
-     */
-    String KEY_ID = "key_id";
-    /**
-     * doctorid
-     */
-    String KEY_DOCTOR_ID = "key_doctor_id";
-    /**
-     * patientId
-     */
-    String KEY_PATIENT_ID = "key_patient_id";
-    /**
-     * patient name
-     */
-    String KEY_PATIENT_NAME = "key_patient_name";
+    String KEY_TRANSFER_ORDER_ID = "key_transfer_order_id";
     /**
      * patient bean
      */
@@ -101,77 +85,9 @@ public interface CommonData {
      */
     String KEY_DOCTOR_BEAN = "key_doctor_bean";
     /**
-     * transfer id
-     */
-    String KEY_TRANSFER_ID = "key_transfer_id";
-    /**
-     * transfer bean
-     */
-    String KEY_TRANSFER_BEAN = "key_transfer_bean";
-    /**
-     * patient case detail bean
-     */
-    String PATIENT_CASE_DETAIL_BEAN = "Patient_Case_Detail_Bean";
-    /**
-     * 聊天name
-     */
-    String KEY_CHAT_NAME = "key_chat_name";
-    /**
-     * doctor 昵称
-     */
-    String KEY_DOCTOR_NICKNAME = "key_doctor_nickname";
-    /**
-     * 是否能对合作医生操作
-     */
-    String KEY_IS_DEAL_DOC = "key_is_deal_doc";
-    /**
-     * 是否禁止发起聊天
-     */
-    String KEY_IS_FORBID_CHAT = "key_is_forbid_chat";
-    /**
-     * 挂号类型
-     */
-    String KEY_REGISTRATION_TYPE = "key_registration_type";
-    /**
-     * 我的患者数量
-     */
-    String KEY_PATIENT_NUM = "key_patient_num";
-    /**
-     * 我的合作医生数量
-     */
-    String KEY_DOCTOR_NUM = "key_doctor_num";
-    /**
-     * 我的合作医生申请数量
-     */
-    String KEY_DOCTOR_APPLY_NUM = "key_doctor_apply_num";
-    /**
-     * 我的患者申请数量
-     */
-    String KEY_PATIENT_APPLY_NUM = "key_patient_apply_num";
-    /**
-     * 我的转诊申请数量
-     */
-    String KEY_CHANGE_PATIENT_NUM = "key_change_patient_num";
-    /**
-     * registrationBean id
-     */
-    String KEY_REGISTRATION_ID = "key_registration_id";
-    /**
-     * patient case detail bean
-     */
-    String KEY_REGISTRATION_BEAN = "key_registration_bean";
-    /**
-     * patient case detail list
-     */
-    String KEY_REGISTRATION_LIST = "key_registration_list";
-    /**
      * hospital bean
      */
     String KEY_HOSPITAL_BEAN = "key_hospital_bean";
-    /**
-     * hospital name
-     */
-    String KEY_HOSPITAL_NAME = "key_hospital_name";
     /**
      * hospital CODE
      */
@@ -181,37 +97,9 @@ public interface CommonData {
      */
     String KEY_DEPART_BEAN = "key_depart_bean";
     /**
-     * depart name
-     */
-    String KEY_DEPART_NAME = "key_depart_name";
-    /**
-     * meeting bean
-     */
-    String KEY_MEETING_BEAN = "key_meeting_bean";
-    /**
-     * 转诊小红点提醒
-     */
-    String KEY_NEW_TRANSFER_MESSAGE_REMIND = "key_new_transfer_message_remind";
-    /**
-     * 新订单小红点提醒
-     */
-    String KEY_NEW_ORDER_MESSAGE_REMIND = "key_new_order_message_remind";
-    /**
      * 广告页下载链接
      */
     String KEY_SPLASH_IMG_URL = "key_splash_img_url";
-    /**
-     * 处理医生合作申请 requestSource
-     */
-    String KEY_REQUESTSOURCE = "key_requestsource";
-    /**
-     * 医生重新认证
-     */
-    String KEY_DOC_AUTH_AGAIN = "key_doc_auth_again";
-    /**
-     * 首页列表基础显示条数
-     */
-    int DATA_LIST_BASE_NUM = 3;
     /**
      * 极光-合作医生申请码
      */
@@ -280,32 +168,4 @@ public interface CommonData {
      * 极光-医院确认患者就诊（发送给接受医生）
      */
     int JIGUANG_CODE_TO_DOCTOR_TRANSFER_FINISH_SUCCESS = 161;
-    /**
-     * 患者病例 诊断
-     */
-    int CODE_CASE_DIA = 200;
-    /**
-     * 患者病例 医院
-     */
-    int CODE_CASE_HOSPITAL = 201;
-    /**
-     * 患者病例 科室
-     */
-    int CODE_CASE_TYPE = 202;
-    /**
-     * 患者病例 主诉
-     */
-    int CODE_CASE_INFO = 203;
-    /**
-     * 患者病例 病史
-     */
-    int CODE_CASE_NOW = 204;
-    /**
-     * 患者病例 体格检查
-     */
-    int CODE_CASE_CHECK = 205;
-    /**
-     * 患者病例 治疗
-     */
-    int CODE_CASE_DEAL_WAY = 206;
 }

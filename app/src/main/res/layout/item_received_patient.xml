@@ -42,13 +42,13 @@
         android:layout_marginEnd="30dp">
 
         <ImageView
-            android:id="@+id/iv_receiving_doctor"
+            android:id="@+id/iv_receiving"
             android:layout_width="44dp"
             android:layout_height="44dp"
             android:src="@mipmap/ic_default_header_r" />
 
         <TextView
-            android:id="@+id/tv_receiving_doctor_name"
+            android:id="@+id/tv_receiving_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/color_373d4d"
@@ -56,19 +56,19 @@
             android:textSize="@dimen/text_16"
             tools:text="姓名"
             android:layout_marginStart="10dp"
-            android:layout_toEndOf="@id/iv_receiving_doctor" />
+            android:layout_toEndOf="@id/iv_receiving" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tv_receiving_doctor_name"
-            android:layout_toEndOf="@id/iv_receiving_doctor"
+            android:layout_below="@id/tv_receiving_name"
+            android:layout_toEndOf="@id/iv_receiving"
             android:gravity="center_vertical"
             android:layout_marginTop="4dp"
             android:layout_marginStart="10dp">
 
             <TextView
-                android:id="@+id/tv_receiving_doctor_sex"
+                android:id="@+id/tv_receiving_sex"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/color_a1a8b3"
@@ -82,7 +82,7 @@
                 android:background="@color/color_ebedf0" />
 
             <TextView
-                android:id="@+id/tv_receiving_doctor_age"
+                android:id="@+id/tv_receiving_age"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/color_a1a8b3"
@@ -93,7 +93,7 @@
         </LinearLayout>
 
         <ImageView
-            android:id="@+id/iv_receiving_doctor_call"
+            android:id="@+id/iv_receiving_call"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_centerVertical="true"

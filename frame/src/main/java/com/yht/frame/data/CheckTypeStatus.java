@@ -5,7 +5,7 @@ package com.yht.frame.data;
  * @date 19/2/19
  * 预约检查项状态
  */
-public interface CheckStatus {
+public interface CheckTypeStatus {
     /**
      * 1-待确认
      */

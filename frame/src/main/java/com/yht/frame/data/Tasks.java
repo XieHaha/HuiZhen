@@ -118,6 +118,30 @@ WE_CHAT_LOGIN,
      */
     ADD_RESERVE_TRANSFER_ORDER,
     /**
+     * 取消预约转诊订单
+     */
+    CANCEL_RESERVE_TRANSFER_ORDER,
+    /**
+     * 接受预约转诊订单
+     */
+    RECEIVE_RESERVE_TRANSFER_ORDER,
+    /**
+     * 拒绝预约转诊订单
+     */
+    REJECT_RESERVE_TRANSFER_ORDER,
+    /**
+     * 查询发起的转诊记录
+     */
+    GET_INITIATE_TRANSFER_ORDER_LIST,
+    /**
+     * 根据状态查询转诊记录
+     */
+    GET_TRANSFER_STATUS_ORDER_LIST,
+    /**
+     * 查询发起的转诊记录
+     */
+    GET_TRANSFER_ORDER_DETAIL,
+    /**
      * 获取环信appkey
      */
     GET_EASE_APPKEY,
