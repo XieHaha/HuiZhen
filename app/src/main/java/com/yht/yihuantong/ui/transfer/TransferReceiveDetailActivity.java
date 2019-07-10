@@ -10,7 +10,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.yht.frame.data.BaseData;
+import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
+import com.yht.frame.data.Tasks;
 import com.yht.frame.data.TransferOrderStatus;
 import com.yht.frame.data.base.TransferBean;
 import com.yht.frame.http.retrofit.RequestUtils;
@@ -97,7 +100,13 @@ public class TransferReceiveDetailActivity extends BaseActivity implements Trans
     LinearLayout layoutReceived;
     @BindView(R.id.layout_contact)
     LinearLayout layoutContact;
+    @BindView(R.id.public_title_bar_title)
+    TextView publicTitleBarTitle;
     private TransferBean transferBean;
+    /**
+     * 拒绝转诊原因
+     */
+    private String rejectReason;
 
     @Override
     protected boolean isInitBackBtn() {
@@ -127,6 +136,22 @@ public class TransferReceiveDetailActivity extends BaseActivity implements Trans
     }
 
     /**
+     * 接受转诊
+     */
+    private void receiveReserveTransferOrder() {
+        RequestUtils.receiveReserveTransferOrder(this, loginBean.getToken(), transferBean.getTargetHospitalName(),
+                                                 transferBean.getOrderNo(), "", "", this);
+    }
+
+    /**
+     * 拒绝转诊
+     */
+    private void rejectReserveTransferOrder() {
+        RequestUtils.rejectReserveTransferOrder(this, loginBean.getToken(), rejectReason, transferBean.getOrderNo(),
+                                                this);
+    }
+
+    /**
      * 界面逻辑处理（已接诊、待处理）
      */
     private void initPage() {
@@ -138,36 +163,70 @@ public class TransferReceiveDetailActivity extends BaseActivity implements Trans
             layoutNotice.setVisibility(View.VISIBLE);
             layoutEditTransfer.setVisibility(View.VISIBLE);
             layoutContact.setVisibility(View.VISIBLE);
-            layoutCall.setVisibility(View.GONE);
+            layoutCall.setVisibility(View.INVISIBLE);
             layoutReceived.setVisibility(View.GONE);
+            ivCheckStatus.setImageResource(R.mipmap.ic_status_received);
+            publicTitleBarTitle.setText(R.string.title_received_transfer_detail);
         }
     }
 
-    private void init() {
-        tvDoctorPhone.setText("");
-        tvReceivingDepart.setText("");
-        tvReceivingHospital.setText("");
-        tvReserveTime.setText("");
-        tvTransferNotice.setText("");
-        Glide.with(this).load("").apply(GlideHelper.getOptionsPic(BaseUtils.dp2px(this, 4))).into(ivPatientImg);
-        ivCheckStatus.setImageResource(R.mipmap.ic_status_received);
-        tvPatientName.setText("");
-        tvPhone.setText("");
-        tvPatientSex.setText("");
-        tvPatientAge.setText("");
-        tvIcCard.setText("");
-        tvPastMedical.setText("");
-        tvFamilyMedical.setText("");
-        tvAllergies.setText("");
-        tvTransferTime.setText("");
-        tvReceivingDoctor.setText("");
-        tvTransferDepart.setText("");
-        tvTransferHospital.setText("");
-        tvTransferType.setText("");
-        tvTransferPurpose.setText("");
-        tvPayment.setText("");
-        tvInitiateDiagnosis.setText("");
-        tvReceivingStatus.setText("");
+    private void initDetailData() {
+        Glide.with(this)
+             .load(transferBean.getWxPhoto())
+             .apply(GlideHelper.getOptions(BaseUtils.dp2px(this, 4)))
+             .into(ivPatientImg);
+        tvDoctorPhone.setText(transferBean.getSourceDoctorMobile());
+        tvReceivingDoctor.setText(transferBean.getTargetDoctorName());
+        tvReceivingDepart.setText(transferBean.getTargetHospitalDepartmentName());
+        tvReceivingHospital.setText(transferBean.getTargetHospitalName());
+        tvReserveTime.setText(transferBean.getAppointAt());
+        tvTransferNotice.setText(transferBean.getNote());
+        tvPatientName.setText(transferBean.getPatientName());
+        tvPhone.setText(transferBean.getPatientMobile());
+        tvPatientSex.setText(transferBean.getSex() == BaseData.BASE_ONE
+                             ? getString(R.string.txt_sex_male)
+                             : getString(R.string.txt_sex_female));
+        tvPatientAge.setText(String.valueOf(transferBean.getPatientAge()));
+        tvIcCard.setText(transferBean.getPatientIdCardNo());
+        tvPastMedical.setText(transferBean.getPastHistory());
+        tvFamilyMedical.setText(transferBean.getFamilyHistory());
+        tvAllergies.setText(transferBean.getAllergyHistory());
+        tvTransferTime.setText(transferBean.getTransferDate());
+        tvTransferDepart.setText(transferBean.getSourceHospitalDepartmentName());
+        tvTransferHospital.setText(transferBean.getSourceHospitalName());
+        tvTransferPurpose.setText(transferBean.getTransferTarget());
+        tvTransferType.setText(transferBean.getTransferType() == BaseData.BASE_ZERO
+                               ? getString(R.string.txt_transfer_up)
+                               : getString(R.string.txt_transfer_down));
+        tvTransferPurpose.setText(transferBean.getTransferTarget());
+        int payType = transferBean.getPayType();
+        if (payType == BaseData.BASE_ZERO) {
+            tvPayment.setText(getString(R.string.txt_self_pay));
+        }
+        else if (payType == BaseData.BASE_ONE) {
+            tvPayment.setText(getString(R.string.txt_medicare));
+        }
+        else {
+            tvPayment.setText(getString(R.string.txt_self_medicare));
+        }
+        tvInitiateDiagnosis.setText(transferBean.getInitResult());
+        int status = transferBean.getReceiveStatus();
+        switch (status) {
+            case TRANSFER_STATUS_WAIT:
+                tvReceivingStatus.setText(getString(R.string.txt_status_wait));
+                break;
+            case TRANSFER_STATUS_RECEIVED:
+                tvReceivingStatus.setText(getString(R.string.txt_status_received));
+                break;
+            case TRANSFER_STATUS_CANCEL:
+                tvReceivingStatus.setText(getString(R.string.txt_status_cancel));
+                break;
+            case TRANSFER_STATUS_REFUSE:
+                tvReceivingStatus.setText(getString(R.string.txt_status_reject));
+                break;
+            default:
+                break;
+        }
     }
 
     @OnClick({
@@ -177,12 +236,15 @@ public class TransferReceiveDetailActivity extends BaseActivity implements Trans
         Intent intent;
         switch (view.getId()) {
             case R.id.layout_call:
+                new HintDialog(this).setPhone(transferBean.getSourceDoctorMobile())
+                                    .setOnEnterClickListener(() -> callPhone(transferBean.getSourceDoctorMobile()))
+                                    .show();
                 break;
             case R.id.layout_edit_transfer:
                 intent = new Intent(this, TransferEditActivity.class);
                 intent.putExtra(CommonData.KEY_RECEIVE_OR_EDIT_VISIT, true);
-                intent.putExtra(CommonData.KEY_RECEIVE_HOSPITAL, "接诊医院");
-                intent.putExtra(CommonData.KEY_RESERVE_TIME, "预约就诊时间");
+                intent.putExtra(CommonData.KEY_RECEIVE_HOSPITAL, transferBean.getTargetHospitalName());
+                intent.putExtra(CommonData.KEY_RESERVE_TIME, transferBean.getAppointAt());
                 startActivity(intent);
                 break;
             case R.id.tv_transfer_other:
@@ -195,6 +257,10 @@ public class TransferReceiveDetailActivity extends BaseActivity implements Trans
                                      .setEnterSelect(true)
                                      .setOnEnterClickListener(() -> {
                                      })
+                                     .setResultListener(result -> {
+                                         rejectReason = result;
+                                         rejectReserveTransferOrder();
+                                     })
                                      .show();
                 break;
             case R.id.tv_received:
@@ -202,10 +268,33 @@ public class TransferReceiveDetailActivity extends BaseActivity implements Trans
                 startActivity(intent);
                 break;
             case R.id.tv_contact_patient:
-                new HintDialog(this).setPhone("").setOnEnterClickListener(() -> callPhone("")).show();
+                new HintDialog(this).setPhone(transferBean.getPatientMobile())
+                                    .setOnEnterClickListener(() -> callPhone(transferBean.getPatientMobile()))
+                                    .show();
                 break;
             case R.id.tv_contact_doctor:
-                new HintDialog(this).setPhone("").setOnEnterClickListener(() -> callPhone("")).show();
+                new HintDialog(this).setPhone(transferBean.getTargetDoctorMobile())
+                                    .setOnEnterClickListener(() -> callPhone(transferBean.getTargetDoctorMobile()))
+                                    .show();
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onResponseSuccess(Tasks task, BaseResponse response) {
+        super.onResponseSuccess(task, response);
+        switch (task) {
+            case GET_TRANSFER_ORDER_DETAIL:
+                transferBean = (TransferBean)response.getData();
+                initDetailData();
+                break;
+            case RECEIVE_RESERVE_TRANSFER_ORDER:
+            case REJECT_RESERVE_TRANSFER_ORDER:
+                //通知列表刷新
+                setResult(RESULT_OK);
+                getTransferOrderDetail();
                 break;
             default:
                 break;

@@ -110,6 +110,16 @@ public class InputDialog implements View.OnClickListener {
             if (onEnterClickListener != null) {
                 onEnterClickListener.onEnter();
             }
+            if (resultListener != null) {
+                String string = etContent.getText().toString();
+                if (TextUtils.isEmpty(string)) {
+                    ToastUtil.toast(context, "请输入取消原因");
+                    return;
+                }
+                else {
+                    resultListener.onResult(string);
+                }
+            }
             hideSoftInputFromWindow(etContent);
             dismiss();
         }

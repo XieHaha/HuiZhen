@@ -177,6 +177,7 @@ public class TransferInitiateDetailActivity extends BaseActivity implements Tran
                 layoutCancelResult.setVisibility(View.VISIBLE);
                 ivCheckStatus.setImageResource(R.mipmap.ic_status_cancel);
                 tvReceivingStatus.setText(getString(R.string.txt_status_cancel));
+                tvTransferAgain.setText(R.string.txt_transfer_again);
                 tvTransferCancel.setText(transferBean.getCancelReason());
                 break;
             case TRANSFER_STATUS_REFUSE:
