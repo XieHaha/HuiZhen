@@ -131,6 +131,7 @@
                 android:layout_marginTop="18dp" />
 
             <RadioGroup
+                android:id="@+id/layout_pregnancy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="35dp"
@@ -189,6 +190,7 @@
                 android:layout_marginTop="18dp" />
 
             <RadioGroup
+                android:id="@+id/layout_payment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="35dp"

@@ -133,11 +133,12 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
     private void addReserveTransferOrder() {
         RequestUtils.addReserveTransferOrder(this, loginBean.getToken(), reverseTransferBean, this);
     }
+
     /**
      * 新增预约检查订单
      */
     private void addReserveCheckOrder() {
-        RequestUtils.addReserveCheckOrder(this, loginBean.getToken(), reverseTransferBean, this);
+        RequestUtils.addReserveCheckOrder(this, loginBean.getToken(), reserveCheckBean, this);
     }
 
     /**
@@ -213,10 +214,12 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
         if (submitCheckFragment == null) {
             submitCheckFragment = new SubmitCheckFragment();
             submitCheckFragment.setOnCheckListener(this);
+            submitCheckFragment.setReserveCheckBean(reserveCheckBean);
             transaction.add(R.id.layout_frame_root, submitCheckFragment);
         }
         else {
             transaction.show(submitCheckFragment);
+            submitCheckFragment.setReserveCheckBean(reserveCheckBean);
             submitCheckFragment.onResume();
         }
         transaction.commitAllowingStateLoss();
@@ -372,19 +375,24 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
     }
 
     @Override
-    public void onCheckStepThree() {
-        Intent intent = new Intent(this, ReservationSuccessActivity.class);
-        startActivity(intent);
-        finish();
+    public void onCheckStepThree(ReserveCheckBean bean) {
+        reserveCheckBean = bean;
+        addReserveCheckOrder();
     }
 
     @Override
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
+        Intent intent;
         switch (task) {
             case ADD_RESERVE_TRANSFER_ORDER:
-                Intent intent = new Intent(this, ReservationSuccessActivity.class);
+                intent = new Intent(this, ReservationSuccessActivity.class);
                 intent.putExtra(CommonData.KEY_CHECK_OR_TRANSFER, true);
+                startActivity(intent);
+                finish();
+                break;
+            case ADD_RESERVE_CHECK_ORDER:
+                intent = new Intent(this, ReservationSuccessActivity.class);
                 startActivity(intent);
                 finish();
                 break;

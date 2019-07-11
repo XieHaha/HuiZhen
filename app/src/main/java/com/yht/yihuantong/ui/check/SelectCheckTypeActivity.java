@@ -6,8 +6,10 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.View;
 
-import com.yht.frame.api.LitePalHelper;
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
@@ -16,8 +18,9 @@ import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.widgets.edittext.AbstractTextWatcher;
 import com.yht.frame.widgets.edittext.SuperEditText;
+import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.yht.yihuantong.R;
-import com.yht.yihuantong.ui.adapter.CheckTypeSelectAdapter;
+import com.yht.yihuantong.ui.adapter.SelectCheckTypeAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,12 +32,13 @@ import butterknife.BindView;
  * @date 19/6/4 17:53
  * @des 医院选择
  */
-public class SelectCheckTypeActivity extends BaseActivity implements CheckTypeSelectAdapter.OnCheckItemClickListener {
+public class SelectCheckTypeActivity extends BaseActivity
+        implements BaseQuickAdapter.RequestLoadMoreListener, BaseQuickAdapter.OnItemClickListener {
     @BindView(R.id.et_search_check_type)
     SuperEditText etSearchCheckType;
     @BindView(R.id.recyclerview)
     RecyclerView recyclerview;
-    private CheckTypeSelectAdapter checkTypeSelectAdapter;
+    private SelectCheckTypeAdapter selectCheckTypeAdapter;
     private List<SelectCheckTypeBean> selectCheckTypeBeans = new ArrayList<>();
     /**
      * 当前选中的检查项
@@ -63,10 +67,11 @@ public class SelectCheckTypeActivity extends BaseActivity implements CheckTypeSe
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         recyclerview.setLayoutManager(new LinearLayoutManager(this));
-        checkTypeSelectAdapter = new CheckTypeSelectAdapter(this, recyclerview);
-        checkTypeSelectAdapter.setDatas(selectCheckTypeBeans);
-        checkTypeSelectAdapter.setOnCheckItemClickListener(this);
-        recyclerview.setAdapter(checkTypeSelectAdapter);
+        selectCheckTypeAdapter = new SelectCheckTypeAdapter(R.layout.item_check_select, selectCheckTypeBeans);
+        selectCheckTypeAdapter.setOnItemClickListener(this);
+        selectCheckTypeAdapter.setLoadMoreView(new CustomLoadMoreView());
+        selectCheckTypeAdapter.setOnLoadMoreListener(this, recyclerview);
+        recyclerview.setAdapter(selectCheckTypeAdapter);
         getCheckTypeList();
     }
 
@@ -98,8 +103,8 @@ public class SelectCheckTypeActivity extends BaseActivity implements CheckTypeSe
     }
 
     @Override
-    public void onCheckItemClick(int parentPosition, int position) {
-        curSelectCheckTypeBean = selectCheckTypeBeans.get(parentPosition);
+    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+        curSelectCheckTypeBean = selectCheckTypeBeans.get(position);
         Intent intent = new Intent();
         intent.putExtra(CommonData.KEY_RESERVE_CHECK_TYPE_BEAN, curSelectCheckTypeBean);
         setResult(RESULT_OK, intent);
@@ -110,9 +115,24 @@ public class SelectCheckTypeActivity extends BaseActivity implements CheckTypeSe
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
         if (task == Tasks.GET_CHECK_TYPE) {
-            selectCheckTypeBeans = (List<SelectCheckTypeBean>)response.getData();
-            checkTypeSelectAdapter.setDatas(selectCheckTypeBeans);
-            new LitePalHelper().updateAll(selectCheckTypeBeans, SelectCheckTypeBean.class);
+            List<SelectCheckTypeBean> list = (List<SelectCheckTypeBean>)response.getData();
+            if (page == BaseData.BASE_ONE) {
+                selectCheckTypeBeans.clear();
+            }
+            selectCheckTypeBeans.addAll(list);
+            selectCheckTypeAdapter.setNewData(selectCheckTypeBeans);
+            if (list != null && list.size() == BaseData.BASE_PAGE_DATA_NUM) {
+                selectCheckTypeAdapter.loadMoreComplete();
+            }
+            else {
+                selectCheckTypeAdapter.loadMoreEnd();
+            }
         }
+    }
+
+    @Override
+    public void onLoadMoreRequested() {
+        page++;
+        getCheckTypeList();
     }
 }

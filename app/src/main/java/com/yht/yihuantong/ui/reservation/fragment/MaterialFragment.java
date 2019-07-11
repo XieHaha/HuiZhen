@@ -436,6 +436,7 @@ public class MaterialFragment extends BaseFragment implements View.OnFocusChange
                 if (tvMaterialNext.isSelected() && checkListener != null) {
                     if (isTransfer) {
                         //数据回填
+                        reverseTransferBean.setSex(sex);
                         reverseTransferBean.setPatientAge(Integer.valueOf(age));
                         reverseTransferBean.setPatientMobile(phone);
                         if (TextUtils.isEmpty(pastMedicalHis)) {
@@ -461,6 +462,7 @@ public class MaterialFragment extends BaseFragment implements View.OnFocusChange
                     }
                     else {
                         //数据回填
+                        reserveCheckBean.setSex(sex);
                         reserveCheckBean.setAge(Integer.valueOf(age));
                         reserveCheckBean.setPhone(phone);
                         if (TextUtils.isEmpty(pastMedicalHis)) {

@@ -159,6 +159,7 @@
             android:textSize="@dimen/text_16"
             android:textColor="@color/color_373d4d"
             android:layout_alignParentEnd="true"
+            android:singleLine="true"
             android:background="@null"
             android:focusableInTouchMode="false"
             android:focusable="false"

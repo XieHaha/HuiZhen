@@ -143,6 +143,12 @@ public class SubmitTransferFragment extends BaseFragment implements RadioGroup.O
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
+        //默认自费
+        payTypeId = rbSelf.getId();
+        //默认家属要求
+        transferPurposeId = rbFamilyRequire.getId();
+        //默认上转
+        transferTypeId = rbUp.getId();
     }
 
     @Override

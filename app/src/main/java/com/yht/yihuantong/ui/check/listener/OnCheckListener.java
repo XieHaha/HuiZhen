@@ -37,5 +37,5 @@ public interface OnCheckListener {
     /**
      * 结果
      */
-    void onCheckStepThree();
+    void onCheckStepThree(ReserveCheckBean bean);
 }

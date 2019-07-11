@@ -33,6 +33,10 @@ public class ReservationSuccessActivity extends BaseActivity {
      * 是否为预约转诊
      */
     private boolean isTransfer;
+    /**
+     * 订单编号
+     */
+    private String orderNo;
 
     @Override
     protected boolean isInitBackBtn() {
@@ -49,6 +53,7 @@ public class ReservationSuccessActivity extends BaseActivity {
         super.initData(savedInstanceState);
         if (getIntent() != null) {
             isTransfer = getIntent().getBooleanExtra(CommonData.KEY_CHECK_OR_TRANSFER, false);
+            orderNo = getIntent().getStringExtra(CommonData.KEY_ORDER_ID);
         }
         initPage();
     }

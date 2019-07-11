@@ -10,6 +10,7 @@ import com.yht.frame.data.Tasks;
 import com.yht.frame.data.base.DoctorAuthBean;
 import com.yht.frame.data.base.HospitalBean;
 import com.yht.frame.data.base.LoginBean;
+import com.yht.frame.data.base.ReserveCheckBean;
 import com.yht.frame.data.base.ReserveTransferBean;
 import com.yht.frame.data.bean.HospitalProductBean;
 import com.yht.frame.data.bean.HospitalProductTypeBean;
@@ -319,24 +320,26 @@ public class RequestUtils {
                                                                  listener));
     }
 
-    public static void addReserveCheckOrder(Context context, String token, ReserveTransferBean bean,
+    public static void addReserveCheckOrder(Context context, String token, ReserveCheckBean bean,
             final ResponseListener<BaseResponse> listener) {
         Map<String, Object> params = new HashMap<>(16);
+        params.put("age", bean.getAge());
         params.put("allergyHistory", bean.getAllergyHistory());
         params.put("confirmPhoto", bean.getConfirmPhoto());
         params.put("familyHistory", bean.getFamilyHistory());
+        params.put("idCardNo", bean.getIdCardNo());
         params.put("initResult", bean.getInitResult());
+        params.put("isPregnancy", bean.getIsPregnancy());
         params.put("pastHistory", bean.getPastHistory());
-        params.put("patientAge", bean.getPatientAge());
+        params.put("phone", bean.getPhone());
+        if (TextUtils.isEmpty(bean.getPatientCode())) {
+            bean.setPatientCode("");
+        }
         params.put("patientCode", bean.getPatientCode());
-        params.put("patientIdCardNo", bean.getPatientIdCardNo());
-        params.put("patientMobile", bean.getPatientMobile());
         params.put("patientName", bean.getPatientName());
         params.put("payType", bean.getPayType());
-        params.put("receiveDoctorCode", bean.getReceiveDoctorCode());
         params.put("sex", bean.getSex());
-        params.put("transferTarget", bean.getTransferTarget());
-        params.put("transferType", bean.getTransferType());
+        params.put("checkTrans", bean.getCheckTrans());
         RetrofitManager.getApiUrlManager()
                        .addReserveCheckOrder(token, params)
                        .compose(RxJavaHelper.observableIO2Main(context))

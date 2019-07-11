@@ -254,7 +254,7 @@ public class TransferReceiveDetailActivity extends BaseActivity implements Trans
                 break;
             case R.id.tv_transfer_other:
                 intent = new Intent(this, TransferAgainActivity.class);
-                intent.putExtra(CommonData.KEY_TRANSFER_ORDER_ID, transferBean.getOrderNo());
+                intent.putExtra(CommonData.KEY_ORDER_ID, transferBean.getOrderNo());
                 startActivityForResult(intent, REQUEST_CODE_TRANSFER_AGAIN);
                 break;
             case R.id.tv_refuse:

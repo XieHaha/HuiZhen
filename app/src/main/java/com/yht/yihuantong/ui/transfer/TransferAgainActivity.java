@@ -85,7 +85,7 @@ public class TransferAgainActivity extends BaseActivity {
         super.initData(savedInstanceState);
         ivReceivingDoctorCall.setImageResource(R.mipmap.ic_delete);
         if (getIntent() != null) {
-            orderNo = getIntent().getStringExtra(CommonData.KEY_TRANSFER_ORDER_ID);
+            orderNo = getIntent().getStringExtra(CommonData.KEY_ORDER_ID);
         }
     }
 

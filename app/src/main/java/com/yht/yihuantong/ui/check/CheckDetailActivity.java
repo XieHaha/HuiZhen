@@ -65,6 +65,10 @@ public class CheckDetailActivity extends BaseActivity {
     @BindView(R.id.layout_contact)
     LinearLayout layoutContact;
     /**
+     * 订单
+     */
+    private String orderNo;
+    /**
      * 头部底部判断
      */
     private boolean isShowBottom;
@@ -84,6 +88,7 @@ public class CheckDetailActivity extends BaseActivity {
         super.initData(savedInstanceState);
         if (getIntent() != null) {
             isShowBottom = getIntent().getBooleanExtra(CommonData.KEY_PUBLIC, false);
+            orderNo = getIntent().getStringExtra(CommonData.KEY_ORDER_ID);
         }
         if (isShowBottom) {
             layoutBottom.setVisibility(View.VISIBLE);

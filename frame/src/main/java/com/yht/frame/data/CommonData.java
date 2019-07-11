@@ -65,9 +65,9 @@ public interface CommonData {
      */
     String KEY_TRANSFER_ORDER_BEAN = "key_transfer_order_bean";
     /**
-     * 转诊订单id
+     * 订单id
      */
-    String KEY_TRANSFER_ORDER_ID = "key_transfer_order_id";
+    String KEY_ORDER_ID = "key_order_id";
     /**
      * patient bean
      */

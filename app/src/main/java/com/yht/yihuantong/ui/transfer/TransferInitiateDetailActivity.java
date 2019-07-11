@@ -94,6 +94,10 @@ public class TransferInitiateDetailActivity extends BaseActivity implements Tran
      */
     private TransferBean transferBean;
     /**
+     * 订单编号
+     */
+    private String orderNo;
+    /**
      * 取消转诊原因
      */
     private String cancelreason;
@@ -113,6 +117,10 @@ public class TransferInitiateDetailActivity extends BaseActivity implements Tran
         super.initData(savedInstanceState);
         if (getIntent() != null) {
             transferBean = (TransferBean)getIntent().getSerializableExtra(CommonData.KEY_TRANSFER_ORDER_BEAN);
+            orderNo = getIntent().getStringExtra(CommonData.KEY_ORDER_ID);
+        }
+        if (transferBean != null) {
+            orderNo = transferBean.getOrderNo();
         }
         initDetailData();
         getTransferOrderDetail();
@@ -195,15 +203,14 @@ public class TransferInitiateDetailActivity extends BaseActivity implements Tran
      * 获取详情
      */
     private void getTransferOrderDetail() {
-        RequestUtils.getTransferOrderDetail(this, loginBean.getToken(), transferBean.getOrderNo(), this);
+        RequestUtils.getTransferOrderDetail(this, loginBean.getToken(), orderNo, this);
     }
 
     /**
      * 取消转诊
      */
     private void cancelReserveTransferOrder() {
-        RequestUtils.cancelReserveTransferOrder(this, loginBean.getToken(), cancelreason, transferBean.getOrderNo(),
-                                                this);
+        RequestUtils.cancelReserveTransferOrder(this, loginBean.getToken(), cancelreason, orderNo, this);
     }
 
     @OnClick({

@@ -9,21 +9,32 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.yht.frame.api.DirHelper;
+import com.yht.frame.data.BaseData;
+import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
+import com.yht.frame.data.Tasks;
+import com.yht.frame.data.base.ReserveCheckBean;
+import com.yht.frame.data.base.ReserveCheckTypeBean;
 import com.yht.frame.data.base.SelectCheckTypeBean;
+import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.permission.Permission;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
+import com.yht.frame.utils.ScalingUtils;
+import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.frame.widgets.recyclerview.FullListView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ZycApplication;
@@ -31,7 +42,6 @@ import com.yht.yihuantong.ui.adapter.CheckTypeListViewAdapter;
 import com.yht.yihuantong.ui.check.SelectCheckTypeActivity;
 import com.yht.yihuantong.ui.check.SelectCheckTypeByHospitalActivity;
 import com.yht.yihuantong.ui.check.listener.OnCheckListener;
-import com.yht.frame.utils.glide.GlideHelper;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -45,7 +55,8 @@ import butterknife.OnClick;
  * @date 19/6/14 14:23
  * @des 预约检查 确认提交
  */
-public class SubmitCheckFragment extends BaseFragment implements CheckTypeListViewAdapter.OnDeleteClickListener {
+public class SubmitCheckFragment extends BaseFragment
+        implements CheckTypeListViewAdapter.OnDeleteClickListener, RadioGroup.OnCheckedChangeListener {
     @BindView(R.id.tv_select)
     TextView tvSelect;
     @BindView(R.id.full_listview)
@@ -72,9 +83,14 @@ public class SubmitCheckFragment extends BaseFragment implements CheckTypeListVi
     TextView tvSubmitNext;
     @BindView(R.id.tv_hospital_name)
     TextView tvHospitalName;
+    @BindView(R.id.layout_pregnancy)
+    RadioGroup layoutPregnancy;
+    @BindView(R.id.layout_payment)
+    RadioGroup layoutPayment;
     private File cameraTempFile;
     private Uri mCurrentPhotoUri;
     private String mCurrentPhotoPath;
+    private ReserveCheckBean reserveCheckBean;
     /**
      * 已选择检查项目适配器
      */
@@ -83,6 +99,14 @@ public class SubmitCheckFragment extends BaseFragment implements CheckTypeListVi
      * 检查项目数据
      */
     private List<SelectCheckTypeBean> checkTypeData = new ArrayList<>();
+    /**
+     * 拍照确认图片url
+     */
+    private String confirmImageUrl;
+    /**
+     * 缴费类型、转诊目的、转诊类型
+     */
+    private int payTypeId, pregnancyId;
     /**
      * 根据检查项目选择医院
      */
@@ -98,8 +122,47 @@ public class SubmitCheckFragment extends BaseFragment implements CheckTypeListVi
     }
 
     @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putString(CommonData.KEY_PUBLIC, mCurrentPhotoPath);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if (savedInstanceState != null) {
+            mCurrentPhotoPath = savedInstanceState.getString(CommonData.KEY_PUBLIC);
+        }
+    }
+
+    @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
+        //默认自费
+        payTypeId = rbSelf.getId();
+        //默认备孕
+        pregnancyId = rbYes.getId();
+    }
+
+    @Override
+    public void initListener() {
+        super.initListener();
+        layoutPregnancy.setOnCheckedChangeListener(this);
+        layoutPayment.setOnCheckedChangeListener(this);
+    }
+
+    public void setReserveCheckBean(ReserveCheckBean reserveCheckBean) {
+        this.reserveCheckBean = reserveCheckBean;
+    }
+
+    /**
+     * 上传图片
+     *
+     * @param file
+     */
+    private void uploadImage(File file) {
+        ScalingUtils.resizePic(getContext(), file.getAbsolutePath());
+        RequestUtils.uploadImg(getContext(), loginBean.getToken(), file, this);
     }
 
     /**
@@ -131,6 +194,7 @@ public class SubmitCheckFragment extends BaseFragment implements CheckTypeListVi
             ivDeleteOne.setVisibility(View.GONE);
             cameraTempFile = null;
             mCurrentPhotoUri = null;
+            confirmImageUrl = "";
             mCurrentPhotoPath = "";
         }
         initNextButton();
@@ -148,6 +212,7 @@ public class SubmitCheckFragment extends BaseFragment implements CheckTypeListVi
         layoutCheckRoot.setVisibility(View.VISIBLE);
         tvHospitalName.setText(bean.getHospitalName());
         initFullListView();
+        initNextButton();
     }
 
     /**
@@ -170,6 +235,7 @@ public class SubmitCheckFragment extends BaseFragment implements CheckTypeListVi
         checkTypeData.clear();
         tvSelect.setVisibility(View.VISIBLE);
         layoutCheckRoot.setVisibility(View.GONE);
+        initNextButton();
     }
 
     /**
@@ -177,11 +243,25 @@ public class SubmitCheckFragment extends BaseFragment implements CheckTypeListVi
      */
     private void initNextButton() {
         //需要添加判断检查项目是否为空
-        if (cameraTempFile == null) {
-            tvSubmitNext.setSelected(false);
+        if (checkTypeData.size() > 0 && !TextUtils.isEmpty(confirmImageUrl)) {
+            tvSubmitNext.setSelected(true);
         }
         else {
-            tvSubmitNext.setSelected(true);
+            tvSubmitNext.setSelected(false);
+        }
+    }
+
+    @Override
+    public void onCheckedChanged(RadioGroup group, int checkedId) {
+        switch (group.getId()) {
+            case R.id.layout_pregnancy:
+                pregnancyId = checkedId;
+                break;
+            case R.id.layout_payment:
+                payTypeId = checkedId;
+                break;
+            default:
+                break;
         }
     }
 
@@ -222,8 +302,36 @@ public class SubmitCheckFragment extends BaseFragment implements CheckTypeListVi
                 initImage(false);
                 break;
             case R.id.tv_submit_next:
-                if (checkListener != null) {
-                    checkListener.onCheckStepThree();
+                if (tvSubmitNext.isSelected() && checkListener != null) {
+                    reserveCheckBean.setConfirmPhoto(confirmImageUrl);
+                    ArrayList<ReserveCheckTypeBean> list = new ArrayList<>();
+                    for (SelectCheckTypeBean bean : checkTypeData) {
+                        ReserveCheckTypeBean checkBean = new ReserveCheckTypeBean();
+                        checkBean.setHospitalCode(bean.getHospitalCode());
+                        checkBean.setProductCode(bean.getProjectCode());
+                        checkBean.setPrice(bean.getPrice());
+                        list.add(checkBean);
+                    }
+                    //检查项列表
+                    reserveCheckBean.setCheckTrans(list);
+                    //是否备孕
+                    if (pregnancyId == rbYes.getId()) {
+                        reserveCheckBean.setIsPregnancy(BaseData.BASE_ZERO);
+                    }
+                    else {
+                        reserveCheckBean.setIsPregnancy(BaseData.BASE_ONE);
+                    }
+                    //缴费类型
+                    if (payTypeId == rbSelf.getId()) {
+                        reserveCheckBean.setPayType(String.valueOf(BaseData.BASE_ZERO));
+                    }
+                    else if (payTypeId == rbMedicare.getId()) {
+                        reserveCheckBean.setPayType(String.valueOf(BaseData.BASE_ONE));
+                    }
+                    else {
+                        reserveCheckBean.setPayType(String.valueOf(BaseData.BASE_TWO));
+                    }
+                    checkListener.onCheckStepThree(reserveCheckBean);
                 }
                 break;
             default:
@@ -241,6 +349,43 @@ public class SubmitCheckFragment extends BaseFragment implements CheckTypeListVi
         checkTypeData.remove(position);
         checkTypeListviewAdapter.setData(checkTypeData);
         checkTypeListviewAdapter.notifyDataSetChanged();
+        //不存在检查项 删除已选医院
+        if (checkTypeData.size() == 0) {
+            deleteAllSelectCheckType();
+        }
+    }
+
+    @Override
+    public void onResponseSuccess(Tasks task, BaseResponse response) {
+        super.onResponseSuccess(task, response);
+        if (task == Tasks.UPLOAD_FILE) {
+            confirmImageUrl = (String)response.getData();
+            initImage(true);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+        switch (requestCode) {
+            case RC_PICK_CAMERA:
+                cameraTempFile = new File(mCurrentPhotoPath);
+                uploadImage(cameraTempFile);
+                break;
+            case REQUEST_CODE_SELECT_HOSPITAL:
+                if (data != null) {
+                    selectHospitalByCheckItem(data);
+                }
+                break;
+            case REQUEST_CODE_SELECT_CHECK:
+                if (data != null) { selectCheckItemByHospital(data); }
+                break;
+            default:
+                break;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     /**
@@ -275,30 +420,6 @@ public class SubmitCheckFragment extends BaseFragment implements CheckTypeListVi
         // 指定调用相机拍照后照片的储存路径
         intent.putExtra(MediaStore.EXTRA_OUTPUT, mCurrentPhotoUri);
         startActivityForResult(intent, RC_PICK_CAMERA);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode != Activity.RESULT_OK) {
-            return;
-        }
-        switch (requestCode) {
-            case RC_PICK_CAMERA:
-                cameraTempFile = new File(mCurrentPhotoPath);
-                initImage(true);
-                break;
-            case REQUEST_CODE_SELECT_HOSPITAL:
-                if (data != null) {
-                    selectHospitalByCheckItem(data);
-                }
-                break;
-            case REQUEST_CODE_SELECT_CHECK:
-                if (data != null) { selectCheckItemByHospital(data); }
-                break;
-            default:
-                break;
-        }
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
