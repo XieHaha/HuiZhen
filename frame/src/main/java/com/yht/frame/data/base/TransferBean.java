@@ -25,6 +25,7 @@ public class TransferBean implements Serializable {
      * 接诊医生
      */
     private String targetDoctorName;
+    private String targetDoctorMobile;
     private String targetHospitalDepartmentName;
     private String targetHospitalName;
     private String targetHospitalCode;
@@ -37,6 +38,7 @@ public class TransferBean implements Serializable {
      * 转诊医生
      */
     private String sourceDoctorName;
+    private String sourceDoctorMobile;
     private String sourceHospitalDepartmentName;
     private String sourceHospitalName;
     private String sourceHospitalCode;
@@ -50,12 +52,12 @@ public class TransferBean implements Serializable {
     private String pastHistory;
     private String familyHistory;
     private String allergyHistory;
-    private String sourceDoctorMobile;
     private String initResult;
-    private String targetDoctorMobile;
     private String note;
     private String rejectReason;
     private String cancelReason;
+    private String transferReason;
+    private String photo;
 
     public String getOrderNo() {
         return orderNo;
@@ -311,5 +313,21 @@ public class TransferBean implements Serializable {
 
     public void setSourceHospitalCode(String sourceHospitalCode) {
         this.sourceHospitalCode = sourceHospitalCode;
+    }
+
+    public String getTransferReason() {
+        return transferReason;
+    }
+
+    public void setTransferReason(String transferReason) {
+        this.transferReason = transferReason;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 }

@@ -530,6 +530,13 @@ public class RequestUtils {
                                                                  listener));
     }
 
+    public static void getBanner(Context context, String token, final ResponseListener<BaseResponse> listener) {
+        RetrofitManager.getApiUrlManager()
+                       .getBanner(token)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_BANNER, listener));
+    }
+
     public static void getVersion(Context context, String token, final ResponseListener<BaseResponse> listener) {
         RetrofitManager.getApiUrlManager()
                        .getVersion(token, BaseData.ADMIN)

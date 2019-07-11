@@ -1,6 +1,7 @@
 package com.yht.frame.http.retrofit;
 
 import com.yht.frame.data.BaseResponse;
+import com.yht.frame.data.base.BannerBean;
 import com.yht.frame.data.base.CheckBean;
 import com.yht.frame.data.base.CheckDetailBean;
 import com.yht.frame.data.base.CooperateHospitalBean;
@@ -506,6 +507,15 @@ public interface ApiUrlManager {
      */
     @GET("/order/studioOrderStatistics")
     Observable<BaseResponse<OrderNumStatisticsBean>> getStudioOrderStatistics(@Header("token") String token);
+
+    /**
+     * 工作室 banner
+     *
+     * @param token token
+     * @return 返回值
+     */
+    @GET("/client/banner/banner_by_doctor")
+    Observable<BaseResponse<List<BannerBean>>> getBanner(@Header("token") String token);
 
     /**
      * 版本更新

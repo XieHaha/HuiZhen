@@ -178,6 +178,10 @@ WE_CHAT_LOGIN,
      */
     GET_STUDIO_ORDER_STATISTICS,
     /**
+     * banner
+     */
+    GET_BANNER,
+    /**
      * 版本更新
      */
     GET_VERSION,

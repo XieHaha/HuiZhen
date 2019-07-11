@@ -26,6 +26,7 @@ import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.glide.GlideHelper;
+import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.utils.ImageUrlUtil;
 
@@ -228,10 +229,7 @@ public class CheckDetailActivity extends BaseActivity implements OrderStatus, Ch
      * 检查项目
      */
     private void initCheckType() {
-        //避免重复加载
-        if (layoutCheckType.getChildCount() > 0) {
-            return;
-        }
+        layoutCheckType.removeAllViews();
         checkTypeList = checkDetailBean.getTrans();
         if (checkTypeList != null && checkTypeList.size() > 0) {
             for (int i = 0; i < checkTypeList.size(); i++) {
@@ -286,7 +284,9 @@ public class CheckDetailActivity extends BaseActivity implements OrderStatus, Ch
 
     @OnClick(R.id.tv_check_next)
     public void onViewClicked() {
-        //TODO 联系患者
+        new HintDialog(this).setPhone(checkDetailBean.getPatientMobile())
+                            .setOnEnterClickListener(() -> callPhone(checkDetailBean.getPatientMobile()))
+                            .show();
     }
 
     @Override

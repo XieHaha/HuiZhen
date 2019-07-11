@@ -18,6 +18,7 @@ import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
+import com.yht.frame.data.base.BannerBean;
 import com.yht.frame.data.base.OrderNumStatisticsBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.permission.Permission;
@@ -26,7 +27,6 @@ import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.yihuantong.R;
-import com.yht.yihuantong.ui.check.CheckDetailActivity;
 import com.yht.yihuantong.ui.check.CheckHistoryActivity;
 import com.yht.yihuantong.ui.personal.PersonalActivity;
 import com.yht.yihuantong.ui.reservation.ReservationCheckOrTransferActivity;
@@ -36,6 +36,7 @@ import com.yht.yihuantong.utils.ImageUrlUtil;
 import com.yzq.zxinglibrary.android.CaptureActivity;
 import com.yzq.zxinglibrary.common.Constant;
 
+import java.util.List;
 import java.util.Objects;
 
 import butterknife.BindView;
@@ -75,6 +76,7 @@ public class WorkerFragment extends BaseFragment {
      * 订单统计
      */
     private OrderNumStatisticsBean orderNumStatisticsBean;
+    private List<BannerBean> bannerBeans;
     /**
      * 扫码
      */
@@ -91,7 +93,6 @@ public class WorkerFragment extends BaseFragment {
         statusBarFix.setLayoutParams(
                 new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getStateBarHeight(getActivity())));
         publicMainTitleScan.setVisibility(View.VISIBLE);
-        initFlipper();
     }
 
     @Override
@@ -105,6 +106,7 @@ public class WorkerFragment extends BaseFragment {
              .apply(GlideHelper.getOptions(BaseUtils.dp2px(getContext(), 4)))
              .into(ivPersonalImage);
         getStudioOrderStatistics();
+        getBanner();
     }
 
     /**
@@ -115,14 +117,21 @@ public class WorkerFragment extends BaseFragment {
     }
 
     /**
+     * banner
+     */
+    private void getBanner() {
+        RequestUtils.getBanner(getContext(), loginBean.getToken(), this);
+    }
+
+    /**
      * 广告轮播
      */
     private void initFlipper() {
-        for (int i = 0; i < 4; i++) {
+        viewFlipper.removeAllViews();
+        for (int i = 0; i < bannerBeans.size(); i++) {
             View view = LayoutInflater.from(getContext()).inflate(R.layout.item_flipper, null);
             TextView textView = view.findViewById(R.id.tv_flipper);
-            textView.setText(i + "秒带你玩转会珍3.0");
-            view.setTag(i);
+            textView.setText(bannerBeans.get(i).getBannerRemark());
             viewFlipper.addView(view);
         }
     }
@@ -170,9 +179,7 @@ public class WorkerFragment extends BaseFragment {
                 startActivity(intent);
                 break;
             case R.id.view_flipper:
-                intent = new Intent(getContext(), CheckDetailActivity.class);
-                intent.putExtra(CommonData.KEY_ORDER_ID, "SP20190708170319319505374");
-                startActivity(intent);
+                ToastUtil.toast(getContext(), bannerBeans.get(viewFlipper.getDisplayedChild()).getBannerRemark());
                 break;
             case R.id.layout_initiate_check:
                 startActivity(new Intent(getContext(), CheckHistoryActivity.class));
@@ -197,6 +204,12 @@ public class WorkerFragment extends BaseFragment {
             case GET_STUDIO_ORDER_STATISTICS:
                 orderNumStatisticsBean = (OrderNumStatisticsBean)response.getData();
                 initStatistics();
+                break;
+            case GET_BANNER:
+                bannerBeans = (List<BannerBean>)response.getData();
+                if (bannerBeans != null) {
+                    initFlipper();
+                }
                 break;
             default:
                 break;
