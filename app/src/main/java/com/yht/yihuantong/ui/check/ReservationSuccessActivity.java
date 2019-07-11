@@ -76,11 +76,13 @@ public class ReservationSuccessActivity extends BaseActivity {
             case R.id.tv_detail:
                 if (isTransfer) {
                     Intent intent = new Intent(this, TransferInitiateDetailActivity.class);
+                    intent.putExtra(CommonData.KEY_ORDER_ID, orderNo);
                     startActivity(intent);
                 }
                 else {
                     Intent intent = new Intent(this, CheckDetailActivity.class);
                     intent.putExtra(CommonData.KEY_PUBLIC, true);
+                    intent.putExtra(CommonData.KEY_ORDER_ID, orderNo);
                     startActivity(intent);
                 }
                 finish();

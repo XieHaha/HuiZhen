@@ -1,6 +1,8 @@
 package com.yht.frame.http.retrofit;
 
 import com.yht.frame.data.BaseResponse;
+import com.yht.frame.data.base.CheckBean;
+import com.yht.frame.data.base.CheckDetailBean;
 import com.yht.frame.data.base.CooperateHospitalBean;
 import com.yht.frame.data.base.DoctorAuthBean;
 import com.yht.frame.data.base.DoctorCurrencyBean;
@@ -12,6 +14,7 @@ import com.yht.frame.data.base.HospitalDepartChildBean;
 import com.yht.frame.data.base.HospitalTitleBean;
 import com.yht.frame.data.base.IncomeDetailBean;
 import com.yht.frame.data.base.LoginBean;
+import com.yht.frame.data.base.OrderNumStatisticsBean;
 import com.yht.frame.data.base.PatientBean;
 import com.yht.frame.data.base.PatientDetailBean;
 import com.yht.frame.data.base.PatientOrderBean;
@@ -55,7 +58,7 @@ public interface ApiUrlManager {
      * @param info map参数
      * @return 返回
      */
-    @POST("/client/wx/login")
+    @POST("/client/wx/doctor-login")
     Observable<BaseResponse<LoginBean>> weChatLogin(@Body Map<String, String> info);
 
     /**
@@ -64,7 +67,7 @@ public interface ApiUrlManager {
      * @param info map参数
      * @return 返回
      */
-    @POST("/client/wx/bind")
+    @POST("/client/wx/doctor-bind")
     Observable<BaseResponse<LoginBean>> weChatBind(@Body Map<String, String> info);
 
     /**
@@ -353,6 +356,28 @@ public interface ApiUrlManager {
             @Body Map<String, Object> info);
 
     /**
+     * 查询检查订单列表
+     *
+     * @param info  参数
+     * @param token token
+     * @return 返回值
+     */
+    @GET("/order-check/query-doctor-order")
+    Observable<BaseResponse<List<CheckBean>>> getReserveCheckOrderList(@Header("token") String token,
+            @QueryMap Map<String, Integer> info);
+
+    /**
+     * 查询检查订单详情
+     *
+     * @param info  参数
+     * @param token token
+     * @return 返回值
+     */
+    @GET("/order-check/query-detail")
+    Observable<BaseResponse<CheckDetailBean>> getReserveCheckOrderDetail(@Header("token") String token,
+            @Query("orderNo") String info);
+
+    /**
      * 添加检查项目查询(医生端预约检查、选择检查项目)
      *
      * @param info  map参数
@@ -472,6 +497,15 @@ public interface ApiUrlManager {
     @GET("/order-transfer/detail/get")
     Observable<BaseResponse<TransferBean>> getTransferOrderDetail(@Header("token") String token,
             @Query("orderNo") String info);
+
+    /**
+     * 工作室 所有订单数量
+     *
+     * @param token token
+     * @return 返回值
+     */
+    @GET("/order/studioOrderStatistics")
+    Observable<BaseResponse<OrderNumStatisticsBean>> getStudioOrderStatistics(@Header("token") String token);
 
     /**
      * 版本更新

@@ -122,6 +122,14 @@ WE_CHAT_LOGIN,
      */
     ADD_RESERVE_CHECK_ORDER,
     /**
+     * 获取检查订单列表
+     */
+    GET_RESERVE_CHECK_ORDER_LIST,
+    /**
+     * 获取检查订单详情
+     */
+    GET_RESERVE_CHECK_ORDER_DETAIL,
+    /**
      * 获取检查项
      */
     GET_CHECK_TYPE,
@@ -165,6 +173,14 @@ WE_CHAT_LOGIN,
      * 查询发起的转诊记录
      */
     GET_TRANSFER_ORDER_DETAIL,
+    /**
+     * 获取所有订单数量
+     */
+    GET_STUDIO_ORDER_STATISTICS,
+    /**
+     * 版本更新
+     */
+    GET_VERSION,
     /**
      * 获取环信appkey
      */

@@ -8,8 +8,8 @@ import android.util.TypedValue;
 
 import com.github.promeg.pinyinhelper.Pinyin;
 import com.yht.frame.data.BaseData;
-import com.yht.frame.data.base.PatientOrderBean;
 import com.yht.frame.data.base.PatientBean;
+import com.yht.frame.data.base.PatientOrderBean;
 import com.yht.frame.data.base.TransferBean;
 
 import java.io.BufferedInputStream;
@@ -260,6 +260,21 @@ public class BaseUtils {
         }
         return builder.toString();
     }
+
+    /**
+     * @param beans 数据源
+     * @return tags 返回一个包含所有Tag字母在内的字符串
+     */
+    public static String getCheckTimeTags(List<String> beans) {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < beans.size(); i++) {
+            if (!builder.toString().contains(beans.get(i))) {
+                builder.append(beans.get(i));
+            }
+        }
+        return builder.toString();
+    }
+
     /**
      * @param beans 数据源
      * @return tags 返回一个包含所有Tag字母在内的字符串
@@ -323,7 +338,7 @@ public class BaseUtils {
     /**
      * 根据身份证号判断性别
      *
-     * @param idCard  男1  女2
+     * @param idCard 男1  女2
      * @return
      */
     public static int getSexByCard(String idCard) {

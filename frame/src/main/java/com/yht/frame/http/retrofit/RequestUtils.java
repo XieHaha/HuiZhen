@@ -332,9 +332,6 @@ public class RequestUtils {
         params.put("isPregnancy", bean.getIsPregnancy());
         params.put("pastHistory", bean.getPastHistory());
         params.put("phone", bean.getPhone());
-        if (TextUtils.isEmpty(bean.getPatientCode())) {
-            bean.setPatientCode("");
-        }
         params.put("patientCode", bean.getPatientCode());
         params.put("patientName", bean.getPatientName());
         params.put("payType", bean.getPayType());
@@ -345,6 +342,27 @@ public class RequestUtils {
                        .compose(RxJavaHelper.observableIO2Main(context))
                        .subscribe(
                                new AbstractLoadViewObserver<>(context, true, Tasks.ADD_RESERVE_CHECK_ORDER, listener));
+    }
+
+    public static void getReserveCheckOrderList(Context context, String token, int pageSize, int startPage,
+            final ResponseListener<BaseResponse> listener) {
+        Map<String, Integer> params = new HashMap<>(16);
+        params.put("pageSize", pageSize);
+        params.put("startPage", startPage);
+        RetrofitManager.getApiUrlManager()
+                       .getReserveCheckOrderList(token, params)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_RESERVE_CHECK_ORDER_LIST,
+                                                                 listener));
+    }
+
+    public static void getReserveCheckOrderDetail(Context context, String token, String orderNo,
+            final ResponseListener<BaseResponse> listener) {
+        RetrofitManager.getApiUrlManager()
+                       .getReserveCheckOrderDetail(token, orderNo)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_RESERVE_CHECK_ORDER_DETAIL,
+                                                                 listener));
     }
 
     public static void getCheckTypeList(Context context, String token, String doctorCode, String projectName, int page,
@@ -503,12 +521,20 @@ public class RequestUtils {
                                                                  listener));
     }
 
+    public static void getStudioOrderStatistics(Context context, String token,
+            final ResponseListener<BaseResponse> listener) {
+        RetrofitManager.getApiUrlManager()
+                       .getStudioOrderStatistics(token)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_STUDIO_ORDER_STATISTICS,
+                                                                 listener));
+    }
+
     public static void getVersion(Context context, String token, final ResponseListener<BaseResponse> listener) {
         RetrofitManager.getApiUrlManager()
                        .getVersion(token, BaseData.ADMIN)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_TRANSFER_ORDER_DETAIL,
-                                                                 listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_VERSION, listener));
     }
 
     /******************************以上为新接口 2019年7月5日14:03:44*************************************/

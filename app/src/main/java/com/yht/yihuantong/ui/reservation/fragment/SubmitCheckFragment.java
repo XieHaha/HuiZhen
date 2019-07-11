@@ -316,10 +316,10 @@ public class SubmitCheckFragment extends BaseFragment
                     reserveCheckBean.setCheckTrans(list);
                     //是否备孕
                     if (pregnancyId == rbYes.getId()) {
-                        reserveCheckBean.setIsPregnancy(BaseData.BASE_ZERO);
+                        reserveCheckBean.setIsPregnancy(BaseData.BASE_ONE);
                     }
                     else {
-                        reserveCheckBean.setIsPregnancy(BaseData.BASE_ONE);
+                        reserveCheckBean.setIsPregnancy(BaseData.BASE_ZERO);
                     }
                     //缴费类型
                     if (payTypeId == rbSelf.getId()) {

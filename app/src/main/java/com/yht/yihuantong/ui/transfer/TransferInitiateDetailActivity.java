@@ -130,6 +130,9 @@ public class TransferInitiateDetailActivity extends BaseActivity implements Tran
      * 详情数据
      */
     private void initDetailData() {
+        if (transferBean == null) {
+            return;
+        }
         Glide.with(this)
              .load(ImageUrlUtil.append(transferBean.getWxPhoto()))
              .apply(GlideHelper.getOptions(BaseUtils.dp2px(this, 4)))

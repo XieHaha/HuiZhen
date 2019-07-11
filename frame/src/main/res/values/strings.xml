@@ -307,6 +307,8 @@
     <string name="txt_currency_withdraw_hint">提现成功</string>
 
     <!--状态-->
+    <string name="txt_status_incomplete">未完成</string>
+    <string name="txt_status_complete">已完成</string>
     <string name="txt_status_wait">待接诊</string>
     <string name="txt_status_received">已接诊</string>
     <string name="txt_status_transfer">已转诊</string>

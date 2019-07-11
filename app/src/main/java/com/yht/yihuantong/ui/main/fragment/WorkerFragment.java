@@ -9,19 +9,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.bumptech.glide.Glide;
+import com.yht.frame.data.BaseData;
+import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
+import com.yht.frame.data.Tasks;
+import com.yht.frame.data.base.OrderNumStatisticsBean;
+import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.permission.Permission;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.ui.check.CheckDetailActivity;
 import com.yht.yihuantong.ui.check.CheckHistoryActivity;
-import com.yht.yihuantong.ui.check.SelectCheckTypeActivity;
 import com.yht.yihuantong.ui.personal.PersonalActivity;
 import com.yht.yihuantong.ui.reservation.ReservationCheckOrTransferActivity;
 import com.yht.yihuantong.ui.transfer.TransferInitiateListActivity;
@@ -61,6 +67,14 @@ public class WorkerFragment extends BaseFragment {
     TextView tvAcceptedTransferNum;
     @BindView(R.id.view_flipper)
     ViewFlipper viewFlipper;
+    @BindView(R.id.tv_receiving_transfer_num)
+    TextView tvReceivingTransferNum;
+    @BindView(R.id.layout_receiving_transfer_num)
+    RelativeLayout layoutReceivingTransferNum;
+    /**
+     * 订单统计
+     */
+    private OrderNumStatisticsBean orderNumStatisticsBean;
     /**
      * 扫码
      */
@@ -90,6 +104,14 @@ public class WorkerFragment extends BaseFragment {
              .load(ImageUrlUtil.append(loginBean.getPhoto()))
              .apply(GlideHelper.getOptions(BaseUtils.dp2px(getContext(), 4)))
              .into(ivPersonalImage);
+        getStudioOrderStatistics();
+    }
+
+    /**
+     * 获取所有订单数量
+     */
+    private void getStudioOrderStatistics() {
+        RequestUtils.getStudioOrderStatistics(getContext(), loginBean.getToken(), this);
     }
 
     /**
@@ -102,6 +124,22 @@ public class WorkerFragment extends BaseFragment {
             textView.setText(i + "秒带你玩转会珍3.0");
             view.setTag(i);
             viewFlipper.addView(view);
+        }
+    }
+
+    /**
+     * 订单数量
+     */
+    private void initStatistics() {
+        tvInitiateCheckNum.setText(String.valueOf(orderNumStatisticsBean.getInitiateOrderCheck()));
+        tvInitiateTransferNum.setText(String.valueOf(orderNumStatisticsBean.getInitiateOrderTransfer()));
+        tvAcceptedTransferNum.setText(String.valueOf(orderNumStatisticsBean.getReceiveOrderTransfer()));
+        if (orderNumStatisticsBean.getPendingOrderTransfer() != BaseData.BASE_ZERO) {
+            tvReceivingTransferNum.setText(String.valueOf(orderNumStatisticsBean.getPendingOrderTransfer()));
+            layoutReceivingTransferNum.setVisibility(View.VISIBLE);
+        }
+        else {
+            layoutReceivingTransferNum.setVisibility(View.GONE);
         }
     }
 
@@ -132,7 +170,8 @@ public class WorkerFragment extends BaseFragment {
                 startActivity(intent);
                 break;
             case R.id.view_flipper:
-                intent = new Intent(getContext(), SelectCheckTypeActivity.class);
+                intent = new Intent(getContext(), CheckDetailActivity.class);
+                intent.putExtra(CommonData.KEY_ORDER_ID, "SP20190708170319319505374");
                 startActivity(intent);
                 break;
             case R.id.layout_initiate_check:
@@ -151,13 +190,17 @@ public class WorkerFragment extends BaseFragment {
         }
     }
 
-    /**
-     * 开启扫一扫
-     */
-    private void openScan() {
-        Intent intent = new Intent(getContext(), CaptureActivity.class);
-        startActivityForResult(intent, REQUEST_CODE_SCAN);
-        Objects.requireNonNull(getActivity()).overridePendingTransition(R.anim.keep, R.anim.keep);
+    @Override
+    public void onResponseSuccess(Tasks task, BaseResponse response) {
+        super.onResponseSuccess(task, response);
+        switch (task) {
+            case GET_STUDIO_ORDER_STATISTICS:
+                orderNumStatisticsBean = (OrderNumStatisticsBean)response.getData();
+                initStatistics();
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
@@ -172,6 +215,15 @@ public class WorkerFragment extends BaseFragment {
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    /**
+     * 开启扫一扫
+     */
+    private void openScan() {
+        Intent intent = new Intent(getContext(), CaptureActivity.class);
+        startActivityForResult(intent, REQUEST_CODE_SCAN);
+        Objects.requireNonNull(getActivity()).overridePendingTransition(R.anim.keep, R.anim.keep);
     }
 
     @Override

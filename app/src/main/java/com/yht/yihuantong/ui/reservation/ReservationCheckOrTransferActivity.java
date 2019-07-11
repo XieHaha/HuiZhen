@@ -384,15 +384,20 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
         Intent intent;
+        String orderNo;
         switch (task) {
             case ADD_RESERVE_TRANSFER_ORDER:
+                orderNo = (String)response.getData();
                 intent = new Intent(this, ReservationSuccessActivity.class);
                 intent.putExtra(CommonData.KEY_CHECK_OR_TRANSFER, true);
+                intent.putExtra(CommonData.KEY_ORDER_ID, orderNo);
                 startActivity(intent);
                 finish();
                 break;
             case ADD_RESERVE_CHECK_ORDER:
+                orderNo = (String)response.getData();
                 intent = new Intent(this, ReservationSuccessActivity.class);
+                intent.putExtra(CommonData.KEY_ORDER_ID, orderNo);
                 startActivity(intent);
                 finish();
                 break;

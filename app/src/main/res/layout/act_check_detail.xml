@@ -203,6 +203,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/layout_check_type_root"
                 android:layout_width="match_parent"
                 android:orientation="vertical"
                 android:paddingTop="20dp"
@@ -221,7 +222,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_marginTop="12dp">
+                    android:layout_marginTop="7dp">
 
                 </LinearLayout>
 
@@ -366,6 +367,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/layout_cancel_result"
                 android:layout_width="match_parent"
                 android:orientation="vertical"
                 android:paddingTop="20dp"
@@ -399,10 +401,12 @@
             </LinearLayout>
 
             <RelativeLayout
+                android:id="@+id/layout_check_report_root"
                 android:layout_width="match_parent"
                 android:orientation="vertical"
                 android:paddingTop="20dp"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="visible">
 
                 <TextView
                     android:id="@+id/text"
