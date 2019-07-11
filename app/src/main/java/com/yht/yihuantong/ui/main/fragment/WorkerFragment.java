@@ -21,9 +21,9 @@ import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.check.CheckHistoryActivity;
+import com.yht.yihuantong.ui.check.SelectCheckTypeActivity;
 import com.yht.yihuantong.ui.personal.PersonalActivity;
 import com.yht.yihuantong.ui.reservation.ReservationCheckOrTransferActivity;
-import com.yht.yihuantong.ui.transfer.SelectReceivingDoctorActivity;
 import com.yht.yihuantong.ui.transfer.TransferInitiateListActivity;
 import com.yht.yihuantong.ui.transfer.TransferReceiveListActivity;
 import com.yht.yihuantong.utils.ImageUrlUtil;
@@ -132,7 +132,7 @@ public class WorkerFragment extends BaseFragment {
                 startActivity(intent);
                 break;
             case R.id.view_flipper:
-                intent = new Intent(getContext(), SelectReceivingDoctorActivity.class);
+                intent = new Intent(getContext(), SelectCheckTypeActivity.class);
                 startActivity(intent);
                 break;
             case R.id.layout_initiate_check:

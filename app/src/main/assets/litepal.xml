@@ -35,6 +35,7 @@
         <mapping class="com.yht.frame.data.base.PatientBean" />
         <mapping class="com.yht.frame.data.bean.CooperateDocBean" />
         <mapping class="com.yht.frame.data.base.HospitalBean" />
+        <mapping class="com.yht.frame.data.base.SelectCheckTypeBean" />
     </list>
 
     <!--

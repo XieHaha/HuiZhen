@@ -11,6 +11,10 @@ public interface CommonData {
     /**
      * 公用数据key
      */
+    String KEY_TITLE = "key_title";
+    /**
+     * 公用数据key
+     */
     String KEY_PUBLIC_STRING = "key_public_string";
     /**
      * 环信登录状态
@@ -21,21 +25,9 @@ public interface CommonData {
      */
     String KEY_CHECK_OR_TRANSFER = "key_check_or_transfer";
     /**
-     * 是否已接诊  true为已接诊  false待处理
-     */
-    String KEY_IS_RECEIVE_TRANSFER = "key_is_receive_transfer";
-    /**
      * 变更接诊信息  or  接诊
      */
     String KEY_RECEIVE_OR_EDIT_VISIT = "key_receive_or_edit_visit";
-    /**
-     * 接诊医院
-     */
-    String KEY_RECEIVE_HOSPITAL = "key_receive_hospital";
-    /**
-     * 预约就诊时间
-     */
-    String KEY_RESERVE_TIME = "key_reserve_time";
     /**
      * 是否显示的是登录协议（登录协议页面不显示title）
      */
@@ -96,6 +88,14 @@ public interface CommonData {
      * depart bean
      */
     String KEY_DEPART_BEAN = "key_depart_bean";
+    /**
+     * 预约检查选择的检查项
+     */
+    String KEY_RESERVE_CHECK_TYPE_BEAN = "key_reserve_check_type_bean";
+    /**
+     * 预约检查选择的检查项列表
+     */
+    String KEY_RESERVE_CHECK_TYPE_LIST = "key_reserve_check_type_list";
     /**
      * 广告页下载链接
      */

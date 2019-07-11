@@ -1,6 +1,7 @@
 package com.yht.frame.http.retrofit;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.google.gson.JsonObject;
 import com.yht.frame.data.BaseData;
@@ -65,9 +66,10 @@ public class RequestUtils {
                        .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_VERIFY_CODE, listener));
     }
 
-    public static void login(Context context, String prepareId, String verifyCode,
+    public static void login(Context context, String prepareId, String verifyCode, String merchant,
             final ResponseListener<BaseResponse> listener) {
         Map<String, String> params = new HashMap<>(16);
+        params.put("merchant", merchant);
         params.put("prepareId", prepareId);
         params.put("verifyCode", verifyCode);
         RetrofitManager.getApiUrlManager()
@@ -338,9 +340,42 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .addReserveCheckOrder(token, params)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.ADD_RESERVE_CHECK_ORDER,
+                       .subscribe(
+                               new AbstractLoadViewObserver<>(context, true, Tasks.ADD_RESERVE_CHECK_ORDER, listener));
+    }
+
+    public static void getCheckTypeList(Context context, String token, String doctorCode, String projectName, int page,
+            final ResponseListener<BaseResponse> listener) {
+        Map<String, Object> params = new HashMap<>(16);
+        params.put("currentPage", page);
+        params.put("docCode", doctorCode);
+        if (!TextUtils.isEmpty(projectName)) {
+            params.put("projectName", projectName);
+        }
+        RetrofitManager.getApiUrlManager()
+                       .getCheckTypeList(token, params)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_CHECK_TYPE, listener));
+    }
+
+    public static void getCheckTypeByHospitalList(Context context, String token, String hospitalCode,
+            String projectName, String selectCodes, int page, final ResponseListener<BaseResponse> listener) {
+        Map<String, Object> params = new HashMap<>(16);
+        params.put("currentPage", page);
+        params.put("hospitalCode", hospitalCode);
+        if (!TextUtils.isEmpty(projectName)) {
+            params.put("projectName", projectName);
+        }
+        if (!TextUtils.isEmpty(selectCodes)) {
+            params.put("selectCodes", selectCodes);
+        }
+        RetrofitManager.getApiUrlManager()
+                       .getCheckTypeByHospitalList(token, params)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_CHECK_TYPE_BY_HOSPITAL,
                                                                  listener));
     }
+
     public static void addReserveTransferOrder(Context context, String token, ReserveTransferBean bean,
             final ResponseListener<BaseResponse> listener) {
         Map<String, Object> params = new HashMap<>(16);

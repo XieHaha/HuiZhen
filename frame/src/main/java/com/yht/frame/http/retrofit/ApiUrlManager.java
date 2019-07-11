@@ -15,6 +15,7 @@ import com.yht.frame.data.base.LoginBean;
 import com.yht.frame.data.base.PatientBean;
 import com.yht.frame.data.base.PatientDetailBean;
 import com.yht.frame.data.base.PatientOrderBean;
+import com.yht.frame.data.base.SelectCheckTypeBean;
 import com.yht.frame.data.base.TransferBean;
 import com.yht.frame.data.base.VerifyCodeBean;
 import com.yht.frame.data.base.WithDrawDetailBean;
@@ -110,7 +111,7 @@ public interface ApiUrlManager {
      * @param token token
      * @return 返回值
      */
-    @GET("/client/hospital/zzHospital")
+    @GET("/client/hospital/selectInput/forSelect")
     Observable<BaseResponse<List<HospitalBean>>> getHospitalListByReverse(@Header("token") String token);
 
     /**
@@ -119,7 +120,7 @@ public interface ApiUrlManager {
      * @param token token
      * @return 返回值
      */
-    @GET("/client/hospital/validSelectInput")
+    @GET("/client/hospital/selectInput/forChange")
     Observable<BaseResponse<List<HospitalBean>>> getHospitalListByDoctor(@Header("token") String token);
 
     /**
@@ -350,6 +351,29 @@ public interface ApiUrlManager {
     @POST("/order-check/create")
     Observable<BaseResponse<String>> addReserveCheckOrder(@Header("token") String token,
             @Body Map<String, Object> info);
+
+    /**
+     * 添加检查项目查询(医生端预约检查、选择检查项目)
+     *
+     * @param info  map参数
+     * @param token token
+     * @return 返回值
+     */
+    @GET("/client/product/checkdoccode")
+    Observable<BaseResponse<List<SelectCheckTypeBean>>> getCheckTypeList(@Header("token") String token,
+            @QueryMap Map<String, Object> info);
+
+    /**
+     * 添加检查项目查询 (获取医院下面的)
+     *
+     * @param info  map参数
+     * @param token token
+     * @return 返回值
+     */
+    @GET("/client/product/checkhoscode")
+    Observable<BaseResponse<List<SelectCheckTypeBean>>> getCheckTypeByHospitalList(@Header("token") String token,
+            @QueryMap Map<String, Object> info);
+
     /**
      * 新增预约转诊订单
      *
@@ -457,8 +481,7 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @GET("/version/current-version")
-    Observable<BaseResponse<TransferBean>> getVersion(@Header("token") String token,
-            @Query("device") String info);
+    Observable<BaseResponse<TransferBean>> getVersion(@Header("token") String token, @Query("device") String info);
     /********************************分隔线*********************************/
     /**
      * 首页广告

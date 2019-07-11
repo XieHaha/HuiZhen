@@ -84,7 +84,7 @@ public class MaterialFragment extends BaseFragment implements View.OnFocusChange
     private String name, idCard, age, phone;
     private int sex;
     private String pastMedicalHis = "", familyMedicalHis = "", allergiesHis = "", diagnosisHis = "";
-    private boolean istransfer;
+    private boolean isTransfer;
     /**
      * 二次编辑 是否清空所有已填数据
      */
@@ -101,8 +101,8 @@ public class MaterialFragment extends BaseFragment implements View.OnFocusChange
         initPatientBaseData();
     }
 
-    public void setIstransfer(boolean istransfer) {
-        this.istransfer = istransfer;
+    public void setTransfer(boolean transfer) {
+        this.isTransfer = transfer;
     }
 
     public void setReverseTransferBean(ReserveTransferBean bean) {
@@ -132,7 +132,7 @@ public class MaterialFragment extends BaseFragment implements View.OnFocusChange
             familyMedicalHis = "";
             allergiesHis = "";
         }
-        if (istransfer) {
+        if (isTransfer) {
             initTransferData();
         }
         else {
@@ -434,7 +434,7 @@ public class MaterialFragment extends BaseFragment implements View.OnFocusChange
                 break;
             case R.id.tv_material_next:
                 if (tvMaterialNext.isSelected() && checkListener != null) {
-                    if (istransfer) {
+                    if (isTransfer) {
                         //数据回填
                         reverseTransferBean.setPatientAge(Integer.valueOf(age));
                         reverseTransferBean.setPatientMobile(phone);

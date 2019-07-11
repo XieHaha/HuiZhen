@@ -95,7 +95,8 @@
                 android:id="@+id/full_listview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp">
+                android:layout_marginTop="8dp"
+                android:divider="@null">
 
             </com.yht.frame.widgets.recyclerview.FullListView>
 

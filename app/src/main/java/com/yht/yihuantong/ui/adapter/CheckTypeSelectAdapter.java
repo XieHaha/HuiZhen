@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.yht.frame.data.base.SelectCheckTypeBean;
 import com.yht.frame.widgets.view.ExpandableLayout;
 import com.yht.yihuantong.R;
 
@@ -24,13 +25,14 @@ public class CheckTypeSelectAdapter extends RecyclerView.Adapter<CheckTypeSelect
     private RecyclerView recyclerView;
     private int selectedItem = UNSELECTED;
     private Context context;
-    private List<String> datas = new ArrayList<>();
+    private List<SelectCheckTypeBean> datas = new ArrayList<>();
 
-    public void setDatas(List<String> datas) {
+    public void setDatas(List<SelectCheckTypeBean> datas) {
         if (datas == null) {
             datas = new ArrayList<>();
         }
         this.datas = datas;
+        notifyDataSetChanged();
     }
 
     public CheckTypeSelectAdapter(Context context, RecyclerView recyclerView) {
@@ -60,18 +62,19 @@ public class CheckTypeSelectAdapter extends RecyclerView.Adapter<CheckTypeSelect
         private LinearLayout layout;
         private TextView tvCheckType;
         private View viewLine;
+        private TextView hospitalName, price;
 
         private ViewHolder(View itemView) {
             super(itemView);
             tvCheckType = itemView.findViewById(R.id.tv_check_type_name);
             viewLine = itemView.findViewById(R.id.view_line);
             layout = itemView.findViewById(R.id.layout);
-            for (int i = 0; i < 5; i++) {
-                View view = LayoutInflater.from(context).inflate(R.layout.item_check_type_child, null);
-                view.setTag(i);
-                view.setOnClickListener(this);
-                layout.addView(view);
-            }
+            View view = LayoutInflater.from(context).inflate(R.layout.item_check_type_child, null);
+            view.setTag(0);
+            hospitalName = view.findViewById(R.id.tv_check_type_name);
+            price = view.findViewById(R.id.tv_price);
+            view.setOnClickListener(this);
+            layout.addView(view);
             expandableLayout = itemView.findViewById(R.id.expandable_layout);
             expandableLayout.setOnExpansionUpdateListener(this);
             tvCheckType.setOnClickListener(this);
@@ -79,8 +82,12 @@ public class CheckTypeSelectAdapter extends RecyclerView.Adapter<CheckTypeSelect
 
         private void bind() {
             int position = getAdapterPosition();
+            SelectCheckTypeBean bean = datas.get(position);
             boolean isSelected = position == selectedItem;
             expandableLayout.setExpanded(isSelected, false);
+            tvCheckType.setText(bean.getProjectName());
+            hospitalName.setText(bean.getHospitalName());
+            price.setText(String.format(context.getString(R.string.txt_price), bean.getPrice()));
         }
 
         @Override

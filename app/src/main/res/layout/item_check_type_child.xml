@@ -20,13 +20,12 @@
         android:textSize="@dimen/text_16"
         android:layout_marginStart="15dp"
         android:layout_marginEnd="27dp"
-        android:text="医院医院医院"
         android:paddingTop="10dp" />
 
     <TextView
+        android:id="@+id/tv_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="￥111.00"
         android:textColor="@color/color_373d4d"
         android:textSize="@dimen/text_16"
         android:paddingTop="10dp" />

@@ -76,6 +76,8 @@ public abstract class BaseActivity extends RxAppCompatActivity
      * 标题
      */
     private TextView tvTitle;
+    public String token = "P1wDQpcrTx45XddRgbg6Kt+fSTJ6DDAce3H85a1p04lUcZRXC9MkRKGiC+Hk5cd8HvIintOVLGeRlt/DePjJ3DyMDcxmbdfurLDWNb4lXPEcdLx31yh2zqc0ME1RA+pN8GQ+4cxoLQrH7ujIc9llMRrvPx+EjRUaXD4Nkr7KMpYZ8v5/gMrBRlmUiTSD5QbKTagVZ8avfIlOV/AQlvCL2HB89c2QcVHalRHZZ9+qgOLNQw4lCKNCmHfE6daWBNsvTKQHuu3rjNgGM79TruXidQ==";
+    public String code = "DOC_WYS(ZSCS)2019070217414741473";
 
     @Override
     protected final void onCreate(Bundle savedInstanceState) {

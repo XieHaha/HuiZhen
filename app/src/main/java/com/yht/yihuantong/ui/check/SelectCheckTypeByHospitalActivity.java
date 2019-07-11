@@ -6,15 +6,23 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.yht.frame.data.BaseData;
+import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
+import com.yht.frame.data.Tasks;
+import com.yht.frame.data.base.SelectCheckTypeBean;
+import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
+import com.yht.frame.widgets.edittext.AbstractTextWatcher;
 import com.yht.frame.widgets.edittext.SuperEditText;
+import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.yht.yihuantong.R;
-import com.yht.yihuantong.ui.adapter.CheckTypeByHospitalSelectAdapter;
+import com.yht.yihuantong.ui.adapter.SelectCheckTypeByHospitalAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +37,8 @@ import static com.yht.yihuantong.ui.auth.fragment.AuthBaseFragment.REQUEST_CODE_
  * @date 19/6/4 17:53
  * @des 选择医院下所有检查项目
  */
-public class SelectCheckTypeByHospitalActivity extends BaseActivity implements BaseQuickAdapter.OnItemClickListener {
+public class SelectCheckTypeByHospitalActivity extends BaseActivity
+        implements BaseQuickAdapter.OnItemClickListener, BaseQuickAdapter.RequestLoadMoreListener {
     @BindView(R.id.et_search_check_type)
     SuperEditText etSearchCheckType;
     @BindView(R.id.recyclerview)
@@ -38,9 +47,31 @@ public class SelectCheckTypeByHospitalActivity extends BaseActivity implements B
     TextView publicTitleBarMore;
     @BindView(R.id.public_title_bar_title)
     TextView publicTitleBarTitle;
-    private CheckTypeByHospitalSelectAdapter checkTypeByHospitalSelectAdapter;
-    private List<String> hospitals;
+    private SelectCheckTypeByHospitalAdapter selectAdapter;
+    /**
+     * 检查项列表
+     */
+    private List<SelectCheckTypeBean> selectCheckTypeBeans = new ArrayList<>();
+    /**
+     * 选中的检查项index
+     */
     private ArrayList<Integer> selectPosition = new ArrayList<>();
+    /**
+     * 搜索关键字
+     */
+    private String searchKey;
+    /**
+     * 选中医院code
+     */
+    private String curHospitalCode;
+    /**
+     * 已经选中的检查项
+     */
+    private String selectCheckType;
+    /**
+     * 页码
+     */
+    private int page = 1;
 
     @Override
     protected boolean isInitBackBtn() {
@@ -53,19 +84,52 @@ public class SelectCheckTypeByHospitalActivity extends BaseActivity implements B
     }
 
     @Override
-    public void initData(@NonNull Bundle savedInstanceState) {
-        super.initData(savedInstanceState);
+    public void initView(@NonNull Bundle savedInstanceState) {
+        super.initView(savedInstanceState);
         initTitle();
         recyclerview.setLayoutManager(new LinearLayoutManager(this));
-        hospitals = new ArrayList<>();
-        hospitals.add("检查项目1");
-        hospitals.add("检查项目2");
-        hospitals.add("检查项目3");
-        hospitals.add("检查项目4");
-        checkTypeByHospitalSelectAdapter = new CheckTypeByHospitalSelectAdapter(R.layout.item_check_by_hospital_select,
-                                                                                hospitals);
-        checkTypeByHospitalSelectAdapter.setOnItemClickListener(this);
-        recyclerview.setAdapter(checkTypeByHospitalSelectAdapter);
+        selectAdapter = new SelectCheckTypeByHospitalAdapter(R.layout.item_check_by_hospital_select,
+                                                             selectCheckTypeBeans);
+        selectAdapter.setLoadMoreView(new CustomLoadMoreView());
+        selectAdapter.setOnLoadMoreListener(this, recyclerview);
+        selectAdapter.setOnItemClickListener(this);
+        recyclerview.setAdapter(selectAdapter);
+    }
+
+    @Override
+    public void initData(@NonNull Bundle savedInstanceState) {
+        super.initData(savedInstanceState);
+        if (getIntent() != null) {
+            curHospitalCode = getIntent().getStringExtra(CommonData.KEY_HOSPITAL_CODE);
+            selectCheckType = getIntent().getStringExtra(CommonData.KEY_PUBLIC);
+        }
+        getCheckTypeByHospitalList();
+    }
+
+    @Override
+    public void initListener() {
+        super.initListener();
+        etSearchCheckType.addTextChangedListener(new AbstractTextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                super.onTextChanged(s, start, before, count);
+                if (!TextUtils.isEmpty(s)) {
+                    searchKey = s.toString();
+                    getCheckTypeByHospitalList();
+                }
+                else {
+                    searchKey = "";
+                    getCheckTypeByHospitalList();
+                }
+            }
+        });
+    }
+
+    /**
+     * 获取医院下检查项 全部
+     */
+    private void getCheckTypeByHospitalList() {
+        RequestUtils.getCheckTypeByHospitalList(this, token, curHospitalCode, searchKey, selectCheckType, page, this);
     }
 
     /**
@@ -73,7 +137,7 @@ public class SelectCheckTypeByHospitalActivity extends BaseActivity implements B
      */
     private void initTitle() {
         if (getIntent() != null) {
-            String title = getIntent().getStringExtra(CommonData.KEY_PUBLIC);
+            String title = getIntent().getStringExtra(CommonData.KEY_TITLE);
             publicTitleBarTitle.setText(title);
         }
         //右边按钮
@@ -85,9 +149,32 @@ public class SelectCheckTypeByHospitalActivity extends BaseActivity implements B
     public void onViewClicked() {
         if (publicTitleBarMore.isSelected()) {
             Intent intent = new Intent();
-            intent.putExtra("test", selectPosition);
+            ArrayList<SelectCheckTypeBean> list = new ArrayList<>();
+            for (Integer index : selectPosition) {
+                list.add(selectCheckTypeBeans.get(index));
+            }
+            intent.putExtra(CommonData.KEY_RESERVE_CHECK_TYPE_LIST, list);
             setResult(RESULT_OK, intent);
             finish();
+        }
+    }
+
+    @Override
+    public void onResponseSuccess(Tasks task, BaseResponse response) {
+        super.onResponseSuccess(task, response);
+        if (task == Tasks.GET_CHECK_TYPE_BY_HOSPITAL) {
+            List<SelectCheckTypeBean> list = (List<SelectCheckTypeBean>)response.getData();
+            if (page == BaseData.BASE_ONE) {
+                selectCheckTypeBeans.clear();
+            }
+            selectCheckTypeBeans.addAll(list);
+            selectAdapter.setNewData(selectCheckTypeBeans);
+            if (list != null && list.size() == BaseData.BASE_PAGE_DATA_NUM) {
+                selectAdapter.loadMoreComplete();
+            }
+            else {
+                selectAdapter.loadMoreEnd();
+            }
         }
     }
 
@@ -118,7 +205,13 @@ public class SelectCheckTypeByHospitalActivity extends BaseActivity implements B
         else {
             publicTitleBarMore.setSelected(false);
         }
-        checkTypeByHospitalSelectAdapter.setSelectPosition(selectPosition);
-        checkTypeByHospitalSelectAdapter.notifyDataSetChanged();
+        selectAdapter.setSelectPosition(selectPosition);
+        selectAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onLoadMoreRequested() {
+        page++;
+        getCheckTypeByHospitalList();
     }
 }

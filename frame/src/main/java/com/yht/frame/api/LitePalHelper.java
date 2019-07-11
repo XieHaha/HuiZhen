@@ -2,6 +2,7 @@ package com.yht.frame.api;
 
 import com.yht.frame.data.base.HospitalBean;
 import com.yht.frame.data.base.PatientBean;
+import com.yht.frame.data.base.SelectCheckTypeBean;
 
 import org.litepal.crud.DataSupport;
 
@@ -31,6 +32,16 @@ public class LitePalHelper<T extends DataSupport> {
      */
     public static List<HospitalBean> findHospitals(String key) {
         return DataSupport.where("hospitalName like ?", "%" + key + "%").find(HospitalBean.class);
+    }
+
+    /**
+     * 模糊查询 检查项
+     *
+     * @param key
+     * @return
+     */
+    public static List<SelectCheckTypeBean> findCheckTypes(String key) {
+        return DataSupport.where("projectName like ?", "%" + key + "%").find(SelectCheckTypeBean.class);
     }
 
     /**

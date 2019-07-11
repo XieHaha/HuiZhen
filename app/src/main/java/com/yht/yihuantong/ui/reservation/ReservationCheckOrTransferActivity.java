@@ -188,7 +188,7 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
         hideAll(transaction);
         if (materialFragment == null) {
             materialFragment = new MaterialFragment();
-            materialFragment.setIstransfer(isTransfer);
+            materialFragment.setTransfer(isTransfer);
             materialFragment.setOnCheckListener(this);
             materialFragment.setReverseTransferBean(reverseTransferBean);
             materialFragment.setReserveCheckBean(reserveCheckBean);

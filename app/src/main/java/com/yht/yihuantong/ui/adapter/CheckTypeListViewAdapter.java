@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.yht.frame.data.base.SelectCheckTypeBean;
 import com.yht.yihuantong.R;
 
 import java.util.ArrayList;
@@ -16,17 +17,17 @@ import java.util.List;
 /**
  * @author 顿顿
  * @date 19/6/19 16:37
- * @des
+ * @des 预约检查选择检查项
  */
-public class CheckTypeListviewAdapter extends BaseAdapter {
+public class CheckTypeListViewAdapter extends BaseAdapter {
     private Context context;
-    private List<String> data;
+    private List<SelectCheckTypeBean> data;
 
-    public CheckTypeListviewAdapter(Context context) {
+    public CheckTypeListViewAdapter(Context context) {
         this.context = context;
     }
 
-    public void setData(List<String> data) {
+    public void setData(List<SelectCheckTypeBean> data) {
         if (data == null) {
             data = new ArrayList<>();
         }
@@ -72,13 +73,10 @@ public class CheckTypeListviewAdapter extends BaseAdapter {
      * @param position
      */
     private void initView(ViewHolder holder, int position) {
-        holder.tvCheckTypeName.setText(data.get(position));
-        holder.ivDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (onDeleteClickListener != null) {
-                    onDeleteClickListener.onDelete(position);
-                }
+        holder.tvCheckTypeName.setText(data.get(position).getProjectName());
+        holder.ivDelete.setOnClickListener(v -> {
+            if (onDeleteClickListener != null) {
+                onDeleteClickListener.onDelete(position);
             }
         });
     }

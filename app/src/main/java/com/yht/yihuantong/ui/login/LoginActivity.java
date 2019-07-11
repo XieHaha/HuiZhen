@@ -125,7 +125,7 @@ public class LoginActivity extends BaseActivity {
      * 登录
      */
     private void login() {
-        RequestUtils.login(this, verifyCodeBean.getPrepare_id(), verifyCode, this);
+        RequestUtils.login(this, verifyCodeBean.getPrepare_id(), verifyCode, BaseData.ADMIN, this);
     }
 
     /**

@@ -19,13 +19,15 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.yht.frame.api.DirHelper;
+import com.yht.frame.data.CommonData;
+import com.yht.frame.data.base.SelectCheckTypeBean;
 import com.yht.frame.permission.Permission;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.widgets.recyclerview.FullListView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ZycApplication;
-import com.yht.yihuantong.ui.adapter.CheckTypeListviewAdapter;
+import com.yht.yihuantong.ui.adapter.CheckTypeListViewAdapter;
 import com.yht.yihuantong.ui.check.SelectCheckTypeActivity;
 import com.yht.yihuantong.ui.check.SelectCheckTypeByHospitalActivity;
 import com.yht.yihuantong.ui.check.listener.OnCheckListener;
@@ -43,7 +45,7 @@ import butterknife.OnClick;
  * @date 19/6/14 14:23
  * @des 预约检查 确认提交
  */
-public class SubmitCheckFragment extends BaseFragment implements CheckTypeListviewAdapter.OnDeleteClickListener {
+public class SubmitCheckFragment extends BaseFragment implements CheckTypeListViewAdapter.OnDeleteClickListener {
     @BindView(R.id.tv_select)
     TextView tvSelect;
     @BindView(R.id.full_listview)
@@ -76,11 +78,11 @@ public class SubmitCheckFragment extends BaseFragment implements CheckTypeListvi
     /**
      * 已选择检查项目适配器
      */
-    private CheckTypeListviewAdapter checkTypeListviewAdapter;
+    private CheckTypeListViewAdapter checkTypeListviewAdapter;
     /**
      * 检查项目数据
      */
-    private List<String> checkTypeData;
+    private List<SelectCheckTypeBean> checkTypeData = new ArrayList<>();
     /**
      * 根据检查项目选择医院
      */
@@ -104,7 +106,7 @@ public class SubmitCheckFragment extends BaseFragment implements CheckTypeListvi
      * 检查项目列表
      */
     private void initFullListView() {
-        checkTypeListviewAdapter = new CheckTypeListviewAdapter(getContext());
+        checkTypeListviewAdapter = new CheckTypeListViewAdapter(getContext());
         checkTypeListviewAdapter.setData(checkTypeData);
         checkTypeListviewAdapter.setOnDeleteClickListener(this);
         fullListView.setAdapter(checkTypeListviewAdapter);
@@ -136,15 +138,15 @@ public class SubmitCheckFragment extends BaseFragment implements CheckTypeListvi
 
     /**
      * 根据检查项目匹配医院回调
-     *
-     * @param data
      */
     private void selectHospitalByCheckItem(Intent data) {
+        SelectCheckTypeBean bean = (SelectCheckTypeBean)data.getSerializableExtra(
+                CommonData.KEY_RESERVE_CHECK_TYPE_BEAN);
+        checkTypeData.clear();
+        checkTypeData.add(bean);
         tvSelect.setVisibility(View.GONE);
         layoutCheckRoot.setVisibility(View.VISIBLE);
-        tvHospitalName.setText("医院");
-        checkTypeData = new ArrayList<>();
-        checkTypeData.add("测试数据");
+        tvHospitalName.setText(bean.getHospitalName());
         initFullListView();
     }
 
@@ -154,9 +156,9 @@ public class SubmitCheckFragment extends BaseFragment implements CheckTypeListvi
      * @param data
      */
     private void selectCheckItemByHospital(Intent data) {
-        checkTypeData.add("yige");
-        checkTypeData.add("22222");
-        checkTypeData.add("3333");
+        ArrayList<SelectCheckTypeBean> list = (ArrayList<SelectCheckTypeBean>)data.getSerializableExtra(
+                CommonData.KEY_RESERVE_CHECK_TYPE_LIST);
+        checkTypeData.addAll(list);
         checkTypeListviewAdapter.setData(checkTypeData);
         checkTypeListviewAdapter.notifyDataSetChanged();
     }
@@ -200,6 +202,17 @@ public class SubmitCheckFragment extends BaseFragment implements CheckTypeListvi
                 break;
             case R.id.layout_add_hospital_check:
                 intent = new Intent(getContext(), SelectCheckTypeByHospitalActivity.class);
+                intent.putExtra(CommonData.KEY_TITLE, checkTypeData.get(0).getHospitalName());
+                intent.putExtra(CommonData.KEY_HOSPITAL_CODE, checkTypeData.get(0).getHospitalCode());
+                StringBuilder builder = new StringBuilder();
+                for (int i = 0; i < checkTypeData.size(); i++) {
+                    SelectCheckTypeBean bean = checkTypeData.get(i);
+                    builder.append(bean.getProjectCode());
+                    if (checkTypeData.size() - 1 != i) {
+                        builder.append(",");
+                    }
+                }
+                intent.putExtra(CommonData.KEY_PUBLIC, builder.toString());
                 startActivityForResult(intent, REQUEST_CODE_SELECT_CHECK);
                 break;
             case R.id.layout_upload_one:
@@ -275,10 +288,12 @@ public class SubmitCheckFragment extends BaseFragment implements CheckTypeListvi
                 initImage(true);
                 break;
             case REQUEST_CODE_SELECT_HOSPITAL:
-                selectHospitalByCheckItem(data);
+                if (data != null) {
+                    selectHospitalByCheckItem(data);
+                }
                 break;
             case REQUEST_CODE_SELECT_CHECK:
-                selectCheckItemByHospital(data);
+                if (data != null) { selectCheckItemByHospital(data); }
                 break;
             default:
                 break;

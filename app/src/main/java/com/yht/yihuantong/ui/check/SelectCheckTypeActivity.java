@@ -1,13 +1,20 @@
 package com.yht.yihuantong.ui.check;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 
+import com.yht.frame.api.LitePalHelper;
+import com.yht.frame.data.BaseResponse;
+import com.yht.frame.data.CommonData;
+import com.yht.frame.data.Tasks;
+import com.yht.frame.data.base.SelectCheckTypeBean;
+import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
+import com.yht.frame.widgets.edittext.AbstractTextWatcher;
 import com.yht.frame.widgets.edittext.SuperEditText;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.adapter.CheckTypeSelectAdapter;
@@ -16,8 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-
-import static com.yht.yihuantong.ui.auth.fragment.AuthBaseFragment.REQUEST_CODE_HOSPITAL;
 
 /**
  * @author 顿顿
@@ -30,7 +35,19 @@ public class SelectCheckTypeActivity extends BaseActivity implements CheckTypeSe
     @BindView(R.id.recyclerview)
     RecyclerView recyclerview;
     private CheckTypeSelectAdapter checkTypeSelectAdapter;
-    private List<String> hospitals;
+    private List<SelectCheckTypeBean> selectCheckTypeBeans = new ArrayList<>();
+    /**
+     * 当前选中的检查项
+     */
+    private SelectCheckTypeBean curSelectCheckTypeBean;
+    /**
+     * 搜索key
+     */
+    private String searchKey;
+    /**
+     * 页码
+     */
+    private int page = 1;
 
     @Override
     protected boolean isInitBackBtn() {
@@ -46,32 +63,56 @@ public class SelectCheckTypeActivity extends BaseActivity implements CheckTypeSe
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         recyclerview.setLayoutManager(new LinearLayoutManager(this));
-        hospitals = new ArrayList<>();
-        hospitals.add("a");
-        hospitals.add("a");
-        hospitals.add("a");
-        hospitals.add("a");
         checkTypeSelectAdapter = new CheckTypeSelectAdapter(this, recyclerview);
-        checkTypeSelectAdapter.setDatas(hospitals);
+        checkTypeSelectAdapter.setDatas(selectCheckTypeBeans);
         checkTypeSelectAdapter.setOnCheckItemClickListener(this);
         recyclerview.setAdapter(checkTypeSelectAdapter);
+        getCheckTypeList();
+    }
+
+    @Override
+    public void initListener() {
+        super.initListener();
+        etSearchCheckType.addTextChangedListener(new AbstractTextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                super.onTextChanged(s, start, before, count);
+                if (!TextUtils.isEmpty(s)) {
+                    searchKey = s.toString();
+                    //搜索查询
+                    getCheckTypeList();
+                }
+                else {
+                    searchKey = "";
+                    getCheckTypeList();
+                }
+            }
+        });
+    }
+
+    /**
+     * 获取检查项 全部
+     */
+    private void getCheckTypeList() {
+        RequestUtils.getCheckTypeList(this, token, code, searchKey, page, this);
     }
 
     @Override
     public void onCheckItemClick(int parentPosition, int position) {
-        setResult(RESULT_OK);
+        curSelectCheckTypeBean = selectCheckTypeBeans.get(parentPosition);
+        Intent intent = new Intent();
+        intent.putExtra(CommonData.KEY_RESERVE_CHECK_TYPE_BEAN, curSelectCheckTypeBean);
+        setResult(RESULT_OK, intent);
         finish();
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode != Activity.RESULT_OK) {
-            return;
-        }
-        if (requestCode == REQUEST_CODE_HOSPITAL) {
-            setResult(RESULT_OK, data);
-            finish();
+    public void onResponseSuccess(Tasks task, BaseResponse response) {
+        super.onResponseSuccess(task, response);
+        if (task == Tasks.GET_CHECK_TYPE) {
+            selectCheckTypeBeans = (List<SelectCheckTypeBean>)response.getData();
+            checkTypeSelectAdapter.setDatas(selectCheckTypeBeans);
+            new LitePalHelper().updateAll(selectCheckTypeBeans, SelectCheckTypeBean.class);
         }
     }
 }

@@ -122,6 +122,14 @@ WE_CHAT_LOGIN,
      */
     ADD_RESERVE_CHECK_ORDER,
     /**
+     * 获取检查项
+     */
+    GET_CHECK_TYPE,
+    /**
+     * 根据医院code获取检查项
+     */
+    GET_CHECK_TYPE_BY_HOSPITAL,
+    /**
      * 新增预约转诊订单
      */
     ADD_RESERVE_TRANSFER_ORDER,
