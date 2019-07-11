@@ -228,6 +228,10 @@ public class CheckDetailActivity extends BaseActivity implements OrderStatus, Ch
      * 检查项目
      */
     private void initCheckType() {
+        //避免重复加载
+        if (layoutCheckType.getChildCount() > 0) {
+            return;
+        }
         checkTypeList = checkDetailBean.getTrans();
         if (checkTypeList != null && checkTypeList.size() > 0) {
             for (int i = 0; i < checkTypeList.size(); i++) {

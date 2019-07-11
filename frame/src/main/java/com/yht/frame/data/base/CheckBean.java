@@ -17,7 +17,7 @@ public class CheckBean implements Serializable {
     private String patientCode;
     private String patientName;
     private String patientPhoto;
-    private ArrayList<CheckTypeBean> checkNames;
+    private ArrayList<CheckTypeBean> checkList;
 
     public int getStatus() {
         return status;
@@ -75,11 +75,11 @@ public class CheckBean implements Serializable {
         this.patientPhoto = patientPhoto;
     }
 
-    public ArrayList<CheckTypeBean> getCheckNames() {
-        return checkNames;
+    public ArrayList<CheckTypeBean> getCheckList() {
+        return checkList;
     }
 
-    public void setCheckNames(ArrayList<CheckTypeBean> checkNames) {
-        this.checkNames = checkNames;
+    public void setCheckList(ArrayList<CheckTypeBean> checkList) {
+        this.checkList = checkList;
     }
 }
