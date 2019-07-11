@@ -90,7 +90,7 @@ public class TransferInitiateDetailActivity extends BaseActivity implements Tran
     @BindView(R.id.layout_receive_notice)
     RelativeLayout layoutReceiveNotice;
     /**
-     * 订单号
+     * 订单
      */
     private TransferBean transferBean;
     /**

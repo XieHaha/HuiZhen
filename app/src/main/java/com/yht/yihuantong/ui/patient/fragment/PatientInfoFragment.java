@@ -88,6 +88,10 @@ public class PatientInfoFragment extends BaseFragment
         getPatientOrderList();
     }
 
+    public void setPatientCode(String patientCode) {
+        this.patientCode = patientCode;
+    }
+
     /**
      * 获取患者详情
      */
@@ -101,10 +105,6 @@ public class PatientInfoFragment extends BaseFragment
     private void getPatientOrderList() {
         RequestUtils.getPatientOrderListByPatientCode(getContext(), patientCode, loginBean.getToken(),
                                                       BaseData.BASE_PAGE_DATA_NUM, page, this);
-    }
-
-    public void setPatientCode(String patientCode) {
-        this.patientCode = patientCode;
     }
 
     /**
@@ -158,11 +158,12 @@ public class PatientInfoFragment extends BaseFragment
     private void sortOrderList() {
         titleBars = new ArrayList<>();
         for (PatientOrderBean bean : patientOrderBeans) {
-            titleBars.add(bean.getTime());
+            String time = BaseUtils.formatDate(bean.getCreateAt(), BaseUtils.YYYY_MM_DD);
+            titleBars.add(time);
         }
         //返回一个包含所有Tag字母在内的字符串并赋值给tagsStr
-        //        String tagsStr = BaseUtils.getTimeTags(patientOrderBeans);
-        //        timeItemDecoration.setTitleBar(titleBars, tagsStr);
+        String tagsStr = BaseUtils.getTimeTags(titleBars);
+        timeItemDecoration.setTitleBar(titleBars, tagsStr);
     }
 
     @Override
@@ -172,12 +173,14 @@ public class PatientInfoFragment extends BaseFragment
         switch (bean.getItemType()) {
             case PatientOrderBean.CHECK:
                 intent = new Intent(getContext(), CheckDetailActivity.class);
+                intent.putExtra(CommonData.KEY_ORDER_ID, bean.getOrderNo());
                 break;
             case PatientOrderBean.REMOTE:
                 intent = new Intent(getContext(), RemoteDetailActivity.class);
                 break;
             case PatientOrderBean.TRANSFER:
                 intent = new Intent(getContext(), TransferDetailActivity.class);
+                intent.putExtra(CommonData.KEY_ORDER_ID, bean.getOrderNo());
                 break;
             default:
                 break;

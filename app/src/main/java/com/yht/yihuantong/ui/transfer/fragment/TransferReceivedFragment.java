@@ -8,6 +8,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.RelativeLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.yht.frame.data.BaseData;
@@ -41,6 +42,8 @@ public class TransferReceivedFragment extends BaseFragment
     RecyclerView recyclerView;
     @BindView(R.id.layout_refresh)
     SwipeRefreshLayout layoutRefresh;
+    @BindView(R.id.layout_none_record)
+    RelativeLayout layoutNoneRecord;
     private TransferReceivedAdapter transferReceivedAdapter;
     /**
      * 已接收转诊患者
@@ -115,6 +118,12 @@ public class TransferReceivedFragment extends BaseFragment
             }
             else {
                 transferReceivedAdapter.loadMoreEnd();
+            }
+            if (transferBeans.size() == 0) {
+                layoutNoneRecord.setVisibility(View.VISIBLE);
+            }
+            else {
+                layoutNoneRecord.setVisibility(View.GONE);
             }
         }
     }

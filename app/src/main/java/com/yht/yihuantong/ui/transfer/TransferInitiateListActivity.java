@@ -123,7 +123,7 @@ public class TransferInitiateListActivity extends BaseActivity
             titleBars.add(bean.getTransferDate());
         }
         //返回一个包含所有Tag字符串并赋值给tagsStr
-        String tag = BaseUtils.getCheckTimeTags(titleBars);
+        String tag = BaseUtils.getTimeTags(titleBars);
         timeItemDecoration.setTitleBar(titleBars, tag);
     }
 

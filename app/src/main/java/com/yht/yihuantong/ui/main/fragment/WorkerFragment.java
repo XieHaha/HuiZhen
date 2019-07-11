@@ -88,6 +88,12 @@ public class WorkerFragment extends BaseFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        getStudioOrderStatistics();
+    }
+
+    @Override
     public void initView(View view, @NonNull Bundle savedInstanceState) {
         super.initView(view, savedInstanceState);
         statusBarFix.setLayoutParams(
@@ -105,7 +111,6 @@ public class WorkerFragment extends BaseFragment {
              .load(ImageUrlUtil.append(loginBean.getPhoto()))
              .apply(GlideHelper.getOptions(BaseUtils.dp2px(getContext(), 4)))
              .into(ivPersonalImage);
-        getStudioOrderStatistics();
         getBanner();
     }
 

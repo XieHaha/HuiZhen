@@ -12,6 +12,8 @@ import com.yht.frame.data.CheckTypeStatus;
 import com.yht.frame.data.OrderStatus;
 import com.yht.frame.data.base.CheckTypeBean;
 import com.yht.frame.data.base.PatientOrderBean;
+import com.yht.frame.utils.LogUtils;
+import com.yht.frame.utils.ToastUtil;
 import com.yht.yihuantong.R;
 
 import java.util.ArrayList;
@@ -81,13 +83,7 @@ public class PatientOrderAdapter extends BaseMultiItemQuickAdapter<PatientOrderB
             default:
                 break;
         }
-        //检查项数据
-        LinearLayout layout = helper.getView(R.id.layout_check_type);
-        addCheckView(layout, item);
-        //检查报告
-        helper.setVisible(R.id.layout_check_report_root, false);
-        LinearLayout layoutReport = helper.getView(R.id.layout_check_report);
-        addReportView(layoutReport, item);
+        addCheckView(helper, item);
     }
 
     /**
@@ -117,58 +113,79 @@ public class PatientOrderAdapter extends BaseMultiItemQuickAdapter<PatientOrderB
     /**
      * 添加检查项
      *
-     * @param layout
+     * @param helper
      * @param item
      */
-    private void addCheckView(LinearLayout layout, PatientOrderBean item) {
-        //已经初始化后不在处理
-        if (layout.getChildCount() > 0) {
-            return;
-        }
+    private void addCheckView(BaseViewHolder helper, PatientOrderBean item) {
+        //检查项数据
+        LinearLayout layout = helper.getView(R.id.layout_check_type);
+        layout.removeAllViews();
         ArrayList<CheckTypeBean> list = item.getTrans();
+        //已经上传了报告的检查项
+        ArrayList<CheckTypeBean> reportList = new ArrayList<>();
         if (list != null && list.size() > 0) {
             for (int i = 0; i < list.size(); i++) {
+                CheckTypeBean checkTypeBean = list.get(i);
                 View view = LayoutInflater.from(mContext).inflate(R.layout.item_check_type, null);
                 TextView textView = view.findViewById(R.id.tv_check_type_name);
                 ImageView imageDot = view.findViewById(R.id.iv_check_type_dot);
                 ImageView imageView = view.findViewById(R.id.iv_check_type_status);
-                textView.setText(list.get(i).getName());
-                int status = list.get(i).getStatus();
-                switch (status) {
-                    case CHECK_STATUS_WAIT:
-                        textView.setSelected(true);
-                        imageDot.setSelected(true);
-                        imageView.setVisibility(View.GONE);
-                        break;
-                    case CHECK_STATUS_WAIT_PAY:
-                        break;
-                    case CHECK_STATUS_PAID:
-                        break;
-                    case CHECK_STATUS_COMPLETE:
-                        break;
-                    case CHECK_STATUS_CANCEL:
-                        textView.setSelected(false);
-                        imageDot.setSelected(false);
-                        imageView.setVisibility(View.VISIBLE);
-                        break;
-                    default:
-                        break;
+                textView.setText(checkTypeBean.getName());
+                int status = checkTypeBean.getStatus();
+                //已完成（已上传报告）
+                if (status == CHECK_STATUS_COMPLETE) {
+                    reportList.add(checkTypeBean);
+                }
+                //检查项已取消
+                if (status == CHECK_STATUS_CANCEL) {
+                    textView.setSelected(true);
+                    imageDot.setSelected(true);
+                    imageView.setVisibility(View.VISIBLE);
+                }
+                else {
+                    textView.setSelected(false);
+                    imageDot.setSelected(false);
+                    imageView.setVisibility(View.GONE);
                 }
                 layout.addView(view);
             }
+            if (reportList.size() > 0) {
+                helper.setText(R.id.tv_check_report,
+                               String.format(mContext.getString(R.string.txt_report_num), reportList.size(),
+                                             list.size()));
+                helper.setGone(R.id.layout_check_report_root, true);
+                addReportView(helper, reportList);
+            }
+            else {
+                helper.setGone(R.id.layout_check_report_root, false);
+            }
+        }
+        else {
+            helper.setGone(R.id.layout_check_report_root, false);
         }
     }
 
     /**
      * 添加报告
      *
-     * @param layout
-     * @param item
+     * @param helper
+     * @param reportList
      */
-    private void addReportView(LinearLayout layout, PatientOrderBean item) {
-        //已经初始化后不在处理
-        if (layout.getChildCount() > 0) {
-            return;
+    private void addReportView(BaseViewHolder helper, ArrayList<CheckTypeBean> reportList) {
+        //检查报告
+        LinearLayout layoutReport = helper.getView(R.id.layout_check_report);
+        layoutReport.removeAllViews();
+        for (int i = 0; i < reportList.size(); i++) {
+            CheckTypeBean bean = reportList.get(i);
+            View view = LayoutInflater.from(mContext).inflate(R.layout.item_check_report, null);
+            TextView textView = view.findViewById(R.id.tv_check_report_name);
+            textView.setText(bean.getName());
+            view.setTag(i);
+            view.setOnClickListener(v -> {
+                ToastUtil.toast(mContext, "parent:" + helper.getAdapterPosition() + " child:" + v.getTag());
+                LogUtils.i("test", " url:" + bean.getReport());
+            });
+            layoutReport.addView(view);
         }
     }
 }

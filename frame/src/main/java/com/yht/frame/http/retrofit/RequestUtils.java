@@ -526,8 +526,7 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .getStudioOrderStatistics(token)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_STUDIO_ORDER_STATISTICS,
-                                                                 listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_STUDIO_ORDER_STATISTICS, listener));
     }
 
     public static void getBanner(Context context, String token, final ResponseListener<BaseResponse> listener) {

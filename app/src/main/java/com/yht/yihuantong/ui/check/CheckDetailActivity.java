@@ -25,12 +25,14 @@ import com.yht.frame.data.base.CheckTypeByDetailBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
+import com.yht.frame.utils.LogUtils;
 import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.utils.ImageUrlUtil;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -38,7 +40,7 @@ import butterknife.OnClick;
 /**
  * @author 顿顿
  * @date 19/6/14 10:56
- * @des 预约检查详情
+ * @des 预约服务详情
  */
 public class CheckDetailActivity extends BaseActivity implements OrderStatus, CheckTypeStatus {
     @BindView(R.id.iv_patient_img)
@@ -98,7 +100,11 @@ public class CheckDetailActivity extends BaseActivity implements OrderStatus, Ch
     /**
      * 检查项
      */
-    private ArrayList<CheckTypeByDetailBean> checkTypeList;
+    private List<CheckTypeByDetailBean> checkTypeList;
+    /**
+     * 已上传报告的检查项
+     */
+    private List<CheckTypeByDetailBean> reportList;
     private Bitmap bitmapCancel, bitmapNoreach, bitmapReach;
     /**
      * 订单
@@ -191,19 +197,16 @@ public class CheckDetailActivity extends BaseActivity implements OrderStatus, Ch
             case ORDER_STATUS_INCOMPLETE:
                 ivCheckStatus.setImageResource(R.mipmap.ic_check_incomplete);
                 layoutCancelResult.setVisibility(View.GONE);
-                layoutCheckReportRoot.setVisibility(View.GONE);
                 tvCheckStatus.setText(getString(R.string.txt_status_incomplete));
                 break;
             case ORDER_STATUS_COMPLETE:
                 ivCheckStatus.setImageResource(R.mipmap.ic_status_complete);
-                layoutCheckReportRoot.setVisibility(View.VISIBLE);
                 layoutCancelResult.setVisibility(View.GONE);
                 tvCheckStatus.setText(getString(R.string.txt_status_complete));
                 break;
             default:
                 ivCheckStatus.setImageResource(R.mipmap.ic_status_cancel);
                 layoutCancelResult.setVisibility(View.VISIBLE);
-                layoutCheckReportRoot.setVisibility(View.VISIBLE);
                 tvCheckStatus.setText(getString(R.string.txt_status_cancel));
                 break;
         }
@@ -231,11 +234,24 @@ public class CheckDetailActivity extends BaseActivity implements OrderStatus, Ch
     private void initCheckType() {
         layoutCheckType.removeAllViews();
         checkTypeList = checkDetailBean.getTrans();
+        reportList = new ArrayList<>();
         if (checkTypeList != null && checkTypeList.size() > 0) {
             for (int i = 0; i < checkTypeList.size(); i++) {
                 CheckTypeByDetailBean bean = checkTypeList.get(i);
                 layoutCheckType.addView(addCheckType(i, bean));
             }
+            if (reportList.size() > 0) {
+                layoutCheckReportRoot.setVisibility(View.VISIBLE);
+                tvCheckReport.setText(
+                        String.format(getString(R.string.txt_report_num), reportList.size(), checkTypeList.size()));
+                initCheckReport();
+            }
+            else {
+                layoutCheckReportRoot.setVisibility(View.GONE);
+            }
+        }
+        else {
+            layoutCheckReportRoot.setVisibility(View.GONE);
         }
     }
 
@@ -252,6 +268,10 @@ public class CheckDetailActivity extends BaseActivity implements OrderStatus, Ch
         imageView.setVisibility(View.VISIBLE);
         TextView tvType = view.findViewById(R.id.tv_check_type);
         tvType.setText(String.format(getString(R.string.txt_space), bean.getName()));
+        //已完成（已上传报告）
+        if (bean.getStatus() == CHECK_STATUS_COMPLETE) {
+            reportList.add(bean);
+        }
         if (bean.getStatus() == CHECK_STATUS_CANCEL) {
             tvType.append(appendImage(bean.getStatus(), bean.getName()));
             tvType.setSelected(true);
@@ -263,8 +283,6 @@ public class CheckDetailActivity extends BaseActivity implements OrderStatus, Ch
         }
         //隐藏价格
         view.findViewById(R.id.tv_check_price).setVisibility(View.GONE);
-        view.setTag(i);
-        view.setOnClickListener(this);
         return view;
     }
 
@@ -272,12 +290,16 @@ public class CheckDetailActivity extends BaseActivity implements OrderStatus, Ch
      * 检查报告
      */
     private void initCheckReport() {
-        for (int i = 0; i < 3; i++) {
+        layoutCheckReport.removeAllViews();
+        for (int i = 0; i < reportList.size(); i++) {
+            CheckTypeByDetailBean bean = reportList.get(i);
             View view = getLayoutInflater().inflate(R.layout.item_check_report, null);
             TextView textView = view.findViewById(R.id.tv_check_report_name);
-            textView.setText("检查报告");
+            textView.setText(bean.getName());
             view.setTag(i);
-            view.setOnClickListener(this);
+            view.setOnClickListener(v -> {
+                LogUtils.i("test", " url:" + bean.getReport());
+            });
             layoutCheckReport.addView(view);
         }
     }
@@ -287,11 +309,6 @@ public class CheckDetailActivity extends BaseActivity implements OrderStatus, Ch
         new HintDialog(this).setPhone(checkDetailBean.getPatientMobile())
                             .setOnEnterClickListener(() -> callPhone(checkDetailBean.getPatientMobile()))
                             .show();
-    }
-
-    @Override
-    public void onClick(View v) {
-        super.onClick(v);
     }
 
     @Override

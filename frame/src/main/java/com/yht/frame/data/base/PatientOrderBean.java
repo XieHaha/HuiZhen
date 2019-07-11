@@ -27,6 +27,7 @@ public class PatientOrderBean implements MultiItemEntity {
      */
     private int type;
     private int status;
+    private long createAt;
     private String time;
     private String orderNo;
     private String sourceHospitalName;
@@ -49,6 +50,14 @@ public class PatientOrderBean implements MultiItemEntity {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public long getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(long createAt) {
+        this.createAt = createAt;
     }
 
     public int getStatus() {
