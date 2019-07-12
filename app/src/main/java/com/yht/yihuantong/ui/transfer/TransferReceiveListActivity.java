@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.yht.frame.data.CommonData;
 import com.yht.frame.ui.BaseActivity;
-import com.yht.frame.utils.LogUtils;
 import com.yht.frame.widgets.view.AbstractOnPageChangeListener;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.adapter.ViewPagerAdapter;
@@ -69,12 +68,6 @@ public class TransferReceiveListActivity extends BaseActivity {
 
             viewBar.setTranslationX(calcViewBarOffset());
         }
-//        new ViewPrepared().asyncPrepare(tvLeft, (w, h) -> {
-//            ViewGroup.LayoutParams params = viewBar.getLayoutParams();
-//            params.width = w + BaseUtils.dp2px(this, 12);
-//            viewBar.setLayoutParams(params);
-//
-//        });
     }
 
     @Override
@@ -160,7 +153,6 @@ public class TransferReceiveListActivity extends BaseActivity {
     private int calcViewBarOffset() {
         //获取屏幕宽度
         int width = ScreenUtils.getScreenSize(this)[0];
-        LogUtils.i(TAG, "width:" + width + "  viewBar:" + viewBar.getWidth());
         return (width - viewBar.getWidth() * 2) / 4;
     }
 

@@ -28,11 +28,10 @@ import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.widgets.edittext.AbstractTextWatcher;
 import com.yht.frame.widgets.edittext.SuperEditText;
-import com.yht.frame.widgets.recyclerview.IndexBar;
-import com.yht.frame.widgets.recyclerview.SideBar;
 import com.yht.frame.widgets.recyclerview.decoration.SideBarItemDecoration;
 import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.ui.adapter.IndexBarAdapter;
 import com.yht.yihuantong.ui.adapter.PatientAdapter;
 import com.yht.yihuantong.ui.patient.PatientPersonalActivity;
 
@@ -52,14 +51,10 @@ public class PatientFragment extends BaseFragment
                    BaseQuickAdapter.RequestLoadMoreListener, SwipeRefreshLayout.OnRefreshListener {
     @BindView(R.id.status_bar_fix)
     View statusBarFix;
-    @BindView(R.id.index_bar)
-    IndexBar indexBar;
     @BindView(R.id.public_main_title)
     TextView publicMainTitle;
     @BindView(R.id.recyclerview)
     RecyclerView recyclerview;
-    @BindView(R.id.side_bar)
-    SideBar sideBar;
     @BindView(R.id.layout_bg)
     RelativeLayout layoutBg;
     @BindView(R.id.et_search_patient)
@@ -70,11 +65,14 @@ public class PatientFragment extends BaseFragment
     TextView tvNonePatient;
     @BindView(R.id.layout_refresh)
     SwipeRefreshLayout layoutRefresh;
+    @BindView(R.id.recycler_view)
+    RecyclerView indexRecyclerView;
     private View headerView;
     /**
      * 适配器
      */
     private PatientAdapter patientAdapter;
+    private IndexBarAdapter indexBarAdapter;
     /**
      * recycler
      */
@@ -91,6 +89,7 @@ public class PatientFragment extends BaseFragment
      * 搜索患者数据
      */
     private List<PatientBean> searchPatientBeans = new ArrayList<>();
+    private List<String> indexs = new ArrayList<>();
 
     @Override
     public int getLayoutID() {
@@ -106,7 +105,6 @@ public class PatientFragment extends BaseFragment
         layoutRefresh.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light,
                                               android.R.color.holo_orange_light, android.R.color.holo_green_light);
         layoutRefresh.setOnRefreshListener(this);
-        initEvents();
     }
 
     @Override
@@ -114,6 +112,9 @@ public class PatientFragment extends BaseFragment
         super.initData(savedInstanceState);
         recyclerview.setLayoutManager(layoutManager = new LinearLayoutManager(getContext()));
         recyclerview.addItemDecoration(decoration = new SideBarItemDecoration(getContext()));
+        indexRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        indexBarAdapter = new IndexBarAdapter(R.layout.item_index_tag, indexs);
+        indexRecyclerView.setAdapter(indexBarAdapter);
         getPatients();
         initAdapter();
     }
@@ -135,6 +136,16 @@ public class PatientFragment extends BaseFragment
                     layoutBg.setVisibility(View.GONE);
                     patientAdapter.setNewData(searchPatientBeans);
                     patientAdapter.loadMoreEnd();
+                }
+            }
+        });
+        indexBarAdapter.setOnItemClickListener((adapter, view, position) -> {
+            String tag = indexs.get(position);
+            if (TextUtils.isEmpty(tag) || patientBeans.size() <= 0) { return; }
+            for (int i = 0; i < patientBeans.size(); i++) {
+                if (tag.equals(patientBeans.get(i).getIndexTag())) {
+                    layoutManager.scrollToPositionWithOffset(i + 1, 0);
+                    return;
                 }
             }
         });
@@ -179,7 +190,12 @@ public class PatientFragment extends BaseFragment
         BaseUtils.sortData(patientBeans);
         //返回一个包含所有Tag字母在内的字符串并赋值给tagsStr
         String tagsStr = BaseUtils.getTags(patientBeans);
-        sideBar.setIndexStr(tagsStr);
+        char[] tags = tagsStr.toCharArray();
+        indexs.clear();
+        for (char c : tags) {
+            indexs.add(String.valueOf(c));
+        }
+        indexBarAdapter.setNewData(indexs);
         decoration.setDatas(patientBeans, tagsStr);
     }
 
@@ -200,7 +216,12 @@ public class PatientFragment extends BaseFragment
         BaseUtils.sortData(searchPatientBeans);
         //返回一个包含所有Tag字母在内的字符串并赋值给tagsStr
         String tagsStr = BaseUtils.getTags(searchPatientBeans);
-        sideBar.setIndexStr(tagsStr);
+        char[] tags = tagsStr.toCharArray();
+        indexs.clear();
+        for (char c : tags) {
+            indexs.add(String.valueOf(c));
+        }
+        indexBarAdapter.setNewData(indexs);
         decoration.setDatas(searchPatientBeans, tagsStr);
     }
 
@@ -286,21 +307,6 @@ public class PatientFragment extends BaseFragment
     @Override
     public void onRefresh() {
         getPatients();
-    }
-
-    /**
-     * 列表侧边栏附表滚动
-     */
-    public void initEvents() {
-        sideBar.setIndexChangeListener(tag -> {
-            if (TextUtils.isEmpty(tag) || patientBeans.size() <= 0) { return; }
-            for (int i = 0; i < patientBeans.size(); i++) {
-                if (tag.equals(patientBeans.get(i).getIndexTag())) {
-                    layoutManager.scrollToPositionWithOffset(i + 1, 0);
-                    return;
-                }
-            }
-        });
     }
 
     /**
