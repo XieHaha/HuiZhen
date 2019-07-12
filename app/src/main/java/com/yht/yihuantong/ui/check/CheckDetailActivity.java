@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.style.ImageSpan;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -28,6 +27,7 @@ import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.LogUtils;
 import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.frame.widgets.dialog.HintDialog;
+import com.yht.frame.widgets.view.CenterImageSpan;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.utils.ImageUrlUtil;
 
@@ -297,7 +297,7 @@ public class CheckDetailActivity extends BaseActivity implements OrderStatus, Ch
             TextView textView = view.findViewById(R.id.tv_check_report_name);
             textView.setText(bean.getName());
             view.setTag(i);
-            view.setOnClickListener(v -> {
+            textView.setOnClickListener(v -> {
                 LogUtils.i("test", " url:" + bean.getReport());
             });
             layoutCheckReport.addView(view);
@@ -325,19 +325,19 @@ public class CheckDetailActivity extends BaseActivity implements OrderStatus, Ch
     }
 
     private SpannableString appendImage(int status, String showText) {
-        ImageSpan imgSpan;
+        CenterImageSpan imgSpan;
         switch (status) {
             case CHECK_STATUS_WAIT_PAY:
-                imgSpan = new ImageSpan(this, bitmapNoreach);
+                imgSpan = new CenterImageSpan(this, bitmapNoreach);
                 break;
             case CHECK_STATUS_COMPLETE:
-                imgSpan = new ImageSpan(this, bitmapReach);
+                imgSpan = new CenterImageSpan(this, bitmapReach);
                 break;
             case CHECK_STATUS_CANCEL:
-                imgSpan = new ImageSpan(this, bitmapCancel);
+                imgSpan = new CenterImageSpan(this, bitmapCancel);
                 break;
             default:
-                imgSpan = new ImageSpan(this, bitmapCancel);
+                imgSpan = new CenterImageSpan(this, bitmapCancel);
                 break;
         }
         SpannableString spanString = new SpannableString(showText);

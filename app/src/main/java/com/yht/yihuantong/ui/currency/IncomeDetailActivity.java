@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.style.ImageSpan;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -20,6 +19,7 @@ import com.yht.frame.data.base.CheckTypeBean;
 import com.yht.frame.data.base.IncomeDetailBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
+import com.yht.frame.widgets.view.CenterImageSpan;
 import com.yht.yihuantong.R;
 
 import java.util.ArrayList;
@@ -91,7 +91,7 @@ public class IncomeDetailActivity extends BaseActivity implements CurrencyDetail
 
     private void initPage() {
         if (incomeDetailBean != null) {
-            tvIncomePrice.setText(String.valueOf(incomeDetailBean.getArrived()));
+            tvIncomePrice.setText(incomeDetailBean.getArrived());
             tvIncomeEstimate.setText(
                     String.format(getString(R.string.txt_personal_estimate_income), incomeDetailBean.getTotal()));
             tvPatientName.setText(incomeDetailBean.getPatientName());
@@ -173,15 +173,15 @@ public class IncomeDetailActivity extends BaseActivity implements CurrencyDetail
     }
 
     private SpannableString appendImage(String status, String showText) {
-        ImageSpan imgSpan;
+        CenterImageSpan imgSpan;
         if (status.contains("已取消")) {
-            imgSpan = new ImageSpan(this, bitmapCancel);
+            imgSpan = new CenterImageSpan(this, bitmapCancel);
         }
         else if (status.contains("未到账")) {
-            imgSpan = new ImageSpan(this, bitmapNoreach);
+            imgSpan = new CenterImageSpan(this, bitmapNoreach);
         }
         else {
-            imgSpan = new ImageSpan(this, bitmapReach);
+            imgSpan = new CenterImageSpan(this, bitmapReach);
         }
         SpannableString spanString = new SpannableString(showText);
         spanString.setSpan(imgSpan, 0, showText.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);

@@ -181,7 +181,7 @@ public class PatientOrderAdapter extends BaseMultiItemQuickAdapter<PatientOrderB
             TextView textView = view.findViewById(R.id.tv_check_report_name);
             textView.setText(bean.getName());
             view.setTag(i);
-            view.setOnClickListener(v -> {
+            textView.setOnClickListener(v -> {
                 ToastUtil.toast(mContext, "parent:" + helper.getAdapterPosition() + " child:" + v.getTag());
                 LogUtils.i("test", " url:" + bean.getReport());
             });

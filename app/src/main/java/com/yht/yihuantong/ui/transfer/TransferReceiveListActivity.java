@@ -6,15 +6,13 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.yht.frame.data.CommonData;
 import com.yht.frame.ui.BaseActivity;
-import com.yht.frame.utils.BaseUtils;
+import com.yht.frame.utils.LogUtils;
 import com.yht.frame.widgets.view.AbstractOnPageChangeListener;
-import com.yht.frame.widgets.view.ViewPrepared;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.adapter.ViewPagerAdapter;
 import com.yht.yihuantong.ui.transfer.fragment.TransferReceivedFragment;
@@ -43,6 +41,10 @@ public class TransferReceiveListActivity extends BaseActivity {
     View viewBar;
     @BindView(R.id.view_pager)
     ViewPager viewPager;
+    /**
+     * true为 1  false 为 0
+     */
+    private boolean index;
 
     @Override
     protected boolean isInitBackBtn() {
@@ -57,17 +59,22 @@ public class TransferReceiveListActivity extends BaseActivity {
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-        new ViewPrepared().asyncPrepare(tvLeft, (w, h) -> {
-            ViewGroup.LayoutParams params = viewBar.getLayoutParams();
-            params.width = w + BaseUtils.dp2px(this, 12);
-            viewBar.setLayoutParams(params);
-            viewBar.setTranslationX(calcViewBarOffset());
-        });
-        boolean index = false;
         if (getIntent() != null) {
             index = getIntent().getBooleanExtra(CommonData.KEY_PUBLIC, false);
         }
         initFragment(index);
+        if (index) {
+            move(1, calcViewBarOffset(), 0);
+        }else {
+
+            viewBar.setTranslationX(calcViewBarOffset());
+        }
+//        new ViewPrepared().asyncPrepare(tvLeft, (w, h) -> {
+//            ViewGroup.LayoutParams params = viewBar.getLayoutParams();
+//            params.width = w + BaseUtils.dp2px(this, 12);
+//            viewBar.setLayoutParams(params);
+//
+//        });
     }
 
     @Override
@@ -84,10 +91,10 @@ public class TransferReceiveListActivity extends BaseActivity {
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
                 if (position == 0) {
-                    titleBar(true);
+                    titleBar(false);
                 }
                 else {
-                    titleBar(false);
+                    titleBar(true);
                 }
             }
         });
@@ -115,10 +122,10 @@ public class TransferReceiveListActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.layout_left:
-                titleBar(true);
+                titleBar(false);
                 break;
             case R.id.layout_right:
-                titleBar(false);
+                titleBar(true);
                 break;
             default:
                 break;
@@ -128,10 +135,10 @@ public class TransferReceiveListActivity extends BaseActivity {
     /**
      * titlebar处理
      *
-     * @param one true 为默认
+     * @param index true
      */
-    private void titleBar(boolean one) {
-        if (one) {
+    private void titleBar(boolean index) {
+        if (!index) {
             viewPager.setCurrentItem(0);
             tvLeft.setSelected(true);
             tvLeft.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
@@ -153,6 +160,7 @@ public class TransferReceiveListActivity extends BaseActivity {
     private int calcViewBarOffset() {
         //获取屏幕宽度
         int width = ScreenUtils.getScreenSize(this)[0];
+        LogUtils.i(TAG, "width:" + width + "  viewBar:" + viewBar.getWidth());
         return (width - viewBar.getWidth() * 2) / 4;
     }
 

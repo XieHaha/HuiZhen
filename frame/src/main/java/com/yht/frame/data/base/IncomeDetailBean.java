@@ -10,8 +10,8 @@ import java.util.ArrayList;
  */
 public class IncomeDetailBean implements Serializable {
     private static final long serialVersionUID = -762440704114133758L;
-    private int total;
-    private int arrived;
+    private String total;
+    private String arrived;
     private int serviceFlag;
     private String doctorCode;
     private String serviceFlagName;
@@ -25,19 +25,19 @@ public class IncomeDetailBean implements Serializable {
     private String msg;
     private ArrayList<CheckTypeBean> examList;
 
-    public int getTotal() {
+    public String getTotal() {
         return total;
     }
 
-    public void setTotal(int total) {
+    public void setTotal(String total) {
         this.total = total;
     }
 
-    public int getArrived() {
+    public String getArrived() {
         return arrived;
     }
 
-    public void setArrived(int arrived) {
+    public void setArrived(String arrived) {
         this.arrived = arrived;
     }
 

@@ -117,7 +117,6 @@ public class CheckHistoryActivity extends BaseActivity
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         Intent intent = new Intent(this, CheckDetailActivity.class);
         intent.putExtra(CommonData.KEY_ORDER_ID, checkedList.get(position).getOrderNo());
-        intent.putExtra(CommonData.KEY_PUBLIC, true);
         startActivity(intent);
     }
 
