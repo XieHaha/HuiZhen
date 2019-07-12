@@ -28,20 +28,27 @@ public class AddImageAdapter extends BaseQuickAdapter<NormImage, BaseViewHolder>
     @Override
     protected void convert(BaseViewHolder helper, NormImage item) {
         //两个都为空
-        String url;
         if (TextUtils.isEmpty(item.getImagePath()) && TextUtils.isEmpty(item.getImageUrl())) {
             helper.setVisible(R.id.iv_delete, false);
-            url = "";
+            Glide.with(mContext)
+                 .load("")
+                 .apply(GlideHelper.getOptionsPic(BaseUtils.dp2px(mContext, 4)))
+                 .into((ImageView)helper.getView(R.id.iv_upload));
         }
         else {
-            url = TextUtils.isEmpty(item.getImagePath())
-                  ? ImageUrlUtil.append(item.getImageUrl())
-                  : item.getImagePath();
+            if (TextUtils.isEmpty(item.getImagePath())) {
+                Glide.with(mContext)
+                     .load(ImageUrlUtil.addTokenToUrl(item.getImageUrl()))
+                     .apply(GlideHelper.getOptionsPic(BaseUtils.dp2px(mContext, 4)))
+                     .into((ImageView)helper.getView(R.id.iv_upload));
+            }
+            else {
+                Glide.with(mContext)
+                     .load(item.getImagePath())
+                     .apply(GlideHelper.getOptionsPic(BaseUtils.dp2px(mContext, 4)))
+                     .into((ImageView)helper.getView(R.id.iv_upload));
+            }
             helper.setVisible(R.id.iv_delete, true).addOnClickListener(R.id.iv_delete);
         }
-        Glide.with(mContext)
-             .load(url)
-             .apply(GlideHelper.getOptionsPic(BaseUtils.dp2px(mContext, 4)))
-             .into((ImageView)helper.getView(R.id.iv_upload));
     }
 }

@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
+import com.yht.frame.data.base.PatientDetailBean;
 import com.yht.frame.data.base.ReserveCheckBean;
 import com.yht.frame.data.base.ReserveTransferBean;
 import com.yht.frame.http.retrofit.RequestUtils;
@@ -87,6 +88,10 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
      */
     private SubmitCheckFragment submitCheckFragment;
     /**
+     * 患者回填数据
+     */
+    private PatientDetailBean patientDetailBean;
+    /**
      * 确认提交(预约转诊)
      */
     private SubmitTransferFragment submitTransferFragment;
@@ -122,9 +127,11 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
         super.initData(savedInstanceState);
         if (getIntent() != null) {
             isTransfer = getIntent().getBooleanExtra(CommonData.KEY_CHECK_OR_TRANSFER, false);
+            patientDetailBean = (PatientDetailBean)getIntent().getSerializableExtra(CommonData.KEY_PATIENT_BEAN);
         }
         initTitlePage();
         initTab();
+        initHistoryData();
     }
 
     /**
@@ -160,6 +167,15 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
     }
 
     /**
+     * 若已有患者数据  进行数据回填
+     */
+    private void initHistoryData() {
+        if (patientDetailBean != null) {
+
+        }
+    }
+
+    /**
      * 初始化tabs
      */
     private void initTab() {
@@ -172,7 +188,7 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
         hideAll(transaction);
         if (identifyFragment == null) {
             identifyFragment = new IdentifyFragment();
-            identifyFragment.setIstransfer(isTransfer);
+            identifyFragment.setTransfer(isTransfer);
             identifyFragment.setOnCheckListener(this);
             transaction.add(R.id.layout_frame_root, identifyFragment);
         }

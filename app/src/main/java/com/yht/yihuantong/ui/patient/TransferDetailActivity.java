@@ -100,7 +100,7 @@ public class TransferDetailActivity extends BaseActivity implements TransferOrde
             return;
         }
         Glide.with(this)
-             .load(ImageUrlUtil.append(transferBean.getWxPhoto()))
+             .load(ImageUrlUtil.addTokenToUrl(transferBean.getWxPhoto()))
              .apply(GlideHelper.getOptions(BaseUtils.dp2px(this, 4)))
              .into(ivPatientImg);
         tvPatientName.setText(transferBean.getPatientName());

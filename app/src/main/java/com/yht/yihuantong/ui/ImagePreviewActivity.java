@@ -127,7 +127,7 @@ public class ImagePreviewActivity extends Activity implements ViewPager.OnPageCh
         imgViewPager.setAdapter(new TouchImageAdapter());
         imgViewPager.setCurrentItem(currentIndex);
         btnSaveImage.setOnClickListener(v -> {
-            String imageUri = ImageUrlUtil.append(urls.get(currentIndex).getImageUrl());
+            String imageUri = urls.get(currentIndex).getImageUrl();
             String fileName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
             if (CacheUtils.getInstance(getBaseContext()).saveImageFileToDisk(imageUri)) {
                 Toast.makeText(ImagePreviewActivity.this,
@@ -214,8 +214,10 @@ public class ImagePreviewActivity extends Activity implements ViewPager.OnPageCh
         @Override
         public View instantiateItem(final ViewGroup container, final int position) {
             currentPreviceView = imgPreViews.get(position);
+            //                        currentPreviceView.loadingImageAsync(urls.get(position).getImagePath(), urls.get(position).getImageUrl(),
+            //                                                             position);
             currentPreviceView.loadingImageAsync(urls.get(position).getImagePath(),
-                                                 ImageUrlUtil.append(urls.get(position).getImageUrl()), position);
+                                                 ImageUrlUtil.addTokenToUrl(urls.get(position).getImageUrl()));
             container.addView(currentPreviceView, LinearLayout.LayoutParams.MATCH_PARENT,
                               LinearLayout.LayoutParams.MATCH_PARENT);
             return currentPreviceView;

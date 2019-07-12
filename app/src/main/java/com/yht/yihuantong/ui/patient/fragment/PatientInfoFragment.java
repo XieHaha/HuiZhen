@@ -18,9 +18,11 @@ import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.base.PatientDetailBean;
 import com.yht.frame.data.base.PatientOrderBean;
+import com.yht.frame.data.base.ReservationValidateBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
+import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.frame.widgets.recyclerview.decoration.TimeItemDecoration;
 import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
@@ -30,6 +32,7 @@ import com.yht.yihuantong.ui.check.CheckDetailActivity;
 import com.yht.yihuantong.ui.patient.TransferDetailActivity;
 import com.yht.yihuantong.ui.remote.RemoteDetailActivity;
 import com.yht.yihuantong.ui.reservation.ReservationCheckOrTransferActivity;
+import com.yht.yihuantong.ui.reservation.ReservationDisableActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +59,10 @@ public class PatientInfoFragment extends BaseFragment
     private TimeItemDecoration timeItemDecoration;
     private PatientDetailBean patientDetailBean;
     /**
+     * 检查、转诊、验证
+     */
+    private ReservationValidateBean reservationValidateBean;
+    /**
      * 当前患者code
      */
     private String patientCode;
@@ -64,6 +71,10 @@ public class PatientInfoFragment extends BaseFragment
      */
     private List<PatientOrderBean> patientOrderBeans = new ArrayList<>();
     private List<String> titleBars;
+    /**
+     * 预约转诊前判断是否已有转诊未处理
+     */
+    private boolean exist;
     /**
      * 页码
      */
@@ -86,6 +97,8 @@ public class PatientInfoFragment extends BaseFragment
         super.initData(savedInstanceState);
         getPatientDetail();
         getPatientOrderList();
+        getValidateHospitalList();
+        getPatientExistTransfer();
     }
 
     public void setPatientCode(String patientCode) {
@@ -105,6 +118,20 @@ public class PatientInfoFragment extends BaseFragment
     private void getPatientOrderList() {
         RequestUtils.getPatientOrderListByPatientCode(getContext(), patientCode, loginBean.getToken(),
                                                       BaseData.BASE_PAGE_DATA_NUM, page, this);
+    }
+
+    /**
+     * 校验医生是否有预约检查和预约转诊的合作医院
+     */
+    private void getValidateHospitalList() {
+        RequestUtils.getValidateHospitalList(getContext(), loginBean.getToken(), this);
+    }
+
+    /**
+     * 查询患者是否存在未完成的转诊单
+     */
+    private void getPatientExistTransfer() {
+        RequestUtils.getPatientExistTransfer(getContext(), loginBean.getToken(), patientCode, this);
     }
 
     /**
@@ -193,13 +220,33 @@ public class PatientInfoFragment extends BaseFragment
         Intent intent;
         switch (view.getId()) {
             case R.id.tv_reserve_check:
-                intent = new Intent(getContext(), ReservationCheckOrTransferActivity.class);
-                startActivity(intent);
+                if (reservationValidateBean.isJc()) {
+                    intent = new Intent(getContext(), ReservationCheckOrTransferActivity.class);
+                    intent.putExtra(CommonData.KEY_PATIENT_BEAN, patientDetailBean);
+                    startActivity(intent);
+                }
+                else {
+                    intent = new Intent(getContext(), ReservationDisableActivity.class);
+                    startActivity(intent);
+                }
                 break;
             case R.id.tv_reserve_transfer:
-                intent = new Intent(getContext(), ReservationCheckOrTransferActivity.class);
-                intent.putExtra(CommonData.KEY_CHECK_OR_TRANSFER, true);
-                startActivity(intent);
+                if (exist) {
+                    ToastUtil.toast(getContext(), R.string.txt_patient_exist_transfer);
+                }
+                else {
+                    if (reservationValidateBean.isJc()) {
+                        intent = new Intent(getContext(), ReservationCheckOrTransferActivity.class);
+                        intent.putExtra(CommonData.KEY_PATIENT_BEAN, patientDetailBean);
+                        intent.putExtra(CommonData.KEY_CHECK_OR_TRANSFER, true);
+                        startActivity(intent);
+                    }
+                    else {
+                        intent = new Intent(getContext(), ReservationDisableActivity.class);
+                        intent.putExtra(CommonData.KEY_CHECK_OR_TRANSFER, true);
+                        startActivity(intent);
+                    }
+                }
                 break;
             default:
                 break;
@@ -229,6 +276,12 @@ public class PatientInfoFragment extends BaseFragment
                 else {
                     patientOrderAdapter.loadMoreComplete();
                 }
+                break;
+            case GET_VALIDATE_HOSPITAL_LIST:
+                reservationValidateBean = (ReservationValidateBean)response.getData();
+                break;
+            case GET_PATIENT_EXIST_TRANSFER:
+                exist = (boolean)response.getData();
                 break;
             default:
                 break;

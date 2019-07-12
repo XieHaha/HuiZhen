@@ -35,7 +35,7 @@ public class CheckHistoryAdapter extends BaseQuickAdapter<CheckBean, BaseViewHol
     @Override
     protected void convert(BaseViewHolder helper, CheckBean item) {
         Glide.with(mContext)
-             .load(ImageUrlUtil.append(item.getPatientPhoto()))
+             .load(ImageUrlUtil.addTokenToUrl(item.getPatientPhoto()))
              .apply(GlideHelper.getOptions(BaseUtils.dp2px(mContext, 4)))
              .into((ImageView)helper.getView(R.id.iv_check_img));
         helper.setText(R.id.tv_check_name, item.getPatientName())

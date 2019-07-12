@@ -174,7 +174,7 @@ public class CheckDetailActivity extends BaseActivity implements OrderStatus, Ch
         }
         initCheckType();
         Glide.with(this)
-             .load(ImageUrlUtil.append(checkDetailBean.getPatientPhoto()))
+             .load(ImageUrlUtil.addTokenToUrl(checkDetailBean.getPatientPhoto()))
              .apply(GlideHelper.getOptions(BaseUtils.dp2px(this, 4)))
              .into(ivPatientImg);
         tvPatientName.setText(checkDetailBean.getPatientName());

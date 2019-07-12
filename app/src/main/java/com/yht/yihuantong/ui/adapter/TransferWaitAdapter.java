@@ -27,7 +27,7 @@ public class TransferWaitAdapter extends BaseQuickAdapter<TransferBean, BaseView
     @Override
     protected void convert(BaseViewHolder helper, TransferBean item) {
         Glide.with(mContext)
-             .load(ImageUrlUtil.append(item.getWxPhoto()))
+             .load(ImageUrlUtil.addTokenToUrl(item.getWxPhoto()))
              .apply(GlideHelper.getOptions(BaseUtils.dp2px(mContext, 4)))
              .into((ImageView)helper.getView(R.id.iv_transfer_img));
         helper.setText(R.id.txt_transfer_time, item.getTransferDate())

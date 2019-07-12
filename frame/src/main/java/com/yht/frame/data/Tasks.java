@@ -38,6 +38,10 @@ WE_CHAT_LOGIN,
      */
     GET_HOSPITAL_LIST_BY_DOCTOR,
     /**
+     * 校验医生是否有预约检查和预约转诊的合作医院。
+     */
+    GET_VALIDATE_HOSPITAL_LIST,
+    /**
      * 获取当前医生有预约转诊权限的合作医院下面的一级级科室。
      */
     GET_DEPART_ONE_LIST_BY_REVERSE,

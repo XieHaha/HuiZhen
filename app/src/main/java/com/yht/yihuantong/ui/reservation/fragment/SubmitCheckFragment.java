@@ -29,6 +29,7 @@ import com.yht.frame.data.Tasks;
 import com.yht.frame.data.base.ReserveCheckBean;
 import com.yht.frame.data.base.ReserveCheckTypeBean;
 import com.yht.frame.data.base.SelectCheckTypeBean;
+import com.yht.frame.data.bean.NormImage;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.permission.Permission;
 import com.yht.frame.ui.BaseFragment;
@@ -38,6 +39,7 @@ import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.frame.widgets.recyclerview.FullListView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ZycApplication;
+import com.yht.yihuantong.ui.ImagePreviewActivity;
 import com.yht.yihuantong.ui.adapter.CheckTypeListViewAdapter;
 import com.yht.yihuantong.ui.check.SelectCheckTypeActivity;
 import com.yht.yihuantong.ui.check.SelectCheckTypeByHospitalActivity;
@@ -107,6 +109,10 @@ public class SubmitCheckFragment extends BaseFragment
      * 缴费类型、转诊目的、转诊类型
      */
     private int payTypeId, pregnancyId;
+    /**
+     * 图片
+     */
+    private ArrayList<NormImage> imagePaths = new ArrayList<>();
     /**
      * 根据检查项目选择医院
      */
@@ -190,6 +196,7 @@ public class SubmitCheckFragment extends BaseFragment
                  .into(ivUploadOne);
         }
         else {
+            imagePaths.clear();
             ivUploadOne.setImageDrawable(null);
             ivDeleteOne.setVisibility(View.GONE);
             cameraTempFile = null;
@@ -296,7 +303,16 @@ public class SubmitCheckFragment extends BaseFragment
                 startActivityForResult(intent, REQUEST_CODE_SELECT_CHECK);
                 break;
             case R.id.layout_upload_one:
-                permissionHelper.request(new String[] { Permission.CAMERA, Permission.STORAGE_WRITE });
+                if (cameraTempFile == null) {
+                    permissionHelper.request(new String[] { Permission.CAMERA, Permission.STORAGE_WRITE });
+                }
+                else {
+                    //查看大图
+                    intent = new Intent(getContext(), ImagePreviewActivity.class);
+                    intent.putExtra(ImagePreviewActivity.INTENT_URLS, imagePaths);
+                    startActivity(intent);
+                    getActivity().overridePendingTransition(R.anim.anim_fade_in, R.anim.keep);
+                }
                 break;
             case R.id.iv_delete_one:
                 initImage(false);
@@ -360,6 +376,9 @@ public class SubmitCheckFragment extends BaseFragment
         super.onResponseSuccess(task, response);
         if (task == Tasks.UPLOAD_FILE) {
             confirmImageUrl = (String)response.getData();
+            if (imagePaths.size() > 0) {
+                imagePaths.get(0).setImageUrl(confirmImageUrl);
+            }
             initImage(true);
         }
     }
@@ -371,6 +390,10 @@ public class SubmitCheckFragment extends BaseFragment
         }
         switch (requestCode) {
             case RC_PICK_CAMERA:
+                imagePaths.clear();
+                NormImage normImage = new NormImage();
+                normImage.setImagePath(mCurrentPhotoPath);
+                imagePaths.add(normImage);
                 cameraTempFile = new File(mCurrentPhotoPath);
                 uploadImage(cameraTempFile);
                 break;

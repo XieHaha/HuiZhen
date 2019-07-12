@@ -57,7 +57,7 @@ public class PersonalInfoActivity extends BaseActivity {
         tvInfoDepart.setText(loginBean.getDepartmentName());
         tvInfoHospital.setText(loginBean.getHospitalName());
         Glide.with(this)
-             .load(ImageUrlUtil.append(loginBean.getPhoto()))
+             .load(ImageUrlUtil.addTokenToUrl(loginBean.getPhoto()))
              .apply(GlideHelper.getOptions(BaseUtils.dp2px(this, 4)))
              .into(ivInfoImg);
     }

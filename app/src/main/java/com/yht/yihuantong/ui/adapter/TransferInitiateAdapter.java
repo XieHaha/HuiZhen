@@ -29,7 +29,7 @@ public class TransferInitiateAdapter extends BaseQuickAdapter<TransferBean, Base
     @Override
     protected void convert(BaseViewHolder helper, TransferBean item) {
         Glide.with(mContext)
-             .load(ImageUrlUtil.append(item.getWxPhoto()))
+             .load(ImageUrlUtil.addTokenToUrl(item.getWxPhoto()))
              .apply(GlideHelper.getOptions(BaseUtils.dp2px(mContext, 4)))
              .into((ImageView)helper.getView(R.id.iv_transfer_img));
         helper.setGone(R.id.layout_transfer_root, false);

@@ -30,15 +30,17 @@ import android.widget.OverScroller;
 import android.widget.Scroller;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.model.GlideUrl;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.yht.frame.R;
-import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.frame.widgets.imagePreview.utils.CacheUtils;
+
+import java.io.File;
 
 /**
  * @author Kyle
@@ -140,9 +142,19 @@ public class ImagePreviewView extends AppCompatImageView {
         isBreak = false;
     }
 
+    public void loadingImageAsync(final String imgPath, final GlideUrl bigUrl) {
+        if (TextUtils.isEmpty(imgPath)) {
+            loadImaByGlide(bigUrl);
+        }
+        else {
+            loadImaLocal(imgPath);
+        }
+    }
+
     public void loadingImageAsync(final String imgPath, final String bigUrl, final int position) {
         if (!isBreak) {
             if (TextUtils.isEmpty(imgPath)) {
+                if (TextUtils.isEmpty(bigUrl)) { return; }
                 loadState = CacheUtils.getInstance(getContext()).getCacheState(bigUrl, bigUrl);
                 switch (loadState) {
                     case 0:
@@ -179,7 +191,19 @@ public class ImagePreviewView extends AppCompatImageView {
     }
 
     private void loadImaLocal(final String imgPth) {
-        Glide.with(context).load(imgPth).apply(GlideHelper.getOptionsPic(BaseUtils.dp2px(getContext(), 1))).into(this);
+        Glide.with(context)
+             .load(new File(imgPth))
+             .apply(GlideHelper.getOptionsPicBig())
+             .into(this);
+    }
+
+    /**
+     * glide
+     *
+     * @param url
+     */
+    private void loadImaByGlide(final GlideUrl url) {
+        Glide.with(context).load(url).apply(GlideHelper.getOptionsPicBig()).into(this);
     }
 
     /**

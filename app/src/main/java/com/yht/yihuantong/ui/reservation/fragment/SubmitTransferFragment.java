@@ -27,6 +27,7 @@ import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.base.DoctorInfoBean;
 import com.yht.frame.data.base.ReserveTransferBean;
+import com.yht.frame.data.bean.NormImage;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.permission.Permission;
 import com.yht.frame.ui.BaseFragment;
@@ -37,10 +38,12 @@ import com.yht.frame.widgets.edittext.AbstractTextWatcher;
 import com.yht.frame.widgets.view.ExpandableLayout;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ZycApplication;
+import com.yht.yihuantong.ui.ImagePreviewActivity;
 import com.yht.yihuantong.ui.check.listener.OnCheckListener;
 import com.yht.yihuantong.ui.transfer.SelectReceivingDoctorActivity;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -120,6 +123,10 @@ public class SubmitTransferFragment extends BaseFragment implements RadioGroup.O
      * 缴费类型、转诊目的、转诊类型
      */
     private int payTypeId, transferPurposeId, transferTypeId;
+    /**
+     * 图片
+     */
+    private ArrayList<NormImage> imagePaths = new ArrayList<>();
     /**
      * 二次编辑 是否清空所有已填数据
      */
@@ -228,6 +235,7 @@ public class SubmitTransferFragment extends BaseFragment implements RadioGroup.O
                  .into(ivUploadOne);
         }
         else {
+            imagePaths.clear();
             ivUploadOne.setImageDrawable(null);
             ivDeleteOne.setVisibility(View.GONE);
             cameraTempFile = null;
@@ -294,7 +302,16 @@ public class SubmitTransferFragment extends BaseFragment implements RadioGroup.O
                 }
                 break;
             case R.id.layout_upload_one:
-                permissionHelper.request(new String[] { Permission.CAMERA, Permission.STORAGE_WRITE });
+                if (cameraTempFile == null) {
+                    permissionHelper.request(new String[] { Permission.CAMERA, Permission.STORAGE_WRITE });
+                }
+                else {
+                    //查看大图
+                    intent = new Intent(getContext(), ImagePreviewActivity.class);
+                    intent.putExtra(ImagePreviewActivity.INTENT_URLS, imagePaths);
+                    startActivity(intent);
+                    getActivity().overridePendingTransition(R.anim.anim_fade_in, R.anim.keep);
+                }
                 break;
             case R.id.iv_delete_one:
                 initImage(false);
@@ -372,6 +389,9 @@ public class SubmitTransferFragment extends BaseFragment implements RadioGroup.O
         super.onResponseSuccess(task, response);
         if (task == Tasks.UPLOAD_FILE) {
             confirmImageUrl = (String)response.getData();
+            if (imagePaths.size() > 0) {
+                imagePaths.get(0).setImageUrl(confirmImageUrl);
+            }
             initImage(true);
         }
     }
@@ -383,6 +403,10 @@ public class SubmitTransferFragment extends BaseFragment implements RadioGroup.O
         }
         switch (requestCode) {
             case RC_PICK_CAMERA:
+                imagePaths.clear();
+                NormImage normImage = new NormImage();
+                normImage.setImagePath(mCurrentPhotoPath);
+                imagePaths.add(normImage);
                 cameraTempFile = new File(mCurrentPhotoPath);
                 uploadImage(cameraTempFile);
                 break;

@@ -27,6 +27,7 @@ import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.ui.auth.AuthDoctorActivity;
 import com.yht.yihuantong.ui.check.CheckHistoryActivity;
 import com.yht.yihuantong.ui.personal.PersonalActivity;
 import com.yht.yihuantong.ui.reservation.ReservationCheckOrTransferActivity;
@@ -108,7 +109,7 @@ public class WorkerFragment extends BaseFragment {
         tvPersonalDepart.setText(loginBean.getDepartmentName());
         tvPersonalHospital.setText(loginBean.getHospitalName());
         Glide.with(this)
-             .load(ImageUrlUtil.append(loginBean.getPhoto()))
+             .load(ImageUrlUtil.addTokenToUrl(loginBean.getPhoto()))
              .apply(GlideHelper.getOptions(BaseUtils.dp2px(getContext(), 4)))
              .into(ivPersonalImage);
         getBanner();
@@ -186,6 +187,7 @@ public class WorkerFragment extends BaseFragment {
                 break;
             case R.id.view_flipper:
                 ToastUtil.toast(getContext(), bannerBeans.get(viewFlipper.getDisplayedChild()).getBannerRemark());
+                startActivity(new Intent(getContext(), AuthDoctorActivity.class));
                 break;
             case R.id.layout_initiate_check:
                 startActivity(new Intent(getContext(), CheckHistoryActivity.class));

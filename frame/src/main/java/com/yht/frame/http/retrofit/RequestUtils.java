@@ -116,6 +116,15 @@ public class RequestUtils {
                                                                  listener));
     }
 
+    public static void getValidateHospitalList(Context context, String token,
+            final ResponseListener<BaseResponse> listener) {
+        RetrofitManager.getApiUrlManager()
+                       .getValidateHospitalList(token)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_VALIDATE_HOSPITAL_LIST,
+                                                                 listener));
+    }
+
     public static void getDepartOneListByReverse(Context context, String token, String hospitalCode,
             final ResponseListener<BaseResponse> listener) {
         RetrofitManager.getApiUrlManager()

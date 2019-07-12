@@ -1,7 +1,10 @@
 package com.yht.yihuantong.utils;
 
+import com.bumptech.glide.load.model.GlideUrl;
+import com.bumptech.glide.load.model.LazyHeaders;
 import com.yht.frame.data.BaseNetConfig;
 import com.yht.yihuantong.BuildConfig;
+import com.yht.yihuantong.ZycApplication;
 
 /**
  * @author 顿顿
@@ -19,5 +22,20 @@ public class ImageUrlUtil {
         builder.append(BaseNetConfig.BASE_URL_IMAGE);
         builder.append(url);
         return builder.toString();
+    }
+
+    /**
+     * 添加header token
+     *
+     * @param url
+     * @return
+     */
+    public static GlideUrl addTokenToUrl(String url) {
+        GlideUrl glideUrl = new GlideUrl(append(url), new LazyHeaders.Builder().addHeader("token",
+                                                                                          ZycApplication.getInstance()
+                                                                                                        .getLoginSuccessBean()
+                                                                                                        .getToken())
+                                                                               .build());
+        return glideUrl;
     }
 }

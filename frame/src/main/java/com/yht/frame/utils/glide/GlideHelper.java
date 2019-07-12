@@ -17,6 +17,10 @@ public final class GlideHelper {
      * 图片
      */
     private static final RequestOptions OPTIONS_PIC = new RequestOptions();
+    /**
+     * 图片 大图
+     */
+    private static final RequestOptions OPTIONS_PIC_BIG = new RequestOptions();
 
     public static RequestOptions getOptions(int corner) {
         //设置图片圆角角度
@@ -28,8 +32,12 @@ public final class GlideHelper {
     }
 
     public static RequestOptions getOptionsPic(int corner) {
-        //设置图片圆角角度
-        RoundedCorners roundedCorners = new RoundedCorners(corner);
-        return OPTIONS_PIC.optionalTransform(roundedCorners).priority(Priority.NORMAL);
+        return OPTIONS_PIC.transform(new CenterCropRoundCornerTransform(corner)).priority(Priority.NORMAL);
+    }
+
+    public static RequestOptions getOptionsPicBig() {
+        return OPTIONS_PIC_BIG.placeholder(R.mipmap.icon_loading_img)
+                              .error(R.mipmap.icon_load_faild_img)
+                              .priority(Priority.NORMAL);
     }
 }

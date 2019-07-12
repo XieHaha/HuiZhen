@@ -52,7 +52,7 @@ public class IdentifyFragment extends BaseFragment implements View.OnFocusChange
     /**
      * 是否为转诊
      */
-    private boolean istransfer;
+    private boolean isTransfer;
 
     @Override
     public int getLayoutID() {
@@ -83,8 +83,8 @@ public class IdentifyFragment extends BaseFragment implements View.OnFocusChange
         });
     }
 
-    public void setIstransfer(boolean istransfer) {
-        this.istransfer = istransfer;
+    public void setTransfer(boolean transfer) {
+        this.isTransfer = transfer;
     }
 
     /**
@@ -140,7 +140,7 @@ public class IdentifyFragment extends BaseFragment implements View.OnFocusChange
                 //新用户
                 if (patientDetailBean == null) {
                     if (checkListener != null) {
-                        if (istransfer) {
+                        if (isTransfer) {
                             reverseTransferBean = new ReserveTransferBean();
                             reverseTransferBean.setPatientName(name);
                             reverseTransferBean.setPatientIdCardNo(idCard);
@@ -159,7 +159,7 @@ public class IdentifyFragment extends BaseFragment implements View.OnFocusChange
                         ToastUtil.toast(getContext(), R.string.txt_identity_information_error);
                     }
                     else {
-                        if (istransfer) {
+                        if (isTransfer) {
                             //校验患者是否有存在的待处理转诊单
                             getPatientExistTransfer();
                         }

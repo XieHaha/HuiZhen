@@ -19,6 +19,7 @@ import com.yht.frame.data.base.OrderNumStatisticsBean;
 import com.yht.frame.data.base.PatientBean;
 import com.yht.frame.data.base.PatientDetailBean;
 import com.yht.frame.data.base.PatientOrderBean;
+import com.yht.frame.data.base.ReservationValidateBean;
 import com.yht.frame.data.base.SelectCheckTypeBean;
 import com.yht.frame.data.base.TransferBean;
 import com.yht.frame.data.base.VerifyCodeBean;
@@ -97,7 +98,7 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @Multipart
-    @POST("/file/upload_file")
+    @POST("/admin/file/upload_file")
     Observable<BaseResponse<String>> uploadImg(@Header("token") String token, @Part MultipartBody.Part file);
 
     /**
@@ -126,6 +127,15 @@ public interface ApiUrlManager {
      */
     @GET("/client/hospital/selectInput/forChange")
     Observable<BaseResponse<List<HospitalBean>>> getHospitalListByDoctor(@Header("token") String token);
+
+    /**
+     * 校验医生是否有预约检查和预约转诊的合作医院。
+     *
+     * @param token token
+     * @return 返回值
+     */
+    @GET("/client/hospital/validate/doctor/service")
+    Observable<BaseResponse<ReservationValidateBean>> getValidateHospitalList(@Header("token") String token);
 
     /**
      * 获取当前医生有预约转诊权限的合作医院下面的一级科室

@@ -160,7 +160,7 @@ public class AuthBaseFragment extends BaseFragment
             rbFemale.setChecked(true);
         }
         Glide.with(this)
-             .load(ImageUrlUtil.append(doctorAuthBean.getDoctorPhoto()))
+             .load(ImageUrlUtil.addTokenToUrl(doctorAuthBean.getDoctorPhoto()))
              .apply(GlideHelper.getOptions(BaseUtils.dp2px(getContext(), 4)))
              .into(ivAuthBaseImg);
         initNextButton();
