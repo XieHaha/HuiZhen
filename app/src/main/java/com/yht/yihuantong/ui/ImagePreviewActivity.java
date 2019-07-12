@@ -27,7 +27,7 @@ import com.yht.frame.widgets.imagePreview.utils.NavigaterPageIndex;
 import com.yht.frame.widgets.imagePreview.view.ImageLoadingView;
 import com.yht.frame.widgets.imagePreview.view.ImagePreviewView;
 import com.yht.yihuantong.R;
-import com.yht.yihuantong.utils.ImageUrlUtil;
+import com.yht.yihuantong.utils.FileUrlUtil;
 
 import java.util.ArrayList;
 
@@ -217,7 +217,7 @@ public class ImagePreviewActivity extends Activity implements ViewPager.OnPageCh
             //                        currentPreviceView.loadingImageAsync(urls.get(position).getImagePath(), urls.get(position).getImageUrl(),
             //                                                             position);
             currentPreviceView.loadingImageAsync(urls.get(position).getImagePath(),
-                                                 ImageUrlUtil.addTokenToUrl(urls.get(position).getImageUrl()));
+                                                 FileUrlUtil.addTokenToUrl(urls.get(position).getImageUrl()));
             container.addView(currentPreviceView, LinearLayout.LayoutParams.MATCH_PARENT,
                               LinearLayout.LayoutParams.MATCH_PARENT);
             return currentPreviceView;

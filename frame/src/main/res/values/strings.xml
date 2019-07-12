@@ -74,6 +74,8 @@
     <string name="txt_plus">+%s</string>
     <string name="txt_space">%s&#160;&#160;</string>
     <string name="txt_price">￥%s</string>
+    <string name="txt_report_name_by_num">%s报告%d</string>
+    <string name="txt_report_name">%s报告</string>
 
     <!--主页-->
     <string name="txt_message">消息</string>

@@ -11,7 +11,7 @@ import com.yht.frame.data.bean.NormImage;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.yihuantong.R;
-import com.yht.yihuantong.utils.ImageUrlUtil;
+import com.yht.yihuantong.utils.FileUrlUtil;
 
 import java.util.List;
 
@@ -38,7 +38,7 @@ public class AddImageAdapter extends BaseQuickAdapter<NormImage, BaseViewHolder>
         else {
             if (TextUtils.isEmpty(item.getImagePath())) {
                 Glide.with(mContext)
-                     .load(ImageUrlUtil.addTokenToUrl(item.getImageUrl()))
+                     .load(FileUrlUtil.addTokenToUrl(item.getImageUrl()))
                      .apply(GlideHelper.getOptionsPic(BaseUtils.dp2px(mContext, 4)))
                      .into((ImageView)helper.getView(R.id.iv_upload));
             }

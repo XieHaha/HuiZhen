@@ -11,7 +11,7 @@ import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.yihuantong.R;
 import com.yht.frame.utils.glide.GlideHelper;
-import com.yht.yihuantong.utils.ImageUrlUtil;
+import com.yht.yihuantong.utils.FileUrlUtil;
 
 import butterknife.BindView;
 
@@ -57,7 +57,7 @@ public class PersonalInfoActivity extends BaseActivity {
         tvInfoDepart.setText(loginBean.getDepartmentName());
         tvInfoHospital.setText(loginBean.getHospitalName());
         Glide.with(this)
-             .load(ImageUrlUtil.addTokenToUrl(loginBean.getPhoto()))
+             .load(FileUrlUtil.addTokenToUrl(loginBean.getPhoto()))
              .apply(GlideHelper.getOptions(BaseUtils.dp2px(this, 4)))
              .into(ivInfoImg);
     }

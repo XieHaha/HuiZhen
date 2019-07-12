@@ -17,7 +17,7 @@ import com.yht.frame.data.base.CheckTypeBean;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.yihuantong.R;
-import com.yht.yihuantong.utils.ImageUrlUtil;
+import com.yht.yihuantong.utils.FileUrlUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +35,7 @@ public class CheckHistoryAdapter extends BaseQuickAdapter<CheckBean, BaseViewHol
     @Override
     protected void convert(BaseViewHolder helper, CheckBean item) {
         Glide.with(mContext)
-             .load(ImageUrlUtil.addTokenToUrl(item.getPatientPhoto()))
+             .load(FileUrlUtil.addTokenToUrl(item.getPatientPhoto()))
              .apply(GlideHelper.getOptions(BaseUtils.dp2px(mContext, 4)))
              .into((ImageView)helper.getView(R.id.iv_check_img));
         helper.setText(R.id.tv_check_name, item.getPatientName())

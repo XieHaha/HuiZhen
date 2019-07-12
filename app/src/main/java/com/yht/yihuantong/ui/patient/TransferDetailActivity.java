@@ -17,7 +17,7 @@ import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.yihuantong.R;
-import com.yht.yihuantong.utils.ImageUrlUtil;
+import com.yht.yihuantong.utils.FileUrlUtil;
 
 import butterknife.BindView;
 
@@ -100,7 +100,7 @@ public class TransferDetailActivity extends BaseActivity implements TransferOrde
             return;
         }
         Glide.with(this)
-             .load(ImageUrlUtil.addTokenToUrl(transferBean.getWxPhoto()))
+             .load(FileUrlUtil.addTokenToUrl(transferBean.getWxPhoto()))
              .apply(GlideHelper.getOptions(BaseUtils.dp2px(this, 4)))
              .into(ivPatientImg);
         tvPatientName.setText(transferBean.getPatientName());

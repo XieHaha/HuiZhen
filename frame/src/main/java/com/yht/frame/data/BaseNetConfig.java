@@ -36,5 +36,5 @@ public interface BaseNetConfig {
     /**
      * 图片基础链接
      */
-    String BASE_URL_IMAGE = "/admin/file/download_file?filePath=";
+    String BASE_URL_FILE = "/admin/file/download_file?filePath=";
 }

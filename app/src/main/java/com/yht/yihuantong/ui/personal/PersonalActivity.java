@@ -30,7 +30,7 @@ import com.yht.yihuantong.ui.adapter.CurrencyDetailAdapter;
 import com.yht.yihuantong.ui.currency.CurrencyActivity;
 import com.yht.yihuantong.ui.currency.IncomeDetailActivity;
 import com.yht.yihuantong.ui.currency.WithdrawDetailActivity;
-import com.yht.yihuantong.utils.ImageUrlUtil;
+import com.yht.yihuantong.utils.FileUrlUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -146,7 +146,7 @@ public class PersonalActivity extends BaseActivity
         tvPersonalDepart.setText(loginBean.getDepartmentName());
         tvPersonalHospital.setText(loginBean.getHospitalName());
         Glide.with(this)
-             .load(ImageUrlUtil.addTokenToUrl(loginBean.getPhoto()))
+             .load(FileUrlUtil.addTokenToUrl(loginBean.getPhoto()))
              .apply(GlideHelper.getOptions(BaseUtils.dp2px(this, 4)))
              .into(ivPersonalImage);
     }

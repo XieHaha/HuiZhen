@@ -182,7 +182,13 @@ public class AuthLicenseFragment extends BaseFragment
             !TextUtils.isEmpty(imagePaths.get(position).getImageUrl())) {
             //查看大图
             Intent intent = new Intent(getContext(), ImagePreviewActivity.class);
-            intent.putExtra(ImagePreviewActivity.INTENT_URLS, imagePaths);
+            ArrayList<NormImage> list = new ArrayList<>();
+            for (NormImage image : imagePaths) {
+                if (!TextUtils.isEmpty(image.getImagePath()) || !TextUtils.isEmpty(image.getImageUrl())) {
+                    list.add(image);
+                }
+            }
+            intent.putExtra(ImagePreviewActivity.INTENT_URLS, list);
             intent.putExtra(ImagePreviewActivity.INTENT_POSITION, position);
             startActivity(intent);
             getActivity().overridePendingTransition(R.anim.anim_fade_in, R.anim.keep);

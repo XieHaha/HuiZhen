@@ -425,7 +425,8 @@
                     android:textColor="@color/color_1491fc"
                     android:text="@string/txt_report_num"
                     android:layout_toEndOf="@id/text"
-                    android:layout_marginStart="5dp" />
+                    android:layout_marginStart="5dp"
+                    android:visibility="invisible"/>
 
                 <LinearLayout
                     android:id="@+id/layout_check_report"

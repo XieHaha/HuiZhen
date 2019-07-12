@@ -25,11 +25,12 @@ import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.LogUtils;
+import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.frame.widgets.view.CenterImageSpan;
 import com.yht.yihuantong.R;
-import com.yht.yihuantong.utils.ImageUrlUtil;
+import com.yht.yihuantong.utils.FileUrlUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -174,7 +175,7 @@ public class CheckDetailActivity extends BaseActivity implements OrderStatus, Ch
         }
         initCheckType();
         Glide.with(this)
-             .load(ImageUrlUtil.addTokenToUrl(checkDetailBean.getPatientPhoto()))
+             .load(FileUrlUtil.addTokenToUrl(checkDetailBean.getPatientPhoto()))
              .apply(GlideHelper.getOptions(BaseUtils.dp2px(this, 4)))
              .into(ivPatientImg);
         tvPatientName.setText(checkDetailBean.getPatientName());
@@ -291,17 +292,47 @@ public class CheckDetailActivity extends BaseActivity implements OrderStatus, Ch
      */
     private void initCheckReport() {
         layoutCheckReport.removeAllViews();
-        for (int i = 0; i < reportList.size(); i++) {
-            CheckTypeByDetailBean bean = reportList.get(i);
+        List<CheckTypeByDetailBean> newReportUrls = splitReportUrl();
+        for (int i = 0; i < newReportUrls.size(); i++) {
+            CheckTypeByDetailBean bean = newReportUrls.get(i);
             View view = getLayoutInflater().inflate(R.layout.item_check_report, null);
             TextView textView = view.findViewById(R.id.tv_check_report_name);
             textView.setText(bean.getName());
-            view.setTag(i);
-            textView.setOnClickListener(v -> {
-                LogUtils.i("test", " url:" + bean.getReport());
+            view.setOnClickListener(v -> {
+                LogUtils.i(TAG, " url:" + bean.getReport());
+                ToastUtil.toast(CheckDetailActivity.this, bean.getName());
             });
             layoutCheckReport.addView(view);
         }
+    }
+
+    /**
+     * 一个检查项可能存在多个报告  拆分报告
+     */
+    private List<CheckTypeByDetailBean> splitReportUrl() {
+        List<CheckTypeByDetailBean> newReportUrls = new ArrayList<>();
+        for (int i = 0; i < reportList.size(); i++) {
+            CheckTypeByDetailBean bean = reportList.get(i);
+            String reportUrl = bean.getReport();
+            String[] reportUrls = reportUrl.split(";");
+            if (reportUrls.length > 1) {
+                for (int j = 0; j < reportUrls.length; j++) {
+                    CheckTypeByDetailBean checkTypeByDetailBean = new CheckTypeByDetailBean();
+                    String name = bean.getName();
+                    checkTypeByDetailBean.setName(
+                            String.format(getString(R.string.txt_report_name_by_num), name, (j + 1)));
+                    checkTypeByDetailBean.setReport(reportUrls[j]);
+                    newReportUrls.add(checkTypeByDetailBean);
+                }
+            }
+            else {
+                String name = bean.getName();
+                bean.setName(String.format(getString(R.string.txt_report_name), name));
+                bean.setReport(reportUrls[0]);
+                newReportUrls.add(bean);
+            }
+        }
+        return newReportUrls;
     }
 
     @OnClick(R.id.tv_check_next)

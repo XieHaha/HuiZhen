@@ -24,7 +24,7 @@ import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.frame.widgets.dialog.InputDialog;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.reservation.ReservationCheckOrTransferActivity;
-import com.yht.yihuantong.utils.ImageUrlUtil;
+import com.yht.yihuantong.utils.FileUrlUtil;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -134,7 +134,7 @@ public class TransferInitiateDetailActivity extends BaseActivity implements Tran
             return;
         }
         Glide.with(this)
-             .load(ImageUrlUtil.addTokenToUrl(transferBean.getWxPhoto()))
+             .load(FileUrlUtil.addTokenToUrl(transferBean.getWxPhoto()))
              .apply(GlideHelper.getOptions(BaseUtils.dp2px(this, 4)))
              .into(ivPatientImg);
         tvPatientName.setText(transferBean.getPatientName());

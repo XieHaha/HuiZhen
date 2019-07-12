@@ -45,7 +45,7 @@ import com.yht.yihuantong.ui.dialog.DownDialog;
 import com.yht.yihuantong.ui.dialog.listener.OnMediaItemClickListener;
 import com.yht.yihuantong.ui.dialog.listener.OnTitleItemClickListener;
 import com.yht.frame.utils.glide.GlideHelper;
-import com.yht.yihuantong.utils.ImageUrlUtil;
+import com.yht.yihuantong.utils.FileUrlUtil;
 import com.yht.yihuantong.utils.MatisseUtils;
 import com.zhihu.matisse.Matisse;
 
@@ -160,7 +160,7 @@ public class AuthBaseFragment extends BaseFragment
             rbFemale.setChecked(true);
         }
         Glide.with(this)
-             .load(ImageUrlUtil.addTokenToUrl(doctorAuthBean.getDoctorPhoto()))
+             .load(FileUrlUtil.addTokenToUrl(doctorAuthBean.getDoctorPhoto()))
              .apply(GlideHelper.getOptions(BaseUtils.dp2px(getContext(), 4)))
              .into(ivAuthBaseImg);
         initNextButton();

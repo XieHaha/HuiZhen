@@ -11,7 +11,7 @@ import com.yht.frame.data.base.TransferBean;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.yihuantong.R;
-import com.yht.yihuantong.utils.ImageUrlUtil;
+import com.yht.yihuantong.utils.FileUrlUtil;
 
 import java.util.List;
 
@@ -29,7 +29,7 @@ public class TransferInitiateAdapter extends BaseQuickAdapter<TransferBean, Base
     @Override
     protected void convert(BaseViewHolder helper, TransferBean item) {
         Glide.with(mContext)
-             .load(ImageUrlUtil.addTokenToUrl(item.getWxPhoto()))
+             .load(FileUrlUtil.addTokenToUrl(item.getWxPhoto()))
              .apply(GlideHelper.getOptions(BaseUtils.dp2px(mContext, 4)))
              .into((ImageView)helper.getView(R.id.iv_transfer_img));
         helper.setGone(R.id.layout_transfer_root, false);

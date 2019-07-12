@@ -16,8 +16,8 @@ public class LoginBean implements Serializable {
     private int approvalStatus;
     private int sex;
     private String doctorCode;
-    private String mobile;
     private String doctorName;
+    private String mobile;
     private String jobTitle;
     private String photo;
     private String hospitalCode;

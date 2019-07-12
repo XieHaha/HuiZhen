@@ -9,9 +9,9 @@ import com.yht.yihuantong.ZycApplication;
 /**
  * @author 顿顿
  * @date 19/7/5 16:52
- * @des
+ * @des 文件下载链接拼接
  */
-public class ImageUrlUtil {
+public class FileUrlUtil {
     /**
      * @param url 图片全链接
      * @return
@@ -19,7 +19,7 @@ public class ImageUrlUtil {
     public static String append(String url) {
         StringBuilder builder = new StringBuilder();
         builder.append(BuildConfig.BASE_BASIC_URL);
-        builder.append(BaseNetConfig.BASE_URL_IMAGE);
+        builder.append(BaseNetConfig.BASE_URL_FILE);
         builder.append(url);
         return builder.toString();
     }
