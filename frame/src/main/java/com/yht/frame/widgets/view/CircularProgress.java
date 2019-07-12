@@ -1,4 +1,4 @@
-package com.yht.yihuantong.version.view;
+package com.yht.frame.widgets.view;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
@@ -17,16 +17,13 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 
-import com.yht.yihuantong.R;
+import com.yht.frame.R;
 
 /**
- *
  * @author luozi
  * @date 2016/1/13
  */
-public class CircularProgress extends View
-{
-
+public class CircularProgress extends View {
     private static final Interpolator ANGLE_INTERPOLATOR = new LinearInterpolator();
     private static final Interpolator SWEEP_INTERPOLATOR = new AccelerateDecelerateInterpolator();
     private static final int ANGLE_ANIMATOR_DURATION = 2000;
@@ -34,7 +31,6 @@ public class CircularProgress extends View
     private static final int MIN_SWEEP_ANGLE = 30;
     private static final int DEFAULT_BORDER_WIDTH = 3;
     private final RectF fBounds = new RectF();
-
     private ObjectAnimator mObjectAnimatorSweep;
     private ObjectAnimator mObjectAnimatorAngle;
     private boolean mModeAppearing = true;
@@ -56,22 +52,18 @@ public class CircularProgress extends View
 
     public CircularProgress(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-
         float density = context.getResources().getDisplayMetrics().density;
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CircularProgress, defStyleAttr, 0);
         mBorderWidth = a.getDimension(R.styleable.CircularProgress_progress_border_width,
-                DEFAULT_BORDER_WIDTH * density);
+                                      DEFAULT_BORDER_WIDTH * density);
         mColor = a.getColor(R.styleable.CircularProgress_progress_border_color, 0x268cfa);
         a.recycle();
-
-
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeCap(Cap.ROUND);
         mPaint.setStrokeWidth(mBorderWidth);
         mPaint.setColor(mColor);
-
         setupAnimations();
     }
 
@@ -104,7 +96,8 @@ public class CircularProgress extends View
         super.onVisibilityChanged(changedView, visibility);
         if (visibility == VISIBLE) {
             start();
-        } else {
+        }
+        else {
             stop();
         }
     }
@@ -135,10 +128,10 @@ public class CircularProgress extends View
         super.draw(canvas);
         float startAngle = mCurrentGlobalAngle - mCurrentGlobalAngleOffset;
         float sweepAngle = mCurrentSweepAngle;
-
         if (mModeAppearing) {
             sweepAngle += MIN_SWEEP_ANGLE;
-        } else {
+        }
+        else {
             startAngle = startAngle + sweepAngle;
             sweepAngle = 360 - sweepAngle - MIN_SWEEP_ANGLE;
         }
@@ -146,7 +139,6 @@ public class CircularProgress extends View
         canvas.drawCircle(fBounds.centerX(), fBounds.centerY(), fBounds.centerX() - mBorderWidth / 2, mPaint);
         mPaint.setColor(mColor);
         canvas.drawArc(fBounds, startAngle, sweepAngle, false, mPaint);
-
     }
 
     private static int gradient(int color1, int color2, float p) {
@@ -156,9 +148,9 @@ public class CircularProgress extends View
         int r2 = (color2 & 0xff0000) >> 16;
         int g2 = (color2 & 0xff00) >> 8;
         int b2 = color2 & 0xff;
-        int newr = (int) (r2 * p + r1 * (1 - p));
-        int newg = (int) (g2 * p + g1 * (1 - p));
-        int newb = (int) (b2 * p + b1 * (1 - p));
+        int newr = (int)(r2 * p + r1 * (1 - p));
+        int newg = (int)(g2 * p + g1 * (1 - p));
+        int newb = (int)(b2 * p + b1 * (1 - p));
         return Color.argb(255, newr, newg, newb);
     }
 
@@ -168,10 +160,11 @@ public class CircularProgress extends View
             mCurrentGlobalAngleOffset = (mCurrentGlobalAngleOffset + MIN_SWEEP_ANGLE * 2) % 360;
         }
     }
+
     // ////////////////////////////////////////////////////////////////////////////
     // ////////////// Animation
-
-    private Property<CircularProgress, Float> mAngleProperty = new Property<CircularProgress, Float>(Float.class, "angle") {
+    private Property<CircularProgress, Float> mAngleProperty = new Property<CircularProgress, Float>(Float.class,
+                                                                                                     "angle") {
         @Override
         public Float get(CircularProgress object) {
             return object.getCurrentGlobalAngle();
@@ -182,8 +175,8 @@ public class CircularProgress extends View
             object.setCurrentGlobalAngle(value);
         }
     };
-
-    private Property<CircularProgress, Float> mSweepProperty = new Property<CircularProgress, Float>(Float.class, "arc") {
+    private Property<CircularProgress, Float> mSweepProperty = new Property<CircularProgress, Float>(Float.class,
+                                                                                                     "arc") {
         @Override
         public Float get(CircularProgress object) {
             return object.getCurrentSweepAngle();
@@ -201,7 +194,6 @@ public class CircularProgress extends View
         mObjectAnimatorAngle.setDuration(ANGLE_ANIMATOR_DURATION);
         mObjectAnimatorAngle.setRepeatMode(ValueAnimator.RESTART);
         mObjectAnimatorAngle.setRepeatCount(ValueAnimator.INFINITE);
-
         mObjectAnimatorSweep = ObjectAnimator.ofFloat(this, mSweepProperty, 360f - MIN_SWEEP_ANGLE * 2);
         mObjectAnimatorSweep.setInterpolator(SWEEP_INTERPOLATOR);
         mObjectAnimatorSweep.setDuration(SWEEP_ANIMATOR_DURATION);
@@ -210,17 +202,14 @@ public class CircularProgress extends View
         mObjectAnimatorSweep.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
-
             }
 
             @Override
             public void onAnimationEnd(Animator animation) {
-
             }
 
             @Override
             public void onAnimationCancel(Animator animation) {
-
             }
 
             @Override

@@ -60,7 +60,7 @@ public class VersionModel extends AbstractResponseAdapter<BaseResponse> implemen
             }
         }
         FileTransferServer.getInstance(context)
-                          .downloadFile(url, DirHelper.getPathFile(), "ZYC" + ".apk", downloadListener);
+                          .downloadFile("", url, DirHelper.getPathFile(), "ZYC" + ".apk", downloadListener);
     }
 
     @Override

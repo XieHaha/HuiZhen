@@ -195,7 +195,7 @@ public class SplashActivity extends BaseActivity implements DocAuthStatus {
 
     private void downloadImg(String url) {
         FileTransferServer.getInstance(this)
-                          .downloadFile(0, url, DirHelper.getPathImage(), "splash.png", new DownloadListener() {
+                          .downloadFile(0, "", url, DirHelper.getPathImage(), "splash.png", new DownloadListener() {
                               @Override
                               public void onDownloadError(int what, Exception exception) {
                               }

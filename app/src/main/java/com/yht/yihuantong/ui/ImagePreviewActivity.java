@@ -154,7 +154,7 @@ public class ImagePreviewActivity extends Activity implements ViewPager.OnPageCh
      */
     private void downloadImg(String imageUri, String fileName) {
         FileTransferServer.getInstance(ImagePreviewActivity.this)
-                          .downloadFile(imageUri, DirHelper.getPathImage(), fileName, new DownloadListener() {
+                          .downloadFile("",imageUri, DirHelper.getPathImage(), fileName, new DownloadListener() {
                               @Override
                               public void onDownloadError(int what, Exception exception) {
                                   //                                  ToastUtil.toast(ImagePreviewActivity.this, R.string.toast_save_image_error);

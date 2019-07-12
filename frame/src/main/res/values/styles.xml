@@ -21,6 +21,22 @@
         <item name="android:maxHeight">5dip</item>
     </style>
 
+    <style name="percent_dialog" parent="@android:style/Theme.Dialog">
+        <!-- 边框 -->
+        <item name="android:windowFrame">@null</item>
+        <!-- 是否浮现在activity之上 -->
+        <item name="android:windowIsFloating">true</item>
+        <!-- 半透明 -->
+        <item name="android:windowIsTranslucent">true</item>
+        <!--&lt;!&ndash; 无标题 &ndash;&gt;-->
+        <item name="android:windowNoTitle">true</item>
+        <!--透明背景-->
+        <item name="android:background">@android:color/transparent</item>
+        <!-- 内容背景 -->
+        <item name="android:windowBackground">@color/color_00000000</item>
+        <!-- 模糊 -->
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
     <style name="loading_dialog" parent="@android:style/Theme.Dialog">
         <!-- 边框 -->
         <item name="android:windowFrame">@null</item>

@@ -98,7 +98,7 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @Multipart
-    @POST("/admin/file/upload_file")
+    @POST("/client/file/upload_file")
     Observable<BaseResponse<String>> uploadImg(@Header("token") String token, @Part MultipartBody.Part file);
 
     /**

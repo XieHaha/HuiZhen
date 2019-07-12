@@ -2,6 +2,7 @@ package com.yht.frame.api;
 
 import android.content.Context;
 import android.net.Uri;
+import android.text.TextUtils;
 
 import com.yanzhenjie.nohttp.FileBinary;
 import com.yanzhenjie.nohttp.NoHttp;
@@ -75,16 +76,20 @@ public class FileTransferServer {
         uploadrQueue.add(what, request, responseListener);
     }
 
-    public void downloadFile(String url, String savePath, String fileName, DownloadListener downloadListener) {
-        downloadFile(0, url, savePath, fileName, downloadListener);
+    public void downloadFile(String token, String url, String savePath, String fileName,
+            DownloadListener downloadListener) {
+        downloadFile(0, token, url, savePath, fileName, downloadListener);
     }
 
-    public void downloadFile(int what, String urlStr, String savePath, String fileName,
+    public void downloadFile(int what, String token, String urlStr, String savePath, String fileName,
             DownloadListener downloadListener) {
         String url;
         url = urlStr.contains(" ") ? urlStr.replace(" ", "%20") : urlStr;
         LogUtils.i(TAG, url);
         DownloadRequest request = NoHttp.createDownloadRequest(Uri.encode(url, url), savePath, fileName, false, true);
+        if (!TextUtils.isEmpty(token)) {
+            request.addHeader("token", token);
+        }
         downloadQueue.add(what, request, downloadListener);
     }
 
