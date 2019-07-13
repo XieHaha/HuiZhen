@@ -285,6 +285,7 @@
     <string name="txt_cancel_transfer_reason_hint">请输入取消转诊理由</string>
     <string name="txt_sure_cancel">确认取消</string>
     <string name="txt_think_again">再想想</string>
+    <string name="txt_open_other_report">查看相关报告</string>
 
     <!--远程相关-->
     <string name="txt_condition_description">病情描述</string>

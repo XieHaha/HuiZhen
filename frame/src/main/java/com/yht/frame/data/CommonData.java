@@ -97,6 +97,10 @@ public interface CommonData {
      */
     String KEY_RESERVE_CHECK_TYPE_LIST = "key_reserve_check_type_list";
     /**
+     * 检查报告列表
+     */
+    String KEY_CHECK_REPORT_LIST = "key_check_report_list";
+    /**
      * 广告页下载链接
      */
     String KEY_SPLASH_IMG_URL = "key_splash_img_url";

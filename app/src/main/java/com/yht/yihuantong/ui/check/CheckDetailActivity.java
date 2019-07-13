@@ -28,7 +28,6 @@ import com.yht.frame.data.base.CheckTypeByDetailBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
-import com.yht.frame.utils.LogUtils;
 import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.frame.widgets.dialog.HintDialog;
@@ -110,10 +109,22 @@ public class CheckDetailActivity extends BaseActivity implements OrderStatus, Ch
      */
     private List<CheckTypeByDetailBean> checkTypeList;
     /**
-     * 已上传报告的检查项
+     * 已上传报告的检查项 (每一项可能含有多个报告地址)
      */
     private List<CheckTypeByDetailBean> reportList;
-    private Bitmap bitmapCancel, bitmapNoreach, bitmapReach;
+    /**
+     * 已拆分后的检查报告列表（每一项只包含一项报告）
+     */
+    private ArrayList<CheckTypeByDetailBean> newReportUrls;
+    private Bitmap bitmapCancel, bitmapNoReach, bitmapReach;
+    /**
+     * 下载进度
+     */
+    private PercentDialog percentDialog;
+    /**
+     * 文件总大小
+     */
+    private long fileSize;
     /**
      * 订单
      */
@@ -151,10 +162,20 @@ public class CheckDetailActivity extends BaseActivity implements OrderStatus, Ch
         getReserveCheckOrderDetail();
     }
 
+    /**
+     * 检查项状态图
+     */
     private void initBitmap() {
         bitmapCancel = BitmapFactory.decodeResource(getApplication().getResources(), R.mipmap.ic_tag_cancel);
-        bitmapNoreach = BitmapFactory.decodeResource(getApplication().getResources(), R.mipmap.ic_tag_noreach);
+        bitmapNoReach = BitmapFactory.decodeResource(getApplication().getResources(), R.mipmap.ic_tag_noreach);
         bitmapReach = BitmapFactory.decodeResource(getApplication().getResources(), R.mipmap.ic_tag_reach);
+    }
+
+    /**
+     * 下载进度条
+     */
+    private void initPercentView() {
+        percentDialog = new PercentDialog(this);
     }
 
     /**
@@ -242,6 +263,22 @@ public class CheckDetailActivity extends BaseActivity implements OrderStatus, Ch
         }
     }
 
+    @OnClick(R.id.tv_check_next)
+    public void onViewClicked() {
+        new HintDialog(this).setPhone(checkDetailBean.getPatientMobile())
+                            .setOnEnterClickListener(() -> callPhone(checkDetailBean.getPatientMobile()))
+                            .show();
+    }
+
+    @Override
+    public void onResponseSuccess(Tasks task, BaseResponse response) {
+        super.onResponseSuccess(task, response);
+        if (task == Tasks.GET_RESERVE_CHECK_ORDER_DETAIL) {
+            checkDetailBean = (CheckDetailBean)response.getData();
+            initDetailData();
+        }
+    }
+
     /**
      * 检查项目
      */
@@ -252,13 +289,17 @@ public class CheckDetailActivity extends BaseActivity implements OrderStatus, Ch
         if (checkTypeList != null && checkTypeList.size() > 0) {
             for (int i = 0; i < checkTypeList.size(); i++) {
                 CheckTypeByDetailBean bean = checkTypeList.get(i);
-                layoutCheckType.addView(addCheckType(i, bean));
+                layoutCheckType.addView(addCheckType(bean));
             }
+            //判断是否有已上传报告
             if (reportList.size() > 0) {
                 layoutCheckReportRoot.setVisibility(View.VISIBLE);
                 tvCheckReport.setText(
                         String.format(getString(R.string.txt_report_num), reportList.size(), checkTypeList.size()));
-                initCheckReport();
+                //拆分报告
+                splitReportUrl();
+                //添加报告
+                addCheckReport();
             }
             else {
                 layoutCheckReportRoot.setVisibility(View.GONE);
@@ -272,11 +313,10 @@ public class CheckDetailActivity extends BaseActivity implements OrderStatus, Ch
     /**
      * 添加检查项
      *
-     * @param i
      * @param bean
      * @return
      */
-    private View addCheckType(int i, CheckTypeByDetailBean bean) {
+    private View addCheckType(CheckTypeByDetailBean bean) {
         View view = getLayoutInflater().inflate(R.layout.item_check_by_detail, null);
         ImageView imageView = view.findViewById(R.id.iv_check_type_dot);
         imageView.setVisibility(View.VISIBLE);
@@ -301,19 +341,17 @@ public class CheckDetailActivity extends BaseActivity implements OrderStatus, Ch
     }
 
     /**
-     * 检查报告
+     * 添加检查报告
      */
-    private void initCheckReport() {
+    private void addCheckReport() {
         layoutCheckReport.removeAllViews();
-        List<CheckTypeByDetailBean> newReportUrls = splitReportUrl();
         for (int i = 0; i < newReportUrls.size(); i++) {
             CheckTypeByDetailBean bean = newReportUrls.get(i);
             View view = getLayoutInflater().inflate(R.layout.item_check_report, null);
             TextView textView = view.findViewById(R.id.tv_check_report_name);
             textView.setText(bean.getName());
-            view.setOnClickListener(v -> {
-                downReportFile(FileUrlUtil.append(bean.getReport()), bean.getName());
-            });
+            view.setTag(i);
+            view.setOnClickListener(v -> downReportFile(FileUrlUtil.append(bean.getReport()), (Integer)view.getTag()));
             layoutCheckReport.addView(view);
         }
     }
@@ -321,8 +359,8 @@ public class CheckDetailActivity extends BaseActivity implements OrderStatus, Ch
     /**
      * 一个检查项可能存在多个报告  拆分报告
      */
-    private List<CheckTypeByDetailBean> splitReportUrl() {
-        List<CheckTypeByDetailBean> newReportUrls = new ArrayList<>();
+    private void splitReportUrl() {
+        newReportUrls = new ArrayList<>();
         for (int i = 0; i < reportList.size(); i++) {
             CheckTypeByDetailBean bean = reportList.get(i);
             String reportUrl = bean.getReport();
@@ -344,34 +382,13 @@ public class CheckDetailActivity extends BaseActivity implements OrderStatus, Ch
                 newReportUrls.add(bean);
             }
         }
-        return newReportUrls;
-    }
-
-    @OnClick(R.id.tv_check_next)
-    public void onViewClicked() {
-        new HintDialog(this).setPhone(checkDetailBean.getPatientMobile())
-                            .setOnEnterClickListener(() -> callPhone(checkDetailBean.getPatientMobile()))
-                            .show();
-    }
-
-    @Override
-    public void onResponseSuccess(Tasks task, BaseResponse response) {
-        super.onResponseSuccess(task, response);
-        switch (task) {
-            case GET_RESERVE_CHECK_ORDER_DETAIL:
-                checkDetailBean = (CheckDetailBean)response.getData();
-                initDetailData();
-                break;
-            default:
-                break;
-        }
     }
 
     private SpannableString appendImage(int status, String showText) {
         CenterImageSpan imgSpan;
         switch (status) {
             case CHECK_STATUS_WAIT_PAY:
-                imgSpan = new CenterImageSpan(this, bitmapNoreach);
+                imgSpan = new CenterImageSpan(this, bitmapNoReach);
                 break;
             case CHECK_STATUS_COMPLETE:
                 imgSpan = new CenterImageSpan(this, bitmapReach);
@@ -388,21 +405,12 @@ public class CheckDetailActivity extends BaseActivity implements OrderStatus, Ch
         return spanString;
     }
 
-    private PercentDialog percentDialog;
-
-    private void initPercentView() {
-        percentDialog = new PercentDialog(this);
-    }
-
-    private long fileSize;
-
-    private void downReportFile(String url, String showName) {
+    private void downReportFile(String url, int position) {
         String fileName = url.substring(url.lastIndexOf("/") + 1);
-        LogUtils.i(TAG, "url:" + url + "   \nfileName:" + fileName);
         String filePath = DirHelper.getPathFile() + "/" + fileName;
         File file = new File(filePath);
         if (file != null && file.exists()) {
-            FileDisplayActivity.show(this, filePath, showName);
+            FileDisplayActivity.show(CheckDetailActivity.this, newReportUrls, position);
         }
         else {
             FileTransferServer.getInstance(this)
@@ -431,8 +439,8 @@ public class CheckDetailActivity extends BaseActivity implements OrderStatus, Ch
                                                 public void onFinish(int what, String filePath) {
                                                     //跳转webview
                                                     percentDialog.dismiss();
-                                                    FileDisplayActivity.show(CheckDetailActivity.this, filePath,
-                                                                             fileName);
+                                                    FileDisplayActivity.show(CheckDetailActivity.this, newReportUrls,
+                                                                             position);
                                                 }
 
                                                 @Override
@@ -449,9 +457,9 @@ public class CheckDetailActivity extends BaseActivity implements OrderStatus, Ch
             bitmapReach.recycle();
             bitmapReach = null;
         }
-        if (bitmapNoreach != null) {
-            bitmapNoreach.recycle();
-            bitmapNoreach = null;
+        if (bitmapNoReach != null) {
+            bitmapNoReach.recycle();
+            bitmapNoReach = null;
         }
         if (bitmapCancel != null) {
             bitmapCancel.recycle();

@@ -1,15 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <include layout="@layout/public_title" />
+    <include
+        layout="@layout/public_title"
+        android:id="@+id/title_bar" />
+
+    <LinearLayout
+        android:id="@+id/layout_report_list"
+        android:layout_width="match_parent"
+        android:layout_height="68dp"
+        android:paddingStart="35dp"
+        android:paddingEnd="35dp"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:background="@color/color_ffffff">
+
+        <TextView
+            android:id="@+id/tv_report"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:background="@drawable/corner28_1491fc_bg"
+            android:text="@string/txt_open_other_report"
+            android:gravity="center"
+            android:textSize="@dimen/text_16"
+            android:textColor="@color/color_ffffff" />
+    </LinearLayout>
+
+    <com.tencent.smtt.sdk.WebView
+        android:id="@+id/web_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/title_bar"
+        android:layout_above="@id/layout_report_list" />
+
 
     <com.yht.yihuantong.ui.x5.FileReaderView
         android:id="@+id/documentReaderView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_below="@id/title_bar"
+        android:layout_above="@id/layout_report_list" />
 
-</LinearLayout>
+</RelativeLayout>

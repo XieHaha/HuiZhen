@@ -20,6 +20,7 @@ import com.yht.frame.data.CommonData;
 import com.yht.frame.data.base.LoginBean;
 import com.yht.frame.http.retrofit.RetrofitManager;
 import com.yht.frame.utils.BaseUtils;
+import com.yht.frame.utils.LogUtils;
 import com.yht.frame.utils.SharePreferenceUtil;
 import com.yht.frame.widgets.imagePreview.ImageLoadUtil;
 import com.yht.yihuantong.chat.HxHelper;
@@ -121,13 +122,14 @@ public class ZycApplication extends LitePalApplication {
             @Override
             public void onViewInitFinished(boolean arg0) {
                 //x5內核初始化完成的回调，为true表示x5内核加载成功，否则表示x5内核加载失败，会自动切换到系统内核。
+                LogUtils.i("ZYC", "qbsdk:" + arg0);
             }
 
             @Override
             public void onCoreInitFinished() {
             }
         };
-        //x5内核初始化接口
+        //x5内核初始化接口 预加载
         QbSdk.initX5Environment(getApplicationContext(), cb);
     }
 

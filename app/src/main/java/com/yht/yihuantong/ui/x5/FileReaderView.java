@@ -30,13 +30,23 @@ public class FileReaderView extends FrameLayout implements TbsReaderView.ReaderC
 
     public FileReaderView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        mTbsReaderView = getTbsReaderView(context);
-        this.addView(mTbsReaderView, new LinearLayout.LayoutParams(-1, -1));
+        //        mTbsReaderView = getTbsReaderView(context);
+        //        this.addView(mTbsReaderView, new LinearLayout.LayoutParams(-1, -1));
         this.context = context;
     }
 
     private TbsReaderView getTbsReaderView(Context context) {
         return new TbsReaderView(context, this);
+    }
+
+    /**
+     * 重新加载
+     */
+    public void setNewTbsReaderView() {
+        stop();
+        this.removeAllViews();
+        mTbsReaderView = getTbsReaderView(context);
+        this.addView(mTbsReaderView, new LinearLayout.LayoutParams(-1, -1));
     }
 
     /**

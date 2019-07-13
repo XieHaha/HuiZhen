@@ -235,7 +235,7 @@ public class PatientInfoFragment extends BaseFragment
                     ToastUtil.toast(getContext(), R.string.txt_patient_exist_transfer);
                 }
                 else {
-                    if (reservationValidateBean.isJc()) {
+                    if (reservationValidateBean.isZz()) {
                         intent = new Intent(getContext(), ReservationCheckOrTransferActivity.class);
                         intent.putExtra(CommonData.KEY_PATIENT_BEAN, patientDetailBean);
                         intent.putExtra(CommonData.KEY_CHECK_OR_TRANSFER, true);

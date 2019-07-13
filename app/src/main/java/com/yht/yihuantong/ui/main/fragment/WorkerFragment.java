@@ -20,6 +20,7 @@ import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.base.BannerBean;
 import com.yht.frame.data.base.OrderNumStatisticsBean;
+import com.yht.frame.data.base.ReservationValidateBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.permission.Permission;
 import com.yht.frame.ui.BaseFragment;
@@ -30,6 +31,7 @@ import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.check.CheckHistoryActivity;
 import com.yht.yihuantong.ui.personal.PersonalActivity;
 import com.yht.yihuantong.ui.reservation.ReservationCheckOrTransferActivity;
+import com.yht.yihuantong.ui.reservation.ReservationDisableActivity;
 import com.yht.yihuantong.ui.transfer.TransferInitiateListActivity;
 import com.yht.yihuantong.ui.transfer.TransferReceiveListActivity;
 import com.yht.yihuantong.utils.FileUrlUtil;
@@ -76,7 +78,14 @@ public class WorkerFragment extends BaseFragment {
      * 订单统计
      */
     private OrderNumStatisticsBean orderNumStatisticsBean;
+    /**
+     * 广告banner
+     */
     private List<BannerBean> bannerBeans;
+    /**
+     * 检查、转诊、验证
+     */
+    private ReservationValidateBean reservationValidateBean;
     /**
      * 扫码
      */
@@ -112,6 +121,7 @@ public class WorkerFragment extends BaseFragment {
              .apply(GlideHelper.getOptions(BaseUtils.dp2px(getContext(), 4)))
              .into(ivPersonalImage);
         getBanner();
+        getValidateHospitalList();
     }
 
     /**
@@ -126,6 +136,13 @@ public class WorkerFragment extends BaseFragment {
      */
     private void getBanner() {
         RequestUtils.getBanner(getContext(), loginBean.getToken(), this);
+    }
+
+    /**
+     * 校验医生是否有预约检查和预约转诊的合作医院
+     */
+    private void getValidateHospitalList() {
+        RequestUtils.getValidateHospitalList(getContext(), loginBean.getToken(), this);
     }
 
     /**
@@ -171,13 +188,26 @@ public class WorkerFragment extends BaseFragment {
                 startActivity(new Intent(getContext(), PersonalActivity.class));
                 break;
             case R.id.layout_check:
-                intent = new Intent(getContext(), ReservationCheckOrTransferActivity.class);
-                startActivity(intent);
+                if (reservationValidateBean != null && reservationValidateBean.isJc()) {
+                    intent = new Intent(getContext(), ReservationCheckOrTransferActivity.class);
+                    startActivity(intent);
+                }
+                else {
+                    intent = new Intent(getContext(), ReservationDisableActivity.class);
+                    startActivity(intent);
+                }
                 break;
             case R.id.layout_transfer:
-                intent = new Intent(getContext(), ReservationCheckOrTransferActivity.class);
-                intent.putExtra(CommonData.KEY_CHECK_OR_TRANSFER, true);
-                startActivity(intent);
+                if (reservationValidateBean != null && reservationValidateBean.isZz()) {
+                    intent = new Intent(getContext(), ReservationCheckOrTransferActivity.class);
+                    intent.putExtra(CommonData.KEY_CHECK_OR_TRANSFER, true);
+                    startActivity(intent);
+                }
+                else {
+                    intent = new Intent(getContext(), ReservationDisableActivity.class);
+                    intent.putExtra(CommonData.KEY_CHECK_OR_TRANSFER, true);
+                    startActivity(intent);
+                }
                 break;
             case R.id.layout_transfer_apply:
                 intent = new Intent(getContext(), TransferReceiveListActivity.class);
@@ -215,6 +245,9 @@ public class WorkerFragment extends BaseFragment {
                 if (bannerBeans != null) {
                     initFlipper();
                 }
+                break;
+            case GET_VALIDATE_HOSPITAL_LIST:
+                reservationValidateBean = (ReservationValidateBean)response.getData();
                 break;
             default:
                 break;
