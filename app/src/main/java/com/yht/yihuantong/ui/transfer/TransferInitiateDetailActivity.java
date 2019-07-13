@@ -90,7 +90,7 @@ public class TransferInitiateDetailActivity extends BaseActivity implements Tran
     @BindView(R.id.layout_receive_notice)
     RelativeLayout layoutReceiveNotice;
     /**
-     * 订单
+     * 订单 详情
      */
     private TransferBean transferBean;
     /**
@@ -100,7 +100,7 @@ public class TransferInitiateDetailActivity extends BaseActivity implements Tran
     /**
      * 取消转诊原因
      */
-    private String cancelreason;
+    private String cancelReason;
 
     @Override
     protected boolean isInitBackBtn() {
@@ -213,7 +213,7 @@ public class TransferInitiateDetailActivity extends BaseActivity implements Tran
      * 取消转诊
      */
     private void cancelReserveTransferOrder() {
-        RequestUtils.cancelReserveTransferOrder(this, loginBean.getToken(), cancelreason, orderNo, this);
+        RequestUtils.cancelReserveTransferOrder(this, loginBean.getToken(), cancelReason, orderNo, this);
     }
 
     @OnClick({
@@ -232,7 +232,7 @@ public class TransferInitiateDetailActivity extends BaseActivity implements Tran
                                          .setOnCancelClickListener(() -> {
                                          })
                                          .setResultListener(result -> {
-                                             cancelreason = result;
+                                             cancelReason = result;
                                              cancelReserveTransferOrder();
                                          })
                                          .show();
@@ -240,6 +240,7 @@ public class TransferInitiateDetailActivity extends BaseActivity implements Tran
                 else {
                     //重新转诊
                     Intent intent = new Intent(this, ReservationCheckOrTransferActivity.class);
+                    intent.putExtra(CommonData.KEY_TRANSFER_ORDER_BEAN, transferBean);
                     intent.putExtra(CommonData.KEY_CHECK_OR_TRANSFER, true);
                     startActivity(intent);
                 }

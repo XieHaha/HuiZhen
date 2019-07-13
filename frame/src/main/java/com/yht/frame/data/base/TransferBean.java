@@ -20,12 +20,16 @@ public class TransferBean implements Serializable {
     private String transferDate;
     private String confirmPhoto;
     private String patientName;
+    private String patientCode;
     private String transferTarget;
     /**
      * 接诊医生
      */
     private String targetDoctorName;
+    private String targetDoctorCode;
+    private String targetDoctorPhoto;
     private String targetDoctorMobile;
+    private String targetDoctorJobTitle;
     private String targetHospitalDepartmentName;
     private String targetHospitalName;
     private String targetHospitalCode;
@@ -38,6 +42,7 @@ public class TransferBean implements Serializable {
      * 转诊医生
      */
     private String sourceDoctorName;
+    private String sourceDoctorCode;
     private String sourceDoctorMobile;
     private String sourceHospitalDepartmentName;
     private String sourceHospitalName;
@@ -329,5 +334,45 @@ public class TransferBean implements Serializable {
 
     public void setPhoto(String photo) {
         this.photo = photo;
+    }
+
+    public String getPatientCode() {
+        return patientCode;
+    }
+
+    public void setPatientCode(String patientCode) {
+        this.patientCode = patientCode;
+    }
+
+    public String getTargetDoctorCode() {
+        return targetDoctorCode;
+    }
+
+    public void setTargetDoctorCode(String targetDoctorCode) {
+        this.targetDoctorCode = targetDoctorCode;
+    }
+
+    public String getSourceDoctorCode() {
+        return sourceDoctorCode;
+    }
+
+    public void setSourceDoctorCode(String sourceDoctorCode) {
+        this.sourceDoctorCode = sourceDoctorCode;
+    }
+
+    public String getTargetDoctorPhoto() {
+        return targetDoctorPhoto;
+    }
+
+    public void setTargetDoctorPhoto(String targetDoctorPhoto) {
+        this.targetDoctorPhoto = targetDoctorPhoto;
+    }
+
+    public String getTargetDoctorJobTitle() {
+        return targetDoctorJobTitle;
+    }
+
+    public void setTargetDoctorJobTitle(String targetDoctorJobTitle) {
+        this.targetDoctorJobTitle = targetDoctorJobTitle;
     }
 }

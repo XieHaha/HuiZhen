@@ -19,6 +19,7 @@ import com.yht.frame.data.Tasks;
 import com.yht.frame.data.base.PatientDetailBean;
 import com.yht.frame.data.base.ReserveCheckBean;
 import com.yht.frame.data.base.ReserveTransferBean;
+import com.yht.frame.data.base.TransferBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.widgets.dialog.HintDialog;
@@ -74,7 +75,7 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
      * 碎片管理
      */
     private FragmentManager fragmentManager;
-    private FragmentTransaction transaction;
+    private FragmentTransaction fragmentTransaction;
     /**
      * 基本信息
      */
@@ -88,13 +89,17 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
      */
     private SubmitCheckFragment submitCheckFragment;
     /**
+     * 确认提交(预约转诊)
+     */
+    private SubmitTransferFragment submitTransferFragment;
+    /**
      * 患者回填数据
      */
     private PatientDetailBean patientDetailBean;
     /**
-     * 确认提交(预约转诊)
+     * 重新转诊 数据回填
      */
-    private SubmitTransferFragment submitTransferFragment;
+    private TransferBean transferBean;
     /**
      * 当前预约转诊数据
      */
@@ -123,15 +128,29 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
     }
 
     @Override
-    public void initData(@NonNull Bundle savedInstanceState) {
-        super.initData(savedInstanceState);
+    public void initView(@NonNull Bundle savedInstanceState) {
+        super.initView(savedInstanceState);
+        fragmentManager = getSupportFragmentManager();
         if (getIntent() != null) {
             isTransfer = getIntent().getBooleanExtra(CommonData.KEY_CHECK_OR_TRANSFER, false);
+            //患者详情页面回传数据
             patientDetailBean = (PatientDetailBean)getIntent().getSerializableExtra(CommonData.KEY_PATIENT_BEAN);
+            //转诊详情页面回传数据(重新转诊)
+            transferBean = (TransferBean)getIntent().getSerializableExtra(CommonData.KEY_TRANSFER_ORDER_BEAN);
         }
         initTitlePage();
-        initTab();
-        initHistoryData();
+    }
+
+    @Override
+    public void initData(@NonNull Bundle savedInstanceState) {
+        super.initData(savedInstanceState);
+        if (hasHistoryData()) {
+            //重新转诊直接进入到第二步
+            tabReservationLicenseView();
+        }
+        else {
+            tabReservationBaseView();
+        }
     }
 
     /**
@@ -167,57 +186,126 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
     }
 
     /**
-     * 若已有患者数据  进行数据回填
+     * 已有数据回填（包括患者基本数据或者订单数据）
+     * 返回true  表示有数据需要回填
      */
-    private void initHistoryData() {
+    private boolean hasHistoryData() {
         if (patientDetailBean != null) {
-
+            initPatientBaseData();
+            return true;
+        }
+        else if (transferBean != null) {
+            initTransferOrderData();
+            return true;
+        }
+        else {
+            return false;
         }
     }
 
     /**
-     * 初始化tabs
+     * 患者基本数据回填
      */
-    private void initTab() {
-        fragmentManager = getSupportFragmentManager();
-        tabReservationBaseView();
+    private void initPatientBaseData() {
+        if (isTransfer) {
+            //转诊 数据回填
+            reverseTransferBean = new ReserveTransferBean();
+            reverseTransferBean.setPatientName(patientDetailBean.getName());
+            reverseTransferBean.setPatientIdCardNo(patientDetailBean.getIdCard());
+            reverseTransferBean.setPatientCode(patientDetailBean.getCode());
+            reverseTransferBean.setSex(patientDetailBean.getSex());
+            reverseTransferBean.setPatientAge(patientDetailBean.getAge());
+            reverseTransferBean.setPatientMobile(patientDetailBean.getMobile());
+            reverseTransferBean.setPastHistory(patientDetailBean.getPast());
+            reverseTransferBean.setFamilyHistory(patientDetailBean.getFamily());
+            reverseTransferBean.setAllergyHistory(patientDetailBean.getAllergy());
+            //给个默认值 防止回填数据冲突（区分转诊订单详情、患者的个人页面）
+            reverseTransferBean.setTransferType(-1);
+            reverseTransferBean.setPayType(-1);
+        }
+        else {
+            //预约检查
+            reserveCheckBean = new ReserveCheckBean();
+            reserveCheckBean.setPatientName(patientDetailBean.getName());
+            reserveCheckBean.setIdCardNo(patientDetailBean.getIdCard());
+            reserveCheckBean.setPatientCode(patientDetailBean.getCode());
+            reserveCheckBean.setSex(patientDetailBean.getSex());
+            reserveCheckBean.setAge(patientDetailBean.getAge());
+            reserveCheckBean.setPhone(patientDetailBean.getMobile());
+            reserveCheckBean.setPastHistory(patientDetailBean.getPast());
+            reserveCheckBean.setFamilyHistory(patientDetailBean.getFamily());
+            reserveCheckBean.setAllergyHistory(patientDetailBean.getAllergy());
+        }
+    }
+
+    /**
+     * 订单数据回填
+     */
+    private void initTransferOrderData() {
+        //数据回填 患者信息
+        reverseTransferBean = new ReserveTransferBean();
+        reverseTransferBean.setPatientName(transferBean.getPatientName());
+        reverseTransferBean.setPatientIdCardNo(transferBean.getPatientIdCardNo());
+        reverseTransferBean.setPatientCode(transferBean.getPatientCode());
+        reverseTransferBean.setSex(transferBean.getSex());
+        reverseTransferBean.setPatientAge(transferBean.getPatientAge());
+        reverseTransferBean.setPatientMobile(transferBean.getPatientMobile());
+        reverseTransferBean.setPastHistory(transferBean.getPastHistory());
+        reverseTransferBean.setFamilyHistory(transferBean.getFamilyHistory());
+        reverseTransferBean.setAllergyHistory(transferBean.getAllergyHistory());
+        reverseTransferBean.setInitResult(transferBean.getInitResult());
+        //接诊医生信息
+        reverseTransferBean.setReceiveDoctorCode(transferBean.getTargetDoctorCode());
+        reverseTransferBean.setReceiveDoctorName(transferBean.getTargetDoctorName());
+        reverseTransferBean.setReceiveDoctorDepart(transferBean.getTargetHospitalDepartmentName());
+        reverseTransferBean.setReceiveDoctorHospital(transferBean.getTargetHospitalName());
+        reverseTransferBean.setReceiveDoctorPhoto(transferBean.getTargetDoctorPhoto());
+        reverseTransferBean.setReceiveDoctorJobTitle(transferBean.getTargetDoctorJobTitle());
+        //转诊类型
+        reverseTransferBean.setTransferType(transferBean.getTransferType());
+        //转诊目的
+        reverseTransferBean.setTransferTarget(transferBean.getTransferTarget());
+        //缴费类型
+        reverseTransferBean.setPayType(transferBean.getPayType());
+        //确认照片
+        reverseTransferBean.setConfirmPhoto(transferBean.getConfirmPhoto());
     }
 
     private void tabReservationBaseView() {
-        transaction = fragmentManager.beginTransaction();
-        hideAll(transaction);
+        fragmentTransaction = fragmentManager.beginTransaction();
+        hideAll(fragmentTransaction);
         if (identifyFragment == null) {
             identifyFragment = new IdentifyFragment();
             identifyFragment.setTransfer(isTransfer);
             identifyFragment.setOnCheckListener(this);
-            transaction.add(R.id.layout_frame_root, identifyFragment);
+            fragmentTransaction.add(R.id.layout_frame_root, identifyFragment);
         }
         else {
-            transaction.show(identifyFragment);
+            fragmentTransaction.show(identifyFragment);
             identifyFragment.onResume();
         }
-        transaction.commitAllowingStateLoss();
+        fragmentTransaction.commitAllowingStateLoss();
         selectTab(BASE_ZERO);
     }
 
     private void tabReservationLicenseView() {
-        transaction = fragmentManager.beginTransaction();
-        hideAll(transaction);
+        fragmentTransaction = fragmentManager.beginTransaction();
+        hideAll(fragmentTransaction);
         if (materialFragment == null) {
             materialFragment = new MaterialFragment();
             materialFragment.setTransfer(isTransfer);
             materialFragment.setOnCheckListener(this);
             materialFragment.setReverseTransferBean(reverseTransferBean);
             materialFragment.setReserveCheckBean(reserveCheckBean);
-            transaction.add(R.id.layout_frame_root, materialFragment);
+            fragmentTransaction.add(R.id.layout_frame_root, materialFragment);
         }
         else {
-            transaction.show(materialFragment);
+            fragmentTransaction.show(materialFragment);
             materialFragment.setReverseTransferBean(reverseTransferBean);
             materialFragment.setReserveCheckBean(reserveCheckBean);
             materialFragment.onResume();
         }
-        transaction.commitAllowingStateLoss();
+        fragmentTransaction.commitAllowingStateLoss();
         selectTab(BASE_ONE);
     }
 
@@ -225,20 +313,20 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
      * 预约检查提交碎片
      */
     private void tabCheckResultView() {
-        transaction = fragmentManager.beginTransaction();
-        hideAll(transaction);
+        fragmentTransaction = fragmentManager.beginTransaction();
+        hideAll(fragmentTransaction);
         if (submitCheckFragment == null) {
             submitCheckFragment = new SubmitCheckFragment();
             submitCheckFragment.setOnCheckListener(this);
             submitCheckFragment.setReserveCheckBean(reserveCheckBean);
-            transaction.add(R.id.layout_frame_root, submitCheckFragment);
+            fragmentTransaction.add(R.id.layout_frame_root, submitCheckFragment);
         }
         else {
-            transaction.show(submitCheckFragment);
+            fragmentTransaction.show(submitCheckFragment);
             submitCheckFragment.setReserveCheckBean(reserveCheckBean);
             submitCheckFragment.onResume();
         }
-        transaction.commitAllowingStateLoss();
+        fragmentTransaction.commitAllowingStateLoss();
         selectTab(BASE_TWO);
     }
 
@@ -246,20 +334,20 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
      * 预约转诊提交碎片
      */
     private void tabTransferResultView() {
-        transaction = fragmentManager.beginTransaction();
-        hideAll(transaction);
+        fragmentTransaction = fragmentManager.beginTransaction();
+        hideAll(fragmentTransaction);
         if (submitTransferFragment == null) {
             submitTransferFragment = new SubmitTransferFragment();
             submitTransferFragment.setOnCheckListener(this);
             submitTransferFragment.setReverseTransferBean(reverseTransferBean);
-            transaction.add(R.id.layout_frame_root, submitTransferFragment);
+            fragmentTransaction.add(R.id.layout_frame_root, submitTransferFragment);
         }
         else {
-            transaction.show(submitTransferFragment);
+            fragmentTransaction.show(submitTransferFragment);
             submitTransferFragment.setReverseTransferBean(reverseTransferBean);
             submitTransferFragment.onResume();
         }
-        transaction.commitAllowingStateLoss();
+        fragmentTransaction.commitAllowingStateLoss();
         selectTab(BASE_TWO);
     }
 
@@ -320,6 +408,7 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
                 curPage = BASE_TWO;
                 //1
                 viewReservationLicenseRight.setSelected(true);
+                tvReservationMaterial.setSelected(false);
                 tvReservationMaterial.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
                 ivReservationMaterial.setImageResource(R.mipmap.ic_step_finish);
                 //2
@@ -430,10 +519,16 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
     private boolean finishPage() {
         if (curPage == BASE_TWO) {
             curPage = 1;
+            if (submitTransferFragment != null) {
+                reverseTransferBean = submitTransferFragment.getReverseTransferBean();
+            }
             tabReservationLicenseView();
             return false;
         }
         else if (curPage == 1) {
+            if (transferBean != null || patientDetailBean != null) {
+                return true;
+            }
             curPage = 0;
             tabReservationBaseView();
             return false;

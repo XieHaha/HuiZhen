@@ -169,6 +169,8 @@ public class MaterialFragment extends BaseFragment implements View.OnFocusChange
             else {
                 rbFemale.setChecked(true);
             }
+            //初步诊断
+            etDiagnosis.setText(diagnosisHis = reverseTransferBean.getInitResult());
             //既往病史
             initPastMedicalHis(!TextUtils.isEmpty(pastMedicalHis) &&
                                (!getString(R.string.txt_past_medical_his_not).equals(pastMedicalHis)));
@@ -178,6 +180,7 @@ public class MaterialFragment extends BaseFragment implements View.OnFocusChange
             //过敏史
             initAllergies(
                     !TextUtils.isEmpty(allergiesHis) && (!getString(R.string.txt_allergies_not).equals(allergiesHis)));
+            initNextButton();
         }
     }
 
@@ -210,6 +213,8 @@ public class MaterialFragment extends BaseFragment implements View.OnFocusChange
             else {
                 rbFemale.setChecked(true);
             }
+            //初步诊断
+            etDiagnosis.setText(diagnosisHis = reserveCheckBean.getInitResult());
             //既往病史
             initPastMedicalHis(!TextUtils.isEmpty(pastMedicalHis) &&
                                (!getString(R.string.txt_past_medical_his_not).equals(pastMedicalHis)));
@@ -219,6 +224,7 @@ public class MaterialFragment extends BaseFragment implements View.OnFocusChange
             //过敏史
             initAllergies(
                     !TextUtils.isEmpty(allergiesHis) && (!getString(R.string.txt_allergies_not).equals(allergiesHis)));
+            initNextButton();
         }
     }
 

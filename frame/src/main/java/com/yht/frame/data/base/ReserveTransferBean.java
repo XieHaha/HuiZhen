@@ -22,8 +22,16 @@ public class ReserveTransferBean implements Serializable {
     private String patientIdCardNo;
     private String patientMobile;
     private String patientName;
-    private String receiveDoctorCode;
     private String transferTarget;
+    /**
+     * 接诊医生信息
+     */
+    private String receiveDoctorName;
+    private String receiveDoctorCode;
+    private String receiveDoctorDepart;
+    private String receiveDoctorHospital;
+    private String receiveDoctorPhoto;
+    private String receiveDoctorJobTitle;
 
     public int getSex() {
         return sex;
@@ -137,11 +145,51 @@ public class ReserveTransferBean implements Serializable {
         this.receiveDoctorCode = receiveDoctorCode;
     }
 
+    public String getReceiveDoctorName() {
+        return receiveDoctorName;
+    }
+
+    public void setReceiveDoctorName(String receiveDoctorName) {
+        this.receiveDoctorName = receiveDoctorName;
+    }
+
+    public String getReceiveDoctorDepart() {
+        return receiveDoctorDepart;
+    }
+
+    public void setReceiveDoctorDepart(String receiveDoctorDepart) {
+        this.receiveDoctorDepart = receiveDoctorDepart;
+    }
+
+    public String getReceiveDoctorHospital() {
+        return receiveDoctorHospital;
+    }
+
+    public void setReceiveDoctorHospital(String receiveDoctorHospital) {
+        this.receiveDoctorHospital = receiveDoctorHospital;
+    }
+
+    public String getReceiveDoctorPhoto() {
+        return receiveDoctorPhoto;
+    }
+
+    public void setReceiveDoctorPhoto(String receiveDoctorPhoto) {
+        this.receiveDoctorPhoto = receiveDoctorPhoto;
+    }
+
     public String getTransferTarget() {
         return transferTarget;
     }
 
     public void setTransferTarget(String transferTarget) {
         this.transferTarget = transferTarget;
+    }
+
+    public String getReceiveDoctorJobTitle() {
+        return receiveDoctorJobTitle;
+    }
+
+    public void setReceiveDoctorJobTitle(String receiveDoctorJobTitle) {
+        this.receiveDoctorJobTitle = receiveDoctorJobTitle;
     }
 }
