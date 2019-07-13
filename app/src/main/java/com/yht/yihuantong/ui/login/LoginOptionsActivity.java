@@ -27,6 +27,7 @@ import com.yht.frame.data.Tasks;
 import com.yht.frame.data.base.LoginBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
+import com.yht.yihuantong.BuildConfig;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ZycApplication;
 import com.yht.yihuantong.ui.WebViewActivity;
@@ -226,7 +227,8 @@ public class LoginOptionsActivity extends BaseActivity {
             @Override
             public void onClick(@NonNull View widget) {
                 Intent intent = new Intent(LoginOptionsActivity.this, WebViewActivity.class);
-                intent.putExtra(CommonData.KEY_PUBLIC, BaseNetConfig.BASE_BASIC_USER_PROTOCOL_URL);
+                intent.putExtra(CommonData.KEY_PUBLIC,
+                                BuildConfig.BASE_BASIC_URL + BaseNetConfig.BASE_BASIC_USER_PROTOCOL_URL);
                 startActivity(intent);
                 clearBackgroundColor(widget);
             }

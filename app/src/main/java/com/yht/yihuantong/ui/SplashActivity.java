@@ -23,7 +23,7 @@ import com.yht.frame.data.DocAuthStatus;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
-import com.yht.frame.utils.LogUtils;
+import com.yht.frame.utils.HuiZhenLog;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.auth.AuthDoctorActivity;
 import com.yht.yihuantong.ui.login.LoginOptionsActivity;
@@ -157,7 +157,7 @@ public class SplashActivity extends BaseActivity implements DocAuthStatus {
             RequestUtils.getSplash(this, "doctor", "android", name, this);
         }
         catch (PackageManager.NameNotFoundException e) {
-            LogUtils.w(TAG, "Exception error!", e);
+            HuiZhenLog.w(TAG, "Exception error!", e);
         }
     }
 

@@ -30,7 +30,7 @@ import com.yht.frame.http.listener.ResponseListener;
 import com.yht.frame.permission.OnPermissionCallback;
 import com.yht.frame.permission.Permission;
 import com.yht.frame.permission.PermissionHelper;
-import com.yht.frame.utils.LogUtils;
+import com.yht.frame.utils.HuiZhenLog;
 import com.yht.frame.utils.SharePreferenceUtil;
 import com.yht.frame.utils.StatusBarUtil;
 import com.yht.frame.utils.ToastUtil;
@@ -129,7 +129,7 @@ public abstract class BaseActivity extends RxAppCompatActivity
             tvTitle = (TextView)findViewById(R.id.public_title_bar_title);
         }
         catch (Exception e) {
-            LogUtils.e(getClass().getSimpleName(), e.getMessage());
+            HuiZhenLog.e(getClass().getSimpleName(), e.getMessage());
         }
     }
 
@@ -148,7 +148,7 @@ public abstract class BaseActivity extends RxAppCompatActivity
             tvTitle.setText(getTitle().toString());
         }
         catch (Exception e) {
-            LogUtils.e(getClass().getSimpleName(), e.getMessage());
+            HuiZhenLog.e(getClass().getSimpleName(), e.getMessage());
         }
     }
 

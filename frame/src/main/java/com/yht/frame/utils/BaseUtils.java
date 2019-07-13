@@ -136,7 +136,7 @@ public class BaseUtils {
             return String.valueOf(age);
         }
         catch (IllegalArgumentException e) {
-            LogUtils.w(TAG, "IllegalArgumentException error", e);
+            HuiZhenLog.w(TAG, "IllegalArgumentException error", e);
             return "0";
         }
     }
@@ -203,13 +203,13 @@ public class BaseUtils {
                 out.close();
             }
             catch (IOException e) {
-                LogUtils.e(TAG, e.getMessage());
+                HuiZhenLog.e(TAG, e.getMessage());
             }
             try {
                 in.close();
             }
             catch (IOException e) {
-                LogUtils.e(TAG, e.getMessage());
+                HuiZhenLog.e(TAG, e.getMessage());
             }
         }
         return count;

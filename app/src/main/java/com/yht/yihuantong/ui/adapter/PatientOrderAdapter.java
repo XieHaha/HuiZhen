@@ -9,10 +9,10 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.yht.frame.data.CheckTypeStatus;
-import com.yht.frame.data.OrderStatus;
+import com.yht.frame.data.PatientOrderStatus;
 import com.yht.frame.data.base.CheckTypeBean;
 import com.yht.frame.data.base.PatientOrderBean;
-import com.yht.frame.utils.LogUtils;
+import com.yht.frame.utils.HuiZhenLog;
 import com.yht.frame.utils.ToastUtil;
 import com.yht.yihuantong.R;
 
@@ -25,7 +25,7 @@ import java.util.List;
  * @des 患者订单记录
  */
 public class PatientOrderAdapter extends BaseMultiItemQuickAdapter<PatientOrderBean, BaseViewHolder>
-        implements CheckTypeStatus, OrderStatus {
+        implements CheckTypeStatus, PatientOrderStatus {
     /**
      * @param data A new list is created out of this one to avoid mutable list
      */
@@ -42,11 +42,11 @@ public class PatientOrderAdapter extends BaseMultiItemQuickAdapter<PatientOrderB
             case PatientOrderBean.CHECK:
                 initCheckData(helper, item);
                 break;
-            case PatientOrderBean.REMOTE:
-                initRemoteData(helper, item);
-                break;
             case PatientOrderBean.TRANSFER:
                 initTransferData(helper, item);
+                break;
+            case PatientOrderBean.REMOTE:
+                initRemoteData(helper, item);
                 break;
             default:
                 break;
@@ -66,16 +66,16 @@ public class PatientOrderAdapter extends BaseMultiItemQuickAdapter<PatientOrderB
         //订单状态
         int status = item.getStatus();
         switch (status) {
-            case ORDER_STATUS_INCOMPLETE:
+            case PATIENT_ORDER_INCOMPLETE:
                 helper.setVisible(R.id.iv_check_status_out, false);
                 helper.setVisible(R.id.iv_check_status_in, true);
                 break;
-            case ORDER_STATUS_COMPLETE:
+            case PATIENT_ORDER_COMPLETE:
                 helper.setImageResource(R.id.iv_check_status_out, R.mipmap.ic_status_complete);
                 helper.setVisible(R.id.iv_check_status_out, true);
                 helper.setVisible(R.id.iv_check_status_in, false);
                 break;
-            case ORDER_STATUS_CANCEL:
+            case PATIENT_ORDER_CANCEL:
                 helper.setVisible(R.id.iv_check_status_out, true);
                 helper.setVisible(R.id.iv_check_status_in, false);
                 helper.setImageResource(R.id.iv_check_status_out, R.mipmap.ic_status_cancel);
@@ -87,27 +87,58 @@ public class PatientOrderAdapter extends BaseMultiItemQuickAdapter<PatientOrderB
     }
 
     /**
-     * 远程数据
-     *
-     * @param helper
-     * @param item
-     */
-    private void initRemoteData(BaseViewHolder helper, PatientOrderBean item) {
-        helper.setText(R.id.tv_remote_name, R.string.txt_remote_consultation);
-        helper.setImageResource(R.id.iv_remote_img, R.mipmap.ic_remote);
-    }
-
-    /**
      * 转诊数据
      *
      * @param helper
      * @param item
      */
     private void initTransferData(BaseViewHolder helper, PatientOrderBean item) {
-        helper.setText(R.id.tv_transfer_name, R.string.txt_reserve_transfer);
-        helper.setImageResource(R.id.iv_transfer_img, R.mipmap.ic_transfer);
-        helper.setVisible(R.id.layout_transfer_root, true);
-        helper.setVisible(R.id.layout_transfer_purpose, false);
+        helper.setText(R.id.tv_transfer_name, R.string.txt_reserve_transfer)
+              .setText(R.id.tv_transfer_doctor, item.getSourceDoctorName())
+              .setText(R.id.tv_transfer_depart, item.getSourceHospitalDepartmentName())
+              .setText(R.id.tv_transfer_hospital, item.getSourceHospitalName())
+              .setText(R.id.tv_receiving_doctor, item.getTargetDoctorName())
+              .setText(R.id.tv_receiving_depart, item.getTargetHospitalDepartmentName())
+              .setText(R.id.tv_receiving_hospital, item.getTargetHospitalName())
+              .setImageResource(R.id.iv_transfer_img, R.mipmap.ic_transfer)
+              .setVisible(R.id.layout_transfer_root, true)
+              .setGone(R.id.layout_transfer_purpose, false);
+        //订单状态
+        int status = item.getStatus();
+        switch (status) {
+            case PATIENT_ORDER_INCOMPLETE:
+                helper.setVisible(R.id.iv_transfer_status_out, false);
+                helper.setVisible(R.id.iv_transfer_status_in, true);
+                break;
+            case PATIENT_ORDER_COMPLETE:
+                helper.setImageResource(R.id.iv_transfer_status_out, R.mipmap.ic_status_received);
+                helper.setVisible(R.id.iv_transfer_status_out, true);
+                helper.setVisible(R.id.iv_transfer_status_in, false);
+                break;
+            case PATIENT_ORDER_CANCEL:
+                helper.setVisible(R.id.iv_transfer_status_out, true);
+                helper.setVisible(R.id.iv_transfer_status_in, false);
+                helper.setImageResource(R.id.iv_transfer_status_out, R.mipmap.ic_status_cancel);
+                break;
+            case PATIENT_ORDER_REJECT:
+                helper.setVisible(R.id.iv_transfer_status_out, true);
+                helper.setVisible(R.id.iv_transfer_status_in, false);
+                helper.setImageResource(R.id.iv_transfer_status_out, R.mipmap.ic_status_reject);
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
+     * 远程数据
+     *
+     * @param helper
+     * @param item
+     */
+    private void initRemoteData(BaseViewHolder helper, PatientOrderBean item) {
+        helper.setText(R.id.tv_remote_name, R.string.txt_remote_consultation)
+              .setImageResource(R.id.iv_remote_img, R.mipmap.ic_remote);
     }
 
     /**
@@ -133,11 +164,11 @@ public class PatientOrderAdapter extends BaseMultiItemQuickAdapter<PatientOrderB
                 textView.setText(checkTypeBean.getName());
                 int status = checkTypeBean.getStatus();
                 //已完成（已上传报告）
-                if (status == CHECK_STATUS_COMPLETE) {
+                if (status == CHECK_TYPE_STATUS_COMPLETE) {
                     reportList.add(checkTypeBean);
                 }
                 //检查项已取消
-                if (status == CHECK_STATUS_CANCEL) {
+                if (status == CHECK_TYPE_STATUS_CANCEL) {
                     textView.setSelected(true);
                     imageDot.setSelected(true);
                     imageView.setVisibility(View.VISIBLE);
@@ -183,7 +214,7 @@ public class PatientOrderAdapter extends BaseMultiItemQuickAdapter<PatientOrderB
             view.setTag(i);
             textView.setOnClickListener(v -> {
                 ToastUtil.toast(mContext, "parent:" + helper.getAdapterPosition() + " child:" + v.getTag());
-                LogUtils.i("test", " url:" + bean.getReport());
+                HuiZhenLog.i("test", " url:" + bean.getReport());
             });
             layoutReport.addView(view);
         }

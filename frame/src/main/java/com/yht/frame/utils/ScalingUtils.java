@@ -64,7 +64,7 @@ public final class ScalingUtils {
             bitmap.compress(format, 50, out);
         }
         catch (Exception e) {
-            LogUtils.w(TAG, "Exception error!", e);
+            HuiZhenLog.w(TAG, "Exception error!", e);
         }
         finally {
             if (out != null) {
@@ -73,7 +73,7 @@ public final class ScalingUtils {
                     out.close();
                 }
                 catch (IOException e) {
-                    LogUtils.w(TAG, "Exception error!", e);
+                    HuiZhenLog.w(TAG, "Exception error!", e);
                 }
             }
         }
@@ -111,12 +111,12 @@ public final class ScalingUtils {
                     out.write(baos.toByteArray());
                 }
                 catch (Exception e) {
-                    LogUtils.w(TAG, "Exception error!", e);
+                    HuiZhenLog.w(TAG, "Exception error!", e);
                 }
             }
         }
         catch (Exception e) {
-            LogUtils.w(TAG, "Exception error!", e);
+            HuiZhenLog.w(TAG, "Exception error!", e);
         }
     }
 
@@ -438,10 +438,10 @@ public final class ScalingUtils {
             bm = null;
         }
         catch (OutOfMemoryError e) {
-            LogUtils.w(TAG, "Exception error!", e);
+            HuiZhenLog.w(TAG, "Exception error!", e);
         }
         catch (Exception e) {
-            LogUtils.w(TAG, "Exception error!", e);
+            HuiZhenLog.w(TAG, "Exception error!", e);
         }
     }
 }

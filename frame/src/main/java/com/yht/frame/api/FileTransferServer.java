@@ -15,7 +15,7 @@ import com.yanzhenjie.nohttp.rest.JsonObjectRequest;
 import com.yanzhenjie.nohttp.rest.OnResponseListener;
 import com.yanzhenjie.nohttp.rest.Request;
 import com.yanzhenjie.nohttp.rest.RequestQueue;
-import com.yht.frame.utils.LogUtils;
+import com.yht.frame.utils.HuiZhenLog;
 
 import java.io.File;
 
@@ -85,7 +85,7 @@ public class FileTransferServer {
             DownloadListener downloadListener) {
         String url;
         url = urlStr.contains(" ") ? urlStr.replace(" ", "%20") : urlStr;
-        LogUtils.i(TAG, url);
+        HuiZhenLog.i(TAG, url);
         DownloadRequest request = NoHttp.createDownloadRequest(Uri.encode(url, url), savePath, fileName, false, true);
         if (!TextUtils.isEmpty(token)) {
             request.addHeader("token", token);

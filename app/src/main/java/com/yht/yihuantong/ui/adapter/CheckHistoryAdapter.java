@@ -42,16 +42,16 @@ public class CheckHistoryAdapter extends BaseQuickAdapter<CheckBean, BaseViewHol
               .setText(R.id.tv_check_hospital, item.getTargetHospitalName());
         int status = item.getStatus();
         switch (status) {
-            case CHECK_STATUS_INCOMPLETE:
+            case CHECK_ORDER_STATUS_INCOMPLETE:
                 helper.setGone(R.id.iv_check_status_in, true);
                 helper.setGone(R.id.iv_check_status_out, false);
                 break;
-            case CHECK_STATUS_COMPLETE:
+            case CHECK_ORDER_STATUS_COMPLETE:
                 helper.setGone(R.id.iv_check_status_in, false);
                 helper.setGone(R.id.iv_check_status_out, true);
                 helper.setImageResource(R.id.iv_check_status_out, R.mipmap.ic_status_complete);
                 break;
-            case CHECK_STATUS_CANCEL:
+            case CHECK_ORDER_STATUS_CANCEL:
                 helper.setGone(R.id.iv_check_status_in, false);
                 helper.setGone(R.id.iv_check_status_out, true);
                 helper.setImageResource(R.id.iv_check_status_out, R.mipmap.ic_status_cancel);
@@ -76,7 +76,7 @@ public class CheckHistoryAdapter extends BaseQuickAdapter<CheckBean, BaseViewHol
             ImageView imageDot = view.findViewById(R.id.iv_check_type_dot);
             ImageView imageView = view.findViewById(R.id.iv_check_type_status);
             textView.setText(bean.getName());
-            if (bean.getStatus() == CheckTypeStatus.CHECK_STATUS_CANCEL) {
+            if (bean.getStatus() == CheckTypeStatus.CHECK_TYPE_STATUS_CANCEL) {
                 imageView.setVisibility(View.VISIBLE);
                 textView.setSelected(true);
                 imageDot.setSelected(true);

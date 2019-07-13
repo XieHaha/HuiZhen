@@ -9,13 +9,13 @@ public interface CheckOrderStatus {
     /**
      * -未完成
      */
-    int CHECK_STATUS_INCOMPLETE = 0;
+    int CHECK_ORDER_STATUS_INCOMPLETE = 0;
     /**
      * -已完成
      */
-    int CHECK_STATUS_COMPLETE = 1;
+    int CHECK_ORDER_STATUS_COMPLETE = 1;
     /**
      * -已取消
      */
-    int CHECK_STATUS_CANCEL = 2;
+    int CHECK_ORDER_STATUS_CANCEL = 2;
 }

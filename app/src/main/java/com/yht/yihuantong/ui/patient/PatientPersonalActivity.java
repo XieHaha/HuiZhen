@@ -11,7 +11,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -22,7 +21,6 @@ import com.yht.frame.data.base.PatientBean;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.widgets.view.AbstractOnPageChangeListener;
-import com.yht.frame.widgets.view.ViewPrepared;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.chat.EaseChatFragment;
 import com.yht.yihuantong.ui.adapter.ViewPagerAdapter;
@@ -150,12 +148,7 @@ public class PatientPersonalActivity extends BaseActivity implements EaseChatFra
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-        new ViewPrepared().asyncPrepare(tvLeft, (w, h) -> {
-            ViewGroup.LayoutParams params = viewBar.getLayoutParams();
-            params.width = w + BaseUtils.dp2px(this, 12);
-            viewBar.setLayoutParams(params);
-            viewBar.setTranslationX(calcViewBarOffset());
-        });
+        viewBar.setTranslationX(calcViewBarOffset());
         initFragment();
         initReceiver();
     }

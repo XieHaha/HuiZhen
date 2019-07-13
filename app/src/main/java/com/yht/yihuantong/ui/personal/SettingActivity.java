@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.yht.frame.data.BaseData;
 import com.yht.frame.ui.BaseActivity;
-import com.yht.frame.utils.LogUtils;
+import com.yht.frame.utils.HuiZhenLog;
 import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.yihuantong.R;
 
@@ -84,7 +84,7 @@ public class SettingActivity extends BaseActivity {
             }
         }
         catch (PackageManager.NameNotFoundException e) {
-            LogUtils.w(TAG, "Exception error!", e);
+            HuiZhenLog.w(TAG, "Exception error!", e);
         }
     }
 

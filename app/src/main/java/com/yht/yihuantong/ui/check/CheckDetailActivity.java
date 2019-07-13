@@ -19,9 +19,9 @@ import com.yht.frame.api.DirHelper;
 import com.yht.frame.api.FileTransferServer;
 import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
+import com.yht.frame.data.CheckOrderStatus;
 import com.yht.frame.data.CheckTypeStatus;
 import com.yht.frame.data.CommonData;
-import com.yht.frame.data.OrderStatus;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.base.CheckDetailBean;
 import com.yht.frame.data.base.CheckTypeByDetailBean;
@@ -49,7 +49,7 @@ import butterknife.OnClick;
  * @date 19/6/14 10:56
  * @des 预约服务详情
  */
-public class CheckDetailActivity extends BaseActivity implements OrderStatus, CheckTypeStatus {
+public class CheckDetailActivity extends BaseActivity implements CheckOrderStatus, CheckTypeStatus {
     @BindView(R.id.iv_patient_img)
     ImageView ivPatientImg;
     @BindView(R.id.tv_patient_name)
@@ -229,12 +229,12 @@ public class CheckDetailActivity extends BaseActivity implements OrderStatus, Ch
         }
         int status = checkDetailBean.getStatus();
         switch (status) {
-            case ORDER_STATUS_INCOMPLETE:
+            case CHECK_ORDER_STATUS_INCOMPLETE:
                 ivCheckStatus.setImageResource(R.mipmap.ic_check_incomplete);
                 layoutCancelResult.setVisibility(View.GONE);
                 tvCheckStatus.setText(getString(R.string.txt_status_incomplete));
                 break;
-            case ORDER_STATUS_COMPLETE:
+            case CHECK_ORDER_STATUS_COMPLETE:
                 ivCheckStatus.setImageResource(R.mipmap.ic_status_complete);
                 layoutCancelResult.setVisibility(View.GONE);
                 tvCheckStatus.setText(getString(R.string.txt_status_complete));
@@ -323,10 +323,10 @@ public class CheckDetailActivity extends BaseActivity implements OrderStatus, Ch
         TextView tvType = view.findViewById(R.id.tv_check_type);
         tvType.setText(String.format(getString(R.string.txt_space), bean.getName()));
         //已完成（已上传报告）
-        if (bean.getStatus() == CHECK_STATUS_COMPLETE) {
+        if (bean.getStatus() == CHECK_TYPE_STATUS_COMPLETE) {
             reportList.add(bean);
         }
-        if (bean.getStatus() == CHECK_STATUS_CANCEL) {
+        if (bean.getStatus() == CHECK_TYPE_STATUS_CANCEL) {
             tvType.append(appendImage(bean.getStatus(), bean.getName()));
             tvType.setSelected(true);
             imageView.setSelected(true);
@@ -351,7 +351,7 @@ public class CheckDetailActivity extends BaseActivity implements OrderStatus, Ch
             TextView textView = view.findViewById(R.id.tv_check_report_name);
             textView.setText(bean.getName());
             view.setTag(i);
-            view.setOnClickListener(v -> downReportFile(FileUrlUtil.append(bean.getReport()), (Integer)view.getTag()));
+            view.setOnClickListener(v -> downReportFile(bean.getReport(), (Integer)view.getTag()));
             layoutCheckReport.addView(view);
         }
     }
@@ -387,13 +387,13 @@ public class CheckDetailActivity extends BaseActivity implements OrderStatus, Ch
     private SpannableString appendImage(int status, String showText) {
         CenterImageSpan imgSpan;
         switch (status) {
-            case CHECK_STATUS_WAIT_PAY:
+            case CHECK_TYPE_STATUS_WAIT_PAY:
                 imgSpan = new CenterImageSpan(this, bitmapNoReach);
                 break;
-            case CHECK_STATUS_COMPLETE:
+            case CHECK_TYPE_STATUS_COMPLETE:
                 imgSpan = new CenterImageSpan(this, bitmapReach);
                 break;
-            case CHECK_STATUS_CANCEL:
+            case CHECK_TYPE_STATUS_CANCEL:
                 imgSpan = new CenterImageSpan(this, bitmapCancel);
                 break;
             default:

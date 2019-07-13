@@ -1,6 +1,6 @@
 package com.yht.frame.api;
 
-import com.yht.frame.utils.LogUtils;
+import com.yht.frame.utils.HuiZhenLog;
 
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 
@@ -78,7 +78,7 @@ public class ThreadPoolHelper {
                 if (e instanceof RejectedExecutionException) {
                     execInSingle(r);
                 }
-                LogUtils.w(TAG, "Exception error!", e);
+                HuiZhenLog.w(TAG, "Exception error!", e);
             }
         }
 
@@ -94,7 +94,7 @@ public class ThreadPoolHelper {
                 if (e instanceof RejectedExecutionException) {
                     execInCached(r);
                 }
-                LogUtils.w(TAG, "Exception error!", e);
+                HuiZhenLog.w(TAG, "Exception error!", e);
             }
         }
 
@@ -107,7 +107,7 @@ public class ThreadPoolHelper {
                 return executorCached.submit(c);
             }
             catch (Exception e) {
-                LogUtils.e(TAG, "ThreadPoolHelper submitInCached Exception", e);
+                HuiZhenLog.e(TAG, "ThreadPoolHelper submitInCached Exception", e);
             }
             return null;
         }
@@ -125,7 +125,7 @@ public class ThreadPoolHelper {
                 if (e instanceof RejectedExecutionException) {
                     execInFixed(r);
                 }
-                LogUtils.w(TAG, "Exception error!", e);
+                HuiZhenLog.w(TAG, "Exception error!", e);
             }
         }
     }

@@ -29,7 +29,7 @@ import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.ui.BaseFragment;
-import com.yht.frame.utils.LogUtils;
+import com.yht.frame.utils.HuiZhenLog;
 import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.frame.widgets.view.AbstractOnPageChangeListener;
@@ -278,7 +278,7 @@ public class MessageFragment extends BaseFragment
         public void onDisconnected(final int error) {
             getActivity().runOnUiThread(() -> {
                 if (error == EMError.USER_REMOVED) {
-                    LogUtils.e(TAG, "账号被删除");
+                    HuiZhenLog.e(TAG, "账号被删除");
                 }
                 else if (error == EMError.USER_LOGIN_ANOTHER_DEVICE) {
                     ToastUtil.toast(getContext(), "账号在其他设备登录");

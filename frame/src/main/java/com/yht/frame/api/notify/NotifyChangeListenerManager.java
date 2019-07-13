@@ -2,7 +2,7 @@ package com.yht.frame.api.notify;
 
 import android.support.annotation.NonNull;
 
-import com.yht.frame.utils.LogUtils;
+import com.yht.frame.utils.HuiZhenLog;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -141,7 +141,7 @@ public class NotifyChangeListenerManager {
                             change.onChange(data);
                         }
                     } catch (Exception e) {
-                        LogUtils.w(TAG, "notifyStatusChange error", e);
+                        HuiZhenLog.w(TAG, "notifyStatusChange error", e);
                     }
                 }
             }
@@ -161,7 +161,7 @@ public class NotifyChangeListenerManager {
                             change.onChange(data);
                         }
                     } catch (Exception e) {
-                        LogUtils.w(TAG, "notifyMessageChange error", e);
+                        HuiZhenLog.w(TAG, "notifyMessageChange error", e);
                     }
                 }
             }
@@ -181,7 +181,7 @@ public class NotifyChangeListenerManager {
                             change.onChange(data);
                         }
                     } catch (Exception e) {
-                        LogUtils.w(TAG, "notifyMessageChange error", e);
+                        HuiZhenLog.w(TAG, "notifyMessageChange error", e);
                     }
                 }
             }
@@ -201,7 +201,7 @@ public class NotifyChangeListenerManager {
                             change.onChange(data);
                         }
                     } catch (Exception e) {
-                        LogUtils.w(TAG, "notifyMessageChange error", e);
+                        HuiZhenLog.w(TAG, "notifyMessageChange error", e);
                     }
                 }
             }
@@ -221,7 +221,7 @@ public class NotifyChangeListenerManager {
                             change.onChange(data);
                         }
                     } catch (Exception e) {
-                        LogUtils.w(TAG, "notifyMessageChange error", e);
+                        HuiZhenLog.w(TAG, "notifyMessageChange error", e);
                     }
                 }
             }
@@ -241,7 +241,7 @@ public class NotifyChangeListenerManager {
                             change.onChange(data);
                         }
                     } catch (Exception e) {
-                        LogUtils.w(TAG, "notifyMessageChange error", e);
+                        HuiZhenLog.w(TAG, "notifyMessageChange error", e);
                     }
                 }
             }

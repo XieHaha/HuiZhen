@@ -24,11 +24,7 @@ public interface BaseNetConfig {
     /**
      * 用户使用协议
      */
-    String BASE_BASIC_USER_PROTOCOL_URL = "http://www.zychealth.com/privacy/doctor.html";
-    /**
-     * 下载页面
-     */
-    String BASE_BASIC_DOWNLOAD_URL = "http://www.zychealth.com/downloadapp/index.html?doctorId=";
+    String BASE_BASIC_USER_PROTOCOL_URL = "/client/sys/protocol_by_doctor";
     /**
      * 微信下载页面
      */

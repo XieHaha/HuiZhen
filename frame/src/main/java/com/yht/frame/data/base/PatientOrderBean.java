@@ -15,13 +15,13 @@ public class PatientOrderBean implements MultiItemEntity {
      */
     public static final int CHECK = 1;
     /**
-     * 远程
-     */
-    public static final int REMOTE = 2;
-    /**
      * 转诊
      */
-    public static final int TRANSFER = 3;
+    public static final int TRANSFER = 2;
+    /**
+     * 远程
+     */
+    public static final int REMOTE = 3;
     /**
      * type
      */
@@ -34,6 +34,8 @@ public class PatientOrderBean implements MultiItemEntity {
     private String sourceHospitalDepartmentName;
     private String sourceDoctorName;
     private String targetHospitalName;
+    private String targetHospitalDepartmentName;
+    private String targetDoctorName;
     private ArrayList<CheckTypeBean> trans;
 
     public String getTime() {
@@ -106,6 +108,22 @@ public class PatientOrderBean implements MultiItemEntity {
 
     public void setTargetHospitalName(String targetHospitalName) {
         this.targetHospitalName = targetHospitalName;
+    }
+
+    public String getTargetHospitalDepartmentName() {
+        return targetHospitalDepartmentName;
+    }
+
+    public void setTargetHospitalDepartmentName(String targetHospitalDepartmentName) {
+        this.targetHospitalDepartmentName = targetHospitalDepartmentName;
+    }
+
+    public String getTargetDoctorName() {
+        return targetDoctorName;
+    }
+
+    public void setTargetDoctorName(String targetDoctorName) {
+        this.targetDoctorName = targetDoctorName;
     }
 
     public ArrayList<CheckTypeBean> getTrans() {

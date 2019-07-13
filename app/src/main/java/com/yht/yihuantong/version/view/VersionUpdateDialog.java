@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.yht.frame.api.DirHelper;
 import com.yht.frame.ui.AppManager;
-import com.yht.frame.utils.LogUtils;
+import com.yht.frame.utils.HuiZhenLog;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ZycApplication;
 import com.yht.yihuantong.version.ConstantsVersionMode;
@@ -150,7 +150,7 @@ public class VersionUpdateDialog extends Dialog implements ConstantsVersionMode,
                 contentArray = content.split("##");
             }
             catch (PatternSyntaxException e) {
-                LogUtils.w(TAG, "Exception error!", e);
+                HuiZhenLog.w(TAG, "Exception error!", e);
                 return this;
             }
         }

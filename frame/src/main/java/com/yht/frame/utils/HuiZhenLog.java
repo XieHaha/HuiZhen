@@ -20,7 +20,7 @@ import java.util.Date;
  *
  * @author dundun
  */
-public class LogUtils {
+public class HuiZhenLog {
     private static boolean isEnableLog = false;
     private static final char V = 'v';
     private static final char D = 'd';
@@ -29,7 +29,7 @@ public class LogUtils {
     private static final char E = 'e';
 
     public static void setIsEnableLog(boolean isEnableLog) {
-        LogUtils.isEnableLog = isEnableLog;
+        HuiZhenLog.isEnableLog = isEnableLog;
     }
 
     /**

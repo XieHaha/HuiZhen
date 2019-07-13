@@ -16,7 +16,7 @@ import android.text.TextUtils;
 
 import com.yht.frame.api.DirHelper;
 import com.yht.frame.utils.BaseUtils;
-import com.yht.frame.utils.LogUtils;
+import com.yht.frame.utils.HuiZhenLog;
 import com.yht.frame.utils.MimeUtils;
 import com.yht.frame.utils.ToastUtil;
 import com.yht.yihuantong.ZycApplication;
@@ -64,12 +64,12 @@ public final class FileUtils {
                 return true;
             }
             catch (IOException e) {
-                LogUtils.w(TAG, "Exception error!", e);
+                HuiZhenLog.w(TAG, "Exception error!", e);
                 throw new RuntimeException(e.getMessage(), e);
             }
         }
         catch (IOException e) {
-            LogUtils.w(TAG, "Exception error!", e);
+            HuiZhenLog.w(TAG, "Exception error!", e);
             throw new RuntimeException(e.getMessage(), e);
         }
     }
@@ -89,7 +89,7 @@ public final class FileUtils {
             }
         }
         catch (Exception e) {
-            LogUtils.w(TAG, "Exception error!", e);
+            HuiZhenLog.w(TAG, "Exception error!", e);
         }
         return "";
     }
@@ -167,11 +167,11 @@ public final class FileUtils {
         }
         catch (ActivityNotFoundException e) {
             ToastUtil.toast(context, "无法打开文件");
-            LogUtils.w(TAG, "Exception error!", e);
+            HuiZhenLog.w(TAG, "Exception error!", e);
         }
         catch (Exception ex) {
             ToastUtil.toast(context, "无法打开文件");
-            LogUtils.w(TAG, "Exception error!", ex);
+            HuiZhenLog.w(TAG, "Exception error!", ex);
         }
     }
 

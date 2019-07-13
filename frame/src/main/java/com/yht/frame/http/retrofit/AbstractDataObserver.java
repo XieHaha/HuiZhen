@@ -4,7 +4,7 @@ import com.yht.frame.data.BaseNetConfig;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.http.listener.ResponseListener;
-import com.yht.frame.utils.LogUtils;
+import com.yht.frame.utils.HuiZhenLog;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
@@ -45,11 +45,11 @@ public abstract class AbstractDataObserver<T> implements Observer<BaseResponse<T
         //服务器错误信息处理
         if (listener != null) {
             listener.onResponseError(task, new Exception("网络繁忙，请稍后再试"));
-            LogUtils.e(TAG, task + "   onError:" + e);
+            HuiZhenLog.e(TAG, task + "   onError:" + e);
             if (e.getStackTrace() != null) {
                 for (StackTraceElement element : e.getStackTrace()) {
                     //错误日志 数据量较多 可以显示
-                    //LogUtils.e(TAG, "onError element:" + element.toString());
+                    //HuiZhenLog.e(TAG, "onError element:" + element.toString());
                 }
             }
         }

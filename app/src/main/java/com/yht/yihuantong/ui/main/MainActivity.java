@@ -17,7 +17,7 @@ import com.yht.frame.data.BaseData;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.base.PatientBean;
 import com.yht.frame.ui.BaseActivity;
-import com.yht.frame.utils.LogUtils;
+import com.yht.frame.utils.HuiZhenLog;
 import com.yht.frame.utils.ToastUtil;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.main.fragment.MessageFragment;
@@ -135,7 +135,7 @@ public class MainActivity extends BaseActivity {
         EMClient.getInstance().login("15828456584_d", BaseData.BASE_EASE_DEFAULT_PWD, new EMCallBack() {
             @Override
             public void onSuccess() {
-                runOnUiThread(() -> LogUtils.i(TAG, getString(R.string.txt_login_ease_success)));
+                runOnUiThread(() -> HuiZhenLog.i(TAG, getString(R.string.txt_login_ease_success)));
             }
 
             @Override
@@ -144,7 +144,7 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void onError(int code, String message) {
-                LogUtils.i(TAG, getString(R.string.txt_login_ease_error));
+                HuiZhenLog.i(TAG, getString(R.string.txt_login_ease_error));
                 ToastUtil.toast(MainActivity.this, R.string.txt_login_ease_error);
             }
         });

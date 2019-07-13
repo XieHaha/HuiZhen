@@ -19,7 +19,6 @@ import com.yht.frame.utils.MimeUtils;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.dialog.DownDialog;
 import com.yht.yihuantong.ui.dialog.listener.OnMediaItemClickListener;
-import com.yht.yihuantong.utils.FileUrlUtil;
 import com.yht.yihuantong.utils.FileUtils;
 
 import java.util.ArrayList;
@@ -124,7 +123,7 @@ public class FileDisplayActivity extends BaseActivity implements OnMediaItemClic
     private void openFile() {
         CheckTypeByDetailBean bean = reportList.get(curPosition);
         tvTitle.setText(bean.getName());
-        String url = FileUrlUtil.append(bean.getReport());
+        String url = bean.getReport();
         String fileName = url.substring(url.lastIndexOf("/") + 1);
         String filePath = DirHelper.getPathFile() + "/" + fileName;
         //获取文件格式

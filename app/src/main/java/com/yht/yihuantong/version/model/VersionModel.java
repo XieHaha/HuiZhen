@@ -10,7 +10,7 @@ import com.yht.frame.data.Tasks;
 import com.yht.frame.data.bean.VersionBean;
 import com.yht.frame.http.listener.AbstractResponseAdapter;
 import com.yht.frame.http.retrofit.RequestUtils;
-import com.yht.frame.utils.LogUtils;
+import com.yht.frame.utils.HuiZhenLog;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -44,7 +44,7 @@ public class VersionModel extends AbstractResponseAdapter<BaseResponse> implemen
         File file = new File(DirHelper.getPathFile() + "/ZYC.apk");
         if (file.exists()) {
             if (!file.delete()) {
-                LogUtils.e(TAG, "delete error");
+                HuiZhenLog.e(TAG, "delete error");
             }
         }
     }
@@ -56,7 +56,7 @@ public class VersionModel extends AbstractResponseAdapter<BaseResponse> implemen
         File file = new File(DirHelper.getPathFile() + "/ZYC.apk");
         if (file.exists()) {
             if (!file.delete()) {
-                LogUtils.e(TAG, "delete error");
+                HuiZhenLog.e(TAG, "delete error");
             }
         }
         FileTransferServer.getInstance(context)

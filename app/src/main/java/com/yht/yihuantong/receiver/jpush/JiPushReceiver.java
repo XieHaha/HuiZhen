@@ -8,7 +8,7 @@
 //
 //import com.yht.frame.api.notify.NotifyChangeListenerManager;
 //import com.yht.frame.data.CommonData;
-//import com.yht.frame.utils.LogUtils;
+//import com.yht.frame.utils.HuiZhenLog;
 //import com.yht.frame.utils.SharePreferenceUtil;
 //import com.yht.yihuantong.ui.main.MainActivity;
 //
@@ -34,7 +34,7 @@
 //    public void onReceive(Context context, Intent intent) {
 //        try {
 //            Bundle bundle = intent.getExtras();
-//            LogUtils.i(TAG, "onReceive - " + intent.getAction() + ", extras: " + printBundle(bundle));
+//            HuiZhenLog.i(TAG, "onReceive - " + intent.getAction() + ", extras: " + printBundle(bundle));
 //            if (JPushInterface.ACTION_NOTIFICATION_RECEIVED.equals(intent.getAction())) {
 //                JSONObject json = new JSONObject(bundle.getString(JPushInterface.EXTRA_EXTRA));
 //                int type = json.optInt("newsid");
@@ -50,11 +50,11 @@
 //                jumpPageByType(context, type, msgId);
 //            }
 //            else {
-//                LogUtils.i(TAG, "[JiPushReceiver] Unhandled intent - " + intent.getAction());
+//                HuiZhenLog.i(TAG, "[JiPushReceiver] Unhandled intent - " + intent.getAction());
 //            }
 //        }
 //        catch (Exception e) {
-//            LogUtils.w(TAG, "Exception error", e);
+//            HuiZhenLog.w(TAG, "Exception error", e);
 //        }
 //    }
 //
@@ -217,7 +217,7 @@
 //            }
 //            else if (key.equals(JPushInterface.EXTRA_EXTRA)) {
 //                if (TextUtils.isEmpty(bundle.getString(JPushInterface.EXTRA_EXTRA))) {
-//                    LogUtils.i(TAG, "This message has no Extra data");
+//                    HuiZhenLog.i(TAG, "This message has no Extra data");
 //                    continue;
 //                }
 //                try {
@@ -229,7 +229,7 @@
 //                    }
 //                }
 //                catch (JSONException e) {
-//                    LogUtils.e(TAG, "Get message extra JSON error!");
+//                    HuiZhenLog.e(TAG, "Get message extra JSON error!");
 //                }
 //            }
 //            else {

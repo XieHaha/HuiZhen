@@ -22,7 +22,7 @@ import com.yanzhenjie.nohttp.download.DownloadListener;
 import com.yht.frame.api.DirHelper;
 import com.yht.frame.data.bean.VersionBean;
 import com.yht.frame.utils.BaseUtils;
-import com.yht.frame.utils.LogUtils;
+import com.yht.frame.utils.HuiZhenLog;
 import com.yht.frame.utils.ToastUtil;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ZycApplication;
@@ -225,7 +225,7 @@ public class VersionPresenter implements ConstantsVersionMode {
             return context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName + "";
         }
         catch (NameNotFoundException e) {
-            LogUtils.w(TAG, "Exception error!", e);
+            HuiZhenLog.w(TAG, "Exception error!", e);
         }
         return null;
     }
@@ -273,14 +273,14 @@ public class VersionPresenter implements ConstantsVersionMode {
             }
             catch (Exception x) {
                 i1 = Integer.MAX_VALUE;
-                LogUtils.w(TAG, "Exception error!", x);
+                HuiZhenLog.w(TAG, "Exception error!", x);
             }
             try {
                 i2 = Integer.parseInt(arr2[ii]);
             }
             catch (Exception x) {
                 i2 = Integer.MAX_VALUE;
-                LogUtils.w(TAG, "Exception error!", x);
+                HuiZhenLog.w(TAG, "Exception error!", x);
             }
             if (i1 != i2) {
                 return i1 - i2;

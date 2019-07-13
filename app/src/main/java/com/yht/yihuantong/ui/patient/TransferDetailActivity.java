@@ -109,57 +109,33 @@ public class TransferDetailActivity extends BaseActivity implements TransferOrde
                              : getString(R.string.txt_sex_female));
         tvPatientAge.setText(String.valueOf(transferBean.getPatientAge()));
         tvTransferTime.setText(transferBean.getTransferDate());
-        //        tvInitiateDiagnosis.setText(transferBean.getInitResult());
-        //        tvTransferType.setText(transferBean.getTransferType() == BaseData.BASE_ZERO
-        //                               ? getString(R.string.txt_transfer_up)
-        //                               : getString(R.string.txt_transfer_down));
+        //转诊医生信息
+        tvTransferDoctor.setText(transferBean.getSourceDoctorName());
+        tvTransferDepart.setText(transferBean.getSourceHospitalDepartmentName());
+        tvTransferHospital.setText(transferBean.getSourceHospitalName());
+        //转诊目的
         tvTransferPurpose.setText(transferBean.getTransferTarget());
-        //        int payType = transferBean.getPayType();
-        //        if (payType == BaseData.BASE_ZERO) {
-        //            tvPayment.setText(getString(R.string.txt_self_pay));
-        //        }
-        //        else if (payType == BaseData.BASE_ONE) {
-        //            tvPayment.setText(getString(R.string.txt_medicare));
-        //        }
-        //        else {
-        //            tvPayment.setText(getString(R.string.txt_self_medicare));
-        //        }
+        //初步诊断
+        tvCheckDiagnosisTop.setText(transferBean.getInitResult());
+        //接诊医生信息
         tvReceivingDoctor.setText(transferBean.getTargetDoctorName());
+        tvReceivingDepart.setText(transferBean.getTargetHospitalDepartmentName());
+        tvReceivingHospital.setText(transferBean.getTargetHospitalName());
         int status = transferBean.getReceiveStatus();
         switch (status) {
             case TRANSFER_STATUS_WAIT:
-                //                layoutBottom.setVisibility(View.VISIBLE);
-                //                layoutBottomOne.setVisibility(View.GONE);
                 ivCheckStatus.setImageResource(R.mipmap.ic_wait_transfer);
-                //                tvTransferAgain.setText(R.string.txt_transfer_cancel);
                 tvReceivingStatus.setText(getString(R.string.txt_status_wait));
                 break;
             case TRANSFER_STATUS_RECEIVED:
-                //                layoutBottom.setVisibility(View.GONE);
-                //                layoutBottomOne.setVisibility(View.VISIBLE);
-                //                layoutReceiveDepart.setVisibility(View.VISIBLE);
-                //                layoutReceiveHospital.setVisibility(View.VISIBLE);
-                //                layoutReceiveTime.setVisibility(View.VISIBLE);
-                //                layoutReceiveNotice.setVisibility(View.VISIBLE);
                 ivCheckStatus.setImageResource(R.mipmap.ic_status_received);
                 tvReceivingStatus.setText(getString(R.string.txt_status_received));
-                tvReceivingDepart.setText(transferBean.getTargetHospitalDepartmentName());
-                tvReceivingHospital.setText(transferBean.getTargetHospitalName());
-                //                tvReserveTime.setText(transferBean.getAppointAt());
-                //                tvTransferNotice.setText(transferBean.getNote());
                 break;
             case TRANSFER_STATUS_CANCEL:
-                //                layoutBottom.setVisibility(View.VISIBLE);
-                //                layoutBottomOne.setVisibility(View.GONE);
-                //                layoutCancelResult.setVisibility(View.VISIBLE);
                 ivCheckStatus.setImageResource(R.mipmap.ic_status_cancel);
                 tvReceivingStatus.setText(getString(R.string.txt_status_cancel));
-                //                tvTransferAgain.setText(R.string.txt_transfer_again);
-                //                tvTransferCancel.setText(transferBean.getCancelReason());
                 break;
             case TRANSFER_STATUS_REFUSE:
-                //                layoutBottom.setVisibility(View.VISIBLE);
-                //                layoutBottomOne.setVisibility(View.GONE);
                 ivCheckStatus.setImageResource(R.mipmap.ic_status_reject);
                 tvReceivingStatus.setText(getString(R.string.txt_status_reject));
                 break;
@@ -171,13 +147,9 @@ public class TransferDetailActivity extends BaseActivity implements TransferOrde
     @Override
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
-        switch (task) {
-            case GET_TRANSFER_ORDER_DETAIL:
-                transferBean = (TransferBean)response.getData();
-                initDetailData();
-                break;
-            default:
-                break;
+        if (task == Tasks.GET_TRANSFER_ORDER_DETAIL) {
+            transferBean = (TransferBean)response.getData();
+            initDetailData();
         }
     }
 }
