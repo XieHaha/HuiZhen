@@ -2,15 +2,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rl_root"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/color_ffffff">
 
     <ImageView
-        android:id="@+id/iv_start"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="fitXY"
-        android:fitsSystemWindows="true"
-        android:src="@mipmap/logo_icon" />
+        android:id="@+id/iv_gif"
+        android:layout_width="wrap_content"
+        android:layout_height="300dp"
+        android:layout_marginTop="60dp"
+        android:layout_centerHorizontal="true"/>
 
     <TextView
         android:id="@+id/act_splash_time_hint"
@@ -21,6 +21,7 @@
         android:textColor="@color/color_ffffff"
         android:gravity="center"
         android:textSize="14sp"
+        android:visibility="gone"
         android:background="@drawable/corner15_stroke1_white33_bg"
         android:layout_height="28dp" />
 

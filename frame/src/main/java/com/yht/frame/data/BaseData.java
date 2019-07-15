@@ -49,7 +49,7 @@ public interface BaseData {
     /**
      * 广告页最长等待时间
      */
-    int MAX_WAIT_TIME = 2;
+    int MAX_WAIT_TIME = 5;
     /**
      * 验证码二次获取默认时间
      */

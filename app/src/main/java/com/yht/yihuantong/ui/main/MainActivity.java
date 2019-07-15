@@ -83,7 +83,7 @@ public class MainActivity extends BaseActivity {
         loginEaseChat();
         //测试数据 存储
         savePatient();
-        setJPushAlias(loginBean.getMobile());
+        setJPushAlias(loginBean.getDoctorCode());
     }
 
     /**
