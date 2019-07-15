@@ -108,6 +108,24 @@ public class BaseUtils {
         return "";
     }
 
+    /**
+     * 日期格式转为时间戳
+     *
+     * @param date
+     * @param format
+     * @return
+     */
+    public static String date2TimeStamp(String date, String format) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat(format);
+            return String.valueOf(sdf.parse(date).getTime());
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
     public static String getAge(long time) {
         try {
             Date birthDay = new Date(time);

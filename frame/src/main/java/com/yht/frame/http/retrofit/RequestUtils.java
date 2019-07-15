@@ -89,6 +89,44 @@ public class RequestUtils {
                        .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.UPLOAD_FILE, listener));
     }
 
+    public static void getAppMessageList(Context context, String token, int pageSize, int startPage,
+            final ResponseListener<BaseResponse> listener) {
+        Map<String, Integer> params = new HashMap<>(16);
+        params.put("pageSize", pageSize);
+        params.put("startPage", startPage);
+        RetrofitManager.getApiUrlManager()
+                       .getAppMessageList(token, params)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_APP_MESSAGE_LIST, listener));
+    }
+
+    public static void getAppUnReadMessageTotal(Context context, String token,
+            final ResponseListener<BaseResponse> listener) {
+        RetrofitManager.getApiUrlManager()
+                       .getAppUnReadMessageTotal(token)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_APP_UNREAD_MESSAGE_TOTAL,
+                                                                 listener));
+    }
+
+    public static void updateAppUnReadMessageAll(Context context, String token,
+            final ResponseListener<BaseResponse> listener) {
+        RetrofitManager.getApiUrlManager()
+                       .updateAppUnReadMessageAll(token)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.UPDATE_APP_UNREAD_MESSAGE_ALL,
+                                                                 listener));
+    }
+
+    public static void updateAppUnReadMessageById(Context context, String token, int id,
+            final ResponseListener<BaseResponse> listener) {
+        RetrofitManager.getApiUrlManager()
+                       .updateAppUnReadMessageById(token, id)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.UPDATE_APP_UNREAD_MESSAGE_BY_ID,
+                                                                 listener));
+    }
+
     public static void getHospitalListByAuth(Context context, String token,
             final ResponseListener<BaseResponse> listener) {
         RetrofitManager.getApiUrlManager()

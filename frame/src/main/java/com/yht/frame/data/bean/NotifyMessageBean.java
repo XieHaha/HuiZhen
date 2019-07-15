@@ -1,38 +1,55 @@
 package com.yht.frame.data.bean;
 
-import com.chad.library.adapter.base.entity.MultiItemEntity;
+import java.io.Serializable;
 
 /**
  * @author 顿顿
  * @date 19/6/29 10:57
  * @des 通知消息
  */
-public class NotifyMessageBean implements MultiItemEntity {
+public class NotifyMessageBean implements Serializable {
+    private static final long serialVersionUID = -478493117520659186L;
+    private int id;
     /**
-     * 报告
+     * 0未读  1已读
      */
-    public static final int REPORT = 1;
-    /**
-     * 会珍币
-     */
-    public static final int CURRENCY = 2;
-    /**
-     * type
-     */
-    private int itemType;
+    private int state;
+    private String msgType;
+    private String content;
     private String title;
-    private String time;
+    private String createAt;
+    private String extraData;
 
-    public String getTime() {
-        return time;
+    public int getId() {
+        return id;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void setItemType(int itemType) {
-        this.itemType = itemType;
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
+    }
+
+    public String getMsgType() {
+        return msgType;
+    }
+
+    public void setMsgType(String msgType) {
+        this.msgType = msgType;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public String getTitle() {
@@ -43,8 +60,19 @@ public class NotifyMessageBean implements MultiItemEntity {
         this.title = title;
     }
 
-    @Override
-    public int getItemType() {
-        return itemType;
+    public String getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(String createAt) {
+        this.createAt = createAt;
+    }
+
+    public String getExtraData() {
+        return extraData;
+    }
+
+    public void setExtraData(String extraData) {
+        this.extraData = extraData;
     }
 }

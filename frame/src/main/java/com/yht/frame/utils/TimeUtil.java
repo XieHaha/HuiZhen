@@ -44,7 +44,6 @@ public class TimeUtil {
         try {
             //当前时间
             Calendar todayCalendar = Calendar.getInstance();
-            todayCalendar.setTimeInMillis(1561969130000L);
             //消息时间
             Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis(timestamp);

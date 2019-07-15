@@ -15,6 +15,7 @@ import com.yht.frame.data.base.HospitalDepartChildBean;
 import com.yht.frame.data.base.HospitalTitleBean;
 import com.yht.frame.data.base.IncomeDetailBean;
 import com.yht.frame.data.base.LoginBean;
+import com.yht.frame.data.base.MessageTotalBean;
 import com.yht.frame.data.base.OrderNumStatisticsBean;
 import com.yht.frame.data.base.PatientBean;
 import com.yht.frame.data.base.PatientDetailBean;
@@ -27,6 +28,7 @@ import com.yht.frame.data.base.WithDrawDetailBean;
 import com.yht.frame.data.bean.CombineBean;
 import com.yht.frame.data.bean.CooperateDocBean;
 import com.yht.frame.data.bean.HospitalProductTypeBean;
+import com.yht.frame.data.bean.NotifyMessageBean;
 import com.yht.frame.data.bean.PatientCaseDetailBean;
 import com.yht.frame.data.bean.RegistrationBean;
 import com.yht.frame.data.bean.TransPatientBean;
@@ -43,6 +45,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -100,6 +103,45 @@ public interface ApiUrlManager {
     @Multipart
     @POST("/client/file/upload_file")
     Observable<BaseResponse<String>> uploadImg(@Header("token") String token, @Part MultipartBody.Part file);
+
+    /**
+     * 获取消息列表
+     *
+     * @param info  map参数
+     * @param token token
+     * @return 返回值
+     */
+    @POST("/client/msg/list/app")
+    Observable<BaseResponse<List<NotifyMessageBean>>> getAppMessageList(@Header("token") String token,
+            @Body Map<String, Integer> info);
+
+    /**
+     * 获取未读消息总数
+     *
+     * @param token token
+     * @return 返回值
+     */
+    @GET("/client/msg/unread/total")
+    Observable<BaseResponse<MessageTotalBean>> getAppUnReadMessageTotal(@Header("token") String token);
+
+    /**
+     * 消息全部已读
+     *
+     * @param token token
+     * @return 返回值
+     */
+    @PUT("/client/msg/allRead")
+    Observable<BaseResponse<String>> updateAppUnReadMessageAll(@Header("token") String token);
+
+    /**
+     * 单条消息已读
+     *
+     * @param token token
+     * @param id    id
+     * @return 返回值
+     */
+    @PUT("/client/msg/read/{id}")
+    Observable<BaseResponse<String>> updateAppUnReadMessageById(@Header("token") String token, @Path("id") int id);
 
     /**
      * 获取医院列表 （医生认证模块）

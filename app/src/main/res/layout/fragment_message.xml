@@ -45,7 +45,8 @@
                     android:background="@drawable/circular_red_point_bg"
                     android:layout_toEndOf="@id/tv_left"
                     android:layout_marginStart="3dp"
-                    android:layout_marginTop="10dp" />
+                    android:layout_marginTop="10dp"
+                    android:visibility="invisible"/>
             </RelativeLayout>
 
             <RelativeLayout
@@ -71,7 +72,8 @@
                     android:background="@drawable/circular_red_point_bg"
                     android:layout_toEndOf="@id/tv_right"
                     android:layout_marginStart="3dp"
-                    android:layout_marginTop="10dp" />
+                    android:layout_marginTop="10dp"
+                    android:visibility="invisible"/>
             </RelativeLayout>
         </LinearLayout>
 

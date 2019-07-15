@@ -1,8 +1,12 @@
 package com.yht.yihuantong.ui.adapter;
 
-import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
+import android.support.annotation.Nullable;
+
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.yht.frame.data.BaseData;
 import com.yht.frame.data.bean.NotifyMessageBean;
+import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.TimeUtil;
 import com.yht.yihuantong.R;
 
@@ -13,24 +17,23 @@ import java.util.List;
  * @date 19/6/5 14:25
  * @des 消息通知
  */
-public class NotifyMessageAdapter extends BaseMultiItemQuickAdapter<NotifyMessageBean, BaseViewHolder> {
-    public NotifyMessageAdapter(List<NotifyMessageBean> data) {
-        super(data);
-        addItemType(NotifyMessageBean.REPORT, R.layout.item_notify_message_report);
-        addItemType(NotifyMessageBean.CURRENCY, R.layout.item_notify_message_currency);
+public class NotifyMessageAdapter extends BaseQuickAdapter<NotifyMessageBean, BaseViewHolder> {
+    public NotifyMessageAdapter(int layoutResId, @Nullable List<NotifyMessageBean> data) {
+        super(layoutResId, data);
     }
 
     @Override
     protected void convert(BaseViewHolder helper, NotifyMessageBean item) {
-        switch (helper.getItemViewType()) {
-            case NotifyMessageBean.REPORT:
-                helper.setText(R.id.tv_time_bar, TimeUtil.getTimeString(Long.valueOf(item.getTime())));
-                break;
-            case NotifyMessageBean.CURRENCY:
-                helper.setText(R.id.tv_time_bar, TimeUtil.getTimeString(Long.valueOf(item.getTime())));
-                break;
-            default:
-                break;
+        helper.setText(R.id.tv_title, item.getTitle())
+              .setText(R.id.tv_content, item.getContent())
+              .setText(R.id.tv_time_bar, TimeUtil.getTimeString(
+                      Long.valueOf(BaseUtils.date2TimeStamp(item.getCreateAt(), BaseUtils.YYYY_MM_DD_HH_MM_SS))))
+              .addOnClickListener(R.id.layout_detail);
+        if (item.getState() == BaseData.BASE_ZERO) {
+            helper.setVisible(R.id.iv_new_message, true);
+        }
+        else {
+            helper.setVisible(R.id.iv_new_message, false);
         }
     }
 }

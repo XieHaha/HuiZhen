@@ -26,6 +26,22 @@ WE_CHAT_LOGIN,
      */
     UPLOAD_FILE,
     /**
+     * 获取消息列表
+     */
+    GET_APP_MESSAGE_LIST,
+    /**
+     * 获取未读消息总数
+     */
+    GET_APP_UNREAD_MESSAGE_TOTAL,
+    /**
+     * 消息全部已读
+     */
+    UPDATE_APP_UNREAD_MESSAGE_ALL,
+    /**
+     * 单条消息已读
+     */
+    UPDATE_APP_UNREAD_MESSAGE_BY_ID,
+    /**
      * 获取医院列表 (认证模块)
      */
     GET_HOSPITAL_LIST_BY_AUTH,

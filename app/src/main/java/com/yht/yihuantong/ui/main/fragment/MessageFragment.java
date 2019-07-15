@@ -27,7 +27,11 @@ import com.hyphenate.EMError;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
+import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
+import com.yht.frame.data.Tasks;
+import com.yht.frame.data.base.MessageTotalBean;
+import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.HuiZhenLog;
 import com.yht.frame.utils.ToastUtil;
@@ -54,7 +58,8 @@ import butterknife.OnClick;
  */
 public class MessageFragment extends BaseFragment
         implements EaseConversationListFragment.EaseConversationListItemClickListener,
-                   EaseConversationListFragment.EaseConversationListItemLongClickListener {
+                   EaseConversationListFragment.EaseConversationListItemLongClickListener,
+                   NotifyMessageFragment.OnMessageUpdateListener {
     @BindView(R.id.status_bar_fix)
     View statusBarFix;
     @BindView(R.id.layout_title)
@@ -150,6 +155,12 @@ public class MessageFragment extends BaseFragment
     }
 
     @Override
+    public void initData(@NonNull Bundle savedInstanceState) {
+        super.initData(savedInstanceState);
+        getAppUnReadMessageTotal();
+    }
+
+    @Override
     public void initListener() {
         super.initListener();
         viewPager.addOnPageChangeListener(new AbstractOnPageChangeListener() {
@@ -172,6 +183,20 @@ public class MessageFragment extends BaseFragment
             }
         });
         initEaseListener();
+    }
+
+    /**
+     * 获取未读消息总数
+     */
+    private void getAppUnReadMessageTotal() {
+        RequestUtils.getAppUnReadMessageTotal(getContext(), loginBean.getToken(), this);
+    }
+
+    /**
+     * 消息全部已读
+     */
+    private void updateAppUnReadMessageAll() {
+        RequestUtils.updateAppUnReadMessageAll(getContext(), loginBean.getToken(), this);
     }
 
     /**
@@ -232,7 +257,7 @@ public class MessageFragment extends BaseFragment
             ivMessageDot.setVisibility(View.VISIBLE);
         }
         else {
-            ivMessageDot.setVisibility(View.GONE);
+            ivMessageDot.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -264,6 +289,11 @@ public class MessageFragment extends BaseFragment
         }
         curConversation = conversation;
         initPopwindow(view, popupLocation(view));
+    }
+
+    @Override
+    public void onMessageUpdate() {
+        getAppUnReadMessageTotal();
     }
 
     /**
@@ -351,10 +381,11 @@ public class MessageFragment extends BaseFragment
         easeConversationListFragment.setConversationListItemClickListener(this);
         easeConversationListFragment.setConversationListItemLongClickListener(this);
         //通知
-        NotifyMessageFragment transferWaitFragment = new NotifyMessageFragment();
+        NotifyMessageFragment notifyMessageFragment = new NotifyMessageFragment();
+        notifyMessageFragment.setOnMessageUpdateListener(this);
         List<Fragment> fragmentList = new ArrayList<>();
         fragmentList.add(easeConversationListFragment);
-        fragmentList.add(transferWaitFragment);
+        fragmentList.add(notifyMessageFragment);
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(
                 Objects.requireNonNull(getActivity()).getSupportFragmentManager(), fragmentList);
         viewPager.setAdapter(viewPagerAdapter);
@@ -393,6 +424,33 @@ public class MessageFragment extends BaseFragment
             case R.id.layout_right:
                 break;
             case R.id.tv_read_message:
+                if (tvReadMessage.isSelected()) {
+                    updateAppUnReadMessageAll();
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onResponseSuccess(Tasks task, BaseResponse response) {
+        super.onResponseSuccess(task, response);
+        switch (task) {
+            case GET_APP_UNREAD_MESSAGE_TOTAL:
+                MessageTotalBean messageTotalBean = (MessageTotalBean)response.getData();
+                if (messageTotalBean.getTotal() > 0) {
+                    tvReadMessage.setSelected(true);
+                    ivNotifyDot.setVisibility(View.VISIBLE);
+                }
+                else {
+                    tvReadMessage.setSelected(false);
+                    ivNotifyDot.setVisibility(View.INVISIBLE);
+                }
+                break;
+            case UPDATE_APP_UNREAD_MESSAGE_ALL:
+                tvReadMessage.setSelected(false);
+                ivNotifyDot.setVisibility(View.INVISIBLE);
                 break;
             default:
                 break;

@@ -92,6 +92,7 @@ public class LoginOptionsActivity extends BaseActivity
         //检查更新
         mVersionPresenter = new VersionPresenter(this, "");
         mVersionPresenter.setVersionViewListener(this);
+        mVersionPresenter.init();
         registerToWeChat();
         spannableString(getString(R.string.txt_login_protocol));
     }
