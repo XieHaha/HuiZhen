@@ -22,13 +22,13 @@ public class PushMessageReceiver extends JPushMessageReceiver {
 
     @Override
     public void onMessage(Context context, CustomMessage customMessage) {
-        HuiZhenLog.e(TAG, "[onMessage] " + customMessage);
+        HuiZhenLog.i(TAG, "[onMessage] " + customMessage);
         processCustomMessage(context, customMessage);
     }
 
     @Override
     public void onNotifyMessageOpened(Context context, NotificationMessage message) {
-        HuiZhenLog.e(TAG, "[onNotifyMessageOpened] " + message);
+        HuiZhenLog.i(TAG, "[onNotifyMessageOpened] " + message);
         try {
             //打开自定义的Activity
             Intent i = new Intent(context, SettingActivity.class);
@@ -36,7 +36,6 @@ public class PushMessageReceiver extends JPushMessageReceiver {
             bundle.putString(JPushInterface.EXTRA_NOTIFICATION_TITLE, message.notificationTitle);
             bundle.putString(JPushInterface.EXTRA_ALERT, message.notificationContent);
             i.putExtras(bundle);
-            //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             context.startActivity(i);
         }
@@ -46,7 +45,7 @@ public class PushMessageReceiver extends JPushMessageReceiver {
 
     @Override
     public void onMultiActionClicked(Context context, Intent intent) {
-        HuiZhenLog.e(TAG, "[onMultiActionClicked] 用户点击了通知栏按钮");
+        HuiZhenLog.i(TAG, "[onMultiActionClicked] 用户点击了通知栏按钮");
         String nActionExtra = intent.getExtras().getString(JPushInterface.EXTRA_NOTIFICATION_ACTION_EXTRA);
         //开发者根据不同 Action 携带的 extra 字段来分配不同的动作。
         if (nActionExtra == null) {
@@ -54,42 +53,42 @@ public class PushMessageReceiver extends JPushMessageReceiver {
             return;
         }
         if (nActionExtra.equals("my_extra1")) {
-            HuiZhenLog.e(TAG, "[onMultiActionClicked] 用户点击通知栏按钮一");
+            HuiZhenLog.i(TAG, "[onMultiActionClicked] 用户点击通知栏按钮一");
         }
         else if (nActionExtra.equals("my_extra2")) {
-            HuiZhenLog.e(TAG, "[onMultiActionClicked] 用户点击通知栏按钮二");
+            HuiZhenLog.i(TAG, "[onMultiActionClicked] 用户点击通知栏按钮二");
         }
         else if (nActionExtra.equals("my_extra3")) {
-            HuiZhenLog.e(TAG, "[onMultiActionClicked] 用户点击通知栏按钮三");
+            HuiZhenLog.i(TAG, "[onMultiActionClicked] 用户点击通知栏按钮三");
         }
         else {
-            HuiZhenLog.e(TAG, "[onMultiActionClicked] 用户点击通知栏按钮未定义");
+            HuiZhenLog.i(TAG, "[onMultiActionClicked] 用户点击通知栏按钮未定义");
         }
     }
 
     @Override
     public void onNotifyMessageArrived(Context context, NotificationMessage message) {
-        HuiZhenLog.e(TAG, "[onNotifyMessageArrived] " + message);
+        HuiZhenLog.i(TAG, "[onNotifyMessageArrived] " + message);
     }
 
     @Override
     public void onNotifyMessageDismiss(Context context, NotificationMessage message) {
-        HuiZhenLog.e(TAG, "[onNotifyMessageDismiss] " + message);
+        HuiZhenLog.i(TAG, "[onNotifyMessageDismiss] " + message);
     }
 
     @Override
     public void onRegister(Context context, String registrationId) {
-        HuiZhenLog.e(TAG, "[onRegister] " + registrationId);
+        HuiZhenLog.i(TAG, "[onRegister] " + registrationId);
     }
 
     @Override
     public void onConnected(Context context, boolean isConnected) {
-        HuiZhenLog.e(TAG, "[onConnected] " + isConnected);
+        HuiZhenLog.i(TAG, "[onConnected] " + isConnected);
     }
 
     @Override
     public void onCommandResult(Context context, CmdMessage cmdMessage) {
-        HuiZhenLog.e(TAG, "[onCommandResult] " + cmdMessage);
+        HuiZhenLog.i(TAG, "[onCommandResult] " + cmdMessage);
     }
 
     @Override

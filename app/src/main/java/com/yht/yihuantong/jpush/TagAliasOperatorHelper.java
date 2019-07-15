@@ -20,7 +20,7 @@ import cn.jpush.android.api.JPushMessage;
  * @author dundun
  */
 public class TagAliasOperatorHelper {
-    private static final String TAG = "JIGUANG-TagAliasHelper";
+    private static final String TAG = "JIGUANG-ZYC";
     public static int sequence = 1;
     /**
      * 增加
@@ -357,10 +357,10 @@ public class TagAliasOperatorHelper {
     }
 
     public static class TagAliasBean {
-        int action;
-        Set<String> tags;
-        String alias;
-        boolean isAliasAction;
+        public int action;
+        public Set<String> tags;
+        public String alias;
+        public boolean isAliasAction;
 
         @Override
         public String toString() {

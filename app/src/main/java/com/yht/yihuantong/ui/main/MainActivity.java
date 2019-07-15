@@ -20,6 +20,7 @@ import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.HuiZhenLog;
 import com.yht.frame.utils.ToastUtil;
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.jpush.TagAliasOperatorHelper;
 import com.yht.yihuantong.ui.main.fragment.MessageFragment;
 import com.yht.yihuantong.ui.main.fragment.PatientFragment;
 import com.yht.yihuantong.ui.main.fragment.WorkerFragment;
@@ -30,7 +31,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import cn.jpush.android.api.JPushInterface;
+
+import static com.yht.yihuantong.jpush.TagAliasOperatorHelper.ACTION_SET;
 
 /**
  * @author dundun
@@ -81,7 +83,20 @@ public class MainActivity extends BaseActivity {
         loginEaseChat();
         //测试数据 存储
         savePatient();
-        JPushInterface.setAlias(this, BaseData.BASE_ONE, loginBean.getMobile());
+        setJPushAlias(loginBean.getMobile());
+    }
+
+    /**
+     * 极光alias推送设置
+     *
+     * @param alias
+     */
+    private void setJPushAlias(String alias) {
+        TagAliasOperatorHelper.TagAliasBean tagAliasBean = new TagAliasOperatorHelper.TagAliasBean();
+        tagAliasBean.action = ACTION_SET;
+        tagAliasBean.alias = alias;
+        tagAliasBean.isAliasAction = true;
+        TagAliasOperatorHelper.getInstance().handleAction(getApplicationContext(), BASE_ONE, tagAliasBean);
     }
 
     List<PatientBean> patientBeans;
