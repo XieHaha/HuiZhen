@@ -234,7 +234,7 @@ public class BindPhoneActivity extends BaseActivity {
                     tempLoginBean.setMobile(bean.getMobile());
                 }
                 //存储登录数据
-                ZycApplication.getInstance().setLoginSuccessBean(tempLoginBean);
+                ZycApplication.getInstance().setLoginBean(tempLoginBean);
                 //跳转医生认证
                 startActivity(new Intent(this, AuthDoctorActivity.class));
                 finish();

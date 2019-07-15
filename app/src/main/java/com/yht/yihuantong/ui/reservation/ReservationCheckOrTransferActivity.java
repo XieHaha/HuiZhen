@@ -391,6 +391,7 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
                 curPage = BASE_ONE;
                 //0
                 viewReservationBase.setSelected(true);
+                tvReservationBase.setSelected(true);
                 tvReservationBase.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
                 ivReservationBase.setImageResource(R.mipmap.ic_step_finish);
                 //1
@@ -408,7 +409,6 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
                 curPage = BASE_TWO;
                 //1
                 viewReservationLicenseRight.setSelected(true);
-                tvReservationMaterial.setSelected(false);
                 tvReservationMaterial.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
                 ivReservationMaterial.setImageResource(R.mipmap.ic_step_finish);
                 //2
@@ -417,17 +417,6 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
                 tvReservationResult.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
                 break;
             default:
-                curPage = BASE_ZERO;
-                //0
-                tvReservationBase.setSelected(true);
-                viewReservationBase.setSelected(false);
-                ivReservationBase.setImageResource(R.mipmap.ic_step_sel);
-                tvReservationBase.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-                //1
-                tvReservationMaterial.setSelected(false);
-                viewReservationLicenseLeft.setSelected(false);
-                ivReservationMaterial.setImageResource(R.mipmap.ic_step_def);
-                tvReservationMaterial.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
                 break;
         }
     }
@@ -528,6 +517,14 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
         else if (curPage == 1) {
             if (transferBean != null || patientDetailBean != null) {
                 return true;
+            }
+            if (materialFragment != null) {
+                if (isTransfer) {
+                    reverseTransferBean = materialFragment.getReverseTransferBean();
+                }
+                else {
+                    reserveCheckBean = materialFragment.getReserveCheckBean();
+                }
             }
             curPage = 0;
             tabReservationBaseView();

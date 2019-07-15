@@ -9,7 +9,7 @@
 //import com.yht.frame.api.notify.NotifyChangeListenerManager;
 //import com.yht.frame.data.CommonData;
 //import com.yht.frame.utils.HuiZhenLog;
-//import com.yht.frame.utils.SharePreferenceUtil;
+//import com.yht.yihuantong.ZycApplication;
 //import com.yht.yihuantong.ui.main.MainActivity;
 //
 //import org.json.JSONException;
@@ -17,6 +17,7 @@
 //
 //import java.util.Iterator;
 //
+//import cn.jpush.android.api.JPushInterface;
 //
 ///**
 // * 自定义接收器
@@ -39,8 +40,6 @@
 //                JSONObject json = new JSONObject(bundle.getString(JPushInterface.EXTRA_EXTRA));
 //                int type = json.optInt("newsid");
 //                int msgId = json.optInt("msg");
-//                //新通知本地存储
-//                MessageNotifyHelper.save(new SharePreferenceUtil(context), type, msgId);
 //                notifyStatusChange(type, String.valueOf(msgId));
 //            }
 //            else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
@@ -125,7 +124,7 @@
 //     * @param type
 //     */
 //    private void jumpPageByType(Context context, int type, int id) {
-//        if (YihtApplication.getInstance().getLoginBean() == null) {
+//        if (ZycApplication.getInstance().getLoginBean() == null) {
 //            return;
 //        }
 //        Intent mainIntent, baseIntent;
@@ -135,7 +134,7 @@
 //                mainIntent = new Intent(context, MainActivity.class);
 //                mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //                mainIntent.putExtra(CommonData.KEY_PUBLIC, 0);
-//                baseIntent = new Intent(context, ApplyPatientActivity.class);
+//                baseIntent = new Intent(context, MainActivity.class);
 //                intents = new Intent[] { mainIntent, baseIntent };
 //                context.startActivities(intents);
 //                break;
@@ -143,7 +142,7 @@
 //                mainIntent = new Intent(context, MainActivity.class);
 //                mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //                mainIntent.putExtra(CommonData.KEY_PUBLIC, 0);
-//                baseIntent = new Intent(context, PatientsActivity.class);
+//                baseIntent = new Intent(context, MainActivity.class);
 //                intents = new Intent[] { mainIntent, baseIntent };
 //                context.startActivities(intents);
 //                break;
@@ -151,7 +150,7 @@
 //                mainIntent = new Intent(context, MainActivity.class);
 //                mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //                mainIntent.putExtra(CommonData.KEY_PUBLIC, 2);
-//                baseIntent = new Intent(context, ApplyCooperateDocActivity.class);
+//                baseIntent = new Intent(context, MainActivity.class);
 //                intents = new Intent[] { mainIntent, baseIntent };
 //                context.startActivities(intents);
 //                break;
@@ -163,7 +162,7 @@
 //                break;
 //            case JIGUANG_CODE_DOCTOR_INFO_CHECK_SUCCESS:
 //            case JIGUANG_CODE_DOCTOR_INFO_CHECK_FAILED:
-//                mainIntent = new Intent(context, AuthDocStatusActivity.class);
+//                mainIntent = new Intent(context, MainActivity.class);
 //                mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //                context.startActivity(mainIntent);
 //                NotifyChangeListenerManager.getInstance().notifyDoctorAuthStatus(type);
@@ -178,8 +177,7 @@
 //                mainIntent = new Intent(context, MainActivity.class);
 //                mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //                mainIntent.putExtra(CommonData.KEY_PUBLIC, 0);
-//                baseIntent = new Intent(context, TransferPatientActivity.class);
-//                baseIntent.putExtra(CommonData.KEY_TRANSFER_ID, id);
+//                baseIntent = new Intent(context, MainActivity.class);
 //                intents = new Intent[] { mainIntent, baseIntent };
 //                context.startActivities(intents);
 //                break;
@@ -190,8 +188,7 @@
 //                mainIntent = new Intent(context, MainActivity.class);
 //                mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //                mainIntent.putExtra(CommonData.KEY_PUBLIC, 0);
-//                baseIntent = new Intent(context, RegistrationDetailActivity.class);
-//                baseIntent.putExtra(CommonData.KEY_REGISTRATION_ID, String.valueOf(id));
+//                baseIntent = new Intent(context, MainActivity.class);
 //                intents = new Intent[] { mainIntent, baseIntent };
 //                context.startActivities(intents);
 //                break;

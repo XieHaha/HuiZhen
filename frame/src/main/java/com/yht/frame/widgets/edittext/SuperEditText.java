@@ -67,6 +67,9 @@ public class SuperEditText extends AppCompatEditText {
     @Override
     protected void onFocusChanged(boolean focused, int direction, Rect previouslyFocusedRect) {
         super.onFocusChanged(focused, direction, previouslyFocusedRect);
+        if (focused) {
+            setSelection(getText().toString().length());
+        }
         setDeleteIconVisible(focused && length() > 0);
     }
 
@@ -102,7 +105,7 @@ public class SuperEditText extends AppCompatEditText {
     private void setDeleteIconVisible(boolean deleteVisible) {
         setCompoundDrawables(null, null, deleteVisible ? icDelete : null, null);
         //设置图片和text之间的间距
-        setCompoundDrawablePadding(BaseUtils.dp2px(getContext(),10));
+        setCompoundDrawablePadding(BaseUtils.dp2px(getContext(), 10));
         invalidate();
     }
 

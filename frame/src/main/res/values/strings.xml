@@ -324,6 +324,8 @@
     <string name="toast_id_card_error">身份证号码格式错误</string>
     <string name="toast_phone_error">手机号码格式错误</string>
     <string name="toast_load_image_error">图片加载失败</string>
+    <string name="toast_version_update_hint">当前已是最新版本</string>
+    <string name="txt_download_hint">开始下载</string>
 
     <!--loadview-->
     <string name="brvah_loading">加载中&#8230;</string>

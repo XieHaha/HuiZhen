@@ -39,11 +39,15 @@ import me.jessyan.autosize.unit.Subunits;
  */
 public class ZycApplication extends LitePalApplication {
     private static ZycApplication instance;
-    private LoginBean loginSuccessBean;
+    private LoginBean loginBean;
     /**
      * 微信api
      */
     public static IWXAPI iwxapi;
+    /**
+     * 调试模式
+     */
+    private final boolean debugMode = true;
 
     @Override
     public void onCreate() {
@@ -53,13 +57,15 @@ public class ZycApplication extends LitePalApplication {
         // 界面适配
         initAndroidAutoSize();
         //app 帮助类
-        ApiManager.getInstance().init(this, true);
+        ApiManager.getInstance().init(this, debugMode);
         //网络
         RetrofitManager.getInstance().init(BuildConfig.BASE_BASIC_URL);
         //启动预加载的服务
         initX5();
         //环信
         initEase();
+        //极光
+        initJPush();
         //图片预览
         initImageLoader();
         //数据库
@@ -95,7 +101,7 @@ public class ZycApplication extends LitePalApplication {
         opts.setShowChatTitle(false);
         HxHelper.getInstance().init(this);
         EaseUI.getInstance().setUserProfileProvider((username, callback) -> {
-            LoginBean bean = getLoginSuccessBean();
+            LoginBean bean = getLoginBean();
             //如果是当前用户，就设置自己的昵称和头像
             if (null != bean && TextUtils.equals(bean.getDoctorCode(), username)) {
                 EaseUser eu = new EaseUser(username);
@@ -107,6 +113,15 @@ public class ZycApplication extends LitePalApplication {
             //否则交给HxHelper处理，从消息中获取昵称和头像
             return HxHelper.getInstance().getUser(username, callback);
         });
+    }
+
+    /**
+     * 极光推送 初始化
+     */
+    private void initJPush() {
+        //极光推送
+//        JPushInterface.setDebugMode(debugMode);
+//        JPushInterface.init(this);
     }
 
     /**
@@ -133,17 +148,17 @@ public class ZycApplication extends LitePalApplication {
         QbSdk.initX5Environment(getApplicationContext(), cb);
     }
 
-    public LoginBean getLoginSuccessBean() {
+    public LoginBean getLoginBean() {
         String userStr = (String)SharePreferenceUtil.getObject(this, CommonData.KEY_LOGIN_BEAN, "");
         if (!TextUtils.isEmpty(userStr)) {
-            loginSuccessBean = new Gson().fromJson(userStr, LoginBean.class);
+            loginBean = new Gson().fromJson(userStr, LoginBean.class);
         }
-        return loginSuccessBean;
+        return loginBean;
     }
 
-    public void setLoginSuccessBean(LoginBean loginSuccessBean) {
-        this.loginSuccessBean = loginSuccessBean;
-        SharePreferenceUtil.putObject(this, CommonData.KEY_LOGIN_BEAN, loginSuccessBean);
+    public void setLoginBean(LoginBean loginBean) {
+        this.loginBean = loginBean;
+        SharePreferenceUtil.putObject(this, CommonData.KEY_LOGIN_BEAN, loginBean);
     }
 
     /**

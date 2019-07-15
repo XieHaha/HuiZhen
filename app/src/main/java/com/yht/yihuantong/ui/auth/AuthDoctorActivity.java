@@ -283,7 +283,7 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
             case SUBMIT_DOCTOR_AUTH:
                 //提交成功后需要更新本地认证状态
                 loginBean.setApprovalStatus(DocAuthStatus.AUTH_WAITTING);
-                ZycApplication.getInstance().setLoginSuccessBean(loginBean);
+                ZycApplication.getInstance().setLoginBean(loginBean);
                 //跳转到认证结果
                 tabAuthResultView();
                 break;

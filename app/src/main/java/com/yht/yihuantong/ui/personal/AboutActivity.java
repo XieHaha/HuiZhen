@@ -1,9 +1,14 @@
 package com.yht.yihuantong.ui.personal;
 
+import android.content.Intent;
 import android.view.View;
 
+import com.yht.frame.data.BaseNetConfig;
+import com.yht.frame.data.CommonData;
 import com.yht.frame.ui.BaseActivity;
+import com.yht.yihuantong.BuildConfig;
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.ui.WebViewActivity;
 
 import butterknife.OnClick;
 
@@ -25,8 +30,13 @@ public class AboutActivity extends BaseActivity {
 
     @OnClick({ R.id.layout_service_protocol, R.id.layout_about_understand })
     public void onViewClicked(View view) {
+        Intent intent;
         switch (view.getId()) {
             case R.id.layout_service_protocol:
+                intent = new Intent(this, WebViewActivity.class);
+                intent.putExtra(CommonData.KEY_PUBLIC,
+                                BuildConfig.BASE_BASIC_URL + BaseNetConfig.BASE_BASIC_USER_PROTOCOL_URL);
+                startActivity(intent);
                 break;
             case R.id.layout_about_understand:
                 break;

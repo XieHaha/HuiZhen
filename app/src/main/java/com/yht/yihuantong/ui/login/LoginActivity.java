@@ -227,7 +227,7 @@ public class LoginActivity extends BaseActivity {
             case LOGIN_AND_REGISTER:
                 loginBean = (LoginBean)response.getData();
                 //存储登录结果
-                ZycApplication.getInstance().setLoginSuccessBean(loginBean);
+                ZycApplication.getInstance().setLoginBean(loginBean);
                 jump();
                 break;
             default:

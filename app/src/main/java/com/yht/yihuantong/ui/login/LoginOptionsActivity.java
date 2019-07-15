@@ -25,14 +25,18 @@ import com.yht.frame.data.CommonData;
 import com.yht.frame.data.DocAuthStatus;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.base.LoginBean;
+import com.yht.frame.data.bean.VersionBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
+import com.yht.frame.utils.ToastUtil;
 import com.yht.yihuantong.BuildConfig;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ZycApplication;
 import com.yht.yihuantong.ui.WebViewActivity;
 import com.yht.yihuantong.ui.auth.AuthDoctorActivity;
 import com.yht.yihuantong.ui.main.MainActivity;
+import com.yht.yihuantong.version.presenter.VersionPresenter;
+import com.yht.yihuantong.version.view.VersionUpdateDialog;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -42,7 +46,8 @@ import butterknife.OnClick;
  * @date 19/5/24 14:02
  * @des
  */
-public class LoginOptionsActivity extends BaseActivity {
+public class LoginOptionsActivity extends BaseActivity
+        implements VersionPresenter.VersionViewListener, VersionUpdateDialog.OnEnterClickListener {
     @BindView(R.id.tv_login_wechat)
     TextView tvLoginWechat;
     @BindView(R.id.tv_login_phone)
@@ -53,6 +58,14 @@ public class LoginOptionsActivity extends BaseActivity {
      * IWXAPI 是第三方app和微信通信的openApi接口
      */
     private IWXAPI api;
+    /**
+     * 版本检测
+     */
+    private VersionPresenter mVersionPresenter;
+    /**
+     * 版本弹窗
+     */
+    private VersionUpdateDialog versionUpdateDialog;
     /**
      * 账号登录状态
      */
@@ -76,6 +89,9 @@ public class LoginOptionsActivity extends BaseActivity {
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
+        //检查更新
+        mVersionPresenter = new VersionPresenter(this, "");
+        mVersionPresenter.setVersionViewListener(this);
         registerToWeChat();
         spannableString(getString(R.string.txt_login_protocol));
     }
@@ -98,7 +114,7 @@ public class LoginOptionsActivity extends BaseActivity {
         }
         else {
             // 已绑定手机，需要存储登录信息
-            ZycApplication.getInstance().setLoginSuccessBean(loginBean);
+            ZycApplication.getInstance().setLoginBean(loginBean);
             //判断认证状态
             switch (loginBean.getApprovalStatus()) {
                 case DocAuthStatus.AUTH_NONE:
@@ -212,6 +228,41 @@ public class LoginOptionsActivity extends BaseActivity {
             default:
                 break;
         }
+    }
+
+    /*********************版本更新回调*************************/
+    @Override
+    public void updateVersion(VersionBean version, int mode, boolean isDownLoading) {
+        if (mode == -1) {
+            ToastUtil.toast(this, R.string.toast_version_update_hint);
+            return;
+        }
+        versionUpdateDialog = new VersionUpdateDialog(this);
+        versionUpdateDialog.setCancelable(false);
+        versionUpdateDialog.setUpdateMode(mode).
+                setIsDownNewAPK(isDownLoading).setContent(version.getUpdateDescription());
+        versionUpdateDialog.setOnEnterClickListener(this);
+        versionUpdateDialog.show();
+    }
+
+    @Override
+    public void updateLoading(long total, long current) {
+        if (versionUpdateDialog != null && versionUpdateDialog.isShowing()) {
+            versionUpdateDialog.setProgressValue(total, current);
+        }
+    }
+
+    /**
+     * 当无可用网络时回调
+     */
+    @Override
+    public void updateNetWorkError() {
+    }
+
+    @Override
+    public void onEnter(boolean isMustUpdate) {
+        mVersionPresenter.getNewAPK(isMustUpdate);
+        ToastUtil.toast(this, R.string.txt_download_hint);
     }
 
     /**

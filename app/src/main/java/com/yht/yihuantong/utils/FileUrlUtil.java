@@ -23,7 +23,7 @@ public class FileUrlUtil {
             return null;
         }
         GlideUrl glideUrl = new GlideUrl(url, new LazyHeaders.Builder().addHeader("token", ZycApplication.getInstance()
-                                                                                                         .getLoginSuccessBean()
+                                                                                                         .getLoginBean()
                                                                                                          .getToken())
                                                                        .build());
         return glideUrl;
