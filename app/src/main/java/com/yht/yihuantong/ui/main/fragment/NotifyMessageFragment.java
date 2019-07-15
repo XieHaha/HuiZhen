@@ -77,7 +77,6 @@ public class NotifyMessageFragment extends BaseFragment
      * 页码
      */
     private int page = 1;
-    private String token = "P1wDQpcrTx45XddRgbg6Kt+fSTJ6DDAce3H85a1p04ls4M3tX3xBTPizfExE4cA7WT3jx9t8rXTXzxD+Xi23YYm8ealJOSAiIGoEXpyzcxe+ryCfBnijo8VXl9T8mn14YDNT+fgaVIsMQRmtVBuwr3fLS+9qUUTY5JR+ui4w1+2vP3mgP\\/keCEBSJlOJ1+Pxx1REKgCN6\\/5r1wf+wVJlyMBMzx\\/IaHRNy2jm3YjJlfM70jF1ZBKUY2q51rxQoeh\\/IPZ+HVIWdaj0yXvlb+AqEA==";
 
     @Override
     public int getLayoutID() {
@@ -104,14 +103,14 @@ public class NotifyMessageFragment extends BaseFragment
      * 获取消息列表
      */
     private void getAppMessageList() {
-        RequestUtils.getAppMessageList(getContext(), token, BaseData.BASE_PAGE_DATA_NUM, page, this);
+        RequestUtils.getAppMessageList(getContext(), loginBean.getToken(), BaseData.BASE_PAGE_DATA_NUM, page, this);
     }
 
     /**
      * 单条消息已读
      */
     private void updateAppUnReadMessageById(int id) {
-        RequestUtils.updateAppUnReadMessageById(getContext(), token, id, this);
+        RequestUtils.updateAppUnReadMessageById(getContext(), loginBean.getToken(), id, this);
     }
 
     /**
@@ -203,6 +202,14 @@ public class NotifyMessageFragment extends BaseFragment
                 }
                 else {
                     notifyMessageAdapter.loadMoreEnd();
+                }
+                if (messageList != null && messageList.size() > 0) {
+                    tvNoneMessage.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.VISIBLE);
+                }
+                else {
+                    tvNoneMessage.setVisibility(View.VISIBLE);
+                    recyclerView.setVisibility(View.GONE);
                 }
                 break;
             case UPDATE_APP_UNREAD_MESSAGE_BY_ID:

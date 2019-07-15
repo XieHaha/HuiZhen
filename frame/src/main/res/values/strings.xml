@@ -10,6 +10,7 @@
     <string name="title_setting">设置</string>
     <string name="title_about">关于会珍</string>
     <string name="title_personal_info">个人信息</string>
+    <string name="title_personal_center">个人中心</string>
     <string name="title_total_income">累计收入</string>
     <string name="title_month_income">本月收入</string>
     <string name="title_withdraw_detail">提现详情</string>

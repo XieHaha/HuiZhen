@@ -29,7 +29,7 @@ import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.check.CheckHistoryActivity;
-import com.yht.yihuantong.ui.personal.PersonalActivity;
+import com.yht.yihuantong.ui.personal.PersonalNewActivity;
 import com.yht.yihuantong.ui.reservation.ReservationCheckOrTransferActivity;
 import com.yht.yihuantong.ui.reservation.ReservationDisableActivity;
 import com.yht.yihuantong.ui.transfer.TransferInitiateListActivity;
@@ -185,7 +185,7 @@ public class WorkerFragment extends BaseFragment {
                 permissionHelper.request(new String[] { Permission.CAMERA });
                 break;
             case R.id.layout_personal_base:
-                startActivity(new Intent(getContext(), PersonalActivity.class));
+                startActivity(new Intent(getContext(), PersonalNewActivity.class));
                 break;
             case R.id.layout_check:
                 if (reservationValidateBean != null && reservationValidateBean.isJc()) {
