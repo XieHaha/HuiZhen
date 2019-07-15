@@ -4,7 +4,7 @@ import android.support.annotation.Nullable;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.yht.frame.data.CurrencyDetailType;
+import com.yht.frame.data.type.CurrencyDetailType;
 import com.yht.frame.data.base.DoctorCurrencyDetailBean;
 import com.yht.yihuantong.R;
 

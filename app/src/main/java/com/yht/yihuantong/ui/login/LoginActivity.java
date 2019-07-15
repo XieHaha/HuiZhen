@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
-import com.yht.frame.data.DocAuthStatus;
+import com.yht.frame.data.type.DocAuthStatus;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.base.LoginBean;
 import com.yht.frame.data.base.VerifyCodeBean;

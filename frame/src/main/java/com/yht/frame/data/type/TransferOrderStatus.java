@@ -1,4 +1,4 @@
-package com.yht.frame.data;
+package com.yht.frame.data.type;
 
 /**
  * @author 顿顿

@@ -4,7 +4,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.yht.frame.data.DocAuthStatus;
+import com.yht.frame.data.type.DocAuthStatus;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.yihuantong.R;

@@ -3,10 +3,10 @@ package com.yht.frame.api.notify;
 import android.support.annotation.NonNull;
 
 /**
- * Created by dundun on 18/4/27.
+ * @author dundun
+ * @date 18/4/27
  */
-public interface INotifyChangeListenerServer
-{
+public interface INotifyChangeListenerServer {
     /**
      * 患者状态监听
      *
@@ -22,6 +22,7 @@ public interface INotifyChangeListenerServer
      * @param registerType 注册类型
      */
     void registerDoctorStatusChangeListener(@NonNull IChange<String> listener, @NonNull RegisterType registerType);
+
     /**
      * 医生转诊申请监听
      *
@@ -29,6 +30,7 @@ public interface INotifyChangeListenerServer
      * @param registerType 注册类型
      */
     void registerDoctorTransferPatientListener(@NonNull IChange<String> listener, @NonNull RegisterType registerType);
+
     /**
      * 医生认证状态监听
      *
@@ -36,6 +38,7 @@ public interface INotifyChangeListenerServer
      * @param registerType 注册类型
      */
     void registerDoctorAuthStatusChangeListener(@NonNull IChange<Integer> listener, @NonNull RegisterType registerType);
+
     /**
      * 最近联系人监听
      *
@@ -43,6 +46,7 @@ public interface INotifyChangeListenerServer
      * @param registerType 注册类型
      */
     void registerRecentContactChangeListener(@NonNull IChange<String> listener, @NonNull RegisterType registerType);
+
     /**
      * 服务包订单状态
      *

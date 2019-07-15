@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
-import com.yht.frame.data.CurrencyDetailType;
+import com.yht.frame.data.type.CurrencyDetailType;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.base.CheckTypeBean;
 import com.yht.frame.data.base.IncomeDetailBean;

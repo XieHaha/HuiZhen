@@ -1,4 +1,4 @@
-package com.yht.yihuantong.ui.check;
+package com.yht.yihuantong.ui.reservation;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,10 +6,11 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.TextView;
 
+import com.yht.frame.api.notify.NotifyChangeListenerManager;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.yihuantong.R;
-import com.yht.yihuantong.ui.reservation.ReservationCheckOrTransferActivity;
+import com.yht.yihuantong.ui.check.CheckDetailActivity;
 import com.yht.yihuantong.ui.transfer.TransferInitiateDetailActivity;
 
 import butterknife.BindView;
@@ -55,6 +56,8 @@ public class ReservationSuccessActivity extends BaseActivity {
             isTransfer = getIntent().getBooleanExtra(CommonData.KEY_CHECK_OR_TRANSFER, false);
             orderNo = getIntent().getStringExtra(CommonData.KEY_ORDER_ID);
         }
+        //预约订单成功  刷新患者列表数据
+        NotifyChangeListenerManager.getInstance().notifyPatientStatusChange("");
         initPage();
     }
 

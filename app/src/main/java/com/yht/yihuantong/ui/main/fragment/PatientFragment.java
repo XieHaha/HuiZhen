@@ -1,7 +1,6 @@
 package com.yht.yihuantong.ui.main.fragment;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -18,7 +17,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.yht.frame.api.ApiManager;
 import com.yht.frame.api.LitePalHelper;
+import com.yht.frame.api.notify.IChange;
+import com.yht.frame.api.notify.INotifyChangeListenerServer;
+import com.yht.frame.api.notify.RegisterType;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
@@ -26,6 +29,7 @@ import com.yht.frame.data.base.PatientBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
+import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.frame.widgets.edittext.AbstractTextWatcher;
 import com.yht.frame.widgets.edittext.SuperEditText;
 import com.yht.frame.widgets.recyclerview.decoration.SideBarItemDecoration;
@@ -34,6 +38,8 @@ import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.adapter.IndexBarAdapter;
 import com.yht.yihuantong.ui.adapter.PatientAdapter;
 import com.yht.yihuantong.ui.patient.PatientPersonalActivity;
+
+import org.litepal.crud.DataSupport;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,6 +88,10 @@ public class PatientFragment extends BaseFragment
      */
     private SideBarItemDecoration decoration;
     /**
+     * 监听器
+     */
+    private INotifyChangeListenerServer iNotifyChangeListenerServer;
+    /**
      * 所有患者数据
      */
     private List<PatientBean> patientBeans = new ArrayList<>();
@@ -90,6 +100,10 @@ public class PatientFragment extends BaseFragment
      */
     private List<PatientBean> searchPatientBeans = new ArrayList<>();
     private List<String> indexs = new ArrayList<>();
+    /**
+     * 患者数据主动更新
+     */
+    private IChange<String> patientDataUpdate = data -> getPatients();
 
     @Override
     public int getLayoutID() {
@@ -105,18 +119,30 @@ public class PatientFragment extends BaseFragment
         layoutRefresh.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light,
                                               android.R.color.holo_orange_light, android.R.color.holo_green_light);
         layoutRefresh.setOnRefreshListener(this);
+        recyclerview.setLayoutManager(layoutManager = new LinearLayoutManager(getContext()));
+        recyclerview.addItemDecoration(decoration = new SideBarItemDecoration(getContext()));
     }
 
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-        recyclerview.setLayoutManager(layoutManager = new LinearLayoutManager(getContext()));
-        recyclerview.addItemDecoration(decoration = new SideBarItemDecoration(getContext()));
-        indexRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        indexBarAdapter = new IndexBarAdapter(R.layout.item_index_tag, indexs);
-        indexRecyclerView.setAdapter(indexBarAdapter);
-        getPatients();
+        iNotifyChangeListenerServer = ApiManager.getInstance().getServer();
         initAdapter();
+        initPatientData();
+    }
+
+    /**
+     * 患者数据处理
+     */
+    private void initPatientData() {
+        //是否有缓存
+        boolean cache = sharePreferenceUtil.getBoolean(CommonData.KEY_UPDATE_PATIENT_DATA);
+        if (cache) {
+            getPatientsByLocal();
+        }
+        else {
+            getPatients();
+        }
     }
 
     @Override
@@ -149,12 +175,19 @@ public class PatientFragment extends BaseFragment
                 }
             }
         });
+        //注册患者状态监听
+        iNotifyChangeListenerServer.registerPatientStatusChangeListener(patientDataUpdate, RegisterType.REGISTER);
     }
 
     /**
      * 适配器
      */
     private void initAdapter() {
+        //侧边bar
+        indexRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        indexBarAdapter = new IndexBarAdapter(R.layout.item_index_tag, indexs);
+        indexRecyclerView.setAdapter(indexBarAdapter);
+        //患者列表
         patientAdapter = new PatientAdapter(R.layout.item_patient, patientBeans);
         patientAdapter.setOnItemClickListener(this);
         patientAdapter.setOnItemChildClickListener(this);
@@ -169,8 +202,25 @@ public class PatientFragment extends BaseFragment
         recyclerview.setAdapter(patientAdapter);
     }
 
+    /**
+     * 获取最新数据
+     */
     private void getPatients() {
         RequestUtils.getPatientListByDoctorCode(getContext(), loginBean.getDoctorCode(), loginBean.getToken(), this);
+    }
+
+    /**
+     * 本地取缓存数据
+     */
+    private void getPatientsByLocal() {
+        //先从本地取
+        patientBeans = DataSupport.findAll(PatientBean.class);
+        if (patientBeans != null) {
+            sortData();
+            patientAdapter.setNewData(patientBeans);
+            patientAdapter.loadMoreEnd();
+            publicMainTitle.setText(String.format(getString(R.string.title_patient), patientBeans.size()));
+        }
     }
 
     /**
@@ -225,18 +275,45 @@ public class PatientFragment extends BaseFragment
         decoration.setDatas(searchPatientBeans, tagsStr);
     }
 
+    /**
+     * 开启搜索
+     */
+    private void openSearch() {
+        //搜索时 关闭下拉刷新
+        layoutRefresh.setEnabled(false);
+        layoutSearch.setVisibility(View.VISIBLE);
+        layoutBg.setVisibility(View.VISIBLE);
+        etSearchPatient.requestFocus();
+        showSoftInputFromWindow(getContext(), etSearchPatient);
+        //显示输入框 隐藏原有输入框
+        decoration.setHasHeader(false);
+        patientAdapter.removeHeaderView(headerView);
+        displaySearchLayout();
+    }
+
+    /**
+     * 关闭搜索
+     */
+    private void closeSearch() {
+        layoutRefresh.setEnabled(true);
+        //隐藏搜索框时重新添加头部
+        decoration.setHasHeader(true);
+        if (patientAdapter.getHeaderLayoutCount() == 0) {
+            patientAdapter.addHeaderView(headerView);
+        }
+        patientAdapter.notifyDataSetChanged();
+        etSearchPatient.setText("");
+        //隐藏软键盘
+        hideSoftInputFromWindow(getContext(), etSearchPatient);
+        //开启隐藏动画
+        hideSearchLayout();
+    }
+
     @Override
     public void onClick(View v) {
         super.onClick(v);
         if (v.getId() == R.id.tv_search_patient) {
-            layoutSearch.setVisibility(View.VISIBLE);
-            layoutBg.setVisibility(View.VISIBLE);
-            etSearchPatient.requestFocus();
-            showSoftInputFromWindow(getContext(), etSearchPatient);
-            //显示输入框 隐藏原有输入框
-            decoration.setHasHeader(false);
-            patientAdapter.removeHeaderView(headerView);
-            displaySearchLayout();
+            openSearch();
         }
     }
 
@@ -245,17 +322,7 @@ public class PatientFragment extends BaseFragment
         switch (view.getId()) {
             case R.id.tv_search_cancel:
             case R.id.layout_bg:
-                //隐藏搜索框时重新添加头部
-                decoration.setHasHeader(true);
-                if (patientAdapter.getHeaderLayoutCount() == 0) {
-                    patientAdapter.addHeaderView(headerView);
-                }
-                patientAdapter.notifyDataSetChanged();
-                etSearchPatient.setText("");
-                //隐藏软键盘
-                hideSoftInputFromWindow(getContext(), etSearchPatient);
-                //开启隐藏动画
-                hideSearchLayout();
+                closeSearch();
                 break;
             default:
                 break;
@@ -271,10 +338,9 @@ public class PatientFragment extends BaseFragment
 
     @Override
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-        Intent intent = new Intent(Intent.ACTION_DIAL);
-        Uri data = Uri.parse("tel:15828456584");
-        intent.setData(data);
-        startActivity(intent);
+        new HintDialog(getContext()).setPhone(patientBeans.get(position).getMobile())
+                                    .setOnEnterClickListener(() -> callPhone(patientBeans.get(position).getMobile()))
+                                    .show();
     }
 
     @Override
@@ -285,6 +351,7 @@ public class PatientFragment extends BaseFragment
                 patientBeans = (List<PatientBean>)response.getData();
                 //更新数据库
                 new LitePalHelper().updateAll(patientBeans, PatientBean.class);
+                sharePreferenceUtil.putBoolean(CommonData.KEY_UPDATE_PATIENT_DATA, true);
                 sortData();
                 patientAdapter.setNewData(patientBeans);
                 patientAdapter.loadMoreEnd();
@@ -346,5 +413,12 @@ public class PatientFragment extends BaseFragment
 
     @Override
     public void onLoadMoreRequested() {
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        //注销患者状态监听
+        iNotifyChangeListenerServer.registerPatientStatusChangeListener(patientDataUpdate, RegisterType.UNREGISTER);
     }
 }

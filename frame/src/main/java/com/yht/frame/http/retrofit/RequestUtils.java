@@ -376,7 +376,7 @@ public class RequestUtils {
         params.put("familyHistory", bean.getFamilyHistory());
         params.put("idCardNo", bean.getIdCardNo());
         params.put("initResult", bean.getInitResult());
-        params.put("isPregnancy", bean.getIsPregnancy());
+        //        params.put("isPregnancy", bean.getIsPregnancy());
         params.put("pastHistory", bean.getPastHistory());
         params.put("phone", bean.getPhone());
         params.put("patientCode", bean.getPatientCode());

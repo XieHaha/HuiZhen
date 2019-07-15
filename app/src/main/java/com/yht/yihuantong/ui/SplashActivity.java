@@ -19,7 +19,7 @@ import com.yht.frame.api.DirHelper;
 import com.yht.frame.api.FileTransferServer;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
-import com.yht.frame.data.DocAuthStatus;
+import com.yht.frame.data.type.DocAuthStatus;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;

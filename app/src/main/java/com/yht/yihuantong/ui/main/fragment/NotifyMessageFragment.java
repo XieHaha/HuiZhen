@@ -32,26 +32,26 @@ import java.util.List;
 
 import butterknife.BindView;
 
-import static com.yht.frame.data.MessageType.MESSAGE_ACCOUNT_CREATE;
-import static com.yht.frame.data.MessageType.MESSAGE_CURRENCY_ARRIVED;
-import static com.yht.frame.data.MessageType.MESSAGE_CURRENCY_DEDUCTION;
-import static com.yht.frame.data.MessageType.MESSAGE_REMOTE_ADVICE;
-import static com.yht.frame.data.MessageType.MESSAGE_REMOTE_CANCEL;
-import static com.yht.frame.data.MessageType.MESSAGE_REMOTE_DELAY;
-import static com.yht.frame.data.MessageType.MESSAGE_REMOTE_INPUT_ADVICE;
-import static com.yht.frame.data.MessageType.MESSAGE_REMOTE_INVITE;
-import static com.yht.frame.data.MessageType.MESSAGE_REMOTE_REJECT;
-import static com.yht.frame.data.MessageType.MESSAGE_REMOTE_START;
-import static com.yht.frame.data.MessageType.MESSAGE_REMOTE_SURE;
-import static com.yht.frame.data.MessageType.MESSAGE_SERVICE_REPORT;
-import static com.yht.frame.data.MessageType.MESSAGE_TRANSFER_APPLY;
-import static com.yht.frame.data.MessageType.MESSAGE_TRANSFER_CANCEL;
-import static com.yht.frame.data.MessageType.MESSAGE_TRANSFER_OTHER;
-import static com.yht.frame.data.MessageType.MESSAGE_TRANSFER_RECEIVED;
-import static com.yht.frame.data.MessageType.MESSAGE_TRANSFER_REJECT;
-import static com.yht.frame.data.MessageType.MESSAGE_TRANSFER_SYSTEM_CANCEL_R;
-import static com.yht.frame.data.MessageType.MESSAGE_TRANSFER_SYSTEM_CANCEL_T;
-import static com.yht.frame.data.MessageType.MESSAGE_TRANSFER_UPDATE;
+import static com.yht.frame.data.type.MessageType.MESSAGE_ACCOUNT_CREATE;
+import static com.yht.frame.data.type.MessageType.MESSAGE_CURRENCY_ARRIVED;
+import static com.yht.frame.data.type.MessageType.MESSAGE_CURRENCY_DEDUCTION;
+import static com.yht.frame.data.type.MessageType.MESSAGE_REMOTE_ADVICE;
+import static com.yht.frame.data.type.MessageType.MESSAGE_REMOTE_CANCEL;
+import static com.yht.frame.data.type.MessageType.MESSAGE_REMOTE_DELAY;
+import static com.yht.frame.data.type.MessageType.MESSAGE_REMOTE_INPUT_ADVICE;
+import static com.yht.frame.data.type.MessageType.MESSAGE_REMOTE_INVITE;
+import static com.yht.frame.data.type.MessageType.MESSAGE_REMOTE_REJECT;
+import static com.yht.frame.data.type.MessageType.MESSAGE_REMOTE_START;
+import static com.yht.frame.data.type.MessageType.MESSAGE_REMOTE_SURE;
+import static com.yht.frame.data.type.MessageType.MESSAGE_SERVICE_REPORT;
+import static com.yht.frame.data.type.MessageType.MESSAGE_TRANSFER_APPLY;
+import static com.yht.frame.data.type.MessageType.MESSAGE_TRANSFER_CANCEL;
+import static com.yht.frame.data.type.MessageType.MESSAGE_TRANSFER_OTHER;
+import static com.yht.frame.data.type.MessageType.MESSAGE_TRANSFER_RECEIVED;
+import static com.yht.frame.data.type.MessageType.MESSAGE_TRANSFER_REJECT;
+import static com.yht.frame.data.type.MessageType.MESSAGE_TRANSFER_SYSTEM_CANCEL_R;
+import static com.yht.frame.data.type.MessageType.MESSAGE_TRANSFER_SYSTEM_CANCEL_T;
+import static com.yht.frame.data.type.MessageType.MESSAGE_TRANSFER_UPDATE;
 import static com.yht.frame.data.Tasks.GET_APP_MESSAGE_LIST;
 
 /**

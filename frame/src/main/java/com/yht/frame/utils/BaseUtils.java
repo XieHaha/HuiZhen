@@ -268,6 +268,7 @@ public class BaseUtils {
      * @return tags 返回一个包含所有Tag字母在内的字符串
      */
     public static String getTags(List<PatientBean> beans) {
+        if (beans == null) { return ""; }
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < beans.size(); i++) {
             if (!builder.toString().contains(beans.get(i).getIndexTag())) {
@@ -282,6 +283,7 @@ public class BaseUtils {
      * @return tags 返回一个包含所有Tag字母在内的字符串
      */
     public static String getTimeTags(List<String> beans) {
+        if (beans == null) { return ""; }
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < beans.size(); i++) {
             if (!builder.toString().contains(beans.get(i))) {

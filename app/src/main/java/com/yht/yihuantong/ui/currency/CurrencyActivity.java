@@ -12,7 +12,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
-import com.yht.frame.data.CurrencyDetailType;
+import com.yht.frame.data.type.CurrencyDetailType;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.base.DoctorCurrencyBean;
 import com.yht.frame.data.base.DoctorCurrencyDetailBean;

@@ -118,7 +118,8 @@
             android:layout_height="wrap_content"
             android:paddingStart="20dp"
             android:layout_marginTop="10dp"
-            android:background="@color/color_ffffff">
+            android:background="@color/color_ffffff"
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/title"
@@ -178,6 +179,7 @@
             android:layout_height="wrap_content"
             android:paddingStart="20dp"
             android:paddingBottom="18dp"
+            android:layout_marginTop="10dp"
             android:background="@color/color_ffffff">
 
             <TextView

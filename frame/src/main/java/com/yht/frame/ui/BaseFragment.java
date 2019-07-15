@@ -52,6 +52,10 @@ public abstract class BaseFragment extends Fragment
      */
     public PermissionHelper permissionHelper;
     /**
+     * 轻量级存储
+     */
+    protected SharePreferenceUtil sharePreferenceUtil;
+    /**
      * 登录数据
      */
     protected LoginBean loginBean;
@@ -88,6 +92,7 @@ public abstract class BaseFragment extends Fragment
         }
         unbinder = ButterKnife.bind(this, view);
         permissionHelper = PermissionHelper.getInstance(getActivity());
+        sharePreferenceUtil = new SharePreferenceUtil(getContext());
         loginBean = getLoginBean();
         data = new ArrayList<String>() {
             {

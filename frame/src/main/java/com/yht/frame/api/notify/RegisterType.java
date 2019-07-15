@@ -2,10 +2,10 @@ package com.yht.frame.api.notify;
 
 /**
  * 注册状态枚举
+ *
  * @author dundun
  */
-public class RegisterType
-{
+public class RegisterType {
     private int type;
     /**
      * 注册
@@ -16,8 +16,7 @@ public class RegisterType
      */
     public static final RegisterType UNREGISTER = new RegisterType(0);
 
-    private RegisterType(int type)
-    {
+    private RegisterType(int type) {
         this.type = type;
     }
 }

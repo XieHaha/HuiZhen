@@ -105,71 +105,7 @@ public interface CommonData {
      */
     String KEY_SPLASH_IMG_URL = "key_splash_img_url";
     /**
-     * 极光-合作医生申请码
+     * 患者列表数据更新
      */
-    int JIGUANG_CODE_COLLEBORATE_DOCTOR_REQUEST = 101;
-    /**
-     * 极光-合作医生添加成功
-     */
-    int JIGUANG_CODE_COLLEBORATE_ADD_SUCCESS = 102;
-    /**
-     * 医生认证成功
-     */
-    int JIGUANG_CODE_DOCTOR_INFO_CHECK_SUCCESS = 103;
-    /**
-     * 医生认证失败
-     */
-    int JIGUANG_CODE_DOCTOR_INFO_CHECK_FAILED = 104;
-    /**
-     * 医患好友添加成功 (医生端)
-     */
-    int JIGUANG_CODE_DOCTOR_DP_ADD_SUCCESS = 106;
-    /**
-     * 申请添加医生 患者申请(医生端)
-     */
-    int JIGUANG_CODE_DOCTOR_DP_ADD_REQUEST = 108;
-    /**
-     * 收到转诊通知 合作医生接受了我的转诊
-     */
-    int JIGUANG_CODE_TRANS_PATIENT_SUCCESS = 112;
-    /**
-     * 收到转诊通知 合作医生转给我的
-     */
-    int JIGUANG_CODE_TRANS_PATIENT_APPLY = 133;
-    /**
-     * 极光-合作医生修改转诊单-拒绝接收该转诊（发送给医生）
-     */
-    int JIGUANG_CODE_DOCTOR_TRANS_REFUSE = 134;
-    /**
-     * 极光-医院取消转诊（发送给发起医生）
-     */
-    int JIGUANG_CODE_FROM_DOCTOR_TRANSFER_FINISHED = 136;
-    /**
-     * 极光-医院取消转诊（发送给接受医生）
-     */
-    int JIGUANG_CODE_TO_DOCTOR_TRANSFER_FINISHED = 137;
-    /**
-     * 极光-患者确认服务包订单（发送给医生）
-     */
-    int JIGUANG_CODE_DOCTOR_PRODUCT_ACCEPTED = 141;
-    /**
-     * 极光-患者拒绝服务包订单（发送给医生）
-     */
-    int JIGUANG_CODE_DOCTOR_PRODUCT_REFUSED = 147;
-    /**
-     * 极光-后台确认完成检查（发送给医生）
-     */
-    int JIGUANG_CODE_DOCTOR_PRODUCT_FINISH = 144;
-    /**
-     * 极光-后台确认发送报告（发送给医生）
-     */
-    int JIGUANG_CODE_DOCTOR_PRODUCT_REPORT = 146;
-    /**
-     * 极光-医院确认患者就诊（发送给发起医生）
-     */
-    int JIGUANG_CODE_FROM_DOCTOR_TRANSFER_FINISH_SUCCESS = 160;
-    /**
-     * 极光-医院确认患者就诊（发送给接受医生）
-     */
-    int JIGUANG_CODE_TO_DOCTOR_TRANSFER_FINISH_SUCCESS = 161;
+    String KEY_UPDATE_PATIENT_DATA = "key_update_patient_data";
 }

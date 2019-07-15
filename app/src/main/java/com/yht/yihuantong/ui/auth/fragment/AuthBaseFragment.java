@@ -23,7 +23,7 @@ import com.yht.frame.api.DirHelper;
 import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
-import com.yht.frame.data.DataDictionary;
+import com.yht.frame.data.type.DataDictionary;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.base.DoctorAuthBean;
 import com.yht.frame.data.base.HospitalBean;

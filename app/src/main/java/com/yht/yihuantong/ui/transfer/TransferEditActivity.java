@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
+import com.yht.frame.api.notify.NotifyChangeListenerManager;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
@@ -27,7 +28,7 @@ import butterknife.OnClick;
 /**
  * @author 顿顿
  * @date 19/6/27 19:41
- * @des 变更接诊信息
+ * @des 变更接诊信息  接诊
  */
 public class TransferEditActivity extends BaseActivity {
     @BindView(R.id.tv_hospital)
@@ -169,6 +170,8 @@ public class TransferEditActivity extends BaseActivity {
         super.onResponseSuccess(task, response);
         switch (task) {
             case RECEIVE_RESERVE_TRANSFER_ORDER:
+                //接诊成功  刷新患者列表数据
+                NotifyChangeListenerManager.getInstance().notifyPatientStatusChange("");
                 //通知刷新
                 setResult(RESULT_OK);
                 finish();

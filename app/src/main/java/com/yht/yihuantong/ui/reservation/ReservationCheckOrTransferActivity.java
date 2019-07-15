@@ -24,7 +24,6 @@ import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.yihuantong.R;
-import com.yht.yihuantong.ui.check.ReservationSuccessActivity;
 import com.yht.yihuantong.ui.check.listener.OnCheckListener;
 import com.yht.yihuantong.ui.reservation.fragment.IdentifyFragment;
 import com.yht.yihuantong.ui.reservation.fragment.MaterialFragment;
