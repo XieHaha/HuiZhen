@@ -28,6 +28,7 @@ import com.yht.yihuantong.chat.HxHelper;
 import org.litepal.LitePal;
 import org.litepal.LitePalApplication;
 
+import cn.jpush.android.api.JPushInterface;
 import me.jessyan.autosize.AutoSize;
 import me.jessyan.autosize.AutoSizeConfig;
 import me.jessyan.autosize.unit.Subunits;
@@ -120,8 +121,8 @@ public class ZycApplication extends LitePalApplication {
      */
     private void initJPush() {
         //极光推送
-//        JPushInterface.setDebugMode(debugMode);
-//        JPushInterface.init(this);
+        JPushInterface.setDebugMode(debugMode);
+        JPushInterface.init(this);
     }
 
     /**

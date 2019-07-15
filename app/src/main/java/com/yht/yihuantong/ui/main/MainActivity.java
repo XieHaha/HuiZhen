@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import cn.jpush.android.api.JPushInterface;
 
 /**
  * @author dundun
@@ -80,6 +81,7 @@ public class MainActivity extends BaseActivity {
         loginEaseChat();
         //测试数据 存储
         savePatient();
+        JPushInterface.setAlias(this, BaseData.BASE_ONE, loginBean.getMobile());
     }
 
     List<PatientBean> patientBeans;
