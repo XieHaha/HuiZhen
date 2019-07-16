@@ -128,6 +128,11 @@
             android:label="@string/title_about"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
+            android:name=".ui.personal.About2Activity"
+            android:screenOrientation="portrait"
+            android:label="@string/title_about2"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
             android:name=".ui.currency.CurrencyActivity"
             android:screenOrientation="portrait"
             android:label=""
@@ -230,7 +235,7 @@
         <activity
             android:name=".ui.WebViewActivity"
             android:screenOrientation="portrait"
-            android:label=""
+            android:label="@string/txt_about_protocol"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.x5.FileDisplayActivity"

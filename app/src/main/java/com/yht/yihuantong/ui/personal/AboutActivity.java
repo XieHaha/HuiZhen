@@ -39,6 +39,7 @@ public class AboutActivity extends BaseActivity {
                 startActivity(intent);
                 break;
             case R.id.layout_about_understand:
+                startActivity(new Intent(this, About2Activity.class));
                 break;
             default:
                 break;
