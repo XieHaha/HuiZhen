@@ -68,8 +68,10 @@ public class WebViewActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_disagree:
+                finish();
                 break;
             case R.id.tv_agree:
+                setResult(RESULT_OK);
                 finish();
                 break;
             default:

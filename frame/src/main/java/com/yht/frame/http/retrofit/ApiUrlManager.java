@@ -20,6 +20,7 @@ import com.yht.frame.data.base.OrderNumStatisticsBean;
 import com.yht.frame.data.base.PatientBean;
 import com.yht.frame.data.base.PatientDetailBean;
 import com.yht.frame.data.base.PatientOrderBean;
+import com.yht.frame.data.base.ProtocolBean;
 import com.yht.frame.data.base.ReservationValidateBean;
 import com.yht.frame.data.base.SelectCheckTypeBean;
 import com.yht.frame.data.base.TransferBean;
@@ -92,6 +93,14 @@ public interface ApiUrlManager {
      */
     @POST("/client/confirm-verify-code")
     Observable<BaseResponse<LoginBean>> login(@Body Map<String, String> info);
+
+    /**
+     * 登录
+     *
+     * @return 返回值
+     */
+    @GET("/client/sys/doctor_protocol_last_date")
+    Observable<BaseResponse<ProtocolBean>> getProtocolUpdateDate();
 
     /**
      * 上传图片

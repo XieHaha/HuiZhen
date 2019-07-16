@@ -25,10 +25,41 @@ public class SharePreferenceUtil {
      * 保存在手机里面的默认文件名
      */
     private static final String FILE_NAME = "ZYC";
+    /**
+     * 保存在手机里面的默认文件名(退出登录不清除的数据)
+     */
+    private static final String FILE_NAME_OTHER = "ZYC_OTHER";
 
     public SharePreferenceUtil(Context mContext) {
         super();
         this.mContext = mContext;
+    }
+
+    /**
+     * 存  不清除的数据
+     *
+     * @param spKey
+     * @param spValue
+     */
+    public void putAlwaysString(String spKey, String spValue) {
+        spEditor = mContext.getSharedPreferences(FILE_NAME_OTHER, 0).edit();
+        spEditor.putString(spKey, spValue);
+        spEditor.commit();
+    }
+
+    /**
+     * 取 不清除的数据
+     *
+     * @param spKey
+     * @return
+     */
+    public String getAlwaysString(String spKey) {
+        sp = mContext.getSharedPreferences(FILE_NAME_OTHER, 0);
+        String value = "";
+        if (sp != null) {
+            value = sp.getString(spKey, "");
+        }
+        return value;
     }
 
     /**

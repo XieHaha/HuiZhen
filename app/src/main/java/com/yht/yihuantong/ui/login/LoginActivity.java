@@ -1,25 +1,32 @@
 package com.yht.yihuantong.ui.login;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.TextView;
 
 import com.yht.frame.data.BaseData;
+import com.yht.frame.data.BaseNetConfig;
 import com.yht.frame.data.BaseResponse;
-import com.yht.frame.data.type.DocAuthStatus;
+import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.base.LoginBean;
 import com.yht.frame.data.base.VerifyCodeBean;
+import com.yht.frame.data.type.DocAuthStatus;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.widgets.edittext.AbstractTextWatcher;
 import com.yht.frame.widgets.edittext.SuperEditText;
+import com.yht.yihuantong.BuildConfig;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ZycApplication;
+import com.yht.yihuantong.ui.WebViewActivity;
 import com.yht.yihuantong.ui.auth.AuthDoctorActivity;
 
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
@@ -60,9 +67,25 @@ public class LoginActivity extends BaseActivity {
      */
     private int time = 0;
     /**
+     * 协议更新时间
+     */
+    private String ptotocolUpdateTime;
+    /**
      * 是否获取过验证码
      */
     private boolean isSendVerifyCode = false;
+    /**
+     * 是否显示登录协议
+     */
+    private boolean isShowNewProtocol;
+    /**
+     * 是否同意协议
+     */
+    private boolean isAgree;
+    /**
+     * 协议结果
+     */
+    private static final int REQUEST_CODE_PROTOCOL = 100;
 
     @Override
     protected boolean isInitBackBtn() {
@@ -88,6 +111,17 @@ public class LoginActivity extends BaseActivity {
             return true;
         }
     });
+
+    @Override
+    public void initData(@NonNull Bundle savedInstanceState) {
+        super.initData(savedInstanceState);
+        if (getIntent() != null) {
+            isShowNewProtocol = getIntent().getBooleanExtra(CommonData.KEY_IS_PROTOCOL_UPDATE_DATE, false);
+            ptotocolUpdateTime = getIntent().getStringExtra(CommonData.KEY_PUBLIC_STRING);
+        }
+        phone = sharePreferenceUtil.getAlwaysString(CommonData.KEY_LOGIN_ACCOUNT);
+        etLoginAccount.setText(phone);
+    }
 
     @Override
     public void initListener() {
@@ -126,6 +160,16 @@ public class LoginActivity extends BaseActivity {
      */
     private void login() {
         RequestUtils.login(this, verifyCodeBean.getPrepare_id(), verifyCode, BaseData.ADMIN, this);
+    }
+
+    /**
+     * 微信登录前需要用户阅读登录协议
+     */
+    private void showProtocol() {
+        Intent intent = new Intent(this, WebViewActivity.class);
+        intent.putExtra(CommonData.KEY_PUBLIC, BuildConfig.BASE_BASIC_URL + BaseNetConfig.BASE_BASIC_USER_PROTOCOL_URL);
+        intent.putExtra(CommonData.KEY_IS_PROTOCOL, true);
+        startActivityForResult(intent, REQUEST_CODE_PROTOCOL);
     }
 
     /**
@@ -202,7 +246,12 @@ public class LoginActivity extends BaseActivity {
             case R.id.tv_login_next:
                 if (tvLoginNext.isSelected()) {
                     if (isSendVerifyCode) {
-                        login();
+                        if (isShowNewProtocol && !isAgree) {
+                            showProtocol();
+                        }
+                        else {
+                            login();
+                        }
                     }
                     else {
                         ToastUtil.toast(this, R.string.txt_login_verify_code_error);
@@ -225,6 +274,7 @@ public class LoginActivity extends BaseActivity {
                 startVerifyCodeTimer();
                 break;
             case LOGIN_AND_REGISTER:
+                sharePreferenceUtil.putAlwaysString(CommonData.KEY_LOGIN_ACCOUNT, phone);
                 loginBean = (LoginBean)response.getData();
                 //存储登录结果
                 ZycApplication.getInstance().setLoginBean(loginBean);
@@ -232,6 +282,19 @@ public class LoginActivity extends BaseActivity {
                 break;
             default:
                 break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+        if (requestCode == REQUEST_CODE_PROTOCOL) {
+            sharePreferenceUtil.putAlwaysString(CommonData.KEY_IS_PROTOCOL_UPDATE_DATE, ptotocolUpdateTime);
+            isAgree = true;
+            login();
         }
     }
 

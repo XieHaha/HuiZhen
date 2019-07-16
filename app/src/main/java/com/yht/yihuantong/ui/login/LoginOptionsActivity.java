@@ -24,10 +24,12 @@ import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.base.LoginBean;
+import com.yht.frame.data.base.ProtocolBean;
 import com.yht.frame.data.bean.VersionBean;
 import com.yht.frame.data.type.DocAuthStatus;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
+import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.ToastUtil;
 import com.yht.yihuantong.BuildConfig;
 import com.yht.yihuantong.R;
@@ -59,6 +61,10 @@ public class LoginOptionsActivity extends BaseActivity
      */
     private IWXAPI api;
     /**
+     * 登录协议
+     */
+    private ProtocolBean protocolBean;
+    /**
      * 版本检测
      */
     private VersionPresenter mVersionPresenter;
@@ -67,6 +73,18 @@ public class LoginOptionsActivity extends BaseActivity
      */
     private UpdateDialog updateDialog;
     /**
+     * 服务协议更新时间戳
+     */
+    private long protocolUpdateDate;
+    /**
+     * 是否显示新的协议
+     */
+    private boolean isShowNewProtocol = true;
+    /**
+     * 是否同意协议
+     */
+    private boolean isAgree;
+    /**
      * 账号登录状态
      */
     private static final int REQUEST_CODE_LOGIN_STATUS = 100;
@@ -74,6 +92,10 @@ public class LoginOptionsActivity extends BaseActivity
      * 绑定手机号
      */
     private static final int REQUEST_CODE_BIND_STATUS = 200;
+    /**
+     * 协议结果
+     */
+    private static final int REQUEST_CODE_PROTOCOL = 300;
 
     @Override
     public int getLayoutID() {
@@ -84,6 +106,15 @@ public class LoginOptionsActivity extends BaseActivity
     protected void onResume() {
         super.onResume();
         weChatCallBack();
+    }
+
+    @Override
+    public void initView(@NonNull Bundle savedInstanceState) {
+        super.initView(savedInstanceState);
+        getProtocolUpdateDate();
+        protocolUpdateDate = BaseUtils.date2TimeStamp(
+                sharePreferenceUtil.getAlwaysString(CommonData.KEY_IS_PROTOCOL_UPDATE_DATE),
+                BaseUtils.YYYY_MM_DD_HH_MM_SS);
     }
 
     @Override
@@ -104,6 +135,23 @@ public class LoginOptionsActivity extends BaseActivity
      */
     private void weChatLogin(String code) {
         RequestUtils.weChatLogin(this, code, BaseData.ADMIN, this);
+    }
+
+    /**
+     * 查询用户协议最后更新时间
+     */
+    private void getProtocolUpdateDate() {
+        RequestUtils.getProtocolUpdateDate(this, this);
+    }
+
+    /**
+     * 微信登录前需要用户阅读登录协议
+     */
+    private void showProtocol() {
+        Intent intent = new Intent(this, WebViewActivity.class);
+        intent.putExtra(CommonData.KEY_PUBLIC, BuildConfig.BASE_BASIC_URL + BaseNetConfig.BASE_BASIC_USER_PROTOCOL_URL);
+        intent.putExtra(CommonData.KEY_IS_PROTOCOL, true);
+        startActivityForResult(intent, REQUEST_CODE_PROTOCOL);
     }
 
     private void jump() {
@@ -188,7 +236,12 @@ public class LoginOptionsActivity extends BaseActivity
             case R.id.tv_login_wechat:
                 //判断手机是否安装微信
                 if (api.isWXAppInstalled()) {
-                    sendReq();
+                    if (isShowNewProtocol && !isAgree) {
+                        showProtocol();
+                    }
+                    else {
+                        sendReq();
+                    }
                 }
                 else {
                     //显示微信下载页面
@@ -199,6 +252,10 @@ public class LoginOptionsActivity extends BaseActivity
                 break;
             case R.id.tv_login_phone:
                 Intent intent = new Intent(this, LoginActivity.class);
+                intent.putExtra(CommonData.KEY_IS_PROTOCOL_UPDATE_DATE, isShowNewProtocol);
+                if (protocolBean != null) {
+                    intent.putExtra(CommonData.KEY_PUBLIC_STRING, protocolBean.getUpdateAt());
+                }
                 startActivityForResult(intent, REQUEST_CODE_LOGIN_STATUS);
                 break;
             default:
@@ -208,10 +265,24 @@ public class LoginOptionsActivity extends BaseActivity
 
     @Override
     public void onResponseSuccess(Tasks task, BaseResponse response) {
-        if (task == Tasks.WE_CHAT_LOGIN) {
-            //微信登录成功
-            loginBean = (LoginBean)response.getData();
-            jump();
+        switch (task) {
+            case WE_CHAT_LOGIN:
+                //微信登录成功
+                loginBean = (LoginBean)response.getData();
+                jump();
+                break;
+            case GET_PROTOCOL_UPDATE_DATE:
+                protocolBean = (ProtocolBean)response.getData();
+                long lastTime = BaseUtils.date2TimeStamp(protocolBean.getUpdateAt(), BaseUtils.YYYY_MM_DD_HH_MM_SS);
+                if (lastTime > protocolUpdateDate) {
+                    isShowNewProtocol = true;
+                }
+                else {
+                    isShowNewProtocol = false;
+                }
+                break;
+            default:
+                break;
         }
     }
 
@@ -226,6 +297,11 @@ public class LoginOptionsActivity extends BaseActivity
             case REQUEST_CODE_BIND_STATUS:
                 jumpMain();
                 break;
+            case REQUEST_CODE_PROTOCOL:
+                sharePreferenceUtil.putAlwaysString(CommonData.KEY_IS_PROTOCOL_UPDATE_DATE, protocolBean.getUpdateAt());
+                isAgree = true;
+                sendReq();
+                break;
             default:
                 break;
         }
@@ -235,7 +311,6 @@ public class LoginOptionsActivity extends BaseActivity
     @Override
     public void updateVersion(VersionBean version, int mode, boolean isDownLoading) {
         if (mode == -1) {
-            ToastUtil.toast(this, R.string.toast_version_update_hint);
             return;
         }
         updateDialog = new UpdateDialog(this);
@@ -277,6 +352,7 @@ public class LoginOptionsActivity extends BaseActivity
         ClickableSpan clickSpan = new ClickableSpan() {
             @Override
             public void onClick(@NonNull View widget) {
+                //                isAgree = true;
                 Intent intent = new Intent(LoginOptionsActivity.this, WebViewActivity.class);
                 intent.putExtra(CommonData.KEY_PUBLIC,
                                 BuildConfig.BASE_BASIC_URL + BaseNetConfig.BASE_BASIC_USER_PROTOCOL_URL);

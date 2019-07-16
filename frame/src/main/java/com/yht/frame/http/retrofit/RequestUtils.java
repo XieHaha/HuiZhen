@@ -79,6 +79,14 @@ public class RequestUtils {
                        .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.LOGIN_AND_REGISTER, listener));
     }
 
+    public static void getProtocolUpdateDate(Context context, final ResponseListener<BaseResponse> listener) {
+        RetrofitManager.getApiUrlManager()
+                       .getProtocolUpdateDate()
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(
+                               new AbstractLoadViewObserver<>(context, true, Tasks.GET_PROTOCOL_UPDATE_DATE, listener));
+    }
+
     public static void uploadImg(Context context, String token, File file,
             final ResponseListener<BaseResponse> listener) {
         RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
@@ -587,7 +595,7 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .getVersion(token, BaseData.ADMIN)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_VERSION, listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_VERSION, listener));
     }
 
     /******************************以上为新接口 2019年7月5日14:03:44*************************************/

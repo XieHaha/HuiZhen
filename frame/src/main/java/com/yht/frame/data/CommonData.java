@@ -21,6 +21,10 @@ public interface CommonData {
      */
     String KEY_EASE_LOGIN_STATUS = "key_ease_login_status";
     /**
+     * 登录账号
+     */
+    String KEY_LOGIN_ACCOUNT = "key_login_account";
+    /**
      * 检查或者转诊  true为转诊  false为检查
      */
     String KEY_CHECK_OR_TRANSFER = "key_check_or_transfer";
@@ -32,6 +36,10 @@ public interface CommonData {
      * 是否显示的是登录协议（登录协议页面不显示title）
      */
     String KEY_IS_PROTOCOL = "key_is_protocol";
+    /**
+     * 协议更新时间
+     */
+    String KEY_IS_PROTOCOL_UPDATE_DATE = "key_is_protocol_update_date";
     /**
      * 登录成功返回数据
      */

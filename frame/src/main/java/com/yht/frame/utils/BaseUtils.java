@@ -115,15 +115,18 @@ public class BaseUtils {
      * @param format
      * @return
      */
-    public static String date2TimeStamp(String date, String format) {
+    public static long date2TimeStamp(String date, String format) {
+        if (TextUtils.isEmpty(date)) {
+            return 0;
+        }
         try {
             SimpleDateFormat sdf = new SimpleDateFormat(format);
-            return String.valueOf(sdf.parse(date).getTime());
+            return sdf.parse(date).getTime();
         }
         catch (Exception e) {
             e.printStackTrace();
         }
-        return "";
+        return 0;
     }
 
     public static String getAge(long time) {

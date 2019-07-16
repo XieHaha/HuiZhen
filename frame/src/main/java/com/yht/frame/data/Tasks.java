@@ -22,6 +22,10 @@ WE_CHAT_LOGIN,
      */
     LOGIN_AND_REGISTER,
     /**
+     * 用户协议最后更新时间
+     */
+    GET_PROTOCOL_UPDATE_DATE,
+    /**
      * 上传文件
      */
     UPLOAD_FILE,

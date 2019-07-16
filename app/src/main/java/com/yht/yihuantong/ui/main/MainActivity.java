@@ -304,7 +304,6 @@ public class MainActivity extends BaseActivity
     @Override
     public void updateVersion(VersionBean version, int mode, boolean isDownLoading) {
         if (mode == -1) {
-            ToastUtil.toast(this, R.string.toast_version_update_hint);
             return;
         }
         updateDialog = new UpdateDialog(this);
