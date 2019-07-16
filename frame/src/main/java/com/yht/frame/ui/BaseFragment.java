@@ -31,7 +31,6 @@ import com.yht.frame.permission.OnPermissionCallback;
 import com.yht.frame.permission.PermissionHelper;
 import com.yht.frame.utils.SharePreferenceUtil;
 import com.yht.frame.utils.ToastUtil;
-import com.yht.frame.widgets.dialog.HintDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -251,6 +250,15 @@ public abstract class BaseFragment extends Fragment
     }
 
     /**
+     * token失效
+     */
+    public void token() {
+        Intent intent = new Intent(BaseData.BASE_TOKEN_ERROR_ACTION);
+        intent.setPackage(getActivity().getPackageName());
+        getActivity().sendBroadcast(intent);
+    }
+
+    /**
      * 默认不适用此方法，在子类里可以重构他
      */
     @Override
@@ -294,11 +302,7 @@ public abstract class BaseFragment extends Fragment
     @Override
     public void onResponseCode(Tasks task, BaseResponse response) {
         if (response.getCode() == BaseNetConfig.REQUEST_TOKEN_ERROR) {
-            new HintDialog(getContext()).setContentString(R.string.txt_id_card_hint)
-                                        .setEnterBtnTxt(R.string.txt_sure)
-                                        .setEnterSelect(true)
-                                        .setOnEnterClickListener(() -> exit())
-                                        .show();
+            token();
         }
         else {
             ToastUtil.toast(getContext(), response.getMsg());

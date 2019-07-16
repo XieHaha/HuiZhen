@@ -87,6 +87,10 @@ public interface BaseData {
      */
     String BASE_SIGN_OUT_ACTION = "zyc.doctor.logout.action";
     /**
+     * token失效
+     */
+    String BASE_TOKEN_ERROR_ACTION = "zyc.doctor.token.action";
+    /**
      * 微信登录APP_ID
      */
     String WE_CHAT_ID = "wx06ffa935bd113f48";

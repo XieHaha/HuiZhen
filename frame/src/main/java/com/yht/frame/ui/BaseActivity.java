@@ -306,6 +306,15 @@ public abstract class BaseActivity extends RxAppCompatActivity
     }
 
     /**
+     * token失效
+     */
+    public void token() {
+        Intent intent = new Intent(BaseData.BASE_TOKEN_ERROR_ACTION);
+        intent.setPackage(getPackageName());
+        sendBroadcast(intent);
+    }
+
+    /**
      * 得到返回按钮控件
      */
     public ImageView getBackBtnView() {
@@ -382,11 +391,7 @@ public abstract class BaseActivity extends RxAppCompatActivity
     @Override
     public void onResponseCode(Tasks task, BaseResponse response) {
         if (response.getCode() == BaseNetConfig.REQUEST_TOKEN_ERROR) {
-            new HintDialog(this).setContentString(R.string.txt_login_expired)
-                                .setEnterBtnTxt(R.string.txt_sure)
-                                .setEnterSelect(true)
-                                .setOnEnterClickListener(() -> exit())
-                                .show();
+            token();
         }
         else {
             ToastUtil.toast(this, response.getMsg());

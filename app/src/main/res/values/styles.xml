@@ -19,6 +19,14 @@
         <item name="android:windowAnimationStyle">@style/ActivityStyle</item>
     </style>
 
+    <style name="ActivityTransDialog" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@style/FadeWindowAnimTheme</item>
+        <item name="android:windowBackground">@color/color_00000000</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:launchMode">singleTask</item>
+    </style>
+
     <style name="AppFullScreenTheme" parent="BaseAppTheme">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
@@ -33,6 +41,13 @@
         <item name="android:activityOpenExitAnimation">@anim/anim_left_out</item>
         <item name="android:activityCloseEnterAnimation">@anim/anim_left_in</item>
         <item name="android:activityCloseExitAnimation">@anim/anim_right_out</item>
+    </style>
+
+    <style name="FadeWindowAnimTheme" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/fade_in</item>
+        <item name="android:activityOpenExitAnimation">@anim/keep</item>
+        <item name="android:activityCloseEnterAnimation">@anim/keep</item>
+        <item name="android:activityCloseExitAnimation">@anim/fade_out</item>
     </style>
 
     <!-- 自定义仿IOS的ActionSheet底部Dialog的样式 ，有模糊效果 -->

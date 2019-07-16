@@ -278,6 +278,12 @@
             android:label="@string/title_personal_center"
             android:windowSoftInputMode="adjustResize|stateHidden" />
 
+        <activity
+            android:name=".ui.HintLoginActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/ActivityTransDialog"
+            android:windowSoftInputMode="adjustPan" />
+
         <!--腾讯X5-->
         <service
             android:name="com.tencent.smtt.export.external.DexClassLoaderProviderService"
@@ -486,7 +492,10 @@
             android:enabled="true"
             android:exported="false">
             <intent-filter>
+                <!--退出登录-->
                 <action android:name="zyc.doctor.logout.action" />
+                <!--token失效-->
+                <action android:name="zyc.doctor.token.action" />
             </intent-filter>
         </receiver>
 

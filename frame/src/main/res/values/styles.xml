@@ -32,7 +32,7 @@
         <!--&lt;!&ndash; 无标题 &ndash;&gt;-->
         <item name="android:windowNoTitle">true</item>
         <!--透明背景-->
-        <item name="android:background">@android:color/transparent</item>
+        <item name="android:background">@color/color_00000000</item>
         <!-- 内容背景 -->
         <item name="android:windowBackground">@color/color_00000000</item>
         <!-- 模糊 -->
@@ -49,7 +49,7 @@
         <!--&lt;!&ndash; 无标题 &ndash;&gt;-->
         <item name="android:windowNoTitle">true</item>
         <!--透明背景-->
-        <item name="android:background">@android:color/transparent</item>
+        <item name="android:background">@color/color_00000000</item>
         <!-- 内容背景 -->
         <item name="android:windowBackground">@drawable/corner4_black50_bg</item>
         <!-- 模糊 -->
@@ -66,7 +66,7 @@
         <!-- 半透明 -->
         <item name="android:windowNoTitle">true</item>
         <!--&lt;!&ndash; 无标题 &ndash;&gt;-->
-        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowBackground">@color/color_00000000</item>
         <!-- 背景透明 -->
         <item name="android:backgroundDimEnabled">true</item>
         <!-- 模糊 -->

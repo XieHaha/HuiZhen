@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
-        android:background="@color/color_50000000">
+        android:background="@color/color_30000000">
 
     </RelativeLayout>
 

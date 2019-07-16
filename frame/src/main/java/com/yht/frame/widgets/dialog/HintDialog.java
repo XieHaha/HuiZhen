@@ -33,6 +33,7 @@ public class HintDialog extends Dialog implements OnClickListener {
      */
     private boolean enterSelect = false;
     private boolean isShow = false;
+    private boolean cancelAble = true;
 
     public HintDialog(Context context) {
         super(context, R.style.normal_dialog);
@@ -57,8 +58,8 @@ public class HintDialog extends Dialog implements OnClickListener {
         tvContent.setMovementMethod(ScrollingMovementMethod.getInstance());
         tvCancel.setOnClickListener(this);
         tvEnter.setOnClickListener(this);
-        setCanceledOnTouchOutside(true);
-        setCancelable(true);
+        setCanceledOnTouchOutside(cancelAble);
+        setCancelable(cancelAble);
     }
 
     @Override
@@ -141,6 +142,11 @@ public class HintDialog extends Dialog implements OnClickListener {
 
     public HintDialog setCancelBtnGone(boolean gone) {
         this.cancelGone = gone;
+        return this;
+    }
+
+    public HintDialog setCancelableAndTouch(boolean cancel) {
+        cancelAble = cancel;
         return this;
     }
 
