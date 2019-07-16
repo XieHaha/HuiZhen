@@ -58,6 +58,7 @@
             android:textSize="@dimen/text_16" />
 
         <View
+            android:id="@+id/view_line"
             android:layout_width="@dimen/app_hei_line"
             android:layout_height="match_parent"
             android:background="@color/color_ebedf0" />

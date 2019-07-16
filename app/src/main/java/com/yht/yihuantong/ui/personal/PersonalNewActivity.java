@@ -8,7 +8,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.yht.frame.data.BaseData;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.glide.GlideHelper;
@@ -75,14 +74,5 @@ public class PersonalNewActivity extends BaseActivity {
             default:
                 break;
         }
-    }
-
-    /**
-     * 退出登录
-     */
-    private void exit() {
-        Intent intent = new Intent(BaseData.BASE_SIGN_OUT_ACTION);
-        intent.setPackage(getPackageName());
-        sendBroadcast(intent);
     }
 }

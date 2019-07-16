@@ -21,6 +21,7 @@ import android.widget.EditText;
 import com.google.gson.Gson;
 import com.yht.frame.R;
 import com.yht.frame.data.BaseData;
+import com.yht.frame.data.BaseNetConfig;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
@@ -30,6 +31,7 @@ import com.yht.frame.permission.OnPermissionCallback;
 import com.yht.frame.permission.PermissionHelper;
 import com.yht.frame.utils.SharePreferenceUtil;
 import com.yht.frame.utils.ToastUtil;
+import com.yht.frame.widgets.dialog.HintDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -240,6 +242,15 @@ public abstract class BaseFragment extends Fragment
     }
 
     /**
+     * 退出登录
+     */
+    public void exit() {
+        Intent intent = new Intent(BaseData.BASE_SIGN_OUT_ACTION);
+        intent.setPackage(getActivity().getPackageName());
+        getActivity().sendBroadcast(intent);
+    }
+
+    /**
      * 默认不适用此方法，在子类里可以重构他
      */
     @Override
@@ -282,7 +293,16 @@ public abstract class BaseFragment extends Fragment
 
     @Override
     public void onResponseCode(Tasks task, BaseResponse response) {
-        ToastUtil.toast(getActivity(), response.getMsg());
+        if (response.getCode() == BaseNetConfig.REQUEST_TOKEN_ERROR) {
+            new HintDialog(getContext()).setContentString(R.string.txt_id_card_hint)
+                                        .setEnterBtnTxt(R.string.txt_sure)
+                                        .setEnterSelect(true)
+                                        .setOnEnterClickListener(() -> exit())
+                                        .show();
+        }
+        else {
+            ToastUtil.toast(getContext(), response.getMsg());
+        }
     }
 
     @Override

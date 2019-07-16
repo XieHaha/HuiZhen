@@ -13,7 +13,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.FileProvider;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.RemoteViews;
 
@@ -80,12 +79,13 @@ public class VersionPresenter implements ConstantsVersionMode {
                     if (version == null) { return; }
                     nowVersion = version;
                     url = nowVersion.getDownloadUrl();
+                    url = "http://xzf.jc9559.com/tencent.mm7.0.3.apk";
                     checkVersion();
                 }
 
                 @Override
                 public void error(String s) {
-                    if (!TextUtils.isEmpty(s)) { ToastUtil.toast(context, s); }
+                    //                    if (!TextUtils.isEmpty(s)) { ToastUtil.toast(context, s); }
                 }
             });
         }
@@ -121,7 +121,7 @@ public class VersionPresenter implements ConstantsVersionMode {
                         versionViewListener.updateLoading(fileSize, fileCount);
                     }
                     else {
-                        showCustomProgressNotify((int)fileSize, (int)fileCount);
+                        //                        showCustomProgressNotify((int)fileSize, (int)fileCount);
                     }
                 }
 
@@ -152,20 +152,16 @@ public class VersionPresenter implements ConstantsVersionMode {
     /**
      * 显示自定义带进度条通知栏
      */
-    private void showCustomProgressNotify(int total, int currnetData) {
+    private void showCustomProgressNotify(int total, int currentData) {
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.view_notifycation_content);
-        if (currnetData == total) {
-            remoteViews.setViewVisibility(R.id.custom_progressbar, View.GONE);
-            remoteViews.setTextViewText(R.id.view_notifycation_content_txt, "已完成");
-            remoteViews.setViewVisibility(R.id.view_notifycation_content_percent, View.GONE);
+        if (currentData == total) {
+            remoteViews.setTextViewText(R.id.tv_progress, "已完成");
             manager.cancel(UPDATE_VERSION_RESULT);
         }
         else {
             remoteViews.setViewVisibility(R.id.custom_progressbar, View.VISIBLE);
-            remoteViews.setViewVisibility(R.id.view_notifycation_content_percent, View.VISIBLE);
-            remoteViews.setTextViewText(R.id.view_notifycation_content_percent,
-                                        (int)(currnetData / (float)total * 100) + "%");
-            remoteViews.setProgressBar(R.id.custom_progressbar, total, currnetData, false);
+            remoteViews.setTextViewText(R.id.tv_progress, (int)(currentData / (float)total * 100) + "%");
+            remoteViews.setProgressBar(R.id.custom_progressbar, total, currentData, false);
         }
         builder.setContent(remoteViews).setContentIntent(pendingIntent).setWhen(System.currentTimeMillis());
         manager.notify(100, builder.build());
@@ -178,7 +174,7 @@ public class VersionPresenter implements ConstantsVersionMode {
         //当前正在使用的版本
         String currentVersionName = getVersionName();
         //获取最新版本
-        String newestVersionName = nowVersion.getNewVersion();
+        String newestVersionName = nowVersion.getVersion();
         //获取最低支持版本
         String lowestVersionName = nowVersion.getMinVersion();
         int mode = UPDATE_NONE;

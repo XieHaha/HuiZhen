@@ -15,20 +15,17 @@ import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
 import com.yht.frame.data.BaseData;
 import com.yht.frame.data.CommonData;
-import com.yht.frame.data.base.PatientBean;
+import com.yht.frame.data.bean.VersionBean;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.HuiZhenLog;
 import com.yht.frame.utils.ToastUtil;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.jpush.TagAliasOperatorHelper;
+import com.yht.yihuantong.ui.dialog.UpdateDialog;
 import com.yht.yihuantong.ui.main.fragment.MessageFragment;
 import com.yht.yihuantong.ui.main.fragment.PatientFragment;
 import com.yht.yihuantong.ui.main.fragment.WorkerFragment;
-
-import org.litepal.crud.DataSupport;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.yht.yihuantong.version.presenter.VersionPresenter;
 
 import butterknife.BindView;
 
@@ -37,7 +34,8 @@ import static com.yht.yihuantong.jpush.TagAliasOperatorHelper.ACTION_SET;
 /**
  * @author dundun
  */
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity
+        implements VersionPresenter.VersionViewListener, UpdateDialog.OnEnterClickListener {
     @BindView(R.id.act_main_tab1)
     LinearLayout actMainTab1;
     @BindView(R.id.act_main_tab3)
@@ -67,10 +65,27 @@ public class MainActivity extends BaseActivity {
      * 患者碎片
      */
     private PatientFragment patientFragment;
+    /**
+     * 版本检测
+     */
+    private VersionPresenter mVersionPresenter;
+    /**
+     * 版本弹窗
+     */
+    private UpdateDialog updateDialog;
 
     @Override
     public int getLayoutID() {
         return R.layout.act_main;
+    }
+
+    @Override
+    public void initView(@NonNull Bundle savedInstanceState) {
+        super.initView(savedInstanceState);
+        //检查更新
+        mVersionPresenter = new VersionPresenter(this, "");
+        mVersionPresenter.setVersionViewListener(this);
+        mVersionPresenter.init();
     }
 
     @Override
@@ -81,8 +96,6 @@ public class MainActivity extends BaseActivity {
         initTab();
         //环信登录
         loginEaseChat();
-        //测试数据 存储
-        savePatient();
         setJPushAlias(loginBean.getDoctorCode());
     }
 
@@ -97,27 +110,6 @@ public class MainActivity extends BaseActivity {
         tagAliasBean.alias = alias;
         tagAliasBean.isAliasAction = true;
         TagAliasOperatorHelper.getInstance().handleAction(getApplicationContext(), BASE_ONE, tagAliasBean);
-    }
-
-    List<PatientBean> patientBeans;
-
-    private void savePatient() {
-        patientBeans = new ArrayList<>();
-        //数据存储
-        for (int i = 0; i < 3; i++) {
-            if (i == 0) {
-                PatientBean bean = new PatientBean();
-                //                bean.setPatientId("18408245131_d");
-                bean.setName("测试名字1");
-            }
-            else {
-                PatientBean bean = new PatientBean();
-                //                bean.setPatientId("");
-                bean.setName("");
-            }
-        }
-        DataSupport.deleteAll(PatientBean.class);
-        DataSupport.saveAll(patientBeans);
     }
 
     @Override
@@ -149,7 +141,7 @@ public class MainActivity extends BaseActivity {
         if (isLogin) {
             return;
         }
-        EMClient.getInstance().login("15828456584_d", BaseData.BASE_EASE_DEFAULT_PWD, new EMCallBack() {
+        EMClient.getInstance().login(loginBean.getDoctorCode(), BaseData.BASE_EASE_DEFAULT_PWD, new EMCallBack() {
             @Override
             public void onSuccess() {
                 runOnUiThread(() -> HuiZhenLog.i(TAG, getString(R.string.txt_login_ease_success)));
@@ -306,6 +298,40 @@ public class MainActivity extends BaseActivity {
         if (workerFragment != null) {
             workerFragment.onNoPermissionNeeded(permissionName);
         }
+    }
+
+    /*********************版本更新回调*************************/
+    @Override
+    public void updateVersion(VersionBean version, int mode, boolean isDownLoading) {
+        if (mode == -1) {
+            ToastUtil.toast(this, R.string.toast_version_update_hint);
+            return;
+        }
+        updateDialog = new UpdateDialog(this);
+        updateDialog.setCancelable(false);
+        updateDialog.setUpdateMode(mode).setData(version.getNotes());
+        updateDialog.setOnEnterClickListener(this);
+        updateDialog.show();
+    }
+
+    @Override
+    public void updateLoading(long total, long current) {
+        if (updateDialog != null && updateDialog.isShowing()) {
+            updateDialog.setProgressValue(total, current);
+        }
+    }
+
+    /**
+     * 当无可用网络时回调
+     */
+    @Override
+    public void updateNetWorkError() {
+    }
+
+    @Override
+    public void onEnter(boolean isMustUpdate) {
+        mVersionPresenter.getNewAPK(isMustUpdate);
+        ToastUtil.toast(this, R.string.txt_download_hint);
     }
 
     /**

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="270dp"
     android:layout_height="wrap_content"
     android:background="@drawable/corner10_ffffff_bg"
@@ -30,16 +31,29 @@
         android:layout_centerHorizontal="true"
         android:textColor="@color/color_373d4d"
         android:textStyle="bold"
+        android:textSize="@dimen/text_16"
         android:text="@string/txt_version_update_hint"
         android:layout_below="@id/image"
         android:layout_marginTop="19dp" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
+
+    <TextView
+        android:id="@+id/tv_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/title"
-        android:layout_marginTop="14dp" />
+        android:layout_marginTop="14dp"
+        android:textSize="@dimen/text_15"
+        android:textColor="@color/color_6a6f80"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp" />
+
+    <!--<android.support.v7.widget.RecyclerView-->
+    <!--android:id="@+id/recycler_view"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_below="@id/title"-->
+    <!--android:layout_marginTop="14dp" />-->
 
     <TextView
         android:id="@+id/tv_update"
@@ -49,9 +63,62 @@
         android:background="@drawable/corner28_1491fc_bg"
         android:text="@string/txt_version_update"
         android:gravity="center"
+        android:visibility="visible"
         android:textSize="@dimen/text_16"
         android:textColor="@color/color_ffffff"
-        android:layout_below="@id/recycler_view"
+        android:layout_below="@id/tv_content"
         android:layout_centerHorizontal="true" />
+
+    <RelativeLayout
+        android:id="@+id/layout_progress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:layout_marginTop="20dp"
+        android:visibility="gone"
+        android:layout_below="@id/tv_content">
+
+        <LinearLayout
+            android:id="@+id/layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <ProgressBar
+                android:id="@+id/custom_progressbar"
+                style="@style/progressBarHorizontal_color"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="10dp"
+                android:layout_height="wrap_content"
+                android:max="100"
+                android:progress="0" />
+
+            <TextView
+                android:id="@+id/tv_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_12"
+                android:textColor="@color/color_1491fc"
+                tools:text="10%" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_exit_app"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_15"
+            android:textColor="@color/color_1491fc"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="12dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:paddingTop="12dp"
+            android:text="@string/txt_exit_app"
+            android:layout_below="@id/layout" />
+
+    </RelativeLayout>
 
 </RelativeLayout>

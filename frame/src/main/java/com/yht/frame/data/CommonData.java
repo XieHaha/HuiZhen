@@ -108,4 +108,8 @@ public interface CommonData {
      * 患者列表数据更新
      */
     String KEY_UPDATE_PATIENT_DATA = "key_update_patient_data";
+    /**
+     * 通知开关
+     */
+    String KEY_NOTIFICATION_CONTROL = "key_notification_control";
 }

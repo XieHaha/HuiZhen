@@ -13,7 +13,6 @@ import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.utils.HuiZhenLog;
 
 import java.io.File;
-import java.util.ArrayList;
 
 /**
  * @author dundun
@@ -66,14 +65,8 @@ public class VersionModel extends AbstractResponseAdapter<BaseResponse> implemen
     @Override
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         if (callBack != null) {
-            ArrayList<VersionBean> list = (ArrayList<VersionBean>)response.getData();
-            if (list != null && list.size() > 0) {
-                for (VersionBean bean : list) {
-                    if ("android".equals(bean.getDeviceSystem())) {
-                        callBack.result(bean);
-                    }
-                }
-            }
+            VersionBean bean = (VersionBean)response.getData();
+            callBack.result(bean);
         }
     }
 

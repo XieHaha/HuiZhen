@@ -22,6 +22,7 @@ import com.google.gson.Gson;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 import com.yht.frame.R;
 import com.yht.frame.data.BaseData;
+import com.yht.frame.data.BaseNetConfig;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
@@ -76,8 +77,6 @@ public abstract class BaseActivity extends RxAppCompatActivity
      * 标题
      */
     private TextView tvTitle;
-    public String token = "P1wDQpcrTx45XddRgbg6Kt+fSTJ6DDAce3H85a1p04lUcZRXC9MkRKGiC+Hk5cd8HvIintOVLGeRlt/DePjJ3DyMDcxmbdfurLDWNb4lXPEcdLx31yh2zqc0ME1RA+pN8GQ+4cxoLQrH7ujIc9llMRrvPx+EjRUaXD4Nkr7KMpYZ8v5/gMrBRlmUiTSD5QbKTagVZ8avfIlOV/AQlvCL2HB89c2QcVHalRHZZ9+qgOLNQw4lCKNCmHfE6daWBNsvTKQHuu3rjNgGM79TruXidQ==";
-    public String code = "DOC_WYS(ZSCS)2019070217414741473";
 
     @Override
     protected final void onCreate(Bundle savedInstanceState) {
@@ -298,6 +297,15 @@ public abstract class BaseActivity extends RxAppCompatActivity
     }
 
     /**
+     * 退出登录
+     */
+    public void exit() {
+        Intent intent = new Intent(BaseData.BASE_SIGN_OUT_ACTION);
+        intent.setPackage(getPackageName());
+        sendBroadcast(intent);
+    }
+
+    /**
      * 得到返回按钮控件
      */
     public ImageView getBackBtnView() {
@@ -373,7 +381,16 @@ public abstract class BaseActivity extends RxAppCompatActivity
 
     @Override
     public void onResponseCode(Tasks task, BaseResponse response) {
-        ToastUtil.toast(this, response.getMsg());
+        if (response.getCode() == BaseNetConfig.REQUEST_TOKEN_ERROR) {
+            new HintDialog(this).setContentString(R.string.txt_login_expired)
+                                .setEnterBtnTxt(R.string.txt_sure)
+                                .setEnterSelect(true)
+                                .setOnEnterClickListener(() -> exit())
+                                .show();
+        }
+        else {
+            ToastUtil.toast(this, response.getMsg());
+        }
     }
 
     @Override

@@ -577,7 +577,7 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @GET("/version/current-version")
-    Observable<BaseResponse<TransferBean>> getVersion(@Header("token") String token, @Query("device") String info);
+    Observable<BaseResponse<VersionBean>> getVersion(@Header("token") String token, @Query("device") String info);
     /********************************分隔线*********************************/
     /**
      * 首页广告

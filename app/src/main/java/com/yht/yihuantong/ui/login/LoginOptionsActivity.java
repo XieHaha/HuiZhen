@@ -22,10 +22,10 @@ import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseNetConfig;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
-import com.yht.frame.data.type.DocAuthStatus;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.base.LoginBean;
 import com.yht.frame.data.bean.VersionBean;
+import com.yht.frame.data.type.DocAuthStatus;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.ToastUtil;
@@ -34,9 +34,9 @@ import com.yht.yihuantong.R;
 import com.yht.yihuantong.ZycApplication;
 import com.yht.yihuantong.ui.WebViewActivity;
 import com.yht.yihuantong.ui.auth.AuthDoctorActivity;
+import com.yht.yihuantong.ui.dialog.UpdateDialog;
 import com.yht.yihuantong.ui.main.MainActivity;
 import com.yht.yihuantong.version.presenter.VersionPresenter;
-import com.yht.yihuantong.version.view.VersionUpdateDialog;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -47,7 +47,7 @@ import butterknife.OnClick;
  * @des
  */
 public class LoginOptionsActivity extends BaseActivity
-        implements VersionPresenter.VersionViewListener, VersionUpdateDialog.OnEnterClickListener {
+        implements VersionPresenter.VersionViewListener, UpdateDialog.OnEnterClickListener {
     @BindView(R.id.tv_login_wechat)
     TextView tvLoginWechat;
     @BindView(R.id.tv_login_phone)
@@ -65,7 +65,7 @@ public class LoginOptionsActivity extends BaseActivity
     /**
      * 版本弹窗
      */
-    private VersionUpdateDialog versionUpdateDialog;
+    private UpdateDialog updateDialog;
     /**
      * 账号登录状态
      */
@@ -238,18 +238,17 @@ public class LoginOptionsActivity extends BaseActivity
             ToastUtil.toast(this, R.string.toast_version_update_hint);
             return;
         }
-        versionUpdateDialog = new VersionUpdateDialog(this);
-        versionUpdateDialog.setCancelable(false);
-        versionUpdateDialog.setUpdateMode(mode).
-                setIsDownNewAPK(isDownLoading).setContent(version.getUpdateDescription());
-        versionUpdateDialog.setOnEnterClickListener(this);
-        versionUpdateDialog.show();
+        updateDialog = new UpdateDialog(this);
+        updateDialog.setCancelable(false);
+        updateDialog.setUpdateMode(mode).setData(version.getNotes());
+        updateDialog.setOnEnterClickListener(this);
+        updateDialog.show();
     }
 
     @Override
     public void updateLoading(long total, long current) {
-        if (versionUpdateDialog != null && versionUpdateDialog.isShowing()) {
-            versionUpdateDialog.setProgressValue(total, current);
+        if (updateDialog != null && updateDialog.isShowing()) {
+            updateDialog.setProgressValue(total, current);
         }
     }
 

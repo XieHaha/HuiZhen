@@ -9,21 +9,11 @@ import java.io.Serializable;
  */
 public class VersionBean implements Serializable {
     private static final long serialVersionUID = -8438526479985188981L;
-    private String newVersion;
     private String minVersion;
+    private String version;
     private String downloadUrl;
-    private String updateDescription;
-    private String deviceSystem;
-    private int forceUpdate;
-    private long publicTime;
-
-    public String getNewVersion() {
-        return newVersion;
-    }
-
-    public void setNewVersion(String newVersion) {
-        this.newVersion = newVersion;
-    }
+    private String notes;
+    private String publishAt;
 
     public String getMinVersion() {
         return minVersion;
@@ -41,35 +31,27 @@ public class VersionBean implements Serializable {
         this.downloadUrl = downloadUrl;
     }
 
-    public String getUpdateDescription() {
-        return updateDescription;
+    public String getVersion() {
+        return version;
     }
 
-    public void setUpdateDescription(String updateDescription) {
-        this.updateDescription = updateDescription;
+    public void setVersion(String version) {
+        this.version = version;
     }
 
-    public String getDeviceSystem() {
-        return deviceSystem;
+    public String getNotes() {
+        return notes;
     }
 
-    public void setDeviceSystem(String deviceSystem) {
-        this.deviceSystem = deviceSystem;
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 
-    public int getForceUpdate() {
-        return forceUpdate;
+    public String getPublishAt() {
+        return publishAt;
     }
 
-    public void setForceUpdate(int forceUpdate) {
-        this.forceUpdate = forceUpdate;
-    }
-
-    public long getPublicTime() {
-        return publicTime;
-    }
-
-    public void setPublicTime(long publicTime) {
-        this.publicTime = publicTime;
+    public void setPublishAt(String publishAt) {
+        this.publishAt = publishAt;
     }
 }

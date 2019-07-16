@@ -99,7 +99,7 @@ public class SelectCheckTypeActivity extends BaseActivity
      * 获取检查项 全部
      */
     private void getCheckTypeList() {
-        RequestUtils.getCheckTypeList(this, token, code, searchKey, page, this);
+        RequestUtils.getCheckTypeList(this, loginBean.getToken(), loginBean.getDoctorCode(), searchKey, page, this);
     }
 
     @Override

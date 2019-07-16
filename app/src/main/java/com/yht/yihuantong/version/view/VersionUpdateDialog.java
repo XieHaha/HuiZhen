@@ -66,15 +66,15 @@ public class VersionUpdateDialog extends Dialog implements ConstantsVersionMode,
     }
 
     private void initView() {
-        tvTitle = (TextView)findViewById(R.id.act_update_version_title);
-        tvCancel = (TextView)findViewById(R.id.act_update_version_content_cancel);
-        tvUpdate = (TextView)findViewById(R.id.act_update_version_content_update);
-        tvPercent = (TextView)findViewById(R.id.act_update_version_content_percent);
-        tvContent = (TextView)findViewById(R.id.act_update_version_content);
+        tvTitle = findViewById(R.id.act_update_version_title);
+        tvCancel = findViewById(R.id.act_update_version_content_cancel);
+        tvUpdate = findViewById(R.id.act_update_version_content_update);
+        tvPercent = findViewById(R.id.act_update_version_content_percent);
+        tvContent = findViewById(R.id.act_update_version_content);
         tvCancel.setOnClickListener(this);
         tvUpdate.setOnClickListener(this);
-        llUpdateContentLayout = (LinearLayout)findViewById(R.id.act_update_version_content_layout);
-        rlDownloadLayout = (RelativeLayout)findViewById(R.id.act_update_version_content_down_layout);
+        llUpdateContentLayout = findViewById(R.id.act_update_version_content_layout);
+        rlDownloadLayout = findViewById(R.id.act_update_version_content_down_layout);
     }
 
     /**

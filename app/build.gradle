@@ -35,14 +35,14 @@ android {
             applicationId "com.yht.yihuantong"
             buildConfigField "String", "BASE_BASIC_URL", "\"http://192.168.0.126:7071\""
             resValue "string", "APP_NAME", "\"会珍医生内测版\""
-            manifestPlaceholders = [ease_appkey : "1110180330253249#dpappproject",
+            manifestPlaceholders = [ease_appkey : "1105190122042534#dp-test-app",
                                     jpush_appkey: "8b803f7221a77f19b78b3523"]
         }
 
         beta {
             dimension "zyc"
             applicationId "com.yht.yihuantong_test"
-            buildConfigField "String", "BASE_BASIC_URL", "\"gray.med-value.com\""
+            buildConfigField "String", "BASE_BASIC_URL", "\"http://192.168.0.126:7071\""
             resValue "string", "APP_NAME", "\"会珍医生测试版\""
             manifestPlaceholders = [ease_appkey : "1105190122042534#dp-test-app",
                                     jpush_appkey: "0253e6c0183a34f72630c349"]
@@ -109,4 +109,6 @@ dependencies {
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
     //注解
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.0'
+    //gif动图
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.17'
 }

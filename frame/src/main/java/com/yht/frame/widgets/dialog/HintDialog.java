@@ -19,10 +19,15 @@ import com.yht.frame.widgets.dialog.listener.OnEnterClickListener;
 public class HintDialog extends Dialog implements OnClickListener {
     private Context context;
     private TextView tvEnter, tvCancel, tvTitle, tvContent;
+    private View line;
     /**
      * 初始值
      */
     private String titleString = "提示", contentString = "确认合格？", enterString = "确定", cancelString = "取消";
+    /**
+     * 是否隐藏
+     */
+    private boolean cancelGone;
     /**
      * 确认按钮颜色控制
      */
@@ -48,6 +53,7 @@ public class HintDialog extends Dialog implements OnClickListener {
         tvCancel = findViewById(R.id.dialog_simple_hint_cancel);
         tvTitle = findViewById(R.id.dialog_simple_hint_title);
         tvContent = findViewById(R.id.dialog_simple_hint_content);
+        line = findViewById(R.id.view_line);
         tvContent.setMovementMethod(ScrollingMovementMethod.getInstance());
         tvCancel.setOnClickListener(this);
         tvEnter.setOnClickListener(this);
@@ -133,6 +139,11 @@ public class HintDialog extends Dialog implements OnClickListener {
         return this;
     }
 
+    public HintDialog setCancelBtnGone(boolean gone) {
+        this.cancelGone = gone;
+        return this;
+    }
+
     @Override
     public void show() {
         if (!isShow) {
@@ -141,7 +152,13 @@ public class HintDialog extends Dialog implements OnClickListener {
             tvContent.setText(contentString);
             tvEnter.setText(enterString);
             tvEnter.setSelected(enterSelect);
-            tvCancel.setText(cancelString);
+            if (cancelGone) {
+                tvCancel.setVisibility(View.GONE);
+                line.setVisibility(View.GONE);
+            }
+            else {
+                tvCancel.setText(cancelString);
+            }
             isShow = true;
         }
     }

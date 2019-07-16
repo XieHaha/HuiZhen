@@ -129,7 +129,7 @@ public class SelectCheckTypeByHospitalActivity extends BaseActivity
      * 获取医院下检查项 全部
      */
     private void getCheckTypeByHospitalList() {
-        RequestUtils.getCheckTypeByHospitalList(this, token, curHospitalCode, searchKey, selectCheckType, page, this);
+        RequestUtils.getCheckTypeByHospitalList(this, loginBean.getToken(), curHospitalCode, searchKey, selectCheckType, page, this);
     }
 
     /**
