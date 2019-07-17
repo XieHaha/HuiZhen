@@ -121,6 +121,9 @@ public class LoginActivity extends BaseActivity {
         }
         phone = sharePreferenceUtil.getAlwaysString(CommonData.KEY_LOGIN_ACCOUNT);
         etLoginAccount.setText(phone);
+        if (BaseUtils.isMobileNumber(phone)) {
+            tvLoginObtainCode.setSelected(true);
+        }
     }
 
     @Override

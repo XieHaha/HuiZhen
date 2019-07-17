@@ -1,6 +1,7 @@
 package com.yht.yihuantong.chat;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.easeui.UserInfoCallback;
@@ -10,6 +11,7 @@ import com.yht.frame.data.Tasks;
 import com.yht.frame.data.base.PatientBean;
 import com.yht.frame.http.listener.AbstractResponseAdapter;
 import com.yht.frame.http.retrofit.RequestUtils;
+import com.yht.yihuantong.ZycApplication;
 
 import org.litepal.crud.DataSupport;
 
@@ -60,8 +62,9 @@ public class HxHelper {
         }
 
         public EaseUser getUser(String username, UserInfoCallback callback) {
+            if (TextUtils.isEmpty(username)) { return null; }
             EaseUser user = new EaseUser(username);
-            List<PatientBean> list = DataSupport.where("code = ?", username).find(PatientBean.class);
+            List<PatientBean> list = DataSupport.where("code = ?", username.toUpperCase()).find(PatientBean.class);
             if (list != null && list.size() > 0) {
                 PatientBean bean = list.get(0);
                 user.setNickname(bean.getName());
@@ -69,17 +72,21 @@ public class HxHelper {
                 callback.onSuccess(user);
                 return user;
             }
-            RequestUtils.getPatientInfo(context, username, new AbstractResponseAdapter<BaseResponse>() {
-                @Override
-                public void onResponseSuccess(Tasks task, BaseResponse response) {
-                    PatientBean patientBean = (PatientBean)response.getData();
-                    if (patientBean != null) {
-                        user.setNickname(patientBean.getName());
-                        user.setAvatar(patientBean.getWxPhoto());
-                    }
-                    callback.onSuccess(user);
-                }
-            });
+            RequestUtils.getPatientDetailByPatientCode(context, username,
+                                                       ZycApplication.getInstance().getLoginBean().getToken(),
+                                                       new AbstractResponseAdapter<BaseResponse>() {
+                                                           @Override
+                                                           public void onResponseSuccess(Tasks task,
+                                                                   BaseResponse response) {
+                                                               PatientBean patientBean = (PatientBean)response.getData();
+                                                               if (patientBean != null) {
+                                                                   user.setNickname(patientBean.getName());
+                                                                   user.setAvatar(patientBean.getWxPhoto());
+                                                               }
+                                                               patientBean.save();
+                                                               callback.onSuccess(user);
+                                                           }
+                                                       });
             return user;
         }
     }

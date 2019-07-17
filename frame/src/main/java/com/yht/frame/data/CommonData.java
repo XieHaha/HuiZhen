@@ -81,6 +81,18 @@ public interface CommonData {
      */
     String KEY_PATIENT_BEAN = "key_patient_bean";
     /**
+     * patient code
+     */
+    String KEY_PATIENT_CODE = "key_patient_code";
+    /**
+     * patient 聊天
+     */
+    String KEY_PATIENT_CHAT = "key_patient_chat";
+    /**
+     * patient name
+     */
+    String KEY_PATIENT_NAME = "key_patient_name";
+    /**
      * doctor bean
      */
     String KEY_DOCTOR_BEAN = "key_doctor_bean";

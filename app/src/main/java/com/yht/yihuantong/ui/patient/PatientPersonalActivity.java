@@ -27,6 +27,7 @@ import com.yht.yihuantong.ui.adapter.ViewPagerAdapter;
 import com.yht.yihuantong.ui.patient.fragment.PatientInfoFragment;
 
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
+import org.litepal.crud.DataSupport;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,12 +39,16 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import me.jessyan.autosize.utils.ScreenUtils;
 
+import static com.yht.frame.data.CommonData.KEY_PATIENT_CODE;
+import static com.yht.frame.data.CommonData.KEY_PATIENT_NAME;
+
 /**
  * @author 顿顿
  * @date 19/6/27 14:17
  * @des 患者页面（基础信息、聊天）
  */
-public class PatientPersonalActivity extends BaseActivity implements EaseChatFragment.OnTimeLayoutClickListener {
+public class PatientPersonalActivity extends BaseActivity
+        implements EaseChatFragment.OnTimeLayoutClickListener {
     @BindView(R.id.tv_left)
     TextView tvLeft;
     @BindView(R.id.tv_right)
@@ -64,8 +69,12 @@ public class PatientPersonalActivity extends BaseActivity implements EaseChatFra
      * 开启聊天倒计时广播
      */
     private TimerReceiver timerReceiver;
-    private PatientBean patientBean;
+    private String patientCode, patientName;
     private ScheduledExecutorService executorService;
+    /**
+     * 聊天
+     */
+    private boolean isChat;
     /**
      * 倒计时
      */
@@ -138,11 +147,16 @@ public class PatientPersonalActivity extends BaseActivity implements EaseChatFra
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
         if (getIntent() != null) {
-            patientBean = (PatientBean)getIntent().getSerializableExtra(CommonData.KEY_PATIENT_BEAN);
+            patientCode = getIntent().getStringExtra(KEY_PATIENT_CODE);
+            patientName = getIntent().getStringExtra(KEY_PATIENT_NAME);
+            isChat = getIntent().getBooleanExtra(CommonData.KEY_PATIENT_CHAT, false);
         }
-        if (patientBean != null) {
-            publicTitleBarTitle.setText("患者姓名");
+        List<PatientBean> list = DataSupport.where("code = ?", patientCode.toUpperCase()).find(PatientBean.class);
+        if (list != null && list.size() > 0) {
+            PatientBean bean = list.get(0);
+            patientName = bean.getName();
         }
+        publicTitleBarTitle.setText(patientName);
     }
 
     @Override
@@ -177,10 +191,10 @@ public class PatientPersonalActivity extends BaseActivity implements EaseChatFra
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
                 if (position == 0) {
-                    titleBar(true);
+                    titleBar(false);
                 }
                 else {
-                    titleBar(false);
+                    titleBar(true);
                 }
             }
         });
@@ -192,14 +206,14 @@ public class PatientPersonalActivity extends BaseActivity implements EaseChatFra
     private void initFragment() {
         //患者信息
         PatientInfoFragment patientInfoFragment = new PatientInfoFragment();
-        patientInfoFragment.setPatientCode(patientBean.getCode());
+        patientInfoFragment.setPatientCode(patientCode);
         //在线聊天
         easeChatFragment = new EaseChatFragment();
         easeChatFragment.setOnTimeLayoutClickListener(this);
         //传入参数
         Bundle args = new Bundle();
         args.putInt(EaseConstant.EXTRA_CHAT_TYPE, EaseConstant.CHATTYPE_SINGLE);
-        args.putString(EaseConstant.EXTRA_USER_ID, "18582317119_p");
+        args.putString(EaseConstant.EXTRA_USER_ID, patientCode);
         easeChatFragment.hideTitleBar();
         easeChatFragment.setArguments(args);
         List<Fragment> fragmentList = new ArrayList<>();
@@ -207,17 +221,17 @@ public class PatientPersonalActivity extends BaseActivity implements EaseChatFra
         fragmentList.add(easeChatFragment);
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), fragmentList);
         viewPager.setAdapter(viewPagerAdapter);
-        titleBar(true);
+        titleBar(isChat);
     }
 
     @OnClick({ R.id.layout_left, R.id.layout_right })
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.layout_left:
-                titleBar(true);
+                titleBar(false);
                 break;
             case R.id.layout_right:
-                titleBar(false);
+                titleBar(true);
                 break;
             default:
                 break;
@@ -227,10 +241,10 @@ public class PatientPersonalActivity extends BaseActivity implements EaseChatFra
     /**
      * titlebar处理
      *
-     * @param one true 为默认
+     * @param isChat 聊天
      */
-    private void titleBar(boolean one) {
-        if (one) {
+    private void titleBar(boolean isChat) {
+        if (!isChat) {
             viewPager.setCurrentItem(0);
             tvLeft.setSelected(true);
             tvLeft.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));

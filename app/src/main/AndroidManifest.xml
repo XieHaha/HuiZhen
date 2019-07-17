@@ -201,7 +201,22 @@
             android:name=".ui.transfer.TransferInitiateDetailActivity"
             android:screenOrientation="portrait"
             android:label="@string/title_transfer_detail"
-            android:windowSoftInputMode="adjustResize|stateHidden" />
+            android:windowSoftInputMode="adjustResize|stateHidden"
+            android:parentActivityName=".ui.main.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.main.MainActivity" />
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="zyc" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.transfer.SelectReceivingDoctorActivity"
             android:screenOrientation="portrait"

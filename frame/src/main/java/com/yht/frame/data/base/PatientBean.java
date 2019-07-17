@@ -11,7 +11,6 @@ import java.io.Serializable;
  */
 public class PatientBean extends DataSupport implements Serializable {
     private static final long serialVersionUID = -8620697034094662215L;
-    private String patientId;
     private String code;
     private String name;
     private String mobile;
@@ -20,14 +19,6 @@ public class PatientBean extends DataSupport implements Serializable {
      * 排序
      */
     private String indexTag;
-
-    public String getPatientId() {
-        return patientId;
-    }
-
-    public void setPatientId(String patientId) {
-        this.patientId = patientId;
-    }
 
     public String getCode() {
         return code;

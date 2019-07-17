@@ -43,7 +43,7 @@ import com.yht.yihuantong.chat.EaseConversationListFragment;
 import com.yht.yihuantong.chat.listener.AbstractEMContactListener;
 import com.yht.yihuantong.chat.listener.AbstractEMMessageListener;
 import com.yht.yihuantong.ui.adapter.ViewPagerAdapter;
-import com.yht.yihuantong.ui.personal.PersonalInfoActivity;
+import com.yht.yihuantong.ui.patient.PatientPersonalActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -271,8 +271,9 @@ public class MessageFragment extends BaseFragment
      */
     @Override
     public void onListItemClicked(EMConversation conversation) {
-        Intent intent = new Intent(getContext(), PersonalInfoActivity.class);
-        intent.putExtra(CommonData.KEY_CHAT_ID, conversation.conversationId());
+        Intent intent = new Intent(getContext(), PatientPersonalActivity.class);
+        intent.putExtra(CommonData.KEY_PATIENT_CODE, conversation.conversationId());
+        intent.putExtra(CommonData.KEY_PATIENT_CHAT, true);
         startActivity(intent);
     }
 

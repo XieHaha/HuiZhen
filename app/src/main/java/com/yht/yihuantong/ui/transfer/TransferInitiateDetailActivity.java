@@ -1,8 +1,13 @@
 package com.yht.yihuantong.ui.transfer;
 
+import android.app.ActivityManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.NavUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -19,12 +24,16 @@ import com.yht.frame.data.type.TransferOrderStatus;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
+import com.yht.frame.utils.HuiZhenLog;
 import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.frame.widgets.dialog.InputDialog;
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.ui.main.MainActivity;
 import com.yht.yihuantong.ui.reservation.transfer.ReservationTransferActivity;
 import com.yht.yihuantong.utils.FileUrlUtil;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -110,6 +119,68 @@ public class TransferInitiateDetailActivity extends BaseActivity implements Tran
     @Override
     public int getLayoutID() {
         return R.layout.act_transfer_to_detail;
+    }
+
+    @Override
+    public void initView(@NonNull Bundle savedInstanceState) {
+        super.initView(savedInstanceState);
+        if (loginBean == null) {
+            finish();
+            return;
+        }
+        Intent i_getvalue = getIntent();
+        String action = i_getvalue.getAction();
+        if (Intent.ACTION_VIEW.equals(action)) {
+            Uri uri = i_getvalue.getData();
+            if (uri != null) {
+                HuiZhenLog.i(TAG, "value:" + uri.getQueryParameter("key"));
+            }
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isLaunchedActivity(this, MainActivity.class)) {
+            Intent upIntent = NavUtils.getParentActivityIntent(this);
+            if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
+                //                TaskStackBuilder.create(this)
+                //                                .addNextIntentWithParentStack(upIntent)
+                //                                .startActivities();
+            }
+            else {
+                upIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                NavUtils.navigateUpTo(this, upIntent);
+            }
+        }
+        else {
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        }
+        super.onBackPressed();
+    }
+
+    /**
+     * 判断目标activity是否启动
+     *
+     * @param context
+     * @param clazz   传入ACT_main
+     * @return
+     */
+    public boolean isLaunchedActivity(@NonNull Context context, Class<?> clazz) {
+        Intent intent = new Intent(context, clazz);
+        ComponentName cmpName = intent.resolveActivity(context.getPackageManager());
+        boolean flag = false;
+        if (cmpName != null) {
+            ActivityManager am = (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
+            List<ActivityManager.RunningTaskInfo> taskInfoList = am.getRunningTasks(10);
+            for (ActivityManager.RunningTaskInfo taskInfo : taskInfoList) {
+                if (taskInfo.baseActivity.equals(cmpName)) {
+                    flag = true;
+                    break;
+                }
+            }
+        }
+        return flag;
     }
 
     @Override

@@ -326,7 +326,8 @@ public class PatientFragment extends BaseFragment
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         Intent intent = new Intent(getContext(), PatientPersonalActivity.class);
-        intent.putExtra(CommonData.KEY_PATIENT_BEAN, patientBeans.get(position));
+        intent.putExtra(CommonData.KEY_PATIENT_CODE, patientBeans.get(position).getCode());
+        intent.putExtra(CommonData.KEY_PATIENT_NAME, patientBeans.get(position).getName());
         startActivity(intent);
     }
 
