@@ -116,12 +116,15 @@ public class SelectCheckTypeActivity extends BaseActivity
         super.onResponseSuccess(task, response);
         if (task == Tasks.GET_CHECK_TYPE) {
             List<SelectCheckTypeBean> list = (List<SelectCheckTypeBean>)response.getData();
+            if (list == null) {
+                list = new ArrayList<>();
+            }
             if (page == BaseData.BASE_ONE) {
                 selectCheckTypeBeans.clear();
             }
             selectCheckTypeBeans.addAll(list);
             selectCheckTypeAdapter.setNewData(selectCheckTypeBeans);
-            if (list != null && list.size() == BaseData.BASE_PAGE_DATA_NUM) {
+            if (list.size() == BaseData.BASE_PAGE_DATA_NUM) {
                 selectCheckTypeAdapter.loadMoreComplete();
             }
             else {

@@ -431,7 +431,7 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .getCheckTypeList(token, params)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_CHECK_TYPE, listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_CHECK_TYPE, listener));
     }
 
     public static void getCheckTypeByHospitalList(Context context, String token, String hospitalCode,

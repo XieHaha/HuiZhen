@@ -230,11 +230,13 @@ public class ReservationTransferActivity extends BaseActivity implements OnTrans
         hideAll(fragmentTransaction);
         if (identifyFragment == null) {
             identifyFragment = new TransferIdentifyFragment();
+            identifyFragment.setReverseTransferBean(reverseTransferBean);
             identifyFragment.setOnTransferListener(this);
             fragmentTransaction.add(R.id.layout_frame_root, identifyFragment);
         }
         else {
             fragmentTransaction.show(identifyFragment);
+            identifyFragment.setReverseTransferBean(reverseTransferBean);
             identifyFragment.onResume();
         }
         fragmentTransaction.commitAllowingStateLoss();

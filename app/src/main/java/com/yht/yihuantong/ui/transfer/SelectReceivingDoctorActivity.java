@@ -114,6 +114,10 @@ public class SelectReceivingDoctorActivity extends BaseActivity
      */
     private int curType;
     /**
+     * 查询医生参数
+     */
+    private Map<String, Object> params;
+    /**
      * 页码
      */
     private int page = 1;
@@ -251,7 +255,7 @@ public class SelectReceivingDoctorActivity extends BaseActivity
      */
     private void searchDoctor(String key) {
         tvSelect.setVisibility(View.GONE);
-        Map<String, Object> params = new HashMap<>(16);
+        params = new HashMap<>(16);
         params.put("doctorName", key);
         getDoctorListByReverse(params);
     }
@@ -272,6 +276,7 @@ public class SelectReceivingDoctorActivity extends BaseActivity
                 }
                 break;
             case R.id.tv_reset:
+                page = 1;
                 curType = 0;
                 tvSelect.setText(R.string.txt_select_hospital_depart);
                 data = new ArrayList<>();
@@ -318,7 +323,7 @@ public class SelectReceivingDoctorActivity extends BaseActivity
                         //选择的全部一级科室
                         selectEnd();
                         tvSelect.setText(curHospital.getHospitalName() + "-全部科室");
-                        Map<String, Object> params = new HashMap<>(16);
+                        params = new HashMap<>(16);
                         params.put("hospitalCode", curHospital.getHospitalCode());
                         getDoctorListByReverse(params);
                     }
@@ -327,7 +332,7 @@ public class SelectReceivingDoctorActivity extends BaseActivity
                     curDepartTwoPosition = position;
                     reserveTransferSelectDoctorAdapter.setCurPosition(curDepartTwoPosition);
                     selectEnd();
-                    Map<String, Object> params = new HashMap<>(16);
+                    params = new HashMap<>(16);
                     params.put("hospitalCode", curHospital.getHospitalCode());
                     params.put("pid", curHospitalDepartBean.getDepartmentId());
                     if (position != 0) {
@@ -394,6 +399,9 @@ public class SelectReceivingDoctorActivity extends BaseActivity
                 break;
             case GET_DOCTOR_LIST_BY_REVERSE:
                 List<DoctorInfoBean> list = (List<DoctorInfoBean>)response.getData();
+                if (list == null) {
+                    list = new ArrayList<>();
+                }
                 if (page == BaseData.BASE_ONE) {
                     doctors.clear();
                 }
@@ -421,5 +429,6 @@ public class SelectReceivingDoctorActivity extends BaseActivity
     @Override
     public void onLoadMoreRequested() {
         page++;
+        getDoctorListByReverse(params);
     }
 }

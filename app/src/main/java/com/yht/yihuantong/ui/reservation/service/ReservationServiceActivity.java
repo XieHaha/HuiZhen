@@ -184,10 +184,12 @@ public class ReservationServiceActivity extends BaseActivity implements OnCheckL
         if (identifyFragment == null) {
             identifyFragment = new ServiceIdentifyFragment();
             identifyFragment.setOnCheckListener(this);
+            identifyFragment.setReserveCheckBean(reserveCheckBean);
             fragmentTransaction.add(R.id.layout_frame_root, identifyFragment);
         }
         else {
             fragmentTransaction.show(identifyFragment);
+            identifyFragment.setReserveCheckBean(reserveCheckBean);
             identifyFragment.onResume();
         }
         fragmentTransaction.commitAllowingStateLoss();

@@ -74,6 +74,10 @@ public class TransferIdentifyFragment extends BaseFragment implements View.OnFoc
         });
     }
 
+    public void setReverseTransferBean(ReserveTransferBean reverseTransferBean) {
+        this.reverseTransferBean = reverseTransferBean;
+    }
+
     /**
      * 患者验证
      */
@@ -91,7 +95,15 @@ public class TransferIdentifyFragment extends BaseFragment implements View.OnFoc
     @OnClick(R.id.tv_identify_next)
     public void onViewClicked() {
         if (tvIdentifyNext.isSelected()) {
-            verifyPatient();
+            //已经校验过  不在校验
+            if (reverseTransferBean != null && idCard.equals(reverseTransferBean.getPatientIdCardNo())) {
+                if (onTransferListener != null) {
+                    onTransferListener.onTransferStepOne(reverseTransferBean);
+                }
+            }
+            else {
+                verifyPatient();
+            }
         }
     }
 

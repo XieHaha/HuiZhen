@@ -74,6 +74,10 @@ public class ServiceIdentifyFragment extends BaseFragment implements View.OnFocu
         });
     }
 
+    public void setReserveCheckBean(ReserveCheckBean reserveCheckBean) {
+        this.reserveCheckBean = reserveCheckBean;
+    }
+
     /**
      * 患者验证
      */
@@ -84,7 +88,15 @@ public class ServiceIdentifyFragment extends BaseFragment implements View.OnFocu
     @OnClick(R.id.tv_identify_next)
     public void onViewClicked() {
         if (tvIdentifyNext.isSelected()) {
-            verifyPatient();
+            //已经校验过  不在校验
+            if (reserveCheckBean != null && idCard.equals(reserveCheckBean.getIdCardNo())) {
+                if (checkListener != null) {
+                    checkListener.onCheckStepOne(reserveCheckBean);
+                }
+            }
+            else {
+                verifyPatient();
+            }
         }
     }
 

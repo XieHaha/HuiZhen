@@ -10,6 +10,7 @@ import java.util.ArrayList;
  */
 public class ReserveCheckBean implements Serializable {
     private static final long serialVersionUID = -7797688942553183369L;
+    private boolean notUpdate;
     private int age;
     private int isPregnancy;
     private int sex;
@@ -24,6 +25,14 @@ public class ReserveCheckBean implements Serializable {
     private String payType;
     private String phone;
     private ArrayList<ReserveCheckTypeBean> checkTrans;
+
+    public boolean isNotUpdate() {
+        return notUpdate;
+    }
+
+    public void setNotUpdate(boolean notUpdate) {
+        this.notUpdate = notUpdate;
+    }
 
     public int getAge() {
         return age;
