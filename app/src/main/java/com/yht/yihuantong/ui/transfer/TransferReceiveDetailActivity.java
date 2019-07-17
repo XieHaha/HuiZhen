@@ -242,7 +242,8 @@ public class TransferReceiveDetailActivity extends BaseActivity implements Trans
         Intent intent;
         switch (view.getId()) {
             case R.id.layout_call:
-                new HintDialog(this).setPhone(transferBean.getSourceDoctorMobile())
+                new HintDialog(this).setPhone(getString(R.string.txt_contact_doctor_phone),
+                                              transferBean.getSourceDoctorMobile())
                                     .setOnEnterClickListener(() -> callPhone(transferBean.getSourceDoctorMobile()))
                                     .show();
                 break;
@@ -276,12 +277,14 @@ public class TransferReceiveDetailActivity extends BaseActivity implements Trans
                 startActivityForResult(intent, REQUEST_CODE_RECEIVE_TRANSFER);
                 break;
             case R.id.tv_contact_patient:
-                new HintDialog(this).setPhone(transferBean.getPatientMobile())
+                new HintDialog(this).setPhone(getString(R.string.txt_contact_patient_phone),
+                                              transferBean.getPatientMobile())
                                     .setOnEnterClickListener(() -> callPhone(transferBean.getPatientMobile()))
                                     .show();
                 break;
             case R.id.tv_contact_doctor:
-                new HintDialog(this).setPhone(transferBean.getTargetDoctorMobile())
+                new HintDialog(this).setPhone(getString(R.string.txt_contact_doctor_phone),
+                                              transferBean.getTargetDoctorMobile())
                                     .setOnEnterClickListener(() -> callPhone(transferBean.getTargetDoctorMobile()))
                                     .show();
                 break;

@@ -98,7 +98,7 @@ public class TransferReceivedFragment extends BaseFragment
     @Override
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
         TransferBean bean = transferBeans.get(position);
-        new HintDialog(getContext()).setPhone(bean.getPatientMobile())
+        new HintDialog(getContext()).setPhone(getString(R.string.txt_contact_patient_phone), bean.getPatientMobile())
                                     .setOnEnterClickListener(() -> callPhone(bean.getPatientMobile()))
                                     .show();
     }

@@ -430,7 +430,11 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
                 }
                 break;
             case R.id.public_title_bar_more:
-                new HintDialog(this).setPhone("").setOnEnterClickListener(() -> callPhone("")).show();
+                new HintDialog(this).setPhone(getString(R.string.txt_contact_service),
+                                              getString(R.string.txt_contact_service_phone))
+                                    .setOnEnterClickListener(
+                                            () -> callPhone(getString(R.string.txt_contact_service_phone)))
+                                    .show();
                 break;
             default:
                 break;

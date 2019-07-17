@@ -247,13 +247,14 @@ public class TransferInitiateDetailActivity extends BaseActivity implements Tran
                 break;
             case R.id.tv_contact_patient:
             case R.id.tv_contact_patient_one:
-                new HintDialog(this).setPhone(transferBean.getPatientMobile())
+                new HintDialog(this).setPhone(getString(R.string.txt_contact_service), transferBean.getPatientMobile())
                                     .setOnEnterClickListener(() -> callPhone(transferBean.getPatientMobile()))
                                     .show();
                 break;
             case R.id.tv_contact_doctor:
             case R.id.tv_contact_doctor_one:
-                new HintDialog(this).setPhone(transferBean.getTargetDoctorMobile())
+                new HintDialog(this).setPhone(getString(R.string.txt_contact_service),
+                                              transferBean.getTargetDoctorMobile())
                                     .setOnEnterClickListener(() -> callPhone(transferBean.getTargetDoctorMobile()))
                                     .show();
                 break;

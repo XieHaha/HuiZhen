@@ -64,8 +64,10 @@ public class AuthResultFragment extends BaseFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_auth_result_contact:
-                new HintDialog(getContext()).setPhone("028-88888888")
-                                            .setOnEnterClickListener(() -> callPhone(""))
+                new HintDialog(getContext()).setPhone(getString(R.string.txt_contact_service),
+                                                      getString(R.string.txt_contact_service_phone))
+                                            .setOnEnterClickListener(
+                                                    () -> callPhone(getString(R.string.txt_contact_service_phone)))
                                             .show();
                 break;
             case R.id.tv_auth_result_submit:

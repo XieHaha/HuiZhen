@@ -172,9 +172,9 @@ public class HintDialog extends Dialog implements OnClickListener {
     /**
      * 拨打电话封装
      */
-    public HintDialog setPhone(String phone) {
+    public HintDialog setPhone(String key, String phone) {
         setTitleString(R.string.txt_hint);
-        setContentString(context.getString(R.string.txt_contact_hotline) + phone);
+        setContentString(String.format(context.getString(R.string.txt_contact_hotline), key, phone));
         setEnterBtnTxt(R.string.txt_call);
         setEnterSelect(true);
         return this;

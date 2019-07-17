@@ -265,7 +265,7 @@ public class CheckDetailActivity extends BaseActivity implements CheckOrderStatu
 
     @OnClick(R.id.tv_check_next)
     public void onViewClicked() {
-        new HintDialog(this).setPhone(checkDetailBean.getPatientMobile())
+        new HintDialog(this).setPhone(getString(R.string.txt_contact_patient_phone), checkDetailBean.getPatientMobile())
                             .setOnEnterClickListener(() -> callPhone(checkDetailBean.getPatientMobile()))
                             .show();
     }

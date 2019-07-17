@@ -354,7 +354,7 @@ public class SelectReceivingDoctorActivity extends BaseActivity
     @Override
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
         DoctorInfoBean bean = doctors.get(position);
-        new HintDialog(this).setPhone(bean.getDoctorPhone())
+        new HintDialog(this).setPhone(getString(R.string.txt_contact_doctor_phone), bean.getDoctorPhone())
                             .setOnEnterClickListener(() -> callPhone(bean.getDoctorPhone()))
                             .show();
     }
