@@ -1,4 +1,4 @@
-package com.yht.yihuantong.ui.reservation.fragment;
+package com.yht.yihuantong.ui.reservation.service;
 
 import android.text.TextUtils;
 import android.view.View;
@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 import com.yht.frame.data.BaseData;
 import com.yht.frame.data.base.ReserveCheckBean;
-import com.yht.frame.data.base.ReserveTransferBean;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.ToastUtil;
@@ -27,7 +26,7 @@ import butterknife.OnClick;
  * @date 19/6/14 14:23
  * @des 完善资料
  */
-public class MaterialFragment extends BaseFragment implements View.OnFocusChangeListener {
+public class ServiceMaterialFragment extends BaseFragment implements View.OnFocusChangeListener {
     @BindView(R.id.tv_name)
     TextView tvName;
     @BindView(R.id.rb_male)
@@ -71,10 +70,6 @@ public class MaterialFragment extends BaseFragment implements View.OnFocusChange
     @BindView(R.id.layout_allergies)
     LinearLayout layoutAllergies;
     /**
-     * 当前预约转诊数据
-     */
-    private ReserveTransferBean reverseTransferBean;
-    /**
      * 当前预约检查数据
      */
     private ReserveCheckBean reserveCheckBean;
@@ -84,7 +79,6 @@ public class MaterialFragment extends BaseFragment implements View.OnFocusChange
     private String name, idCard, age, phone;
     private int sex;
     private String pastMedicalHis = "", familyMedicalHis = "", allergiesHis = "", diagnosisHis = "";
-    private boolean isTransfer;
     /**
      * 二次编辑 是否清空所有已填数据
      */
@@ -99,19 +93,6 @@ public class MaterialFragment extends BaseFragment implements View.OnFocusChange
     public void onResume() {
         super.onResume();
         initPatientBaseData();
-    }
-
-    public void setTransfer(boolean transfer) {
-        this.isTransfer = transfer;
-    }
-
-    public void setReverseTransferBean(ReserveTransferBean bean) {
-        clearAllTransferData(bean);
-        this.reverseTransferBean = bean;
-    }
-
-    public ReserveTransferBean getReverseTransferBean() {
-        return reverseTransferBean;
     }
 
     public ReserveCheckBean getReserveCheckBean() {
@@ -140,58 +121,7 @@ public class MaterialFragment extends BaseFragment implements View.OnFocusChange
             familyMedicalHis = "";
             allergiesHis = "";
         }
-        if (isTransfer) {
-            initTransferData();
-        }
-        else {
-            initCheckData();
-        }
-    }
-
-    private void initTransferData() {
-        if (reverseTransferBean != null) {
-            BankCardTextWatcher.bind(tvIdCard, this);
-            if (!TextUtils.isEmpty(reverseTransferBean.getPatientCode())) {
-                //老用户
-                editStatus(false);
-                age = String.valueOf(reverseTransferBean.getPatientAge());
-                sex = reverseTransferBean.getSex();
-                phone = reverseTransferBean.getPatientMobile();
-                etPhone.setText(phone);
-                pastMedicalHis = reverseTransferBean.getPastHistory();
-                familyMedicalHis = reverseTransferBean.getFamilyHistory();
-                allergiesHis = reverseTransferBean.getAllergyHistory();
-            }
-            else {
-                //新用户
-                editStatus(true);
-                age = BaseUtils.getAgeByCard(reverseTransferBean.getPatientIdCardNo());
-                sex = BaseUtils.getSexByCard(reverseTransferBean.getPatientIdCardNo());
-                reverseTransferBean.setPatientAge(Integer.valueOf(age));
-                reverseTransferBean.setSex(sex);
-            }
-            tvName.setText(reverseTransferBean.getPatientName());
-            tvIdCard.setText(reverseTransferBean.getPatientIdCardNo());
-            etAge.setText(age);
-            if (sex == BaseData.BASE_ONE) {
-                rbMale.setChecked(true);
-            }
-            else {
-                rbFemale.setChecked(true);
-            }
-            //初步诊断
-            etDiagnosis.setText(diagnosisHis = reverseTransferBean.getInitResult());
-            //既往病史
-            initPastMedicalHis(!TextUtils.isEmpty(pastMedicalHis) &&
-                               (!getString(R.string.txt_past_medical_his_not).equals(pastMedicalHis)));
-            //家族病史
-            initFamilyMedicalHis(!TextUtils.isEmpty(familyMedicalHis) &&
-                                 (!getString(R.string.txt_family_medical_his_not).equals(familyMedicalHis)));
-            //过敏史
-            initAllergies(
-                    !TextUtils.isEmpty(allergiesHis) && (!getString(R.string.txt_allergies_not).equals(allergiesHis)));
-            initNextButton();
-        }
+        initCheckData();
     }
 
     private void initCheckData() {
@@ -244,26 +174,6 @@ public class MaterialFragment extends BaseFragment implements View.OnFocusChange
     /**
      * 涉及到数据回填逻辑，如果更改了患者，需要清空原有已填写数据
      */
-    private void clearAllTransferData(ReserveTransferBean bean) {
-        if (reverseTransferBean == null || bean == null) {
-            clearAll = false;
-        }
-        else {
-            if (reverseTransferBean.getPatientName().equals(bean.getPatientName()) &&
-                reverseTransferBean.getPatientIdCardNo().equals(bean.getPatientIdCardNo())) {
-                //都相等 说明未改变用户
-                clearAll = false;
-            }
-            else {
-                //有不相等的 说明患者已经更改，需要清除原有已填写数据
-                clearAll = true;
-            }
-        }
-    }
-
-    /**
-     * 涉及到数据回填逻辑，如果更改了患者，需要清空原有已填写数据
-     */
     private void clearAllCheckData(ReserveCheckBean bean) {
         if (reserveCheckBean == null || bean == null) {
             clearAll = false;
@@ -300,12 +210,7 @@ public class MaterialFragment extends BaseFragment implements View.OnFocusChange
                 super.onTextChanged(s, start, before, count);
                 age = s.toString();
                 initNextButton();
-                if (isTransfer) {
-                    reverseTransferBean.setPatientAge(Integer.valueOf(age));
-                }
-                else {
-                    reserveCheckBean.setAge(Integer.valueOf(age));
-                }
+                reserveCheckBean.setAge(Integer.valueOf(age));
             }
         });
         etPhone.setOnFocusChangeListener(this);
@@ -314,12 +219,7 @@ public class MaterialFragment extends BaseFragment implements View.OnFocusChange
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 super.onTextChanged(s, start, before, count);
                 phone = s.toString();
-                if (isTransfer) {
-                    reverseTransferBean.setPatientMobile(phone);
-                }
-                else {
-                    reserveCheckBean.setPhone(phone);
-                }
+                reserveCheckBean.setPhone(phone);
                 //判断手机号和诊断史
                 initNextButton();
             }
@@ -331,12 +231,7 @@ public class MaterialFragment extends BaseFragment implements View.OnFocusChange
                 pastMedicalHis = s.toString();
                 tvPastMedicalHisNum.setText(String.format(getString(R.string.txt_calc_num), pastMedicalHis.length()));
                 initNextButton();
-                if (isTransfer) {
-                    reverseTransferBean.setPastHistory(pastMedicalHis);
-                }
-                else {
-                    reserveCheckBean.setPastHistory(pastMedicalHis);
-                }
+                reserveCheckBean.setPastHistory(pastMedicalHis);
             }
         });
         etFamilyMedicalHis.addTextChangedListener(new AbstractTextWatcher() {
@@ -347,12 +242,7 @@ public class MaterialFragment extends BaseFragment implements View.OnFocusChange
                 tvFamilyMedicalHisNum.setText(
                         String.format(getString(R.string.txt_calc_num), familyMedicalHis.length()));
                 initNextButton();
-                if (isTransfer) {
-                    reverseTransferBean.setFamilyHistory(familyMedicalHis);
-                }
-                else {
-                    reserveCheckBean.setFamilyHistory(familyMedicalHis);
-                }
+                reserveCheckBean.setFamilyHistory(familyMedicalHis);
             }
         });
         etAllergies.addTextChangedListener(new AbstractTextWatcher() {
@@ -362,12 +252,7 @@ public class MaterialFragment extends BaseFragment implements View.OnFocusChange
                 allergiesHis = s.toString();
                 tvAllergiesNum.setText(String.format(getString(R.string.txt_calc_num), allergiesHis.length()));
                 initNextButton();
-                if (isTransfer) {
-                    reverseTransferBean.setAllergyHistory(allergiesHis);
-                }
-                else {
-                    reserveCheckBean.setAllergyHistory(allergiesHis);
-                }
+                reserveCheckBean.setAllergyHistory(allergiesHis);
             }
         });
         etDiagnosis.addTextChangedListener(new AbstractTextWatcher() {
@@ -377,12 +262,7 @@ public class MaterialFragment extends BaseFragment implements View.OnFocusChange
                 diagnosisHis = s.toString();
                 initNextButton();
                 initDiagnosis();
-                if (isTransfer) {
-                    reverseTransferBean.setInitResult(diagnosisHis);
-                }
-                else {
-                    reserveCheckBean.setInitResult(diagnosisHis);
-                }
+                reserveCheckBean.setInitResult(diagnosisHis);
             }
         });
     }
@@ -396,33 +276,18 @@ public class MaterialFragment extends BaseFragment implements View.OnFocusChange
             layoutPastMedicalHis.setVisibility(View.GONE);
             etPastMedicalHis.setText(pastMedicalHis);
             tvPastMedicalHisNum.setText(String.format(getString(R.string.txt_calc_num), pastMedicalHis.length()));
-            if (isTransfer) {
-                reverseTransferBean.setPastHistory(pastMedicalHis);
-            }
-            else {
-                reserveCheckBean.setPastHistory(pastMedicalHis);
-            }
+            reserveCheckBean.setPastHistory(pastMedicalHis);
         }
         else {
             etPastMedicalHis.setVisibility(View.INVISIBLE);
             layoutPastMedicalHis.setVisibility(View.VISIBLE);
             tvPastMedicalHisNum.setText(
                     String.format(getString(R.string.txt_calc_num), tvPastMedicalHisNot.getText().toString().length()));
-            if (isTransfer) {
-                if (TextUtils.isEmpty(pastMedicalHis)) {
-                    reverseTransferBean.setPastHistory("");
-                }
-                else {
-                    reverseTransferBean.setPastHistory(getString(R.string.txt_past_medical_his_not));
-                }
+            if (TextUtils.isEmpty(pastMedicalHis)) {
+                reserveCheckBean.setPastHistory("");
             }
             else {
-                if (TextUtils.isEmpty(pastMedicalHis)) {
-                    reserveCheckBean.setPastHistory("");
-                }
-                else {
-                    reserveCheckBean.setPastHistory(getString(R.string.txt_past_medical_his_not));
-                }
+                reserveCheckBean.setPastHistory(getString(R.string.txt_past_medical_his_not));
             }
         }
     }
@@ -436,33 +301,18 @@ public class MaterialFragment extends BaseFragment implements View.OnFocusChange
             layoutFamilyMedicalHis.setVisibility(View.GONE);
             etFamilyMedicalHis.setText(familyMedicalHis);
             tvFamilyMedicalHisNum.setText(String.format(getString(R.string.txt_calc_num), familyMedicalHis.length()));
-            if (isTransfer) {
-                reverseTransferBean.setFamilyHistory(familyMedicalHis);
-            }
-            else {
-                reserveCheckBean.setFamilyHistory(familyMedicalHis);
-            }
+            reserveCheckBean.setFamilyHistory(familyMedicalHis);
         }
         else {
             etFamilyMedicalHis.setVisibility(View.INVISIBLE);
             layoutFamilyMedicalHis.setVisibility(View.VISIBLE);
             tvFamilyMedicalHisNum.setText(String.format(getString(R.string.txt_calc_num),
                                                         tvFamilyMedicalHisNot.getText().toString().length()));
-            if (isTransfer) {
-                if (TextUtils.isEmpty(familyMedicalHis)) {
-                    reverseTransferBean.setFamilyHistory("");
-                }
-                else {
-                    reverseTransferBean.setFamilyHistory(getString(R.string.txt_family_medical_his_not));
-                }
+            if (TextUtils.isEmpty(familyMedicalHis)) {
+                reserveCheckBean.setFamilyHistory("");
             }
             else {
-                if (TextUtils.isEmpty(familyMedicalHis)) {
-                    reserveCheckBean.setFamilyHistory("");
-                }
-                else {
-                    reserveCheckBean.setFamilyHistory(getString(R.string.txt_family_medical_his_not));
-                }
+                reserveCheckBean.setFamilyHistory(getString(R.string.txt_family_medical_his_not));
             }
         }
     }
@@ -476,33 +326,18 @@ public class MaterialFragment extends BaseFragment implements View.OnFocusChange
             layoutAllergies.setVisibility(View.GONE);
             etAllergies.setText(allergiesHis);
             tvAllergiesNum.setText(String.format(getString(R.string.txt_calc_num), allergiesHis.length()));
-            if (isTransfer) {
-                reverseTransferBean.setAllergyHistory(allergiesHis);
-            }
-            else {
-                reserveCheckBean.setAllergyHistory(allergiesHis);
-            }
+            reserveCheckBean.setAllergyHistory(allergiesHis);
         }
         else {
             etAllergies.setVisibility(View.INVISIBLE);
             layoutAllergies.setVisibility(View.VISIBLE);
             tvAllergiesNum.setText(
                     String.format(getString(R.string.txt_calc_num), tvAllergiesNot.getText().toString().length()));
-            if (isTransfer) {
-                if (TextUtils.isEmpty(allergiesHis)) {
-                    reverseTransferBean.setAllergyHistory("");
-                }
-                else {
-                    reverseTransferBean.setAllergyHistory(getString(R.string.txt_allergies_not));
-                }
+            if (TextUtils.isEmpty(allergiesHis)) {
+                reserveCheckBean.setAllergyHistory("");
             }
             else {
-                if (TextUtils.isEmpty(allergiesHis)) {
-                    reserveCheckBean.setAllergyHistory("");
-                }
-                else {
-                    reserveCheckBean.setAllergyHistory(getString(R.string.txt_allergies_not));
-                }
+                reserveCheckBean.setAllergyHistory(getString(R.string.txt_allergies_not));
             }
         }
     }
@@ -555,12 +390,7 @@ public class MaterialFragment extends BaseFragment implements View.OnFocusChange
                 break;
             case R.id.tv_material_next:
                 if (tvMaterialNext.isSelected() && checkListener != null) {
-                    if (isTransfer) {
-                        checkListener.onTransferStepTwo(reverseTransferBean);
-                    }
-                    else {
-                        checkListener.onCheckStepTwo(reserveCheckBean);
-                    }
+                    checkListener.onCheckStepTwo(reserveCheckBean);
                 }
                 break;
             default:

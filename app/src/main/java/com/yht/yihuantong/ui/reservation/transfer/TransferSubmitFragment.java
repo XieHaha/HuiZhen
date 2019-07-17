@@ -1,4 +1,4 @@
-package com.yht.yihuantong.ui.reservation.fragment;
+package com.yht.yihuantong.ui.reservation.transfer;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -38,8 +38,8 @@ import com.yht.frame.widgets.view.ExpandableLayout;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ZycApplication;
 import com.yht.yihuantong.ui.ImagePreviewActivity;
-import com.yht.yihuantong.ui.check.listener.OnCheckListener;
 import com.yht.yihuantong.ui.transfer.SelectReceivingDoctorActivity;
+import com.yht.yihuantong.ui.transfer.listener.OnTransferListener;
 import com.yht.yihuantong.utils.FileUrlUtil;
 
 import java.io.File;
@@ -54,7 +54,7 @@ import butterknife.OnClick;
  * @date 19/6/14 14:23
  * @des 预约转诊 确认提交
  */
-public class SubmitTransferFragment extends BaseFragment implements RadioGroup.OnCheckedChangeListener {
+public class TransferSubmitFragment extends BaseFragment implements RadioGroup.OnCheckedChangeListener {
     @BindView(R.id.rb_up)
     RadioButton rbUp;
     @BindView(R.id.rb_down)
@@ -407,8 +407,8 @@ public class SubmitTransferFragment extends BaseFragment implements RadioGroup.O
                 initImage(false);
                 break;
             case R.id.tv_submit_next:
-                if (tvSubmitNext.isSelected() && checkListener != null) {
-                    checkListener.onTransferStepThree(reverseTransferBean);
+                if (tvSubmitNext.isSelected() && onTransferListener != null) {
+                    onTransferListener.onTransferStepThree(reverseTransferBean);
                 }
                 break;
             case R.id.iv_receiving_doctor_call:
@@ -557,9 +557,9 @@ public class SubmitTransferFragment extends BaseFragment implements RadioGroup.O
         }
     }
 
-    private OnCheckListener checkListener;
+    private OnTransferListener onTransferListener;
 
-    public void setOnCheckListener(OnCheckListener onCheckListener) {
-        this.checkListener = onCheckListener;
+    public void setOnTransferListener(OnTransferListener onTransferListener) {
+        this.onTransferListener = onTransferListener;
     }
 }

@@ -6,7 +6,8 @@ import android.text.Selection;
 import android.text.TextWatcher;
 import android.widget.EditText;
 
-import com.yht.yihuantong.ui.reservation.fragment.IdentifyFragment;
+import com.yht.yihuantong.ui.reservation.service.ServiceIdentifyFragment;
+import com.yht.yihuantong.ui.reservation.transfer.TransferIdentifyFragment;
 
 /**
  * @author 顿顿
@@ -63,8 +64,13 @@ public class BankCardTextWatcher implements TextWatcher {
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        if (fragment != null && fragment instanceof IdentifyFragment) {
-            ((IdentifyFragment)fragment).onCardTextChanged(s, start, before, count);
+        if (fragment != null) {
+            if (fragment instanceof ServiceIdentifyFragment) {
+                ((ServiceIdentifyFragment)fragment).onCardTextChanged(s, start, before, count);
+            }
+            if (fragment instanceof TransferIdentifyFragment) {
+                ((TransferIdentifyFragment)fragment).onCardTextChanged(s, start, before, count);
+            }
         }
         int length = s.length();
         buffer.append(s.toString());

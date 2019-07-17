@@ -30,8 +30,9 @@ import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.check.CheckHistoryActivity;
 import com.yht.yihuantong.ui.personal.PersonalNewActivity;
-import com.yht.yihuantong.ui.reservation.ReservationCheckOrTransferActivity;
 import com.yht.yihuantong.ui.reservation.ReservationDisableActivity;
+import com.yht.yihuantong.ui.reservation.service.ReservationServiceActivity;
+import com.yht.yihuantong.ui.reservation.transfer.ReservationTransferActivity;
 import com.yht.yihuantong.ui.transfer.TransferInitiateListActivity;
 import com.yht.yihuantong.ui.transfer.TransferReceiveListActivity;
 import com.yht.yihuantong.utils.FileUrlUtil;
@@ -189,7 +190,7 @@ public class WorkerFragment extends BaseFragment {
                 break;
             case R.id.layout_check:
                 if (reservationValidateBean != null && reservationValidateBean.isJc()) {
-                    intent = new Intent(getContext(), ReservationCheckOrTransferActivity.class);
+                    intent = new Intent(getContext(), ReservationServiceActivity.class);
                     startActivity(intent);
                 }
                 else {
@@ -199,8 +200,7 @@ public class WorkerFragment extends BaseFragment {
                 break;
             case R.id.layout_transfer:
                 if (reservationValidateBean != null && reservationValidateBean.isZz()) {
-                    intent = new Intent(getContext(), ReservationCheckOrTransferActivity.class);
-                    intent.putExtra(CommonData.KEY_CHECK_OR_TRANSFER, true);
+                    intent = new Intent(getContext(), ReservationTransferActivity.class);
                     startActivity(intent);
                 }
                 else {

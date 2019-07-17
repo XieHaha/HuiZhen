@@ -21,7 +21,7 @@ import com.yht.frame.widgets.recyclerview.decoration.TimeItemDecoration;
 import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.adapter.CheckHistoryAdapter;
-import com.yht.yihuantong.ui.reservation.ReservationCheckOrTransferActivity;
+import com.yht.yihuantong.ui.reservation.service.ReservationServiceActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -110,7 +110,7 @@ public class CheckHistoryActivity extends BaseActivity
 
     @OnClick(R.id.tv_check_next)
     public void onViewClicked() {
-        startActivity(new Intent(this, ReservationCheckOrTransferActivity.class));
+        startActivity(new Intent(this, ReservationServiceActivity.class));
     }
 
     @Override

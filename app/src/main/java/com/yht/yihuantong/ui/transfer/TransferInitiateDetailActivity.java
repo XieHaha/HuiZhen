@@ -14,8 +14,8 @@ import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
-import com.yht.frame.data.type.TransferOrderStatus;
 import com.yht.frame.data.base.TransferBean;
+import com.yht.frame.data.type.TransferOrderStatus;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
@@ -23,7 +23,7 @@ import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.frame.widgets.dialog.InputDialog;
 import com.yht.yihuantong.R;
-import com.yht.yihuantong.ui.reservation.ReservationCheckOrTransferActivity;
+import com.yht.yihuantong.ui.reservation.transfer.ReservationTransferActivity;
 import com.yht.yihuantong.utils.FileUrlUtil;
 
 import butterknife.BindView;
@@ -239,21 +239,21 @@ public class TransferInitiateDetailActivity extends BaseActivity implements Tran
                 }
                 else {
                     //重新转诊
-                    Intent intent = new Intent(this, ReservationCheckOrTransferActivity.class);
+                    Intent intent = new Intent(this, ReservationTransferActivity.class);
                     intent.putExtra(CommonData.KEY_TRANSFER_ORDER_BEAN, transferBean);
-                    intent.putExtra(CommonData.KEY_CHECK_OR_TRANSFER, true);
                     startActivity(intent);
                 }
                 break;
             case R.id.tv_contact_patient:
             case R.id.tv_contact_patient_one:
-                new HintDialog(this).setPhone(getString(R.string.txt_contact_service), transferBean.getPatientMobile())
+                new HintDialog(this).setPhone(getString(R.string.txt_contact_patient_phone),
+                                              transferBean.getPatientMobile())
                                     .setOnEnterClickListener(() -> callPhone(transferBean.getPatientMobile()))
                                     .show();
                 break;
             case R.id.tv_contact_doctor:
             case R.id.tv_contact_doctor_one:
-                new HintDialog(this).setPhone(getString(R.string.txt_contact_service),
+                new HintDialog(this).setPhone(getString(R.string.txt_contact_doctor_phone),
                                               transferBean.getTargetDoctorMobile())
                                     .setOnEnterClickListener(() -> callPhone(transferBean.getTargetDoctorMobile()))
                                     .show();

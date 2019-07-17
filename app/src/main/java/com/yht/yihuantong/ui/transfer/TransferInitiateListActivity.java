@@ -23,7 +23,7 @@ import com.yht.frame.widgets.recyclerview.decoration.TimeItemDecoration;
 import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.adapter.TransferInitiateAdapter;
-import com.yht.yihuantong.ui.reservation.ReservationCheckOrTransferActivity;
+import com.yht.yihuantong.ui.reservation.transfer.ReservationTransferActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -129,8 +129,7 @@ public class TransferInitiateListActivity extends BaseActivity
 
     @OnClick(R.id.tv_check_next)
     public void onViewClicked() {
-        Intent intent = new Intent(this, ReservationCheckOrTransferActivity.class);
-        intent.putExtra(CommonData.KEY_CHECK_OR_TRANSFER, true);
+        Intent intent = new Intent(this, ReservationTransferActivity.class);
         startActivity(intent);
     }
 

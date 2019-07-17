@@ -1,4 +1,4 @@
-package com.yht.yihuantong.ui.reservation.fragment;
+package com.yht.yihuantong.ui.reservation.service;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -57,7 +57,7 @@ import butterknife.OnClick;
  * @date 19/6/14 14:23
  * @des 预约检查 确认提交
  */
-public class SubmitCheckFragment extends BaseFragment
+public class ServiceSubmitFragment extends BaseFragment
         implements CheckTypeListViewAdapter.OnDeleteClickListener, RadioGroup.OnCheckedChangeListener {
     @BindView(R.id.tv_select)
     TextView tvSelect;
@@ -147,13 +147,13 @@ public class SubmitCheckFragment extends BaseFragment
         //默认自费
         payTypeId = rbSelf.getId();
         //默认备孕
-//        pregnancyId = rbYes.getId();
+        //        pregnancyId = rbYes.getId();
     }
 
     @Override
     public void initListener() {
         super.initListener();
-//        layoutPregnancy.setOnCheckedChangeListener(this);
+        //        layoutPregnancy.setOnCheckedChangeListener(this);
         layoutPayment.setOnCheckedChangeListener(this);
     }
 
@@ -330,13 +330,13 @@ public class SubmitCheckFragment extends BaseFragment
                     }
                     //检查项列表
                     reserveCheckBean.setCheckTrans(list);
-//                    //是否备孕
-//                    if (pregnancyId == rbYes.getId()) {
-//                        reserveCheckBean.setIsPregnancy(BaseData.BASE_ONE);
-//                    }
-//                    else {
-//                        reserveCheckBean.setIsPregnancy(BaseData.BASE_ZERO);
-//                    }
+                    //                    //是否备孕
+                    //                    if (pregnancyId == rbYes.getId()) {
+                    //                        reserveCheckBean.setIsPregnancy(BaseData.BASE_ONE);
+                    //                    }
+                    //                    else {
+                    //                        reserveCheckBean.setIsPregnancy(BaseData.BASE_ZERO);
+                    //                    }
                     //缴费类型
                     if (payTypeId == rbSelf.getId()) {
                         reserveCheckBean.setPayType(String.valueOf(BaseData.BASE_ZERO));

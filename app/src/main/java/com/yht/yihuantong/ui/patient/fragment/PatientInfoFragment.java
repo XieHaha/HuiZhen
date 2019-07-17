@@ -31,8 +31,9 @@ import com.yht.yihuantong.ui.adapter.PatientOrderAdapter;
 import com.yht.yihuantong.ui.check.CheckDetailActivity;
 import com.yht.yihuantong.ui.patient.TransferDetailActivity;
 import com.yht.yihuantong.ui.remote.RemoteDetailActivity;
-import com.yht.yihuantong.ui.reservation.ReservationCheckOrTransferActivity;
 import com.yht.yihuantong.ui.reservation.ReservationDisableActivity;
+import com.yht.yihuantong.ui.reservation.service.ReservationServiceActivity;
+import com.yht.yihuantong.ui.reservation.transfer.ReservationTransferActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -221,7 +222,7 @@ public class PatientInfoFragment extends BaseFragment
         switch (view.getId()) {
             case R.id.tv_reserve_check:
                 if (reservationValidateBean.isJc()) {
-                    intent = new Intent(getContext(), ReservationCheckOrTransferActivity.class);
+                    intent = new Intent(getContext(), ReservationServiceActivity.class);
                     intent.putExtra(CommonData.KEY_PATIENT_BEAN, patientDetailBean);
                     startActivity(intent);
                 }
@@ -236,9 +237,8 @@ public class PatientInfoFragment extends BaseFragment
                 }
                 else {
                     if (reservationValidateBean.isZz()) {
-                        intent = new Intent(getContext(), ReservationCheckOrTransferActivity.class);
+                        intent = new Intent(getContext(), ReservationTransferActivity.class);
                         intent.putExtra(CommonData.KEY_PATIENT_BEAN, patientDetailBean);
-                        intent.putExtra(CommonData.KEY_CHECK_OR_TRANSFER, true);
                         startActivity(intent);
                     }
                     else {

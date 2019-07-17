@@ -11,6 +11,8 @@ import com.yht.frame.data.CommonData;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.check.CheckDetailActivity;
+import com.yht.yihuantong.ui.reservation.service.ReservationServiceActivity;
+import com.yht.yihuantong.ui.reservation.transfer.ReservationTransferActivity;
 import com.yht.yihuantong.ui.transfer.TransferInitiateDetailActivity;
 
 import butterknife.BindView;
@@ -92,11 +94,10 @@ public class ReservationSuccessActivity extends BaseActivity {
                 break;
             case R.id.tv_again:
                 if (!isTransfer) {
-                    startActivity(new Intent(this, ReservationCheckOrTransferActivity.class));
+                    startActivity(new Intent(this, ReservationServiceActivity.class));
                 }
                 else {
-                    Intent intent = new Intent(this, ReservationCheckOrTransferActivity.class);
-                    intent.putExtra(CommonData.KEY_CHECK_OR_TRANSFER, true);
+                    Intent intent = new Intent(this, ReservationTransferActivity.class);
                     startActivity(intent);
                 }
                 finish();

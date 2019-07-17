@@ -1,4 +1,4 @@
-package com.yht.yihuantong.ui.reservation;
+package com.yht.yihuantong.ui.reservation.transfer;
 
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -17,18 +17,14 @@ import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.base.PatientDetailBean;
-import com.yht.frame.data.base.ReserveCheckBean;
 import com.yht.frame.data.base.ReserveTransferBean;
 import com.yht.frame.data.base.TransferBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.yihuantong.R;
-import com.yht.yihuantong.ui.check.listener.OnCheckListener;
-import com.yht.yihuantong.ui.reservation.fragment.IdentifyFragment;
-import com.yht.yihuantong.ui.reservation.fragment.MaterialFragment;
-import com.yht.yihuantong.ui.reservation.fragment.SubmitCheckFragment;
-import com.yht.yihuantong.ui.reservation.fragment.SubmitTransferFragment;
+import com.yht.yihuantong.ui.reservation.ReservationSuccessActivity;
+import com.yht.yihuantong.ui.transfer.listener.OnTransferListener;
 
 import butterknife.BindView;
 
@@ -37,9 +33,7 @@ import butterknife.BindView;
  * @date 19/6/14 14:05
  * @des 新增 预约检查 预约转诊
  */
-public class ReservationCheckOrTransferActivity extends BaseActivity implements OnCheckListener {
-    @BindView(R.id.public_title_bar_title)
-    TextView publicTitleBarTitle;
+public class ReservationTransferActivity extends BaseActivity implements OnTransferListener {
     @BindView(R.id.iv_base)
     ImageView ivReservationBase;
     @BindView(R.id.tv_base)
@@ -78,19 +72,15 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
     /**
      * 基本信息
      */
-    private IdentifyFragment identifyFragment;
+    private TransferIdentifyFragment identifyFragment;
     /**
      * 完善资料
      */
-    private MaterialFragment materialFragment;
-    /**
-     * 确认提交(预约检查)
-     */
-    private SubmitCheckFragment submitCheckFragment;
+    private TransferMaterialFragment materialFragment;
     /**
      * 确认提交(预约转诊)
      */
-    private SubmitTransferFragment submitTransferFragment;
+    private TransferSubmitFragment submitTransferFragment;
     /**
      * 患者回填数据
      */
@@ -104,17 +94,9 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
      */
     private ReserveTransferBean reverseTransferBean;
     /**
-     * 当前预约检查数据
-     */
-    private ReserveCheckBean reserveCheckBean;
-    /**
      * 当前碎片
      */
     private int curPage;
-    /**
-     * 是否为转诊
-     */
-    private boolean isTransfer;
 
     @Override
     protected boolean isInitBackBtn() {
@@ -131,7 +113,6 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
         super.initView(savedInstanceState);
         fragmentManager = getSupportFragmentManager();
         if (getIntent() != null) {
-            isTransfer = getIntent().getBooleanExtra(CommonData.KEY_CHECK_OR_TRANSFER, false);
             //患者详情页面回传数据
             patientDetailBean = (PatientDetailBean)getIntent().getSerializableExtra(CommonData.KEY_PATIENT_BEAN);
             //转诊详情页面回传数据(重新转诊)
@@ -160,20 +141,9 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
     }
 
     /**
-     * 新增预约检查订单
-     */
-    private void addReserveCheckOrder() {
-        RequestUtils.addReserveCheckOrder(this, loginBean.getToken(), reserveCheckBean, this);
-    }
-
-    /**
      * title处理
      */
     private void initTitlePage() {
-        //title
-        if (isTransfer) {
-            publicTitleBarTitle.setText(R.string.txt_reserve_transfer);
-        }
         //自定义返回键实践处理
         findViewById(R.id.public_title_bar_back).setOnClickListener(this);
         publicTitleBarMore.setVisibility(View.VISIBLE);
@@ -206,35 +176,20 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
      * 患者基本数据回填
      */
     private void initPatientBaseData() {
-        if (isTransfer) {
-            //转诊 数据回填
-            reverseTransferBean = new ReserveTransferBean();
-            reverseTransferBean.setPatientName(patientDetailBean.getName());
-            reverseTransferBean.setPatientIdCardNo(patientDetailBean.getIdCard());
-            reverseTransferBean.setPatientCode(patientDetailBean.getCode());
-            reverseTransferBean.setSex(patientDetailBean.getSex());
-            reverseTransferBean.setPatientAge(patientDetailBean.getAge());
-            reverseTransferBean.setPatientMobile(patientDetailBean.getMobile());
-            reverseTransferBean.setPastHistory(patientDetailBean.getPast());
-            reverseTransferBean.setFamilyHistory(patientDetailBean.getFamily());
-            reverseTransferBean.setAllergyHistory(patientDetailBean.getAllergy());
-            //给个默认值 防止回填数据冲突（区分转诊订单详情、患者的个人页面）
-            reverseTransferBean.setTransferType(-1);
-            reverseTransferBean.setPayType(-1);
-        }
-        else {
-            //预约检查
-            reserveCheckBean = new ReserveCheckBean();
-            reserveCheckBean.setPatientName(patientDetailBean.getName());
-            reserveCheckBean.setIdCardNo(patientDetailBean.getIdCard());
-            reserveCheckBean.setPatientCode(patientDetailBean.getCode());
-            reserveCheckBean.setSex(patientDetailBean.getSex());
-            reserveCheckBean.setAge(patientDetailBean.getAge());
-            reserveCheckBean.setPhone(patientDetailBean.getMobile());
-            reserveCheckBean.setPastHistory(patientDetailBean.getPast());
-            reserveCheckBean.setFamilyHistory(patientDetailBean.getFamily());
-            reserveCheckBean.setAllergyHistory(patientDetailBean.getAllergy());
-        }
+        //转诊 数据回填
+        reverseTransferBean = new ReserveTransferBean();
+        reverseTransferBean.setPatientName(patientDetailBean.getName());
+        reverseTransferBean.setPatientIdCardNo(patientDetailBean.getIdCard());
+        reverseTransferBean.setPatientCode(patientDetailBean.getCode());
+        reverseTransferBean.setSex(patientDetailBean.getSex());
+        reverseTransferBean.setPatientAge(patientDetailBean.getAge());
+        reverseTransferBean.setPatientMobile(patientDetailBean.getMobile());
+        reverseTransferBean.setPastHistory(patientDetailBean.getPast());
+        reverseTransferBean.setFamilyHistory(patientDetailBean.getFamily());
+        reverseTransferBean.setAllergyHistory(patientDetailBean.getAllergy());
+        //给个默认值 防止回填数据冲突（区分转诊订单详情、患者的个人页面）
+        reverseTransferBean.setTransferType(-1);
+        reverseTransferBean.setPayType(-1);
     }
 
     /**
@@ -274,9 +229,8 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
         fragmentTransaction = fragmentManager.beginTransaction();
         hideAll(fragmentTransaction);
         if (identifyFragment == null) {
-            identifyFragment = new IdentifyFragment();
-            identifyFragment.setTransfer(isTransfer);
-            identifyFragment.setOnCheckListener(this);
+            identifyFragment = new TransferIdentifyFragment();
+            identifyFragment.setOnTransferListener(this);
             fragmentTransaction.add(R.id.layout_frame_root, identifyFragment);
         }
         else {
@@ -291,42 +245,18 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
         fragmentTransaction = fragmentManager.beginTransaction();
         hideAll(fragmentTransaction);
         if (materialFragment == null) {
-            materialFragment = new MaterialFragment();
-            materialFragment.setTransfer(isTransfer);
-            materialFragment.setOnCheckListener(this);
+            materialFragment = new TransferMaterialFragment();
+            materialFragment.setOnTransferListener(this);
             materialFragment.setReverseTransferBean(reverseTransferBean);
-            materialFragment.setReserveCheckBean(reserveCheckBean);
             fragmentTransaction.add(R.id.layout_frame_root, materialFragment);
         }
         else {
             fragmentTransaction.show(materialFragment);
             materialFragment.setReverseTransferBean(reverseTransferBean);
-            materialFragment.setReserveCheckBean(reserveCheckBean);
             materialFragment.onResume();
         }
         fragmentTransaction.commitAllowingStateLoss();
         selectTab(BASE_ONE);
-    }
-
-    /**
-     * 预约检查提交碎片
-     */
-    private void tabCheckResultView() {
-        fragmentTransaction = fragmentManager.beginTransaction();
-        hideAll(fragmentTransaction);
-        if (submitCheckFragment == null) {
-            submitCheckFragment = new SubmitCheckFragment();
-            submitCheckFragment.setOnCheckListener(this);
-            submitCheckFragment.setReserveCheckBean(reserveCheckBean);
-            fragmentTransaction.add(R.id.layout_frame_root, submitCheckFragment);
-        }
-        else {
-            fragmentTransaction.show(submitCheckFragment);
-            submitCheckFragment.setReserveCheckBean(reserveCheckBean);
-            submitCheckFragment.onResume();
-        }
-        fragmentTransaction.commitAllowingStateLoss();
-        selectTab(BASE_TWO);
     }
 
     /**
@@ -336,8 +266,8 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
         fragmentTransaction = fragmentManager.beginTransaction();
         hideAll(fragmentTransaction);
         if (submitTransferFragment == null) {
-            submitTransferFragment = new SubmitTransferFragment();
-            submitTransferFragment.setOnCheckListener(this);
+            submitTransferFragment = new TransferSubmitFragment();
+            submitTransferFragment.setOnTransferListener(this);
             submitTransferFragment.setReverseTransferBean(reverseTransferBean);
             fragmentTransaction.add(R.id.layout_frame_root, submitTransferFragment);
         }
@@ -359,9 +289,6 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
         }
         if (materialFragment != null) {
             transaction.hide(materialFragment);
-        }
-        if (submitCheckFragment != null) {
-            transaction.hide(submitCheckFragment);
         }
         if (submitTransferFragment != null) {
             transaction.hide(submitTransferFragment);
@@ -460,24 +387,6 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
     }
 
     @Override
-    public void onCheckStepOne(ReserveCheckBean bean) {
-        reserveCheckBean = bean;
-        tabReservationLicenseView();
-    }
-
-    @Override
-    public void onCheckStepTwo(ReserveCheckBean bean) {
-        reserveCheckBean = bean;
-        tabCheckResultView();
-    }
-
-    @Override
-    public void onCheckStepThree(ReserveCheckBean bean) {
-        reserveCheckBean = bean;
-        addReserveCheckOrder();
-    }
-
-    @Override
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
         Intent intent;
@@ -522,12 +431,7 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
                 return true;
             }
             if (materialFragment != null) {
-                if (isTransfer) {
-                    reverseTransferBean = materialFragment.getReverseTransferBean();
-                }
-                else {
-                    reserveCheckBean = materialFragment.getReserveCheckBean();
-                }
+                reverseTransferBean = materialFragment.getReverseTransferBean();
             }
             curPage = 0;
             tabReservationBaseView();
@@ -549,9 +453,6 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
             @NonNull int[] grantResults) {
-        if (submitCheckFragment != null) {
-            submitCheckFragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        }
         if (submitTransferFragment != null) {
             submitTransferFragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
@@ -559,9 +460,6 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
 
     @Override
     public void onPermissionNeedExplanation(@NonNull String permissionName) {
-        if (submitCheckFragment != null) {
-            submitCheckFragment.onPermissionNeedExplanation(permissionName);
-        }
         if (submitTransferFragment != null) {
             submitTransferFragment.onPermissionNeedExplanation(permissionName);
         }
@@ -570,9 +468,6 @@ public class ReservationCheckOrTransferActivity extends BaseActivity implements 
     @Override
     public void onNoPermissionNeeded(@NonNull Object permissionName) {
         super.onNoPermissionNeeded(permissionName);
-        if (submitCheckFragment != null) {
-            submitCheckFragment.onNoPermissionNeeded(permissionName);
-        }
         if (submitTransferFragment != null) {
             submitTransferFragment.onNoPermissionNeeded(permissionName);
         }
