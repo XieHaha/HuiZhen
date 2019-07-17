@@ -12,6 +12,8 @@ import com.yht.yihuantong.ZycApplication;
 import com.yht.yihuantong.ui.auth.AuthDoctorActivity;
 import com.yht.yihuantong.ui.main.MainActivity;
 import com.yht.yihuantong.ui.personal.SettingActivity;
+import com.yht.yihuantong.ui.transfer.TransferInitiateDetailActivity;
+import com.yht.yihuantong.ui.transfer.TransferReceiveDetailActivity;
 
 import cn.jpush.android.api.NotificationMessage;
 import cn.jpush.android.service.JPushMessageReceiver;
@@ -80,9 +82,24 @@ public class PushMessageReceiver extends JPushMessageReceiver implements Message
             case MESSAGE_TRANSFER_REJECT:
             case MESSAGE_TRANSFER_RECEIVED:
             case MESSAGE_TRANSFER_OTHER:
+            case MESSAGE_TRANSFER_SYSTEM_CANCEL_T:
+                mainIntent = new Intent(context, MainActivity.class);
+                mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mainIntent.putExtra(CommonData.KEY_PUBLIC, 0);
+                baseIntent = new Intent(context, TransferInitiateDetailActivity.class);
+                intents = new Intent[] { mainIntent, baseIntent };
+                context.startActivities(intents);
+                break;
             case MESSAGE_TRANSFER_CANCEL:
             case MESSAGE_TRANSFER_SYSTEM_CANCEL_R:
-            case MESSAGE_TRANSFER_SYSTEM_CANCEL_T:
+                mainIntent = new Intent(context, MainActivity.class);
+                mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mainIntent.putExtra(CommonData.KEY_PUBLIC, 0);
+                baseIntent = new Intent(context, TransferReceiveDetailActivity.class);
+                baseIntent.putExtra(CommonData.KEY_ORDER_ID,"");
+                intents = new Intent[] { mainIntent, baseIntent };
+                context.startActivities(intents);
+                break;
             case MESSAGE_CURRENCY_ARRIVED:
             case MESSAGE_CURRENCY_DEDUCTION:
             case MESSAGE_ACCOUNT_CREATE:

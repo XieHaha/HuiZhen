@@ -28,6 +28,8 @@ import com.yht.yihuantong.ui.check.CheckDetailActivity;
 import com.yht.yihuantong.ui.currency.IncomeDetailActivity;
 import com.yht.yihuantong.ui.currency.WithdrawDetailActivity;
 import com.yht.yihuantong.ui.transfer.TransferInitiateDetailActivity;
+import com.yht.yihuantong.ui.transfer.TransferReceiveDetailActivity;
+import com.yht.yihuantong.ui.transfer.TransferReceiveListActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -121,6 +123,26 @@ public class NotifyMessageFragment extends BaseFragment
                 intent.putExtra(CommonData.KEY_PUBLIC, true);
                 startActivity(intent);
                 break;
+            case MESSAGE_TRANSFER_APPLY:
+                intent = new Intent(getContext(), TransferReceiveListActivity.class);
+                intent.putExtra(CommonData.KEY_PUBLIC, true);
+                startActivity(intent);
+                break;
+            case MESSAGE_TRANSFER_REJECT:
+            case MESSAGE_TRANSFER_RECEIVED:
+            case MESSAGE_TRANSFER_OTHER:
+            case MESSAGE_TRANSFER_UPDATE:
+            case MESSAGE_TRANSFER_SYSTEM_CANCEL_T:
+                intent = new Intent(getContext(), TransferInitiateDetailActivity.class);
+                intent.putExtra(CommonData.KEY_ORDER_ID, getMessageTypeId(BASE_ONE, bean.getExtraData()));
+                startActivity(intent);
+                break;
+            case MESSAGE_TRANSFER_CANCEL:
+            case MESSAGE_TRANSFER_SYSTEM_CANCEL_R:
+                intent = new Intent(getContext(), TransferReceiveDetailActivity.class);
+                intent.putExtra(CommonData.KEY_ORDER_ID, getMessageTypeId(BASE_ONE, bean.getExtraData()));
+                startActivity(intent);
+                break;
             case MESSAGE_CURRENCY_ARRIVED:
                 intent = new Intent(getContext(), IncomeDetailActivity.class);
                 intent.putExtra(CommonData.KEY_DOCTOR_CURRENCY_ID, getMessageTypeId(BASE_ONE, bean.getExtraData()));
@@ -129,11 +151,6 @@ public class NotifyMessageFragment extends BaseFragment
             case MESSAGE_CURRENCY_DEDUCTION:
                 intent = new Intent(getContext(), WithdrawDetailActivity.class);
                 intent.putExtra(CommonData.KEY_DOCTOR_CURRENCY_ID, getMessageTypeId(BASE_ZERO, bean.getExtraData()));
-                startActivity(intent);
-                break;
-            case MESSAGE_TRANSFER_UPDATE:
-                intent = new Intent(getContext(), TransferInitiateDetailActivity.class);
-                intent.putExtra(CommonData.KEY_ORDER_ID, getMessageTypeId(BASE_ONE, bean.getExtraData()));
                 startActivity(intent);
                 break;
             default:

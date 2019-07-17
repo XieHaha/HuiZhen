@@ -89,7 +89,7 @@ public class TransferWaitFragment extends BaseFragment
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         Intent intent = new Intent(getContext(), TransferReceiveDetailActivity.class);
-        intent.putExtra(CommonData.KEY_TRANSFER_ORDER_BEAN, transferBeans.get(position));
+        intent.putExtra(CommonData.KEY_ORDER_ID, transferBeans.get(position).getOrderNo());
         startActivityForResult(intent, REQUEST_CODE_UPDATE);
     }
 

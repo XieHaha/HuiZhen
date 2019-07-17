@@ -105,6 +105,7 @@ public class TransferReceiveDetailActivity extends BaseActivity implements Trans
     @BindView(R.id.public_title_bar_title)
     TextView publicTitleBarTitle;
     private TransferBean transferBean;
+    private String orderNo;
     /**
      * 拒绝转诊原因
      */
@@ -136,25 +137,23 @@ public class TransferReceiveDetailActivity extends BaseActivity implements Trans
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         if (getIntent() != null) {
-            transferBean = (TransferBean)getIntent().getSerializableExtra(CommonData.KEY_TRANSFER_ORDER_BEAN);
+            orderNo = getIntent().getStringExtra(CommonData.KEY_ORDER_ID);
         }
         getTransferOrderDetail();
-        initPage();
     }
 
     /**
      * 获取详情
      */
     private void getTransferOrderDetail() {
-        RequestUtils.getTransferOrderDetail(this, loginBean.getToken(), transferBean.getOrderNo(), this);
+        RequestUtils.getTransferOrderDetail(this, loginBean.getToken(), orderNo, this);
     }
 
     /**
      * 拒绝转诊
      */
     private void rejectReserveTransferOrder() {
-        RequestUtils.rejectReserveTransferOrder(this, loginBean.getToken(), rejectReason, transferBean.getOrderNo(),
-                                                this);
+        RequestUtils.rejectReserveTransferOrder(this, loginBean.getToken(), rejectReason, orderNo, this);
     }
 
     /**
@@ -299,6 +298,7 @@ public class TransferReceiveDetailActivity extends BaseActivity implements Trans
         switch (task) {
             case GET_TRANSFER_ORDER_DETAIL:
                 transferBean = (TransferBean)response.getData();
+                initPage();
                 initDetailData();
                 break;
             case RECEIVE_RESERVE_TRANSFER_ORDER:
