@@ -11,12 +11,10 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @author dundun
  */
 public class NotifyChangeListenerManager {
-
     private static NotifyChangeListenerServer notifyChangeListenerServer;
 
     public synchronized static NotifyChangeListenerServer getInstance() {
         if (notifyChangeListenerServer == null) {
-
             notifyChangeListenerServer = new NotifyChangeListenerServer();
         }
         return notifyChangeListenerServer;
@@ -25,9 +23,9 @@ public class NotifyChangeListenerManager {
     public static class NotifyChangeListenerServer implements INotifyChangeListenerServer {
         private final String TAG = "ZYC->notify";
         /**
-         * 患者添加状态
+         * 患者列表添加状态
          */
-        private List<IChange<String>> mPatientStatusChangeListeners = new CopyOnWriteArrayList<>();
+        private List<IChange<String>> mPatientListChangeListeners = new CopyOnWriteArrayList<>();
         /**
          * 医生添加状态
          */
@@ -41,88 +39,94 @@ public class NotifyChangeListenerManager {
          */
         private List<IChange<String>> mDoctorTransferPatientListeners = new CopyOnWriteArrayList<>();
         /**
-         * 最近联系人
+         * 消息
          */
-        private List<IChange<String>> mRecentContactChangeListener = new CopyOnWriteArrayList<>();
+        private List<IChange<String>> mRegisterMessageChangeListener = new CopyOnWriteArrayList<>();
         /**
          * 服务包订单
          */
         private List<IChange<String>> mOrderStatusChangeListener = new CopyOnWriteArrayList<>();
 
         @Override
-        public void registerPatientStatusChangeListener(@NonNull IChange<String> listener,
-                                                        @NonNull RegisterType registerType) {
+        public void registerPatientListChangeListener(@NonNull IChange<String> listener,
+                @NonNull RegisterType registerType) {
             if (listener == null) {
                 return;
             }
             if (RegisterType.REGISTER == registerType) {
-                mPatientStatusChangeListeners.add(listener);
-            } else {
-                mPatientStatusChangeListeners.remove(listener);
+                mPatientListChangeListeners.add(listener);
+            }
+            else {
+                mPatientListChangeListeners.remove(listener);
             }
         }
 
         @Override
         public void registerDoctorStatusChangeListener(@NonNull IChange<String> listener,
-                                                       @NonNull RegisterType registerType) {
+                @NonNull RegisterType registerType) {
             if (listener == null) {
                 return;
             }
             if (RegisterType.REGISTER == registerType) {
                 mDoctorStatusChangeListeners.add(listener);
-            } else {
+            }
+            else {
                 mDoctorStatusChangeListeners.remove(listener);
             }
         }
 
         @Override
         public void registerDoctorTransferPatientListener(@NonNull IChange<String> listener,
-                                                          @NonNull RegisterType registerType) {
+                @NonNull RegisterType registerType) {
             if (listener == null) {
                 return;
             }
             if (RegisterType.REGISTER == registerType) {
                 mDoctorTransferPatientListeners.add(listener);
-            } else {
+            }
+            else {
                 mDoctorTransferPatientListeners.remove(listener);
             }
         }
 
         @Override
         public void registerDoctorAuthStatusChangeListener(@NonNull IChange<Integer> listener,
-                                                           @NonNull RegisterType registerType) {
+                @NonNull RegisterType registerType) {
             if (listener == null) {
                 return;
             }
             if (RegisterType.REGISTER == registerType) {
                 mDoctorAuthStatusChangeListeners.add(listener);
-            } else {
+            }
+            else {
                 mDoctorAuthStatusChangeListeners.remove(listener);
             }
         }
 
         @Override
-        public void registerRecentContactChangeListener(@NonNull IChange<String> listener,
-                                                        @NonNull RegisterType registerType) {
+        public void registerMessageStatusChangeListener(@NonNull IChange<String> listener,
+                @NonNull RegisterType registerType) {
             if (listener == null) {
                 return;
             }
             if (RegisterType.REGISTER == registerType) {
-                mRecentContactChangeListener.add(listener);
-            } else {
-                mRecentContactChangeListener.remove(listener);
+                mRegisterMessageChangeListener.add(listener);
+            }
+            else {
+                mRegisterMessageChangeListener.remove(listener);
             }
         }
 
         @Override
         public void registerOrderStatusChangeListener(@NonNull IChange<String> listener,
-                                                      @NonNull RegisterType registerType) {
+                @NonNull RegisterType registerType) {
             if (listener == null) {
                 return;
             }
             if (RegisterType.REGISTER == registerType) {
                 mOrderStatusChangeListener.add(listener);
-            } else {
+            }
+            else {
                 mOrderStatusChangeListener.remove(listener);
             }
         }
@@ -133,14 +137,15 @@ public class NotifyChangeListenerManager {
          * @param data
          */
         public void notifyPatientStatusChange(final String data) {
-            synchronized (mPatientStatusChangeListeners) {
-                for (int i = 0, size = mPatientStatusChangeListeners.size(); i < size; i++) {
+            synchronized (mPatientListChangeListeners) {
+                for (int i = 0, size = mPatientListChangeListeners.size(); i < size; i++) {
                     try {
-                        final IChange<String> change = mPatientStatusChangeListeners.get(i);
+                        final IChange<String> change = mPatientListChangeListeners.get(i);
                         if (null != change) {
                             change.onChange(data);
                         }
-                    } catch (Exception e) {
+                    }
+                    catch (Exception e) {
                         HuiZhenLog.w(TAG, "notifyStatusChange error", e);
                     }
                 }
@@ -160,7 +165,8 @@ public class NotifyChangeListenerManager {
                         if (null != change) {
                             change.onChange(data);
                         }
-                    } catch (Exception e) {
+                    }
+                    catch (Exception e) {
                         HuiZhenLog.w(TAG, "notifyMessageChange error", e);
                     }
                 }
@@ -180,7 +186,8 @@ public class NotifyChangeListenerManager {
                         if (null != change) {
                             change.onChange(data);
                         }
-                    } catch (Exception e) {
+                    }
+                    catch (Exception e) {
                         HuiZhenLog.w(TAG, "notifyMessageChange error", e);
                     }
                 }
@@ -200,7 +207,8 @@ public class NotifyChangeListenerManager {
                         if (null != change) {
                             change.onChange(data);
                         }
-                    } catch (Exception e) {
+                    }
+                    catch (Exception e) {
                         HuiZhenLog.w(TAG, "notifyMessageChange error", e);
                     }
                 }
@@ -208,19 +216,20 @@ public class NotifyChangeListenerManager {
         }
 
         /**
-         * 最近联系人
+         * 消息
          *
          * @param data
          */
-        public void notifyRecentContactChange(final String data) {
-            synchronized (mRecentContactChangeListener) {
-                for (int i = 0, size = mRecentContactChangeListener.size(); i < size; i++) {
+        public void notifyMessageStatusChange(final String data) {
+            synchronized (mRegisterMessageChangeListener) {
+                for (int i = 0, size = mRegisterMessageChangeListener.size(); i < size; i++) {
                     try {
-                        final IChange<String> change = mRecentContactChangeListener.get(i);
+                        final IChange<String> change = mRegisterMessageChangeListener.get(i);
                         if (null != change) {
                             change.onChange(data);
                         }
-                    } catch (Exception e) {
+                    }
+                    catch (Exception e) {
                         HuiZhenLog.w(TAG, "notifyMessageChange error", e);
                     }
                 }
@@ -240,12 +249,12 @@ public class NotifyChangeListenerManager {
                         if (null != change) {
                             change.onChange(data);
                         }
-                    } catch (Exception e) {
+                    }
+                    catch (Exception e) {
                         HuiZhenLog.w(TAG, "notifyMessageChange error", e);
                     }
                 }
             }
         }
     }
-
 }

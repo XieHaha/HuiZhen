@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 import com.yht.frame.R;
+import com.yht.frame.api.notify.INotifyChangeListenerServer;
 import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseNetConfig;
 import com.yht.frame.data.BaseResponse;
@@ -61,6 +62,10 @@ public abstract class BaseActivity extends RxAppCompatActivity
      * 轻量级存储
      */
     protected SharePreferenceUtil sharePreferenceUtil;
+    /**
+     * 监听器
+     */
+    public INotifyChangeListenerServer iNotifyChangeListenerServer;
     /**
      * 权限管理类
      */

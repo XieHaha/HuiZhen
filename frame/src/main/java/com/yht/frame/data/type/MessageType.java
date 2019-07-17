@@ -5,132 +5,93 @@ package com.yht.frame.data.type;
  * @date 19/7/15 13:39
  * @des 推送消息、系统消息管理
  */
-public enum MessageType {/**
- * 医生认证成功
- */
-MESSAGE_DOCTOR_AUTH_SUCCESS("A001", 1),
+public interface MessageType {
+    /**
+     * 医生认证成功
+     */
+    String MESSAGE_DOCTOR_AUTH_SUCCESS = "A001";
     /**
      * 医生认证不通过
      */
-    MESSAGE_DOCTOR_AUTH_FAILED("A002", 2),
+    String MESSAGE_DOCTOR_AUTH_FAILED = "A002";
     /**
      * 医生订单有检查报告上传
      */
-    MESSAGE_SERVICE_REPORT("C007", 3),
+    String MESSAGE_SERVICE_REPORT = "C007";
     /**
      * 收到转诊申请
      */
-    MESSAGE_TRANSFER_APPLY("D002", 4),
+    String MESSAGE_TRANSFER_APPLY = "D002";
     /**
      * 预约转诊被拒绝
      */
-    MESSAGE_TRANSFER_REJECT("D004", 5),
+    String MESSAGE_TRANSFER_REJECT = "D004";
     /**
      * 转诊申请通过
      */
-    MESSAGE_TRANSFER_RECEIVED("D005", 6),
+    String MESSAGE_TRANSFER_RECEIVED = "D005";
     /**
      * 转诊申请被转移给其他医生
      */
-    MESSAGE_TRANSFER_OTHER("D008", 7),
+    String MESSAGE_TRANSFER_OTHER = "D008";
     /**
      * 接诊医生变更接诊信息
      */
-    MESSAGE_TRANSFER_UPDATE("D010", 8),
+    String MESSAGE_TRANSFER_UPDATE = "D010";
     /**
      * 转诊医生取消转诊
      */
-    MESSAGE_TRANSFER_CANCEL("D012", 9),
+    String MESSAGE_TRANSFER_CANCEL = "D012";
     /**
      * 规定时间未处理转诊单，系统取消转诊（接诊医生收）
      */
-    MESSAGE_TRANSFER_SYSTEM_CANCEL_R("D013", 10),
+    String MESSAGE_TRANSFER_SYSTEM_CANCEL_R = "D013";
     /**
      * 规定时间未处理转诊单，系统取消转诊（转诊医生收）
      */
-    MESSAGE_TRANSFER_SYSTEM_CANCEL_T("D014", 11),
+    String MESSAGE_TRANSFER_SYSTEM_CANCEL_T = "D014";
     /**
      * 会诊即将开始提醒
      */
-    MESSAGE_REMOTE_START("E002", 12),
+    String MESSAGE_REMOTE_START = "E002";
     /**
      * 会诊确认提醒
      */
-    MESSAGE_REMOTE_SURE("E003", 13),
+    String MESSAGE_REMOTE_SURE = "E003";
     /**
      * 会诊拒绝提醒
      */
-    MESSAGE_REMOTE_REJECT("E004", 14),
+    String MESSAGE_REMOTE_REJECT = "E004";
     /**
      * 会诊取消提醒
      */
-    MESSAGE_REMOTE_CANCEL("E005", 15),
+    String MESSAGE_REMOTE_CANCEL = "E005";
     /**
      * 发布会诊意见提醒
      */
-    MESSAGE_REMOTE_ADVICE("E006", 16),
+    String MESSAGE_REMOTE_ADVICE = "E006";
     /**
      * 会诊延期提醒
      */
-    MESSAGE_REMOTE_DELAY("E007", 17),
+    String MESSAGE_REMOTE_DELAY = "E007";
     /**
      * 填写会诊意见提醒
      */
-    MESSAGE_REMOTE_INPUT_ADVICE("E008", 18),
+    String MESSAGE_REMOTE_INPUT_ADVICE = "E008";
     /**
      * 新会诊邀请提醒
      */
-    MESSAGE_REMOTE_INVITE("E009", 19),
+    String MESSAGE_REMOTE_INVITE = "E009";
     /**
      * 报告完成，会珍币到账
      */
-    MESSAGE_CURRENCY_ARRIVED("F001", 20),
+    String MESSAGE_CURRENCY_ARRIVED = "F001";
     /**
      * 总后台扣除会珍币
      */
-    MESSAGE_CURRENCY_DEDUCTION("F002", 21),
+    String MESSAGE_CURRENCY_DEDUCTION = "F002";
     /**
      * 中台创建医生，推送给医生
      */
-    MESSAGE_ACCOUNT_CREATE("G003", 22);
-    private String msgType;
-    private int msgCode;
-
-    public String getMsgType() {
-        return msgType;
-    }
-
-    public int getMsgCode() {
-        return msgCode;
-    }
-
-    MessageType(String msgType, int msgCode) {
-        this.msgType = msgType;
-        this.msgCode = msgCode;
-    }
-
-    /**
-     * 根据key获取枚举
-     *
-     * @param key
-     * @return
-     */
-    public static int getValue(String key) {
-        if (null == key) {
-            return 0;
-        }
-        for (MessageType temp : MessageType.values()) {
-            if (temp.getMsgType().equals(key)) {
-                return temp.msgCode();
-            }
-        }
-        return 0;
-    }
-
-    public Integer msgCode() {
-        return this.msgCode;
-    }
-
-    public String msgType() {
-        return this.msgType;
-    }}
+    String MESSAGE_ACCOUNT_CREATE = "G003";
+}

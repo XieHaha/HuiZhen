@@ -18,6 +18,7 @@ import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.base.MessageIdBean;
 import com.yht.frame.data.bean.NotifyMessageBean;
+import com.yht.frame.data.type.MessageType;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
@@ -26,32 +27,13 @@ import com.yht.yihuantong.ui.adapter.NotifyMessageAdapter;
 import com.yht.yihuantong.ui.check.CheckDetailActivity;
 import com.yht.yihuantong.ui.currency.IncomeDetailActivity;
 import com.yht.yihuantong.ui.currency.WithdrawDetailActivity;
+import com.yht.yihuantong.ui.transfer.TransferInitiateDetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 
-import static com.yht.frame.data.type.MessageType.MESSAGE_ACCOUNT_CREATE;
-import static com.yht.frame.data.type.MessageType.MESSAGE_CURRENCY_ARRIVED;
-import static com.yht.frame.data.type.MessageType.MESSAGE_CURRENCY_DEDUCTION;
-import static com.yht.frame.data.type.MessageType.MESSAGE_REMOTE_ADVICE;
-import static com.yht.frame.data.type.MessageType.MESSAGE_REMOTE_CANCEL;
-import static com.yht.frame.data.type.MessageType.MESSAGE_REMOTE_DELAY;
-import static com.yht.frame.data.type.MessageType.MESSAGE_REMOTE_INPUT_ADVICE;
-import static com.yht.frame.data.type.MessageType.MESSAGE_REMOTE_INVITE;
-import static com.yht.frame.data.type.MessageType.MESSAGE_REMOTE_REJECT;
-import static com.yht.frame.data.type.MessageType.MESSAGE_REMOTE_START;
-import static com.yht.frame.data.type.MessageType.MESSAGE_REMOTE_SURE;
-import static com.yht.frame.data.type.MessageType.MESSAGE_SERVICE_REPORT;
-import static com.yht.frame.data.type.MessageType.MESSAGE_TRANSFER_APPLY;
-import static com.yht.frame.data.type.MessageType.MESSAGE_TRANSFER_CANCEL;
-import static com.yht.frame.data.type.MessageType.MESSAGE_TRANSFER_OTHER;
-import static com.yht.frame.data.type.MessageType.MESSAGE_TRANSFER_RECEIVED;
-import static com.yht.frame.data.type.MessageType.MESSAGE_TRANSFER_REJECT;
-import static com.yht.frame.data.type.MessageType.MESSAGE_TRANSFER_SYSTEM_CANCEL_R;
-import static com.yht.frame.data.type.MessageType.MESSAGE_TRANSFER_SYSTEM_CANCEL_T;
-import static com.yht.frame.data.type.MessageType.MESSAGE_TRANSFER_UPDATE;
 import static com.yht.frame.data.Tasks.GET_APP_MESSAGE_LIST;
 
 /**
@@ -61,7 +43,7 @@ import static com.yht.frame.data.Tasks.GET_APP_MESSAGE_LIST;
  */
 public class NotifyMessageFragment extends BaseFragment
         implements SwipeRefreshLayout.OnRefreshListener, BaseQuickAdapter.RequestLoadMoreListener,
-                   BaseQuickAdapter.OnItemChildClickListener {
+                   BaseQuickAdapter.OnItemChildClickListener, MessageType {
     @BindView(R.id.layout_refresh)
     SwipeRefreshLayout layoutRefresh;
     @BindView(R.id.recycler_view)
@@ -132,57 +114,30 @@ public class NotifyMessageFragment extends BaseFragment
         }
         Intent intent;
         String type = bean.getMsgType();
-        if (MESSAGE_SERVICE_REPORT.msgType().equals(type)) {
-            intent = new Intent(getContext(), CheckDetailActivity.class);
-            intent.putExtra(CommonData.KEY_ORDER_ID, getMessageTypeId(BASE_ZERO, bean.getExtraData()));
-            intent.putExtra(CommonData.KEY_PUBLIC, true);
-            startActivity(intent);
-        }
-        else if (MESSAGE_TRANSFER_APPLY.msgType().equals(type)) {
-        }
-        else if (MESSAGE_TRANSFER_REJECT.msgType().equals(type)) {
-        }
-        else if (MESSAGE_TRANSFER_RECEIVED.msgType().equals(type)) {
-        }
-        else if (MESSAGE_TRANSFER_OTHER.msgType().equals(type)) {
-        }
-        else if (MESSAGE_TRANSFER_UPDATE.msgType().equals(type)) {
-        }
-        else if (MESSAGE_TRANSFER_CANCEL.msgType().equals(type)) {
-        }
-        else if (MESSAGE_TRANSFER_SYSTEM_CANCEL_R.msgType().equals(type)) {
-        }
-        else if (MESSAGE_TRANSFER_SYSTEM_CANCEL_T.msgType().equals(type)) {
-        }
-        else if (MESSAGE_REMOTE_START.msgType().equals(type)) {
-        }
-        else if (MESSAGE_REMOTE_SURE.msgType().equals(type)) {
-        }
-        else if (MESSAGE_REMOTE_REJECT.msgType().equals(type)) {
-        }
-        else if (MESSAGE_REMOTE_CANCEL.msgType().equals(type)) {
-        }
-        else if (MESSAGE_REMOTE_ADVICE.msgType().equals(type)) {
-        }
-        else if (MESSAGE_REMOTE_DELAY.msgType().equals(type)) {
-        }
-        else if (MESSAGE_REMOTE_INPUT_ADVICE.msgType().equals(type)) {
-        }
-        else if (MESSAGE_REMOTE_INVITE.msgType().equals(type)) {
-        }
-        else if (MESSAGE_CURRENCY_ARRIVED.msgType().equals(type)) {
-            intent = new Intent(getContext(), IncomeDetailActivity.class);
-            intent.putExtra(CommonData.KEY_DOCTOR_CURRENCY_ID, getMessageTypeId(BASE_ONE, bean.getExtraData()));
-            startActivity(intent);
-        }
-        else if (MESSAGE_CURRENCY_DEDUCTION.msgType().equals(type)) {
-            intent = new Intent(getContext(), WithdrawDetailActivity.class);
-            intent.putExtra(CommonData.KEY_DOCTOR_CURRENCY_ID, getMessageTypeId(BASE_ZERO, bean.getExtraData()));
-            startActivity(intent);
-        }
-        else if (MESSAGE_ACCOUNT_CREATE.msgType().equals(type)) {
-        }
-        else {
+        switch (type) {
+            case MESSAGE_SERVICE_REPORT:
+                intent = new Intent(getContext(), CheckDetailActivity.class);
+                intent.putExtra(CommonData.KEY_ORDER_ID, getMessageTypeId(BASE_ZERO, bean.getExtraData()));
+                intent.putExtra(CommonData.KEY_PUBLIC, true);
+                startActivity(intent);
+                break;
+            case MESSAGE_CURRENCY_ARRIVED:
+                intent = new Intent(getContext(), IncomeDetailActivity.class);
+                intent.putExtra(CommonData.KEY_DOCTOR_CURRENCY_ID, getMessageTypeId(BASE_ONE, bean.getExtraData()));
+                startActivity(intent);
+                break;
+            case MESSAGE_CURRENCY_DEDUCTION:
+                intent = new Intent(getContext(), WithdrawDetailActivity.class);
+                intent.putExtra(CommonData.KEY_DOCTOR_CURRENCY_ID, getMessageTypeId(BASE_ZERO, bean.getExtraData()));
+                startActivity(intent);
+                break;
+            case MESSAGE_TRANSFER_UPDATE:
+                intent = new Intent(getContext(), TransferInitiateDetailActivity.class);
+                intent.putExtra(CommonData.KEY_ORDER_ID, getMessageTypeId(BASE_ONE, bean.getExtraData()));
+                startActivity(intent);
+                break;
+            default:
+                break;
         }
     }
 

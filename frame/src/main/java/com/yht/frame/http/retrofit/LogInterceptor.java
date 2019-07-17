@@ -51,7 +51,7 @@ public class LogInterceptor implements Interceptor {
             if (contentType != null) {
                 charset = contentType.charset(UTF8);
             }
-            if (isPlaintext(buffer) && !fileType.equals(contentType.type())) {
+            if (isPlaintext(buffer) && contentType != null && !fileType.equals(contentType.type())) {
                 HuiZhenLog.i(TAG, "params:" + buffer.readString(charset));
             }
             else {

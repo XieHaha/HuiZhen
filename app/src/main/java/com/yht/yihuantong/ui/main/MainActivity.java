@@ -8,11 +8,16 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
+import com.yht.frame.api.ApiManager;
+import com.yht.frame.api.notify.IChange;
+import com.yht.frame.api.notify.RegisterType;
 import com.yht.frame.data.BaseData;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.bean.VersionBean;
@@ -37,7 +42,7 @@ import static com.yht.yihuantong.jpush.TagAliasOperatorHelper.ACTION_SET;
 public class MainActivity extends BaseActivity
         implements VersionPresenter.VersionViewListener, UpdateDialog.OnEnterClickListener {
     @BindView(R.id.act_main_tab1)
-    LinearLayout actMainTab1;
+    RelativeLayout actMainTab1;
     @BindView(R.id.act_main_tab3)
     LinearLayout actMainTab3;
     @BindView(R.id.act_main_tab2)
@@ -48,6 +53,8 @@ public class MainActivity extends BaseActivity
     TextView tvPatient;
     @BindView(R.id.tv_worker)
     TextView tvWorker;
+    @BindView(R.id.iv_message_dot)
+    ImageView ivMessageDot;
     /**
      * 碎片管理
      */
@@ -73,6 +80,10 @@ public class MainActivity extends BaseActivity
      * 版本弹窗
      */
     private UpdateDialog updateDialog;
+    /**
+     * 消息红点
+     */
+    private IChange<String> messageUpdate = data -> getUnreadMessageStatus();
 
     @Override
     public int getLayoutID() {
@@ -93,6 +104,7 @@ public class MainActivity extends BaseActivity
         super.initData(savedInstanceState);
         //状态栏透明
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        iNotifyChangeListenerServer = ApiManager.getInstance().getServer();
         initTab();
         //环信登录
         loginEaseChat();
@@ -118,6 +130,8 @@ public class MainActivity extends BaseActivity
         actMainTab1.setOnClickListener(this);
         actMainTab2.setOnClickListener(this);
         actMainTab3.setOnClickListener(this);
+        //注册患者状态监听
+        iNotifyChangeListenerServer.registerMessageStatusChangeListener(messageUpdate, RegisterType.REGISTER);
     }
 
     /**
@@ -157,6 +171,20 @@ public class MainActivity extends BaseActivity
                 ToastUtil.toast(MainActivity.this, R.string.txt_login_ease_error);
             }
         });
+    }
+
+    /**
+     * 未读消息状态  小红点
+     */
+    private void getUnreadMessageStatus() {
+        int systemMessage = sharePreferenceUtil.getInt(CommonData.KEY_SYSTEM_MESSAGE_UNREAD_STATUS);
+        int easeMessage = sharePreferenceUtil.getInt(CommonData.KEY_EASE_MESSAGE_UNREAD_STATUS);
+        if (systemMessage > 0 || easeMessage > 0) {
+            ivMessageDot.setVisibility(View.VISIBLE);
+        }
+        else {
+            ivMessageDot.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
@@ -348,5 +376,11 @@ public class MainActivity extends BaseActivity
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        iNotifyChangeListenerServer.registerMessageStatusChangeListener(messageUpdate, RegisterType.UNREGISTER);
     }
 }

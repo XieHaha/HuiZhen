@@ -214,6 +214,7 @@
             android:textColor="@color/color_373d4d"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="20dp"
+            android:layout_marginStart="120dp"
             android:layout_centerVertical="true"
             android:gravity="right" />
     </RelativeLayout>

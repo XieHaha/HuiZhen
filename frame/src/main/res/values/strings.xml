@@ -252,7 +252,7 @@
     <string name="txt_diagnosis_hint">请针对患者病情填写初步诊断结果</string>
     <string name="txt_camera_people">拍照确认</string>
     <string name="txt_camera_people_hint">请按照图示，拍摄患者头像确认。</string>
-    <string name="txt_camera_people_transfer_hint">请按照图示，拍摄患者或家属头像确认订单。</string>
+    <string name="txt_camera_people_transfer_hint">请按照图示，拍摄患者或家属头像。</string>
     <string name="txt_self_pay">自费</string>
     <string name="txt_medicare">医保</string>
     <string name="txt_self_medicare">新农合</string>

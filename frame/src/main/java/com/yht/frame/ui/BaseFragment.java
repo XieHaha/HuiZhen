@@ -20,6 +20,7 @@ import android.widget.EditText;
 
 import com.google.gson.Gson;
 import com.yht.frame.R;
+import com.yht.frame.api.notify.INotifyChangeListenerServer;
 import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseNetConfig;
 import com.yht.frame.data.BaseResponse;
@@ -56,6 +57,10 @@ public abstract class BaseFragment extends Fragment
      * 轻量级存储
      */
     protected SharePreferenceUtil sharePreferenceUtil;
+    /**
+     * 监听器
+     */
+    public INotifyChangeListenerServer iNotifyChangeListenerServer;
     /**
      * 登录数据
      */

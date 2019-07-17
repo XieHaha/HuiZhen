@@ -9,7 +9,7 @@
         android:id="@+id/act_main_tab_frameLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="49dp"/>
+        android:layout_marginBottom="49dp" />
 
     <com.lijiankun24.shadowlayout.ShadowLayout
         android:layout_width="wrap_content"
@@ -30,7 +30,7 @@
             android:background="@color/color_ffffff"
             android:layout_height="49dp">
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/act_main_tab1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -38,20 +38,26 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="21dp"
-                    android:src="@drawable/selector_message_main_tab" />
-
                 <TextView
                     android:id="@+id/tv_message"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
+                    android:drawablePadding="3dp"
+                    android:drawableTop="@drawable/selector_message_main_tab"
                     android:text="@string/txt_message"
+                    android:gravity="center"
                     android:textColor="@color/txt_main_color_selector"
                     android:textSize="@dimen/text_12" />
-            </LinearLayout>
+
+
+                <ImageView
+                    android:id="@+id/iv_message_dot"
+                    android:layout_width="8dp"
+                    android:layout_height="8dp"
+                    android:background="@drawable/circular_red_point_bg"
+                    android:layout_toEndOf="@id/tv_message"
+                    android:visibility="invisible" />
+            </RelativeLayout>
 
 
             <LinearLayout

@@ -45,7 +45,7 @@ public abstract class AbstractDataObserver<T> implements Observer<BaseResponse<T
         //服务器错误信息处理
         if (listener != null) {
             listener.onResponseError(task, new Exception("网络繁忙，请稍后再试"));
-            HuiZhenLog.e(TAG, task + "   onError:" + e);
+            HuiZhenLog.e(TAG, task + " onError:" + e);
             if (e.getStackTrace() != null) {
                 for (StackTraceElement element : e.getStackTrace()) {
                     //错误日志 数据量较多 可以显示

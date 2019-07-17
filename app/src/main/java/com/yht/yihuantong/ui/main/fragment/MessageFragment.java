@@ -27,6 +27,7 @@ import com.hyphenate.EMError;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
+import com.yht.frame.api.notify.NotifyChangeListenerManager;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
@@ -259,6 +260,8 @@ public class MessageFragment extends BaseFragment
         else {
             ivMessageDot.setVisibility(View.INVISIBLE);
         }
+        sharePreferenceUtil.putInt(CommonData.KEY_EASE_MESSAGE_UNREAD_STATUS, msgUnReadCount);
+        NotifyChangeListenerManager.getInstance().notifyMessageStatusChange("");
     }
 
     /**
@@ -447,10 +450,16 @@ public class MessageFragment extends BaseFragment
                     tvReadMessage.setSelected(false);
                     ivNotifyDot.setVisibility(View.INVISIBLE);
                 }
+                //小红点处理
+                sharePreferenceUtil.putInt(CommonData.KEY_SYSTEM_MESSAGE_UNREAD_STATUS, messageTotalBean.getTotal());
+                NotifyChangeListenerManager.getInstance().notifyMessageStatusChange("");
                 break;
             case UPDATE_APP_UNREAD_MESSAGE_ALL:
                 tvReadMessage.setSelected(false);
                 ivNotifyDot.setVisibility(View.INVISIBLE);
+                //小红点处理
+                sharePreferenceUtil.putInt(CommonData.KEY_SYSTEM_MESSAGE_UNREAD_STATUS, 0);
+                NotifyChangeListenerManager.getInstance().notifyMessageStatusChange("");
                 break;
             default:
                 break;

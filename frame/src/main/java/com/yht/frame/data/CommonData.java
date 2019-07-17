@@ -120,4 +120,12 @@ public interface CommonData {
      * 通知开关
      */
     String KEY_NOTIFICATION_CONTROL = "key_notification_control";
+    /**
+     * 系统消息未读状态
+     */
+    String KEY_SYSTEM_MESSAGE_UNREAD_STATUS = "key_system_message_unread_status";
+    /**
+     * 环信消息未读状态
+     */
+    String KEY_EASE_MESSAGE_UNREAD_STATUS = "key_ease_message_unread_status";
 }

@@ -95,6 +95,33 @@ public class SharePreferenceUtil {
      * @param spKey
      * @param spValue
      */
+    public void putInt(String spKey, int spValue) {
+        spEditor = mContext.getSharedPreferences(FILE_NAME, 0).edit();
+        spEditor.putInt(spKey, spValue);
+        spEditor.commit();
+    }
+
+    /**
+     * 取
+     *
+     * @param spKey
+     * @return
+     */
+    public int getInt(String spKey) {
+        sp = mContext.getSharedPreferences(FILE_NAME, 0);
+        int value = -1;
+        if (sp != null) {
+            value = sp.getInt(spKey, -1);
+        }
+        return value;
+    }
+
+    /**
+     * 存
+     *
+     * @param spKey
+     * @param spValue
+     */
     public void putBoolean(String spKey, boolean spValue) {
         spEditor = mContext.getSharedPreferences(FILE_NAME, 0).edit();
         spEditor.putBoolean(spKey, spValue);

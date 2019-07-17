@@ -11,8 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -80,21 +78,15 @@ public class EaseConversationListFragment extends EaseBaseFragment implements Sw
         conversationList.addAll(loadConversationList());
         conversationListView.init(conversationList);
         if (listItemClickListener != null) {
-            conversationListView.setOnItemClickListener(new OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    EMConversation conversation = conversationListView.getItem(position);
-                    listItemClickListener.onListItemClicked(conversation);
-                }
+            conversationListView.setOnItemClickListener((parent, view, position, id) -> {
+                EMConversation conversation = conversationListView.getItem(position);
+                listItemClickListener.onListItemClicked(conversation);
             });
             if (listItemLongClickListener != null) {
-                conversationListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                    @Override
-                    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                        EMConversation conversation = conversationListView.getItem(position);
-                        listItemLongClickListener.onListItemLongClick(view, conversation);
-                        return true;
-                    }
+                conversationListView.setOnItemLongClickListener((parent, view, position, id) -> {
+                    EMConversation conversation = conversationListView.getItem(position);
+                    listItemLongClickListener.onListItemLongClick(view, conversation);
+                    return true;
                 });
             }
         }
@@ -205,7 +197,7 @@ public class EaseConversationListFragment extends EaseBaseFragment implements Sw
         catch (Exception e) {
             e.printStackTrace();
         }
-        List<EMConversation> list = new ArrayList<EMConversation>();
+        List<EMConversation> list = new ArrayList<>();
         for (Pair<Long, EMConversation> sortItem : sortList) {
             list.add(sortItem.second);
         }

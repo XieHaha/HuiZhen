@@ -52,6 +52,7 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/color_6a6f80"
                         android:textSize="@dimen/text_15"
+                        android:layout_marginEnd="120dp"
                         tools:text="医院"
                         android:layout_below="@id/tv_personal_depart"
                         android:layout_marginTop="9dp" />

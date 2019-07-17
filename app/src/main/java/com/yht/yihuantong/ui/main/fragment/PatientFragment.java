@@ -20,7 +20,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.yht.frame.api.ApiManager;
 import com.yht.frame.api.LitePalHelper;
 import com.yht.frame.api.notify.IChange;
-import com.yht.frame.api.notify.INotifyChangeListenerServer;
 import com.yht.frame.api.notify.RegisterType;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
@@ -29,7 +28,6 @@ import com.yht.frame.data.base.PatientBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
-import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.frame.widgets.edittext.AbstractTextWatcher;
 import com.yht.frame.widgets.edittext.SuperEditText;
 import com.yht.frame.widgets.recyclerview.decoration.SideBarItemDecoration;
@@ -87,10 +85,6 @@ public class PatientFragment extends BaseFragment
      * 分隔线
      */
     private SideBarItemDecoration decoration;
-    /**
-     * 监听器
-     */
-    private INotifyChangeListenerServer iNotifyChangeListenerServer;
     /**
      * 所有患者数据
      */
@@ -176,7 +170,7 @@ public class PatientFragment extends BaseFragment
             }
         });
         //注册患者状态监听
-        iNotifyChangeListenerServer.registerPatientStatusChangeListener(patientDataUpdate, RegisterType.REGISTER);
+        iNotifyChangeListenerServer.registerPatientListChangeListener(patientDataUpdate, RegisterType.REGISTER);
     }
 
     /**
@@ -338,9 +332,10 @@ public class PatientFragment extends BaseFragment
 
     @Override
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-        new HintDialog(getContext()).setPhone(patientBeans.get(position).getMobile())
-                                    .setOnEnterClickListener(() -> callPhone(patientBeans.get(position).getMobile()))
-                                    .show();
+        //        new HintDialog(getContext()).setPhone(patientBeans.get(position).getMobile())
+        //                                    .setOnEnterClickListener(() -> callPhone(patientBeans.get(position).getMobile()))
+        //                                    .show();
+        callPhone(patientBeans.get(position).getMobile());
     }
 
     @Override
@@ -349,6 +344,9 @@ public class PatientFragment extends BaseFragment
         switch (task) {
             case GET_PATIENT_LIST_BY_DOCTOR_CODE:
                 patientBeans = (List<PatientBean>)response.getData();
+                if (patientBeans == null) {
+                    patientBeans = new ArrayList<>();
+                }
                 //更新数据库
                 new LitePalHelper().updateAll(patientBeans, PatientBean.class);
                 sharePreferenceUtil.putBoolean(CommonData.KEY_UPDATE_PATIENT_DATA, true);
@@ -419,6 +417,6 @@ public class PatientFragment extends BaseFragment
     public void onDestroy() {
         super.onDestroy();
         //注销患者状态监听
-        iNotifyChangeListenerServer.registerPatientStatusChangeListener(patientDataUpdate, RegisterType.UNREGISTER);
+        iNotifyChangeListenerServer.registerPatientListChangeListener(patientDataUpdate, RegisterType.UNREGISTER);
     }
 }

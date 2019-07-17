@@ -122,8 +122,8 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .updateAppUnReadMessageAll(token)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.UPDATE_APP_UNREAD_MESSAGE_ALL,
-                                                                 listener));
+                       .subscribe(
+                               new AbstractLoadViewObserver<>(context, Tasks.UPDATE_APP_UNREAD_MESSAGE_ALL, listener));
     }
 
     public static void updateAppUnReadMessageById(Context context, String token, int id,
@@ -131,7 +131,7 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .updateAppUnReadMessageById(token, id)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.UPDATE_APP_UNREAD_MESSAGE_BY_ID,
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.UPDATE_APP_UNREAD_MESSAGE_BY_ID,
                                                                  listener));
     }
 
