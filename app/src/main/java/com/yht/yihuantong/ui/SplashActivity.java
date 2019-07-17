@@ -9,7 +9,6 @@ import android.view.WindowManager;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.type.DocAuthStatus;
 import com.yht.frame.ui.BaseActivity;
-import com.yht.frame.utils.HuiZhenLog;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.auth.AuthDoctorActivity;
 import com.yht.yihuantong.ui.login.LoginOptionsActivity;
@@ -104,7 +103,6 @@ public class SplashActivity extends BaseActivity implements DocAuthStatus {
 
     private void initScheduledThread(int duration) {
         time = Math.round(duration / 1000f) + 1;
-        HuiZhenLog.i(TAG, "time:" + time + "  duration:" + duration);
         executorService = new ScheduledThreadPoolExecutor(1, new BasicThreadFactory.Builder().namingPattern(
                 "yht-thread-pool-%d").daemon(true).build());
         executorService.scheduleAtFixedRate(() -> {

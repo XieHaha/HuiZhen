@@ -163,6 +163,7 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
      */
     public void startTimer() {
         layoutChatTime.setVisibility(View.VISIBLE);
+        inputMenu.getPrimaryMenu().setLayoutChatStartVisible(View.GONE);
     }
 
     /**

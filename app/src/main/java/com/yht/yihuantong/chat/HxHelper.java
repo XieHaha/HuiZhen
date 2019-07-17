@@ -64,7 +64,7 @@ public class HxHelper {
         public EaseUser getUser(String username, UserInfoCallback callback) {
             if (TextUtils.isEmpty(username)) { return null; }
             EaseUser user = new EaseUser(username);
-            List<PatientBean> list = DataSupport.where("code = ?", username.toUpperCase()).find(PatientBean.class);
+            List<PatientBean> list = DataSupport.where("code = ?", username).find(PatientBean.class);
             if (list != null && list.size() > 0) {
                 PatientBean bean = list.get(0);
                 user.setNickname(bean.getName());

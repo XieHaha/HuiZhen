@@ -156,7 +156,7 @@ public class EaseChatPrimaryMenu extends EaseChatPrimaryMenuBase implements OnCl
         layoutChatStart.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                layoutChatStart.setVisibility(GONE);
+                //                layoutChatStart.setVisibility(GONE);
                 //开始倒计时  通过广播来处理
                 Intent intent = new Intent(BaseData.BASE_START_TIMER_ACTION);
                 intent.setPackage(getContext().getPackageName());

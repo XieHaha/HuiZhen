@@ -71,24 +71,6 @@ public class VersionModel extends AbstractResponseAdapter<BaseResponse> implemen
     }
 
     @Override
-    public void onResponseError(Tasks task, Exception e) {
-        switch (task) {
-            case UPDATE_VERSION:
-                if (callBack != null) {
-                    callBack.error(e.getMessage());
-                }
-                break;
-            case DOWNLOAD_FILE:
-                if (downloadAPKCallBack != null) {
-                    downloadAPKCallBack.downloadError(e.getMessage());
-                }
-                break;
-            default:
-                break;
-        }
-    }
-
-    @Override
     public void onResponseCode(Tasks task, BaseResponse response) {
         if (callBack != null) {
             callBack.error(response.getMsg());

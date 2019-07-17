@@ -16,8 +16,12 @@ import android.widget.TextView;
 
 import com.hyphenate.easeui.EaseConstant;
 import com.yht.frame.data.BaseData;
+import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
+import com.yht.frame.data.Tasks;
+import com.yht.frame.data.base.ChatTimeBean;
 import com.yht.frame.data.base.PatientBean;
+import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.widgets.view.AbstractOnPageChangeListener;
@@ -47,8 +51,7 @@ import static com.yht.frame.data.CommonData.KEY_PATIENT_NAME;
  * @date 19/6/27 14:17
  * @des 患者页面（基础信息、聊天）
  */
-public class PatientPersonalActivity extends BaseActivity
-        implements EaseChatFragment.OnTimeLayoutClickListener {
+public class PatientPersonalActivity extends BaseActivity implements EaseChatFragment.OnTimeLayoutClickListener {
     @BindView(R.id.tv_left)
     TextView tvLeft;
     @BindView(R.id.tv_right)
@@ -78,7 +81,7 @@ public class PatientPersonalActivity extends BaseActivity
     /**
      * 倒计时
      */
-    private int time = 0;
+    private long time = 0;
     /**
      * 开启计时器
      */
@@ -109,7 +112,7 @@ public class PatientPersonalActivity extends BaseActivity
     private Handler handler = new Handler(message -> {
         switch (message.what) {
             case START:
-                startChatTimer(24 * 60 * 60);
+                startChatTimer();
                 if (easeChatFragment != null) {
                     easeChatFragment.startTimer();
                 }
@@ -165,15 +168,7 @@ public class PatientPersonalActivity extends BaseActivity
         viewBar.setTranslationX(calcViewBarOffset());
         initFragment();
         initReceiver();
-    }
-
-    /**
-     * 动态广播注册
-     */
-    private void initReceiver() {
-        timerReceiver = new TimerReceiver();
-        IntentFilter filter = new IntentFilter(BaseData.BASE_START_TIMER_ACTION);
-        registerReceiver(timerReceiver, filter);
+        getChatLastTime();
     }
 
     @Override
@@ -198,6 +193,36 @@ public class PatientPersonalActivity extends BaseActivity
                 }
             }
         });
+    }
+
+    /**
+     * 开始聊天
+     */
+    private void startChat() {
+        RequestUtils.startChat(this, loginBean.getToken(), loginBean.getDoctorCode(), patientCode, this);
+    }
+
+    /**
+     * 获取聊天剩余时间
+     */
+    private void getChatLastTime() {
+        RequestUtils.getChatLastTime(this, loginBean.getToken(), loginBean.getDoctorCode(), patientCode, this);
+    }
+
+    /**
+     * 结束聊天
+     */
+    private void endChat() {
+        RequestUtils.endChat(this, loginBean.getToken(), loginBean.getDoctorCode(), patientCode, this);
+    }
+
+    /**
+     * 动态广播注册
+     */
+    private void initReceiver() {
+        timerReceiver = new TimerReceiver();
+        IntentFilter filter = new IntentFilter(BaseData.BASE_START_TIMER_ACTION);
+        registerReceiver(timerReceiver, filter);
     }
 
     /**
@@ -238,6 +263,27 @@ public class PatientPersonalActivity extends BaseActivity
         }
     }
 
+    @Override
+    public void onResponseSuccess(Tasks task, BaseResponse response) {
+        super.onResponseSuccess(task, response);
+        switch (task) {
+            case START_CHAT:
+            case GET_CHAT_LAST_TIME:
+                ChatTimeBean chatTimeBean = (ChatTimeBean)response.getData();
+                if (chatTimeBean == null || chatTimeBean.getStopTime() == 0) {
+                    return;
+                }
+                time = chatTimeBean.getStopTime() / 1000;
+                handler.sendEmptyMessage(START);
+                break;
+            case END_CHAT:
+                handler.sendEmptyMessage(END);
+                break;
+            default:
+                break;
+        }
+    }
+
     /**
      * titlebar处理
      *
@@ -271,11 +317,8 @@ public class PatientPersonalActivity extends BaseActivity
 
     /**
      * 开启计时器
-     *
-     * @param remainingTime 剩余时间 (重新计时则忽略)
      */
-    private void startChatTimer(int remainingTime) {
-        time = remainingTime;
+    private void startChatTimer() {
         executorService = new ScheduledThreadPoolExecutor(1, new BasicThreadFactory.Builder().namingPattern(
                 "yht-thread-pool-%d").daemon(true).build());
         executorService.scheduleAtFixedRate(() -> {
@@ -295,7 +338,7 @@ public class PatientPersonalActivity extends BaseActivity
      */
     @Override
     public void onTimeLayoutClick() {
-        handler.sendEmptyMessage(END);
+        endChat();
     }
 
     /**
@@ -304,7 +347,8 @@ public class PatientPersonalActivity extends BaseActivity
     public class TimerReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            handler.sendEmptyMessage(START);
+            //开启聊天
+            runOnUiThread(() -> startChat());
         }
     }
 

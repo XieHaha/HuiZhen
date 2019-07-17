@@ -591,5 +591,38 @@ public class RequestUtils {
                        .compose(RxJavaHelper.observableIO2Main(context))
                        .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_VERSION, listener));
     }
+
+    public static void startChat(Context context, String token, String doctorCode, String patientCode,
+            final ResponseListener<BaseResponse> listener) {
+        Map<String, String> params = new HashMap<>(16);
+        params.put("doctorCode", doctorCode);
+        params.put("patientCode", patientCode);
+        RetrofitManager.getApiUrlManager()
+                       .startChat(token, params)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.START_CHAT, listener));
+    }
+
+    public static void getChatLastTime(Context context, String token, String doctorCode, String patientCode,
+            final ResponseListener<BaseResponse> listener) {
+        Map<String, String> params = new HashMap<>(16);
+        params.put("doctorCode", doctorCode);
+        params.put("patientCode", patientCode);
+        RetrofitManager.getApiUrlManager()
+                       .getChatLastTime(token, params)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_CHAT_LAST_TIME, listener));
+    }
+
+    public static void endChat(Context context, String token, String doctorCode, String patientCode,
+            final ResponseListener<BaseResponse> listener) {
+        Map<String, String> params = new HashMap<>(16);
+        params.put("doctorCode", doctorCode);
+        params.put("patientCode", patientCode);
+        RetrofitManager.getApiUrlManager()
+                       .endChat(token, params)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.END_CHAT, listener));
+    }
 }
 

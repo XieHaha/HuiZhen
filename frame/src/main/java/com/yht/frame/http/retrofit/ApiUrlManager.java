@@ -2,6 +2,7 @@ package com.yht.frame.http.retrofit;
 
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.base.BannerBean;
+import com.yht.frame.data.base.ChatTimeBean;
 import com.yht.frame.data.base.CheckBean;
 import com.yht.frame.data.base.CheckDetailBean;
 import com.yht.frame.data.base.DoctorAuthBean;
@@ -577,4 +578,35 @@ public interface ApiUrlManager {
      */
     @GET("/version/current-version")
     Observable<BaseResponse<VersionBean>> getVersion(@Header("token") String token, @Query("device") String info);
+
+    /**
+     * 添加聊天（开始聊天）
+     *
+     * @param info  map参数
+     * @param token token
+     * @return 返回值
+     */
+    @POST("/client/chatcountdown/add")
+    Observable<BaseResponse<ChatTimeBean>> startChat(@Header("token") String token, @Body Map<String, String> info);
+
+    /**
+     * 获取剩余时间
+     *
+     * @param info  map参数
+     * @param token token
+     * @return 返回值
+     */
+    @POST("/client/chatcountdown/getstoptime")
+    Observable<BaseResponse<ChatTimeBean>> getChatLastTime(@Header("token") String token,
+            @Body Map<String, String> info);
+
+    /**
+     * 结束聊天
+     *
+     * @param info  map参数
+     * @param token token
+     * @return 返回值
+     */
+    @POST("/client/chatcountdown/updatestoptime")
+    Observable<BaseResponse<String>> endChat(@Header("token") String token, @Body Map<String, String> info);
 }

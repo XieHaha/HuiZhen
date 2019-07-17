@@ -104,7 +104,7 @@ public class ZycApplication extends LitePalApplication {
         EaseUI.getInstance().setUserProfileProvider((username, callback) -> {
             LoginBean bean = getLoginBean();
             //如果是当前用户，就设置自己的昵称和头像
-            if (null != bean && TextUtils.equals(bean.getDoctorCode(), username)) {
+            if (null != bean && TextUtils.equals(bean.getDoctorCode(), username.toUpperCase())) {
                 EaseUser eu = new EaseUser(username);
                 eu.setNickname(bean.getDoctorName());
                 eu.setAvatar(bean.getPhoto());
@@ -112,7 +112,7 @@ public class ZycApplication extends LitePalApplication {
                 return eu;
             }
             //否则交给HxHelper处理，从消息中获取昵称和头像
-            return HxHelper.getInstance().getUser(username, callback);
+            return HxHelper.getInstance().getUser(username.toUpperCase(), callback);
         });
     }
 
