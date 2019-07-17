@@ -78,9 +78,30 @@
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:exported="true" />
+
+        <activity
+            android:name=".ui.IntentParseActivity"
+            android:screenOrientation="portrait"
+            android:label=""
+            android:windowSoftInputMode="adjustPan|stateHidden"
+            android:parentActivityName=".ui.main.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.main.MainActivity" />
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="zyc" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.main.MainActivity"
             android:screenOrientation="portrait"
+            android:launchMode="singleTop"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".ui.login.LoginOptionsActivity"
@@ -166,7 +187,12 @@
             android:name=".ui.check.CheckDetailActivity"
             android:screenOrientation="portrait"
             android:label="@string/txt_reserve_check_detail"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
+            android:windowSoftInputMode="adjustPan|stateHidden"
+            android:parentActivityName=".ui.main.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.main.MainActivity" />
+        </activity>
         <activity
             android:name=".ui.reservation.service.ReservationServiceActivity"
             android:screenOrientation="portrait"
@@ -206,16 +232,6 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.main.MainActivity" />
-
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:scheme="zyc" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".ui.transfer.SelectReceivingDoctorActivity"

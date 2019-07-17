@@ -1,5 +1,6 @@
 package com.yht.yihuantong.ui.main;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -93,10 +94,7 @@ public class MainActivity extends BaseActivity
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        //检查更新
-        mVersionPresenter = new VersionPresenter(this, "");
-        mVersionPresenter.setVersionViewListener(this);
-        mVersionPresenter.init();
+        Intent intent = getIntent();
     }
 
     @Override
@@ -109,6 +107,10 @@ public class MainActivity extends BaseActivity
         //环信登录
         loginEaseChat();
         setJPushAlias(loginBean.getDoctorCode());
+        //检查更新
+        mVersionPresenter = new VersionPresenter(this, loginBean.getToken());
+        mVersionPresenter.setVersionViewListener(this);
+        mVersionPresenter.init();
     }
 
     /**
