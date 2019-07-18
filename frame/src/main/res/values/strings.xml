@@ -66,7 +66,7 @@
     <string name="txt_contact">联系我们</string>
     <string name="txt_contact_hotline">您将要拨打%s：\n%s</string>
     <string name="txt_contact_service">医助热线</string>
-    <string name="txt_contact_service_phone">028-88888888</string>
+    <string name="txt_contact_service_phone">18140167371</string>
     <string name="txt_contact_patient_phone">患者电话</string>
     <string name="txt_contact_doctor_phone">医生电话</string>
     <string name="txt_calc_num">%d/500</string>

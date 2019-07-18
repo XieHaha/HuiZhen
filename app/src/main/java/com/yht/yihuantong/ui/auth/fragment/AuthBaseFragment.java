@@ -411,6 +411,7 @@ public class AuthBaseFragment extends BaseFragment
                 tvAuthBaseHospital.setSelected(true);
                 //重新选择医院后  需初始化科室
                 initDepartData(false);
+                initNextButton();
                 break;
             //科室选择
             case REQUEST_CODE_DEPART:

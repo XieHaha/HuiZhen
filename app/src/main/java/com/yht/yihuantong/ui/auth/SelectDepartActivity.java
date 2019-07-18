@@ -120,7 +120,9 @@ public class SelectDepartActivity extends BaseActivity implements BaseQuickAdapt
         if (task == Tasks.GET_DEPART_LIST) {
             departs = (ArrayList<HospitalDepartBean>)response.getData();
             departOneAdapter.setNewData(departs);
-            setDepartChild(0);
+            if (departs != null && departs.size() > 0) {
+                setDepartChild(0);
+            }
         }
     }
 }

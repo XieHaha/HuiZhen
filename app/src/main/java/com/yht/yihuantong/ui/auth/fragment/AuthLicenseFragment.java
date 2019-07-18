@@ -229,13 +229,11 @@ public class AuthLicenseFragment extends BaseFragment
                 if (tvAuthLicenseSubmit.isSelected() && onAuthStepListener != null) {
                     for (int i = 0; i < imagePaths.size(); i++) {
                         String url = imagePaths.get(i).getImageUrl();
-                        if (!TextUtils.isEmpty(url)) {
-                            if (i == BASE_ZERO) {
-                                doctorAuthBean.setCertFront(url);
-                            }
-                            else if (i == BASE_ONE) {
-                                doctorAuthBean.setCertBack(url);
-                            }
+                        if (i == BASE_ZERO) {
+                            doctorAuthBean.setCertFront(url);
+                        }
+                        else if (i == BASE_ONE) {
+                            doctorAuthBean.setCertBack(url);
                         }
                     }
                     onAuthStepListener.onAuthTwo(BASE_TWO, doctorAuthBean);

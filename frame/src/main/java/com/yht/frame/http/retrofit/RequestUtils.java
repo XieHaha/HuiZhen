@@ -204,7 +204,7 @@ public class RequestUtils {
     }
 
     public static void submitDoctorAuth(Context context, DoctorAuthBean bean, String token, String phone,
-            final ResponseListener<BaseResponse> listener) {
+            String merchant, final ResponseListener<BaseResponse> listener) {
         Map<String, Object> params = new HashMap<>(16);
         params.put("certFront", bean.getCertFront());
         params.put("certBack", bean.getCertBack());
@@ -215,6 +215,7 @@ public class RequestUtils {
         params.put("jobTitle", bean.getJobTitle());
         params.put("departmentId", bean.getLastApplyDepartmentId());
         params.put("doctorSex", bean.getDoctorSex());
+        params.put("merchant", merchant);
         RetrofitManager.getApiUrlManager()
                        .submitDoctorAuth(token, params)
                        .compose(RxJavaHelper.observableIO2Main(context))

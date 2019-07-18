@@ -5,6 +5,7 @@ import android.content.Intent;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.yht.frame.api.notify.NotifyChangeListenerManager;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.type.MessageType;
 import com.yht.frame.utils.HuiZhenLog;
@@ -47,6 +48,14 @@ public class PushMessageReceiver extends JPushMessageReceiver implements Message
      * @param type
      */
     private void notifyStatusChange(String type, String msgId) {
+        switch (type) {
+            case MESSAGE_DOCTOR_AUTH_SUCCESS:
+            case MESSAGE_DOCTOR_AUTH_FAILED:
+                NotifyChangeListenerManager.getInstance().notifyDoctorAuthStatus(0);
+                break;
+            default:
+                break;
+        }
     }
 
     /**
@@ -62,11 +71,11 @@ public class PushMessageReceiver extends JPushMessageReceiver implements Message
         Intent[] intents;
         switch (type) {
             case MESSAGE_DOCTOR_AUTH_SUCCESS:
+            case MESSAGE_DOCTOR_AUTH_FAILED:
                 mainIntent = new Intent(context, AuthDoctorActivity.class);
                 mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(mainIntent);
                 break;
-            case MESSAGE_DOCTOR_AUTH_FAILED:
             case MESSAGE_SERVICE_REPORT:
                 mainIntent = new Intent(context, MainActivity.class);
                 mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -86,7 +95,7 @@ public class PushMessageReceiver extends JPushMessageReceiver implements Message
                 mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mainIntent.putExtra(CommonData.KEY_PUBLIC, 0);
                 baseIntent = new Intent(context, TransferInitiateDetailActivity.class);
-                baseIntent.putExtra(CommonData.KEY_ORDER_ID,msgId);
+                baseIntent.putExtra(CommonData.KEY_ORDER_ID, msgId);
                 intents = new Intent[] { mainIntent, baseIntent };
                 context.startActivities(intents);
                 break;
@@ -96,7 +105,7 @@ public class PushMessageReceiver extends JPushMessageReceiver implements Message
                 mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mainIntent.putExtra(CommonData.KEY_PUBLIC, 0);
                 baseIntent = new Intent(context, TransferReceiveDetailActivity.class);
-                baseIntent.putExtra(CommonData.KEY_ORDER_ID,msgId);
+                baseIntent.putExtra(CommonData.KEY_ORDER_ID, msgId);
                 intents = new Intent[] { mainIntent, baseIntent };
                 context.startActivities(intents);
                 break;

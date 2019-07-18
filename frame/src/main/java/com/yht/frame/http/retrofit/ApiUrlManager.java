@@ -232,7 +232,7 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @POST("/client/doctor/auth")
-    Observable<BaseResponse<String>> submitDoctorAuth(@Header("token") String token, @Body Map<String, Object> info);
+    Observable<BaseResponse<LoginBean>> submitDoctorAuth(@Header("token") String token, @Body Map<String, Object> info);
 
     /**
      * 获取已提交认证信息

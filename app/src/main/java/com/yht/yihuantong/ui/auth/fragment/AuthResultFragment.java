@@ -38,10 +38,10 @@ public class AuthResultFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        //获取最新token
         loginBean = getLoginBean();
         initAuthStatus();
     }
-
     private void initAuthStatus() {
         int curAuthStatus = loginBean.getApprovalStatus();
         if (curAuthStatus == DocAuthStatus.AUTH_FAILD) {

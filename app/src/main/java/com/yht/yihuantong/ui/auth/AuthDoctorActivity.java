@@ -1,5 +1,6 @@
 package com.yht.yihuantong.ui.auth;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,11 +12,17 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.yht.frame.api.ApiManager;
+import com.yht.frame.api.notify.IChange;
+import com.yht.frame.api.notify.RegisterType;
+import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
-import com.yht.frame.data.type.DocAuthStatus;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.base.DoctorAuthBean;
+import com.yht.frame.data.base.LoginBean;
+import com.yht.frame.data.type.DocAuthStatus;
 import com.yht.frame.http.retrofit.RequestUtils;
+import com.yht.frame.ui.AppManager;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.SharePreferenceUtil;
 import com.yht.yihuantong.R;
@@ -24,6 +31,7 @@ import com.yht.yihuantong.ui.auth.fragment.AuthBaseFragment;
 import com.yht.yihuantong.ui.auth.fragment.AuthLicenseFragment;
 import com.yht.yihuantong.ui.auth.fragment.AuthResultFragment;
 import com.yht.yihuantong.ui.auth.listener.OnAuthStepListener;
+import com.yht.yihuantong.ui.main.MainActivity;
 
 import butterknife.BindView;
 
@@ -88,6 +96,14 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
      * 当前审核状态
      */
     private int curAuthStatus = -1;
+    /**
+     * 是否为重新认证
+     */
+    private boolean authAgain;
+    /**
+     * 认证状态
+     */
+    private IChange<Integer> authStatus = data -> getDoctorAuth();
 
     @Override
     protected boolean isInitBackBtn() {
@@ -102,16 +118,26 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
+        iNotifyChangeListenerServer = ApiManager.getInstance().getServer();
         findViewById(R.id.public_title_bar_back).setOnClickListener(this);
         curAuthStatus = loginBean.getApprovalStatus();
         initTab();
+        getDoctorAuth();
+    }
+
+    @Override
+    public void initListener() {
+        super.initListener();
+        //注册监听
+        iNotifyChangeListenerServer.registerDoctorAuthStatusChangeListener(authStatus, RegisterType.REGISTER);
     }
 
     /**
      * 提交医生认证
      */
     private void submitDoctorAuth() {
-        RequestUtils.submitDoctorAuth(this, doctorAuthBean, loginBean.getToken(), loginBean.getMobile(), this);
+        RequestUtils.submitDoctorAuth(this, doctorAuthBean, loginBean.getToken(), loginBean.getMobile(), BaseData.ADMIN,
+                                      this);
     }
 
     /**
@@ -281,6 +307,10 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
         super.onResponseSuccess(task, response);
         switch (task) {
             case SUBMIT_DOCTOR_AUTH:
+                //提交成功后需要更新用户code、token
+                LoginBean bean = (LoginBean)response.getData();
+                loginBean.setToken(bean.getToken());
+                loginBean.setDoctorCode(bean.getDoctorCode());
                 //提交成功后需要更新本地认证状态
                 loginBean.setApprovalStatus(DocAuthStatus.AUTH_WAITTING);
                 ZycApplication.getInstance().setLoginBean(loginBean);
@@ -289,7 +319,44 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
                 break;
             case GET_DOCTOR_AUTH:
                 doctorAuthBean = (DoctorAuthBean)response.getData();
-                tabAuthBaseView();
+                //如果已经认证成功
+                if (doctorAuthBean.getApprovalStatus() == DocAuthStatus.AUTH_SUCCESS) {
+                    loginBean.setDoctorName(doctorAuthBean.getDoctorName());
+                    loginBean.setDoctorCode(doctorAuthBean.getDoctorCode());
+                    loginBean.setPhoto(doctorAuthBean.getDoctorPhoto());
+                    loginBean.setMobile(doctorAuthBean.getDoctorPhone());
+                    loginBean.setSex(doctorAuthBean.getDoctorSex());
+                    loginBean.setJobTitle(doctorAuthBean.getJobTitle());
+                    loginBean.setHospitalName(doctorAuthBean.getLastApplyHospitalName());
+                    loginBean.setHospitalCode(doctorAuthBean.getLastApplyHospitalCode());
+                    loginBean.setDepartmentName(doctorAuthBean.getLastApplyDepartmentName());
+                    loginBean.setDoctorName(doctorAuthBean.getDoctorName());
+                    loginBean.setApprovalStatus(doctorAuthBean.getApprovalStatus());
+                    ZycApplication.getInstance().setLoginBean(loginBean);
+                    AppManager.getInstance().finishAllActivity();
+                    Intent intent = new Intent(this, MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    return;
+                }
+                else if (doctorAuthBean.getApprovalStatus() == DocAuthStatus.AUTH_FAILD) {
+                    loginBean.setApprovalStatus(doctorAuthBean.getApprovalStatus());
+                    ZycApplication.getInstance().setLoginBean(loginBean);
+                    if (authAgain) {
+                        tabAuthBaseView();
+                    }
+                    else {
+                        tabAuthResultView();
+                    }
+                }
+                else if (doctorAuthBean.getApprovalStatus() == DocAuthStatus.AUTH_WAITTING) {
+                    loginBean.setApprovalStatus(doctorAuthBean.getApprovalStatus());
+                    ZycApplication.getInstance().setLoginBean(loginBean);
+                    tabAuthResultView();
+                }
+                else {
+                    tabAuthBaseView();
+                }
                 break;
             default:
                 break;
@@ -315,6 +382,8 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
 
     @Override
     public void onAuthThree() {
+        //重新认证 去拉取已有的认证信息
+        authAgain = true;
         getDoctorAuth();
     }
 
@@ -342,6 +411,13 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
             }
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        //注销监听
+        iNotifyChangeListenerServer.registerDoctorAuthStatusChangeListener(authStatus, RegisterType.UNREGISTER);
     }
 
     @Override
