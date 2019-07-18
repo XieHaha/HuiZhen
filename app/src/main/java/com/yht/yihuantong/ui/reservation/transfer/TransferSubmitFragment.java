@@ -263,7 +263,7 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
                 }
             }
             else {
-                reverseTransferBean.setTransferTarget("");
+                reverseTransferBean.setTransferTarget(getString(R.string.txt_family_require));
             }
             //接诊医生
             if (!TextUtils.isEmpty(reverseTransferBean.getReceiveDoctorCode())) {
