@@ -16,6 +16,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NotificationCompat;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -29,17 +30,21 @@ import com.hyphenate.EMConnectionListener;
 import com.hyphenate.EMError;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
+import com.hyphenate.easeui.EaseUI;
+import com.hyphenate.easeui.domain.EaseUser;
 import com.yht.frame.api.ApiManager;
 import com.yht.frame.api.notify.IChange;
 import com.yht.frame.api.notify.RegisterType;
 import com.yht.frame.data.BaseData;
 import com.yht.frame.data.CommonData;
+import com.yht.frame.data.base.LoginBean;
 import com.yht.frame.data.bean.VersionBean;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.HuiZhenLog;
 import com.yht.frame.utils.ToastUtil;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ZycApplication;
+import com.yht.yihuantong.chat.HxHelper;
 import com.yht.yihuantong.chat.listener.AbstractEMContactListener;
 import com.yht.yihuantong.chat.listener.AbstractEMMessageListener;
 import com.yht.yihuantong.chat.receive.EaseMsgClickBroadCastReceiver;
@@ -127,6 +132,21 @@ public class MainActivity extends BaseActivity
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
         largeIcon = ((BitmapDrawable)getResources().getDrawable(R.mipmap.logo_icon)).getBitmap();
+        //环信头像处理，
+        HxHelper.getInstance().init(this);
+        EaseUI.getInstance().setUserProfileProvider((username, callback) -> {
+            LoginBean bean = getLoginBean();
+            //如果是当前用户，就设置自己的昵称和头像
+            if (null != bean && TextUtils.equals(bean.getDoctorCode(), username.toUpperCase())) {
+                EaseUser eu = new EaseUser(username);
+                eu.setNickname(bean.getDoctorName());
+                eu.setAvatar(bean.getPhoto());
+                callback.onSuccess(eu);
+                return eu;
+            }
+            //否则交给HxHelper处理，从消息中获取昵称和头像
+            return HxHelper.getInstance().getUser(username.toUpperCase(), callback);
+        });
     }
 
     @Override

@@ -276,17 +276,17 @@ public final class ViewfinderView extends View {
 
         /*角在线外*/
         // 左上角
-        canvas.drawRect(rect.left - corWidth, rect.top, rect.left, rect.top + corLength, reactPaint);
-        canvas.drawRect(rect.left - corWidth, rect.top - corWidth, rect.left + corLength, rect.top, reactPaint);
+        canvas.drawRect(rect.left, rect.top, rect.left + corWidth, rect.top + corLength, reactPaint);
+        canvas.drawRect(rect.left, rect.top, rect.left + corLength, rect.top + corWidth, reactPaint);
         // 右上角
-        canvas.drawRect(rect.right, rect.top, rect.right + corWidth, rect.top + corLength, reactPaint);
-        canvas.drawRect(rect.right - corLength, rect.top - corWidth, rect.right + corWidth, rect.top, reactPaint);
+        canvas.drawRect(rect.right - corWidth, rect.top, rect.right , rect.top + corLength, reactPaint);
+        canvas.drawRect(rect.right - corLength, rect.top, rect.right , rect.top + corWidth, reactPaint);
         // 左下角
-        canvas.drawRect(rect.left - corWidth, rect.bottom - corLength, rect.left, rect.bottom, reactPaint);
-        canvas.drawRect(rect.left - corWidth, rect.bottom, rect.left + corLength, rect.bottom + corWidth, reactPaint);
+        canvas.drawRect(rect.left, rect.bottom - corLength, rect.left + corWidth, rect.bottom, reactPaint);
+        canvas.drawRect(rect.left, rect.bottom - corWidth, rect.left + corLength, rect.bottom, reactPaint);
         // 右下角
-        canvas.drawRect(rect.right, rect.bottom - corLength, rect.right + corWidth, rect.bottom, reactPaint);
-        canvas.drawRect(rect.right - corLength, rect.bottom, rect.right + corWidth, rect.bottom + corWidth, reactPaint);
+        canvas.drawRect(rect.right - corWidth, rect.bottom - corLength, rect.right, rect.bottom, reactPaint);
+        canvas.drawRect(rect.right - corLength, rect.bottom - corWidth, rect.right, rect.bottom, reactPaint);
     }
 
     /**

@@ -14,7 +14,9 @@ import com.yht.yihuantong.ui.personal.SettingActivity;
 import com.yht.yihuantong.ui.transfer.TransferInitiateDetailActivity;
 
 /**
- * Created by joe on 2017/12/28.
+ *
+ * @author joe
+ * @date 2017/12/28
  * Email: lovejjfg@gmail.com
  */
 @SuppressWarnings({ "WeakerAccess", "unused" })

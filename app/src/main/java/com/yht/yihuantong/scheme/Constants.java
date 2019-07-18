@@ -20,10 +20,10 @@
 package com.yht.yihuantong.scheme;
 
 /**
- * Created by joe on 2017/12/28.
+ * @author joe
+ * @date 2017/12/28
  * Email: lovejjfg@gmail.com
  */
-
 public class Constants {
     public static final String KNOWN_SCHEME = "zyc://";
     public static final String HTTP_SCHEME = "http://";

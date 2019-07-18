@@ -11,7 +11,6 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMOptions;
 import com.hyphenate.easeui.EaseUI;
 import com.hyphenate.easeui.domain.EaseAvatarOptions;
-import com.hyphenate.easeui.domain.EaseUser;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.smtt.sdk.QbSdk;
 import com.yanzhenjie.nohttp.NoHttp;
@@ -111,20 +110,6 @@ public class ZycApplication extends LitePalApplication {
         //设置有关环信自定义的相关配置  titlebar、头像、名字处理
         HxHelper.Opts opts = new HxHelper.Opts();
         opts.setShowChatTitle(false);
-        HxHelper.getInstance().init(this);
-        EaseUI.getInstance().setUserProfileProvider((username, callback) -> {
-            LoginBean bean = getLoginBean();
-            //如果是当前用户，就设置自己的昵称和头像
-            if (null != bean && TextUtils.equals(bean.getDoctorCode(), username.toUpperCase())) {
-                EaseUser eu = new EaseUser(username);
-                eu.setNickname(bean.getDoctorName());
-                eu.setAvatar(bean.getPhoto());
-                callback.onSuccess(eu);
-                return eu;
-            }
-            //否则交给HxHelper处理，从消息中获取昵称和头像
-            return HxHelper.getInstance().getUser(username.toUpperCase(), callback);
-        });
     }
 
     /**

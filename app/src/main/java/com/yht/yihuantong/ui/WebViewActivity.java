@@ -31,6 +31,12 @@ public class WebViewActivity extends BaseActivity {
     TextView tvAgree;
     @BindView(R.id.layout_bottom)
     LinearLayout layoutBottom;
+    @BindView(R.id.public_title_bar_title)
+    TextView publicTitleBarTitle;
+    /**
+     * title
+     */
+    private String title;
     /**
      * 源
      */
@@ -54,12 +60,16 @@ public class WebViewActivity extends BaseActivity {
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         if (getIntent() != null) {
+            title = getIntent().getStringExtra(CommonData.KEY_TITLE);
             url = getIntent().getStringExtra(CommonData.KEY_PUBLIC);
             isProtocol = getIntent().getBooleanExtra(CommonData.KEY_IS_PROTOCOL, false);
         }
         if (isProtocol) {
             layoutBottom.setVisibility(View.VISIBLE);
             layoutTitleRoot.setVisibility(View.GONE);
+        }
+        else {
+            publicTitleBarTitle.setText(title);
         }
         webView.loadUrl(url);
     }

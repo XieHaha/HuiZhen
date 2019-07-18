@@ -247,6 +247,7 @@ public class LoginOptionsActivity extends BaseActivity
                     //显示微信下载页面
                     Intent intent = new Intent(this, WebViewActivity.class);
                     intent.putExtra(CommonData.KEY_PUBLIC, BaseNetConfig.BASE_WE_CHAT_DOWNLOAD_URL);
+                    intent.putExtra(CommonData.KEY_TITLE, getString(R.string.txt_hint));
                     startActivity(intent);
                 }
                 break;
@@ -356,6 +357,7 @@ public class LoginOptionsActivity extends BaseActivity
                 Intent intent = new Intent(LoginOptionsActivity.this, WebViewActivity.class);
                 intent.putExtra(CommonData.KEY_PUBLIC,
                                 BuildConfig.BASE_BASIC_URL + BaseNetConfig.BASE_BASIC_USER_PROTOCOL_URL);
+                intent.putExtra(CommonData.KEY_TITLE, getString(R.string.txt_about_protocol));
                 startActivity(intent);
                 clearBackgroundColor(widget);
             }

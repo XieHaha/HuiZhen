@@ -28,6 +28,7 @@ import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.ui.WebViewActivity;
 import com.yht.yihuantong.ui.check.CheckHistoryActivity;
 import com.yht.yihuantong.ui.personal.PersonalNewActivity;
 import com.yht.yihuantong.ui.reservation.ReservationDisableActivity;
@@ -215,7 +216,11 @@ public class WorkerFragment extends BaseFragment {
                 startActivity(intent);
                 break;
             case R.id.view_flipper:
-                ToastUtil.toast(getContext(), bannerBeans.get(viewFlipper.getDisplayedChild()).getBannerRemark());
+                intent = new Intent(getContext(), WebViewActivity.class);
+                intent.putExtra(CommonData.KEY_PUBLIC, bannerBeans.get(viewFlipper.getDisplayedChild()).getBannerUrl());
+                intent.putExtra(CommonData.KEY_TITLE,
+                                bannerBeans.get(viewFlipper.getDisplayedChild()).getBannerRemark());
+                startActivity(intent);
                 break;
             case R.id.layout_initiate_check:
                 startActivity(new Intent(getContext(), CheckHistoryActivity.class));
