@@ -26,7 +26,6 @@ import com.hyphenate.EMConnectionListener;
 import com.hyphenate.EMError;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
-import com.hyphenate.chat.EMMessage;
 import com.yht.frame.api.notify.NotifyChangeListenerManager;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
@@ -204,33 +203,6 @@ public class MessageFragment extends BaseFragment
      * 环信监听
      */
     private void initEaseListener() {
-        //注册一个监听连接状态的listener
-        connectionListener = new EaseConnectionListener();
-        EMClient.getInstance().addConnectionListener(connectionListener);
-        msgListener = new AbstractEMMessageListener() {
-            @Override
-            public void onMessageReceived(List<EMMessage> messages) {
-                //收到消息
-                if (easeConversationListFragment != null) {
-                    easeConversationListFragment.refresh();
-                }
-                //未读消息统计
-                getActivity().runOnUiThread(() -> updateUnReadCount());
-            }
-        };
-        EMClient.getInstance().chatManager().addMessageListener(msgListener);
-        contactListener = new AbstractEMContactListener() {
-            @Override
-            public void onContactDeleted(String username) {
-                //被删除时回调此方法
-                //删除会话
-                EMClient.getInstance().chatManager().deleteConversation(username, true);
-                if (easeConversationListFragment != null) {
-                    easeConversationListFragment.refresh();
-                }
-            }
-        };
-        EMClient.getInstance().contactManager().setContactListener(contactListener);
         tvDelete.setOnClickListener(v -> {
             popupWindow.dismiss();
             HintDialog hintDialog = new HintDialog(getContext());
@@ -238,15 +210,19 @@ public class MessageFragment extends BaseFragment
             hintDialog.setOnEnterClickListener(() -> {
                 if (curConversation != null) {
                     //删除和某个user会话，如果需要保留聊天记录，传false
-                    EMClient.getInstance().chatManager().deleteConversation(curConversation.conversationId(), true);
-                    //收到消息
-                    if (easeConversationListFragment != null) {
-                        easeConversationListFragment.refresh();
-                    }
+                    EMClient.getInstance().chatManager().deleteConversation(curConversation.conversationId(), false);
+                    refresh();
                 }
             });
             hintDialog.show();
         });
+    }
+
+    public void refresh() {
+        //收到消息
+        if (easeConversationListFragment != null) {
+            easeConversationListFragment.refresh();
+        }
     }
 
     /**

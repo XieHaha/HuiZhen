@@ -97,6 +97,7 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(':frame')
     implementation project(':easeui')
+    implementation project(':shortcutbadge')
     implementation project(':zxinglibrary')
     //腾讯X5
     implementation files('libs/tbs_sdk.jar')

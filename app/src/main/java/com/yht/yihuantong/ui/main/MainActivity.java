@@ -1,11 +1,21 @@
 package com.yht.yihuantong.ui.main;
 
+import android.annotation.TargetApi;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NotificationCompat;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -15,7 +25,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.hyphenate.EMCallBack;
+import com.hyphenate.EMConnectionListener;
+import com.hyphenate.EMError;
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMMessage;
 import com.yht.frame.api.ApiManager;
 import com.yht.frame.api.notify.IChange;
 import com.yht.frame.api.notify.RegisterType;
@@ -26,12 +39,19 @@ import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.HuiZhenLog;
 import com.yht.frame.utils.ToastUtil;
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.ZycApplication;
+import com.yht.yihuantong.chat.listener.AbstractEMContactListener;
+import com.yht.yihuantong.chat.listener.AbstractEMMessageListener;
+import com.yht.yihuantong.chat.receive.EaseMsgClickBroadCastReceiver;
 import com.yht.yihuantong.jpush.TagAliasOperatorHelper;
 import com.yht.yihuantong.ui.dialog.UpdateDialog;
 import com.yht.yihuantong.ui.main.fragment.MessageFragment;
 import com.yht.yihuantong.ui.main.fragment.PatientFragment;
 import com.yht.yihuantong.ui.main.fragment.WorkerFragment;
 import com.yht.yihuantong.version.presenter.VersionPresenter;
+import com.zyc.shortcutbadge.ShortcutBadger;
+
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -73,6 +93,15 @@ public class MainActivity extends BaseActivity
      * 患者碎片
      */
     private PatientFragment patientFragment;
+    private MyConnectionListener connectionListener;
+    /**
+     * 消息监听
+     */
+    private AbstractEMMessageListener msgListener;
+    /**
+     * 联系人变化监听
+     */
+    private AbstractEMContactListener contactListener;
     /**
      * 版本检测
      */
@@ -81,6 +110,9 @@ public class MainActivity extends BaseActivity
      * 版本弹窗
      */
     private UpdateDialog updateDialog;
+    private NotificationManager mNotificationManager;
+    private Bitmap largeIcon = null;
+    private int pendingCount = 1;
     /**
      * 消息红点
      */
@@ -94,7 +126,7 @@ public class MainActivity extends BaseActivity
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        Intent intent = getIntent();
+        largeIcon = ((BitmapDrawable)getResources().getDrawable(R.mipmap.logo_icon)).getBitmap();
     }
 
     @Override
@@ -134,6 +166,36 @@ public class MainActivity extends BaseActivity
         actMainTab3.setOnClickListener(this);
         //注册患者状态监听
         iNotifyChangeListenerServer.registerMessageStatusChangeListener(messageUpdate, RegisterType.REGISTER);
+        //注册一个监听连接状态的listener
+        connectionListener = new MyConnectionListener();
+        EMClient.getInstance().addConnectionListener(connectionListener);
+        msgListener = new AbstractEMMessageListener() {
+            @Override
+            public void onMessageReceived(List<EMMessage> messages) {
+                //收到消息
+                if (messageFragment != null) {
+                    messageFragment.refresh();
+                }
+                runOnUiThread(() -> updateUnReadCount());
+                initNotify();
+                sendChatMsg(messages.get(0));
+            }
+        };
+        EMClient.getInstance().chatManager().addMessageListener(msgListener);
+        contactListener = new AbstractEMContactListener() {
+            @Override
+            public void onContactDeleted(String username) {
+                //被删除时回调此方法
+                //删除会话
+                EMClient.getInstance().chatManager().deleteConversation(username, true);
+                if (messageFragment != null) {
+                    messageFragment.refresh();
+                }
+                //                //通知患者碎片刷新列表
+                //                NotifyChangeListenerManager.getInstance().notifyPatientStatusChange("");
+            }
+        };
+        EMClient.getInstance().contactManager().setContactListener(contactListener);
     }
 
     /**
@@ -175,6 +237,102 @@ public class MainActivity extends BaseActivity
         });
     }
 
+    private void initNotify() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String channelId = BaseData.BASE_CHAT_CHANNEL;
+            String channelName = "聊天消息";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            createNotificationChannel(channelId, channelName, importance);
+        }
+        else {
+            mNotificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+        }
+    }
+
+    /**
+     * 未读消息
+     */
+    public void updateUnReadCount() {
+        int systemMessage = sharePreferenceUtil.getInt(CommonData.KEY_SYSTEM_MESSAGE_UNREAD_STATUS);
+        int easeMessage = sharePreferenceUtil.getInt(CommonData.KEY_EASE_MESSAGE_UNREAD_STATUS);
+        if (systemMessage > 0 || easeMessage > 0) {
+            ivMessageDot.setVisibility(View.VISIBLE);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                //                sendSubscribeMsg(msgUnReadCount);
+            }
+            else {
+                setShortcutBadge(systemMessage + easeMessage);
+            }
+        }
+        else {
+            ivMessageDot.setVisibility(View.INVISIBLE);
+            removeShortcutBadge();
+        }
+    }
+
+    /**
+     * 设置角标
+     */
+    private void setShortcutBadge(int badgeCount) {
+        ShortcutBadger.applyCount(this, badgeCount);
+    }
+
+    /**
+     * 移除角标
+     */
+    private void removeShortcutBadge() {
+        ShortcutBadger.removeCount(this);
+    }
+
+    public void sendChatMsg(EMMessage message) {
+        //当前消息发送者与正在聊天界面对象一致时，不显示通知
+        if (message.getFrom().equals(ZycApplication.getInstance().getChatId())) {
+            return;
+        }
+        if (pendingCount > BaseData.BASE_PENDING_COUNT) {
+            pendingCount = 1;
+        }
+        pendingCount++;
+        Intent intent = new Intent(MainActivity.this, EaseMsgClickBroadCastReceiver.class);
+        intent.putExtra(CommonData.KEY_CHAT_ID, message.getFrom());
+        intent.setAction("ease.msg.android.intent.CLICK");
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this, pendingCount, intent,
+                                                                 PendingIntent.FLAG_UPDATE_CURRENT);
+        NotificationCompat.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            builder = new NotificationCompat.Builder(this, BaseData.BASE_CHAT_CHANNEL);
+            builder.setLargeIcon(largeIcon);
+            builder.setChannelId(BaseData.BASE_CHAT_CHANNEL);
+        }
+        else {
+            builder = new NotificationCompat.Builder(this, null);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder.setSmallIcon(R.mipmap.logo_icon);
+//            builder.setColor(ContextCompat.getColor(this, R.color.color_1491fc));
+        }
+        else {
+            builder.setSmallIcon(R.mipmap.logo_icon);
+        }
+        builder.setAutoCancel(true);
+        builder.setPriority(NotificationCompat.PRIORITY_HIGH);
+        builder.setContentTitle("会珍");
+        builder.setContentText("收到新的消息");
+        builder.setContentIntent(pendingIntent);
+        builder.setDefaults(NotificationCompat.DEFAULT_ALL);
+        builder.setWhen(System.currentTimeMillis());
+        mNotificationManager.notify(message.getFrom(), pendingCount, builder.build());
+    }
+
+    @TargetApi(Build.VERSION_CODES.O)
+    private void createNotificationChannel(String channelId, String channelName, int importance) {
+        NotificationChannel channel = new NotificationChannel(channelId, channelName, importance);
+        mNotificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        channel.setLightColor(Color.GREEN);
+        channel.enableVibration(true);
+        mNotificationManager.createNotificationChannel(channel);
+    }
+
     /**
      * 未读消息状态  小红点
      */
@@ -205,6 +363,24 @@ public class MainActivity extends BaseActivity
             default:
                 tabMessageView();
                 break;
+        }
+    }
+
+    public class MyConnectionListener implements EMConnectionListener {
+        @Override
+        public void onConnected() {
+        }
+
+        @Override
+        public void onDisconnected(final int error) {
+            runOnUiThread(() -> {
+                if (error == EMError.USER_REMOVED) {
+                    HuiZhenLog.e("test", "账号被删除");
+                }
+                else if (error == EMError.USER_LOGIN_ANOTHER_DEVICE) {
+                    ToastUtil.toast(MainActivity.this, "账号在其他设备登录");
+                }
+            });
         }
     }
 
@@ -384,5 +560,9 @@ public class MainActivity extends BaseActivity
     protected void onDestroy() {
         super.onDestroy();
         iNotifyChangeListenerServer.registerMessageStatusChangeListener(messageUpdate, RegisterType.UNREGISTER);
+        //移除监听
+        EMClient.getInstance().removeConnectionListener(connectionListener);
+        EMClient.getInstance().chatManager().removeMessageListener(msgListener);
+        EMClient.getInstance().contactManager().removeContactListener(contactListener);
     }
 }

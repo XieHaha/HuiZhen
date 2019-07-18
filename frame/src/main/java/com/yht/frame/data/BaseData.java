@@ -110,4 +110,16 @@ public interface BaseData {
      * 接口固定参数
      */
     String ADMIN = "ANDROID";
+    /**
+     * requestCode
+     */
+    int BASE_PENDING_COUNT = 10000;
+    /**
+     * 极光推送渠道
+     */
+    String BASE_PUSH_CHANNEL = "d_base_push_channel";
+    /**
+     * 聊天
+     */
+    String BASE_CHAT_CHANNEL = "d_base_chat_channel";
 }

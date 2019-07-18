@@ -29,7 +29,6 @@ import com.yht.yihuantong.ui.currency.IncomeDetailActivity;
 import com.yht.yihuantong.ui.currency.WithdrawDetailActivity;
 import com.yht.yihuantong.ui.transfer.TransferInitiateDetailActivity;
 import com.yht.yihuantong.ui.transfer.TransferReceiveDetailActivity;
-import com.yht.yihuantong.ui.transfer.TransferReceiveListActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -119,12 +118,7 @@ public class NotifyMessageFragment extends BaseFragment
         switch (type) {
             case MESSAGE_SERVICE_REPORT:
                 intent = new Intent(getContext(), CheckDetailActivity.class);
-                intent.putExtra(CommonData.KEY_ORDER_ID, getMessageTypeId(BASE_ZERO, bean.getExtraData()));
-                intent.putExtra(CommonData.KEY_PUBLIC, true);
-                startActivity(intent);
-                break;
-            case MESSAGE_TRANSFER_APPLY:
-                intent = new Intent(getContext(), TransferReceiveListActivity.class);
+                intent.putExtra(CommonData.KEY_ORDER_ID, getMessageTypeId(BASE_ONE, bean.getExtraData()));
                 intent.putExtra(CommonData.KEY_PUBLIC, true);
                 startActivity(intent);
                 break;
@@ -137,6 +131,7 @@ public class NotifyMessageFragment extends BaseFragment
                 intent.putExtra(CommonData.KEY_ORDER_ID, getMessageTypeId(BASE_ONE, bean.getExtraData()));
                 startActivity(intent);
                 break;
+            case MESSAGE_TRANSFER_APPLY:
             case MESSAGE_TRANSFER_CANCEL:
             case MESSAGE_TRANSFER_SYSTEM_CANCEL_R:
                 intent = new Intent(getContext(), TransferReceiveDetailActivity.class);
@@ -150,7 +145,7 @@ public class NotifyMessageFragment extends BaseFragment
                 break;
             case MESSAGE_CURRENCY_DEDUCTION:
                 intent = new Intent(getContext(), WithdrawDetailActivity.class);
-                intent.putExtra(CommonData.KEY_DOCTOR_CURRENCY_ID, getMessageTypeId(BASE_ZERO, bean.getExtraData()));
+                intent.putExtra(CommonData.KEY_DOCTOR_CURRENCY_ID, getMessageTypeId(BASE_ONE, bean.getExtraData()));
                 startActivity(intent);
                 break;
             default:

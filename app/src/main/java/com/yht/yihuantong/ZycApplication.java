@@ -46,6 +46,10 @@ public class ZycApplication extends LitePalApplication {
      */
     public static IWXAPI iwxapi;
     /**
+     * 当前正在聊天的id
+     */
+    private String chatId;
+    /**
      * 调试模式
      */
     private final boolean debugMode = true;
@@ -167,6 +171,14 @@ public class ZycApplication extends LitePalApplication {
      */
     public void clearLoginSuccessBean() {
         SharePreferenceUtil.remove(this, CommonData.KEY_LOGIN_BEAN);
+    }
+
+    public String getChatId() {
+        return chatId;
+    }
+
+    public void setChatId(String chatId) {
+        this.chatId = chatId;
     }
 
     /**
