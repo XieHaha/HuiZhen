@@ -9,7 +9,9 @@
     <!--<item android:top="60dp">-->
     <!--<bitmap-->
     <!--android:gravity="top"-->
-    <!--android:src="@mipmap/pic_splash" />-->
+    <!--android:src="@mipmap/pic_splash"-->
+    <!--android:layout_width="300dp"-->
+    <!--android:layout_height="wrap_content"/>-->
     <!--</item>-->
 
 </layer-list>
