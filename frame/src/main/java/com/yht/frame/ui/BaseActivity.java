@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -38,7 +37,6 @@ import com.yht.frame.utils.StatusBarUtil;
 import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.frame.widgets.dialog.LoadingDialog;
-import com.yht.frame.widgets.dialog.listener.OnEnterClickListener;
 
 import butterknife.ButterKnife;
 
@@ -108,7 +106,6 @@ public abstract class BaseActivity extends RxAppCompatActivity
     /**
      * 方法回调顺序
      * 1.initView
-     * 2.initClss
      * 3.initData
      * 4.initListener
      *
@@ -129,8 +126,8 @@ public abstract class BaseActivity extends RxAppCompatActivity
 
     private void initBaseViews() {
         try {
-            backBtn = (ImageView)findViewById(R.id.public_title_bar_back);
-            tvTitle = (TextView)findViewById(R.id.public_title_bar_title);
+            backBtn = findViewById(R.id.public_title_bar_back);
+            tvTitle = findViewById(R.id.public_title_bar_title);
         }
         catch (Exception e) {
             HuiZhenLog.e(getClass().getSimpleName(), e.getMessage());
@@ -143,11 +140,9 @@ public abstract class BaseActivity extends RxAppCompatActivity
     private void initBackBtn() {
         try {
             backBtn.setVisibility(View.VISIBLE);
-            backBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    finish();
-                }
+            backBtn.setOnClickListener(v -> {
+                hideSoftInputFromWindow(v);
+                finish();
             });
             tvTitle.setText(getTitle().toString());
         }
@@ -276,7 +271,7 @@ public abstract class BaseActivity extends RxAppCompatActivity
     /**
      * 隐藏软键盘
      */
-    public void hideSoftInputFromWindow(EditText editText) {
+    public void hideSoftInputFromWindow(View editText) {
         InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(editText.getWindowToken(), 0);
     }
@@ -284,7 +279,7 @@ public abstract class BaseActivity extends RxAppCompatActivity
     /**
      * 打开软键盘
      */
-    public void showSoftInputFromWindow(EditText editText) {
+    public void showSoftInputFromWindow(View editText) {
         InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.showSoftInput(editText, InputMethodManager.SHOW_FORCED);
     }
@@ -506,12 +501,7 @@ public abstract class BaseActivity extends RxAppCompatActivity
         HintDialog dialog = new HintDialog(this);
         dialog.setEnterBtnTxt(getString(R.string.txt_open));
         dialog.setEnterSelect(true);
-        dialog.setOnEnterClickListener(new OnEnterClickListener() {
-            @Override
-            public void onEnter() {
-                PermissionHelper.toPermissionSetting(getBaseContext());
-            }
-        });
+        dialog.setOnEnterClickListener(() -> PermissionHelper.toPermissionSetting(getBaseContext()));
         switch (permissionName) {
             case Permission.STORAGE_WRITE:
                 dialog.setContentString(getString(R.string.dialog_no_storage_permission_tip));
@@ -521,6 +511,9 @@ public abstract class BaseActivity extends RxAppCompatActivity
                 break;
             case Permission.CAMERA:
                 dialog.setContentString(getString(R.string.dialog_no_camera_permission_tip));
+                break;
+            case Permission.RECORD_AUDIO:
+                dialog.setContentString(getString(R.string.dialog_no_audio_permission_tip));
                 break;
             default:
                 break;

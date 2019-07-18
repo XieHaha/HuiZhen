@@ -176,7 +176,6 @@ public class MainActivity extends BaseActivity
                 if (messageFragment != null) {
                     messageFragment.refresh();
                 }
-                runOnUiThread(() -> updateUnReadCount());
                 initNotify();
                 sendChatMsg(messages.get(0));
             }
@@ -219,24 +218,25 @@ public class MainActivity extends BaseActivity
         if (isLogin) {
             return;
         }
-        EMClient.getInstance().login(loginBean.getDoctorCode().toLowerCase(), BaseData.BASE_EASE_DEFAULT_PWD, new EMCallBack() {
-            @Override
-            public void onSuccess() {
-                EMClient.getInstance().groupManager().loadAllGroups();
-                EMClient.getInstance().chatManager().loadAllConversations();
-                runOnUiThread(() -> HuiZhenLog.i(TAG, getString(R.string.txt_login_ease_success)));
-            }
+        EMClient.getInstance()
+                .login(loginBean.getDoctorCode().toLowerCase(), BaseData.BASE_EASE_DEFAULT_PWD, new EMCallBack() {
+                    @Override
+                    public void onSuccess() {
+                        EMClient.getInstance().groupManager().loadAllGroups();
+                        EMClient.getInstance().chatManager().loadAllConversations();
+                        runOnUiThread(() -> HuiZhenLog.i(TAG, getString(R.string.txt_login_ease_success)));
+                    }
 
-            @Override
-            public void onProgress(int progress, String status) {
-            }
+                    @Override
+                    public void onProgress(int progress, String status) {
+                    }
 
-            @Override
-            public void onError(int code, String message) {
-                HuiZhenLog.i(TAG, getString(R.string.txt_login_ease_error));
-                ToastUtil.toast(MainActivity.this, R.string.txt_login_ease_error);
-            }
-        });
+                    @Override
+                    public void onError(int code, String message) {
+                        HuiZhenLog.i(TAG, getString(R.string.txt_login_ease_error));
+                        ToastUtil.toast(MainActivity.this, R.string.txt_login_ease_error);
+                    }
+                });
     }
 
     private void initNotify() {
@@ -311,7 +311,6 @@ public class MainActivity extends BaseActivity
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             builder.setSmallIcon(R.mipmap.icon_alpha_logo);
-            //            builder.setColor(ContextCompat.getColor(this, R.color.color_1491fc));
         }
         else {
             builder.setSmallIcon(R.mipmap.logo_icon);

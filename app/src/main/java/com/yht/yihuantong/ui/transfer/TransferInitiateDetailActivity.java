@@ -220,6 +220,7 @@ public class TransferInitiateDetailActivity extends BaseActivity implements Tran
             R.id.tv_transfer_again, R.id.tv_contact_patient, R.id.tv_contact_doctor, R.id.tv_contact_patient_one,
             R.id.tv_contact_doctor_one })
     public void onViewClicked(View view) {
+        if (transferBean == null) { return; }
         switch (view.getId()) {
             case R.id.tv_transfer_again:
                 if (TRANSFER_STATUS_WAIT == transferBean.getReceiveStatus()) {

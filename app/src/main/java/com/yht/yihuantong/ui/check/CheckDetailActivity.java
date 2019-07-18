@@ -265,6 +265,7 @@ public class CheckDetailActivity extends BaseActivity implements CheckOrderStatu
 
     @OnClick(R.id.tv_check_next)
     public void onViewClicked() {
+        if (checkDetailBean == null) { return; }
         new HintDialog(this).setPhone(getString(R.string.txt_contact_patient_phone), checkDetailBean.getPatientMobile())
                             .setOnEnterClickListener(() -> callPhone(checkDetailBean.getPatientMobile()))
                             .show();
@@ -418,7 +419,7 @@ public class CheckDetailActivity extends BaseActivity implements CheckOrderStatu
                                             new DownloadListener() {
                                                 @Override
                                                 public void onDownloadError(int what, Exception exception) {
-                                                    ToastUtil.toast(CheckDetailActivity.this, "download error");
+                                                    ToastUtil.toast(CheckDetailActivity.this, "加载失败");
                                                 }
 
                                                 @Override

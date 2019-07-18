@@ -238,6 +238,7 @@ public class TransferReceiveDetailActivity extends BaseActivity implements Trans
             R.id.layout_call, R.id.layout_edit_transfer, R.id.tv_transfer_other, R.id.tv_refuse, R.id.tv_received,
             R.id.tv_contact_doctor, R.id.tv_contact_patient })
     public void onViewClicked(View view) {
+        if (transferBean == null) { return; }
         Intent intent;
         switch (view.getId()) {
             case R.id.layout_call:

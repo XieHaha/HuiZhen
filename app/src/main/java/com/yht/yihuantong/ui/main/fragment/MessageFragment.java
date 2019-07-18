@@ -223,6 +223,7 @@ public class MessageFragment extends BaseFragment
         if (easeConversationListFragment != null) {
             easeConversationListFragment.refresh();
         }
+        updateUnReadCount();
     }
 
     /**
