@@ -126,8 +126,6 @@ public class MainActivity extends BaseActivity
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        EMClient.getInstance().groupManager().loadAllGroups();
-        EMClient.getInstance().chatManager().loadAllConversations();
         largeIcon = ((BitmapDrawable)getResources().getDrawable(R.mipmap.logo_icon)).getBitmap();
     }
 
@@ -221,7 +219,7 @@ public class MainActivity extends BaseActivity
         if (isLogin) {
             return;
         }
-        EMClient.getInstance().login(loginBean.getDoctorCode(), BaseData.BASE_EASE_DEFAULT_PWD, new EMCallBack() {
+        EMClient.getInstance().login(loginBean.getDoctorCode().toLowerCase(), BaseData.BASE_EASE_DEFAULT_PWD, new EMCallBack() {
             @Override
             public void onSuccess() {
                 EMClient.getInstance().groupManager().loadAllGroups();

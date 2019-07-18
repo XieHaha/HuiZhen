@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.view.WindowManager;
 
+import com.hyphenate.chat.EMClient;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.type.DocAuthStatus;
 import com.yht.frame.ui.BaseActivity;
@@ -51,6 +52,8 @@ public class SplashActivity extends BaseActivity implements DocAuthStatus {
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
+        EMClient.getInstance().groupManager().loadAllGroups();
+        EMClient.getInstance().chatManager().loadAllConversations();
         hideBottomUIMenu();
         try {
             GifDrawable gifDrawable = new GifDrawable(getResources(), R.mipmap.pic_splash_gif);

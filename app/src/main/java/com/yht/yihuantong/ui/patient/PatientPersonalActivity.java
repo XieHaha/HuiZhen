@@ -154,7 +154,7 @@ public class PatientPersonalActivity extends BaseActivity implements EaseChatFra
             patientName = getIntent().getStringExtra(KEY_PATIENT_NAME);
             isChat = getIntent().getBooleanExtra(CommonData.KEY_PATIENT_CHAT, false);
         }
-        List<PatientBean> list = DataSupport.where("code = ?", patientCode.toUpperCase()).find(PatientBean.class);
+        List<PatientBean> list = DataSupport.where("code = ?", patientCode).find(PatientBean.class);
         if (list != null && list.size() > 0) {
             PatientBean bean = list.get(0);
             patientName = bean.getName();
@@ -238,7 +238,7 @@ public class PatientPersonalActivity extends BaseActivity implements EaseChatFra
         //传入参数
         Bundle args = new Bundle();
         args.putInt(EaseConstant.EXTRA_CHAT_TYPE, EaseConstant.CHATTYPE_SINGLE);
-        args.putString(EaseConstant.EXTRA_USER_ID, patientCode);
+        args.putString(EaseConstant.EXTRA_USER_ID, patientCode.toLowerCase());
         easeChatFragment.hideTitleBar();
         easeChatFragment.setArguments(args);
         List<Fragment> fragmentList = new ArrayList<>();

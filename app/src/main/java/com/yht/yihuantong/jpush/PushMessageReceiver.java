@@ -11,7 +11,6 @@ import com.yht.frame.utils.HuiZhenLog;
 import com.yht.yihuantong.ZycApplication;
 import com.yht.yihuantong.ui.auth.AuthDoctorActivity;
 import com.yht.yihuantong.ui.main.MainActivity;
-import com.yht.yihuantong.ui.personal.SettingActivity;
 import com.yht.yihuantong.ui.transfer.TransferInitiateDetailActivity;
 import com.yht.yihuantong.ui.transfer.TransferReceiveDetailActivity;
 
@@ -28,8 +27,8 @@ public class PushMessageReceiver extends JPushMessageReceiver implements Message
     public void onNotifyMessageArrived(Context context, NotificationMessage message) {
         JsonObject jsonObject = new JsonParser().parse(message.notificationExtras).getAsJsonObject();
         String type = jsonObject.get("msgType").getAsString();
-        String msgId = jsonObject.get("thisKey").getAsString();
-        HuiZhenLog.i(TAG, "thisKey:" + type + "  msgType:" + msgId);
+        String msgId = jsonObject.get("orderNo").getAsString();
+        HuiZhenLog.i(TAG, "msgType:" + type + "  orderNo:" + msgId);
         notifyStatusChange(type, msgId);
     }
 
@@ -37,8 +36,8 @@ public class PushMessageReceiver extends JPushMessageReceiver implements Message
     public void onNotifyMessageOpened(Context context, NotificationMessage message) {
         JsonObject jsonObject = new JsonParser().parse(message.notificationExtras).getAsJsonObject();
         String type = jsonObject.get("msgType").getAsString();
-        String msgId = jsonObject.get("thisKey").getAsString();
-        HuiZhenLog.i(TAG, "thisKey:" + type + "  msgType:" + msgId);
+        String msgId = jsonObject.get("orderNo").getAsString();
+        HuiZhenLog.i(TAG, "msgType:" + type + "  orderNo:" + msgId);
         jumpPageByType(context, type, msgId);
     }
 
@@ -72,7 +71,7 @@ public class PushMessageReceiver extends JPushMessageReceiver implements Message
                 mainIntent = new Intent(context, MainActivity.class);
                 mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mainIntent.putExtra(CommonData.KEY_PUBLIC, 0);
-                baseIntent = new Intent(context, SettingActivity.class);
+                baseIntent = new Intent(context, AuthDoctorActivity.class);
                 intents = new Intent[] { mainIntent, baseIntent };
                 context.startActivities(intents);
                 break;
@@ -87,6 +86,7 @@ public class PushMessageReceiver extends JPushMessageReceiver implements Message
                 mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mainIntent.putExtra(CommonData.KEY_PUBLIC, 0);
                 baseIntent = new Intent(context, TransferInitiateDetailActivity.class);
+                baseIntent.putExtra(CommonData.KEY_ORDER_ID,msgId);
                 intents = new Intent[] { mainIntent, baseIntent };
                 context.startActivities(intents);
                 break;
@@ -96,7 +96,7 @@ public class PushMessageReceiver extends JPushMessageReceiver implements Message
                 mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mainIntent.putExtra(CommonData.KEY_PUBLIC, 0);
                 baseIntent = new Intent(context, TransferReceiveDetailActivity.class);
-                baseIntent.putExtra(CommonData.KEY_ORDER_ID,"");
+                baseIntent.putExtra(CommonData.KEY_ORDER_ID,msgId);
                 intents = new Intent[] { mainIntent, baseIntent };
                 context.startActivities(intents);
                 break;
