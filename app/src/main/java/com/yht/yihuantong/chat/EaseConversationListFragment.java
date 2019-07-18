@@ -3,7 +3,6 @@ package com.yht.yihuantong.chat;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -17,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.hyphenate.EMConnectionListener;
+import com.hyphenate.EMConversationListener;
 import com.hyphenate.EMError;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
@@ -45,6 +45,12 @@ public class EaseConversationListFragment extends EaseBaseFragment implements Sw
     protected FrameLayout errorItemContainer;
     private View footerView;
     protected boolean isConflict;
+    protected EMConversationListener convListener = new EMConversationListener() {
+        @Override
+        public void onCoversationUpdate() {
+            refresh();
+        }
+    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -118,9 +124,9 @@ public class EaseConversationListFragment extends EaseBaseFragment implements Sw
     };
     private EaseConversationListItemClickListener listItemClickListener;
     private EaseConversationListItemLongClickListener listItemLongClickListener;
-    protected Handler handler = new Handler(new Handler.Callback() {
+    protected Handler handler = new Handler() {
         @Override
-        public boolean handleMessage(Message msg) {
+        public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
                 case 0:
                     onConnectionDisconnected();
@@ -138,9 +144,8 @@ public class EaseConversationListFragment extends EaseBaseFragment implements Sw
                 default:
                     break;
             }
-            return false;
         }
-    });
+    };
 
     /**
      * connected to server

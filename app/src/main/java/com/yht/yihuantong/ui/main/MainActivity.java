@@ -126,6 +126,8 @@ public class MainActivity extends BaseActivity
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
+        EMClient.getInstance().groupManager().loadAllGroups();
+        EMClient.getInstance().chatManager().loadAllConversations();
         largeIcon = ((BitmapDrawable)getResources().getDrawable(R.mipmap.logo_icon)).getBitmap();
     }
 
@@ -222,6 +224,8 @@ public class MainActivity extends BaseActivity
         EMClient.getInstance().login(loginBean.getDoctorCode(), BaseData.BASE_EASE_DEFAULT_PWD, new EMCallBack() {
             @Override
             public void onSuccess() {
+                EMClient.getInstance().groupManager().loadAllGroups();
+                EMClient.getInstance().chatManager().loadAllConversations();
                 runOnUiThread(() -> HuiZhenLog.i(TAG, getString(R.string.txt_login_ease_success)));
             }
 
@@ -308,8 +312,8 @@ public class MainActivity extends BaseActivity
             builder = new NotificationCompat.Builder(this, null);
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder.setSmallIcon(R.mipmap.logo_icon);
-//            builder.setColor(ContextCompat.getColor(this, R.color.color_1491fc));
+            builder.setSmallIcon(R.mipmap.icon_alpha_logo);
+            //            builder.setColor(ContextCompat.getColor(this, R.color.color_1491fc));
         }
         else {
             builder.setSmallIcon(R.mipmap.logo_icon);
