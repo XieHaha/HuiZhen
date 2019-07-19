@@ -299,7 +299,10 @@ public class LoginOptionsActivity extends BaseActivity
                 jumpMain();
                 break;
             case REQUEST_CODE_PROTOCOL:
-                sharePreferenceUtil.putAlwaysString(CommonData.KEY_IS_PROTOCOL_UPDATE_DATE, protocolBean.getUpdateAt());
+                if (protocolBean != null) {
+                    sharePreferenceUtil.putAlwaysString(CommonData.KEY_IS_PROTOCOL_UPDATE_DATE,
+                                                        protocolBean.getUpdateAt());
+                }
                 isAgree = true;
                 sendReq();
                 break;

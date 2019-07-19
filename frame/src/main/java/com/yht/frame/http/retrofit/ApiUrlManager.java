@@ -55,7 +55,7 @@ public interface ApiUrlManager {
      * @param info map参数
      * @return 返回
      */
-    @POST("/client/wx/doctor-login")
+    @POST("client/wx/doctor-login")
     Observable<BaseResponse<LoginBean>> weChatLogin(@Body Map<String, String> info);
 
     /**
@@ -64,7 +64,7 @@ public interface ApiUrlManager {
      * @param info map参数
      * @return 返回
      */
-    @POST("/client/wx/doctor-bind")
+    @POST("client/wx/doctor-bind")
     Observable<BaseResponse<LoginBean>> weChatBind(@Body Map<String, String> info);
 
     /**
@@ -73,7 +73,7 @@ public interface ApiUrlManager {
      * @param info map参数
      * @return 返回值
      */
-    @POST("/client/get-verify-code")
+    @POST("client/get-verify-code")
     Observable<BaseResponse<VerifyCodeBean>> getVerifyCode(@Body Map<String, String> info);
 
     /**
@@ -82,7 +82,7 @@ public interface ApiUrlManager {
      * @param info map参数
      * @return 返回值
      */
-    @POST("/client/confirm-verify-code")
+    @POST("client/confirm-verify-code")
     Observable<BaseResponse<LoginBean>> login(@Body Map<String, String> info);
 
     /**
@@ -90,7 +90,7 @@ public interface ApiUrlManager {
      *
      * @return 返回值
      */
-    @GET("/client/sys/doctor_protocol_last_date")
+    @GET("client/sys/doctor_protocol_last_date")
     Observable<BaseResponse<ProtocolBean>> getProtocolUpdateDate();
 
     /**
@@ -101,7 +101,7 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @Multipart
-    @POST("/client/file/upload_file")
+    @POST("client/file/upload_file")
     Observable<BaseResponse<String>> uploadImg(@Header("token") String token, @Part MultipartBody.Part file);
 
     /**
@@ -111,7 +111,7 @@ public interface ApiUrlManager {
      * @param token token
      * @return 返回值
      */
-    @POST("/client/msg/list/app")
+    @POST("client/msg/list/app")
     Observable<BaseResponse<List<NotifyMessageBean>>> getAppMessageList(@Header("token") String token,
             @Body Map<String, Integer> info);
 
@@ -121,7 +121,7 @@ public interface ApiUrlManager {
      * @param token token
      * @return 返回值
      */
-    @GET("/client/msg/unread/total")
+    @GET("client/msg/unread/total")
     Observable<BaseResponse<MessageTotalBean>> getAppUnReadMessageTotal(@Header("token") String token);
 
     /**
@@ -130,7 +130,7 @@ public interface ApiUrlManager {
      * @param token token
      * @return 返回值
      */
-    @PUT("/client/msg/allRead")
+    @PUT("client/msg/allRead")
     Observable<BaseResponse<String>> updateAppUnReadMessageAll(@Header("token") String token);
 
     /**
@@ -140,7 +140,7 @@ public interface ApiUrlManager {
      * @param id    id
      * @return 返回值
      */
-    @PUT("/client/msg/read/{id}")
+    @PUT("client/msg/read/{id}")
     Observable<BaseResponse<String>> updateAppUnReadMessageById(@Header("token") String token, @Path("id") int id);
 
     /**
@@ -149,7 +149,7 @@ public interface ApiUrlManager {
      * @param token token
      * @return 返回值
      */
-    @GET("/client/hospital/selectInput")
+    @GET("client/hospital/selectInput")
     Observable<BaseResponse<List<HospitalBean>>> getHospitalListByAuth(@Header("token") String token);
 
     /**
@@ -158,7 +158,7 @@ public interface ApiUrlManager {
      * @param token token
      * @return 返回值
      */
-    @GET("/client/hospital/selectInput/forSelect")
+    @GET("client/hospital/selectInput/forSelect")
     Observable<BaseResponse<List<HospitalBean>>> getHospitalListByReverse(@Header("token") String token);
 
     /**
@@ -167,7 +167,7 @@ public interface ApiUrlManager {
      * @param token token
      * @return 返回值
      */
-    @GET("/client/hospital/selectInput/forChange")
+    @GET("client/hospital/selectInput/forChange")
     Observable<BaseResponse<List<HospitalBean>>> getHospitalListByDoctor(@Header("token") String token);
 
     /**
@@ -176,7 +176,7 @@ public interface ApiUrlManager {
      * @param token token
      * @return 返回值
      */
-    @GET("/client/hospital/validate/doctor/service")
+    @GET("client/hospital/validate/doctor/service")
     Observable<BaseResponse<ReservationValidateBean>> getValidateHospitalList(@Header("token") String token);
 
     /**
@@ -186,7 +186,7 @@ public interface ApiUrlManager {
      * @param hospitalCode code
      * @return 返回值
      */
-    @GET("/client/department/first/{hospitalCode}")
+    @GET("client/department/first/{hospitalCode}")
     Observable<BaseResponse<List<HospitalDepartBean>>> getDepartOneListByReverse(@Header("token") String token,
             @Path("hospitalCode") String hospitalCode);
 
@@ -198,7 +198,7 @@ public interface ApiUrlManager {
      * @param pid          pid
      * @return 返回值
      */
-    @GET("/client/department/second/{hospitalCode}/{pid}")
+    @GET("client/department/second/{hospitalCode}/{pid}")
     Observable<BaseResponse<List<HospitalDepartChildBean>>> getDepartTwoListByReverse(@Header("token") String token,
             @Path("hospitalCode") String hospitalCode, @Path("pid") int pid);
 
@@ -209,7 +209,7 @@ public interface ApiUrlManager {
      * @param info  code
      * @return 返回值
      */
-    @POST("/client/doctor/zzDoctors")
+    @POST("client/doctor/zzDoctors")
     Observable<BaseResponse<List<DoctorInfoBean>>> getDoctorListByReverse(@Header("token") String token,
             @Body Map<String, Object> info);
 
@@ -220,7 +220,7 @@ public interface ApiUrlManager {
      * @param info  map参数
      * @return 返回值
      */
-    @POST("/client/department/tree")
+    @POST("client/department/tree")
     Observable<BaseResponse<List<HospitalDepartBean>>> getDepartTree(@Header("token") String token,
             @Body Map<String, String> info);
 
@@ -231,7 +231,7 @@ public interface ApiUrlManager {
      * @param info  map参数
      * @return 返回值
      */
-    @POST("/client/doctor/auth")
+    @POST("client/doctor/auth")
     Observable<BaseResponse<LoginBean>> submitDoctorAuth(@Header("token") String token, @Body Map<String, Object> info);
 
     /**
@@ -241,7 +241,7 @@ public interface ApiUrlManager {
      * @param mobile 手机号
      * @return 返回值
      */
-    @GET("/client/doctor/authInfo/{mobile}")
+    @GET("client/doctor/authInfo/{mobile}")
     Observable<BaseResponse<DoctorAuthBean>> getDoctorAuth(@Header("token") String token,
             @Path("mobile") String mobile);
 
@@ -252,7 +252,7 @@ public interface ApiUrlManager {
      * @param mobile 手机号
      * @return 返回值
      */
-    @GET("/client/doctor/model/{mobile}")
+    @GET("client/doctor/model/{mobile}")
     Observable<BaseResponse<DoctorInfoBean>> getDoctorInfo(@Header("token") String token,
             @Path("mobile") String mobile);
 
@@ -273,7 +273,7 @@ public interface ApiUrlManager {
      * @param token token
      * @return 返回值
      */
-    @GET("/client/doctorcenter/doctor_balance_info")
+    @GET("client/doctorcenter/doctor_balance_info")
     Observable<BaseResponse<DoctorCurrencyBean>> getDoctorInfoAndBalanceInfo(@Header("token") String token);
 
     /**
@@ -283,7 +283,7 @@ public interface ApiUrlManager {
      * @param token token
      * @return 返回值
      */
-    @GET("/client/doctorcenter/doctor_income")
+    @GET("client/doctorcenter/doctor_income")
     Observable<BaseResponse<IncomeDetailBean>> getDoctorIncomeDetail(@Header("token") String token,
             @Query("doctorOrderTranId") int info);
 
@@ -294,7 +294,7 @@ public interface ApiUrlManager {
      * @param token token
      * @return 返回值
      */
-    @GET("/client/doctorcenter/doctor_cash")
+    @GET("client/doctorcenter/doctor_cash")
     Observable<BaseResponse<WithDrawDetailBean>> getDoctorWithdraw(@Header("token") String token,
             @Query("doctorOrderTranId") int info);
 
@@ -305,7 +305,7 @@ public interface ApiUrlManager {
      * @param token token
      * @return 返回值
      */
-    @GET("/client/doctorcenter/doctor_cash_by_month")
+    @GET("client/doctorcenter/doctor_cash_by_month")
     Observable<BaseResponse<List<HospitalTitleBean>>> getDoctorWithdrawByMonth(@Header("token") String token,
             @Query("query_month") String info);
 
@@ -316,7 +316,7 @@ public interface ApiUrlManager {
      * @param token token
      * @return 返回值
      */
-    @GET("/client/doctorcenter/doctor_tran_list")
+    @GET("client/doctorcenter/doctor_tran_list")
     Observable<BaseResponse<List<DoctorCurrencyDetailBean>>> getDoctorIncomeList(@Header("token") String token,
             @QueryMap Map<String, Integer> info);
 
@@ -327,7 +327,7 @@ public interface ApiUrlManager {
      * @param token token
      * @return 返回值
      */
-    @GET("/client/doctorcenter/doctor_tran_list_only_income")
+    @GET("client/doctorcenter/doctor_tran_list_only_income")
     Observable<BaseResponse<List<DoctorCurrencyDetailBean>>> getDoctorIncomeWithOutList(@Header("token") String token,
             @QueryMap Map<String, Object> info);
 
@@ -338,7 +338,7 @@ public interface ApiUrlManager {
      * @param token token
      * @return 返回值
      */
-    @GET("/client/doctorcenter/doctor_tran_list_by_month")
+    @GET("client/doctorcenter/doctor_tran_list_by_month")
     Observable<BaseResponse<List<DoctorCurrencyDetailBean>>> getDoctorIncomeByMonthList(@Header("token") String token,
             @QueryMap Map<String, Integer> info);
 
@@ -349,7 +349,7 @@ public interface ApiUrlManager {
      * @param token token
      * @return 返回值
      */
-    @GET("/client/patient/getbydoccode")
+    @GET("client/patient/getbydoccode")
     Observable<BaseResponse<List<PatientBean>>> getPatientListByDoctorCode(@Header("token") String token,
             @Query("code") String info);
 
@@ -360,7 +360,7 @@ public interface ApiUrlManager {
      * @param token token
      * @return 返回值
      */
-    @GET("/client/patient/getbypatcode")
+    @GET("client/patient/getbypatcode")
     Observable<BaseResponse<PatientDetailBean>> getPatientDetailByPatientCode(@Header("token") String token,
             @Query("code") String info);
 
@@ -382,7 +382,7 @@ public interface ApiUrlManager {
      * @param token token
      * @return 返回值
      */
-    @GET("/client/patient/getpatbyidcardname")
+    @GET("client/patient/getpatbyidcardname")
     Observable<BaseResponse<PatientDetailBean>> verifyPatient(@Header("token") String token,
             @QueryMap Map<String, String> info);
 
@@ -437,7 +437,7 @@ public interface ApiUrlManager {
      * @param token token
      * @return 返回值
      */
-    @GET("/client/product/checkdoccode")
+    @GET("client/product/checkdoccode")
     Observable<BaseResponse<List<SelectCheckTypeBean>>> getCheckTypeList(@Header("token") String token,
             @QueryMap Map<String, Object> info);
 
@@ -448,7 +448,7 @@ public interface ApiUrlManager {
      * @param token token
      * @return 返回值
      */
-    @GET("/client/product/checkhoscode")
+    @GET("client/product/checkhoscode")
     Observable<BaseResponse<List<SelectCheckTypeBean>>> getCheckTypeByHospitalList(@Header("token") String token,
             @QueryMap Map<String, Object> info);
 
@@ -566,7 +566,7 @@ public interface ApiUrlManager {
      * @param token token
      * @return 返回值
      */
-    @GET("/client/banner/banner_by_doctor")
+    @GET("client/banner/banner_by_doctor")
     Observable<BaseResponse<List<BannerBean>>> getBanner(@Header("token") String token);
 
     /**
@@ -586,7 +586,7 @@ public interface ApiUrlManager {
      * @param token token
      * @return 返回值
      */
-    @POST("/client/chatcountdown/add")
+    @POST("client/chatcountdown/add")
     Observable<BaseResponse<ChatTimeBean>> startChat(@Header("token") String token, @Body Map<String, String> info);
 
     /**
@@ -596,7 +596,7 @@ public interface ApiUrlManager {
      * @param token token
      * @return 返回值
      */
-    @POST("/client/chatcountdown/getstoptime")
+    @POST("client/chatcountdown/getstoptime")
     Observable<BaseResponse<ChatTimeBean>> getChatLastTime(@Header("token") String token,
             @Body Map<String, String> info);
 
@@ -607,6 +607,6 @@ public interface ApiUrlManager {
      * @param token token
      * @return 返回值
      */
-    @POST("/client/chatcountdown/updatestoptime")
+    @POST("client/chatcountdown/updatestoptime")
     Observable<BaseResponse<String>> endChat(@Header("token") String token, @Body Map<String, String> info);
 }

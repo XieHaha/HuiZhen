@@ -36,6 +36,7 @@ public class AboutActivity extends BaseActivity {
                 intent = new Intent(this, WebViewActivity.class);
                 intent.putExtra(CommonData.KEY_PUBLIC,
                                 BuildConfig.BASE_BASIC_URL + BaseNetConfig.BASE_BASIC_USER_PROTOCOL_URL);
+                intent.putExtra(CommonData.KEY_TITLE,getString(R.string.txt_about_protocol));
                 startActivity(intent);
                 break;
             case R.id.layout_about_understand:

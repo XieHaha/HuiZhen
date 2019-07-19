@@ -15,7 +15,7 @@ android {
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
-            abiFilters "armeabi-v7a"
+            abiFilters "armeabi-v7a","armeabi"
         }
     }
 
@@ -24,7 +24,7 @@ android {
         zyc {
             dimension "zyc"
             applicationId "com.yht.yihuantong"
-            buildConfigField "String", "BASE_BASIC_URL", "\"http://192.168.0.126:7071\""
+            buildConfigField "String", "BASE_BASIC_URL", "\"http://192.168.0.126:7071/\""
             resValue "string", "APP_NAME", "\"会珍医生版\""
             manifestPlaceholders = [ease_appkey : "1110180330253249#dpappproject",
                                     jpush_appkey: "8b803f7221a77f19b78b3523"]
@@ -33,7 +33,7 @@ android {
         develop {
             dimension "zyc"
             applicationId "com.yht.yihuantong"
-            buildConfigField "String", "BASE_BASIC_URL", "\"http://192.168.0.126:7071\""
+            buildConfigField "String", "BASE_BASIC_URL", "\"http://192.168.0.126:7071/\""
             resValue "string", "APP_NAME", "\"会珍医生内测版\""
             manifestPlaceholders = [ease_appkey : "1105190122042534#dp-test-app",
                                     jpush_appkey: "8b803f7221a77f19b78b3523"]
@@ -42,7 +42,7 @@ android {
         beta {
             dimension "zyc"
             applicationId "com.yht.yihuantong_test"
-            buildConfigField "String", "BASE_BASIC_URL", "\"http://192.168.0.126:7071\""
+            buildConfigField "String", "BASE_BASIC_URL", "\"http://patient-t.med-value.com/api/\""
             resValue "string", "APP_NAME", "\"会珍医生测试版\""
             manifestPlaceholders = [ease_appkey : "1105190122042534#dp-test-app",
                                     jpush_appkey: "0253e6c0183a34f72630c349"]
