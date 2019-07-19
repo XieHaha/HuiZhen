@@ -83,6 +83,7 @@
     <string name="txt_price">￥%s</string>
     <string name="txt_report_name_by_num">%s报告%d</string>
     <string name="txt_report_name">%s报告</string>
+    <string name="txt_ease_login_expired">您的账号在其他设备登录，如果不是本人操作，请修改密码！</string>
     <string name="txt_login_expired">登录已过期，请重新登录</string>
 
 

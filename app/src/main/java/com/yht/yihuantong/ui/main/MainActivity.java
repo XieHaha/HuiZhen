@@ -49,6 +49,7 @@ import com.yht.yihuantong.chat.listener.AbstractEMContactListener;
 import com.yht.yihuantong.chat.listener.AbstractEMMessageListener;
 import com.yht.yihuantong.chat.receive.EaseMsgClickBroadCastReceiver;
 import com.yht.yihuantong.jpush.TagAliasOperatorHelper;
+import com.yht.yihuantong.ui.HintLoginActivity;
 import com.yht.yihuantong.ui.dialog.UpdateDialog;
 import com.yht.yihuantong.ui.main.fragment.MessageFragment;
 import com.yht.yihuantong.ui.main.fragment.PatientFragment;
@@ -396,10 +397,12 @@ public class MainActivity extends BaseActivity
         public void onDisconnected(final int error) {
             runOnUiThread(() -> {
                 if (error == EMError.USER_REMOVED) {
-                    HuiZhenLog.e("test", "账号被删除");
                 }
                 else if (error == EMError.USER_LOGIN_ANOTHER_DEVICE) {
-                    ToastUtil.toast(MainActivity.this, "账号在其他设备登录");
+                    Intent intent = new Intent(MainActivity.this, HintLoginActivity.class);
+                    intent.putExtra(CommonData.KEY_PUBLIC, true);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.anim_fade_in, R.anim.keep);
                 }
             });
         }
