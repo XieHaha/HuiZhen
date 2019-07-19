@@ -13,31 +13,24 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.yanzhenjie.nohttp.Headers;
-import com.yanzhenjie.nohttp.download.DownloadListener;
-import com.yht.frame.api.DirHelper;
-import com.yht.frame.api.FileTransferServer;
 import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
-import com.yht.frame.data.type.CheckOrderStatus;
-import com.yht.frame.data.type.CheckTypeStatus;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.base.CheckDetailBean;
 import com.yht.frame.data.base.CheckTypeByDetailBean;
+import com.yht.frame.data.type.CheckOrderStatus;
+import com.yht.frame.data.type.CheckTypeStatus;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
-import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.frame.widgets.dialog.HintDialog;
-import com.yht.frame.widgets.dialog.PercentDialog;
 import com.yht.frame.widgets.view.CenterImageSpan;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.x5.FileDisplayActivity;
 import com.yht.yihuantong.utils.FileUrlUtil;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -118,14 +111,6 @@ public class CheckDetailActivity extends BaseActivity implements CheckOrderStatu
     private ArrayList<CheckTypeByDetailBean> newReportUrls;
     private Bitmap bitmapCancel, bitmapNoReach, bitmapReach;
     /**
-     * 下载进度
-     */
-    private PercentDialog percentDialog;
-    /**
-     * 文件总大小
-     */
-    private long fileSize;
-    /**
      * 订单
      */
     private String orderNo;
@@ -142,12 +127,6 @@ public class CheckDetailActivity extends BaseActivity implements CheckOrderStatu
     @Override
     public int getLayoutID() {
         return R.layout.act_check_detail;
-    }
-
-    @Override
-    public void initView(@NonNull Bundle savedInstanceState) {
-        super.initView(savedInstanceState);
-        initPercentView();
     }
 
     @Override
@@ -169,13 +148,6 @@ public class CheckDetailActivity extends BaseActivity implements CheckOrderStatu
         bitmapCancel = BitmapFactory.decodeResource(getApplication().getResources(), R.mipmap.ic_tag_cancel);
         bitmapNoReach = BitmapFactory.decodeResource(getApplication().getResources(), R.mipmap.ic_tag_noreach);
         bitmapReach = BitmapFactory.decodeResource(getApplication().getResources(), R.mipmap.ic_tag_reach);
-    }
-
-    /**
-     * 下载进度条
-     */
-    private void initPercentView() {
-        percentDialog = new PercentDialog(this);
     }
 
     /**
@@ -352,7 +324,7 @@ public class CheckDetailActivity extends BaseActivity implements CheckOrderStatu
             TextView textView = view.findViewById(R.id.tv_check_report_name);
             textView.setText(bean.getName());
             view.setTag(i);
-            view.setOnClickListener(v -> downReportFile(bean.getReport(), (Integer)view.getTag()));
+            view.setOnClickListener(v -> FileDisplayActivity.show(this, newReportUrls, (Integer)v.getTag()));
             layoutCheckReport.addView(view);
         }
     }
@@ -404,51 +376,6 @@ public class CheckDetailActivity extends BaseActivity implements CheckOrderStatu
         SpannableString spanString = new SpannableString(showText);
         spanString.setSpan(imgSpan, 0, showText.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         return spanString;
-    }
-
-    private void downReportFile(String url, int position) {
-        String fileName = url.substring(url.lastIndexOf("/") + 1);
-        String filePath = DirHelper.getPathFile() + "/" + fileName;
-        File file = new File(filePath);
-        if (file != null && file.exists()) {
-            FileDisplayActivity.show(CheckDetailActivity.this, newReportUrls, position);
-        }
-        else {
-            FileTransferServer.getInstance(this)
-                              .downloadFile(1, loginBean.getToken(), url, DirHelper.getPathFile(), fileName,
-                                            new DownloadListener() {
-                                                @Override
-                                                public void onDownloadError(int what, Exception exception) {
-                                                    ToastUtil.toast(CheckDetailActivity.this, "加载失败");
-                                                }
-
-                                                @Override
-                                                public void onStart(int what, boolean isResume, long rangeSize,
-                                                        Headers responseHeaders, long allCount) {
-                                                    fileSize = allCount;
-                                                    percentDialog.show();
-                                                    //show dialog
-                                                }
-
-                                                @Override
-                                                public void onProgress(int what, int progress, long fileCount,
-                                                        long speed) {
-                                                    percentDialog.setProgressValue(fileSize, fileCount);
-                                                }
-
-                                                @Override
-                                                public void onFinish(int what, String filePath) {
-                                                    //跳转webview
-                                                    percentDialog.dismiss();
-                                                    FileDisplayActivity.show(CheckDetailActivity.this, newReportUrls,
-                                                                             position);
-                                                }
-
-                                                @Override
-                                                public void onCancel(int what) {
-                                                }
-                                            });
-        }
     }
 
     @Override

@@ -9,17 +9,8 @@ import java.io.Serializable;
  */
 public class MessageIdBean implements Serializable {
     private static final long serialVersionUID = -5735325720124017341L;
-    private String id;
     private String orderNo;
-    private String doctorCode;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
+    private String type;
 
     public String getOrderNo() {
         return orderNo;
@@ -29,11 +20,11 @@ public class MessageIdBean implements Serializable {
         this.orderNo = orderNo;
     }
 
-    public String getDoctorCode() {
-        return doctorCode;
+    public String getType() {
+        return type;
     }
 
-    public void setDoctorCode(String doctorCode) {
-        this.doctorCode = doctorCode;
+    public void setType(String type) {
+        this.type = type;
     }
 }

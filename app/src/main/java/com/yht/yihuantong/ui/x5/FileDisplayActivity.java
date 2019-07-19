@@ -10,17 +10,23 @@ import android.widget.TextView;
 
 import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;
+import com.yanzhenjie.nohttp.Headers;
+import com.yanzhenjie.nohttp.download.DownloadListener;
 import com.yht.frame.api.DirHelper;
+import com.yht.frame.api.FileTransferServer;
 import com.yht.frame.data.BaseData;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.base.CheckTypeByDetailBean;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.MimeUtils;
+import com.yht.frame.utils.ToastUtil;
+import com.yht.frame.widgets.dialog.PercentDialog;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.dialog.DownDialog;
 import com.yht.yihuantong.ui.dialog.listener.OnMediaItemClickListener;
 import com.yht.yihuantong.utils.FileUtils;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -49,6 +55,14 @@ public class FileDisplayActivity extends BaseActivity implements OnMediaItemClic
      */
     private ArrayList<String> reportNameList;
     /**
+     * 下载进度
+     */
+    private PercentDialog percentDialog;
+    /**
+     * 文件总大小
+     */
+    private long fileSize;
+    /**
      * 当前选中的报告index
      */
     private int curPosition = -1;
@@ -67,6 +81,7 @@ public class FileDisplayActivity extends BaseActivity implements OnMediaItemClic
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
         initWebViewSetting();
+        initPercentView();
     }
 
     @Override
@@ -78,7 +93,14 @@ public class FileDisplayActivity extends BaseActivity implements OnMediaItemClic
             curPosition = getIntent().getIntExtra(CommonData.KEY_PUBLIC, -1);
         }
         initReportListDialog();
-        openFile();
+        distinguishFile();
+    }
+
+    /**
+     * 下载进度条
+     */
+    private void initPercentView() {
+        percentDialog = new PercentDialog(this);
     }
 
     private void initWebViewSetting() {
@@ -120,7 +142,7 @@ public class FileDisplayActivity extends BaseActivity implements OnMediaItemClic
     /**
      * 判断文件格式，选择不同方式打开
      */
-    private void openFile() {
+    private void distinguishFile() {
         CheckTypeByDetailBean bean = reportList.get(curPosition);
         tvTitle.setText(bean.getName());
         String url = bean.getReport();
@@ -135,19 +157,63 @@ public class FileDisplayActivity extends BaseActivity implements OnMediaItemClic
             webView.loadUrl(url);
         }
         else {
-            //每次打开一个文件需要初始化文件阅读器，否则无法阅读下一个文件（一直处于加载中）
-            fileReaderView.setNewTbsReaderView();
-            webView.setVisibility(View.GONE);
-            fileReaderView.setVisibility(View.VISIBLE);
-            fileReaderView.show(filePath);
+            File file = new File(filePath);
+            if (file != null && file.exists()) {
+                openFile(filePath);
+            }
+            else {
+                //本地文件不存在
+                downReportFile(url, fileName);
+            }
         }
+    }
+
+    private void openFile(String filePath) {
+        //每次打开一个文件需要初始化文件阅读器，否则无法阅读下一个文件（一直处于加载中）
+        fileReaderView.setNewTbsReaderView();
+        webView.setVisibility(View.GONE);
+        fileReaderView.setVisibility(View.VISIBLE);
+        fileReaderView.show(filePath);
     }
 
     @Override
     public void onMediaItemClick(int position) {
         if (curPosition == position) { return; }
         curPosition = position;
-        openFile();
+        distinguishFile();
+    }
+
+    private void downReportFile(String url, String fileName) {
+        FileTransferServer.getInstance(this)
+                          .downloadFile(1, loginBean.getToken(), url, DirHelper.getPathFile(), fileName,
+                                        new DownloadListener() {
+                                            @Override
+                                            public void onDownloadError(int what, Exception exception) {
+                                                ToastUtil.toast(FileDisplayActivity.this, "加载失败");
+                                            }
+
+                                            @Override
+                                            public void onStart(int what, boolean isResume, long rangeSize,
+                                                    Headers responseHeaders, long allCount) {
+                                                fileSize = allCount;
+                                                percentDialog.show();
+                                            }
+
+                                            @Override
+                                            public void onProgress(int what, int progress, long fileCount, long speed) {
+                                                percentDialog.setProgressValue(fileSize, fileCount);
+                                            }
+
+                                            @Override
+                                            public void onFinish(int what, String filePath) {
+                                                percentDialog.dismiss();
+                                                openFile(filePath);
+                                            }
+
+                                            @Override
+                                            public void onCancel(int what) {
+                                            }
+                                        });
     }
 
     /**

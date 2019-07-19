@@ -11,7 +11,9 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
+import com.yht.frame.api.ApiManager;
+import com.yht.frame.api.notify.IChange;
+import com.yht.frame.api.notify.RegisterType;
 import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
@@ -60,6 +62,13 @@ public class NotifyMessageFragment extends BaseFragment
      * 页码
      */
     private int page = 1;
+    /**
+     * 消息红点
+     */
+    private IChange<String> messageUpdate = data -> {
+        //全部消息已读通知
+        getAppMessageList();
+    };
 
     @Override
     public int getLayoutID() {
@@ -79,7 +88,15 @@ public class NotifyMessageFragment extends BaseFragment
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
+        iNotifyChangeListenerServer = ApiManager.getInstance().getServer();
         getAppMessageList();
+    }
+
+    @Override
+    public void initListener() {
+        super.initListener();
+        //注册患者状态监听
+        iNotifyChangeListenerServer.registerMessageStatusChangeListener(messageUpdate, RegisterType.REGISTER);
     }
 
     /**
@@ -111,14 +128,16 @@ public class NotifyMessageFragment extends BaseFragment
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
         NotifyMessageBean bean = messageList.get(position);
         if (bean.getState() == BASE_ZERO) {
+            //单条消息已读
             updateAppUnReadMessageById(messageList.get(position).getId());
         }
         Intent intent;
         String type = bean.getMsgType();
+        String orderNo = getMessageTypeId(bean.getExtraData());
         switch (type) {
             case MESSAGE_SERVICE_REPORT:
                 intent = new Intent(getContext(), CheckDetailActivity.class);
-                intent.putExtra(CommonData.KEY_ORDER_ID, getMessageTypeId(BASE_ONE, bean.getExtraData()));
+                intent.putExtra(CommonData.KEY_ORDER_ID, orderNo);
                 intent.putExtra(CommonData.KEY_PUBLIC, true);
                 startActivity(intent);
                 break;
@@ -128,24 +147,24 @@ public class NotifyMessageFragment extends BaseFragment
             case MESSAGE_TRANSFER_UPDATE:
             case MESSAGE_TRANSFER_SYSTEM_CANCEL_T:
                 intent = new Intent(getContext(), TransferInitiateDetailActivity.class);
-                intent.putExtra(CommonData.KEY_ORDER_ID, getMessageTypeId(BASE_ONE, bean.getExtraData()));
+                intent.putExtra(CommonData.KEY_ORDER_ID, orderNo);
                 startActivity(intent);
                 break;
             case MESSAGE_TRANSFER_APPLY:
             case MESSAGE_TRANSFER_CANCEL:
             case MESSAGE_TRANSFER_SYSTEM_CANCEL_R:
                 intent = new Intent(getContext(), TransferReceiveDetailActivity.class);
-                intent.putExtra(CommonData.KEY_ORDER_ID, getMessageTypeId(BASE_ONE, bean.getExtraData()));
+                intent.putExtra(CommonData.KEY_ORDER_ID, orderNo);
                 startActivity(intent);
                 break;
             case MESSAGE_CURRENCY_ARRIVED:
                 intent = new Intent(getContext(), IncomeDetailActivity.class);
-                intent.putExtra(CommonData.KEY_DOCTOR_CURRENCY_ID, getMessageTypeId(BASE_ONE, bean.getExtraData()));
+                intent.putExtra(CommonData.KEY_DOCTOR_CURRENCY_ID, orderNo);
                 startActivity(intent);
                 break;
             case MESSAGE_CURRENCY_DEDUCTION:
                 intent = new Intent(getContext(), WithdrawDetailActivity.class);
-                intent.putExtra(CommonData.KEY_DOCTOR_CURRENCY_ID, getMessageTypeId(BASE_ONE, bean.getExtraData()));
+                intent.putExtra(CommonData.KEY_DOCTOR_CURRENCY_ID, orderNo);
                 startActivity(intent);
                 break;
             default:
@@ -217,26 +236,16 @@ public class NotifyMessageFragment extends BaseFragment
     /**
      * 获取id
      *
-     * @param type 0 id,1 orderNo,2 doctorCode
      * @param data
      */
-    private String getMessageTypeId(int type, String data) {
-        try {
-            switch (type) {
-                case BASE_ZERO:
-                    return new Gson().fromJson(data, MessageIdBean.class).getId();
-                case BASE_ONE:
-                    return new Gson().fromJson(data, MessageIdBean.class).getOrderNo();
-                case BASE_TWO:
-                    return new Gson().fromJson(data, MessageIdBean.class).getDoctorCode();
-                default:
-                    return "";
-            }
-        }
-        catch (JsonSyntaxException e) {
-            e.printStackTrace();
-        }
-        return "";
+    private String getMessageTypeId(String data) {
+        return new Gson().fromJson(data, MessageIdBean.class).getOrderNo();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        iNotifyChangeListenerServer.registerMessageStatusChangeListener(messageUpdate, RegisterType.UNREGISTER);
     }
 
     private OnMessageUpdateListener onMessageUpdateListener;
