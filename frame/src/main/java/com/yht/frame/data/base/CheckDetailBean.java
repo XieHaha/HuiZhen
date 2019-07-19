@@ -18,6 +18,7 @@ public class CheckDetailBean implements Serializable {
     private int actualPay;
     private String patientCode;
     private String patientPhoto;
+    private String wxPhoto;
     private String patientName;
     private String createAt;
     private String sourceDoctorMobile;
@@ -91,6 +92,14 @@ public class CheckDetailBean implements Serializable {
 
     public String getPatientPhoto() {
         return patientPhoto;
+    }
+
+    public String getWxPhoto() {
+        return wxPhoto;
+    }
+
+    public void setWxPhoto(String wxPhoto) {
+        this.wxPhoto = wxPhoto;
     }
 
     public void setPatientPhoto(String patientPhoto) {

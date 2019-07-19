@@ -129,7 +129,7 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
     protected int[] itemIds = { ITEM_PICTURE, ITEM_TAKE_PICTURE };
     private boolean isMessageListInited;
     protected MyItemClickListener extendMenuItemClickListener;
-    protected boolean isRoaming = false;
+    protected boolean isRoaming = true;
     private ExecutorService fetchQueue;
     private EaseChatPrimaryMenuBase.OnStartRecordCallBack onStartRecordCallBack;
     /**

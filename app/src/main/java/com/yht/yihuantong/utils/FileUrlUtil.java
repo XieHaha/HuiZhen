@@ -1,11 +1,5 @@
 package com.yht.yihuantong.utils;
 
-import android.text.TextUtils;
-
-import com.bumptech.glide.load.model.GlideUrl;
-import com.bumptech.glide.load.model.LazyHeaders;
-import com.yht.yihuantong.ZycApplication;
-
 /**
  * @author 顿顿
  * @date 19/7/5 16:52
@@ -18,14 +12,15 @@ public class FileUrlUtil {
      * @param url
      * @return
      */
-    public static GlideUrl addTokenToUrl(String url) {
-        if (TextUtils.isEmpty(url)) {
-            return null;
-        }
-        GlideUrl glideUrl = new GlideUrl(url, new LazyHeaders.Builder().addHeader("token", ZycApplication.getInstance()
-                                                                                                         .getLoginBean()
-                                                                                                         .getToken())
-                                                                       .build());
-        return glideUrl;
+    public static String addTokenToUrl(String url) {
+        return url;
+        //        if (TextUtils.isEmpty(url)) {
+        //            return null;
+        //        }
+        //        GlideUrl glideUrl = new GlideUrl(url, new LazyHeaders.Builder().addHeader("token", ZycApplication.getInstance()
+        //                                                                                                         .getLoginBean()
+        //                                                                                                         .getToken())
+        //                                                                       .build());
+        //        return glideUrl;
     }
 }

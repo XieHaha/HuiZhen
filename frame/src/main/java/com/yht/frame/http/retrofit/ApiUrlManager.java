@@ -263,7 +263,7 @@ public interface ApiUrlManager {
      * @param info  参数 比如jobTitle、depart等
      * @return 返回值
      */
-    @GET("/dm/query-by-type")
+    @GET("dm/query-by-type")
     Observable<BaseResponse<List<HospitalTitleBean>>> getDataByType(@Header("token") String token,
             @Query("type") String info);
 
@@ -371,7 +371,7 @@ public interface ApiUrlManager {
      * @param token token
      * @return 返回值
      */
-    @GET("/order/query-patient-order")
+    @GET("order/query-patient-order")
     Observable<BaseResponse<List<PatientOrderBean>>> getPatientOrderListByPatientCode(@Header("token") String token,
             @QueryMap Map<String, Object> info);
 
@@ -393,7 +393,7 @@ public interface ApiUrlManager {
      * @param token token
      * @return 返回值
      */
-    @GET("/order-transfer/exist")
+    @GET("order-transfer/exist")
     Observable<BaseResponse<Boolean>> getPatientExistTransfer(@Header("token") String token,
             @Query("patientCode") String info);
 
@@ -404,7 +404,7 @@ public interface ApiUrlManager {
      * @param token token
      * @return 返回值
      */
-    @POST("/order-check/create")
+    @POST("order-check/create")
     Observable<BaseResponse<String>> addReserveCheckOrder(@Header("token") String token,
             @Body Map<String, Object> info);
 
@@ -415,7 +415,7 @@ public interface ApiUrlManager {
      * @param token token
      * @return 返回值
      */
-    @GET("/order-check/query-doctor-order")
+    @GET("order-check/query-doctor-order")
     Observable<BaseResponse<List<CheckBean>>> getReserveCheckOrderList(@Header("token") String token,
             @QueryMap Map<String, Integer> info);
 
@@ -426,7 +426,7 @@ public interface ApiUrlManager {
      * @param token token
      * @return 返回值
      */
-    @GET("/order-check/query-detail")
+    @GET("order-check/query-detail")
     Observable<BaseResponse<CheckDetailBean>> getReserveCheckOrderDetail(@Header("token") String token,
             @Query("orderNo") String info);
 
@@ -459,7 +459,7 @@ public interface ApiUrlManager {
      * @param token token
      * @return 返回值
      */
-    @POST("/order-transfer/add")
+    @POST("order-transfer/add")
     Observable<BaseResponse<String>> addReserveTransferOrder(@Header("token") String token,
             @Body Map<String, Object> info);
 
@@ -470,7 +470,7 @@ public interface ApiUrlManager {
      * @param token token
      * @return 返回值
      */
-    @POST("/order-transfer/cancel")
+    @POST("order-transfer/cancel")
     Observable<BaseResponse<String>> cancelReserveTransferOrder(@Header("token") String token,
             @Body Map<String, String> info);
 
@@ -481,7 +481,7 @@ public interface ApiUrlManager {
      * @param token token
      * @return 返回值
      */
-    @POST("/order-transfer/receive")
+    @POST("order-transfer/receive")
     Observable<BaseResponse<String>> receiveReserveTransferOrder(@Header("token") String token,
             @Body Map<String, String> info);
 
@@ -492,7 +492,7 @@ public interface ApiUrlManager {
      * @param token token
      * @return 返回值
      */
-    @POST("/order-transfer/updateReceiveInfo")
+    @POST("order-transfer/updateReceiveInfo")
     Observable<BaseResponse<String>> updateReserveTransferOrder(@Header("token") String token,
             @Body Map<String, String> info);
 
@@ -503,7 +503,7 @@ public interface ApiUrlManager {
      * @param token token
      * @return 返回值
      */
-    @POST("/order-transfer/reject")
+    @POST("order-transfer/reject")
     Observable<BaseResponse<String>> rejectReserveTransferOrder(@Header("token") String token,
             @Body Map<String, String> info);
 
@@ -514,7 +514,7 @@ public interface ApiUrlManager {
      * @param token token
      * @return 返回值
      */
-    @POST("/order-transfer/transferAgain")
+    @POST("order-transfer/transferAgain")
     Observable<BaseResponse<String>> transferAgainOtherDoctor(@Header("token") String token,
             @Body Map<String, String> info);
 
@@ -525,7 +525,7 @@ public interface ApiUrlManager {
      * @param token token
      * @return 返回值
      */
-    @GET("/order-transfer/initiate/list")
+    @GET("order-transfer/initiate/list")
     Observable<BaseResponse<List<TransferBean>>> getInitiateTransferOrderList(@Header("token") String token,
             @QueryMap Map<String, Integer> info);
 
@@ -536,7 +536,7 @@ public interface ApiUrlManager {
      * @param token token
      * @return 返回值
      */
-    @GET("/order-transfer/status/list")
+    @GET("order-transfer/status/list")
     Observable<BaseResponse<List<TransferBean>>> getTransferStatusOrderList(@Header("token") String token,
             @QueryMap Map<String, Integer> info);
 
@@ -547,7 +547,7 @@ public interface ApiUrlManager {
      * @param token token
      * @return 返回值
      */
-    @GET("/order-transfer/detail/get")
+    @GET("order-transfer/detail/get")
     Observable<BaseResponse<TransferBean>> getTransferOrderDetail(@Header("token") String token,
             @Query("orderNo") String info);
 
@@ -557,7 +557,7 @@ public interface ApiUrlManager {
      * @param token token
      * @return 返回值
      */
-    @GET("/order/studioOrderStatistics")
+    @GET("order/studioOrderStatistics")
     Observable<BaseResponse<OrderNumStatisticsBean>> getStudioOrderStatistics(@Header("token") String token);
 
     /**
@@ -576,7 +576,7 @@ public interface ApiUrlManager {
      * @param token token
      * @return 返回值
      */
-    @GET("/version/current-version")
+    @GET("version/current-version")
     Observable<BaseResponse<VersionBean>> getVersion(@Header("token") String token, @Query("device") String info);
 
     /**

@@ -122,7 +122,10 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
         findViewById(R.id.public_title_bar_back).setOnClickListener(this);
         curAuthStatus = loginBean.getApprovalStatus();
         initTab();
-        getDoctorAuth();
+        //未提交资料不获取
+        if (curAuthStatus != DocAuthStatus.AUTH_NONE) {
+            getDoctorAuth();
+        }
     }
 
     @Override
@@ -319,6 +322,7 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
                 break;
             case GET_DOCTOR_AUTH:
                 doctorAuthBean = (DoctorAuthBean)response.getData();
+                if (doctorAuthBean == null) { return; }
                 //如果已经认证成功
                 if (doctorAuthBean.getApprovalStatus() == DocAuthStatus.AUTH_SUCCESS) {
                     loginBean.setDoctorName(doctorAuthBean.getDoctorName());

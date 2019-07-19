@@ -30,7 +30,6 @@ import android.widget.OverScroller;
 import android.widget.Scroller;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.model.GlideUrl;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
@@ -142,7 +141,7 @@ public class ImagePreviewView extends AppCompatImageView {
         isBreak = false;
     }
 
-    public void loadingImageAsync(final String imgPath, final GlideUrl bigUrl) {
+    public void loadingImageAsync(final String imgPath, final String bigUrl) {
         if (TextUtils.isEmpty(imgPath)) {
             loadImaByGlide(bigUrl);
         }
@@ -202,7 +201,7 @@ public class ImagePreviewView extends AppCompatImageView {
      *
      * @param url
      */
-    private void loadImaByGlide(final GlideUrl url) {
+    private void loadImaByGlide(final String url) {
         Glide.with(context).load(url).apply(GlideHelper.getOptionsPicBig()).into(this);
     }
 
