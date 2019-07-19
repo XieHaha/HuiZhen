@@ -38,7 +38,8 @@ import static com.yht.yihuantong.ui.auth.fragment.AuthBaseFragment.REQUEST_CODE_
  * @des 医院选择 认证
  */
 public class SelectHospitalByAuthActivity extends BaseActivity
-        implements BaseQuickAdapter.OnItemClickListener, BaseQuickAdapter.RequestLoadMoreListener {
+        implements BaseQuickAdapter.OnItemClickListener, BaseQuickAdapter.RequestLoadMoreListener,
+                   SuperEditText.OnDeleteClickListener {
     @BindView(R.id.et_search_hospital)
     SuperEditText etSearchHospital;
     @BindView(R.id.rv_hospital)
@@ -71,11 +72,11 @@ public class SelectHospitalByAuthActivity extends BaseActivity
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         getHospitalListByAuth();
+        rvHospital.setVisibility(View.GONE);
         rvHospital.setLayoutManager(new LinearLayoutManager(this));
         hospitalAdapter = new HospitalSelectAdapter(R.layout.item_hospital, hospitals);
         hospitalAdapter.setOnItemClickListener(this);
         hospitalAdapter.setLoadMoreView(new CustomLoadMoreView());
-        hospitalAdapter.loadMoreEnd();
         rvHospital.setAdapter(hospitalAdapter);
     }
 
@@ -88,15 +89,14 @@ public class SelectHospitalByAuthActivity extends BaseActivity
                 super.onTextChanged(s, start, before, count);
                 String tag = s.toString();
                 if (TextUtils.isEmpty(tag)) {
-                    layoutNoneHospital.setVisibility(View.GONE);
-                    rvHospital.setVisibility(View.VISIBLE);
-                    hospitalAdapter.setNewData(hospitals);
+                    rvHospital.setVisibility(View.GONE);
                 }
                 else {
                     searchHospital(tag);
                 }
             }
         });
+        etSearchHospital.setOnDeleteClickListener(this);
     }
 
     /**
@@ -117,6 +117,7 @@ public class SelectHospitalByAuthActivity extends BaseActivity
             rvHospital.setVisibility(View.VISIBLE);
             layoutNoneHospital.setVisibility(View.GONE);
             hospitalAdapter.setNewData(searchHospitals);
+            hospitalAdapter.loadMoreEnd();
         }
         else {
             rvHospital.setVisibility(View.GONE);
@@ -145,17 +146,23 @@ public class SelectHospitalByAuthActivity extends BaseActivity
             hospitals = (List<HospitalBean>)response.getData();
             //更新数据库
             new LitePalHelper().updateAll(hospitals, HospitalBean.class);
-            if (hospitals != null && hospitals.size() > 0) {
-                layoutNoneHospital.setVisibility(View.GONE);
-                rvHospital.setVisibility(View.VISIBLE);
-                hospitalAdapter.setNewData(hospitals);
-                hospitalAdapter.loadMoreEnd();
-            }
-            else {
-                layoutNoneHospital.setVisibility(View.VISIBLE);
-                rvHospital.setVisibility(View.GONE);
-            }
+            //            if (hospitals != null && hospitals.size() > 0) {
+            //                layoutNoneHospital.setVisibility(View.GONE);
+            //                rvHospital.setVisibility(View.VISIBLE);
+            //                hospitalAdapter.setNewData(hospitals);
+            //                hospitalAdapter.loadMoreEnd();
+            //            }
+            //            else {
+            //                layoutNoneHospital.setVisibility(View.VISIBLE);
+            //                rvHospital.setVisibility(View.GONE);
+            //            }
         }
+    }
+
+    @Override
+    public void onDeleteClick() {
+        layoutNoneHospital.setVisibility(View.GONE);
+        rvHospital.setVisibility(View.GONE);
     }
 
     /**

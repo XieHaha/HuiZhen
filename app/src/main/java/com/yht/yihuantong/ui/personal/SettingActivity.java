@@ -10,13 +10,11 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationManagerCompat;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.yht.frame.data.CommonData;
 import com.yht.frame.data.bean.VersionBean;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.HuiZhenLog;
@@ -38,8 +36,7 @@ import static android.provider.Settings.EXTRA_APP_PACKAGE;
  * @des
  */
 public class SettingActivity extends BaseActivity
-        implements VersionPresenter.VersionViewListener, UpdateDialog.OnEnterClickListener,
-                   CompoundButton.OnCheckedChangeListener {
+        implements VersionPresenter.VersionViewListener, UpdateDialog.OnEnterClickListener {
     private static final String TAG = "SettingActivity";
     @BindView(R.id.sw_message_control)
     Switch swMessageControl;
@@ -81,7 +78,8 @@ public class SettingActivity extends BaseActivity
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        swMessageControl.setOnCheckedChangeListener(this);
+        swMessageControl.setFocusable(false);
+        swMessageControl.setClickable(false);
     }
 
     @Override
@@ -97,9 +95,8 @@ public class SettingActivity extends BaseActivity
      * 权限开关
      */
     private void initNotify() {
-        boolean notify = sharePreferenceUtil.getBoolean(CommonData.KEY_NOTIFICATION_CONTROL);
         if (hasNotify()) {
-            swMessageControl.setChecked(notify);
+            swMessageControl.setChecked(true);
         }
         else {
             swMessageControl.setChecked(false);
@@ -114,11 +111,14 @@ public class SettingActivity extends BaseActivity
         return manager.areNotificationsEnabled();
     }
 
-    @OnClick({ R.id.layout_about, R.id.layout_version, R.id.tv_exit })
+    @OnClick({ R.id.layout_notify, R.id.layout_about, R.id.layout_version, R.id.tv_exit })
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.layout_about:
                 startActivity(new Intent(this, AboutActivity.class));
+                break;
+            case R.id.layout_notify:
+                openNotifySetting();
                 break;
             case R.id.layout_version:
                 mVersionPresenter.init();
@@ -133,21 +133,6 @@ public class SettingActivity extends BaseActivity
             default:
                 break;
         }
-    }
-
-    @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        if (isChecked) {
-            if (!hasNotify()) {
-                HintDialog dialog = new HintDialog(this);
-                dialog.setEnterBtnTxt(getString(R.string.txt_open));
-                dialog.setEnterSelect(true);
-                dialog.setOnEnterClickListener(() -> openNotifySetting());
-                dialog.setContentString(getString(R.string.dialog_no_notify_tip));
-                dialog.show();
-            }
-        }
-        sharePreferenceUtil.putBoolean(CommonData.KEY_NOTIFICATION_CONTROL, isChecked);
     }
 
     private void openNotifySetting() {

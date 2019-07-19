@@ -122,7 +122,7 @@
             android:name=".ui.auth.SelectHospitalByAuthActivity"
             android:screenOrientation="portrait"
             android:label="@string/title_select_hospital"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
+            android:windowSoftInputMode="stateAlwaysVisible" />
         <activity
             android:name=".ui.auth.AddHospitalActivity"
             android:screenOrientation="portrait"
