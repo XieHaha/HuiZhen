@@ -28,6 +28,7 @@ import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.ZycApplication;
 import com.yht.yihuantong.ui.WebViewActivity;
 import com.yht.yihuantong.ui.check.CheckHistoryActivity;
 import com.yht.yihuantong.ui.personal.PersonalNewActivity;
@@ -85,10 +86,6 @@ public class WorkerFragment extends BaseFragment {
      */
     private List<BannerBean> bannerBeans;
     /**
-     * 检查、转诊、验证
-     */
-    private ReservationValidateBean reservationValidateBean;
-    /**
      * 扫码
      */
     private static final int REQUEST_CODE_SCAN = 100;
@@ -102,6 +99,7 @@ public class WorkerFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         getStudioOrderStatistics();
+        getValidateHospitalList();
     }
 
     @Override
@@ -123,7 +121,6 @@ public class WorkerFragment extends BaseFragment {
              .apply(GlideHelper.getOptions(BaseUtils.dp2px(getContext(), 4)))
              .into(ivPersonalImage);
         getBanner();
-        getValidateHospitalList();
     }
 
     /**
@@ -190,7 +187,7 @@ public class WorkerFragment extends BaseFragment {
                 startActivity(new Intent(getContext(), PersonalNewActivity.class));
                 break;
             case R.id.layout_check:
-                if (reservationValidateBean != null && reservationValidateBean.isJc()) {
+                if (ZycApplication.getInstance().isServiceAble()) {
                     intent = new Intent(getContext(), ReservationServiceActivity.class);
                     startActivity(intent);
                 }
@@ -200,7 +197,7 @@ public class WorkerFragment extends BaseFragment {
                 }
                 break;
             case R.id.layout_transfer:
-                if (reservationValidateBean != null && reservationValidateBean.isZz()) {
+                if (ZycApplication.getInstance().isTransferAble()) {
                     intent = new Intent(getContext(), ReservationTransferActivity.class);
                     startActivity(intent);
                 }
@@ -233,10 +230,12 @@ public class WorkerFragment extends BaseFragment {
                 //                }
                 break;
             case R.id.layout_initiate_check:
-                startActivity(new Intent(getContext(), CheckHistoryActivity.class));
+                intent = new Intent(getContext(), CheckHistoryActivity.class);
+                startActivity(intent);
                 break;
             case R.id.layout_initiate_transfer:
-                startActivity(new Intent(getContext(), TransferInitiateListActivity.class));
+                intent = new Intent(getContext(), TransferInitiateListActivity.class);
+                startActivity(intent);
                 break;
             case R.id.layout_accepted_transfer:
                 intent = new Intent(getContext(), TransferReceiveListActivity.class);
@@ -262,7 +261,11 @@ public class WorkerFragment extends BaseFragment {
                 }
                 break;
             case GET_VALIDATE_HOSPITAL_LIST:
-                reservationValidateBean = (ReservationValidateBean)response.getData();
+                ReservationValidateBean bean = (ReservationValidateBean)response.getData();
+                if (bean != null) {
+                    ZycApplication.getInstance().setServiceAble(bean.isJc());
+                    ZycApplication.getInstance().setTransferAble(bean.isZz());
+                }
                 break;
             default:
                 break;

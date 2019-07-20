@@ -76,7 +76,7 @@ public class ServiceMaterialFragment extends BaseFragment implements View.OnFocu
     /**
      * 基础信息
      */
-    private String name, idCard, age, phone;
+    private String age, phone;
     private int sex;
     private String pastMedicalHis = "", familyMedicalHis = "", allergiesHis = "", diagnosisHis = "";
     /**

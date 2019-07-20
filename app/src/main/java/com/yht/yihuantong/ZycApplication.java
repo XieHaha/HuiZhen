@@ -50,6 +50,10 @@ public class ZycApplication extends LitePalApplication {
      */
     private String chatId;
     /**
+     * 服务、转诊权限
+     */
+    private boolean transferAble, serviceAble;
+    /**
      * 调试模式
      */
     private final boolean debugMode = true;
@@ -171,6 +175,22 @@ public class ZycApplication extends LitePalApplication {
 
     public void setChatId(String chatId) {
         this.chatId = chatId;
+    }
+
+    public boolean isTransferAble() {
+        return transferAble;
+    }
+
+    public void setTransferAble(boolean transferAble) {
+        this.transferAble = transferAble;
+    }
+
+    public boolean isServiceAble() {
+        return serviceAble;
+    }
+
+    public void setServiceAble(boolean serviceAble) {
+        this.serviceAble = serviceAble;
     }
 
     /**

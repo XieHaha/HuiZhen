@@ -8,6 +8,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -19,10 +20,13 @@ import com.yht.frame.data.base.TransferBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
+import com.yht.frame.widgets.LoadViewHelper;
 import com.yht.frame.widgets.recyclerview.decoration.TimeItemDecoration;
 import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.ZycApplication;
 import com.yht.yihuantong.ui.adapter.TransferInitiateAdapter;
+import com.yht.yihuantong.ui.reservation.ReservationDisableActivity;
 import com.yht.yihuantong.ui.reservation.transfer.ReservationTransferActivity;
 
 import java.util.ArrayList;
@@ -40,11 +44,13 @@ public class TransferInitiateListActivity extends BaseActivity
         implements BaseQuickAdapter.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener,
                    BaseQuickAdapter.RequestLoadMoreListener {
     @BindView(R.id.recyclerview)
-    RecyclerView recyclerview;
+    RecyclerView recyclerView;
     @BindView(R.id.layout_refresh)
     SwipeRefreshLayout layoutRefresh;
     @BindView(R.id.public_title_bar_title)
     TextView publicTitleBarTitle;
+    @BindView(R.id.layout_none)
+    LinearLayout layoutNone;
     /**
      * 时间分隔
      */
@@ -78,13 +84,19 @@ public class TransferInitiateListActivity extends BaseActivity
     }
 
     @Override
+    public void initView(@NonNull Bundle savedInstanceState) {
+        super.initView(savedInstanceState);
+        loadViewHelper = new LoadViewHelper(this);
+    }
+
+    @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         layoutRefresh.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light,
                                               android.R.color.holo_orange_light, android.R.color.holo_green_light);
         timeItemDecoration = new TimeItemDecoration(this, false);
-        recyclerview.setLayoutManager(new LinearLayoutManager(this));
-        recyclerview.addItemDecoration(timeItemDecoration);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.addItemDecoration(timeItemDecoration);
         initAdapter();
         getInitiateTransferOrderList();
     }
@@ -95,10 +107,10 @@ public class TransferInitiateListActivity extends BaseActivity
     private void initAdapter() {
         transferInitiateAdapter = new TransferInitiateAdapter(R.layout.item_transfer_history, transferList);
         transferInitiateAdapter.setLoadMoreView(new CustomLoadMoreView());
-        transferInitiateAdapter.setOnLoadMoreListener(this, recyclerview);
+        transferInitiateAdapter.setOnLoadMoreListener(this, recyclerView);
         transferInitiateAdapter.setOnItemClickListener(this);
         transferInitiateAdapter.loadMoreEnd();
-        recyclerview.setAdapter(transferInitiateAdapter);
+        recyclerView.setAdapter(transferInitiateAdapter);
     }
 
     @Override
@@ -129,8 +141,16 @@ public class TransferInitiateListActivity extends BaseActivity
 
     @OnClick(R.id.tv_check_next)
     public void onViewClicked() {
-        Intent intent = new Intent(this, ReservationTransferActivity.class);
-        startActivity(intent);
+        Intent intent;
+        if (ZycApplication.getInstance().isTransferAble()) {
+            intent = new Intent(this, ReservationTransferActivity.class);
+            startActivity(intent);
+        }
+        else {
+            intent = new Intent(this, ReservationDisableActivity.class);
+            intent.putExtra(CommonData.KEY_CHECK_OR_TRANSFER, true);
+            startActivity(intent);
+        }
     }
 
     @Override
@@ -149,7 +169,12 @@ public class TransferInitiateListActivity extends BaseActivity
                 transferList.clear();
             }
             transferList.addAll(list);
-            publicTitleBarTitle.setText(String.format(getString(R.string.title_add_transfer), transferList.size()));
+            if (transferList.size() > 0) {
+                publicTitleBarTitle.setText(String.format(getString(R.string.title_add_transfer), transferList.size()));
+            }
+            else {
+                publicTitleBarTitle.setText(R.string.txt_initiate_transfer);
+            }
             sortTransferData();
             transferInitiateAdapter.setNewData(transferList);
             if (list != null && list.size() == BaseData.BASE_PAGE_DATA_NUM) {
@@ -157,6 +182,15 @@ public class TransferInitiateListActivity extends BaseActivity
             }
             else {
                 transferInitiateAdapter.loadMoreEnd();
+            }
+            if (transferList != null && transferList.size() > 0) {
+                recyclerView.setVisibility(View.VISIBLE);
+                layoutNone.setVisibility(View.GONE);
+            }
+            else {
+                recyclerView.setVisibility(View.GONE);
+                layoutNone.setVisibility(View.VISIBLE);
+                loadViewHelper.load(LoadViewHelper.NONE_RECORDING);
             }
         }
     }

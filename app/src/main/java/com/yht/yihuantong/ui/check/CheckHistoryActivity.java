@@ -7,6 +7,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.yht.frame.data.BaseData;
@@ -17,10 +18,13 @@ import com.yht.frame.data.base.CheckBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
+import com.yht.frame.widgets.LoadViewHelper;
 import com.yht.frame.widgets.recyclerview.decoration.TimeItemDecoration;
 import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.ZycApplication;
 import com.yht.yihuantong.ui.adapter.CheckHistoryAdapter;
+import com.yht.yihuantong.ui.reservation.ReservationDisableActivity;
 import com.yht.yihuantong.ui.reservation.service.ReservationServiceActivity;
 
 import java.util.ArrayList;
@@ -41,6 +45,8 @@ public class CheckHistoryActivity extends BaseActivity
     RecyclerView recyclerView;
     @BindView(R.id.layout_refresh)
     SwipeRefreshLayout layoutRefresh;
+    @BindView(R.id.layout_none)
+    LinearLayout layoutNone;
     private CheckHistoryAdapter checkHistoryAdapter;
     /**
      * 时间分隔
@@ -61,6 +67,12 @@ public class CheckHistoryActivity extends BaseActivity
     @Override
     public int getLayoutID() {
         return R.layout.act_check_history;
+    }
+
+    @Override
+    public void initView(@NonNull Bundle savedInstanceState) {
+        super.initView(savedInstanceState);
+        loadViewHelper = new LoadViewHelper(this);
     }
 
     @Override
@@ -110,7 +122,12 @@ public class CheckHistoryActivity extends BaseActivity
 
     @OnClick(R.id.tv_check_next)
     public void onViewClicked() {
-        startActivity(new Intent(this, ReservationServiceActivity.class));
+        if (ZycApplication.getInstance().isServiceAble()) {
+            startActivity(new Intent(this, ReservationServiceActivity.class));
+        }
+        else {
+            startActivity(new Intent(this, ReservationDisableActivity.class));
+        }
     }
 
     @Override
@@ -123,24 +140,29 @@ public class CheckHistoryActivity extends BaseActivity
     @Override
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
-        switch (task) {
-            case GET_RESERVE_CHECK_ORDER_LIST:
-                List<CheckBean> list = (List<CheckBean>)response.getData();
-                if (page == BaseData.BASE_ONE) {
-                    checkedList.clear();
-                }
-                checkedList.addAll(list);
-                sortTransferData();
-                checkHistoryAdapter.setNewData(checkedList);
-                if (list != null && list.size() == BaseData.BASE_PAGE_DATA_NUM) {
-                    checkHistoryAdapter.loadMoreComplete();
-                }
-                else {
-                    checkHistoryAdapter.loadMoreEnd();
-                }
-                break;
-            default:
-                break;
+        if (task == Tasks.GET_RESERVE_CHECK_ORDER_LIST) {
+            List<CheckBean> list = (List<CheckBean>)response.getData();
+            if (page == BaseData.BASE_ONE) {
+                checkedList.clear();
+            }
+            checkedList.addAll(list);
+            sortTransferData();
+            checkHistoryAdapter.setNewData(checkedList);
+            if (list != null && list.size() == BaseData.BASE_PAGE_DATA_NUM) {
+                checkHistoryAdapter.loadMoreComplete();
+            }
+            else {
+                checkHistoryAdapter.loadMoreEnd();
+            }
+            if (checkedList != null && checkedList.size() > 0) {
+                recyclerView.setVisibility(View.VISIBLE);
+                layoutNone.setVisibility(View.GONE);
+            }
+            else {
+                recyclerView.setVisibility(View.GONE);
+                layoutNone.setVisibility(View.VISIBLE);
+                loadViewHelper.load(LoadViewHelper.NONE_RECORDING);
+            }
         }
     }
 

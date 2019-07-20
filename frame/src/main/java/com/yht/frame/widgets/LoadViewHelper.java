@@ -93,8 +93,7 @@ public class LoadViewHelper implements View.OnClickListener {
             case NONE_RECORDING:
                 hintImg.setImageResource(R.mipmap.pic_none_record);
                 hintText.setText(R.string.txt_none_recording);
-                hintNext.setVisibility(View.VISIBLE);
-                hintNext.setText(R.string.txt_reserve_check);
+                hintNext.setVisibility(View.GONE);
                 rootLayout.setBackgroundColor(Color.WHITE);
                 break;
             case NONE_NETWORK:

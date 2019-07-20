@@ -294,6 +294,7 @@
             android:name=".ui.WebViewActivity"
             android:screenOrientation="portrait"
             android:label="@string/txt_about_protocol"
+            android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.x5.FileDisplayActivity"

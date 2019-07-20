@@ -35,6 +35,7 @@ import com.yht.frame.utils.HuiZhenLog;
 import com.yht.frame.utils.SharePreferenceUtil;
 import com.yht.frame.utils.StatusBarUtil;
 import com.yht.frame.utils.ToastUtil;
+import com.yht.frame.widgets.LoadViewHelper;
 import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.frame.widgets.dialog.LoadingDialog;
 
@@ -60,6 +61,7 @@ public abstract class BaseActivity extends RxAppCompatActivity
      * 轻量级存储
      */
     protected SharePreferenceUtil sharePreferenceUtil;
+    protected LoadViewHelper loadViewHelper;
     /**
      * 监听器
      */

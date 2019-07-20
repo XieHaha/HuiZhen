@@ -40,7 +40,6 @@ public class WebViewActivity extends BaseActivity implements LoadViewHelper.OnNe
     TextView publicTitleBarTitle;
     @BindView(R.id.layout_public_hint)
     LinearLayout layoutPublicHint;
-    private LoadViewHelper loadViewHelper;
     /**
      * title
      */
