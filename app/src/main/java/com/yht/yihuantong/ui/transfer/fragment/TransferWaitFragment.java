@@ -111,9 +111,15 @@ public class TransferWaitFragment extends BaseFragment
             }
             if (transferBeans.size() == 0) {
                 layoutNoneRecord.setVisibility(View.VISIBLE);
+                if (listener != null) {
+                    listener.onPendingTransferOrder(false);
+                }
             }
             else {
                 layoutNoneRecord.setVisibility(View.GONE);
+                if (listener != null) {
+                    listener.onPendingTransferOrder(true);
+                }
             }
         }
     }
@@ -151,5 +157,18 @@ public class TransferWaitFragment extends BaseFragment
     public void onLoadMoreRequested() {
         page++;
         getTransferStatusOrderList();
+    }
+
+    private OnPendingTransferOrderListener listener;
+
+    public void setOnPendingTransferOrderListener(OnPendingTransferOrderListener listener) {
+        this.listener = listener;
+    }
+
+    public interface OnPendingTransferOrderListener {
+        /**
+         * @param visible 小红点
+         */
+        void onPendingTransferOrder(boolean visible);
     }
 }

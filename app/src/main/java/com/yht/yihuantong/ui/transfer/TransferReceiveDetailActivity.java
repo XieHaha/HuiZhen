@@ -188,11 +188,11 @@ public class TransferReceiveDetailActivity extends BaseActivity implements Trans
         tvTransferNotice.setText(transferBean.getNote());
         tvPatientName.setText(transferBean.getPatientName());
         tvPhone.setText(transferBean.getPatientMobile());
+        tvIcCard.setText(transferBean.getPatientIdCardNo());
         tvPatientSex.setText(transferBean.getSex() == BaseData.BASE_ONE
                              ? getString(R.string.txt_sex_male)
                              : getString(R.string.txt_sex_female));
         tvPatientAge.setText(String.valueOf(transferBean.getPatientAge()));
-        tvIcCard.setText(transferBean.getPatientIdCardNo());
         tvPastMedical.setText(transferBean.getPastHistory());
         tvFamilyMedical.setText(transferBean.getFamilyHistory());
         tvAllergies.setText(transferBean.getAllergyHistory());
@@ -219,6 +219,8 @@ public class TransferReceiveDetailActivity extends BaseActivity implements Trans
         switch (status) {
             case TRANSFER_STATUS_WAIT:
                 tvReceivingStatus.setText(getString(R.string.txt_status_wait));
+                tvPhone.setText(BaseUtils.asteriskUserPhone(transferBean.getPatientMobile()));
+                tvIcCard.setText(BaseUtils.asteriskUserCard(transferBean.getPatientIdCardNo()));
                 break;
             case TRANSFER_STATUS_RECEIVED:
                 tvReceivingStatus.setText(getString(R.string.txt_status_received));

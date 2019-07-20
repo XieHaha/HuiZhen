@@ -107,8 +107,8 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .getAppUnReadMessageTotal(token)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_APP_UNREAD_MESSAGE_TOTAL,
-                                                                 listener));
+                       .subscribe(
+                               new AbstractLoadViewObserver<>(context, Tasks.GET_APP_UNREAD_MESSAGE_TOTAL, listener));
     }
 
     public static void updateAppUnReadMessageAll(Context context, String token,
@@ -161,8 +161,7 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .getValidateHospitalList(token)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_VALIDATE_HOSPITAL_LIST,
-                                                                 listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_VALIDATE_HOSPITAL_LIST, listener));
     }
 
     public static void getDepartOneListByReverse(Context context, String token, String hospitalCode,

@@ -28,6 +28,7 @@ import com.yht.frame.data.base.PatientBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
+import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.frame.widgets.edittext.AbstractTextWatcher;
 import com.yht.frame.widgets.edittext.SuperEditText;
 import com.yht.frame.widgets.recyclerview.decoration.SideBarItemDecoration;
@@ -333,10 +334,10 @@ public class PatientFragment extends BaseFragment
 
     @Override
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-        //        new HintDialog(getContext()).setPhone(patientBeans.get(position).getMobile())
-        //                                    .setOnEnterClickListener(() -> callPhone(patientBeans.get(position).getMobile()))
-        //                                    .show();
-        callPhone(patientBeans.get(position).getMobile());
+        new HintDialog(getContext()).setPhone(getString(R.string.txt_contact_patient_phone),
+                                              patientBeans.get(position).getMobile())
+                                    .setOnEnterClickListener(() -> callPhone(patientBeans.get(position).getMobile()))
+                                    .show();
     }
 
     @Override

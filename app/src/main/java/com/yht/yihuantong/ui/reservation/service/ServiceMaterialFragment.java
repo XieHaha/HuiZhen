@@ -223,7 +223,9 @@ public class ServiceMaterialFragment extends BaseFragment implements View.OnFocu
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 super.onTextChanged(s, start, before, count);
                 phone = s.toString();
-                reserveCheckBean.setPhone(phone);
+                if (BaseUtils.isMobileNumber(phone)) {
+                    reserveCheckBean.setPhone(phone);
+                }
                 //判断手机号和诊断史
                 initNextButton();
             }
@@ -288,9 +290,6 @@ public class ServiceMaterialFragment extends BaseFragment implements View.OnFocu
             tvPastMedicalHisNum.setText(
                     String.format(getString(R.string.txt_calc_num), tvPastMedicalHisNot.getText().toString().length()));
             if (TextUtils.isEmpty(pastMedicalHis)) {
-                reserveCheckBean.setPastHistory("");
-            }
-            else {
                 reserveCheckBean.setPastHistory(getString(R.string.txt_past_medical_his_not));
             }
         }
@@ -313,9 +312,6 @@ public class ServiceMaterialFragment extends BaseFragment implements View.OnFocu
             tvFamilyMedicalHisNum.setText(String.format(getString(R.string.txt_calc_num),
                                                         tvFamilyMedicalHisNot.getText().toString().length()));
             if (TextUtils.isEmpty(familyMedicalHis)) {
-                reserveCheckBean.setFamilyHistory("");
-            }
-            else {
                 reserveCheckBean.setFamilyHistory(getString(R.string.txt_family_medical_his_not));
             }
         }
@@ -338,9 +334,6 @@ public class ServiceMaterialFragment extends BaseFragment implements View.OnFocu
             tvAllergiesNum.setText(
                     String.format(getString(R.string.txt_calc_num), tvAllergiesNot.getText().toString().length()));
             if (TextUtils.isEmpty(allergiesHis)) {
-                reserveCheckBean.setAllergyHistory("");
-            }
-            else {
                 reserveCheckBean.setAllergyHistory(getString(R.string.txt_allergies_not));
             }
         }

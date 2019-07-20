@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.yht.frame.R;
+import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.widgets.dialog.listener.OnCancelClickListener;
 import com.yht.frame.widgets.dialog.listener.OnEnterClickListener;
 
@@ -174,7 +175,8 @@ public class HintDialog extends Dialog implements OnClickListener {
      */
     public HintDialog setPhone(String key, String phone) {
         setTitleString(R.string.txt_hint);
-        setContentString(String.format(context.getString(R.string.txt_contact_hotline), key, phone));
+        setContentString(String.format(context.getString(R.string.txt_contact_hotline), key,
+                                       BaseUtils.asteriskUserPhone(phone)));
         setEnterBtnTxt(R.string.txt_call);
         setEnterSelect(true);
         return this;

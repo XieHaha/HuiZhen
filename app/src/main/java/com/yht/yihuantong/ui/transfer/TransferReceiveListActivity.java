@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -29,7 +30,8 @@ import me.jessyan.autosize.utils.ScreenUtils;
  * @date 19/6/27 14:17
  * @des 我收到的转诊
  */
-public class TransferReceiveListActivity extends BaseActivity {
+public class TransferReceiveListActivity extends BaseActivity
+        implements TransferWaitFragment.OnPendingTransferOrderListener {
     @BindView(R.id.tv_left)
     TextView tvLeft;
     @BindView(R.id.tv_right)
@@ -40,6 +42,8 @@ public class TransferReceiveListActivity extends BaseActivity {
     View viewBar;
     @BindView(R.id.view_pager)
     ViewPager viewPager;
+    @BindView(R.id.iv_wait_dot)
+    ImageView ivWaitDot;
     /**
      * true为 1  false 为 0
      */
@@ -62,12 +66,6 @@ public class TransferReceiveListActivity extends BaseActivity {
             index = getIntent().getBooleanExtra(CommonData.KEY_PUBLIC, false);
         }
         initFragment(index);
-        if (index) {
-            move(1, calcViewBarOffset(), 0);
-        }else {
-
-            viewBar.setTranslationX(calcViewBarOffset());
-        }
     }
 
     @Override
@@ -99,16 +97,33 @@ public class TransferReceiveListActivity extends BaseActivity {
      * @param index
      */
     private void initFragment(boolean index) {
+        if (index) {
+            move(1, calcViewBarOffset(), 0);
+        }
+        else {
+            viewBar.setTranslationX(calcViewBarOffset());
+        }
         //已接收
         TransferReceivedFragment transferReceivedFragment = new TransferReceivedFragment();
         //待处理
         TransferWaitFragment transferWaitFragment = new TransferWaitFragment();
+        transferWaitFragment.setOnPendingTransferOrderListener(this);
         List<Fragment> fragmentList = new ArrayList<>();
         fragmentList.add(transferReceivedFragment);
         fragmentList.add(transferWaitFragment);
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), fragmentList);
         viewPager.setAdapter(viewPagerAdapter);
         titleBar(index);
+    }
+
+    @Override
+    public void onPendingTransferOrder(boolean visible) {
+        if (visible) {
+            ivWaitDot.setVisibility(View.VISIBLE);
+        }
+        else {
+            ivWaitDot.setVisibility(View.GONE);
+        }
     }
 
     @OnClick({ R.id.layout_left, R.id.layout_right })

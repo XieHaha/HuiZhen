@@ -19,6 +19,7 @@ import com.yht.frame.data.type.TransferOrderStatus;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
+import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.frame.widgets.dialog.InputDialog;
@@ -216,6 +217,15 @@ public class TransferInitiateDetailActivity extends BaseActivity implements Tran
         RequestUtils.cancelReserveTransferOrder(this, loginBean.getToken(), cancelReason, orderNo, this);
     }
 
+    /**
+     * 查询患者是否存在未完成的转诊单
+     */
+    private void getPatientExistTransfer() {
+        if (transferBean != null) {
+            RequestUtils.getPatientExistTransfer(this, loginBean.getToken(), transferBean.getPatientCode(), this);
+        }
+    }
+
     @OnClick({
             R.id.tv_transfer_again, R.id.tv_contact_patient, R.id.tv_contact_doctor, R.id.tv_contact_patient_one,
             R.id.tv_contact_doctor_one })
@@ -239,10 +249,7 @@ public class TransferInitiateDetailActivity extends BaseActivity implements Tran
                                          .show();
                 }
                 else {
-                    //重新转诊
-                    Intent intent = new Intent(this, ReservationTransferActivity.class);
-                    intent.putExtra(CommonData.KEY_TRANSFER_ORDER_BEAN, transferBean);
-                    startActivity(intent);
+                    getPatientExistTransfer();
                 }
                 break;
             case R.id.tv_contact_patient:
@@ -276,6 +283,18 @@ public class TransferInitiateDetailActivity extends BaseActivity implements Tran
                 //通知列表刷新
                 setResult(RESULT_OK);
                 getTransferOrderDetail();
+                break;
+            case GET_PATIENT_EXIST_TRANSFER:
+                boolean exist = (boolean)response.getData();
+                if (exist) {
+                    ToastUtil.toast(this, R.string.txt_patient_exist_transfer);
+                }
+                else {
+                    //重新转诊
+                    Intent intent = new Intent(this, ReservationTransferActivity.class);
+                    intent.putExtra(CommonData.KEY_TRANSFER_ORDER_BEAN, transferBean);
+                    startActivity(intent);
+                }
                 break;
             default:
                 break;

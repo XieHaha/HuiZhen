@@ -175,10 +175,10 @@ public class MessageFragment extends BaseFragment
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
                 if (position == 0) {
-                    titleBar(true);
+                    titleBar(BASE_ZERO);
                 }
                 else {
-                    titleBar(false);
+                    titleBar(BASE_ONE);
                 }
             }
         });
@@ -370,7 +370,7 @@ public class MessageFragment extends BaseFragment
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(
                 Objects.requireNonNull(getActivity()).getSupportFragmentManager(), fragmentList);
         viewPager.setAdapter(viewPagerAdapter);
-        titleBar(true);
+        titleBar(BASE_ZERO);
     }
 
     /**
@@ -378,8 +378,8 @@ public class MessageFragment extends BaseFragment
      *
      * @param one true 为默认
      */
-    private void titleBar(boolean one) {
-        if (one) {
+    private void titleBar(int one) {
+        if (one == BASE_ZERO) {
             viewPager.setCurrentItem(0);
             tvReadMessage.setVisibility(View.GONE);
             tvLeft.setSelected(true);
@@ -401,8 +401,10 @@ public class MessageFragment extends BaseFragment
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.layout_left:
+                titleBar(BASE_ZERO);
                 break;
             case R.id.layout_right:
+                titleBar(BASE_ONE);
                 break;
             case R.id.tv_read_message:
                 if (tvReadMessage.isSelected()) {

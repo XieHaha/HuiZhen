@@ -223,7 +223,9 @@ public class TransferMaterialFragment extends BaseFragment implements View.OnFoc
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 super.onTextChanged(s, start, before, count);
                 phone = s.toString();
-                reverseTransferBean.setPatientMobile(phone);
+                if (BaseUtils.isMobileNumber(phone)) {
+                    reverseTransferBean.setPatientMobile(phone);
+                }
                 //判断手机号和诊断史
                 initNextButton();
             }
@@ -288,9 +290,6 @@ public class TransferMaterialFragment extends BaseFragment implements View.OnFoc
             tvPastMedicalHisNum.setText(
                     String.format(getString(R.string.txt_calc_num), tvPastMedicalHisNot.getText().toString().length()));
             if (TextUtils.isEmpty(pastMedicalHis)) {
-                reverseTransferBean.setPastHistory("");
-            }
-            else {
                 reverseTransferBean.setPastHistory(getString(R.string.txt_past_medical_his_not));
             }
         }
@@ -313,9 +312,6 @@ public class TransferMaterialFragment extends BaseFragment implements View.OnFoc
             tvFamilyMedicalHisNum.setText(String.format(getString(R.string.txt_calc_num),
                                                         tvFamilyMedicalHisNot.getText().toString().length()));
             if (TextUtils.isEmpty(familyMedicalHis)) {
-                reverseTransferBean.setFamilyHistory("");
-            }
-            else {
                 reverseTransferBean.setFamilyHistory(getString(R.string.txt_family_medical_his_not));
             }
         }
@@ -338,9 +334,6 @@ public class TransferMaterialFragment extends BaseFragment implements View.OnFoc
             tvAllergiesNum.setText(
                     String.format(getString(R.string.txt_calc_num), tvAllergiesNot.getText().toString().length()));
             if (TextUtils.isEmpty(allergiesHis)) {
-                reverseTransferBean.setAllergyHistory("");
-            }
-            else {
                 reverseTransferBean.setAllergyHistory(getString(R.string.txt_allergies_not));
             }
         }

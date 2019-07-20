@@ -41,6 +41,24 @@ public class BaseUtils {
     public static final String INIT_TIME = "00:00:00";
     private static final int BUFFER_SIZE = 1024 * 2;
 
+
+    /**
+     * 手机号 星号处理    asterisk（星号）
+     */
+    public static String asteriskUserPhone(String mobiles)
+            throws NullPointerException, StringIndexOutOfBoundsException {
+        if (TextUtils.isEmpty(mobiles) || mobiles.length() < BaseData.BASE_PHONE_DEFAULT_LENGTH) { return ""; }
+        return mobiles.substring(0, 3) + "****" + mobiles.substring(7, mobiles.length());
+    }
+    /**
+     * 手机号 星号处理    asterisk（星号）
+     */
+    public static String asteriskUserCard(String idCard)
+            throws NullPointerException, StringIndexOutOfBoundsException {
+        if (TextUtils.isEmpty(idCard) || idCard.length() < BaseData.BASE_ID_CARD_LENGTH) { return ""; }
+        return idCard.substring(0, 3) + "****" + idCard.substring(15, idCard.length());
+    }
+
     /**
      * 网络是否可用
      *
