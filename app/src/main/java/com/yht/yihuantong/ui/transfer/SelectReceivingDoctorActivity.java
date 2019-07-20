@@ -149,7 +149,7 @@ public class SelectReceivingDoctorActivity extends BaseActivity
         doctorAdapter.setOnItemChildClickListener(this);
         searchRecyclerView.setAdapter(doctorAdapter);
         getHospitalListByReverse();
-        getDoctorListByReverse(null);
+        getDoctorListByReverse(new HashMap<>(16));
     }
 
     @Override

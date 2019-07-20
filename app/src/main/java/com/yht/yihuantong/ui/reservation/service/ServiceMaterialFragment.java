@@ -76,9 +76,8 @@ public class ServiceMaterialFragment extends BaseFragment implements View.OnFocu
     /**
      * 基础信息
      */
-    private String age, phone;
     private int sex;
-    private String pastMedicalHis = "", familyMedicalHis = "", allergiesHis = "", diagnosisHis = "";
+    private String age, phone, pastMedicalHis = "", familyMedicalHis = "", allergiesHis = "", diagnosisHis = "";
     /**
      * 二次编辑 是否清空所有已填数据
      */
@@ -210,7 +209,12 @@ public class ServiceMaterialFragment extends BaseFragment implements View.OnFocu
                 super.onTextChanged(s, start, before, count);
                 age = s.toString();
                 initNextButton();
-                reserveCheckBean.setAge(Integer.valueOf(age));
+                if (!TextUtils.isEmpty(age)) {
+                    reserveCheckBean.setAge(Integer.valueOf(age));
+                }
+                else {
+                    reserveCheckBean.setAge(0);
+                }
             }
         });
         etPhone.setOnFocusChangeListener(this);

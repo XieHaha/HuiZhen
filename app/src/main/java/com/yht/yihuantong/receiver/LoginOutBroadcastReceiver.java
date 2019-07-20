@@ -6,6 +6,7 @@ import android.content.Intent;
 
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
+import com.yht.frame.data.CommonData;
 import com.yht.frame.data.base.PatientBean;
 import com.yht.frame.ui.AppManager;
 import com.yht.frame.utils.SharePreferenceUtil;
@@ -30,8 +31,10 @@ public class LoginOutBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
+        String errorHint = intent.getStringExtra(CommonData.KEY_PUBLIC_STRING);
         if (BASE_TOKEN_ERROR_ACTION.equals(action)) {
             Intent intent1 = new Intent(context, HintLoginActivity.class);
+            intent.putExtra(CommonData.KEY_PUBLIC_STRING, errorHint);
             intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent1);
         }

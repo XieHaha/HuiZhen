@@ -257,8 +257,9 @@ public abstract class BaseFragment extends Fragment
     /**
      * token失效
      */
-    public void token() {
+    public void token(String errorHint) {
         Intent intent = new Intent(BaseData.BASE_TOKEN_ERROR_ACTION);
+        intent.putExtra(CommonData.KEY_PUBLIC_STRING, errorHint);
         intent.setPackage(getActivity().getPackageName());
         getActivity().sendBroadcast(intent);
     }
@@ -307,10 +308,13 @@ public abstract class BaseFragment extends Fragment
     @Override
     public void onResponseCode(Tasks task, BaseResponse response) {
         if (response.getCode() == BaseNetConfig.REQUEST_TOKEN_ERROR) {
-            token();
+            token(response.getMsg());
+        }
+        else if (response.getCode() == BaseNetConfig.REQUEST_OTHER_ERROR) {
+            ToastUtil.toast(getContext(), response.getMsg());
         }
         else {
-            ToastUtil.toast(getContext(), response.getMsg());
+            //不提示
         }
     }
 

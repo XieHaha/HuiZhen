@@ -10,6 +10,10 @@ public interface BaseNetConfig {
      */
     int REQUEST_SUCCESS = 2000;
     /**
+     * 其他错误
+     */
+    int REQUEST_OTHER_ERROR = 4000;
+    /**
      * token错误或者失效
      */
     int REQUEST_TOKEN_ERROR = 4001;

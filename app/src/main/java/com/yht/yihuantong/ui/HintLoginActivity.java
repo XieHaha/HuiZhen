@@ -18,10 +18,7 @@ import butterknife.OnClick;
 public class HintLoginActivity extends BaseActivity {
     @BindView(R.id.dialog_simple_hint_content)
     TextView dialogSimpleHintContent;
-    /**
-     * 是否为环信抢登录
-     */
-    private boolean isEase;
+    private String errorHint;
 
     @Override
     public int getLayoutID() {
@@ -32,11 +29,9 @@ public class HintLoginActivity extends BaseActivity {
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
         if (getIntent() != null) {
-            isEase = getIntent().getBooleanExtra(CommonData.KEY_PUBLIC, false);
+            errorHint = getIntent().getStringExtra(CommonData.KEY_PUBLIC_STRING);
         }
-        if (isEase) {
-            dialogSimpleHintContent.setText(R.string.txt_ease_login_expired);
-        }
+        dialogSimpleHintContent.setText(errorHint);
     }
 
     @Override

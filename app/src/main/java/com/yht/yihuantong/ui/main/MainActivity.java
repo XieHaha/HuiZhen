@@ -400,7 +400,7 @@ public class MainActivity extends BaseActivity
                 }
                 else if (error == EMError.USER_LOGIN_ANOTHER_DEVICE) {
                     Intent intent = new Intent(MainActivity.this, HintLoginActivity.class);
-                    intent.putExtra(CommonData.KEY_PUBLIC, true);
+                    intent.putExtra(CommonData.KEY_PUBLIC_STRING, getString(R.string.txt_ease_login_expired));
                     startActivity(intent);
                     overridePendingTransition(R.anim.anim_fade_in, R.anim.keep);
                 }

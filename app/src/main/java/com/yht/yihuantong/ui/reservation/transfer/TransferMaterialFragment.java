@@ -209,7 +209,12 @@ public class TransferMaterialFragment extends BaseFragment implements View.OnFoc
                 super.onTextChanged(s, start, before, count);
                 age = s.toString();
                 initNextButton();
-                reverseTransferBean.setPatientAge(Integer.valueOf(age));
+                if (!TextUtils.isEmpty(age)) {
+                    reverseTransferBean.setPatientAge(Integer.valueOf(age));
+                }
+                else {
+                    reverseTransferBean.setPatientAge(0);
+                }
             }
         });
         etPhone.setOnFocusChangeListener(this);
