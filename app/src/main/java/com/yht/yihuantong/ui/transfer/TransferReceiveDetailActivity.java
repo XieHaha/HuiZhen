@@ -103,6 +103,10 @@ public class TransferReceiveDetailActivity extends BaseActivity implements Trans
     LinearLayout layoutContact;
     @BindView(R.id.public_title_bar_title)
     TextView publicTitleBarTitle;
+    @BindView(R.id.tv_cancel)
+    TextView tvCancel;
+    @BindView(R.id.layout_cancel_result)
+    RelativeLayout layoutCancelResult;
     private TransferBean transferBean;
     private String orderNo;
     /**
@@ -232,6 +236,8 @@ public class TransferReceiveDetailActivity extends BaseActivity implements Trans
             case TRANSFER_STATUS_CANCEL:
                 tvReceivingStatus.setText(getString(R.string.txt_status_cancel));
                 ivCheckStatus.setImageResource(R.mipmap.ic_status_cancel);
+                layoutCancelResult.setVisibility(View.VISIBLE);
+                tvCancel.setText(transferBean.getCancelReason());
                 layoutContact.setVisibility(View.GONE);
                 layoutReceived.setVisibility(View.GONE);
                 break;

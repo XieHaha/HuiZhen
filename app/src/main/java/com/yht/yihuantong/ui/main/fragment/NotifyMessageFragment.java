@@ -26,7 +26,7 @@ import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.adapter.NotifyMessageAdapter;
-import com.yht.yihuantong.ui.check.CheckDetailActivity;
+import com.yht.yihuantong.ui.check.ServiceDetailActivity;
 import com.yht.yihuantong.ui.currency.IncomeDetailActivity;
 import com.yht.yihuantong.ui.currency.WithdrawDetailActivity;
 import com.yht.yihuantong.ui.transfer.TransferInitiateDetailActivity;
@@ -136,7 +136,7 @@ public class NotifyMessageFragment extends BaseFragment
         String orderNo = getMessageTypeId(bean.getExtraData());
         switch (type) {
             case MESSAGE_SERVICE_REPORT:
-                intent = new Intent(getContext(), CheckDetailActivity.class);
+                intent = new Intent(getContext(), ServiceDetailActivity.class);
                 intent.putExtra(CommonData.KEY_ORDER_ID, orderNo);
                 intent.putExtra(CommonData.KEY_PUBLIC, true);
                 startActivity(intent);

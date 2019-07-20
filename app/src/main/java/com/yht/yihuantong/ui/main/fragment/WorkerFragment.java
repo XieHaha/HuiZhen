@@ -30,7 +30,7 @@ import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ZycApplication;
 import com.yht.yihuantong.ui.WebViewActivity;
-import com.yht.yihuantong.ui.check.CheckHistoryActivity;
+import com.yht.yihuantong.ui.check.ServiceHistoryActivity;
 import com.yht.yihuantong.ui.personal.PersonalNewActivity;
 import com.yht.yihuantong.ui.reservation.ReservationDisableActivity;
 import com.yht.yihuantong.ui.reservation.service.ReservationServiceActivity;
@@ -230,7 +230,7 @@ public class WorkerFragment extends BaseFragment {
                 //                }
                 break;
             case R.id.layout_initiate_check:
-                intent = new Intent(getContext(), CheckHistoryActivity.class);
+                intent = new Intent(getContext(), ServiceHistoryActivity.class);
                 startActivity(intent);
                 break;
             case R.id.layout_initiate_transfer:

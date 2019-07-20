@@ -8,7 +8,7 @@ import android.text.TextUtils;
 
 import com.yht.frame.utils.HuiZhenLog;
 import com.yht.yihuantong.ui.SplashActivity;
-import com.yht.yihuantong.ui.check.CheckDetailActivity;
+import com.yht.yihuantong.ui.check.ServiceDetailActivity;
 import com.yht.yihuantong.ui.main.MainActivity;
 import com.yht.yihuantong.ui.personal.SettingActivity;
 import com.yht.yihuantong.ui.transfer.TransferInitiateDetailActivity;
@@ -110,7 +110,7 @@ public class JumpUtils {
                 intent = new Intent(context, TransferInitiateDetailActivity.class);
                 return intent;
             case "2":
-                intent = new Intent(context, CheckDetailActivity.class);
+                intent = new Intent(context, ServiceDetailActivity.class);
                 return intent;
             default:
                 break;

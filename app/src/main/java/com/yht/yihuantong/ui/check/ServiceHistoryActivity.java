@@ -38,7 +38,7 @@ import butterknife.OnClick;
  * @date 19/6/13 15:26
  * @des
  */
-public class CheckHistoryActivity extends BaseActivity
+public class ServiceHistoryActivity extends BaseActivity
         implements BaseQuickAdapter.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener,
                    BaseQuickAdapter.RequestLoadMoreListener {
     @BindView(R.id.recyclerview)
@@ -132,7 +132,7 @@ public class CheckHistoryActivity extends BaseActivity
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        Intent intent = new Intent(this, CheckDetailActivity.class);
+        Intent intent = new Intent(this, ServiceDetailActivity.class);
         intent.putExtra(CommonData.KEY_ORDER_ID, checkedList.get(position).getOrderNo());
         startActivity(intent);
     }

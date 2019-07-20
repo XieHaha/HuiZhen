@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -26,6 +27,7 @@ import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.widgets.view.AbstractOnPageChangeListener;
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.ZycApplication;
 import com.yht.yihuantong.chat.EaseChatFragment;
 import com.yht.yihuantong.ui.adapter.ViewPagerAdapter;
 import com.yht.yihuantong.ui.patient.fragment.PatientInfoFragment;
@@ -98,17 +100,6 @@ public class PatientPersonalActivity extends BaseActivity implements EaseChatFra
      * 等待时间
      */
     final long awaitTime = 3 * 1000;
-
-    @Override
-    protected boolean isInitBackBtn() {
-        return true;
-    }
-
-    @Override
-    public int getLayoutID() {
-        return R.layout.act_patient_personal;
-    }
-
     private Handler handler = new Handler(message -> {
         switch (message.what) {
             case START:
@@ -147,6 +138,16 @@ public class PatientPersonalActivity extends BaseActivity implements EaseChatFra
     });
 
     @Override
+    protected boolean isInitBackBtn() {
+        return true;
+    }
+
+    @Override
+    public int getLayoutID() {
+        return R.layout.act_patient_personal;
+    }
+
+    @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
         if (getIntent() != null) {
@@ -160,6 +161,10 @@ public class PatientPersonalActivity extends BaseActivity implements EaseChatFra
             patientName = bean.getName();
         }
         publicTitleBarTitle.setText(patientName);
+        //通知显示问题
+        if (!TextUtils.isEmpty(patientCode)) {
+            ZycApplication.getInstance().setChatId(patientCode.toLowerCase());
+        }
     }
 
     @Override
@@ -361,6 +366,7 @@ public class PatientPersonalActivity extends BaseActivity implements EaseChatFra
         if (executorService != null) {
             executorService.shutdownNow();
         }
+        ZycApplication.getInstance().setChatId("");
     }
 
     @Override

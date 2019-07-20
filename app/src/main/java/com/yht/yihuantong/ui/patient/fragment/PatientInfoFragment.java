@@ -28,7 +28,7 @@ import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ZycApplication;
 import com.yht.yihuantong.ui.adapter.PatientOrderAdapter;
-import com.yht.yihuantong.ui.check.CheckDetailActivity;
+import com.yht.yihuantong.ui.check.ServiceDetailActivity;
 import com.yht.yihuantong.ui.patient.TransferDetailActivity;
 import com.yht.yihuantong.ui.remote.RemoteDetailActivity;
 import com.yht.yihuantong.ui.reservation.ReservationDisableActivity;
@@ -188,7 +188,7 @@ public class PatientInfoFragment extends BaseFragment
         PatientOrderBean bean = patientOrderBeans.get(position);
         switch (bean.getItemType()) {
             case PatientOrderBean.CHECK:
-                intent = new Intent(getContext(), CheckDetailActivity.class);
+                intent = new Intent(getContext(), ServiceDetailActivity.class);
                 intent.putExtra(CommonData.KEY_ORDER_ID, bean.getOrderNo());
                 break;
             case PatientOrderBean.REMOTE:

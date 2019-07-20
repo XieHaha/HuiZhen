@@ -10,7 +10,7 @@ import com.yht.frame.api.notify.NotifyChangeListenerManager;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.yihuantong.R;
-import com.yht.yihuantong.ui.check.CheckDetailActivity;
+import com.yht.yihuantong.ui.check.ServiceDetailActivity;
 import com.yht.yihuantong.ui.reservation.service.ReservationServiceActivity;
 import com.yht.yihuantong.ui.reservation.transfer.ReservationTransferActivity;
 import com.yht.yihuantong.ui.transfer.TransferInitiateDetailActivity;
@@ -85,7 +85,7 @@ public class ReservationSuccessActivity extends BaseActivity {
                     startActivity(intent);
                 }
                 else {
-                    Intent intent = new Intent(this, CheckDetailActivity.class);
+                    Intent intent = new Intent(this, ServiceDetailActivity.class);
                     intent.putExtra(CommonData.KEY_PUBLIC, true);
                     intent.putExtra(CommonData.KEY_ORDER_ID, orderNo);
                     startActivity(intent);

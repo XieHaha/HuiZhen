@@ -90,6 +90,10 @@ public class TransferInitiateDetailActivity extends BaseActivity implements Tran
     RelativeLayout layoutCancelResult;
     @BindView(R.id.layout_receive_notice)
     RelativeLayout layoutReceiveNotice;
+    @BindView(R.id.tv_transfer_reject)
+    TextView tvTransferReject;
+    @BindView(R.id.layout_reject_result)
+    RelativeLayout layoutRejectResult;
     /**
      * 订单 详情
      */
@@ -165,6 +169,7 @@ public class TransferInitiateDetailActivity extends BaseActivity implements Tran
             case TRANSFER_STATUS_WAIT:
                 layoutBottom.setVisibility(View.VISIBLE);
                 layoutBottomOne.setVisibility(View.GONE);
+                layoutRejectResult.setVisibility(View.GONE);
                 ivCheckStatus.setImageResource(R.mipmap.ic_wait_transfer);
                 tvTransferAgain.setText(R.string.txt_transfer_cancel);
                 tvReceivingStatus.setText(getString(R.string.txt_status_wait));
@@ -176,6 +181,7 @@ public class TransferInitiateDetailActivity extends BaseActivity implements Tran
                 layoutReceiveHospital.setVisibility(View.VISIBLE);
                 layoutReceiveTime.setVisibility(View.VISIBLE);
                 layoutReceiveNotice.setVisibility(View.VISIBLE);
+                layoutRejectResult.setVisibility(View.GONE);
                 ivCheckStatus.setImageResource(R.mipmap.ic_status_received);
                 tvReceivingStatus.setText(getString(R.string.txt_status_received));
                 tvReceivingDepart.setText(transferBean.getTargetHospitalDepartmentName());
@@ -187,6 +193,7 @@ public class TransferInitiateDetailActivity extends BaseActivity implements Tran
                 layoutBottom.setVisibility(View.VISIBLE);
                 layoutBottomOne.setVisibility(View.GONE);
                 layoutCancelResult.setVisibility(View.VISIBLE);
+                layoutRejectResult.setVisibility(View.GONE);
                 ivCheckStatus.setImageResource(R.mipmap.ic_status_cancel);
                 tvReceivingStatus.setText(getString(R.string.txt_status_cancel));
                 tvTransferAgain.setText(R.string.txt_transfer_again);
@@ -197,6 +204,8 @@ public class TransferInitiateDetailActivity extends BaseActivity implements Tran
                 layoutBottomOne.setVisibility(View.GONE);
                 ivCheckStatus.setImageResource(R.mipmap.ic_status_reject);
                 tvReceivingStatus.setText(getString(R.string.txt_status_reject));
+                layoutRejectResult.setVisibility(View.VISIBLE);
+                tvTransferReject.setText(transferBean.getRejectReason());
                 break;
             default:
                 break;

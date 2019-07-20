@@ -42,7 +42,7 @@ import butterknife.OnClick;
  * @date 19/6/14 10:56
  * @des 预约服务详情
  */
-public class CheckDetailActivity extends BaseActivity implements CheckOrderStatus, CheckTypeStatus {
+public class ServiceDetailActivity extends BaseActivity implements CheckOrderStatus, CheckTypeStatus {
     @BindView(R.id.iv_patient_img)
     ImageView ivPatientImg;
     @BindView(R.id.tv_patient_name)
