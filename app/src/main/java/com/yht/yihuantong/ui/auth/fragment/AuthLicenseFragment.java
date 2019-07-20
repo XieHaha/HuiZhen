@@ -28,7 +28,6 @@ import com.yht.frame.data.bean.NormImage;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.permission.Permission;
 import com.yht.frame.ui.BaseFragment;
-import com.yht.frame.utils.HuiZhenLog;
 import com.yht.frame.utils.ScalingUtils;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ZycApplication;
@@ -126,9 +125,7 @@ public class AuthLicenseFragment extends BaseFragment
      * @param file
      */
     private void uploadImage(File file) {
-        HuiZhenLog.i(TAG, "size:" + file.length());
         ScalingUtils.resizePic(getContext(), file.getAbsolutePath());
-        HuiZhenLog.i(TAG, "compress size:" + file.length());
         RequestUtils.uploadImg(getContext(), loginBean.getToken(), file, this);
     }
 

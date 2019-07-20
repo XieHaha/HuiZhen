@@ -74,7 +74,7 @@ public class SelectHospitalByAuthActivity extends BaseActivity
         getHospitalListByAuth();
         rvHospital.setVisibility(View.GONE);
         rvHospital.setLayoutManager(new LinearLayoutManager(this));
-        hospitalAdapter = new HospitalSelectAdapter(R.layout.item_hospital, hospitals);
+        hospitalAdapter = new HospitalSelectAdapter(R.layout.item_hospital, searchHospitals);
         hospitalAdapter.setOnItemClickListener(this);
         hospitalAdapter.setLoadMoreView(new CustomLoadMoreView());
         rvHospital.setAdapter(hospitalAdapter);
@@ -133,8 +133,9 @@ public class SelectHospitalByAuthActivity extends BaseActivity
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+        hideSoftInputFromWindow(view);
         Intent intent = new Intent();
-        intent.putExtra(CommonData.KEY_HOSPITAL_BEAN, hospitals.get(position));
+        intent.putExtra(CommonData.KEY_HOSPITAL_BEAN, searchHospitals.get(position));
         setResult(RESULT_OK, intent);
         finish();
     }

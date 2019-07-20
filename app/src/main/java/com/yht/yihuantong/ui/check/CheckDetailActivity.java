@@ -65,8 +65,8 @@ public class CheckDetailActivity extends BaseActivity implements CheckOrderStatu
     LinearLayout layoutCheckType;
     @BindView(R.id.tv_check_hospital)
     TextView tvCheckHospital;
-    @BindView(R.id.tv_check_pregnancy)
-    TextView tvCheckPregnancy;
+    //    @BindView(R.id.tv_check_pregnancy)
+    //    TextView tvCheckPregnancy;
     @BindView(R.id.tv_check_payment)
     TextView tvCheckPayment;
     @BindView(R.id.tv_check_status)
@@ -219,9 +219,9 @@ public class CheckDetailActivity extends BaseActivity implements CheckOrderStatu
         }
         tvCheckHospital.setText(checkDetailBean.getTargetHospitalName());
         //是否备孕
-        tvCheckPregnancy.setText(checkDetailBean.getIsPregnancy() == BaseData.BASE_ZERO
-                                 ? getString(R.string.txt_yes)
-                                 : getString(R.string.txt_no));
+        //        tvCheckPregnancy.setText(checkDetailBean.getIsPregnancy() == BaseData.BASE_ZERO
+        //                                 ? getString(R.string.txt_yes)
+        //                                 : getString(R.string.txt_no));
         //缴费类型
         int payType = checkDetailBean.getPayType();
         if (payType == BaseData.BASE_ZERO) {
