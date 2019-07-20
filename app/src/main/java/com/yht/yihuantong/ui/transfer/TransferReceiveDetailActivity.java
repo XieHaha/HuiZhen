@@ -15,8 +15,8 @@ import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
-import com.yht.frame.data.type.TransferOrderStatus;
 import com.yht.frame.data.base.TransferBean;
+import com.yht.frame.data.type.TransferOrderStatus;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
@@ -24,7 +24,6 @@ import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.frame.widgets.dialog.InputDialog;
-import com.yht.frame.widgets.edittext.SuperEditText;
 import com.yht.yihuantong.R;
 
 import butterknife.BindView;
@@ -47,7 +46,7 @@ public class TransferReceiveDetailActivity extends BaseActivity implements Trans
     @BindView(R.id.iv_check_status)
     ImageView ivCheckStatus;
     @BindView(R.id.tv_ic_card)
-    SuperEditText tvIcCard;
+    TextView tvIcCard;
     @BindView(R.id.tv_phone)
     TextView tvPhone;
     @BindView(R.id.tv_past_medical)
@@ -167,9 +166,9 @@ public class TransferReceiveDetailActivity extends BaseActivity implements Trans
             layoutReserveTime.setVisibility(View.VISIBLE);
             layoutNotice.setVisibility(View.VISIBLE);
             layoutEditTransfer.setVisibility(View.VISIBLE);
-            layoutContact.setVisibility(View.VISIBLE);
             layoutCall.setVisibility(View.INVISIBLE);
-            layoutReceived.setVisibility(View.GONE);
+            layoutContact.setVisibility(View.VISIBLE);
+            layoutReceived.setVisibility(View.INVISIBLE);
             ivCheckStatus.setImageResource(R.mipmap.ic_status_received);
             publicTitleBarTitle.setText(R.string.title_received_transfer_detail);
         }
@@ -187,8 +186,8 @@ public class TransferReceiveDetailActivity extends BaseActivity implements Trans
         tvReserveTime.setText(transferBean.getAppointAt());
         tvTransferNotice.setText(transferBean.getNote());
         tvPatientName.setText(transferBean.getPatientName());
-        tvPhone.setText(transferBean.getPatientMobile());
-        tvIcCard.setText(transferBean.getPatientIdCardNo());
+        tvPhone.setText(BaseUtils.asteriskUserPhone(transferBean.getPatientMobile()));
+        tvIcCard.setText(BaseUtils.asteriskUserCard(transferBean.getPatientIdCardNo()));
         tvPatientSex.setText(transferBean.getSex() == BaseData.BASE_ONE
                              ? getString(R.string.txt_sex_male)
                              : getString(R.string.txt_sex_female));
@@ -219,17 +218,28 @@ public class TransferReceiveDetailActivity extends BaseActivity implements Trans
         switch (status) {
             case TRANSFER_STATUS_WAIT:
                 tvReceivingStatus.setText(getString(R.string.txt_status_wait));
-                tvPhone.setText(BaseUtils.asteriskUserPhone(transferBean.getPatientMobile()));
-                tvIcCard.setText(BaseUtils.asteriskUserCard(transferBean.getPatientIdCardNo()));
+                ivCheckStatus.setImageResource(R.mipmap.ic_wait_transfer);
+                layoutContact.setVisibility(View.GONE);
+                layoutReceived.setVisibility(View.VISIBLE);
                 break;
             case TRANSFER_STATUS_RECEIVED:
                 tvReceivingStatus.setText(getString(R.string.txt_status_received));
+                ivCheckStatus.setImageResource(R.mipmap.ic_status_received);
+                //只有已接诊才显示全
+                tvPhone.setText(transferBean.getPatientMobile());
+                tvIcCard.setText(BaseUtils.spaceUserCard(transferBean.getPatientIdCardNo()));
                 break;
             case TRANSFER_STATUS_CANCEL:
                 tvReceivingStatus.setText(getString(R.string.txt_status_cancel));
+                ivCheckStatus.setImageResource(R.mipmap.ic_status_cancel);
+                layoutContact.setVisibility(View.GONE);
+                layoutReceived.setVisibility(View.GONE);
                 break;
             case TRANSFER_STATUS_REFUSE:
                 tvReceivingStatus.setText(getString(R.string.txt_status_reject));
+                ivCheckStatus.setImageResource(R.mipmap.ic_status_reject);
+                layoutContact.setVisibility(View.GONE);
+                layoutReceived.setVisibility(View.GONE);
                 break;
             default:
                 break;
@@ -286,8 +296,8 @@ public class TransferReceiveDetailActivity extends BaseActivity implements Trans
                 break;
             case R.id.tv_contact_doctor:
                 new HintDialog(this).setPhone(getString(R.string.txt_contact_doctor_phone),
-                                              transferBean.getTargetDoctorMobile())
-                                    .setOnEnterClickListener(() -> callPhone(transferBean.getTargetDoctorMobile()))
+                                              transferBean.getSourceDoctorMobile())
+                                    .setOnEnterClickListener(() -> callPhone(transferBean.getSourceDoctorMobile()))
                                     .show();
                 break;
             default:

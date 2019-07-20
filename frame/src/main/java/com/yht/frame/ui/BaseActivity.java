@@ -146,6 +146,7 @@ public abstract class BaseActivity extends RxAppCompatActivity
                 hideSoftInputFromWindow(v);
                 finish();
             });
+            tvTitle.setSelected(true);
             tvTitle.setText(getTitle().toString());
         }
         catch (Exception e) {

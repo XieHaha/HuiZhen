@@ -14,7 +14,7 @@
         android:scrollbars="none"
         android:layout_height="match_parent"
         android:layout_below="@id/title_bar"
-        android:layout_marginBottom="68dp"
+        android:layout_above="@id/layout_received"
         android:background="@color/color_ffffff">
 
         <LinearLayout
@@ -117,19 +117,16 @@
                     android:text="@string/txt_id_card_hint"
                     android:paddingEnd="16dp" />
 
-                <com.yht.frame.widgets.edittext.SuperEditText
+                <TextView
                     android:id="@+id/tv_ic_card"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_16"
                     android:layout_toEndOf="@id/text"
                     android:textColor="@color/color_373d4d"
-                    tools:text="医生"
-                    android:background="@null"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false">
+                    tools:text="">
 
-                </com.yht.frame.widgets.edittext.SuperEditText>
+                </TextView>
 
                 <View
                     android:layout_width="match_parent"
@@ -164,7 +161,7 @@
                     android:textSize="@dimen/text_16"
                     android:layout_toEndOf="@id/text_phone"
                     android:textColor="@color/color_373d4d"
-                    tools:text="医生" />
+                    tools:text="" />
 
 
                 <View
@@ -200,7 +197,7 @@
                     android:textSize="@dimen/text_16"
                     android:layout_toEndOf="@id/text_past"
                     android:textColor="@color/color_373d4d"
-                    tools:text="医生" />
+                    tools:text="" />
 
 
                 <View
@@ -236,7 +233,7 @@
                     android:textSize="@dimen/text_16"
                     android:layout_toEndOf="@id/text_family"
                     android:textColor="@color/color_373d4d"
-                    tools:text="医生" />
+                    tools:text="" />
 
 
                 <View
@@ -272,7 +269,7 @@
                     android:textSize="@dimen/text_16"
                     android:layout_toEndOf="@id/text_allergies"
                     android:textColor="@color/color_373d4d"
-                    tools:text="医生" />
+                    tools:text="" />
 
 
                 <View
@@ -313,7 +310,7 @@
                     android:textSize="@dimen/text_16"
                     android:layout_toEndOf="@id/text1"
                     android:textColor="@color/color_373d4d"
-                    tools:text="医生" />
+                    tools:text="" />
 
                 <View
                     android:layout_width="match_parent"
@@ -349,7 +346,7 @@
                     android:layout_toEndOf="@id/text6"
                     android:layout_marginTop="18dp"
                     android:textColor="@color/color_373d4d"
-                    tools:text="医生" />
+                    tools:text="" />
 
                 <LinearLayout
                     android:id="@+id/layout_call"
@@ -405,7 +402,7 @@
                     android:textSize="@dimen/text_16"
                     android:layout_toEndOf="@id/text_7"
                     android:textColor="@color/color_373d4d"
-                    tools:text="医生" />
+                    tools:text="" />
 
 
                 <View
@@ -441,7 +438,7 @@
                     android:textSize="@dimen/text_16"
                     android:layout_toEndOf="@id/text_8"
                     android:textColor="@color/color_373d4d"
-                    tools:text="医生" />
+                    tools:text="" />
 
 
                 <View
@@ -479,7 +476,7 @@
                     android:textSize="@dimen/text_16"
                     android:layout_toEndOf="@id/text_81"
                     android:textColor="@color/color_373d4d"
-                    tools:text="医生" />
+                    tools:text="" />
 
 
                 <View
@@ -515,7 +512,7 @@
                     android:textSize="@dimen/text_16"
                     android:layout_toEndOf="@id/text3"
                     android:textColor="@color/color_373d4d"
-                    tools:text="医生" />
+                    tools:text="" />
 
 
                 <View
@@ -551,7 +548,7 @@
                     android:textSize="@dimen/text_16"
                     android:layout_toEndOf="@id/text4"
                     android:textColor="@color/color_373d4d"
-                    tools:text="医生" />
+                    tools:text="" />
 
 
                 <View
@@ -587,7 +584,7 @@
                     android:textSize="@dimen/text_16"
                     android:layout_toEndOf="@id/text5"
                     android:textColor="@color/color_373d4d"
-                    tools:text="医生" />
+                    tools:text="" />
 
 
                 <View
@@ -623,7 +620,7 @@
                     android:textSize="@dimen/text_16"
                     android:layout_toEndOf="@id/text2"
                     android:textColor="@color/color_373d4d"
-                    tools:text="医生" />
+                    tools:text="" />
 
 
                 <View
@@ -664,7 +661,7 @@
                     android:textSize="@dimen/text_16"
                     android:layout_toEndOf="@id/text9"
                     android:textColor="@color/color_373d4d"
-                    tools:text="医生" />
+                    tools:text="" />
 
 
                 <View
@@ -702,7 +699,7 @@
                     android:textSize="@dimen/text_16"
                     android:layout_toEndOf="@id/text7"
                     android:textColor="@color/color_373d4d"
-                    tools:text="医生" />
+                    tools:text="" />
 
 
                 <View
@@ -740,7 +737,7 @@
                     android:textSize="@dimen/text_16"
                     android:layout_toEndOf="@id/text8"
                     android:textColor="@color/color_373d4d"
-                    tools:text="医生" />
+                    tools:text="" />
 
 
                 <View
@@ -778,7 +775,7 @@
                     android:textSize="@dimen/text_16"
                     android:layout_toEndOf="@id/text10"
                     android:textColor="@color/color_373d4d"
-                    tools:text="医生" />
+                    tools:text="" />
 
 
                 <View
@@ -816,7 +813,7 @@
                     android:textSize="@dimen/text_16"
                     android:layout_toEndOf="@id/text12"
                     android:textColor="@color/color_373d4d"
-                    tools:text="医生" />
+                    tools:text="" />
 
                 <View
                     android:layout_width="match_parent"
@@ -931,7 +928,7 @@
             android:layout_weight="1"
             android:layout_height="38dp"
             android:background="@drawable/corner28_1491fc_bg"
-            android:text="@string/txt_contact_doctor"
+            android:text="@string/txt_contact_transfer_doctor"
             android:gravity="center"
             android:textSize="@dimen/text_14"
             android:textColor="@color/color_ffffff"

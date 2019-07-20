@@ -278,6 +278,7 @@
     <string name="txt_transfer_cancel">取消转诊</string>
     <string name="txt_transfer_other">转给他人</string>
     <string name="txt_contact_doctor">联系接诊医生</string>
+    <string name="txt_contact_transfer_doctor">联系转诊医生</string>
     <string name="txt_transfer_time">转诊时间</string>
     <string name="txt_transfer_type">转诊类型</string>
     <string name="txt_reserve_time">预约就诊\n时间</string>
