@@ -202,7 +202,7 @@ public class TransferInitiateDetailActivity extends BaseActivity implements Tran
             case TRANSFER_STATUS_REFUSE:
                 layoutBottom.setVisibility(View.VISIBLE);
                 layoutBottomOne.setVisibility(View.GONE);
-                ivCheckStatus.setImageResource(R.mipmap.ic_status_reject);
+                ivCheckStatus.setImageResource(R.mipmap.ic_status_be_rejected);
                 tvReceivingStatus.setText(getString(R.string.txt_status_reject));
                 layoutRejectResult.setVisibility(View.VISIBLE);
                 tvTransferReject.setText(transferBean.getRejectReason());

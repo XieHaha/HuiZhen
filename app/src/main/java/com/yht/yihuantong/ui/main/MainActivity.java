@@ -255,7 +255,6 @@ public class MainActivity extends BaseActivity
                     @Override
                     public void onError(int code, String message) {
                         HuiZhenLog.i(TAG, getString(R.string.txt_login_ease_error));
-                        ToastUtil.toast(MainActivity.this, R.string.txt_login_ease_error);
                     }
                 });
     }

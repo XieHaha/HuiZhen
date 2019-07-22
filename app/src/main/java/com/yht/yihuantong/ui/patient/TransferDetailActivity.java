@@ -136,7 +136,7 @@ public class TransferDetailActivity extends BaseActivity implements TransferOrde
                 tvReceivingStatus.setText(getString(R.string.txt_status_cancel));
                 break;
             case TRANSFER_STATUS_REFUSE:
-                ivCheckStatus.setImageResource(R.mipmap.ic_status_reject);
+                ivCheckStatus.setImageResource(R.mipmap.ic_status_be_rejected);
                 tvReceivingStatus.setText(getString(R.string.txt_status_reject));
                 break;
             default:

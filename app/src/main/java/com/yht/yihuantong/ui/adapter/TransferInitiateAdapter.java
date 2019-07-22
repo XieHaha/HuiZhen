@@ -69,7 +69,7 @@ public class TransferInitiateAdapter extends BaseQuickAdapter<TransferBean, Base
                 helper.setGone(R.id.layout_receiving_depart, false);
                 helper.setGone(R.id.layout_receiving_hospital, false);
                 helper.setGone(R.id.iv_transfer_status_out, true);
-                helper.setImageResource(R.id.iv_transfer_status_out, R.mipmap.ic_status_reject);
+                helper.setImageResource(R.id.iv_transfer_status_out, R.mipmap.ic_status_be_rejected);
                 break;
             default:
                 break;

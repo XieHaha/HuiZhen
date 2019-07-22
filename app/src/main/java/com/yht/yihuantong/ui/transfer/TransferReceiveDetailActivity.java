@@ -243,7 +243,7 @@ public class TransferReceiveDetailActivity extends BaseActivity implements Trans
                 break;
             case TRANSFER_STATUS_REFUSE:
                 tvReceivingStatus.setText(getString(R.string.txt_status_reject));
-                ivCheckStatus.setImageResource(R.mipmap.ic_status_reject);
+                ivCheckStatus.setImageResource(R.mipmap.ic_status_rejected);
                 layoutContact.setVisibility(View.GONE);
                 layoutReceived.setVisibility(View.GONE);
                 break;

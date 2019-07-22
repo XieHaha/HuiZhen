@@ -34,7 +34,7 @@ public class LoginOutBroadcastReceiver extends BroadcastReceiver {
         String errorHint = intent.getStringExtra(CommonData.KEY_PUBLIC_STRING);
         if (BASE_TOKEN_ERROR_ACTION.equals(action)) {
             Intent intent1 = new Intent(context, HintLoginActivity.class);
-            intent.putExtra(CommonData.KEY_PUBLIC_STRING, errorHint);
+            intent1.putExtra(CommonData.KEY_PUBLIC_STRING, errorHint);
             intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent1);
         }

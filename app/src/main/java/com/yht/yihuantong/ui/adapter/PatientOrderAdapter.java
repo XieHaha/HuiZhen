@@ -123,7 +123,7 @@ public class PatientOrderAdapter extends BaseMultiItemQuickAdapter<PatientOrderB
             case PATIENT_ORDER_REJECT:
                 helper.setVisible(R.id.iv_transfer_status_out, true);
                 helper.setVisible(R.id.iv_transfer_status_in, false);
-                helper.setImageResource(R.id.iv_transfer_status_out, R.mipmap.ic_status_reject);
+                helper.setImageResource(R.id.iv_transfer_status_out, R.mipmap.ic_status_be_rejected);
                 break;
             default:
                 break;

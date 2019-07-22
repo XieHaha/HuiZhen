@@ -44,7 +44,6 @@
                 android:layout_toEndOf="@id/iv_check_img"
                 android:layout_below="@id/tv_check_name"
                 android:layout_marginStart="12dp"
-                android:gravity="center_vertical"
                 android:layout_marginTop="1dp">
 
                 <TextView
@@ -147,7 +146,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:src="@mipmap/ic_check_incomplete"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="12dp"
         android:visibility="gone" />
 
 </RelativeLayout>

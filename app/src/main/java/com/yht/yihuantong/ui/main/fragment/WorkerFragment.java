@@ -98,6 +98,7 @@ public class WorkerFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        getBanner();
         getStudioOrderStatistics();
         getValidateHospitalList();
     }
@@ -120,7 +121,6 @@ public class WorkerFragment extends BaseFragment {
              .load(FileUrlUtil.addTokenToUrl(loginBean.getPhoto()))
              .apply(GlideHelper.getOptions(BaseUtils.dp2px(getContext(), 4)))
              .into(ivPersonalImage);
-        getBanner();
     }
 
     /**
