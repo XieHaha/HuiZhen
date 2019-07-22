@@ -51,7 +51,7 @@ public class BaseUtils {
     }
 
     /**
-     * 手机号 星号处理    asterisk（星号）
+     * 身份证 星号处理    asterisk（星号）
      */
     public static String asteriskUserCard(String idCard) throws NullPointerException, StringIndexOutOfBoundsException {
         if (TextUtils.isEmpty(idCard) || idCard.length() < BaseData.BASE_ID_CARD_LENGTH) { return ""; }
@@ -59,7 +59,7 @@ public class BaseUtils {
     }
 
     /**
-     * 手机号 星号处理    asterisk（星号）
+     * 手机号 空格    asterisk（星号）
      */
     public static String spaceUserCard(String idCard) throws NullPointerException, StringIndexOutOfBoundsException {
         if (TextUtils.isEmpty(idCard) || idCard.length() < BaseData.BASE_ID_CARD_LENGTH) { return ""; }
@@ -88,6 +88,28 @@ public class BaseUtils {
 
     public static int px2dp(Context context, float pxValue) {
         return (int)(pxValue / context.getResources().getDisplayMetrics().density + 0.5f);
+    }
+
+    /**
+     * 将px值转换为sp值，保证文字大小不变
+     *
+     * @param pxValue （DisplayMetrics类中属性scaledDensity）
+     * @return
+     */
+    public static int px2sp(Context context, float pxValue) {
+        final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
+        return (int)(pxValue / fontScale + 0.5f);
+    }
+
+    /**
+     * 将sp值转换为px值，保证文字大小不变
+     *
+     * @param spValue （DisplayMetrics类中属性scaledDensity）
+     * @return
+     */
+    public static int sp2px(Context context, float spValue) {
+        final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
+        return (int)(spValue * fontScale + 0.5f);
     }
 
     /**

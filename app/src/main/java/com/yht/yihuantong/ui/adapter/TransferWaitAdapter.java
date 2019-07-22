@@ -35,6 +35,7 @@ public class TransferWaitAdapter extends BaseQuickAdapter<TransferBean, BaseView
               .setText(R.id.tv_transfer_purpose, item.getTransferTarget())
               .setText(R.id.tv_transfer_doctor, item.getSourceDoctorName())
               .setText(R.id.tv_transfer_depart, item.getSourceHospitalDepartmentName())
-              .setText(R.id.tv_transfer_hospital, item.getSourceHospitalName());
+              .setText(R.id.tv_transfer_hospital, item.getSourceHospitalName())
+              .addOnClickListener(R.id.iv_transfer_img);
     }
 }

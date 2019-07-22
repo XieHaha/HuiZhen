@@ -231,10 +231,16 @@ public class WorkerFragment extends BaseFragment {
                 break;
             case R.id.layout_initiate_check:
                 intent = new Intent(getContext(), ServiceHistoryActivity.class);
+                if (orderNumStatisticsBean != null) {
+                    intent.putExtra(CommonData.KEY_PUBLIC, orderNumStatisticsBean.getInitiateOrderCheck());
+                }
                 startActivity(intent);
                 break;
             case R.id.layout_initiate_transfer:
                 intent = new Intent(getContext(), TransferInitiateListActivity.class);
+                if (orderNumStatisticsBean != null) {
+                    intent.putExtra(CommonData.KEY_PUBLIC, orderNumStatisticsBean.getInitiateOrderTransfer());
+                }
                 startActivity(intent);
                 break;
             case R.id.layout_accepted_transfer:

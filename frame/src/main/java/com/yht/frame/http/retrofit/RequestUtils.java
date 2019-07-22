@@ -582,7 +582,7 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .getBanner(token)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_BANNER, listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_BANNER, listener));
     }
 
     public static void getVersion(Context context, String token, final ResponseListener<BaseResponse> listener) {

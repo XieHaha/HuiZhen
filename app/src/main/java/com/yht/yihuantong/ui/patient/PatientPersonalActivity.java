@@ -25,6 +25,7 @@ import com.yht.frame.data.base.PatientBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
+import com.yht.frame.utils.ScreenUtils;
 import com.yht.frame.widgets.view.AbstractOnPageChangeListener;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ZycApplication;
@@ -43,7 +44,6 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import me.jessyan.autosize.utils.ScreenUtils;
 
 import static com.yht.frame.data.CommonData.KEY_PATIENT_CODE;
 import static com.yht.frame.data.CommonData.KEY_PATIENT_NAME;
@@ -316,7 +316,7 @@ public class PatientPersonalActivity extends BaseActivity implements EaseChatFra
      */
     private int calcViewBarOffset() {
         //获取屏幕宽度
-        int width = ScreenUtils.getScreenSize(this)[0];
+        int width = ScreenUtils.getScreenWidth(this);
         return (width - viewBar.getWidth() * 2) / 4;
     }
 

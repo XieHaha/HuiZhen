@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.yht.frame.data.BaseData;
@@ -24,6 +25,7 @@ import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ZycApplication;
 import com.yht.yihuantong.ui.adapter.CheckHistoryAdapter;
+import com.yht.yihuantong.ui.patient.PatientPersonalActivity;
 import com.yht.yihuantong.ui.reservation.ReservationDisableActivity;
 import com.yht.yihuantong.ui.reservation.service.ReservationServiceActivity;
 
@@ -40,13 +42,15 @@ import butterknife.OnClick;
  */
 public class ServiceHistoryActivity extends BaseActivity
         implements BaseQuickAdapter.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener,
-                   BaseQuickAdapter.RequestLoadMoreListener {
+                   BaseQuickAdapter.RequestLoadMoreListener, BaseQuickAdapter.OnItemChildClickListener {
     @BindView(R.id.recyclerview)
     RecyclerView recyclerView;
     @BindView(R.id.layout_refresh)
     SwipeRefreshLayout layoutRefresh;
     @BindView(R.id.layout_none)
     LinearLayout layoutNone;
+    @BindView(R.id.public_title_bar_title)
+    TextView publicTitleBarTitle;
     private CheckHistoryAdapter checkHistoryAdapter;
     /**
      * 时间分隔
@@ -73,6 +77,16 @@ public class ServiceHistoryActivity extends BaseActivity
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
         loadViewHelper = new LoadViewHelper(this);
+        int num = 0;
+        if (getIntent() != null) {
+            num = getIntent().getIntExtra(CommonData.KEY_PUBLIC, 0);
+        }
+        if (num > 0) {
+            publicTitleBarTitle.setText(String.format(getString(R.string.title_add_service), num));
+        }
+        else {
+            publicTitleBarTitle.setText(R.string.txt_initiate_check);
+        }
     }
 
     @Override
@@ -103,6 +117,7 @@ public class ServiceHistoryActivity extends BaseActivity
         checkHistoryAdapter.setLoadMoreView(new CustomLoadMoreView());
         checkHistoryAdapter.setOnLoadMoreListener(this, recyclerView);
         checkHistoryAdapter.setOnItemClickListener(this);
+        checkHistoryAdapter.setOnItemChildClickListener(this);
         recyclerView.setAdapter(checkHistoryAdapter);
     }
 
@@ -134,6 +149,14 @@ public class ServiceHistoryActivity extends BaseActivity
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         Intent intent = new Intent(this, ServiceDetailActivity.class);
         intent.putExtra(CommonData.KEY_ORDER_ID, checkedList.get(position).getOrderNo());
+        startActivity(intent);
+    }
+
+    @Override
+    public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+        Intent intent = new Intent(this, PatientPersonalActivity.class);
+        intent.putExtra(CommonData.KEY_PATIENT_CODE, checkedList.get(position).getPatientCode());
+        intent.putExtra(CommonData.KEY_PATIENT_NAME, checkedList.get(position).getPatientName());
         startActivity(intent);
     }
 

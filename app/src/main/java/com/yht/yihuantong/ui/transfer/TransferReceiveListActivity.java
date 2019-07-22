@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.yht.frame.data.CommonData;
 import com.yht.frame.ui.BaseActivity;
+import com.yht.frame.utils.ScreenUtils;
 import com.yht.frame.widgets.view.AbstractOnPageChangeListener;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.adapter.ViewPagerAdapter;
@@ -23,7 +24,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import me.jessyan.autosize.utils.ScreenUtils;
 
 /**
  * @author 顿顿
@@ -167,7 +167,7 @@ public class TransferReceiveListActivity extends BaseActivity
      */
     private int calcViewBarOffset() {
         //获取屏幕宽度
-        int width = ScreenUtils.getScreenSize(this)[0];
+        int width = ScreenUtils.getScreenWidth(this);
         return (width - viewBar.getWidth() * 2) / 4;
     }
 

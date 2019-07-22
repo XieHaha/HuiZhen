@@ -93,11 +93,11 @@ public class TimeItemDecoration extends RecyclerView.ItemDecoration {
         //返回一个包含Decoration和Margin在内的Rect
         parent.getDecoratedBoundsWithMargins(child, mBounds);
         final int bottom = mBounds.top + Math.round(ViewCompat.getTranslationY(child)) + DIVIDER_HEIGHT;
-        mPaint.setTextSize(40);
+        mPaint.setTextSize(BaseUtils.sp2px(mContext,13));
         mPaint.setColor(ContextCompat.getColor(mContext, R.color.color_6a6f80));
         Typeface font = Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD);
         mPaint.setTypeface(font);
-        canvas.drawText(bar, BaseUtils.dp2px(mContext, 52), bottom, mPaint);
+        canvas.drawText(bar, BaseUtils.dp2px(mContext, 48), bottom, mPaint);
     }
 
     /**

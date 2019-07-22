@@ -105,7 +105,7 @@ public class SideBarItemDecoration extends RecyclerView.ItemDecoration {
         final int bottom = mBounds.top + Math.round(ViewCompat.getTranslationY(child)) + DIVIDER_HEIGHT;
         mPaint.setColor(Color.WHITE);
         canvas.drawRect(left, top, right, bottom, mPaint);
-        mPaint.setTextSize(40);
+        mPaint.setTextSize(BaseUtils.sp2px(mContext, 14));
         mPaint.setColor(ContextCompat.getColor(mContext, R.color.color_373d4d));
         Typeface font = Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD);
         mPaint.setTypeface(font);
@@ -140,7 +140,7 @@ public class SideBarItemDecoration extends RecyclerView.ItemDecoration {
         mPaint.setColor(Color.WHITE);
         canvas.drawRect(parent.getLeft(), parent.getPaddingTop(), parent.getRight() - parent.getPaddingRight(),
                         bottom / 2 * 3, mPaint);
-        mPaint.setTextSize(40);
+        mPaint.setTextSize(BaseUtils.sp2px(mContext,14));
         mPaint.setColor(ContextCompat.getColor(mContext, R.color.color_373d4d));
         Typeface font = Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD);
         mPaint.setTypeface(font);

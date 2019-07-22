@@ -26,6 +26,7 @@ import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ZycApplication;
 import com.yht.yihuantong.ui.adapter.TransferInitiateAdapter;
+import com.yht.yihuantong.ui.patient.PatientPersonalActivity;
 import com.yht.yihuantong.ui.reservation.ReservationDisableActivity;
 import com.yht.yihuantong.ui.reservation.transfer.ReservationTransferActivity;
 
@@ -42,7 +43,7 @@ import butterknife.OnClick;
  */
 public class TransferInitiateListActivity extends BaseActivity
         implements BaseQuickAdapter.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener,
-                   BaseQuickAdapter.RequestLoadMoreListener {
+                   BaseQuickAdapter.RequestLoadMoreListener, BaseQuickAdapter.OnItemChildClickListener {
     @BindView(R.id.recyclerview)
     RecyclerView recyclerView;
     @BindView(R.id.layout_refresh)
@@ -87,6 +88,16 @@ public class TransferInitiateListActivity extends BaseActivity
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
         loadViewHelper = new LoadViewHelper(this);
+        int num = 0;
+        if (getIntent() != null) {
+            num = getIntent().getIntExtra(CommonData.KEY_PUBLIC, 0);
+        }
+        if (num > 0) {
+            publicTitleBarTitle.setText(String.format(getString(R.string.title_add_transfer), num));
+        }
+        else {
+            publicTitleBarTitle.setText(R.string.txt_initiate_transfer);
+        }
     }
 
     @Override
@@ -109,6 +120,7 @@ public class TransferInitiateListActivity extends BaseActivity
         transferInitiateAdapter.setLoadMoreView(new CustomLoadMoreView());
         transferInitiateAdapter.setOnLoadMoreListener(this, recyclerView);
         transferInitiateAdapter.setOnItemClickListener(this);
+        transferInitiateAdapter.setOnItemChildClickListener(this);
         transferInitiateAdapter.loadMoreEnd();
         recyclerView.setAdapter(transferInitiateAdapter);
     }
@@ -161,6 +173,14 @@ public class TransferInitiateListActivity extends BaseActivity
     }
 
     @Override
+    public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+        Intent intent = new Intent(this, PatientPersonalActivity.class);
+        intent.putExtra(CommonData.KEY_PATIENT_CODE, transferList.get(position).getPatientCode());
+        intent.putExtra(CommonData.KEY_PATIENT_NAME, transferList.get(position).getPatientName());
+        startActivity(intent);
+    }
+
+    @Override
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
         if (task == Tasks.GET_INITIATE_TRANSFER_ORDER_LIST) {
@@ -169,12 +189,6 @@ public class TransferInitiateListActivity extends BaseActivity
                 transferList.clear();
             }
             transferList.addAll(list);
-            if (transferList.size() > 0) {
-                publicTitleBarTitle.setText(String.format(getString(R.string.title_add_transfer), transferList.size()));
-            }
-            else {
-                publicTitleBarTitle.setText(R.string.txt_initiate_transfer);
-            }
             sortTransferData();
             transferInitiateAdapter.setNewData(transferList);
             if (list != null && list.size() == BaseData.BASE_PAGE_DATA_NUM) {

@@ -22,6 +22,7 @@ import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.adapter.TransferWaitAdapter;
+import com.yht.yihuantong.ui.patient.PatientPersonalActivity;
 import com.yht.yihuantong.ui.transfer.TransferReceiveDetailActivity;
 
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ import butterknife.BindView;
  */
 public class TransferWaitFragment extends BaseFragment
         implements BaseQuickAdapter.RequestLoadMoreListener, SwipeRefreshLayout.OnRefreshListener,
-                   BaseQuickAdapter.OnItemClickListener {
+                   BaseQuickAdapter.OnItemClickListener, BaseQuickAdapter.OnItemChildClickListener {
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.layout_refresh)
@@ -71,6 +72,7 @@ public class TransferWaitFragment extends BaseFragment
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         transferWaitAdapter = new TransferWaitAdapter(R.layout.item_transfer_wait, transferBeans);
         transferWaitAdapter.setOnItemClickListener(this);
+        transferWaitAdapter.setOnItemChildClickListener(this);
         transferWaitAdapter.setLoadMoreView(new CustomLoadMoreView());
         transferWaitAdapter.setOnLoadMoreListener(this, recyclerView);
         recyclerView.setAdapter(transferWaitAdapter);
@@ -91,6 +93,14 @@ public class TransferWaitFragment extends BaseFragment
         Intent intent = new Intent(getContext(), TransferReceiveDetailActivity.class);
         intent.putExtra(CommonData.KEY_ORDER_ID, transferBeans.get(position).getOrderNo());
         startActivityForResult(intent, REQUEST_CODE_UPDATE);
+    }
+
+    @Override
+    public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+        Intent intent = new Intent(getContext(), PatientPersonalActivity.class);
+        intent.putExtra(CommonData.KEY_PATIENT_CODE, transferBeans.get(position).getPatientCode());
+        intent.putExtra(CommonData.KEY_PATIENT_NAME, transferBeans.get(position).getPatientName());
+        startActivity(intent);
     }
 
     @Override

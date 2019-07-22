@@ -39,22 +39,22 @@ public class CheckHistoryAdapter extends BaseQuickAdapter<CheckBean, BaseViewHol
              .apply(GlideHelper.getOptions(BaseUtils.dp2px(mContext, 4)))
              .into((ImageView)helper.getView(R.id.iv_check_img));
         helper.setText(R.id.tv_check_name, item.getPatientName())
-              .setText(R.id.tv_check_hospital, item.getTargetHospitalName());
+              .setText(R.id.tv_check_hospital, item.getTargetHospitalName())
+              .addOnClickListener(R.id.iv_check_img);
         int status = item.getStatus();
         switch (status) {
             case CHECK_ORDER_STATUS_INCOMPLETE:
-                helper.setGone(R.id.iv_check_status_in, true);
-                helper.setGone(R.id.iv_check_status_out, false);
+                helper.setGone(R.id.iv_check_status_in, true).setGone(R.id.iv_check_status_out, false);
                 break;
             case CHECK_ORDER_STATUS_COMPLETE:
-                helper.setGone(R.id.iv_check_status_in, false);
-                helper.setGone(R.id.iv_check_status_out, true);
-                helper.setImageResource(R.id.iv_check_status_out, R.mipmap.ic_status_complete);
+                helper.setGone(R.id.iv_check_status_in, false)
+                      .setGone(R.id.iv_check_status_out, true)
+                      .setImageResource(R.id.iv_check_status_out, R.mipmap.ic_status_complete);
                 break;
             case CHECK_ORDER_STATUS_CANCEL:
-                helper.setGone(R.id.iv_check_status_in, false);
-                helper.setGone(R.id.iv_check_status_out, true);
-                helper.setImageResource(R.id.iv_check_status_out, R.mipmap.ic_status_cancel);
+                helper.setGone(R.id.iv_check_status_in, false)
+                      .setGone(R.id.iv_check_status_out, true)
+                      .setImageResource(R.id.iv_check_status_out, R.mipmap.ic_status_cancel);
                 break;
             default:
                 break;
