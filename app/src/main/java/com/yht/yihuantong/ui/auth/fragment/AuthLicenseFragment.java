@@ -126,7 +126,7 @@ public class AuthLicenseFragment extends BaseFragment
      */
     private void uploadImage(File file) {
         ScalingUtils.resizePic(getContext(), file.getAbsolutePath());
-        RequestUtils.uploadImg(getContext(), loginBean.getToken(), file, this);
+        RequestUtils.uploadImgWaterMark(getContext(), loginBean.getToken(), file, this);
     }
 
     /**
@@ -182,6 +182,8 @@ public class AuthLicenseFragment extends BaseFragment
             ArrayList<NormImage> list = new ArrayList<>();
             for (NormImage image : imagePaths) {
                 if (!TextUtils.isEmpty(image.getImagePath()) || !TextUtils.isEmpty(image.getImageUrl())) {
+                    //显示水印图片,不显示本地
+                    image.setImagePath("");
                     list.add(image);
                 }
             }

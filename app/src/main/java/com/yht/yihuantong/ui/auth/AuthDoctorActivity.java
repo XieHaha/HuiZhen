@@ -122,10 +122,7 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
         findViewById(R.id.public_title_bar_back).setOnClickListener(this);
         curAuthStatus = loginBean.getApprovalStatus();
         initTab();
-        //未提交资料不获取
-        if (curAuthStatus != DocAuthStatus.AUTH_NONE) {
-            getDoctorAuth();
-        }
+        getDoctorAuth();
     }
 
     @Override

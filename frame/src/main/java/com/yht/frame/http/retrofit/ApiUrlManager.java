@@ -105,6 +105,17 @@ public interface ApiUrlManager {
     Observable<BaseResponse<String>> uploadImg(@Header("token") String token, @Part MultipartBody.Part file);
 
     /**
+     * 上传图片  水印
+     *
+     * @param token token
+     * @param file  图片
+     * @return 返回值
+     */
+    @Multipart
+    @POST("client/file/upload_image_file")
+    Observable<BaseResponse<String>> uploadImgWaterMark(@Header("token") String token, @Part MultipartBody.Part file);
+
+    /**
      * 获取消息列表
      *
      * @param info  map参数
