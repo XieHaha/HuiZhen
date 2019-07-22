@@ -15,10 +15,12 @@ import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
-import com.yht.frame.data.type.TransferOrderStatus;
 import com.yht.frame.data.base.TransferBean;
+import com.yht.frame.data.type.TransferOrderStatus;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseFragment;
+import com.yht.frame.utils.BaseUtils;
+import com.yht.frame.widgets.LoadViewHelper;
 import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.yht.yihuantong.R;
@@ -37,7 +39,8 @@ import butterknife.BindView;
  */
 public class TransferReceivedFragment extends BaseFragment
         implements BaseQuickAdapter.RequestLoadMoreListener, SwipeRefreshLayout.OnRefreshListener,
-                   BaseQuickAdapter.OnItemClickListener, BaseQuickAdapter.OnItemChildClickListener {
+                   BaseQuickAdapter.OnItemClickListener, BaseQuickAdapter.OnItemChildClickListener,
+                   LoadViewHelper.OnNextClickListener {
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.layout_refresh)
@@ -66,6 +69,8 @@ public class TransferReceivedFragment extends BaseFragment
     @Override
     public void initView(View view, @NonNull Bundle savedInstanceState) {
         super.initView(view, savedInstanceState);
+        loadViewHelper = new LoadViewHelper(view);
+        loadViewHelper.setOnNextClickListener(this);
         layoutRefresh.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light,
                                               android.R.color.holo_orange_light, android.R.color.holo_green_light);
         layoutRefresh.setOnRefreshListener(this);
@@ -76,7 +81,18 @@ public class TransferReceivedFragment extends BaseFragment
         transferReceivedAdapter.setLoadMoreView(new CustomLoadMoreView());
         transferReceivedAdapter.setOnLoadMoreListener(this, recyclerView);
         recyclerView.setAdapter(transferReceivedAdapter);
-        getTransferStatusOrderList();
+    }
+
+    @Override
+    public void initData(@NonNull Bundle savedInstanceState) {
+        super.initData(savedInstanceState);
+        if (BaseUtils.isNetworkAvailable(getContext())) {
+            getTransferStatusOrderList();
+        }
+        else {
+            layoutNoneRecord.setVisibility(View.VISIBLE);
+            loadViewHelper.load(LoadViewHelper.NONE_NETWORK);
+        }
     }
 
     /**
@@ -104,6 +120,11 @@ public class TransferReceivedFragment extends BaseFragment
     }
 
     @Override
+    public void onNextClick() {
+        getTransferStatusOrderList();
+    }
+
+    @Override
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
         if (task == Tasks.GET_TRANSFER_STATUS_ORDER_LIST) {
@@ -121,6 +142,7 @@ public class TransferReceivedFragment extends BaseFragment
             }
             if (transferBeans.size() == 0) {
                 layoutNoneRecord.setVisibility(View.VISIBLE);
+                loadViewHelper.load(LoadViewHelper.NONE_RECORDING);
             }
             else {
                 layoutNoneRecord.setVisibility(View.GONE);

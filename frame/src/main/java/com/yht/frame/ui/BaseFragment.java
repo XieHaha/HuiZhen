@@ -32,6 +32,7 @@ import com.yht.frame.permission.OnPermissionCallback;
 import com.yht.frame.permission.PermissionHelper;
 import com.yht.frame.utils.SharePreferenceUtil;
 import com.yht.frame.utils.ToastUtil;
+import com.yht.frame.widgets.LoadViewHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +58,10 @@ public abstract class BaseFragment extends Fragment
      * 轻量级存储
      */
     protected SharePreferenceUtil sharePreferenceUtil;
+    /**
+     * 占位view
+     */
+    protected LoadViewHelper loadViewHelper;
     /**
      * 监听器
      */

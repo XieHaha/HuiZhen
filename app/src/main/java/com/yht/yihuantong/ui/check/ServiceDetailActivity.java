@@ -25,6 +25,7 @@ import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.glide.GlideHelper;
+import com.yht.frame.widgets.LoadViewHelper;
 import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.frame.widgets.view.CenterImageSpan;
 import com.yht.yihuantong.R;
@@ -42,7 +43,8 @@ import butterknife.OnClick;
  * @date 19/6/14 10:56
  * @des 预约服务详情
  */
-public class ServiceDetailActivity extends BaseActivity implements CheckOrderStatus, CheckTypeStatus {
+public class ServiceDetailActivity extends BaseActivity
+        implements CheckOrderStatus, CheckTypeStatus, LoadViewHelper.OnNextClickListener {
     @BindView(R.id.iv_patient_img)
     ImageView ivPatientImg;
     @BindView(R.id.tv_patient_name)
@@ -93,6 +95,8 @@ public class ServiceDetailActivity extends BaseActivity implements CheckOrderSta
     LinearLayout layoutCancelResult;
     @BindView(R.id.layout_check_report_root)
     RelativeLayout layoutCheckReportRoot;
+    @BindView(R.id.layout_hint)
+    LinearLayout layoutHint;
     /**
      * 检查详情
      */
@@ -130,6 +134,13 @@ public class ServiceDetailActivity extends BaseActivity implements CheckOrderSta
     }
 
     @Override
+    public void initView(@NonNull Bundle savedInstanceState) {
+        super.initView(savedInstanceState);
+        loadViewHelper = new LoadViewHelper(this);
+        loadViewHelper.setOnNextClickListener(this);
+    }
+
+    @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         if (getIntent() != null) {
@@ -138,7 +149,13 @@ public class ServiceDetailActivity extends BaseActivity implements CheckOrderSta
         }
         initBitmap();
         initBasePage();
-        getReserveCheckOrderDetail();
+        if (BaseUtils.isNetworkAvailable(this)) {
+            getReserveCheckOrderDetail();
+        }
+        else {
+            layoutHint.setVisibility(View.VISIBLE);
+            loadViewHelper.load(LoadViewHelper.NONE_NETWORK);
+        }
     }
 
     /**
@@ -244,9 +261,15 @@ public class ServiceDetailActivity extends BaseActivity implements CheckOrderSta
     }
 
     @Override
+    public void onNextClick() {
+        getReserveCheckOrderDetail();
+    }
+
+    @Override
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
         if (task == Tasks.GET_RESERVE_CHECK_ORDER_DETAIL) {
+            layoutHint.setVisibility(View.GONE);
             checkDetailBean = (CheckDetailBean)response.getData();
             initDetailData();
         }

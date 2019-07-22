@@ -52,7 +52,7 @@ public class PatientInfoFragment extends BaseFragment
     RecyclerView recyclerView;
     private TextView tvName, tvAge, tvSex, tvPastMedical, familyMedical, tvAllergies, tvNoneRecord;
     private ImageView ivHeadImg;
-    private View headerView;
+    private View headerView, footerView;
     private PatientOrderAdapter patientOrderAdapter;
     /**
      * 时间分隔
@@ -86,6 +86,7 @@ public class PatientInfoFragment extends BaseFragment
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
         initHeaderView();
+        initFooterView();
         initAdapter();
     }
 
@@ -136,6 +137,13 @@ public class PatientInfoFragment extends BaseFragment
         familyMedical = headerView.findViewById(R.id.tv_family_medical);
         tvAllergies = headerView.findViewById(R.id.tv_allergies);
         tvNoneRecord = headerView.findViewById(R.id.tv_none_medical_recording);
+    }
+
+    /**
+     * footer
+     */
+    private void initFooterView() {
+        footerView = LayoutInflater.from(getContext()).inflate(R.layout.view_patient_info_footer, null);
     }
 
     private void initAdapter() {
@@ -263,6 +271,12 @@ public class PatientInfoFragment extends BaseFragment
                 }
                 else {
                     patientOrderAdapter.loadMoreComplete();
+                }
+                if (patientOrderBeans != null && patientOrderBeans.size() > 0) {
+                    patientOrderAdapter.removeAllFooterView();
+                }
+                else {
+                    patientOrderAdapter.addFooterView(footerView);
                 }
                 break;
             case GET_PATIENT_EXIST_TRANSFER:

@@ -43,7 +43,8 @@ import butterknife.OnClick;
  */
 public class TransferInitiateListActivity extends BaseActivity
         implements BaseQuickAdapter.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener,
-                   BaseQuickAdapter.RequestLoadMoreListener, BaseQuickAdapter.OnItemChildClickListener {
+                   BaseQuickAdapter.RequestLoadMoreListener, BaseQuickAdapter.OnItemChildClickListener,
+                   LoadViewHelper.OnNextClickListener {
     @BindView(R.id.recyclerview)
     RecyclerView recyclerView;
     @BindView(R.id.layout_refresh)
@@ -52,6 +53,8 @@ public class TransferInitiateListActivity extends BaseActivity
     TextView publicTitleBarTitle;
     @BindView(R.id.layout_none)
     LinearLayout layoutNone;
+    @BindView(R.id.layout_reserve_transfer)
+    LinearLayout layoutReserveTransfer;
     /**
      * 时间分隔
      */
@@ -88,6 +91,7 @@ public class TransferInitiateListActivity extends BaseActivity
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
         loadViewHelper = new LoadViewHelper(this);
+        loadViewHelper.setOnNextClickListener(this);
         int num = 0;
         if (getIntent() != null) {
             num = getIntent().getIntExtra(CommonData.KEY_PUBLIC, 0);
@@ -109,7 +113,14 @@ public class TransferInitiateListActivity extends BaseActivity
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(timeItemDecoration);
         initAdapter();
-        getInitiateTransferOrderList();
+        if (BaseUtils.isNetworkAvailable(this)) {
+            getInitiateTransferOrderList();
+        }
+        else {
+            layoutReserveTransfer.setVisibility(View.GONE);
+            layoutNone.setVisibility(View.VISIBLE);
+            loadViewHelper.load(LoadViewHelper.NONE_NETWORK);
+        }
     }
 
     /**
@@ -181,9 +192,16 @@ public class TransferInitiateListActivity extends BaseActivity
     }
 
     @Override
+    public void onNextClick() {
+        getInitiateTransferOrderList();
+    }
+
+    @Override
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
         if (task == Tasks.GET_INITIATE_TRANSFER_ORDER_LIST) {
+            layoutReserveTransfer.setVisibility(View.VISIBLE);
+            layoutNone.setVisibility(View.GONE);
             List<TransferBean> list = (List<TransferBean>)response.getData();
             if (page == BaseData.BASE_ONE) {
                 transferList.clear();

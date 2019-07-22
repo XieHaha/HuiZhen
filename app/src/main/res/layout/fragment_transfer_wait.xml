@@ -22,17 +22,7 @@
         android:background="@color/color_ffffff"
         android:visibility="gone">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/color_6a6f80"
-            android:textSize="@dimen/text_15"
-            android:drawableTop="@mipmap/pic_none_record"
-            android:drawablePadding="16dp"
-            android:gravity="center"
-            android:text="@string/txt_none_recording"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="75dp" />
+        <include layout="@layout/public_hint" />
     </RelativeLayout>
 
 </RelativeLayout>

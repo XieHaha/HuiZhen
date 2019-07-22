@@ -21,6 +21,7 @@ import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.utils.glide.GlideHelper;
+import com.yht.frame.widgets.LoadViewHelper;
 import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.frame.widgets.dialog.InputDialog;
 import com.yht.yihuantong.R;
@@ -35,7 +36,8 @@ import butterknife.OnClick;
  * @date 19/6/14 10:56
  * @des 预约转诊详情  我转诊给其他医生 (有两种状态  待接诊、已接诊)
  */
-public class TransferInitiateDetailActivity extends BaseActivity implements TransferOrderStatus {
+public class TransferInitiateDetailActivity extends BaseActivity
+        implements TransferOrderStatus, LoadViewHelper.OnNextClickListener {
     @BindView(R.id.iv_patient_img)
     ImageView ivPatientImg;
     @BindView(R.id.tv_patient_name)
@@ -94,6 +96,8 @@ public class TransferInitiateDetailActivity extends BaseActivity implements Tran
     TextView tvTransferReject;
     @BindView(R.id.layout_reject_result)
     RelativeLayout layoutRejectResult;
+    @BindView(R.id.layout_hint)
+    LinearLayout layoutHint;
     /**
      * 订单 详情
      */
@@ -118,6 +122,13 @@ public class TransferInitiateDetailActivity extends BaseActivity implements Tran
     }
 
     @Override
+    public void initView(@NonNull Bundle savedInstanceState) {
+        super.initView(savedInstanceState);
+        loadViewHelper = new LoadViewHelper(this);
+        loadViewHelper.setOnNextClickListener(this);
+    }
+
+    @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         if (getIntent() != null) {
@@ -128,7 +139,13 @@ public class TransferInitiateDetailActivity extends BaseActivity implements Tran
             orderNo = transferBean.getOrderNo();
         }
         initDetailData();
-        getTransferOrderDetail();
+        if (BaseUtils.isNetworkAvailable(this)) {
+            getTransferOrderDetail();
+        }
+        else {
+            layoutHint.setVisibility(View.VISIBLE);
+            loadViewHelper.load(LoadViewHelper.NONE_NETWORK);
+        }
     }
 
     /**
@@ -281,10 +298,16 @@ public class TransferInitiateDetailActivity extends BaseActivity implements Tran
     }
 
     @Override
+    public void onNextClick() {
+        getTransferOrderDetail();
+    }
+
+    @Override
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
         switch (task) {
             case GET_TRANSFER_ORDER_DETAIL:
+                layoutHint.setVisibility(View.GONE);
                 transferBean = (TransferBean)response.getData();
                 initDetailData();
                 break;

@@ -218,16 +218,6 @@ public class WorkerFragment extends BaseFragment {
                 intent.putExtra(CommonData.KEY_TITLE,
                                 bannerBeans.get(viewFlipper.getDisplayedChild()).getBannerRemark());
                 startActivity(intent);
-                //                try {
-                //                    EMCursorResult<EMMessage> list = EMClient.getInstance()
-                //                                                             .chatManager()
-                //                                                             .fetchHistoryMessages("hz_ydm201907121121562156431168",
-                //                                                                                   EMConversation.EMConversationType.Chat,
-                //                                                                                   20, "");
-                //                }
-                //                catch (HyphenateException e) {
-                //                    e.printStackTrace();
-                //                }
                 break;
             case R.id.layout_initiate_check:
                 intent = new Intent(getContext(), ServiceHistoryActivity.class);

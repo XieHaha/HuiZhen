@@ -42,7 +42,8 @@ import butterknife.OnClick;
  */
 public class ServiceHistoryActivity extends BaseActivity
         implements BaseQuickAdapter.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener,
-                   BaseQuickAdapter.RequestLoadMoreListener, BaseQuickAdapter.OnItemChildClickListener {
+                   BaseQuickAdapter.RequestLoadMoreListener, BaseQuickAdapter.OnItemChildClickListener,
+                   LoadViewHelper.OnNextClickListener {
     @BindView(R.id.recyclerview)
     RecyclerView recyclerView;
     @BindView(R.id.layout_refresh)
@@ -51,6 +52,8 @@ public class ServiceHistoryActivity extends BaseActivity
     LinearLayout layoutNone;
     @BindView(R.id.public_title_bar_title)
     TextView publicTitleBarTitle;
+    @BindView(R.id.layout_reserve_service)
+    LinearLayout layoutReserveService;
     private CheckHistoryAdapter checkHistoryAdapter;
     /**
      * 时间分隔
@@ -77,6 +80,7 @@ public class ServiceHistoryActivity extends BaseActivity
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
         loadViewHelper = new LoadViewHelper(this);
+        loadViewHelper.setOnNextClickListener(this);
         int num = 0;
         if (getIntent() != null) {
             num = getIntent().getIntExtra(CommonData.KEY_PUBLIC, 0);
@@ -99,7 +103,14 @@ public class ServiceHistoryActivity extends BaseActivity
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(timeItemDecoration);
         initAdapter();
-        getReserveCheckOrderList();
+        if (BaseUtils.isNetworkAvailable(this)) {
+            getReserveCheckOrderList();
+        }
+        else {
+            layoutReserveService.setVisibility(View.GONE);
+            layoutNone.setVisibility(View.VISIBLE);
+            loadViewHelper.load(LoadViewHelper.NONE_NETWORK);
+        }
     }
 
     /**
@@ -161,9 +172,16 @@ public class ServiceHistoryActivity extends BaseActivity
     }
 
     @Override
+    public void onNextClick() {
+        getReserveCheckOrderList();
+    }
+
+    @Override
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
         if (task == Tasks.GET_RESERVE_CHECK_ORDER_LIST) {
+            layoutReserveService.setVisibility(View.VISIBLE);
+            layoutNone.setVisibility(View.GONE);
             List<CheckBean> list = (List<CheckBean>)response.getData();
             if (page == BaseData.BASE_ONE) {
                 checkedList.clear();
