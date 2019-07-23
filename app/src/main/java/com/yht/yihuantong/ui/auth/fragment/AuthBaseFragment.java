@@ -95,12 +95,19 @@ public class AuthBaseFragment extends BaseFragment
      * 上传数据mondle
      */
     private DoctorAuthBean doctorAuthBean;
+    /**
+     * 当前选中科室
+     */
     private HospitalDepartChildBean curDepart;
     private Uri cutFileUri;
     private File cameraTempFile, cutFile;
     private Uri mCurrentPhotoUri;
     private String mCurrentPhotoPath;
     private List<String> titleData = new ArrayList<>();
+    /**
+     * 当前选中的科室position 一二级科室
+     */
+    private int positionOne = -1, positionTwo = -1;
     /**
      * 医院选择
      */
@@ -247,6 +254,8 @@ public class AuthBaseFragment extends BaseFragment
                 if (!TextUtils.isEmpty(doctorAuthBean.getLastApplyHospitalName())) {
                     intent = new Intent(getContext(), SelectDepartActivity.class);
                     intent.putExtra(CommonData.KEY_HOSPITAL_CODE, doctorAuthBean.getLastApplyHospitalCode());
+                    intent.putExtra(CommonData.KEY_DEPART_POSITION, positionOne);
+                    intent.putExtra(CommonData.KEY_DEPART_CHILD_POSITION, positionTwo);
                     startActivityForResult(intent, REQUEST_CODE_DEPART);
                 }
                 else {
@@ -418,6 +427,8 @@ public class AuthBaseFragment extends BaseFragment
             //科室选择
             case REQUEST_CODE_DEPART:
                 curDepart = (HospitalDepartChildBean)data.getSerializableExtra(CommonData.KEY_DEPART_BEAN);
+                positionOne = data.getIntExtra(CommonData.KEY_DEPART_POSITION, -1);
+                positionTwo = data.getIntExtra(CommonData.KEY_DEPART_CHILD_POSITION, -1);
                 initDepartData(true);
                 initNextButton();
                 break;

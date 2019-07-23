@@ -36,7 +36,7 @@ public class SelectDepartActivity extends BaseActivity implements BaseQuickAdapt
     private DepartOneAdapter departOneAdapter;
     private DepartTwoAdapter departTwoAdapter;
     private ArrayList<HospitalDepartBean> departs;
-    private ArrayList<HospitalDepartChildBean> departChilds;
+    private ArrayList<HospitalDepartChildBean> departChildren;
     /**
      * 当前选中医院code
      */
@@ -61,19 +61,23 @@ public class SelectDepartActivity extends BaseActivity implements BaseQuickAdapt
         super.initData(savedInstanceState);
         if (getIntent() != null) {
             hospitalCode = getIntent().getStringExtra(CommonData.KEY_HOSPITAL_CODE);
+            positionOne = getIntent().getIntExtra(CommonData.KEY_DEPART_POSITION, -1);
+            positionTwo = getIntent().getIntExtra(CommonData.KEY_DEPART_CHILD_POSITION, -1);
         }
         getDepartTree();
         //一级科室
         rvDepartOne.setLayoutManager(new LinearLayoutManager(this));
         departOneAdapter = new DepartOneAdapter(R.layout.item_depart, departs);
+        if (positionOne == -1) {
+            //默认选中第一个
+            positionOne = 0;
+        }
         departOneAdapter.setCurPosition(positionOne);
         departOneAdapter.setOnItemClickListener(this);
-        //默认第一个选中
-        departOneAdapter.setCurPosition(0);
         rvDepartOne.setAdapter(departOneAdapter);
         //二级科室
         rvDepartTwo.setLayoutManager(new LinearLayoutManager(this));
-        departTwoAdapter = new DepartTwoAdapter(R.layout.item_depart_two, departChilds);
+        departTwoAdapter = new DepartTwoAdapter(R.layout.item_depart_two, departChildren);
         departTwoAdapter.setCurPosition(positionTwo);
         departTwoAdapter.setOnItemClickListener(this);
         rvDepartTwo.setAdapter(departTwoAdapter);
@@ -89,26 +93,29 @@ public class SelectDepartActivity extends BaseActivity implements BaseQuickAdapt
 
     /**
      * 子科室
-     *
-     * @param position
      */
-    private void setDepartChild(int position) {
-        departChilds = departs.get(position).getChildList();
-        departTwoAdapter.setNewData(departChilds);
+    private void setDepartChild() {
+        departChildren = departs.get(positionOne).getChildList();
+        departTwoAdapter.setCurPosition(positionTwo);
+        departTwoAdapter.setNewData(departChildren);
     }
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         if (adapter instanceof DepartOneAdapter) {
             positionOne = position;
+            //一级科室改变后重置二级科室选中状态
+            positionTwo = -1;
             departOneAdapter.setCurPosition(position);
-            setDepartChild(position);
+            setDepartChild();
         }
         else {
             positionTwo = position;
             departTwoAdapter.setCurPosition(position);
             Intent intent = new Intent();
-            intent.putExtra(CommonData.KEY_DEPART_BEAN, departChilds.get(position));
+            intent.putExtra(CommonData.KEY_DEPART_BEAN, departChildren.get(position));
+            intent.putExtra(CommonData.KEY_DEPART_POSITION, positionOne);
+            intent.putExtra(CommonData.KEY_DEPART_CHILD_POSITION, positionTwo);
             setResult(RESULT_OK, intent);
             finish();
         }
@@ -121,7 +128,7 @@ public class SelectDepartActivity extends BaseActivity implements BaseQuickAdapt
             departs = (ArrayList<HospitalDepartBean>)response.getData();
             departOneAdapter.setNewData(departs);
             if (departs != null && departs.size() > 0) {
-                setDepartChild(0);
+                setDepartChild();
             }
         }
     }

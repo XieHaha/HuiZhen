@@ -109,6 +109,14 @@ public interface CommonData {
      */
     String KEY_DEPART_BEAN = "key_depart_bean";
     /**
+     * 一级科室 position
+     */
+    String KEY_DEPART_POSITION = "key_depart_position";
+    /**
+     * 二级科室 position
+     */
+    String KEY_DEPART_CHILD_POSITION = "key_depart_child_position";
+    /**
      * 预约检查选择的检查项
      */
     String KEY_RESERVE_CHECK_TYPE_BEAN = "key_reserve_check_type_bean";
