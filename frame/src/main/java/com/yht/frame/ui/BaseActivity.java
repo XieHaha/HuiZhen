@@ -85,9 +85,9 @@ public abstract class BaseActivity extends RxAppCompatActivity
 
     @Override
     protected final void onCreate(Bundle savedInstanceState) {
+        beforeCreateView(savedInstanceState);
         super.onCreate(savedInstanceState);
         AppManager.getInstance().addActivity(this);
-        befordCreateView(savedInstanceState);
         int layoutID = getLayoutID();
         if (layoutID != 0) {
             setContentView(layoutID);
@@ -364,9 +364,6 @@ public abstract class BaseActivity extends RxAppCompatActivity
     }
     //=====================setContentView 前回调
 
-    @Override
-    public void befordCreateView(@NonNull Bundle savedInstanceState) {
-    }
 
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {

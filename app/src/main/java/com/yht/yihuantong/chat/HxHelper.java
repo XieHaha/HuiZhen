@@ -11,7 +11,6 @@ import com.yht.frame.data.Tasks;
 import com.yht.frame.data.base.PatientBean;
 import com.yht.frame.http.listener.AbstractResponseAdapter;
 import com.yht.frame.http.retrofit.RequestUtils;
-import com.yht.frame.utils.HuiZhenLog;
 import com.yht.yihuantong.ZycApplication;
 
 import org.litepal.crud.DataSupport;
@@ -63,7 +62,6 @@ public class HxHelper {
         }
 
         public EaseUser getUser(String username, UserInfoCallback callback) {
-            HuiZhenLog.i("ZYC", "code:" + username);
             if (TextUtils.isEmpty(username)) { return null; }
             EaseUser user = new EaseUser(username);
             List<PatientBean> list = DataSupport.where("code = ?", username).find(PatientBean.class);

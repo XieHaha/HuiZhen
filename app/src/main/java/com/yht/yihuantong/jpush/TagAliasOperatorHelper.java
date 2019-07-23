@@ -31,11 +31,11 @@ import cn.jpush.android.api.JPushMessage;
  */
 public class TagAliasOperatorHelper {
     private static final String TAG = "ZYC-PUSH";
-    private static int sequence = 1;
+    public static int sequence = 1;
     /**
      * 增加
      */
-    private static final int ACTION_ADD = 1;
+    public static final int ACTION_ADD = 1;
     /**
      * 覆盖
      */
@@ -43,20 +43,20 @@ public class TagAliasOperatorHelper {
     /**
      * 删除部分
      */
-    private static final int ACTION_DELETE = 3;
+    public static final int ACTION_DELETE = 3;
     /**
      * 删除所有
      */
-    private static final int ACTION_CLEAN = 4;
+    public static final int ACTION_CLEAN = 4;
     /**
      * 查询
      */
-    private static final int ACTION_GET = 5;
-    private static final int ACTION_CHECK = 6;
-    private static final int DELAY_SEND_ACTION = 1;
-    private static final int DELAY_SET_MOBILE_NUMBER_ACTION = 2;
-    private Context context;
-    private static TagAliasOperatorHelper mInstance;
+    public static final int ACTION_GET = 5;
+    public static final int ACTION_CHECK = 6;
+    public static final int DELAY_SEND_ACTION = 1;
+    public static final int DELAY_SET_MOBILE_NUMBER_ACTION = 2;
+    public Context context;
+    public static TagAliasOperatorHelper mInstance;
 
     private TagAliasOperatorHelper() {
     }

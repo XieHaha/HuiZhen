@@ -27,6 +27,7 @@ import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.SharePreferenceUtil;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ZycApplication;
+import com.yht.yihuantong.jpush.TagAliasOperatorHelper;
 import com.yht.yihuantong.ui.auth.fragment.AuthBaseFragment;
 import com.yht.yihuantong.ui.auth.fragment.AuthLicenseFragment;
 import com.yht.yihuantong.ui.auth.fragment.AuthResultFragment;
@@ -34,6 +35,8 @@ import com.yht.yihuantong.ui.auth.listener.OnAuthStepListener;
 import com.yht.yihuantong.ui.main.MainActivity;
 
 import butterknife.BindView;
+
+import static com.yht.yihuantong.jpush.TagAliasOperatorHelper.ACTION_SET;
 
 /**
  * @author 顿顿
@@ -101,9 +104,18 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
      */
     private boolean authAgain;
     /**
+     * 根据推送消息判断，
+     */
+    private boolean pushStatus;
+    /**
      * 认证状态
      */
-    private IChange<Integer> authStatus = data -> getDoctorAuth();
+    private IChange<Integer> authStatus = data -> {
+        if (data == DocAuthStatus.AUTH_FAILD) {
+            pushStatus = true;
+        }
+        getDoctorAuth();
+    };
 
     @Override
     protected boolean isInitBackBtn() {
@@ -121,8 +133,9 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
         iNotifyChangeListenerServer = ApiManager.getInstance().getServer();
         findViewById(R.id.public_title_bar_back).setOnClickListener(this);
         curAuthStatus = loginBean.getApprovalStatus();
-        initTab();
+        fragmentManager = getSupportFragmentManager();
         getDoctorAuth();
+        setJPushAlias(loginBean.getDoctorCode());
     }
 
     @Override
@@ -148,16 +161,28 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
     }
 
     /**
+     * 极光alias推送设置
+     *
+     * @param alias
+     */
+    private void setJPushAlias(String alias) {
+        TagAliasOperatorHelper.TagAliasBean tagAliasBean = new TagAliasOperatorHelper.TagAliasBean();
+        tagAliasBean.action = ACTION_SET;
+        tagAliasBean.alias = alias;
+        tagAliasBean.isAliasAction = true;
+        TagAliasOperatorHelper.getInstance().handleAction(getApplicationContext(), BASE_ONE, tagAliasBean);
+    }
+
+    /**
      * 初始化tabs
      */
     private void initTab() {
-        fragmentManager = getSupportFragmentManager();
-        if (curAuthStatus == DocAuthStatus.AUTH_NONE) {
-            tabAuthBaseView();
-        }
-        else {
-            tabAuthResultView();
-        }
+        //        if (curAuthStatus == DocAuthStatus.AUTH_NONE) {
+        //            tabAuthBaseView();
+        //        }
+        //        else {
+        //            tabAuthResultView();
+        //        }
     }
 
     private void tabAuthBaseView() {
@@ -343,10 +368,11 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
                 else if (doctorAuthBean.getApprovalStatus() == DocAuthStatus.AUTH_FAILD) {
                     loginBean.setApprovalStatus(doctorAuthBean.getApprovalStatus());
                     ZycApplication.getInstance().setLoginBean(loginBean);
-                    if (authAgain) {
+                    if (authAgain && !pushStatus) {
                         tabAuthBaseView();
                     }
                     else {
+                        pushStatus = false;
                         tabAuthResultView();
                     }
                 }

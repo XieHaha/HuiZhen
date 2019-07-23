@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.yht.frame.api.notify.NotifyChangeListenerManager;
 import com.yht.frame.data.CommonData;
+import com.yht.frame.data.type.DocAuthStatus;
 import com.yht.frame.data.type.MessageType;
 import com.yht.frame.utils.HuiZhenLog;
 import com.yht.yihuantong.ZycApplication;
@@ -28,8 +29,14 @@ public class PushMessageReceiver extends JPushMessageReceiver implements Message
     public void onNotifyMessageArrived(Context context, NotificationMessage message) {
         JsonObject jsonObject = new JsonParser().parse(message.notificationExtras).getAsJsonObject();
         String type = jsonObject.get("msgType").getAsString();
-        String msgId = jsonObject.get("orderNo").getAsString();
-        HuiZhenLog.i(TAG, "msgType:" + type + "  orderNo:" + msgId);
+        String msgId;
+        if (MESSAGE_DOCTOR_AUTH_FAILED.equals(type) || MESSAGE_DOCTOR_AUTH_SUCCESS.equals(type)) {
+            msgId = jsonObject.get("phone").getAsString();
+        }
+        else {
+            msgId = jsonObject.get("orderNo").getAsString();
+        }
+        HuiZhenLog.i(TAG, "msgType:" + type + "  msgId:" + msgId);
         notifyStatusChange(type, msgId);
     }
 
@@ -37,8 +44,14 @@ public class PushMessageReceiver extends JPushMessageReceiver implements Message
     public void onNotifyMessageOpened(Context context, NotificationMessage message) {
         JsonObject jsonObject = new JsonParser().parse(message.notificationExtras).getAsJsonObject();
         String type = jsonObject.get("msgType").getAsString();
-        String msgId = jsonObject.get("orderNo").getAsString();
-        HuiZhenLog.i(TAG, "msgType:" + type + "  orderNo:" + msgId);
+        String msgId;
+        if (MESSAGE_DOCTOR_AUTH_FAILED.equals(type) || MESSAGE_DOCTOR_AUTH_SUCCESS.equals(type)) {
+            msgId = jsonObject.get("phone").getAsString();
+        }
+        else {
+            msgId = jsonObject.get("orderNo").getAsString();
+        }
+        HuiZhenLog.i(TAG, "msgType:" + type + "  msgId:" + msgId);
         jumpPageByType(context, type, msgId);
     }
 
@@ -50,8 +63,10 @@ public class PushMessageReceiver extends JPushMessageReceiver implements Message
     private void notifyStatusChange(String type, String msgId) {
         switch (type) {
             case MESSAGE_DOCTOR_AUTH_SUCCESS:
+                NotifyChangeListenerManager.getInstance().notifyDoctorAuthStatus(DocAuthStatus.AUTH_SUCCESS);
+                break;
             case MESSAGE_DOCTOR_AUTH_FAILED:
-                NotifyChangeListenerManager.getInstance().notifyDoctorAuthStatus(0);
+                NotifyChangeListenerManager.getInstance().notifyDoctorAuthStatus(DocAuthStatus.AUTH_FAILD);
                 break;
             default:
                 break;

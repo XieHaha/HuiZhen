@@ -298,10 +298,6 @@ public abstract class BaseFragment extends Fragment
     }
 
     @Override
-    public void befordCreateView(@NonNull Bundle savedInstanceState) {
-    }
-
-    @Override
     public void onResponseSuccess(Tasks task, BaseResponse response) {
     }
 

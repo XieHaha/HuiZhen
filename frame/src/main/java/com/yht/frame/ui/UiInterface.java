@@ -20,11 +20,6 @@ public interface UiInterface {
     View getLayoutView();
 
     /**
-     * setContentView调用前调用
-     */
-    void befordCreateView(@NonNull Bundle savedInstanceState);
-
-    /**
      * 初始化类，调用顺序为2
      */
     void initView(@NonNull Bundle savedInstanceState);

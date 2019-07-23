@@ -8,12 +8,10 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.yht.frame.data.type.CheckTypeStatus;
-import com.yht.frame.data.type.PatientOrderStatus;
 import com.yht.frame.data.base.CheckTypeBean;
 import com.yht.frame.data.base.PatientOrderBean;
-import com.yht.frame.utils.HuiZhenLog;
-import com.yht.frame.utils.ToastUtil;
+import com.yht.frame.data.type.CheckTypeStatus;
+import com.yht.frame.data.type.PatientOrderStatus;
 import com.yht.yihuantong.R;
 
 import java.util.ArrayList;
@@ -212,10 +210,6 @@ public class PatientOrderAdapter extends BaseMultiItemQuickAdapter<PatientOrderB
             TextView textView = view.findViewById(R.id.tv_check_report_name);
             textView.setText(bean.getName());
             view.setTag(i);
-            textView.setOnClickListener(v -> {
-                ToastUtil.toast(mContext, "parent:" + helper.getAdapterPosition() + " child:" + v.getTag());
-                HuiZhenLog.i("test", " url:" + bean.getReport());
-            });
             layoutReport.addView(view);
         }
     }

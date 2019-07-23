@@ -13,6 +13,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NotificationCompat;
@@ -57,6 +58,7 @@ import com.yht.yihuantong.ui.main.fragment.WorkerFragment;
 import com.yht.yihuantong.version.presenter.VersionPresenter;
 import com.zyc.shortcutbadge.ShortcutBadger;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -118,11 +120,26 @@ public class MainActivity extends BaseActivity
     private UpdateDialog updateDialog;
     private NotificationManager mNotificationManager;
     private Bitmap largeIcon = null;
+    /**
+     * fragment
+     */
+    private List<Fragment> fragmentList = new ArrayList<>();
     private int pendingCount = 1;
     /**
      * 消息红点
      */
     private IChange<String> messageUpdate = data -> getUnreadMessageStatus();
+
+    @Override
+    public void beforeCreateView(@NonNull Bundle savedInstanceState) {
+        super.beforeCreateView(savedInstanceState);
+        //必须在super 之前调用,不然无效。因为那时候fragment已经被恢复了。
+        if (savedInstanceState != null) {
+            // FRAGMENTS_TAG
+            savedInstanceState.remove("android:support:fragments");
+            savedInstanceState.remove("android:fragments");
+        }
+    }
 
     @Override
     public int getLayoutID() {
@@ -413,6 +430,7 @@ public class MainActivity extends BaseActivity
         if (messageFragment == null) {
             messageFragment = new MessageFragment();
             transaction.add(R.id.act_main_tab_frameLayout, messageFragment);
+            fragmentList.add(messageFragment);
         }
         else {
             transaction.show(messageFragment);
@@ -428,6 +446,7 @@ public class MainActivity extends BaseActivity
         if (workerFragment == null) {
             workerFragment = new WorkerFragment();
             transaction.add(R.id.act_main_tab_frameLayout, workerFragment);
+            fragmentList.add(workerFragment);
         }
         else {
             transaction.show(workerFragment);
@@ -443,6 +462,7 @@ public class MainActivity extends BaseActivity
         if (patientFragment == null) {
             patientFragment = new PatientFragment();
             transaction.add(R.id.act_main_tab_frameLayout, patientFragment);
+            fragmentList.add(patientFragment);
         }
         else {
             transaction.show(patientFragment);
@@ -456,14 +476,8 @@ public class MainActivity extends BaseActivity
      * 隐藏所有碎片
      */
     private void hideAll(FragmentTransaction transaction) {
-        if (messageFragment != null) {
-            transaction.hide(messageFragment);
-        }
-        if (workerFragment != null) {
-            transaction.hide(workerFragment);
-        }
-        if (patientFragment != null) {
-            transaction.hide(patientFragment);
+        for (Fragment fragment : fragmentList) {
+            getSupportFragmentManager().beginTransaction().hide(fragment).commit();
         }
     }
 
