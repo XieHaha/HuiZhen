@@ -26,7 +26,7 @@ import com.yht.frame.data.BaseNetConfig;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
-import com.yht.frame.data.base.LoginBean;
+import com.yht.frame.data.bean.LoginBean;
 import com.yht.frame.http.listener.ResponseListener;
 import com.yht.frame.permission.OnPermissionCallback;
 import com.yht.frame.permission.Permission;

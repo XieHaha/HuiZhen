@@ -23,7 +23,7 @@ import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
-import com.yht.frame.data.base.DoctorAuthBean;
+import com.yht.frame.data.bean.DoctorAuthBean;
 import com.yht.frame.data.bean.NormImage;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.permission.Permission;

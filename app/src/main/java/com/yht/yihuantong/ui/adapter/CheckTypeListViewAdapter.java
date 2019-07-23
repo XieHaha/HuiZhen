@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.yht.frame.data.base.SelectCheckTypeBean;
+import com.yht.frame.data.bean.SelectCheckTypeBean;
 import com.yht.yihuantong.R;
 
 import java.util.ArrayList;

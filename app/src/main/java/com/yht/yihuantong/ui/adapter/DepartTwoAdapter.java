@@ -5,7 +5,7 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.yht.frame.data.base.HospitalDepartChildBean;
+import com.yht.frame.data.bean.HospitalDepartChildBean;
 import com.yht.yihuantong.R;
 
 import java.util.List;

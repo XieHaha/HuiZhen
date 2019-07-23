@@ -7,7 +7,7 @@ import android.widget.TextView;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
-import com.yht.frame.data.base.WithDrawDetailBean;
+import com.yht.frame.data.bean.WithDrawDetailBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.yihuantong.R;

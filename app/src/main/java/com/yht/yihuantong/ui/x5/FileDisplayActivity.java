@@ -16,7 +16,7 @@ import com.yht.frame.api.DirHelper;
 import com.yht.frame.api.FileTransferServer;
 import com.yht.frame.data.BaseData;
 import com.yht.frame.data.CommonData;
-import com.yht.frame.data.base.CheckTypeByDetailBean;
+import com.yht.frame.data.bean.CheckTypeByDetailBean;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.MimeUtils;
 import com.yht.frame.utils.ToastUtil;

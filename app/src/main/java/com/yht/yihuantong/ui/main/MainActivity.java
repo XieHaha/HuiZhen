@@ -38,7 +38,7 @@ import com.yht.frame.api.notify.IChange;
 import com.yht.frame.api.notify.RegisterType;
 import com.yht.frame.data.BaseData;
 import com.yht.frame.data.CommonData;
-import com.yht.frame.data.base.LoginBean;
+import com.yht.frame.data.bean.LoginBean;
 import com.yht.frame.data.bean.VersionBean;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.HuiZhenLog;

@@ -24,7 +24,7 @@ import com.yht.frame.api.notify.RegisterType;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
-import com.yht.frame.data.base.PatientBean;
+import com.yht.frame.data.bean.PatientBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;

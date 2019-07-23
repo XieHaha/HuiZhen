@@ -17,7 +17,7 @@ import com.yanzhenjie.nohttp.NoHttp;
 import com.yht.frame.api.ApiManager;
 import com.yht.frame.api.CrashHandler;
 import com.yht.frame.data.CommonData;
-import com.yht.frame.data.base.LoginBean;
+import com.yht.frame.data.bean.LoginBean;
 import com.yht.frame.http.retrofit.RetrofitManager;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.HuiZhenLog;

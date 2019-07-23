@@ -7,7 +7,7 @@ import android.content.Intent;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.yht.frame.data.CommonData;
-import com.yht.frame.data.base.PatientBean;
+import com.yht.frame.data.bean.PatientBean;
 import com.yht.frame.ui.AppManager;
 import com.yht.frame.utils.SharePreferenceUtil;
 import com.yht.yihuantong.ui.HintLoginActivity;

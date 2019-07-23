@@ -7,7 +7,7 @@ import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.yht.frame.data.type.TransferOrderStatus;
-import com.yht.frame.data.base.TransferBean;
+import com.yht.frame.data.bean.TransferBean;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.yihuantong.R;

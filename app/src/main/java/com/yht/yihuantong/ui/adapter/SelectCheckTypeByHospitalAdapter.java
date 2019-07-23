@@ -5,7 +5,7 @@ import android.widget.ImageView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.yht.frame.data.base.SelectCheckTypeBean;
+import com.yht.frame.data.bean.SelectCheckTypeBean;
 import com.yht.yihuantong.R;
 
 import java.util.ArrayList;

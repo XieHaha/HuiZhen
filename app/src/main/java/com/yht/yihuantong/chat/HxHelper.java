@@ -8,7 +8,7 @@ import com.hyphenate.easeui.UserInfoCallback;
 import com.hyphenate.easeui.domain.EaseUser;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.Tasks;
-import com.yht.frame.data.base.PatientBean;
+import com.yht.frame.data.bean.PatientBean;
 import com.yht.frame.http.listener.AbstractResponseAdapter;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.yihuantong.ZycApplication;

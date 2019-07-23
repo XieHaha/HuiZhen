@@ -1,6 +1,6 @@
 package com.yht.yihuantong.ui.check.listener;
 
-import com.yht.frame.data.base.ReserveCheckBean;
+import com.yht.frame.data.bean.ReserveCheckBean;
 
 /**
  * @author 顿顿

@@ -8,8 +8,8 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.yht.frame.data.base.CheckTypeBean;
-import com.yht.frame.data.base.PatientOrderBean;
+import com.yht.frame.data.bean.CheckTypeBean;
+import com.yht.frame.data.bean.PatientOrderBean;
 import com.yht.frame.data.type.CheckTypeStatus;
 import com.yht.frame.data.type.PatientOrderStatus;
 import com.yht.yihuantong.R;

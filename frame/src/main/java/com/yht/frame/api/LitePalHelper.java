@@ -1,7 +1,7 @@
 package com.yht.frame.api;
 
-import com.yht.frame.data.base.HospitalBean;
-import com.yht.frame.data.base.PatientBean;
+import com.yht.frame.data.bean.HospitalBean;
+import com.yht.frame.data.bean.PatientBean;
 
 import org.litepal.crud.DataSupport;
 

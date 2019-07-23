@@ -7,7 +7,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.yht.frame.data.BaseData;
-import com.yht.frame.data.base.ReserveCheckBean;
+import com.yht.frame.data.bean.ReserveCheckBean;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.ToastUtil;

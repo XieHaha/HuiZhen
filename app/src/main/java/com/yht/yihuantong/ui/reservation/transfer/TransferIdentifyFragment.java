@@ -8,8 +8,8 @@ import android.widget.TextView;
 
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.Tasks;
-import com.yht.frame.data.base.PatientDetailBean;
-import com.yht.frame.data.base.ReserveTransferBean;
+import com.yht.frame.data.bean.PatientDetailBean;
+import com.yht.frame.data.bean.ReserveTransferBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;

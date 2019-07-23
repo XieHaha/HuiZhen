@@ -13,7 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.yht.frame.R;
-import com.yht.frame.data.base.PatientBean;
+import com.yht.frame.data.bean.PatientBean;
 import com.yht.frame.utils.BaseUtils;
 
 import java.util.List;

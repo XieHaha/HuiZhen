@@ -6,9 +6,9 @@ import android.text.TextUtils;
 import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.Tasks;
-import com.yht.frame.data.base.DoctorAuthBean;
-import com.yht.frame.data.base.ReserveCheckBean;
-import com.yht.frame.data.base.ReserveTransferBean;
+import com.yht.frame.data.bean.DoctorAuthBean;
+import com.yht.frame.data.bean.ReserveCheckBean;
+import com.yht.frame.data.bean.ReserveTransferBean;
 import com.yht.frame.http.listener.ResponseListener;
 
 import java.io.File;

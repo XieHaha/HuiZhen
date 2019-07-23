@@ -1,6 +1,6 @@
 package com.yht.yihuantong.ui.auth.listener;
 
-import com.yht.frame.data.base.DoctorAuthBean;
+import com.yht.frame.data.bean.DoctorAuthBean;
 
 /**
  * @author 顿顿

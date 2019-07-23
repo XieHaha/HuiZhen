@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.yht.frame.data.CommonData;
-import com.yht.frame.data.base.HospitalBean;
+import com.yht.frame.data.bean.HospitalBean;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.widgets.edittext.AbstractTextWatcher;
 import com.yht.frame.widgets.edittext.EditTextLayout;

@@ -1,6 +1,6 @@
 package com.yht.yihuantong.ui.transfer.listener;
 
-import com.yht.frame.data.base.ReserveTransferBean;
+import com.yht.frame.data.bean.ReserveTransferBean;
 
 /**
  * @author 顿顿

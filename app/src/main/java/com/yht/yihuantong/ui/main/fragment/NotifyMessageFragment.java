@@ -18,7 +18,7 @@ import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
-import com.yht.frame.data.base.MessageIdBean;
+import com.yht.frame.data.bean.MessageIdBean;
 import com.yht.frame.data.bean.NotifyMessageBean;
 import com.yht.frame.data.type.MessageType;
 import com.yht.frame.http.retrofit.RequestUtils;
