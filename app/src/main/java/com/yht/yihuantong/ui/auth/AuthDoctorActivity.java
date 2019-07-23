@@ -305,7 +305,7 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
                 ivAuthLicense.setImageResource(R.mipmap.ic_step_finish);
                 //2
                 layoutAuthResult.setSelected(true);
-                ivAuthResult.setImageResource(R.mipmap.ic_step_sel);
+                ivAuthResult.setImageResource(R.mipmap.ic_step_finish);
                 tvAuthResult.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
                 break;
             default:

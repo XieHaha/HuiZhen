@@ -153,11 +153,13 @@ public class AuthBaseFragment extends BaseFragment
         tvAuthBaseDepart.setSelected(true);
         tvAuthBaseTitle.setText(doctorAuthBean.getJobTitle());
         tvAuthBaseTitle.setSelected(true);
-        if (doctorAuthBean.getDoctorSex() == BaseData.BASE_MALE) {
-            rbMale.setChecked(true);
-        }
-        else {
-            rbFemale.setChecked(true);
+        if (doctorAuthBean.getDoctorSex() != BaseData.BASE_ZERO) {
+            if (doctorAuthBean.getDoctorSex() == BaseData.BASE_MALE) {
+                rbMale.setChecked(true);
+            }
+            else {
+                rbFemale.setChecked(true);
+            }
         }
         Glide.with(this)
              .load(FileUrlUtil.addTokenToUrl(doctorAuthBean.getDoctorPhoto()))

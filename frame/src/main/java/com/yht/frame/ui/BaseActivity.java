@@ -118,9 +118,7 @@ public abstract class BaseActivity extends RxAppCompatActivity
         if (isInitBackBtn()) {
             initBackBtn();
         }
-        if (isInitStatusBar()) {
-            initStatusBar();
-        }
+        initStatusBar(isInitStatusBar());
         initView(savedInstanceState);
         initData(savedInstanceState);
         initListener();
@@ -157,8 +155,13 @@ public abstract class BaseActivity extends RxAppCompatActivity
     /**
      * 状态栏处理
      */
-    private void initStatusBar() {
-        StatusBarUtil.statuBarLightMode(this);
+    private void initStatusBar(boolean trans) {
+        if (trans) {
+            StatusBarUtil.statuBarLightMode(this);
+        }
+        else {
+            StatusBarUtil.statuBarLightModeByTrans(this);
+        }
     }
 
     /**
@@ -363,7 +366,6 @@ public abstract class BaseActivity extends RxAppCompatActivity
         return null;
     }
     //=====================setContentView 前回调
-
 
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {

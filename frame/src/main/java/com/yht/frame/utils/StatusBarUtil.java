@@ -75,10 +75,42 @@ public class StatusBarUtil {
                 result = 2;
             }
             else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                activity.getWindow()
-                        .getDecorView()
-                        .setSystemUiVisibility(
-                                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+                Window window = activity.getWindow();
+                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                window.getDecorView()
+                      .setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
+                                             View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                window.setStatusBarColor(Color.WHITE);
+                result = 3;
+            }
+        }
+        return result;
+    }
+    /**
+     * 状态栏亮色模式，设置状态栏黑色文字、图标，
+     * 适配4.4以上版本MIUIV、Flyme和6.0以上版本其他Android
+     *
+     * @param activity
+     * @return 1:MIUUI 2:Flyme 3:android6.0
+     */
+    public static int statuBarLightModeByTrans(Activity activity) {
+        int result = 0;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            if (miuiSetStatusbarlightmode(activity, true)) {
+                result = 1;
+            }
+            else if (flymeSetStatusBarLightMode(activity.getWindow(), true)) {
+                result = 2;
+            }
+            else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                Window window = activity.getWindow();
+                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                window.getDecorView()
+                      .setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
+                                             View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                window.setStatusBarColor(Color.TRANSPARENT);
                 result = 3;
             }
         }

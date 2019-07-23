@@ -26,6 +26,11 @@ public class HintLoginActivity extends BaseActivity {
     }
 
     @Override
+    protected boolean isInitStatusBar() {
+        return false;
+    }
+
+    @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
         if (getIntent() != null) {

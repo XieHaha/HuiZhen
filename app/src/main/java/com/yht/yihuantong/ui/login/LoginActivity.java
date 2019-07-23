@@ -249,12 +249,13 @@ public class LoginActivity extends BaseActivity {
             case R.id.tv_login_next:
                 if (tvLoginNext.isSelected()) {
                     if (isSendVerifyCode) {
-                        if (isShowNewProtocol && !isAgree) {
-                            showProtocol();
-                        }
-                        else {
-                            login();
-                        }
+                        //                        if (isShowNewProtocol && !isAgree) {
+                        //                            showProtocol();
+                        //                        }
+                        //                        else {
+                        //                            login();
+                        //                        }
+                        login();
                     }
                     else {
                         ToastUtil.toast(this, R.string.txt_login_verify_code_error);

@@ -20,7 +20,6 @@ import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -147,6 +146,11 @@ public class MainActivity extends BaseActivity
     }
 
     @Override
+    protected boolean isInitStatusBar() {
+        return false;
+    }
+
+    @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
         largeIcon = ((BitmapDrawable)getResources().getDrawable(R.mipmap.logo_icon)).getBitmap();
@@ -170,8 +174,6 @@ public class MainActivity extends BaseActivity
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-        //状态栏透明
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         iNotifyChangeListenerServer = ApiManager.getInstance().getServer();
         initTab();
         //环信登录
