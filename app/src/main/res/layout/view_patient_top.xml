@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:background="@color/color_ffffff"
     android:id="@+id/layout_search"
-    android:paddingTop="27dp">
+    android:paddingTop="47dp">
 
     <LinearLayout
         android:id="@+id/layout"

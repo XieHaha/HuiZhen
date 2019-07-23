@@ -155,13 +155,8 @@ public abstract class BaseActivity extends RxAppCompatActivity
     /**
      * 状态栏处理
      */
-    private void initStatusBar(boolean trans) {
-        if (trans) {
-            StatusBarUtil.statuBarLightMode(this);
-        }
-        else {
-            StatusBarUtil.statuBarLightModeByTrans(this);
-        }
+    private void initStatusBar(boolean white) {
+        StatusBarUtil.statuBarLightMode(this, white);
     }
 
     /**
