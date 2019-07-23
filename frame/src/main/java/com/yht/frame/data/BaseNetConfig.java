@@ -30,10 +30,6 @@ public interface BaseNetConfig {
      */
     String BASE_BASIC_USER_PROTOCOL_URL = "/client/sys/protocol_by_doctor";
     /**
-     * 微信下载页面
-     */
-    String BASE_WE_CHAT_DOWNLOAD_URL = "https://weixin.qq.com/";
-    /**
      * 图片基础链接
      */
     String BASE_URL_FILE = "/client/file/download_file?filePath=";

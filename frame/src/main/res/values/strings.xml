@@ -124,6 +124,7 @@
     <string name="txt_login_bind_phone_hint">根据国家法规对账号实名制的要求，进行下一步操作前，请绑定您的手机号。</string>
     <string name="txt_account_disable">账号禁用</string>
     <string name="txt_account_disable_hint">由于多名患者举报，您的账号被禁用</string>
+    <string name="txt_wechat_install_error">您还未安装微信，请使用手机号登录/注册</string>
 
     <!--认证-->
     <string name="txt_auth_base">基本信息</string>

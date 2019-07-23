@@ -245,11 +245,7 @@ public class LoginOptionsActivity extends BaseActivity
                     sendReq();
                 }
                 else {
-                    //显示微信下载页面
-                    Intent intent = new Intent(this, WebViewActivity.class);
-                    intent.putExtra(CommonData.KEY_PUBLIC, BaseNetConfig.BASE_WE_CHAT_DOWNLOAD_URL);
-                    intent.putExtra(CommonData.KEY_TITLE, getString(R.string.txt_hint));
-                    startActivity(intent);
+                    ToastUtil.toast(this, R.string.txt_wechat_install_error);
                 }
                 break;
             case R.id.tv_login_phone:
