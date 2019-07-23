@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:text="@string/txt_none_medical_recording"
         android:textColor="@color/color_6a6f80"
-        android:textSize="15sp"
+        android:textSize="@dimen/text_15"
         android:drawableTop="@mipmap/pic_none_record"
         android:gravity="center" />
 

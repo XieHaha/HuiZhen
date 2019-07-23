@@ -25,6 +25,7 @@ import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.frame.widgets.LoadViewHelper;
 import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.frame.widgets.dialog.InputDialog;
+import com.yht.frame.widgets.textview.JustifiedTextView;
 import com.yht.yihuantong.R;
 
 import butterknife.BindView;
@@ -56,7 +57,7 @@ public class TransferReceiveDetailActivity extends BaseActivity
     @BindView(R.id.tv_family_medical)
     TextView tvFamilyMedical;
     @BindView(R.id.tv_allergies)
-    TextView tvAllergies;
+    JustifiedTextView tvAllergies;
     @BindView(R.id.tv_transfer_time)
     TextView tvTransferTime;
     @BindView(R.id.tv_receiving_doctor)
@@ -74,7 +75,7 @@ public class TransferReceiveDetailActivity extends BaseActivity
     @BindView(R.id.tv_payment)
     TextView tvPayment;
     @BindView(R.id.tv_initiate_diagnosis)
-    TextView tvInitiateDiagnosis;
+    JustifiedTextView tvInitiateDiagnosis;
     @BindView(R.id.tv_receiving_status)
     TextView tvReceivingStatus;
     @BindView(R.id.tv_receiving_depart)

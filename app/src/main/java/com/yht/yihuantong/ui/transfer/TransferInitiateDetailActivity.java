@@ -24,6 +24,7 @@ import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.frame.widgets.LoadViewHelper;
 import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.frame.widgets.dialog.InputDialog;
+import com.yht.frame.widgets.textview.JustifiedTextView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.reservation.transfer.ReservationTransferActivity;
 import com.yht.yihuantong.utils.FileUrlUtil;
@@ -51,7 +52,7 @@ public class TransferInitiateDetailActivity extends BaseActivity
     @BindView(R.id.tv_transfer_time)
     TextView tvTransferTime;
     @BindView(R.id.tv_initiate_diagnosis)
-    TextView tvInitiateDiagnosis;
+    JustifiedTextView tvInitiateDiagnosis;
     @BindView(R.id.tv_transfer_type)
     TextView tvTransferType;
     @BindView(R.id.tv_transfer_purpose)

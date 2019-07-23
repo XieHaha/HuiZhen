@@ -155,22 +155,27 @@
                     android:text="@string/txt_first_diagnosis"
                     android:paddingEnd="16dp" />
 
-                <TextView
-                    android:id="@+id/tv_initiate_diagnosis"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_16"
+                <ScrollView
+                    android:id="@+id/scroll_view"
+                    android:layout_width="match_parent"
                     android:layout_toEndOf="@id/text2"
-                    android:textColor="@color/color_373d4d"
-                    tools:text="医生">
+                    android:layout_height="wrap_content">
 
-                </TextView>
+                    <com.yht.frame.widgets.textview.JustifiedTextView
+                        android:id="@+id/tv_initiate_diagnosis"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/text_16"
+                        android:lineSpacingMultiplier="1.5"
+                        android:textColor="@color/color_373d4d"
+                        tools:text="医生" />
+                </ScrollView>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/app_hei_line"
                     android:background="@color/color_ebedf0"
-                    android:layout_below="@id/tv_initiate_diagnosis"
+                    android:layout_below="@id/scroll_view"
                     android:layout_marginTop="18dp" />
 
             </RelativeLayout>

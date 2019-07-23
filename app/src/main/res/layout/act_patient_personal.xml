@@ -28,7 +28,7 @@
                 android:layout_centerInParent="true"
                 android:text="@string/txt_patient_info"
                 android:textColor="@color/txt_color_6a6f80_1491fc_selector"
-                android:textSize="15sp"
+                android:textSize="@dimen/text_15"
                 android:textStyle="bold" />
 
             <ImageView
@@ -54,7 +54,7 @@
                 android:layout_centerInParent="true"
                 android:text="@string/txt_chat_online"
                 android:textColor="@color/txt_color_6a6f80_1491fc_selector"
-                android:textSize="15sp" />
+                android:textSize="@dimen/text_15" />
 
             <ImageView
                 android:layout_width="6dp"
