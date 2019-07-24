@@ -26,7 +26,10 @@ import com.hyphenate.EMConnectionListener;
 import com.hyphenate.EMError;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
+import com.yht.frame.api.ApiManager;
+import com.yht.frame.api.notify.IChange;
 import com.yht.frame.api.notify.NotifyChangeListenerManager;
+import com.yht.frame.api.notify.RegisterType;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
@@ -47,7 +50,6 @@ import com.yht.yihuantong.ui.patient.PatientPersonalActivity;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -120,6 +122,10 @@ public class MessageFragment extends BaseFragment
      */
     private EaseConversationListFragment easeConversationListFragment;
     /**
+     * 系统消息碎片
+     */
+    private NotifyMessageFragment notifyMessageFragment;
+    /**
      * 环信账号连接
      */
     private EaseConnectionListener connectionListener;
@@ -131,6 +137,12 @@ public class MessageFragment extends BaseFragment
      * 联系人变化监听
      */
     private AbstractEMContactListener contactListener;
+    /**
+     * 消息红点
+     */
+    private IChange<String> messageUpdate = data -> {
+        getAppUnReadMessageTotal();
+    };
 
     @Override
     public int getLayoutID() {
@@ -157,12 +169,15 @@ public class MessageFragment extends BaseFragment
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
+        iNotifyChangeListenerServer = ApiManager.getInstance().getServer();
         getAppUnReadMessageTotal();
     }
 
     @Override
     public void initListener() {
         super.initListener();
+        //注册消息状态监听
+        iNotifyChangeListenerServer.registerMessageStatusChangeListener(messageUpdate, RegisterType.REGISTER);
         viewPager.addOnPageChangeListener(new AbstractOnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -362,13 +377,12 @@ public class MessageFragment extends BaseFragment
         easeConversationListFragment.setConversationListItemClickListener(this);
         easeConversationListFragment.setConversationListItemLongClickListener(this);
         //通知
-        NotifyMessageFragment notifyMessageFragment = new NotifyMessageFragment();
+        notifyMessageFragment = new NotifyMessageFragment();
         notifyMessageFragment.setOnMessageUpdateListener(this);
         List<Fragment> fragmentList = new ArrayList<>();
         fragmentList.add(easeConversationListFragment);
         fragmentList.add(notifyMessageFragment);
-        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(
-                Objects.requireNonNull(getActivity()).getSupportFragmentManager(), fragmentList);
+        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager(), fragmentList);
         viewPager.setAdapter(viewPagerAdapter);
         titleBar(BASE_ZERO);
     }
@@ -444,10 +458,19 @@ public class MessageFragment extends BaseFragment
                 if (onMessageUpdateListener != null) {
                     onMessageUpdateListener.onMessageUpdate();
                 }
+                if (notifyMessageFragment != null) {
+                    notifyMessageFragment.updateAll();
+                }
                 break;
             default:
                 break;
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        iNotifyChangeListenerServer.registerMessageStatusChangeListener(messageUpdate, RegisterType.UNREGISTER);
     }
 
     /**

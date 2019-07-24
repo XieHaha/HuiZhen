@@ -44,13 +44,6 @@ public class ApiManager {
         return sContext;
     }
 
-    /**
-     * 获取是否开启log日志
-     */
-    public boolean isLogEnable() {
-        return isLogEnable;
-    }
-
     public NotifyChangeListenerManager.NotifyChangeListenerServer getServer() {
         return NotifyChangeListenerManager.getInstance();
     }

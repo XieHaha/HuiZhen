@@ -91,8 +91,11 @@ public class WorkerFragment extends BaseFragment {
     private static final int REQUEST_CODE_SCAN = 100;
 
     @Override
-    public int getLayoutID() {
-        return R.layout.fragment_worker;
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (getUserVisibleHint() && isPrepared) {
+            onResume();
+        }
     }
 
     @Override
@@ -101,6 +104,11 @@ public class WorkerFragment extends BaseFragment {
         getBanner();
         getStudioOrderStatistics();
         getValidateHospitalList();
+    }
+
+    @Override
+    public int getLayoutID() {
+        return R.layout.fragment_worker;
     }
 
     @Override

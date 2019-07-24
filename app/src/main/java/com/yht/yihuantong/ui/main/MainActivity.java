@@ -14,9 +14,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -43,6 +42,7 @@ import com.yht.frame.data.bean.VersionBean;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.HuiZhenLog;
 import com.yht.frame.utils.ToastUtil;
+import com.yht.frame.widgets.view.AbstractOnPageChangeListener;
 import com.yht.yihuantong.BuildConfig;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ZycApplication;
@@ -53,6 +53,7 @@ import com.yht.yihuantong.chat.receive.EaseMsgClickBroadCastReceiver;
 import com.yht.yihuantong.jpush.TagAliasOperatorHelper;
 import com.yht.yihuantong.ui.HintLoginActivity;
 import com.yht.yihuantong.ui.WebViewActivity;
+import com.yht.yihuantong.ui.adapter.ViewPagerAdapter;
 import com.yht.yihuantong.ui.dialog.UpdateDialog;
 import com.yht.yihuantong.ui.main.fragment.MessageFragment;
 import com.yht.yihuantong.ui.main.fragment.PatientFragment;
@@ -86,11 +87,8 @@ public class MainActivity extends BaseActivity
     TextView tvWorker;
     @BindView(R.id.iv_message_dot)
     ImageView ivMessageDot;
-    /**
-     * 碎片管理
-     */
-    private FragmentManager fragmentManager;
-    private FragmentTransaction transaction;
+    @BindView(R.id.view_pager)
+    ViewPager viewPager;
     /**
      * 消息碎片
      */
@@ -103,7 +101,10 @@ public class MainActivity extends BaseActivity
      * 患者碎片
      */
     private PatientFragment patientFragment;
-    private MyConnectionListener connectionListener;
+    /**
+     * 环信
+     */
+    private EaseConnectionListener connectionListener;
     /**
      * 消息监听
      */
@@ -122,10 +123,6 @@ public class MainActivity extends BaseActivity
     private UpdateDialog updateDialog;
     private NotificationManager mNotificationManager;
     private Bitmap largeIcon = null;
-    /**
-     * fragment
-     */
-    private List<Fragment> fragmentList = new ArrayList<>();
     private int pendingCount = 1;
     /**
      * 用户协议
@@ -182,7 +179,7 @@ public class MainActivity extends BaseActivity
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         iNotifyChangeListenerServer = ApiManager.getInstance().getServer();
-        initTab();
+        initFragment();
         //环信登录
         loginEaseChat();
         setJPushAlias(loginBean.getDoctorCode());
@@ -198,10 +195,18 @@ public class MainActivity extends BaseActivity
         actMainTab1.setOnClickListener(this);
         actMainTab2.setOnClickListener(this);
         actMainTab3.setOnClickListener(this);
+        viewPager.setOffscreenPageLimit(2);
+        viewPager.addOnPageChangeListener(new AbstractOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                selectTab(position);
+            }
+        });
         //注册用户协议更新监听
         iNotifyChangeListenerServer.registerProtocolChangeListener(protocolUpdate, RegisterType.REGISTER);
         //注册一个监听连接状态的listener
-        connectionListener = new MyConnectionListener();
+        connectionListener = new EaseConnectionListener();
         EMClient.getInstance().addConnectionListener(connectionListener);
         msgListener = new AbstractEMMessageListener() {
             @Override
@@ -240,15 +245,6 @@ public class MainActivity extends BaseActivity
         tagAliasBean.alias = alias;
         tagAliasBean.isAliasAction = true;
         TagAliasOperatorHelper.getInstance().handleAction(getApplicationContext(), BASE_ONE, tagAliasBean);
-    }
-
-    /**
-     * 初始化tabs
-     */
-    private void initTab() {
-        fragmentManager = getSupportFragmentManager();
-        transaction = fragmentManager.beginTransaction();
-        tabWorkerView();
     }
 
     /**
@@ -302,27 +298,6 @@ public class MainActivity extends BaseActivity
         }
         else {
             mNotificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-        }
-    }
-
-    /**
-     * 未读消息
-     */
-    public void updateUnReadCount() {
-        int systemMessage = sharePreferenceUtil.getInt(CommonData.KEY_SYSTEM_MESSAGE_UNREAD_STATUS);
-        int easeMessage = sharePreferenceUtil.getInt(CommonData.KEY_EASE_MESSAGE_UNREAD_STATUS);
-        if (systemMessage > 0 || easeMessage > 0) {
-            ivMessageDot.setVisibility(View.VISIBLE);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                //                sendSubscribeMsg(msgUnReadCount);
-            }
-            else {
-                setShortcutBadge(systemMessage + easeMessage);
-            }
-        }
-        else {
-            ivMessageDot.setVisibility(View.INVISIBLE);
-            removeShortcutBadge();
         }
     }
 
@@ -408,21 +383,23 @@ public class MainActivity extends BaseActivity
         super.onClick(v);
         switch (v.getId()) {
             case R.id.act_main_tab1:
-                tabMessageView();
+                selectTab(BASE_ZERO);
                 break;
             case R.id.act_main_tab2:
-                tabWorkerView();
+                selectTab(BASE_ONE);
                 break;
             case R.id.act_main_tab3:
-                tabPatientView();
+                selectTab(BASE_TWO);
                 break;
             default:
-                tabMessageView();
                 break;
         }
     }
 
-    public class MyConnectionListener implements EMConnectionListener {
+    /**
+     * 环信账号连接监听
+     */
+    public class EaseConnectionListener implements EMConnectionListener {
         @Override
         public void onConnected() {
         }
@@ -440,62 +417,24 @@ public class MainActivity extends BaseActivity
         }
     }
 
-    private void tabMessageView() {
-        transaction = fragmentManager.beginTransaction();
-        hideAll();
-        if (messageFragment == null) {
-            messageFragment = new MessageFragment();
-            messageFragment.setOnMessageUpdateListener(this);
-            transaction.add(R.id.act_main_tab_frameLayout, messageFragment);
-            fragmentList.add(messageFragment);
-        }
-        else {
-            transaction.show(messageFragment);
-            messageFragment.onResume();
-        }
-        transaction.commitAllowingStateLoss();
-        selectTab(0);
-    }
-
-    private void tabWorkerView() {
-        transaction = fragmentManager.beginTransaction();
-        hideAll();
-        if (workerFragment == null) {
-            workerFragment = new WorkerFragment();
-            transaction.add(R.id.act_main_tab_frameLayout, workerFragment);
-            fragmentList.add(workerFragment);
-        }
-        else {
-            transaction.show(workerFragment);
-            workerFragment.onResume();
-        }
-        transaction.commitAllowingStateLoss();
-        selectTab(1);
-    }
-
-    private void tabPatientView() {
-        transaction = fragmentManager.beginTransaction();
-        hideAll();
-        if (patientFragment == null) {
-            patientFragment = new PatientFragment();
-            transaction.add(R.id.act_main_tab_frameLayout, patientFragment);
-            fragmentList.add(patientFragment);
-        }
-        else {
-            transaction.show(patientFragment);
-            patientFragment.onResume();
-        }
-        transaction.commitAllowingStateLoss();
-        selectTab(2);
-    }
-
     /**
-     * 隐藏所有碎片
+     * 碎片初始化
      */
-    private void hideAll() {
-        for (Fragment fragment : fragmentList) {
-            getSupportFragmentManager().beginTransaction().hide(fragment).commit();
-        }
+    private void initFragment() {
+        //聊天消息
+        messageFragment = new MessageFragment();
+        messageFragment.setOnMessageUpdateListener(this);
+        //工作室
+        workerFragment = new WorkerFragment();
+        //患者列表
+        patientFragment = new PatientFragment();
+        List<Fragment> fragmentList = new ArrayList<>();
+        fragmentList.add(messageFragment);
+        fragmentList.add(workerFragment);
+        fragmentList.add(patientFragment);
+        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), fragmentList);
+        viewPager.setAdapter(viewPagerAdapter);
+        selectTab(BASE_ONE);
     }
 
     /**
@@ -503,7 +442,8 @@ public class MainActivity extends BaseActivity
      */
     private void selectTab(int index) {
         switch (index) {
-            case 0:
+            case BASE_ZERO:
+                viewPager.setCurrentItem(index);
                 tvMessage.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
                 tvWorker.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
                 tvPatient.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
@@ -511,15 +451,8 @@ public class MainActivity extends BaseActivity
                 actMainTab2.setSelected(false);
                 actMainTab3.setSelected(false);
                 break;
-            case 1:
-                tvMessage.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
-                tvWorker.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-                tvPatient.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
-                actMainTab1.setSelected(false);
-                actMainTab2.setSelected(true);
-                actMainTab3.setSelected(false);
-                break;
-            case 2:
+            case BASE_TWO:
+                viewPager.setCurrentItem(index);
                 tvMessage.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
                 tvWorker.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
                 tvPatient.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
@@ -527,12 +460,14 @@ public class MainActivity extends BaseActivity
                 actMainTab2.setSelected(false);
                 actMainTab3.setSelected(true);
                 break;
+            case BASE_ONE:
             default:
-                tvMessage.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-                tvWorker.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+                viewPager.setCurrentItem(1);
+                tvMessage.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+                tvWorker.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
                 tvPatient.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
-                actMainTab1.setSelected(true);
-                actMainTab2.setSelected(false);
+                actMainTab1.setSelected(false);
+                actMainTab2.setSelected(true);
                 actMainTab3.setSelected(false);
                 break;
         }

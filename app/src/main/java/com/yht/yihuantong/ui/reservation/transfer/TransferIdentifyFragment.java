@@ -182,7 +182,6 @@ public class TransferIdentifyFragment extends BaseFragment implements View.OnFoc
         reverseTransferBean.setPatientMobile(patientDetailBean.getMobile());
         reverseTransferBean.setPatientAge(patientDetailBean.getAge());
         reverseTransferBean.setSex(patientDetailBean.getSex());
-        //        reverseTransferBean.setConfirmPhoto(patientDetailBean.getWxPhoto());
         reverseTransferBean.setPastHistory(patientDetailBean.getPast());
         reverseTransferBean.setFamilyHistory(patientDetailBean.getFamily());
         reverseTransferBean.setAllergyHistory(patientDetailBean.getAllergy());

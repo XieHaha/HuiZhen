@@ -15,6 +15,7 @@ public class PatientBean extends DataSupport implements Serializable {
     private String name;
     private String mobile;
     private String wxPhoto;
+    private String photo;
     /**
      * 排序
      */
@@ -50,6 +51,14 @@ public class PatientBean extends DataSupport implements Serializable {
 
     public void setWxPhoto(String wxPhoto) {
         this.wxPhoto = wxPhoto;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 
     public String getIndexTag() {

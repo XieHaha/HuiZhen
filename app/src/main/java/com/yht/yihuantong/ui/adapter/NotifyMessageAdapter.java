@@ -18,6 +18,11 @@ import java.util.List;
  * @des 消息通知
  */
 public class NotifyMessageAdapter extends BaseQuickAdapter<NotifyMessageBean, BaseViewHolder> {
+    /**
+     * 全部已读状态（本地）
+     */
+    private boolean updateAll = false;
+
     public NotifyMessageAdapter(int layoutResId, @Nullable List<NotifyMessageBean> data) {
         super(layoutResId, data);
     }
@@ -29,11 +34,15 @@ public class NotifyMessageAdapter extends BaseQuickAdapter<NotifyMessageBean, Ba
               .setText(R.id.tv_time_bar, TimeUtil.getTimeString(
                       BaseUtils.date2TimeStamp(item.getCreateAt(), BaseUtils.YYYY_MM_DD_HH_MM_SS)))
               .addOnClickListener(R.id.layout_detail);
-        if (item.getState() == BaseData.BASE_ZERO) {
+        if (item.getState() == BaseData.BASE_ZERO && !updateAll) {
             helper.setVisible(R.id.iv_new_message, true);
         }
         else {
             helper.setVisible(R.id.iv_new_message, false);
         }
+    }
+
+    public void setUpdateAll(boolean updateAll) {
+        this.updateAll = updateAll;
     }
 }

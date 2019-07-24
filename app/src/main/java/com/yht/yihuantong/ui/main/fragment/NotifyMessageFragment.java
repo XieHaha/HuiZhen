@@ -67,6 +67,7 @@ public class NotifyMessageFragment extends BaseFragment
      * 消息红点
      */
     private IChange<String> messageUpdate = data -> {
+        page = 1;
         //获取所有消息
         getAppMessageList();
     };
@@ -103,7 +104,7 @@ public class NotifyMessageFragment extends BaseFragment
     @Override
     public void initListener() {
         super.initListener();
-        //注册患者状态监听
+        //注册消息状态监听
         iNotifyChangeListenerServer.registerMessageStatusChangeListener(messageUpdate, RegisterType.REGISTER);
         iNotifyChangeListenerServer.registerSingleMessageStatusChangeListener(singleMessage, RegisterType.REGISTER);
     }
@@ -138,6 +139,14 @@ public class NotifyMessageFragment extends BaseFragment
         notifyMessageAdapter.setOnLoadMoreListener(this, recyclerView);
         notifyMessageAdapter.setOnItemChildClickListener(this);
         recyclerView.setAdapter(notifyMessageAdapter);
+    }
+
+    /**
+     * 全部已读  修改本地数据
+     */
+    public void updateAll() {
+        notifyMessageAdapter.setUpdateAll(true);
+        notifyMessageAdapter.notifyDataSetChanged();
     }
 
     @Override

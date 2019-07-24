@@ -27,7 +27,7 @@ public class PatientAdapter extends BaseQuickAdapter<PatientBean, BaseViewHolder
     protected void convert(BaseViewHolder helper, PatientBean item) {
         helper.setText(R.id.tv_patient_name, item.getName()).addOnClickListener(R.id.iv_patient_call);
         Glide.with(mContext)
-             .load(item.getWxPhoto())
+             .load(item.getPhoto())
              .apply(GlideHelper.getOptions(BaseUtils.dp2px(mContext, 4)))
              .into((ImageView)helper.getView(R.id.iv_patient_img));
     }

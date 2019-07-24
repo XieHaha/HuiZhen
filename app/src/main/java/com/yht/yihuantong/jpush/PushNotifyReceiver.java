@@ -3,15 +3,17 @@ package com.yht.yihuantong.jpush;
 import android.content.Context;
 import android.content.Intent;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.Gson;
 import com.yht.frame.api.notify.NotifyChangeListenerManager;
 import com.yht.frame.data.CommonData;
+import com.yht.frame.data.bean.NotifyKeyBean;
 import com.yht.frame.data.type.DocAuthStatus;
 import com.yht.frame.data.type.MessageType;
 import com.yht.frame.utils.HuiZhenLog;
+import com.yht.yihuantong.LifecycleHandler;
 import com.yht.yihuantong.ZycApplication;
 import com.yht.yihuantong.ui.auth.AuthDoctorActivity;
+import com.yht.yihuantong.ui.check.ServiceDetailActivity;
 import com.yht.yihuantong.ui.main.MainActivity;
 import com.yht.yihuantong.ui.transfer.TransferInitiateDetailActivity;
 import com.yht.yihuantong.ui.transfer.TransferReceiveDetailActivity;
@@ -24,38 +26,23 @@ import cn.jpush.android.service.JPushMessageReceiver;
  * 通知消息
  */
 public class PushNotifyReceiver extends JPushMessageReceiver implements MessageType {
-    private static final String TAG = "ZYC";
+    private static final String TAG = "ZYC->NOTIFY";
 
     @Override
     public void onNotifyMessageArrived(Context context, NotificationMessage message) {
-        JsonObject jsonObject = new JsonParser().parse(message.notificationExtras).getAsJsonObject();
-        String type = jsonObject.get("msgType").getAsString();
-        String msgId;
-        if (MESSAGE_DOCTOR_AUTH_FAILED.equals(type) || MESSAGE_DOCTOR_AUTH_SUCCESS.equals(type)) {
-            msgId = jsonObject.get("phone").getAsString();
-        }
-        else {
-            msgId = jsonObject.get("orderNo").getAsString();
-        }
-        HuiZhenLog.i(TAG, "msgType:" + type + "  msgId:" + msgId);
-        notifyStatusChange(type, msgId);
+        NotifyKeyBean notifyKeyBean = new Gson().fromJson(message.notificationExtras, NotifyKeyBean.class);
+        String type = notifyKeyBean.getMsgType();
+        HuiZhenLog.i(TAG, notifyKeyBean.toString());
+        notifyStatusChange(type);
     }
 
     @Override
     public void onNotifyMessageOpened(Context context, NotificationMessage message) {
-        JsonObject jsonObject = new JsonParser().parse(message.notificationExtras).getAsJsonObject();
-        String type = jsonObject.get("msgType").getAsString();
-        String orderNo, msgId = "";
-        if (MESSAGE_DOCTOR_AUTH_FAILED.equals(type) || MESSAGE_DOCTOR_AUTH_SUCCESS.equals(type)) {
-            orderNo = jsonObject.get("phone").getAsString();
-        }
-        else {
-            orderNo = jsonObject.get("orderNo").getAsString();
-            msgId = jsonObject.get("msgId").getAsString();
-        }
-        HuiZhenLog.i(TAG, "msgType:" + type + "  orderNo:" + orderNo + "  msgId:" + msgId);
-        NotifyChangeListenerManager.getInstance().notifySingleMessageStatusChange(msgId);
-        jumpPageByType(context, type, orderNo);
+        NotifyKeyBean notifyKeyBean = new Gson().fromJson(message.notificationExtras, NotifyKeyBean.class);
+        HuiZhenLog.i(TAG, notifyKeyBean.toString());
+        //点击通知栏刷新单条消息已读状态
+        NotifyChangeListenerManager.getInstance().notifySingleMessageStatusChange(notifyKeyBean.getMsgId());
+        jumpPageByType(context, notifyKeyBean.getMsgType(), notifyKeyBean.getOrderNo());
     }
 
     /**
@@ -63,7 +50,7 @@ public class PushNotifyReceiver extends JPushMessageReceiver implements MessageT
      *
      * @param type
      */
-    private void notifyStatusChange(String type, String msgId) {
+    private void notifyStatusChange(String type) {
         switch (type) {
             case MESSAGE_DOCTOR_AUTH_SUCCESS:
                 NotifyChangeListenerManager.getInstance().notifyDoctorAuthStatus(DocAuthStatus.AUTH_SUCCESS);
@@ -72,6 +59,8 @@ public class PushNotifyReceiver extends JPushMessageReceiver implements MessageT
                 NotifyChangeListenerManager.getInstance().notifyDoctorAuthStatus(DocAuthStatus.AUTH_FAILD);
                 break;
             default:
+                //系统消息列表
+                NotifyChangeListenerManager.getInstance().notifyMessageStatusChange("");
                 break;
         }
     }
@@ -97,10 +86,15 @@ public class PushNotifyReceiver extends JPushMessageReceiver implements MessageT
             case MESSAGE_SERVICE_REPORT:
                 mainIntent = new Intent(context, MainActivity.class);
                 mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                mainIntent.putExtra(CommonData.KEY_PUBLIC, 0);
-                baseIntent = new Intent(context, AuthDoctorActivity.class);
-                intents = new Intent[] { mainIntent, baseIntent };
-                context.startActivities(intents);
+                baseIntent = new Intent(context, ServiceDetailActivity.class);
+                baseIntent.putExtra(CommonData.KEY_ORDER_ID, msgId);
+                if (!LifecycleHandler.isApplicationInForeground()) {
+                    intents = new Intent[] { mainIntent, baseIntent };
+                    context.startActivities(intents);
+                }
+                else {
+                    context.startActivity(baseIntent);
+                }
                 break;
             case MESSAGE_TRANSFER_UPDATE:
                 break;
@@ -111,21 +105,29 @@ public class PushNotifyReceiver extends JPushMessageReceiver implements MessageT
             case MESSAGE_TRANSFER_SYSTEM_CANCEL_T:
                 mainIntent = new Intent(context, MainActivity.class);
                 mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                mainIntent.putExtra(CommonData.KEY_PUBLIC, 0);
                 baseIntent = new Intent(context, TransferInitiateDetailActivity.class);
                 baseIntent.putExtra(CommonData.KEY_ORDER_ID, msgId);
-                intents = new Intent[] { mainIntent, baseIntent };
-                context.startActivities(intents);
+                if (!LifecycleHandler.isApplicationInForeground()) {
+                    intents = new Intent[] { mainIntent, baseIntent };
+                    context.startActivities(intents);
+                }
+                else {
+                    context.startActivity(baseIntent);
+                }
                 break;
             case MESSAGE_TRANSFER_CANCEL:
             case MESSAGE_TRANSFER_SYSTEM_CANCEL_R:
                 mainIntent = new Intent(context, MainActivity.class);
                 mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                mainIntent.putExtra(CommonData.KEY_PUBLIC, 0);
                 baseIntent = new Intent(context, TransferReceiveDetailActivity.class);
                 baseIntent.putExtra(CommonData.KEY_ORDER_ID, msgId);
-                intents = new Intent[] { mainIntent, baseIntent };
-                context.startActivities(intents);
+                if (!LifecycleHandler.isApplicationInForeground()) {
+                    intents = new Intent[] { mainIntent, baseIntent };
+                    context.startActivities(intents);
+                }
+                else {
+                    context.startActivity(baseIntent);
+                }
                 break;
             case MESSAGE_CURRENCY_ARRIVED:
             case MESSAGE_CURRENCY_DEDUCTION:

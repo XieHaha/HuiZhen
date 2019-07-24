@@ -28,7 +28,7 @@ public class TransferReceivedAdapter extends BaseQuickAdapter<TransferBean, Base
     @Override
     protected void convert(BaseViewHolder helper, TransferBean item) {
         Glide.with(mContext)
-             .load(FileUrlUtil.addTokenToUrl(item.getWxPhoto()))
+             .load(FileUrlUtil.addTokenToUrl(item.getPhoto()))
              .apply(GlideHelper.getOptions(BaseUtils.dp2px(mContext, 4)))
              .into((ImageView)helper.getView(R.id.iv_receiving));
         helper.setText(R.id.tv_reserve_visit_time, item.getAppointAt())

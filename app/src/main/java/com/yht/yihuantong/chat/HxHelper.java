@@ -68,7 +68,7 @@ public class HxHelper {
             if (list != null && list.size() > 0) {
                 PatientBean bean = list.get(0);
                 user.setNickname(bean.getName());
-                user.setAvatar(bean.getWxPhoto());
+                user.setAvatar(bean.getPhoto());
                 callback.onSuccess(user);
                 return user;
             }
@@ -81,7 +81,7 @@ public class HxHelper {
                                                                PatientBean patientBean = (PatientBean)response.getData();
                                                                if (patientBean != null) {
                                                                    user.setNickname(patientBean.getName());
-                                                                   user.setAvatar(patientBean.getWxPhoto());
+                                                                   user.setAvatar(patientBean.getPhoto());
                                                                }
                                                                patientBean.save();
                                                                callback.onSuccess(user);

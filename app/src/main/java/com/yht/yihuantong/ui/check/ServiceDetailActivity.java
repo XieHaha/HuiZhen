@@ -198,7 +198,7 @@ public class ServiceDetailActivity extends BaseActivity
         }
         initCheckType();
         Glide.with(this)
-             .load(FileUrlUtil.addTokenToUrl(checkDetailBean.getPatientWxPhoto()))
+             .load(FileUrlUtil.addTokenToUrl(checkDetailBean.getPatientPhoto()))
              .apply(GlideHelper.getOptions(BaseUtils.dp2px(this, 4)))
              .into(ivPatientImg);
         tvPatientName.setText(checkDetailBean.getPatientName());

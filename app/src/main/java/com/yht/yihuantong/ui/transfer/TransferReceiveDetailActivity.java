@@ -198,7 +198,7 @@ public class TransferReceiveDetailActivity extends BaseActivity
 
     private void initDetailData() {
         Glide.with(this)
-             .load(transferBean.getWxPhoto())
+             .load(transferBean.getPhoto())
              .apply(GlideHelper.getOptions(BaseUtils.dp2px(this, 4)))
              .into(ivPatientImg);
         tvDoctorPhone.setText(transferBean.getSourceDoctorMobile());

@@ -83,6 +83,10 @@ public abstract class BaseFragment extends Fragment
      */
     public static final int RC_CROP_IMG = RC_PICK_CAMERA + 1;
     public List<String> data;
+    /**
+     * 懒加载 刷新
+     */
+    public boolean isPrepared;
 
     @Override
     public final void onCreate(Bundle savedInstanceState) {
@@ -111,6 +115,7 @@ public abstract class BaseFragment extends Fragment
                 add(getString(R.string.txt_photo));
             }
         };
+        isPrepared = true;
         init(view, savedInstanceState);
         return view;
     }

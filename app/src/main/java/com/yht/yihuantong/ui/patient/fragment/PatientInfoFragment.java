@@ -171,7 +171,7 @@ public class PatientInfoFragment extends BaseFragment
         familyMedical.setText(patientDetailBean.getFamily());
         tvAllergies.setText(patientDetailBean.getAllergy());
         Glide.with(this)
-             .load(patientDetailBean.getWxPhoto())
+             .load(patientDetailBean.getPhoto())
              .apply(GlideHelper.getOptions(BaseUtils.dp2px(getContext(), 4)))
              .into(ivHeadImg);
     }

@@ -157,7 +157,7 @@ public class TransferInitiateDetailActivity extends BaseActivity
             return;
         }
         Glide.with(this)
-             .load(FileUrlUtil.addTokenToUrl(transferBean.getWxPhoto()))
+             .load(FileUrlUtil.addTokenToUrl(transferBean.getPhoto()))
              .apply(GlideHelper.getOptions(BaseUtils.dp2px(this, 4)))
              .into(ivPatientImg);
         tvPatientName.setText(transferBean.getPatientName());
