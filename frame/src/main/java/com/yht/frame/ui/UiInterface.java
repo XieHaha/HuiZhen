@@ -35,6 +35,11 @@ public interface UiInterface {
     void initListener();
 
     /**
+     * 数据请求
+     */
+    void fillNetWorkData();
+
+    /**
      * setContentView调用前调用
      */
     void beforeCreateView(@NonNull Bundle savedInstanceState);

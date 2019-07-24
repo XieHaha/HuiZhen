@@ -169,6 +169,7 @@ public abstract class BaseFragment extends Fragment
         initView(savedInstanceState);
         initData(savedInstanceState);
         initListener();
+        view.post(() -> fillNetWorkData());
     }
 
     @Override
@@ -300,6 +301,10 @@ public abstract class BaseFragment extends Fragment
 
     @Override
     public void initListener() {
+    }
+
+    @Override
+    public void fillNetWorkData() {
     }
 
     @Override

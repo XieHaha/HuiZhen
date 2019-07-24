@@ -116,7 +116,7 @@ public class SelectReceivingDoctorActivity extends BaseActivity
     /**
      * 查询医生参数
      */
-    private Map<String, Object> params;
+    private Map<String, Object> params = new HashMap<>();
     /**
      * 页码
      */
@@ -159,13 +159,14 @@ public class SelectReceivingDoctorActivity extends BaseActivity
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (!TextUtils.isEmpty(s)) {
+                    page = 1;
+                    doctors.clear();
                     searchDoctor(s.toString());
                     selectEnd();
                 }
                 else {
-                    doctorAdapter.setNewData(new ArrayList<>());
+                    getDoctorListByReverse(new HashMap<>(16));
                     tvSelect.setVisibility(View.VISIBLE);
-                    //                    layoutNoneDoctor.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -280,12 +281,14 @@ public class SelectReceivingDoctorActivity extends BaseActivity
                 page = 1;
                 curType = 0;
                 tvSelect.setText(R.string.txt_select_hospital_depart);
+                tvHospitalTitle.setText(R.string.txt_select_hint);
+                tvHospitalTitle.setSelected(false);
                 data = new ArrayList<>();
                 for (HospitalBean bean : hospitals) {
                     data.add(bean.getHospitalName());
                 }
                 reserveTransferSelectDoctorAdapter.setNewData(data);
-                doctorAdapter.setNewData(new ArrayList<>());
+                getDoctorListByReverse(new HashMap<>(16));
                 initHospital();
                 break;
             default:
@@ -326,6 +329,8 @@ public class SelectReceivingDoctorActivity extends BaseActivity
                         tvSelect.setText(curHospital.getHospitalName() + "-全部科室");
                         params = new HashMap<>(16);
                         params.put("hospitalCode", curHospital.getHospitalCode());
+                        page = 1;
+                        doctors.clear();
                         getDoctorListByReverse(params);
                     }
                     break;
@@ -349,6 +354,8 @@ public class SelectReceivingDoctorActivity extends BaseActivity
                                 curHospital.getHospitalName() + "-" + curHospitalDepartBean.getDepartmentName() +
                                 "-全部子科室");
                     }
+                    page = 1;
+                    doctors.clear();
                     getDoctorListByReverse(params);
                     break;
                 default:

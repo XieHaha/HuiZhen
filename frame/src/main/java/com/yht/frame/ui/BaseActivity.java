@@ -122,6 +122,7 @@ public abstract class BaseActivity extends RxAppCompatActivity
         initView(savedInstanceState);
         initData(savedInstanceState);
         initListener();
+        runOnUiThread(() -> fillNetWorkData());
     }
 
     private void initBaseViews() {
@@ -373,6 +374,10 @@ public abstract class BaseActivity extends RxAppCompatActivity
 
     @Override
     public void initListener() {
+    }
+
+    @Override
+    public void fillNetWorkData() {
     }
 
     @Override

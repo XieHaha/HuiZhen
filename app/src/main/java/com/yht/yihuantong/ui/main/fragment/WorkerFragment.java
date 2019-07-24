@@ -94,16 +94,8 @@ public class WorkerFragment extends BaseFragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (getUserVisibleHint() && isPrepared) {
-            onResume();
+            fillNetWorkData();
         }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        getBanner();
-        getStudioOrderStatistics();
-        getValidateHospitalList();
     }
 
     @Override
@@ -131,11 +123,12 @@ public class WorkerFragment extends BaseFragment {
              .into(ivPersonalImage);
     }
 
-    /**
-     * 获取所有订单数量
-     */
-    private void getStudioOrderStatistics() {
-        RequestUtils.getStudioOrderStatistics(getContext(), loginBean.getToken(), this);
+    @Override
+    public void fillNetWorkData() {
+        super.fillNetWorkData();
+        getBanner();
+        getStudioOrderStatistics();
+        getValidateHospitalList();
     }
 
     /**
@@ -143,6 +136,13 @@ public class WorkerFragment extends BaseFragment {
      */
     private void getBanner() {
         RequestUtils.getBanner(getContext(), loginBean.getToken(), this);
+    }
+
+    /**
+     * 获取所有订单数量
+     */
+    private void getStudioOrderStatistics() {
+        RequestUtils.getStudioOrderStatistics(getContext(), loginBean.getToken(), this);
     }
 
     /**

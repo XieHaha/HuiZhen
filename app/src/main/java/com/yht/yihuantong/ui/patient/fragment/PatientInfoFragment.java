@@ -91,8 +91,8 @@ public class PatientInfoFragment extends BaseFragment
     }
 
     @Override
-    public void initData(@NonNull Bundle savedInstanceState) {
-        super.initData(savedInstanceState);
+    public void fillNetWorkData() {
+        super.fillNetWorkData();
         getPatientDetail();
         getPatientOrderList();
         getPatientExistTransfer();

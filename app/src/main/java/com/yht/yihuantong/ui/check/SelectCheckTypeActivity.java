@@ -117,7 +117,7 @@ public class SelectCheckTypeActivity extends BaseActivity
             }
             selectCheckTypeBeans.addAll(list);
             selectCheckTypeAdapter.setNewData(selectCheckTypeBeans);
-            if (list.size() == BaseData.BASE_PAGE_DATA_NUM) {
+            if (list.size() >= 20) {
                 selectCheckTypeAdapter.loadMoreComplete();
             }
             else {

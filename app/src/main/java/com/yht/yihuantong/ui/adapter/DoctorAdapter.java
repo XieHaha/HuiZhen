@@ -1,10 +1,14 @@
 package com.yht.yihuantong.ui.adapter;
 
 import android.support.annotation.Nullable;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.yht.frame.data.bean.DoctorInfoBean;
+import com.yht.frame.utils.BaseUtils;
+import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.yihuantong.R;
 
 import java.util.List;
@@ -26,5 +30,9 @@ public class DoctorAdapter extends BaseQuickAdapter<DoctorInfoBean, BaseViewHold
               .setText(R.id.tv_receiving_doctor_hospital_depart,
                        item.getHospitalName() + "  " + item.getDepartmentName())
               .addOnClickListener(R.id.iv_patient_call);
+        Glide.with(mContext)
+             .load(item.getPhoto())
+             .apply(GlideHelper.getOptions(BaseUtils.dp2px(mContext, 4)))
+             .into((ImageView)helper.getView(R.id.iv_receiving_doctor));
     }
 }

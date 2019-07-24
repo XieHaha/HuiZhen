@@ -130,11 +130,22 @@ public class TransferEditActivity extends BaseActivity {
      * 判断
      */
     private void initNextButton() {
-        if (!TextUtils.isEmpty(noticeText) && !TextUtils.isEmpty(receiveHospital) && !TextUtils.isEmpty(reserveTime)) {
-            tvSubmit.setSelected(true);
+        if (!isEditReceive) {
+            if (!TextUtils.isEmpty(receiveHospital) && !TextUtils.isEmpty(reserveTime)) {
+                tvSubmit.setSelected(true);
+            }
+            else {
+                tvSubmit.setSelected(false);
+            }
         }
         else {
-            tvSubmit.setSelected(false);
+            if (!TextUtils.isEmpty(noticeText) && !TextUtils.isEmpty(receiveHospital) &&
+                !TextUtils.isEmpty(reserveTime)) {
+                tvSubmit.setSelected(true);
+            }
+            else {
+                tvSubmit.setSelected(false);
+            }
         }
     }
 

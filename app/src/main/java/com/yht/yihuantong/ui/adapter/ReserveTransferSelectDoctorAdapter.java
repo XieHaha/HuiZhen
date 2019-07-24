@@ -25,12 +25,6 @@ public class ReserveTransferSelectDoctorAdapter extends BaseQuickAdapter<String,
     protected void convert(BaseViewHolder helper, String item) {
         TextView textView = helper.getView(R.id.tv_depart);
         textView.setText(item);
-//        if (curPosition == helper.getAdapterPosition()) {
-//            textView.setSelected(true);
-//        }
-//        else {
-//            textView.setSelected(false);
-//        }
     }
 
     public void setCurPosition(int curPosition) {
