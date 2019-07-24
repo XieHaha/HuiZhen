@@ -133,10 +133,10 @@ public class MimeUtils {
     public static String getMime(String ext) {
         String memi = "";
         if (imageMime.containsKey(ext.toLowerCase())) {
-            memi = imageMime.get(ext);
+            memi = imageMime.get(ext.toLowerCase());
         }
         else if (otherMime.containsKey(ext.toLowerCase())) {
-            memi = otherMime.get(ext);
+            memi = otherMime.get(ext.toLowerCase());
         }
         return memi;
     }

@@ -179,14 +179,6 @@ public class EaseConversationListFragment extends EaseBaseFragment implements Sw
         // get all conversations
         Map<String, EMConversation> conversations = EMClient.getInstance().chatManager().getAllConversations();
         List<Pair<Long, EMConversation>> sortList = new ArrayList<>();
-        if (conversations != null && conversations.size() > 0) {
-            tvHintTxt.setVisibility(View.GONE);
-            conversationListView.setVisibility(View.VISIBLE);
-        }
-        else {
-            conversationListView.setVisibility(View.GONE);
-            tvHintTxt.setVisibility(View.VISIBLE);
-        }
         //lastMsgTime will change if there is new message during sorting so use synchronized to make sure timestamp of last message won't change.
         synchronized (conversations) {
             for (EMConversation conversation : conversations.values()) {
@@ -194,6 +186,14 @@ public class EaseConversationListFragment extends EaseBaseFragment implements Sw
                     sortList.add(new Pair<>(conversation.getLastMessage().getMsgTime(), conversation));
                 }
             }
+        }
+        if (sortList != null && sortList.size() > 0) {
+            tvHintTxt.setVisibility(View.GONE);
+            conversationListView.setVisibility(View.VISIBLE);
+        }
+        else {
+            conversationListView.setVisibility(View.GONE);
+            tvHintTxt.setVisibility(View.VISIBLE);
         }
         try {
             // Internal is TimSort algorithm, has bug

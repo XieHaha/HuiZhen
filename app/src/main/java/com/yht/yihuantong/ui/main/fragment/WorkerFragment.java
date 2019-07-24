@@ -163,6 +163,7 @@ public class WorkerFragment extends BaseFragment {
             textView.setText(bannerBeans.get(i).getBannerRemark());
             viewFlipper.addView(view);
         }
+        viewFlipper.startFlipping();
     }
 
     /**
@@ -306,5 +307,11 @@ public class WorkerFragment extends BaseFragment {
                 openScan();
             }
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        viewFlipper.stopFlipping();
     }
 }

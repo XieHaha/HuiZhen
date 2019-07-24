@@ -263,10 +263,12 @@ public class MessageFragment extends BaseFragment
      */
     @Override
     public void onListItemClicked(EMConversation conversation) {
-        Intent intent = new Intent(getContext(), PatientPersonalActivity.class);
-        intent.putExtra(CommonData.KEY_PATIENT_CODE, conversation.conversationId().toUpperCase());
-        intent.putExtra(CommonData.KEY_PATIENT_CHAT, true);
-        startActivity(intent);
+        if (conversation != null) {
+            Intent intent = new Intent(getContext(), PatientPersonalActivity.class);
+            intent.putExtra(CommonData.KEY_PATIENT_CODE, conversation.conversationId().toUpperCase());
+            intent.putExtra(CommonData.KEY_PATIENT_CHAT, true);
+            startActivity(intent);
+        }
     }
 
     /**
@@ -277,6 +279,7 @@ public class MessageFragment extends BaseFragment
      */
     @Override
     public void onListItemLongClick(View view, EMConversation conversation) {
+        if (conversation == null) { return; }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             vibrator.vibrate(VibrationEffect.createOneShot(30, VibrationEffect.DEFAULT_AMPLITUDE));
         }
