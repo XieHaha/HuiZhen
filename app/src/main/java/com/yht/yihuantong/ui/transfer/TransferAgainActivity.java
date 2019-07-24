@@ -87,6 +87,7 @@ public class TransferAgainActivity extends BaseActivity {
         if (getIntent() != null) {
             orderNo = getIntent().getStringExtra(CommonData.KEY_ORDER_ID);
         }
+        tvNoticeNum.setText(String.format(getString(R.string.txt_calc_num), 0));
     }
 
     @Override

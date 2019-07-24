@@ -97,8 +97,6 @@ public class PushNotifyReceiver extends JPushMessageReceiver implements MessageT
                 }
                 break;
             case MESSAGE_TRANSFER_UPDATE:
-                break;
-            case MESSAGE_TRANSFER_APPLY:
             case MESSAGE_TRANSFER_REJECT:
             case MESSAGE_TRANSFER_RECEIVED:
             case MESSAGE_TRANSFER_OTHER:
@@ -115,6 +113,7 @@ public class PushNotifyReceiver extends JPushMessageReceiver implements MessageT
                     context.startActivity(baseIntent);
                 }
                 break;
+            case MESSAGE_TRANSFER_APPLY:
             case MESSAGE_TRANSFER_CANCEL:
             case MESSAGE_TRANSFER_SYSTEM_CANCEL_R:
                 mainIntent = new Intent(context, MainActivity.class);

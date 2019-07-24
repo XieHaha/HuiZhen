@@ -161,7 +161,7 @@ public interface ApiUrlManager {
      * @param unionId id
      * @return 返回值
      */
-    @PUT("/client/msg/readByUid/{unionId}")
+    @PUT("client/msg/readByUid/{unionId}")
     Observable<BaseResponse<String>> updateAppUnReadMessageByNotify(@Header("token") String token,
             @Path("unionId") String unionId);
 

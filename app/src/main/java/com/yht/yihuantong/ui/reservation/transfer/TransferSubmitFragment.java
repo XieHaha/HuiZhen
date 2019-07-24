@@ -502,7 +502,7 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
                 }
                 reverseTransferBean.setReceiveDoctorCode(curReceiveDoctor.getDoctorCode());
                 reverseTransferBean.setReceiveDoctorName(curReceiveDoctor.getDoctorName());
-                reverseTransferBean.setReceiveDoctorPhoto(curReceiveDoctor.getDoctorPhoto());
+                reverseTransferBean.setReceiveDoctorPhoto(curReceiveDoctor.getPhoto());
                 reverseTransferBean.setReceiveDoctorJobTitle(curReceiveDoctor.getJobTitle());
                 reverseTransferBean.setReceiveDoctorHospital(curReceiveDoctor.getHospitalName());
                 reverseTransferBean.setReceiveDoctorDepart(curReceiveDoctor.getDepartmentName());
