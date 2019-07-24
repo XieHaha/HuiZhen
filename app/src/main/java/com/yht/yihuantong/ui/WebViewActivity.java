@@ -100,10 +100,10 @@ public class WebViewActivity extends BaseActivity implements LoadViewHelper.OnNe
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_disagree:
-                finish();
+                exit();
                 break;
             case R.id.tv_agree:
-                setResult(RESULT_OK);
+                sharePreferenceUtil.putBoolean(CommonData.KEY_IS_PROTOCOL_UPDATE_DATE, false);
                 finish();
                 break;
             default:

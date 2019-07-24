@@ -6,7 +6,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import com.yht.frame.api.notify.NotifyChangeListenerManager;
+import com.yht.frame.data.CommonData;
 import com.yht.frame.utils.HuiZhenLog;
+import com.yht.frame.utils.SharePreferenceUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,7 +32,10 @@ public class PushMessageReceiver extends BroadcastReceiver {
             Bundle bundle = intent.getExtras();
             HuiZhenLog.i(TAG, "onReceive - " + intent.getAction() + ", extras: " + printBundle(bundle));
             if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(intent.getAction())) {
-                JSONObject json = new JSONObject(bundle.getString(JPushInterface.EXTRA_MESSAGE));
+//                JSONObject json = new JSONObject(bundle.getString(JPushInterface.EXTRA_MESSAGE));
+                //通知协议更新
+                NotifyChangeListenerManager.getInstance().notifyProtocolChange("");
+                new SharePreferenceUtil(context).putBoolean(CommonData.KEY_IS_PROTOCOL_UPDATE_DATE, true);
             }
         }
         catch (Exception e) {

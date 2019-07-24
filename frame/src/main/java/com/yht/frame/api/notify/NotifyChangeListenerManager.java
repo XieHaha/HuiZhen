@@ -27,9 +27,9 @@ public class NotifyChangeListenerManager {
          */
         private List<IChange<String>> mPatientListChangeListeners = new CopyOnWriteArrayList<>();
         /**
-         * 医生添加状态
+         * 服务协议更新
          */
-        private List<IChange<String>> mDoctorStatusChangeListeners = new CopyOnWriteArrayList<>();
+        private List<IChange<String>> mProtocolChangeListeners = new CopyOnWriteArrayList<>();
         /**
          * 医生认证
          */
@@ -42,6 +42,10 @@ public class NotifyChangeListenerManager {
          * 消息
          */
         private List<IChange<String>> mRegisterMessageChangeListener = new CopyOnWriteArrayList<>();
+        /**
+         * 消息
+         */
+        private List<IChange<String>> mRegisterSingleMessageChangeListener = new CopyOnWriteArrayList<>();
         /**
          * 服务包订单
          */
@@ -62,16 +66,16 @@ public class NotifyChangeListenerManager {
         }
 
         @Override
-        public void registerDoctorStatusChangeListener(@NonNull IChange<String> listener,
+        public void registerProtocolChangeListener(@NonNull IChange<String> listener,
                 @NonNull RegisterType registerType) {
             if (listener == null) {
                 return;
             }
             if (RegisterType.REGISTER == registerType) {
-                mDoctorStatusChangeListeners.add(listener);
+                mProtocolChangeListeners.add(listener);
             }
             else {
-                mDoctorStatusChangeListeners.remove(listener);
+                mProtocolChangeListeners.remove(listener);
             }
         }
 
@@ -118,6 +122,20 @@ public class NotifyChangeListenerManager {
         }
 
         @Override
+        public void registerSingleMessageStatusChangeListener(@NonNull IChange<String> listener,
+                @NonNull RegisterType registerType) {
+            if (listener == null) {
+                return;
+            }
+            if (RegisterType.REGISTER == registerType) {
+                mRegisterSingleMessageChangeListener.add(listener);
+            }
+            else {
+                mRegisterSingleMessageChangeListener.remove(listener);
+            }
+        }
+
+        @Override
         public void registerOrderStatusChangeListener(@NonNull IChange<String> listener,
                 @NonNull RegisterType registerType) {
             if (listener == null) {
@@ -157,11 +175,11 @@ public class NotifyChangeListenerManager {
          *
          * @param data
          */
-        public void notifyDoctorStatusChange(final String data) {
-            synchronized (mDoctorStatusChangeListeners) {
-                for (int i = 0, size = mDoctorStatusChangeListeners.size(); i < size; i++) {
+        public void notifyProtocolChange(final String data) {
+            synchronized (mProtocolChangeListeners) {
+                for (int i = 0, size = mProtocolChangeListeners.size(); i < size; i++) {
                     try {
-                        final IChange<String> change = mDoctorStatusChangeListeners.get(i);
+                        final IChange<String> change = mProtocolChangeListeners.get(i);
                         if (null != change) {
                             change.onChange(data);
                         }
@@ -225,6 +243,27 @@ public class NotifyChangeListenerManager {
                 for (int i = 0, size = mRegisterMessageChangeListener.size(); i < size; i++) {
                     try {
                         final IChange<String> change = mRegisterMessageChangeListener.get(i);
+                        if (null != change) {
+                            change.onChange(data);
+                        }
+                    }
+                    catch (Exception e) {
+                        HuiZhenLog.w(TAG, "notifyMessageChange error", e);
+                    }
+                }
+            }
+        }
+
+        /**
+         * 消息
+         *
+         * @param data
+         */
+        public void notifySingleMessageStatusChange(final String data) {
+            synchronized (mRegisterSingleMessageChangeListener) {
+                for (int i = 0, size = mRegisterSingleMessageChangeListener.size(); i < size; i++) {
+                    try {
+                        final IChange<String> change = mRegisterSingleMessageChangeListener.get(i);
                         if (null != change) {
                             change.onChange(data);
                         }

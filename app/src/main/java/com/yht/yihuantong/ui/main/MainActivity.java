@@ -36,12 +36,14 @@ import com.yht.frame.api.ApiManager;
 import com.yht.frame.api.notify.IChange;
 import com.yht.frame.api.notify.RegisterType;
 import com.yht.frame.data.BaseData;
+import com.yht.frame.data.BaseNetConfig;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.bean.LoginBean;
 import com.yht.frame.data.bean.VersionBean;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.HuiZhenLog;
 import com.yht.frame.utils.ToastUtil;
+import com.yht.yihuantong.BuildConfig;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ZycApplication;
 import com.yht.yihuantong.chat.HxHelper;
@@ -50,6 +52,7 @@ import com.yht.yihuantong.chat.listener.AbstractEMMessageListener;
 import com.yht.yihuantong.chat.receive.EaseMsgClickBroadCastReceiver;
 import com.yht.yihuantong.jpush.TagAliasOperatorHelper;
 import com.yht.yihuantong.ui.HintLoginActivity;
+import com.yht.yihuantong.ui.WebViewActivity;
 import com.yht.yihuantong.ui.dialog.UpdateDialog;
 import com.yht.yihuantong.ui.main.fragment.MessageFragment;
 import com.yht.yihuantong.ui.main.fragment.PatientFragment;
@@ -68,7 +71,7 @@ import static com.yht.yihuantong.jpush.TagAliasOperatorHelper.ACTION_SET;
  * @author dundun
  */
 public class MainActivity extends BaseActivity
-        implements VersionPresenter.VersionViewListener, UpdateDialog.OnEnterClickListener {
+        implements VersionPresenter.VersionViewListener, UpdateDialog.OnEnterClickListener, OnMessageUpdateListener {
     @BindView(R.id.act_main_tab1)
     RelativeLayout actMainTab1;
     @BindView(R.id.act_main_tab3)
@@ -125,9 +128,9 @@ public class MainActivity extends BaseActivity
     private List<Fragment> fragmentList = new ArrayList<>();
     private int pendingCount = 1;
     /**
-     * 消息红点
+     * 用户协议
      */
-    private IChange<String> messageUpdate = data -> getUnreadMessageStatus();
+    private IChange<String> protocolUpdate = data -> showProtocol();
 
     @Override
     public void beforeCreateView(@NonNull Bundle savedInstanceState) {
@@ -154,6 +157,10 @@ public class MainActivity extends BaseActivity
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
         largeIcon = ((BitmapDrawable)getResources().getDrawable(R.mipmap.logo_icon)).getBitmap();
+        boolean protocol = sharePreferenceUtil.getBoolean(CommonData.KEY_IS_PROTOCOL_UPDATE_DATE);
+        if (protocol) {
+            showProtocol();
+        }
         //环信头像处理，
         HxHelper.getInstance().init(this);
         EaseUI.getInstance().setUserProfileProvider((username, callback) -> {
@@ -185,27 +192,14 @@ public class MainActivity extends BaseActivity
         mVersionPresenter.init();
     }
 
-    /**
-     * 极光alias推送设置
-     *
-     * @param alias
-     */
-    private void setJPushAlias(String alias) {
-        TagAliasOperatorHelper.TagAliasBean tagAliasBean = new TagAliasOperatorHelper.TagAliasBean();
-        tagAliasBean.action = ACTION_SET;
-        tagAliasBean.alias = alias;
-        tagAliasBean.isAliasAction = true;
-        TagAliasOperatorHelper.getInstance().handleAction(getApplicationContext(), BASE_ONE, tagAliasBean);
-    }
-
     @Override
     public void initListener() {
         super.initListener();
         actMainTab1.setOnClickListener(this);
         actMainTab2.setOnClickListener(this);
         actMainTab3.setOnClickListener(this);
-        //注册患者状态监听
-        iNotifyChangeListenerServer.registerMessageStatusChangeListener(messageUpdate, RegisterType.REGISTER);
+        //注册用户协议更新监听
+        iNotifyChangeListenerServer.registerProtocolChangeListener(protocolUpdate, RegisterType.REGISTER);
         //注册一个监听连接状态的listener
         connectionListener = new MyConnectionListener();
         EMClient.getInstance().addConnectionListener(connectionListener);
@@ -230,11 +224,22 @@ public class MainActivity extends BaseActivity
                 if (messageFragment != null) {
                     messageFragment.refresh();
                 }
-                //                //通知患者碎片刷新列表
-                //                NotifyChangeListenerManager.getInstance().notifyPatientStatusChange("");
             }
         };
         EMClient.getInstance().contactManager().setContactListener(contactListener);
+    }
+
+    /**
+     * 极光alias推送设置
+     *
+     * @param alias
+     */
+    private void setJPushAlias(String alias) {
+        TagAliasOperatorHelper.TagAliasBean tagAliasBean = new TagAliasOperatorHelper.TagAliasBean();
+        tagAliasBean.action = ACTION_SET;
+        tagAliasBean.alias = alias;
+        tagAliasBean.isAliasAction = true;
+        TagAliasOperatorHelper.getInstance().handleAction(getApplicationContext(), BASE_ONE, tagAliasBean);
     }
 
     /**
@@ -244,6 +249,16 @@ public class MainActivity extends BaseActivity
         fragmentManager = getSupportFragmentManager();
         transaction = fragmentManager.beginTransaction();
         tabWorkerView();
+    }
+
+    /**
+     * 微信登录前需要用户阅读登录协议
+     */
+    private void showProtocol() {
+        Intent intent = new Intent(this, WebViewActivity.class);
+        intent.putExtra(CommonData.KEY_PUBLIC, BuildConfig.BASE_BASIC_URL + BaseNetConfig.BASE_BASIC_USER_PROTOCOL_URL);
+        intent.putExtra(CommonData.KEY_IS_PROTOCOL, true);
+        startActivity(intent);
     }
 
     /**
@@ -376,7 +391,8 @@ public class MainActivity extends BaseActivity
     /**
      * 未读消息状态  小红点
      */
-    private void getUnreadMessageStatus() {
+    @Override
+    public void onMessageUpdate() {
         int systemMessage = sharePreferenceUtil.getInt(CommonData.KEY_SYSTEM_MESSAGE_UNREAD_STATUS);
         int easeMessage = sharePreferenceUtil.getInt(CommonData.KEY_EASE_MESSAGE_UNREAD_STATUS);
         if (systemMessage > 0 || easeMessage > 0) {
@@ -414,9 +430,7 @@ public class MainActivity extends BaseActivity
         @Override
         public void onDisconnected(final int error) {
             runOnUiThread(() -> {
-                if (error == EMError.USER_REMOVED) {
-                }
-                else if (error == EMError.USER_LOGIN_ANOTHER_DEVICE) {
+                if (error == EMError.USER_LOGIN_ANOTHER_DEVICE) {
                     Intent intent = new Intent(MainActivity.this, HintLoginActivity.class);
                     intent.putExtra(CommonData.KEY_PUBLIC_STRING, getString(R.string.txt_ease_login_expired));
                     startActivity(intent);
@@ -428,9 +442,10 @@ public class MainActivity extends BaseActivity
 
     private void tabMessageView() {
         transaction = fragmentManager.beginTransaction();
-        hideAll(transaction);
+        hideAll();
         if (messageFragment == null) {
             messageFragment = new MessageFragment();
+            messageFragment.setOnMessageUpdateListener(this);
             transaction.add(R.id.act_main_tab_frameLayout, messageFragment);
             fragmentList.add(messageFragment);
         }
@@ -444,7 +459,7 @@ public class MainActivity extends BaseActivity
 
     private void tabWorkerView() {
         transaction = fragmentManager.beginTransaction();
-        hideAll(transaction);
+        hideAll();
         if (workerFragment == null) {
             workerFragment = new WorkerFragment();
             transaction.add(R.id.act_main_tab_frameLayout, workerFragment);
@@ -460,7 +475,7 @@ public class MainActivity extends BaseActivity
 
     private void tabPatientView() {
         transaction = fragmentManager.beginTransaction();
-        hideAll(transaction);
+        hideAll();
         if (patientFragment == null) {
             patientFragment = new PatientFragment();
             transaction.add(R.id.act_main_tab_frameLayout, patientFragment);
@@ -477,7 +492,7 @@ public class MainActivity extends BaseActivity
     /**
      * 隐藏所有碎片
      */
-    private void hideAll(FragmentTransaction transaction) {
+    private void hideAll() {
         for (Fragment fragment : fragmentList) {
             getSupportFragmentManager().beginTransaction().hide(fragment).commit();
         }
@@ -598,7 +613,7 @@ public class MainActivity extends BaseActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        iNotifyChangeListenerServer.registerMessageStatusChangeListener(messageUpdate, RegisterType.UNREGISTER);
+        iNotifyChangeListenerServer.registerProtocolChangeListener(protocolUpdate, RegisterType.UNREGISTER);
         //移除监听
         EMClient.getInstance().removeConnectionListener(connectionListener);
         EMClient.getInstance().chatManager().removeMessageListener(msgListener);

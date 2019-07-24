@@ -29,6 +29,7 @@ import com.yht.yihuantong.ui.adapter.NotifyMessageAdapter;
 import com.yht.yihuantong.ui.check.ServiceDetailActivity;
 import com.yht.yihuantong.ui.currency.IncomeDetailActivity;
 import com.yht.yihuantong.ui.currency.WithdrawDetailActivity;
+import com.yht.yihuantong.ui.main.OnMessageUpdateListener;
 import com.yht.yihuantong.ui.transfer.TransferInitiateDetailActivity;
 import com.yht.yihuantong.ui.transfer.TransferReceiveDetailActivity;
 
@@ -66,8 +67,15 @@ public class NotifyMessageFragment extends BaseFragment
      * 消息红点
      */
     private IChange<String> messageUpdate = data -> {
-        //全部消息已读通知
+        //获取所有消息
         getAppMessageList();
+    };
+    /**
+     * 单条消息  通知栏点击
+     */
+    private IChange<String> singleMessage = data -> {
+        //点击通知栏  单条消息已读
+        updateAppUnReadMessageByNotify(data);
     };
 
     @Override
@@ -97,6 +105,7 @@ public class NotifyMessageFragment extends BaseFragment
         super.initListener();
         //注册患者状态监听
         iNotifyChangeListenerServer.registerMessageStatusChangeListener(messageUpdate, RegisterType.REGISTER);
+        iNotifyChangeListenerServer.registerSingleMessageStatusChangeListener(singleMessage, RegisterType.REGISTER);
     }
 
     /**
@@ -111,6 +120,13 @@ public class NotifyMessageFragment extends BaseFragment
      */
     private void updateAppUnReadMessageById(int id) {
         RequestUtils.updateAppUnReadMessageById(getContext(), loginBean.getToken(), id, this);
+    }
+
+    /**
+     * 单条消息已读 notify
+     */
+    private void updateAppUnReadMessageByNotify(String id) {
+        RequestUtils.updateAppUnReadMessageByNotify(getContext(), loginBean.getToken(), id, this);
     }
 
     /**
@@ -204,6 +220,12 @@ public class NotifyMessageFragment extends BaseFragment
                     onMessageUpdateListener.onMessageUpdate();
                 }
                 break;
+            case UPDATE_APP_UNREAD_MESSAGE_BY_NOTIFY:
+                getAppMessageList();
+                if (onMessageUpdateListener != null) {
+                    onMessageUpdateListener.onMessageUpdate();
+                }
+                break;
             default:
                 break;
         }
@@ -246,15 +268,12 @@ public class NotifyMessageFragment extends BaseFragment
     public void onDestroy() {
         super.onDestroy();
         iNotifyChangeListenerServer.registerMessageStatusChangeListener(messageUpdate, RegisterType.UNREGISTER);
+        iNotifyChangeListenerServer.registerSingleMessageStatusChangeListener(singleMessage, RegisterType.UNREGISTER);
     }
 
     private OnMessageUpdateListener onMessageUpdateListener;
 
     public void setOnMessageUpdateListener(OnMessageUpdateListener onMessageUpdateListener) {
         this.onMessageUpdateListener = onMessageUpdateListener;
-    }
-
-    public interface OnMessageUpdateListener {
-        void onMessageUpdate();
     }
 }

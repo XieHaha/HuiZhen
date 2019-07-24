@@ -45,15 +45,17 @@ public class PushNotifyReceiver extends JPushMessageReceiver implements MessageT
     public void onNotifyMessageOpened(Context context, NotificationMessage message) {
         JsonObject jsonObject = new JsonParser().parse(message.notificationExtras).getAsJsonObject();
         String type = jsonObject.get("msgType").getAsString();
-        String msgId;
+        String orderNo, msgId = "";
         if (MESSAGE_DOCTOR_AUTH_FAILED.equals(type) || MESSAGE_DOCTOR_AUTH_SUCCESS.equals(type)) {
-            msgId = jsonObject.get("phone").getAsString();
+            orderNo = jsonObject.get("phone").getAsString();
         }
         else {
-            msgId = jsonObject.get("orderNo").getAsString();
+            orderNo = jsonObject.get("orderNo").getAsString();
+            msgId = jsonObject.get("msgId").getAsString();
         }
-        HuiZhenLog.i(TAG, "msgType:" + type + "  msgId:" + msgId);
-        jumpPageByType(context, type, msgId);
+        HuiZhenLog.i(TAG, "msgType:" + type + "  orderNo:" + orderNo + "  msgId:" + msgId);
+        NotifyChangeListenerManager.getInstance().notifySingleMessageStatusChange(msgId);
+        jumpPageByType(context, type, orderNo);
     }
 
     /**

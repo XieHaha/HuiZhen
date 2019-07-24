@@ -42,6 +42,7 @@ import com.yht.yihuantong.chat.EaseConversationListFragment;
 import com.yht.yihuantong.chat.listener.AbstractEMContactListener;
 import com.yht.yihuantong.chat.listener.AbstractEMMessageListener;
 import com.yht.yihuantong.ui.adapter.ViewPagerAdapter;
+import com.yht.yihuantong.ui.main.OnMessageUpdateListener;
 import com.yht.yihuantong.ui.patient.PatientPersonalActivity;
 
 import java.util.ArrayList;
@@ -58,8 +59,7 @@ import butterknife.OnClick;
  */
 public class MessageFragment extends BaseFragment
         implements EaseConversationListFragment.EaseConversationListItemClickListener,
-                   EaseConversationListFragment.EaseConversationListItemLongClickListener,
-                   NotifyMessageFragment.OnMessageUpdateListener {
+                   EaseConversationListFragment.EaseConversationListItemLongClickListener, OnMessageUpdateListener {
     @BindView(R.id.status_bar_fix)
     View statusBarFix;
     @BindView(R.id.layout_title)
@@ -432,14 +432,18 @@ public class MessageFragment extends BaseFragment
                 }
                 //小红点处理
                 sharePreferenceUtil.putInt(CommonData.KEY_SYSTEM_MESSAGE_UNREAD_STATUS, messageTotalBean.getTotal());
-                NotifyChangeListenerManager.getInstance().notifyMessageStatusChange("");
+                if (onMessageUpdateListener != null) {
+                    onMessageUpdateListener.onMessageUpdate();
+                }
                 break;
             case UPDATE_APP_UNREAD_MESSAGE_ALL:
                 tvReadMessage.setSelected(false);
                 ivNotifyDot.setVisibility(View.INVISIBLE);
                 //小红点处理
                 sharePreferenceUtil.putInt(CommonData.KEY_SYSTEM_MESSAGE_UNREAD_STATUS, 0);
-                NotifyChangeListenerManager.getInstance().notifyMessageStatusChange("");
+                if (onMessageUpdateListener != null) {
+                    onMessageUpdateListener.onMessageUpdate();
+                }
                 break;
             default:
                 break;
@@ -453,5 +457,11 @@ public class MessageFragment extends BaseFragment
         //获取控件宽度
         int width = layoutTitle.getMeasuredWidth();
         return (width - viewBar.getWidth() * 2) / 4;
+    }
+
+    private OnMessageUpdateListener onMessageUpdateListener;
+
+    public void setOnMessageUpdateListener(OnMessageUpdateListener onMessageUpdateListener) {
+        this.onMessageUpdateListener = onMessageUpdateListener;
     }
 }

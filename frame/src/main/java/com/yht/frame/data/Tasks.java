@@ -46,6 +46,10 @@ WE_CHAT_LOGIN,
      */
     UPDATE_APP_UNREAD_MESSAGE_BY_ID,
     /**
+     * 单条消息已读 通知栏
+     */
+    UPDATE_APP_UNREAD_MESSAGE_BY_NOTIFY,
+    /**
      * 获取医院列表 (认证模块)
      */
     GET_HOSPITAL_LIST_BY_AUTH,

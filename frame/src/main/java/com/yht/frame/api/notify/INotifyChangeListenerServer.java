@@ -16,12 +16,12 @@ public interface INotifyChangeListenerServer {
     void registerPatientListChangeListener(@NonNull IChange<String> listener, @NonNull RegisterType registerType);
 
     /**
-     * 医生状态监听
+     * 服务协议更新
      *
      * @param listener     接收消息监听器
      * @param registerType 注册类型
      */
-    void registerDoctorStatusChangeListener(@NonNull IChange<String> listener, @NonNull RegisterType registerType);
+    void registerProtocolChangeListener(@NonNull IChange<String> listener, @NonNull RegisterType registerType);
 
     /**
      * 医生转诊申请监听
@@ -46,6 +46,15 @@ public interface INotifyChangeListenerServer {
      * @param registerType 注册类型
      */
     void registerMessageStatusChangeListener(@NonNull IChange<String> listener, @NonNull RegisterType registerType);
+
+    /**
+     * 消息红点
+     *
+     * @param listener     接收消息监听器
+     * @param registerType 注册类型
+     */
+    void registerSingleMessageStatusChangeListener(@NonNull IChange<String> listener,
+            @NonNull RegisterType registerType);
 
     /**
      * 服务包订单状态

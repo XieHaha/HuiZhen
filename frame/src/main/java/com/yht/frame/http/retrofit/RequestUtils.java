@@ -139,6 +139,15 @@ public class RequestUtils {
                                                                  listener));
     }
 
+    public static void updateAppUnReadMessageByNotify(Context context, String token, String id,
+            final ResponseListener<BaseResponse> listener) {
+        RetrofitManager.getApiUrlManager()
+                       .updateAppUnReadMessageByNotify(token, id)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.UPDATE_APP_UNREAD_MESSAGE_BY_NOTIFY,
+                                                                 listener));
+    }
+
     public static void getHospitalListByAuth(Context context, String token,
             final ResponseListener<BaseResponse> listener) {
         RetrofitManager.getApiUrlManager()
