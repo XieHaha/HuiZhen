@@ -15,9 +15,9 @@ import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.DecimalFormat;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -176,39 +176,6 @@ public class BaseUtils {
         return 0;
     }
 
-    public static String getAge(long time) {
-        try {
-            Date birthDay = new Date(time);
-            Calendar cal = Calendar.getInstance();
-            if (cal.before(birthDay)) {
-                throw new IllegalArgumentException("The birthDay is before Now.It's unbelievable!");
-            }
-            int yearNow = cal.get(Calendar.YEAR);
-            int monthNow = cal.get(Calendar.MONTH);
-            int dayOfMonthNow = cal.get(Calendar.DAY_OF_MONTH);
-            cal.setTime(birthDay);
-            int yearBirth = cal.get(Calendar.YEAR);
-            int monthBirth = cal.get(Calendar.MONTH);
-            int dayOfMonthBirth = cal.get(Calendar.DAY_OF_MONTH);
-            int age = yearNow - yearBirth;
-            if (monthNow <= monthBirth) {
-                if (monthNow == monthBirth) {
-                    if (dayOfMonthNow < dayOfMonthBirth) {
-                        age--;
-                    }
-                }
-                else {
-                    age--;
-                }
-            }
-            return String.valueOf(age);
-        }
-        catch (IllegalArgumentException e) {
-            HuiZhenLog.w(TAG, "IllegalArgumentException error", e);
-            return "0";
-        }
-    }
-
     /**
      * 判断是否是手机号码
      *
@@ -354,23 +321,14 @@ public class BaseUtils {
         }
         // 得到年份
         String year = idCard.substring(6).substring(0, 4);
-        // 得到月份
-        String yue = idCard.substring(10).substring(0, 2);
         // 得到当前的系统时间
         Date date = new Date();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy");
         // 当前年份
-        String fyear = format.format(date).substring(0, 4);
-        // 月份
-        String fyue = format.format(date).substring(5, 7);
-        int age = 0;
-        // 当前月份大于用户出身的月份表示已过生
-        if (Integer.parseInt(yue) <= Integer.parseInt(fyue)) {
-            age = Integer.parseInt(fyear) - Integer.parseInt(year) + 1;
-        }
-        // 当前用户还没过生
-        else {
-            age = Integer.parseInt(fyear) - Integer.parseInt(year);
+        String fyear = format.format(date);
+        int age = Integer.parseInt(fyear) - Integer.parseInt(year);
+        if (age < 0) {
+            age = 0;
         }
         return String.valueOf(age);
     }
@@ -427,5 +385,23 @@ public class BaseUtils {
             secStr = "" + sec;
         }
         return hourStr + ":" + minStr + ":" + secStr;
+    }
+
+    /**
+     * 保留两位小数
+     *
+     * @param price
+     * @return
+     */
+    public static String getPrice(int price) {
+        try {
+            //#.00 表示两位小数
+            DecimalFormat df = new DecimalFormat("#0.00");
+            return df.format(price / 100f);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
     }
 }

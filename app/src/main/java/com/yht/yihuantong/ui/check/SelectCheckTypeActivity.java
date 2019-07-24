@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -82,15 +81,8 @@ public class SelectCheckTypeActivity extends BaseActivity
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 super.onTextChanged(s, start, before, count);
-                if (!TextUtils.isEmpty(s)) {
-                    searchKey = s.toString();
-                    //搜索查询
-                    getCheckTypeList();
-                }
-                else {
-                    searchKey = "";
-                    getCheckTypeList();
-                }
+                searchKey = s.toString();
+                getCheckTypeList();
             }
         });
     }
@@ -104,6 +96,7 @@ public class SelectCheckTypeActivity extends BaseActivity
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+        hideSoftInputFromWindow(etSearchCheckType);
         curSelectCheckTypeBean = selectCheckTypeBeans.get(position);
         Intent intent = new Intent();
         intent.putExtra(CommonData.KEY_RESERVE_CHECK_TYPE_BEAN, curSelectCheckTypeBean);

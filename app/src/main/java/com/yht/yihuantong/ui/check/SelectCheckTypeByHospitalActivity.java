@@ -129,7 +129,8 @@ public class SelectCheckTypeByHospitalActivity extends BaseActivity
      * 获取医院下检查项 全部
      */
     private void getCheckTypeByHospitalList() {
-        RequestUtils.getCheckTypeByHospitalList(this, loginBean.getToken(), curHospitalCode, searchKey, selectCheckType, page, this);
+        RequestUtils.getCheckTypeByHospitalList(this, loginBean.getToken(), curHospitalCode, searchKey, selectCheckType,
+                                                page, this);
     }
 
     /**
@@ -148,6 +149,7 @@ public class SelectCheckTypeByHospitalActivity extends BaseActivity
     @OnClick(R.id.public_title_bar_more)
     public void onViewClicked() {
         if (publicTitleBarMore.isSelected()) {
+            hideSoftInputFromWindow(etSearchCheckType);
             Intent intent = new Intent();
             ArrayList<SelectCheckTypeBean> list = new ArrayList<>();
             for (Integer index : selectPosition) {

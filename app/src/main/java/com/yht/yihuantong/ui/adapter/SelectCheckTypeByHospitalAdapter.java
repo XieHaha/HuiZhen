@@ -6,6 +6,7 @@ import android.widget.ImageView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.yht.frame.data.bean.SelectCheckTypeBean;
+import com.yht.frame.utils.BaseUtils;
 import com.yht.yihuantong.R;
 
 import java.util.ArrayList;
@@ -38,6 +39,7 @@ public class SelectCheckTypeByHospitalAdapter extends BaseQuickAdapter<SelectChe
             imageView.setSelected(false);
         }
         helper.setText(R.id.rb_check_type, item.getProjectName());
-        helper.setText(R.id.tv_check_price, String.format(mContext.getString(R.string.txt_price), item.getPrice()));
+        helper.setText(R.id.tv_check_price,
+                       String.format(mContext.getString(R.string.txt_price), BaseUtils.getPrice(item.getPrice())));
     }
 }
