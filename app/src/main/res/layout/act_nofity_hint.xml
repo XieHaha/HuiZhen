@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_ffffff"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/color_373d4d"
+        android:textSize="@dimen/text_24"
+        android:textStyle="bold"
+        android:layout_marginStart="35dp"
+        android:layout_marginEnd="35dp"
+        android:text="@string/txt_open_notify_title"
+        android:layout_marginTop="80dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/color_373d4d"
+        android:layout_marginStart="35dp"
+        android:layout_marginEnd="35dp"
+        android:textSize="@dimen/text_16"
+        android:text="@string/txt_open_notify_hint"
+        android:layout_marginTop="10dp" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:src="@mipmap/pic_notice"
+        android:layout_marginTop="47dp" />
+
+    <TextView
+        android:id="@+id/tv_open_notify_next"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:layout_marginTop="41dp"
+        android:background="@drawable/corner28_stroke1_1491fc"
+        android:text="@string/txt_open_notify_next"
+        android:gravity="center"
+        android:textSize="@dimen/text_16"
+        android:layout_marginStart="35dp"
+        android:layout_marginEnd="35dp"
+        android:textColor="@color/color_1491fc" />
+
+    <TextView
+        android:id="@+id/tv_notify_ignore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_gravity="center_horizontal"
+        android:padding="15dp"
+        android:text="@string/txt_open_notify_ignore"
+        android:gravity="center"
+        android:textSize="@dimen/text_16"
+        android:textColor="@color/color_1491fc" />
+
+
+</LinearLayout>

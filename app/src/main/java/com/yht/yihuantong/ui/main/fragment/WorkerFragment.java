@@ -30,6 +30,7 @@ import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ZycApplication;
+import com.yht.yihuantong.ui.NotifyHintActivity;
 import com.yht.yihuantong.ui.WebViewActivity;
 import com.yht.yihuantong.ui.check.ServiceHistoryActivity;
 import com.yht.yihuantong.ui.personal.PersonalNewActivity;
@@ -39,6 +40,7 @@ import com.yht.yihuantong.ui.reservation.transfer.ReservationTransferActivity;
 import com.yht.yihuantong.ui.transfer.TransferInitiateListActivity;
 import com.yht.yihuantong.ui.transfer.TransferReceiveListActivity;
 import com.yht.yihuantong.utils.FileUrlUtil;
+import com.yht.yihuantong.utils.NotifySettingUtils;
 import com.yzq.zxinglibrary.android.CaptureActivity;
 import com.yzq.zxinglibrary.common.Constant;
 
@@ -115,6 +117,7 @@ public class WorkerFragment extends BaseFragment {
         statusBarFix.setLayoutParams(
                 new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getStateBarHeight(getActivity())));
         publicMainTitleScan.setVisibility(View.VISIBLE);
+        view.postOnAnimationDelayed(() -> initNotifyHint(), 2000);
     }
 
     @Override
@@ -156,6 +159,20 @@ public class WorkerFragment extends BaseFragment {
      */
     private void getValidateHospitalList() {
         RequestUtils.getValidateHospitalList(getContext(), loginBean.getToken(), this);
+    }
+
+    /**
+     * 是否需要提示通知权限   只显示一次
+     */
+    private void initNotifyHint() {
+        int type = sharePreferenceUtil.getAlwaysInteger(CommonData.KEY_NOTIFICATION_CONTROL);
+        //表示用户未操作过
+        if (type != BASE_TWO) {
+            if (!NotifySettingUtils.hasNotify(getActivity())) {
+                startActivity(new Intent(getContext(), NotifyHintActivity.class));
+                getActivity().overridePendingTransition(R.anim.actionsheet_dialog_in, R.anim.keep);
+            }
+        }
     }
 
     /**

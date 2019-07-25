@@ -86,6 +86,10 @@
     <string name="txt_report_name">%s报告</string>
     <string name="txt_ease_login_expired">您的账号在其他设备登录，如果不是本人操作，请修改密码！</string>
     <string name="txt_login_expired">登录已过期，请重新登录</string>
+    <string name="txt_open_notify_title">打开通知?</string>
+    <string name="txt_open_notify_ignore">跳过</string>
+    <string name="txt_open_notify_next">好的，打开通知</string>
+    <string name="txt_open_notify_hint">我们可以在有人向您发起转诊，或者有其他重要活动时通知您。</string>
 
 
     <!--主页-->

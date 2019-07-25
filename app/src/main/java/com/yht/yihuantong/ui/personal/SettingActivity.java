@@ -2,12 +2,8 @@ package com.yht.yihuantong.ui.personal;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
-import android.support.v4.app.NotificationManagerCompat;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -22,13 +18,11 @@ import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.dialog.UpdateDialog;
+import com.yht.yihuantong.utils.NotifySettingUtils;
 import com.yht.yihuantong.version.presenter.VersionPresenter;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-
-import static android.app.Notification.EXTRA_CHANNEL_ID;
-import static android.provider.Settings.EXTRA_APP_PACKAGE;
 
 /**
  * @author 顿顿
@@ -95,20 +89,12 @@ public class SettingActivity extends BaseActivity
      * 权限开关
      */
     private void initNotify() {
-        if (hasNotify()) {
+        if (NotifySettingUtils.hasNotify(this)) {
             swMessageControl.setChecked(true);
         }
         else {
             swMessageControl.setChecked(false);
         }
-    }
-
-    /**
-     * 检测通知权限
-     */
-    private boolean hasNotify() {
-        NotificationManagerCompat manager = NotificationManagerCompat.from(getApplicationContext());
-        return manager.areNotificationsEnabled();
     }
 
     @OnClick({ R.id.layout_notify, R.id.layout_about, R.id.layout_version, R.id.tv_exit })
@@ -118,7 +104,7 @@ public class SettingActivity extends BaseActivity
                 startActivity(new Intent(this, AboutActivity.class));
                 break;
             case R.id.layout_notify:
-                openNotifySetting();
+                NotifySettingUtils.openNotifySetting(this);
                 break;
             case R.id.layout_version:
                 mVersionPresenter.init();
@@ -132,36 +118,6 @@ public class SettingActivity extends BaseActivity
                 break;
             default:
                 break;
-        }
-    }
-
-    private void openNotifySetting() {
-        try {
-            // 根据isOpened结果，判断是否需要提醒用户跳转AppInfo页面，去打开App通知权限
-            Intent intent = new Intent();
-            intent.setAction(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
-            //这种方案适用于 API 26, 即8.0（含8.0）以上可以用
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                intent.putExtra(EXTRA_CHANNEL_ID, getApplicationInfo().uid);
-                intent.putExtra(EXTRA_APP_PACKAGE, getPackageName());
-            }
-            else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                //这种方案适用于 API21——25，即 5.0——7.1 之间的版本可以使用
-                intent.putExtra("app_package", getPackageName());
-                intent.putExtra("app_uid", getApplicationInfo().uid);
-            }
-            startActivity(intent);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            // 出现异常则跳转到应用设置界面：锤子坚果3——OC105 API25
-            Intent intent = new Intent();
-            //下面这种方案是直接跳转到当前应用的设置界面。
-            //https://blog.csdn.net/ysy950803/article/details/71910806
-            intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-            Uri uri = Uri.fromParts("package", getPackageName(), null);
-            intent.setData(uri);
-            startActivity(intent);
         }
     }
 

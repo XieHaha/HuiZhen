@@ -63,6 +63,34 @@ public class SharePreferenceUtil {
     }
 
     /**
+     * 存  不清除的数据
+     *
+     * @param spKey
+     * @param spValue
+     */
+    public void putAlwaysInteger(String spKey, int spValue) {
+        spEditor = mContext.getSharedPreferences(FILE_NAME_OTHER, 0).edit();
+        spEditor.putInt(spKey, spValue);
+        spEditor.commit();
+    }
+
+    /**
+     * 取 不清除的数据
+     *
+     * @param spKey
+     * @return
+     */
+    public int getAlwaysInteger(String spKey) {
+        sp = mContext.getSharedPreferences(FILE_NAME_OTHER, 0);
+        //默认1 为有通知权限
+        int value = 1;
+        if (sp != null) {
+            value = sp.getInt(spKey, 1);
+        }
+        return value;
+    }
+
+    /**
      * 存
      *
      * @param spKey
