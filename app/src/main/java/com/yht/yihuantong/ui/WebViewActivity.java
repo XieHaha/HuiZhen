@@ -1,5 +1,6 @@
 package com.yht.yihuantong.ui;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
@@ -9,6 +10,8 @@ import android.widget.TextView;
 
 import com.tencent.smtt.export.external.interfaces.WebResourceError;
 import com.tencent.smtt.export.external.interfaces.WebResourceRequest;
+import com.tencent.smtt.sdk.WebChromeClient;
+import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
 import com.yht.frame.data.CommonData;
@@ -69,6 +72,7 @@ public class WebViewActivity extends BaseActivity implements LoadViewHelper.OnNe
         super.initView(savedInstanceState);
         loadViewHelper = new LoadViewHelper(this);
         loadViewHelper.setOnNextClickListener(this);
+        initWebViewSetting();
         loadViewClient();
     }
 
@@ -142,6 +146,24 @@ public class WebViewActivity extends BaseActivity implements LoadViewHelper.OnNe
             }
         };
         webView.setWebViewClient(webViewClient);
+        webView.setWebChromeClient(new WebChromeClient());
+    }
+
+    private void initWebViewSetting() {
+        //指定的垂直滚动条有叠加样式
+        webView.setVerticalScrollbarOverlay(true);
+        WebSettings settings = webView.getSettings();
+        settings.setJavaScriptEnabled(true);
+        settings.setDomStorageEnabled(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            settings.setMixedContentMode(0);
+        }
+        //设定支持viewport
+        //        settings.setUseWideViewPort(true);
+        //        settings.setLoadWithOverviewMode(true);
+        //        settings.setBuiltInZoomControls(true);
+        //设定支持缩放
+        //        settings.setSupportZoom(true);
     }
 
     @Override

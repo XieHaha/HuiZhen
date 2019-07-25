@@ -236,6 +236,17 @@ public interface ApiUrlManager {
             @Body Map<String, Object> info);
 
     /**
+     * 接诊医生
+     *
+     * @param token token
+     * @param info  code
+     * @return 返回值
+     */
+    @POST("client/doctor/jzDoctors")
+    Observable<BaseResponse<List<DoctorInfoBean>>> getReceivingDoctorList(@Header("token") String token,
+            @Body Map<String, Object> info);
+
+    /**
      * 获取科室树
      *
      * @param token token

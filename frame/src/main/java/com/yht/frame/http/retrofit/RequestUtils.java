@@ -61,10 +61,11 @@ public class RequestUtils {
                        .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_VERIFY_CODE, listener));
     }
 
-    public static void login(Context context, String prepareId, String verifyCode, String merchant,
+    public static void login(Context context, String prepareId, String phone, String verifyCode, String merchant,
             final ResponseListener<BaseResponse> listener) {
         Map<String, String> params = new HashMap<>(16);
         params.put("merchant", merchant);
+        params.put("phone", phone);
         params.put("prepareId", prepareId);
         params.put("verifyCode", verifyCode);
         RetrofitManager.getApiUrlManager()
@@ -209,6 +210,16 @@ public class RequestUtils {
                        .getDoctorListByReverse(token, params)
                        .compose(RxJavaHelper.observableIO2Main(context))
                        .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_DOCTOR_LIST_BY_REVERSE, listener));
+    }
+
+    public static void getReceivingDoctorList(Context context, String token, Map<String, Object> params, int pageSize,
+            int startPage, final ResponseListener<BaseResponse> listener) {
+        params.put("pageSize", pageSize);
+        params.put("startPage", startPage);
+        RetrofitManager.getApiUrlManager()
+                       .getReceivingDoctorList(token, params)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_RECEIVING_DOCTOR_LIST, listener));
     }
 
     public static void getDepartTree(Context context, String hospitalCode, String token,

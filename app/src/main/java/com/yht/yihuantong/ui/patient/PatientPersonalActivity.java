@@ -104,17 +104,17 @@ public class PatientPersonalActivity extends BaseActivity implements EaseChatFra
         switch (message.what) {
             case START:
                 startChatTimer();
-                if (easeChatFragment != null) {
+                if (easeChatFragment != null && easeChatFragment.isAdded()) {
                     easeChatFragment.startTimer();
                 }
                 break;
             case UPDATE:
-                if (easeChatFragment != null) {
+                if (easeChatFragment != null && easeChatFragment.isAdded()) {
                     easeChatFragment.setTimeValue(BaseUtils.getTimeMode(time));
                 }
                 break;
             case END:
-                if (easeChatFragment != null) {
+                if (easeChatFragment != null && easeChatFragment.isAdded()) {
                     easeChatFragment.endTimer();
                 }
                 try {

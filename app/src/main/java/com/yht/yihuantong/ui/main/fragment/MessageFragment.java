@@ -263,12 +263,11 @@ public class MessageFragment extends BaseFragment
      */
     @Override
     public void onListItemClicked(EMConversation conversation) {
-        if (conversation != null) {
-            Intent intent = new Intent(getContext(), PatientPersonalActivity.class);
-            intent.putExtra(CommonData.KEY_PATIENT_CODE, conversation.conversationId().toUpperCase());
-            intent.putExtra(CommonData.KEY_PATIENT_CHAT, true);
-            startActivity(intent);
-        }
+        if (conversation == null) { return; }
+        Intent intent = new Intent(getContext(), PatientPersonalActivity.class);
+        intent.putExtra(CommonData.KEY_PATIENT_CODE, conversation.conversationId().toUpperCase());
+        intent.putExtra(CommonData.KEY_PATIENT_CHAT, true);
+        startActivity(intent);
     }
 
     /**

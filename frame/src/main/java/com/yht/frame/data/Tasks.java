@@ -78,6 +78,10 @@ WE_CHAT_LOGIN,
      */
     GET_DOCTOR_LIST_BY_REVERSE,
     /**
+     * 接诊医生
+     */
+    GET_RECEIVING_DOCTOR_LIST,
+    /**
      * 根据医院code获取科室树
      */
     GET_DEPART_LIST,
@@ -224,7 +228,6 @@ WE_CHAT_LOGIN,
     /**
      * 结束聊天
      */
-    END_CHAT,
-   }
+    END_CHAT,}
 
 

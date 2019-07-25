@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -93,8 +94,13 @@ public class WorkerFragment extends BaseFragment {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if (getUserVisibleHint() && isPrepared) {
-            fillNetWorkData();
+        if (isPrepared) {
+            if (getUserVisibleHint()) {
+                fillNetWorkData();
+            }
+            else if (viewFlipper.isFlipping()) {
+                viewFlipper.stopFlipping();
+            }
         }
     }
 
@@ -222,11 +228,14 @@ public class WorkerFragment extends BaseFragment {
                 startActivity(intent);
                 break;
             case R.id.view_flipper:
-                intent = new Intent(getContext(), WebViewActivity.class);
-                intent.putExtra(CommonData.KEY_PUBLIC, bannerBeans.get(viewFlipper.getDisplayedChild()).getBannerUrl());
-                intent.putExtra(CommonData.KEY_TITLE,
-                                bannerBeans.get(viewFlipper.getDisplayedChild()).getBannerRemark());
-                startActivity(intent);
+                BannerBean bean = bannerBeans.get(viewFlipper.getDisplayedChild());
+                String url = bean.getBannerUrl();
+                if (!TextUtils.isEmpty(url)) {
+                    intent = new Intent(getContext(), WebViewActivity.class);
+                    intent.putExtra(CommonData.KEY_PUBLIC, url);
+                    intent.putExtra(CommonData.KEY_TITLE, bean.getBannerRemark());
+                    startActivity(intent);
+                }
                 break;
             case R.id.layout_initiate_check:
                 intent = new Intent(getContext(), ServiceHistoryActivity.class);
@@ -307,11 +316,5 @@ public class WorkerFragment extends BaseFragment {
                 openScan();
             }
         }
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        viewFlipper.stopFlipping();
     }
 }

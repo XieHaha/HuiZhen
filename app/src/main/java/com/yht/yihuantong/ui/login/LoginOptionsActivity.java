@@ -111,7 +111,6 @@ public class LoginOptionsActivity extends BaseActivity
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        getProtocolUpdateDate();
         protocolUpdateDate = BaseUtils.date2TimeStamp(
                 sharePreferenceUtil.getAlwaysString(CommonData.KEY_IS_PROTOCOL_UPDATE_DATE),
                 BaseUtils.YYYY_MM_DD_HH_MM_SS);
@@ -142,16 +141,6 @@ public class LoginOptionsActivity extends BaseActivity
      */
     private void getProtocolUpdateDate() {
         RequestUtils.getProtocolUpdateDate(this, this);
-    }
-
-    /**
-     * 微信登录前需要用户阅读登录协议
-     */
-    private void showProtocol() {
-        Intent intent = new Intent(this, WebViewActivity.class);
-        intent.putExtra(CommonData.KEY_PUBLIC, BuildConfig.BASE_BASIC_URL + BaseNetConfig.BASE_BASIC_USER_PROTOCOL_URL);
-        intent.putExtra(CommonData.KEY_IS_PROTOCOL, true);
-        startActivityForResult(intent, REQUEST_CODE_PROTOCOL);
     }
 
     private void jump() {

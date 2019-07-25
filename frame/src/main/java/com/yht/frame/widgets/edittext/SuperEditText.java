@@ -23,7 +23,7 @@ public class SuperEditText extends AppCompatEditText {
     /**
      * 删除键宽高
      */
-    private int deleteWidth = 45, deleteHeight = 45;
+    private int deleteWidth = 18, deleteHeight = 18;
 
     public SuperEditText(Context context) {
         super(context);
@@ -47,7 +47,7 @@ public class SuperEditText extends AppCompatEditText {
         // 1. 根据资源ID获取图标资源（转化成Drawable对象）
         icDelete = ContextCompat.getDrawable(context, R.mipmap.ic_delete);
         // 2. 设置图标大小  起点(x，y)、宽= left_width、高 = left_height
-        icDelete.setBounds(0, 0, deleteWidth, deleteHeight);
+        icDelete.setBounds(0, 0, BaseUtils.dp2px(context,deleteWidth), BaseUtils.dp2px(context,deleteHeight));
     }
 
     /**

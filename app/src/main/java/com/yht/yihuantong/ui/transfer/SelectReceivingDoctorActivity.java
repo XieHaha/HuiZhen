@@ -114,6 +114,11 @@ public class SelectReceivingDoctorActivity extends BaseActivity
      */
     private int curType;
     /**
+     * 是否为接诊
+     */
+    private boolean isReceiveDoctor;
+    private String orderNo;
+    /**
      * 查询医生参数
      */
     private Map<String, Object> params = new HashMap<>();
@@ -130,6 +135,15 @@ public class SelectReceivingDoctorActivity extends BaseActivity
     @Override
     public int getLayoutID() {
         return R.layout.act_select_receiving_doctor;
+    }
+
+    @Override
+    public void initView(@NonNull Bundle savedInstanceState) {
+        super.initView(savedInstanceState);
+        if (getIntent() != null) {
+            isReceiveDoctor = getIntent().getBooleanExtra(CommonData.KEY_IS_RECEIVE_DOCTOR, false);
+            orderNo = getIntent().getStringExtra(CommonData.KEY_ORDER_ID);
+        }
     }
 
     @Override
@@ -200,8 +214,17 @@ public class SelectReceivingDoctorActivity extends BaseActivity
      * @param params
      */
     private void getDoctorListByReverse(Map<String, Object> params) {
-        RequestUtils.getDoctorListByReverse(this, loginBean.getToken(), params, BaseData.BASE_PAGE_DATA_NUM, page,
-                                            this);
+        if (isReceiveDoctor) {
+            //重新转诊的接诊医生
+            params.put("orderNo", orderNo);
+            RequestUtils.getReceivingDoctorList(this, loginBean.getToken(), params, BaseData.BASE_PAGE_DATA_NUM, page,
+                                                this);
+        }
+        else {
+            //预约转诊的接诊医生
+            RequestUtils.getDoctorListByReverse(this, loginBean.getToken(), params, BaseData.BASE_PAGE_DATA_NUM, page,
+                                                this);
+        }
     }
 
     /**
@@ -405,6 +428,7 @@ public class SelectReceivingDoctorActivity extends BaseActivity
                 reserveTransferSelectDoctorAdapter.setNewData(data);
                 initDepartTwo();
                 break;
+            case GET_RECEIVING_DOCTOR_LIST:
             case GET_DOCTOR_LIST_BY_REVERSE:
                 List<DoctorInfoBean> list = (List<DoctorInfoBean>)response.getData();
                 if (list == null) {

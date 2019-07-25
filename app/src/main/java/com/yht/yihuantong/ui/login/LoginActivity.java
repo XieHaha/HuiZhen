@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.yht.frame.data.BaseData;
-import com.yht.frame.data.BaseNetConfig;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
@@ -23,10 +22,8 @@ import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.widgets.edittext.AbstractTextWatcher;
 import com.yht.frame.widgets.edittext.SuperEditText;
-import com.yht.yihuantong.BuildConfig;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ZycApplication;
-import com.yht.yihuantong.ui.WebViewActivity;
 import com.yht.yihuantong.ui.auth.AuthDoctorActivity;
 
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
@@ -162,17 +159,7 @@ public class LoginActivity extends BaseActivity {
      * 登录
      */
     private void login() {
-        RequestUtils.login(this, verifyCodeBean.getPrepare_id(), verifyCode, BaseData.ADMIN, this);
-    }
-
-    /**
-     * 微信登录前需要用户阅读登录协议
-     */
-    private void showProtocol() {
-        Intent intent = new Intent(this, WebViewActivity.class);
-        intent.putExtra(CommonData.KEY_PUBLIC, BuildConfig.BASE_BASIC_URL + BaseNetConfig.BASE_BASIC_USER_PROTOCOL_URL);
-        intent.putExtra(CommonData.KEY_IS_PROTOCOL, true);
-        startActivityForResult(intent, REQUEST_CODE_PROTOCOL);
+        RequestUtils.login(this, verifyCodeBean.getPrepare_id(), phone, verifyCode, BaseData.ADMIN, this);
     }
 
     /**

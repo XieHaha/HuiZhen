@@ -209,11 +209,13 @@ public class TransferMaterialFragment extends BaseFragment implements View.OnFoc
                 super.onTextChanged(s, start, before, count);
                 age = s.toString();
                 initNextButton();
-                if (!TextUtils.isEmpty(age)) {
-                    reverseTransferBean.setPatientAge(Integer.valueOf(age));
-                }
-                else {
-                    reverseTransferBean.setPatientAge(0);
+                if (reverseTransferBean != null) {
+                    if (!TextUtils.isEmpty(age)) {
+                        reverseTransferBean.setPatientAge(Integer.valueOf(age));
+                    }
+                    else {
+                        reverseTransferBean.setPatientAge(0);
+                    }
                 }
             }
         });
@@ -223,7 +225,7 @@ public class TransferMaterialFragment extends BaseFragment implements View.OnFoc
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 super.onTextChanged(s, start, before, count);
                 phone = s.toString();
-                if (BaseUtils.isMobileNumber(phone)) {
+                if (BaseUtils.isMobileNumber(phone) && reverseTransferBean != null) {
                     reverseTransferBean.setPatientMobile(phone);
                 }
                 //判断手机号和诊断史
@@ -237,7 +239,7 @@ public class TransferMaterialFragment extends BaseFragment implements View.OnFoc
                 pastMedicalHis = s.toString();
                 tvPastMedicalHisNum.setText(String.format(getString(R.string.txt_calc_num), pastMedicalHis.length()));
                 initNextButton();
-                reverseTransferBean.setPastHistory(pastMedicalHis);
+                if (reverseTransferBean != null) { reverseTransferBean.setPastHistory(pastMedicalHis); }
             }
         });
         etFamilyMedicalHis.addTextChangedListener(new AbstractTextWatcher() {
@@ -248,7 +250,7 @@ public class TransferMaterialFragment extends BaseFragment implements View.OnFoc
                 tvFamilyMedicalHisNum.setText(
                         String.format(getString(R.string.txt_calc_num), familyMedicalHis.length()));
                 initNextButton();
-                reverseTransferBean.setFamilyHistory(familyMedicalHis);
+                if (reverseTransferBean != null) { reverseTransferBean.setFamilyHistory(familyMedicalHis); }
             }
         });
         etAllergies.addTextChangedListener(new AbstractTextWatcher() {
@@ -258,7 +260,7 @@ public class TransferMaterialFragment extends BaseFragment implements View.OnFoc
                 allergiesHis = s.toString();
                 tvAllergiesNum.setText(String.format(getString(R.string.txt_calc_num), allergiesHis.length()));
                 initNextButton();
-                reverseTransferBean.setAllergyHistory(allergiesHis);
+                if (reverseTransferBean != null) { reverseTransferBean.setAllergyHistory(allergiesHis); }
             }
         });
         etDiagnosis.addTextChangedListener(new AbstractTextWatcher() {
@@ -268,7 +270,7 @@ public class TransferMaterialFragment extends BaseFragment implements View.OnFoc
                 diagnosisHis = s.toString();
                 initNextButton();
                 initDiagnosis();
-                reverseTransferBean.setInitResult(diagnosisHis);
+                if (reverseTransferBean != null) { reverseTransferBean.setInitResult(diagnosisHis); }
             }
         });
     }

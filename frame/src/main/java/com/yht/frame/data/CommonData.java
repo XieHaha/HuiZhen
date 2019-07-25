@@ -33,6 +33,10 @@ public interface CommonData {
      */
     String KEY_RECEIVE_OR_EDIT_VISIT = "key_receive_or_edit_visit";
     /**
+     * 变更接诊信息  or  接诊
+     */
+    String KEY_IS_RECEIVE_DOCTOR = "key_is_receive_doctor";
+    /**
      * 是否显示的是登录协议（登录协议页面不显示title）
      */
     String KEY_IS_PROTOCOL = "key_is_protocol";
