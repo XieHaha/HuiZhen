@@ -16,24 +16,23 @@ import android.widget.Toast;
 
 import com.hyphenate.EMError;
 import com.hyphenate.easeui.R;
+import com.hyphenate.easeui.model.EaseVoiceAudioRecorder;
 import com.hyphenate.easeui.model.EaseVoiceRecorder;
 import com.hyphenate.easeui.utils.EaseCommonUtils;
 import com.hyphenate.easeui.widget.chatrow.EaseChatRowVoicePlayer;
 
 /**
  * Voice recorder view
- *
  */
 public class EaseVoiceRecorderView extends RelativeLayout {
     protected Context context;
     protected LayoutInflater inflater;
     protected Drawable[] micImages;
-    protected EaseVoiceRecorder voiceRecorder;
-
+    //    protected EaseVoiceRecorder voiceRecorder;
+    protected EaseVoiceAudioRecorder voiceAudioRecorder;
     protected PowerManager.WakeLock wakeLock;
     protected ImageView micImage;
     protected TextView recordingHint;
-
     protected Handler micImageHandler = new Handler() {
         @Override
         public void handleMessage(android.os.Message msg) {
@@ -60,14 +59,13 @@ public class EaseVoiceRecorderView extends RelativeLayout {
     private void init(Context context) {
         this.context = context;
         LayoutInflater.from(context).inflate(R.layout.ease_widget_voice_recorder, this);
-
-        micImage = (ImageView) findViewById(R.id.mic_image);
-        recordingHint = (TextView) findViewById(R.id.recording_hint);
-
-        voiceRecorder = new EaseVoiceRecorder(micImageHandler);
-
+        micImage = (ImageView)findViewById(R.id.mic_image);
+        recordingHint = (TextView)findViewById(R.id.recording_hint);
+        //        voiceRecorder = new EaseVoiceRecorder(micImageHandler);
+        voiceAudioRecorder = EaseVoiceAudioRecorder.getInstance(micImageHandler);
         // animation resources, used for recording
-        micImages = new Drawable[] { getResources().getDrawable(R.drawable.ease_record_animate_01),
+        micImages = new Drawable[] {
+                getResources().getDrawable(R.drawable.ease_record_animate_01),
                 getResources().getDrawable(R.drawable.ease_record_animate_02),
                 getResources().getDrawable(R.drawable.ease_record_animate_03),
                 getResources().getDrawable(R.drawable.ease_record_animate_04),
@@ -81,81 +79,84 @@ public class EaseVoiceRecorderView extends RelativeLayout {
                 getResources().getDrawable(R.drawable.ease_record_animate_12),
                 getResources().getDrawable(R.drawable.ease_record_animate_13),
                 getResources().getDrawable(R.drawable.ease_record_animate_14), };
-
-        wakeLock = ((PowerManager) context.getSystemService(Context.POWER_SERVICE)).newWakeLock(
+        wakeLock = ((PowerManager)context.getSystemService(Context.POWER_SERVICE)).newWakeLock(
                 PowerManager.SCREEN_DIM_WAKE_LOCK, "demo");
     }
 
     /**
      * on speak button touched
-     * 
+     *
      * @param v
      * @param event
      */
     public boolean onPressToSpeakBtnTouch(View v, MotionEvent event, EaseVoiceRecorderCallback recorderCallback) {
         switch (event.getAction()) {
-        case MotionEvent.ACTION_DOWN:
-            try {
-                EaseChatRowVoicePlayer voicePlayer = EaseChatRowVoicePlayer.getInstance(context);
-                if (voicePlayer.isPlaying())
-                    voicePlayer.stop();
-                v.setPressed(true);
-                startRecording();
-            } catch (Exception e) {
-                v.setPressed(false);
-            }
-            return true;
-        case MotionEvent.ACTION_MOVE:
-            if (event.getY() < 0) {
-                showReleaseToCancelHint();
-            } else {
-                showMoveUpToCancelHint();
-            }
-            return true;
-        case MotionEvent.ACTION_UP:
-            v.setPressed(false);
-            if (event.getY() < 0) {
-                // discard the recorded audio.
-                discardRecording();
-            } else {
-                // stop recording and send voice file
+            case MotionEvent.ACTION_DOWN:
                 try {
-                    int length = stopRecoding();
-                    if (length > 0) {
-                        if (recorderCallback != null) {
-                            recorderCallback.onVoiceRecordComplete(getVoiceFilePath(), length);
+                    EaseChatRowVoicePlayer voicePlayer = EaseChatRowVoicePlayer.getInstance(context);
+                    if (voicePlayer.isPlaying()) { voicePlayer.stop(); }
+                    v.setPressed(true);
+                    startRecording();
+                }
+                catch (Exception e) {
+                    v.setPressed(false);
+                }
+                return true;
+            case MotionEvent.ACTION_MOVE:
+                if (event.getY() < 0) {
+                    showReleaseToCancelHint();
+                }
+                else {
+                    showMoveUpToCancelHint();
+                }
+                return true;
+            case MotionEvent.ACTION_UP:
+                v.setPressed(false);
+                if (event.getY() < 0) {
+                    // discard the recorded audio.
+                    discardRecording();
+                }
+                else {
+                    // stop recording and send voice file
+                    try {
+                        int length = stopRecoding();
+                        if (length > 0) {
+                            if (recorderCallback != null) {
+                                recorderCallback.onVoiceRecordComplete(getVoiceFilePath(), length);
+                            }
                         }
-                    } else if (length == EMError.FILE_INVALID) {
-                        Toast.makeText(context, R.string.Recording_without_permission, Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(context, R.string.The_recording_time_is_too_short, Toast.LENGTH_SHORT).show();
+                        else if (length == EMError.FILE_INVALID) {
+                            Toast.makeText(context, R.string.Recording_without_permission, Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            Toast.makeText(context, R.string.The_recording_time_is_too_short, Toast.LENGTH_SHORT)
+                                 .show();
+                        }
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    if("stop failed.".equals(e.getLocalizedMessage()))
-                    {
-                        Toast.makeText(context, R.string.The_recording_time_is_too_short, Toast.LENGTH_SHORT).show();
-                    }else {
-
-                        Toast.makeText(context, R.string.send_failure_please, Toast.LENGTH_SHORT).show();
+                    catch (Exception e) {
+                        e.printStackTrace();
+                        if ("stop failed.".equals(e.getLocalizedMessage())) {
+                            Toast.makeText(context, R.string.The_recording_time_is_too_short, Toast.LENGTH_SHORT)
+                                 .show();
+                        }
+                        else {
+                            Toast.makeText(context, R.string.send_failure_please, Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }
-            }
-            return true;
-        default:
-            discardRecording();
-            return false;
+                return true;
+            default:
+                discardRecording();
+                return false;
         }
     }
 
     public interface EaseVoiceRecorderCallback {
         /**
          * on voice record complete
-         * 
-         * @param voiceFilePath
-         *            录音完毕后的文件路径
-         * @param voiceTimeLength
-         *            录音时长
+         *
+         * @param voiceFilePath   录音完毕后的文件路径
+         * @param voiceTimeLength 录音时长
          */
         void onVoiceRecordComplete(String voiceFilePath, int voiceTimeLength);
     }
@@ -170,13 +171,17 @@ public class EaseVoiceRecorderView extends RelativeLayout {
             this.setVisibility(View.VISIBLE);
             recordingHint.setText(context.getString(R.string.move_up_to_cancel));
             recordingHint.setBackgroundColor(Color.TRANSPARENT);
-            voiceRecorder.startRecording(context);
-        } catch (Exception e) {
+            //            voiceRecorder.startRecording(context);
+            voiceAudioRecorder.startRecordAndFile();
+        }
+        catch (Exception e) {
             e.printStackTrace();
-            if (wakeLock.isHeld())
-                wakeLock.release();
-            if (voiceRecorder != null)
-                voiceRecorder.discardRecording();
+            if (wakeLock.isHeld()) { wakeLock.release(); }
+            //            if (voiceRecorder != null)
+            //                voiceRecorder.discardRecording();
+            if (voiceAudioRecorder != null) {
+                voiceAudioRecorder.stopRecordAndFile();
+            }
             this.setVisibility(View.INVISIBLE);
             Toast.makeText(context, R.string.recoding_fail, Toast.LENGTH_SHORT).show();
             return;
@@ -194,35 +199,38 @@ public class EaseVoiceRecorderView extends RelativeLayout {
     }
 
     public void discardRecording() {
-        if (wakeLock.isHeld())
-            wakeLock.release();
+        if (wakeLock.isHeld()) { wakeLock.release(); }
         try {
             // stop recording
-            if (voiceRecorder.isRecording()) {
-                voiceRecorder.discardRecording();
+            //            if (voiceRecorder.isRecording()) {
+            //                voiceRecorder.discardRecording();
+            //                this.setVisibility(View.INVISIBLE);
+            //            }
+            if (voiceAudioRecorder.isRecord) {
+                voiceAudioRecorder.stopRecordAndFile();
                 this.setVisibility(View.INVISIBLE);
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
         }
     }
 
     public int stopRecoding() {
         this.setVisibility(View.INVISIBLE);
-        if (wakeLock.isHeld())
-            wakeLock.release();
-        return voiceRecorder.stopRecoding();
+        if (wakeLock.isHeld()) { wakeLock.release(); }
+        //        return voiceRecorder.stopRecoding();
+        return voiceAudioRecorder.stopRecordAndFile();
     }
 
     public String getVoiceFilePath() {
-        return voiceRecorder.getVoiceFilePath();
+        //        return voiceRecorder.getVoiceFilePath();
+        return voiceAudioRecorder.getNewAudioName();
     }
-
-    public String getVoiceFileName() {
-        return voiceRecorder.getVoiceFileName();
-    }
-
-    public boolean isRecording() {
-        return voiceRecorder.isRecording();
-    }
-
+    //    public String getVoiceFileName() {
+    //        return voiceRecorder.getVoiceFileName();
+    //    }
+    //
+    //    public boolean isRecording() {
+    //        return voiceRecorder.isRecording();
+    //    }
 }
