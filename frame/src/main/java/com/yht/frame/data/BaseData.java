@@ -33,7 +33,7 @@ public interface BaseData {
     /**
      * 昵称的最大长度
      */
-    int BASE_NICK_NAME_LENGTH = 20;
+    int BASE_NICK_NAME_LENGTH = 30;
     /**
      * 身份证号最大长度
      */

@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
+import android.text.Editable;
+import android.text.Selection;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -23,17 +25,18 @@ import com.yht.frame.api.DirHelper;
 import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
-import com.yht.frame.data.type.DataDictionary;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.bean.DoctorAuthBean;
 import com.yht.frame.data.bean.HospitalBean;
 import com.yht.frame.data.bean.HospitalDepartChildBean;
 import com.yht.frame.data.bean.HospitalTitleBean;
+import com.yht.frame.data.type.DataDictionary;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.permission.Permission;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.ToastUtil;
+import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.frame.widgets.edittext.AbstractTextWatcher;
 import com.yht.frame.widgets.edittext.SuperEditText;
 import com.yht.yihuantong.R;
@@ -44,7 +47,6 @@ import com.yht.yihuantong.ui.auth.listener.OnAuthStepListener;
 import com.yht.yihuantong.ui.dialog.DownDialog;
 import com.yht.yihuantong.ui.dialog.listener.OnMediaItemClickListener;
 import com.yht.yihuantong.ui.dialog.listener.OnTitleItemClickListener;
-import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.yihuantong.utils.FileUrlUtil;
 import com.yht.yihuantong.utils.MatisseUtils;
 import com.zhihu.matisse.Matisse;
@@ -142,8 +144,41 @@ public class AuthBaseFragment extends BaseFragment
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 super.onTextChanged(s, start, before, count);
-                doctorAuthBean.setDoctorName(s.toString());
+                String name = s.toString();
+                doctorAuthBean.setDoctorName(name);
                 initNextButton();
+                int mTextMaxlenght = 0;
+                Editable editable = etAuthBaseName.getText();
+                //得到最初字段的长度大小,用于光标位置的判断
+                int selEndIndex = Selection.getSelectionEnd(editable);
+                // 取出每个字符进行判断,如果是字母数字和标点符号则为一个字符加1,
+                //如果是汉字则为两个字符
+                for (int i = 0; i < name.length(); i++) {
+                    char charAt = name.charAt(i);
+                    //32-122包含了空格,大小写字母,数字和一些常用的符号,
+                    //如果在这个范围内则算一个字符,
+                    //如果不在这个范围比如是汉字的话就是两个字符
+                    if (charAt >= 32 && charAt <= 122) {
+                        mTextMaxlenght++;
+                    }
+                    else {
+                        mTextMaxlenght += 2;
+                    }
+                    // 当最大字符大于10时,进行字段的截取,并进行提示字段的大小
+                    if (mTextMaxlenght > BaseData.BASE_NICK_NAME_LENGTH) {
+                        // 截取最大的字段
+                        String newStr = name.substring(0, i);
+                        etAuthBaseName.setText(newStr);
+                        // 得到新字段的长度值
+                        editable = etAuthBaseName.getText();
+                        int newLen = editable.length();
+                        if (selEndIndex > newLen) {
+                            selEndIndex = editable.length();
+                        }
+                        // 设置新光标所在的位置
+                        Selection.setSelection(editable, selEndIndex);
+                    }
+                }
             }
         });
         rgSex.setOnCheckedChangeListener(this);
