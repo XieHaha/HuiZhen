@@ -214,13 +214,11 @@ public final class CameraManager {
             int screenResolutionX = screenResolution.x;
             int width = (int)(screenResolutionX * 0.69);
             int height = width;
-            Log.i("test", "screenResolutionX:" + screenResolutionX + "  width:" + width);
 
 
             /*水平居中  偏上显示*/
             int leftOffset = (screenResolution.x - width) / 2;
             int topOffset = (screenResolution.y - height) / 5;
-            Log.i("test", "leftOffset:" + leftOffset + "  topOffset:" + topOffset);
             framingRect = new Rect(leftOffset, topOffset, leftOffset + width, topOffset + height);
         }
         return framingRect;

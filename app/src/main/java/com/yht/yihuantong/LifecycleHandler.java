@@ -32,13 +32,11 @@ public class LifecycleHandler implements Application.ActivityLifecycleCallbacks 
     @Override
     public void onActivityPaused(Activity activity) {
         ++paused;
-        android.util.Log.w("test", "application is in foreground: " + (resumed > paused));
     }
 
     @Override
     public void onActivityStopped(Activity activity) {
         ++stopped;
-        android.util.Log.w("test", "application is visible: " + (started > stopped));
     }
 
     @Override

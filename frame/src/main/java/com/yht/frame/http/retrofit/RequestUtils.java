@@ -431,8 +431,8 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .getReserveCheckOrderList(token, params)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(
-                               new AbstractLoadViewObserver<>(context, Tasks.GET_RESERVE_CHECK_ORDER_LIST, listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_RESERVE_CHECK_ORDER_LIST,
+                                                                 listener));
     }
 
     public static void getReserveCheckOrderDetail(Context context, String token, String orderNo,
@@ -574,7 +574,7 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .getInitiateTransferOrderList(token, params)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_INITIATE_TRANSFER_ORDER_LIST,
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_INITIATE_TRANSFER_ORDER_LIST,
                                                                  listener));
     }
 
