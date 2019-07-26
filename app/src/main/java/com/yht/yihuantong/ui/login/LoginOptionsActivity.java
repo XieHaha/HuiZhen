@@ -42,6 +42,7 @@ import com.yht.yihuantong.version.presenter.VersionPresenter;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import me.jessyan.autosize.internal.CustomAdapt;
 
 /**
  * @author 顿顿
@@ -49,7 +50,7 @@ import butterknife.OnClick;
  * @des
  */
 public class LoginOptionsActivity extends BaseActivity
-        implements VersionPresenter.VersionViewListener, UpdateDialog.OnEnterClickListener {
+        implements CustomAdapt, VersionPresenter.VersionViewListener, UpdateDialog.OnEnterClickListener {
     @BindView(R.id.tv_login_wechat)
     TextView tvLoginWechat;
     @BindView(R.id.tv_login_phone)
@@ -368,5 +369,16 @@ public class LoginOptionsActivity extends BaseActivity
         if (view instanceof TextView) {
             ((TextView)view).setHighlightColor(ContextCompat.getColor(this, android.R.color.transparent));
         }
+    }
+
+    /*************************屏幕适配*/
+    @Override
+    public boolean isBaseOnWidth() {
+        return false;
+    }
+
+    @Override
+    public float getSizeInDp() {
+        return BaseData.BASE_DEVICE_DEFAULT_WIDTH;
     }
 }
