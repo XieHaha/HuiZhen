@@ -56,3 +56,8 @@
 -keep class org.slf4j.** {*;}
 -keep class ch.imvs.** {*;}
 #环信
+
+#buggly
+-dontwarn com.tencent.bugly.**
+-keep public class com.tencent.bugly.**{*;}
+#buggly

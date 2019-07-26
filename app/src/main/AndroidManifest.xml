@@ -44,6 +44,7 @@
         tools:ignore="MockLocation,ProtectedPermissions" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.READ_LOGS" />
 
     <application
         android:name="com.yht.yihuantong.ZycApplication"

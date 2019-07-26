@@ -45,7 +45,7 @@ import com.yht.yihuantong.chat.EaseConversationListFragment;
 import com.yht.yihuantong.chat.listener.AbstractEMContactListener;
 import com.yht.yihuantong.chat.listener.AbstractEMMessageListener;
 import com.yht.yihuantong.ui.adapter.ViewPagerAdapter;
-import com.yht.yihuantong.ui.main.OnMessageUpdateListener;
+import com.yht.yihuantong.ui.main.listener.OnMessageUpdateListener;
 import com.yht.yihuantong.ui.patient.PatientPersonalActivity;
 
 import java.util.ArrayList;

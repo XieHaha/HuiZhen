@@ -58,6 +58,7 @@ import com.yht.yihuantong.ui.dialog.UpdateDialog;
 import com.yht.yihuantong.ui.main.fragment.MessageFragment;
 import com.yht.yihuantong.ui.main.fragment.PatientFragment;
 import com.yht.yihuantong.ui.main.fragment.WorkerFragment;
+import com.yht.yihuantong.ui.main.listener.OnMessageUpdateListener;
 import com.yht.yihuantong.version.presenter.VersionPresenter;
 import com.zyc.shortcutbadge.ShortcutBadger;
 

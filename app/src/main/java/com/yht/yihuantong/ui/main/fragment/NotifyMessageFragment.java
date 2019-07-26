@@ -29,7 +29,7 @@ import com.yht.yihuantong.ui.adapter.NotifyMessageAdapter;
 import com.yht.yihuantong.ui.check.ServiceDetailActivity;
 import com.yht.yihuantong.ui.currency.IncomeDetailActivity;
 import com.yht.yihuantong.ui.currency.WithdrawDetailActivity;
-import com.yht.yihuantong.ui.main.OnMessageUpdateListener;
+import com.yht.yihuantong.ui.main.listener.OnMessageUpdateListener;
 import com.yht.yihuantong.ui.transfer.TransferInitiateDetailActivity;
 import com.yht.yihuantong.ui.transfer.TransferReceiveDetailActivity;
 

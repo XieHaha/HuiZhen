@@ -11,6 +11,7 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMOptions;
 import com.hyphenate.easeui.EaseUI;
 import com.hyphenate.easeui.domain.EaseAvatarOptions;
+import com.tencent.bugly.crashreport.CrashReport;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.smtt.sdk.QbSdk;
 import com.yanzhenjie.nohttp.NoHttp;
@@ -27,6 +28,10 @@ import com.yht.yihuantong.chat.HxHelper;
 
 import org.litepal.LitePal;
 import org.litepal.LitePalApplication;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 import cn.jpush.android.api.JPushInterface;
 
@@ -65,8 +70,12 @@ public class ZycApplication extends LitePalApplication {
         ApiManager.getInstance().init(this, debugMode);
         //网络
         RetrofitManager.getInstance().init(BuildConfig.BASE_BASIC_URL);
+        //日志捕捉
+        CrashHandler.init(this);
         //启动预加载的服务
         initX5();
+        //腾讯buggly
+        initBuggly();
         //环信
         initEase();
         //极光
@@ -75,8 +84,6 @@ public class ZycApplication extends LitePalApplication {
         initImageLoader();
         //数据库
         LitePal.initialize(this);
-        //日志捕捉
-        CrashHandler.init(this);
         NoHttp.initialize(this);
     }
 
@@ -145,6 +152,19 @@ public class ZycApplication extends LitePalApplication {
         QbSdk.initX5Environment(getApplicationContext(), cb);
     }
 
+    private void initBuggly() {
+        Context context = getApplicationContext();
+        // 获取当前包名
+        String packageName = context.getPackageName();
+        // 获取当前进程名
+        String processName = getProcessName(android.os.Process.myPid());
+        // 设置是否为上报进程
+        CrashReport.UserStrategy strategy = new CrashReport.UserStrategy(context);
+        strategy.setUploadProcess(processName == null || processName.equals(packageName));
+        // 初始化Bugly
+        CrashReport.initCrashReport(context, "43524227c9", debugMode, strategy);
+    }
+
     public LoginBean getLoginBean() {
         String userStr = (String)SharePreferenceUtil.getObject(this, CommonData.KEY_LOGIN_BEAN, "");
         if (!TextUtils.isEmpty(userStr)) {
@@ -208,6 +228,38 @@ public class ZycApplication extends LitePalApplication {
 
     public static ZycApplication getInstance() {
         return instance;
+    }
+
+    /**
+     * 获取进程号对应的进程名
+     *
+     * @param pid 进程号
+     * @return 进程名
+     */
+    private static String getProcessName(int pid) {
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new FileReader("/proc/" + pid + "/cmdline"));
+            String processName = reader.readLine();
+            if (!TextUtils.isEmpty(processName)) {
+                processName = processName.trim();
+            }
+            return processName;
+        }
+        catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
+        finally {
+            try {
+                if (reader != null) {
+                    reader.close();
+                }
+            }
+            catch (IOException exception) {
+                exception.printStackTrace();
+            }
+        }
+        return null;
     }
 
     /**

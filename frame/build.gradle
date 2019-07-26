@@ -3,6 +3,13 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'bugly'
+
+bugly {
+    debug = true
+    appId = '43524227c9'
+    appKey = '12ce14b0-43f4-450f-b7dc-332f852210af'
+}
 
 android {
     compileSdkVersion 26
@@ -65,4 +72,7 @@ dependencies {
     //汉字排序
     api 'com.github.promeg:tinypinyin:2.0.3'
     api 'com.github.promeg:tinypinyin-lexicons-android-cncity:2.0.3'
+    //buggly
+    api 'com.tencent.bugly:crashreport:latest.release'
+    api 'com.tencent.bugly:nativecrashreport:latest.release'
 }
