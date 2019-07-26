@@ -303,7 +303,7 @@ public class ServiceSubmitFragment extends BaseFragment
                 startActivityForResult(intent, REQUEST_CODE_SELECT_CHECK);
                 break;
             case R.id.layout_upload_one:
-                if (cameraTempFile == null) {
+                if (TextUtils.isEmpty(confirmImageUrl)) {
                     permissionHelper.request(new String[] { Permission.CAMERA, Permission.STORAGE_WRITE });
                 }
                 else {

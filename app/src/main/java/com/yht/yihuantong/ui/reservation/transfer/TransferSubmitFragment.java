@@ -391,7 +391,7 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
                 }
                 break;
             case R.id.layout_upload_one:
-                if (cameraTempFile == null) {
+                if (TextUtils.isEmpty(confirmImageUrl)) {
                     permissionHelper.request(new String[] { Permission.CAMERA, Permission.STORAGE_WRITE });
                 }
                 else {
