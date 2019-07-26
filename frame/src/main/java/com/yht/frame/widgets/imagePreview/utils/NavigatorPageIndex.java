@@ -14,7 +14,7 @@ import com.yht.frame.R;
 /**
  * @author dundun
  */
-public class NavigaterPageIndex extends LinearLayout {
+public class NavigatorPageIndex extends LinearLayout {
     private Context mContext;
     /**
      * 用户引导页总数
@@ -31,12 +31,12 @@ public class NavigaterPageIndex extends LinearLayout {
     private SparseArray<View> mViewArray = new SparseArray<View>();
     private ImageView pageImageView;
 
-    public NavigaterPageIndex(Context paramContext, AttributeSet paramAttributeSet) {
+    public NavigatorPageIndex(Context paramContext, AttributeSet paramAttributeSet) {
         super(paramContext, paramAttributeSet);
         this.mContext = paramContext;
-        TypedArray a = mContext.obtainStyledAttributes(paramAttributeSet, R.styleable.NavigaterPageIndex);
-        paddingIndex = a.getDimensionPixelSize(R.styleable.NavigaterPageIndex_indexPadding, 0);
-        paddingBottom = a.getDimensionPixelSize(R.styleable.NavigaterPageIndex_paddingBottom, 0);
+        TypedArray a = mContext.obtainStyledAttributes(paramAttributeSet, R.styleable.NavigatorPageIndex);
+        paddingIndex = a.getDimensionPixelSize(R.styleable.NavigatorPageIndex_indexPadding, 0);
+        paddingBottom = a.getDimensionPixelSize(R.styleable.NavigatorPageIndex_paddingBottom, 0);
         a.recycle();
     }
 

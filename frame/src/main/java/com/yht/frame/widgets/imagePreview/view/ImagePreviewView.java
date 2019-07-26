@@ -5,19 +5,16 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.graphics.RectF;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatImageView;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -30,14 +27,8 @@ import android.widget.OverScroller;
 import android.widget.Scroller;
 
 import com.bumptech.glide.Glide;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.assist.ImageScaleType;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.yht.frame.R;
 import com.yht.frame.utils.glide.GlideHelper;
-import com.yht.frame.widgets.imagePreview.utils.CacheUtils;
 
 import java.io.File;
 
@@ -46,7 +37,6 @@ import java.io.File;
  * @date 2015/10/20
  */
 public class ImagePreviewView extends AppCompatImageView {
-    private static final String DEBUG = "DEBUG";
     //
     // SuperMin and SuperMax multipliers. Determine how much the image can be
     // zoomed below or above the zoom boundaries, before animating back to the
@@ -98,25 +88,14 @@ public class ImagePreviewView extends AppCompatImageView {
     //
     //------------  加载动画相关 BEGIN  ------------//
     //
-    private Handler mHandler;
-    private DisplayImageOptions options;
     /**
      * 是否退出加载
      */
     private static boolean isBreak = false;
-    /**
-     * 是否打开绘制加载动画 true 打开， false 关闭，并且使用默认动画
-     */
-    boolean isOpenLoadingAnimation = true;
     //------------  加载动画相关 END  ------------//
     //
     //-------------  图片加载缓存 BEGIN -------------//
     //
-    /**
-     * -1 不请求； 0 只请求大图，缓存大图； 1 请求大图，缓存大图小图； 2 请求大小图，缓存大小图
-     */
-    private int loadState = -1;
-    //-------------  图片加载缓存 ENG -------------//
 
     /**
      * Constructors
@@ -131,7 +110,6 @@ public class ImagePreviewView extends AppCompatImageView {
 
     public ImagePreviewView(Context context, AttributeSet attrs, int defStyle, Handler handler) {
         super(context, attrs, defStyle);
-        this.mHandler = handler;
         sharedConstructing(context);
         init();
     }
@@ -150,50 +128,8 @@ public class ImagePreviewView extends AppCompatImageView {
         }
     }
 
-    public void loadingImageAsync(final String imgPath, final String bigUrl, final int position) {
-        if (!isBreak) {
-            if (TextUtils.isEmpty(imgPath)) {
-                if (TextUtils.isEmpty(bigUrl)) { return; }
-                loadState = CacheUtils.getInstance(getContext()).getCacheState(bigUrl, bigUrl);
-                switch (loadState) {
-                    case 0:
-                    case 2:
-                        //URL相同，都为空，请求大图，显示默认背景
-                        if (!isBigLoaded) {
-                            setScaleType(ScaleType.MATRIX);
-                            Drawable smallDrawable = ContextCompat.getDrawable(getContext(), R.mipmap.icon_loading_img);
-                            setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.icon_loading_img));
-                            loadImgAsync(bigUrl, smallDrawable);
-                        }
-                        break;
-                    case 1:
-                        //URL不同，小图不空大图为空，请求大图，不显示默认背景
-                        if (!isBigLoaded) {
-                            setScaleType(ScaleType.CENTER_INSIDE);
-                            Bitmap bitmap = CacheUtils.getInstance(getContext()).getBitmapFromImageLoaderCache(bigUrl);
-                            Drawable smallDrawable = new BitmapDrawable(getResources(), bitmap);
-                            setImageBitmap(bitmap);
-                            loadImgAsync(bigUrl, smallDrawable);
-                        }
-                        break;
-                    default://有大图缓存
-                        setScaleType(ScaleType.FIT_CENTER);
-                        Drawable drawable = new BitmapDrawable(getResources(), CacheUtils.getInstance(getContext())
-                                                                                         .getBitmapFromCache(bigUrl));
-                        loadImgAsync(bigUrl, drawable);
-                }
-            }
-            else {
-                loadImaLocal(imgPath);
-            }
-        }
-    }
-
     private void loadImaLocal(final String imgPth) {
-        Glide.with(context)
-             .load(new File(imgPth))
-             .apply(GlideHelper.getOptionsPicBig())
-             .into(this);
+        Glide.with(context).load(new File(imgPth)).apply(GlideHelper.getOptionsPicBig()).into(this);
     }
 
     /**
@@ -203,47 +139,6 @@ public class ImagePreviewView extends AppCompatImageView {
      */
     private void loadImaByGlide(final String url) {
         Glide.with(context).load(url).apply(GlideHelper.getOptionsPicBig()).into(this);
-    }
-
-    /**
-     * 异步加载图片
-     */
-    private void loadImgAsync(final String bigUrl, Drawable drawable) {
-        Drawable faildImg = ContextCompat.getDrawable(getContext(), R.mipmap.icon_load_faild_img);
-        options = new DisplayImageOptions.Builder().cacheOnDisk(true)
-                                                   .cacheInMemory(true)
-                                                   .showImageForEmptyUri(drawable)
-                                                   .showImageOnFail(faildImg)
-                                                   .showImageOnLoading(drawable)
-                                                   .imageScaleType(ImageScaleType.EXACTLY)
-                                                   .bitmapConfig(Bitmap.Config.RGB_565)
-                                                   .considerExifParams(true)
-                                                   .build();
-        ImageLoader.getInstance().displayImage(bigUrl, this, options, new ImageLoadingListener() {
-            @Override
-            public void onLoadingStarted(String imageUri, View view) {
-                //图片开始加载
-                mHandler.sendEmptyMessage(0);
-            }
-
-            @Override
-            public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-                //图片加载失败
-                mHandler.sendEmptyMessage(100);
-            }
-
-            @Override
-            public void onLoadingComplete(String imageUri, View view, final Bitmap loadedImage) {
-                //图片加载成功
-                mHandler.sendEmptyMessage(200);
-                setScaleType(ScaleType.FIT_CENTER);
-                isBigLoaded = true;
-            }
-
-            @Override
-            public void onLoadingCancelled(String imageUri, View view) {
-            }
-        });
     }
 
     private void sharedConstructing(Context context) {

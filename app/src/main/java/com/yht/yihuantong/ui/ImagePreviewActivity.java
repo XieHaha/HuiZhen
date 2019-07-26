@@ -12,18 +12,11 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
-import com.yanzhenjie.nohttp.Headers;
-import com.yanzhenjie.nohttp.download.DownloadListener;
-import com.yht.frame.api.DirHelper;
-import com.yht.frame.api.FileTransferServer;
 import com.yht.frame.data.bean.NormImage;
 import com.yht.frame.utils.ToastUtil;
-import com.yht.frame.widgets.imagePreview.options.PreviewOptions;
 import com.yht.frame.widgets.imagePreview.transformer.CustomTransformer;
-import com.yht.frame.widgets.imagePreview.utils.CacheUtils;
-import com.yht.frame.widgets.imagePreview.utils.NavigaterPageIndex;
+import com.yht.frame.widgets.imagePreview.utils.NavigatorPageIndex;
 import com.yht.frame.widgets.imagePreview.view.ImageLoadingView;
 import com.yht.frame.widgets.imagePreview.view.ImagePreviewView;
 import com.yht.yihuantong.R;
@@ -51,7 +44,7 @@ public class ImagePreviewActivity extends Activity implements ViewPager.OnPageCh
     /**
      * 页面游标
      */
-    private NavigaterPageIndex indicator;
+    private NavigatorPageIndex indicator;
     /**
      * 当前显示的view
      */
@@ -126,59 +119,12 @@ public class ImagePreviewActivity extends Activity implements ViewPager.OnPageCh
         imgViewPager.addOnPageChangeListener(this);
         imgViewPager.setAdapter(new TouchImageAdapter());
         imgViewPager.setCurrentItem(currentIndex);
-        btnSaveImage.setOnClickListener(v -> {
-            String imageUri = urls.get(currentIndex).getImageUrl();
-            String fileName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
-            if (CacheUtils.getInstance(getBaseContext()).saveImageFileToDisk(imageUri)) {
-                Toast.makeText(ImagePreviewActivity.this,
-                               "图片 " + fileName + " 已保存到 " + PreviewOptions.ImageDownloadOptions.IMAGE_SAVE_REL_DIR,
-                               Toast.LENGTH_SHORT).show();
-            }
-            else {
-                downloadImg(imageUri, fileName);
-            }
-        });
         if (imgPreViews.size() > 0) {
             imgPreViews.clear();
         }
         for (int i = 0; i < urls.size(); i++) {
             imgPreViews.add(i, new ImagePreviewView(this, mHandler));
         }
-    }
-
-    /**
-     * 图片下载
-     *
-     * @param imageUri
-     * @param fileName
-     */
-    private void downloadImg(String imageUri, String fileName) {
-        FileTransferServer.getInstance(ImagePreviewActivity.this)
-                          .downloadFile("",imageUri, DirHelper.getPathImage(), fileName, new DownloadListener() {
-                              @Override
-                              public void onDownloadError(int what, Exception exception) {
-                                  //                                  ToastUtil.toast(ImagePreviewActivity.this, R.string.toast_save_image_error);
-                              }
-
-                              @Override
-                              public void onStart(int what, boolean isResume, long rangeSize, Headers responseHeaders,
-                                      long allCount) {
-                              }
-
-                              @Override
-                              public void onProgress(int what, int progress, long fileCount, long speed) {
-                              }
-
-                              @Override
-                              public void onFinish(int what, String filePath) {
-                                  ToastUtil.toast(ImagePreviewActivity.this, "图片 " + fileName + " 已保存到 " +
-                                                                             PreviewOptions.ImageDownloadOptions.IMAGE_SAVE_REL_DIR);
-                              }
-
-                              @Override
-                              public void onCancel(int what) {
-                              }
-                          });
     }
 
     @Override

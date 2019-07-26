@@ -31,7 +31,7 @@
         app:pointColor="#ffffff"
         app:pointRadius="3dp" />
 
-    <com.yht.frame.widgets.imagePreview.utils.NavigaterPageIndex
+    <com.yht.frame.widgets.imagePreview.utils.NavigatorPageIndex
         android:id="@+id/act_image_view_page_indicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

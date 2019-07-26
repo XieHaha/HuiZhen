@@ -23,7 +23,6 @@ import com.yht.frame.http.retrofit.RetrofitManager;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.HuiZhenLog;
 import com.yht.frame.utils.SharePreferenceUtil;
-import com.yht.frame.widgets.imagePreview.ImageLoadUtil;
 import com.yht.yihuantong.chat.HxHelper;
 
 import org.litepal.LitePal;
@@ -83,8 +82,6 @@ public class ZycApplication extends LitePalApplication {
         initEase();
         //极光
         initJPush();
-        //图片预览
-        initImageLoader();
         //数据库
         LitePal.initialize(this);
         NoHttp.initialize(this);
@@ -131,13 +128,6 @@ public class ZycApplication extends LitePalApplication {
         //极光推送
         JPushInterface.setDebugMode(debugMode);
         JPushInterface.init(this);
-    }
-
-    /**
-     * ImageLoader 参数化配置
-     */
-    private void initImageLoader() {
-        ImageLoadUtil.getInstance().initImageLoader(getApplicationContext());
     }
 
     private void initX5() {
