@@ -280,7 +280,7 @@ public class ServiceDetailActivity extends BaseActivity
      */
     private void initCheckType() {
         layoutCheckType.removeAllViews();
-        checkTypeList = checkDetailBean.getTrans();
+        checkTypeList = checkDetailBean.getTranList();
         reportList = new ArrayList<>();
         if (checkTypeList != null && checkTypeList.size() > 0) {
             for (int i = 0; i < checkTypeList.size(); i++) {

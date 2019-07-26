@@ -32,7 +32,7 @@ public class CheckDetailBean implements Serializable {
     private String finishAt;
     private String notes;
     private String doctorName;
-    private ArrayList<CheckTypeByDetailBean> trans;
+    private ArrayList<CheckTypeByDetailBean> tranList;
 
     public int getSex() {
         return sex;
@@ -210,11 +210,11 @@ public class CheckDetailBean implements Serializable {
         this.doctorName = doctorName;
     }
 
-    public ArrayList<CheckTypeByDetailBean> getTrans() {
-        return trans;
+    public ArrayList<CheckTypeByDetailBean> getTranList() {
+        return tranList;
     }
 
-    public void setTrans(ArrayList<CheckTypeByDetailBean> trans) {
-        this.trans = trans;
+    public void setTranList(ArrayList<CheckTypeByDetailBean> tranList) {
+        this.tranList = tranList;
     }
 }

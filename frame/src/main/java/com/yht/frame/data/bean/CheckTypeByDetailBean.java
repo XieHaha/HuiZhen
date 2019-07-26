@@ -12,8 +12,13 @@ public class CheckTypeByDetailBean implements Serializable {
     private int id;
     private int status;
     private int hospitalDepartmentId;
+    private long shouldPay;
     private String name;
     private String orderAt;
+    private String payAt;
+    private String finishAt;
+    private String createAt;
+    private String operatorName;
     private String departmentName;
     private String type;
     private String cancelReason;
@@ -89,5 +94,45 @@ public class CheckTypeByDetailBean implements Serializable {
 
     public void setReport(String report) {
         this.report = report;
+    }
+
+    public long getShouldPay() {
+        return shouldPay;
+    }
+
+    public void setShouldPay(long shouldPay) {
+        this.shouldPay = shouldPay;
+    }
+
+    public String getPayAt() {
+        return payAt;
+    }
+
+    public void setPayAt(String payAt) {
+        this.payAt = payAt;
+    }
+
+    public String getFinishAt() {
+        return finishAt;
+    }
+
+    public void setFinishAt(String finishAt) {
+        this.finishAt = finishAt;
+    }
+
+    public String getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(String createAt) {
+        this.createAt = createAt;
+    }
+
+    public String getOperatorName() {
+        return operatorName;
+    }
+
+    public void setOperatorName(String operatorName) {
+        this.operatorName = operatorName;
     }
 }
