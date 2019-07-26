@@ -56,7 +56,7 @@ dependencies {
     //数据库
     api 'org.litepal.android:core:1.6.1'
     //适配界面
-    api 'me.jessyan:autosize:1.1.2'
+//    api 'me.jessyan:autosize:1.1.2'
     //知乎
     api 'com.zhihu.android:matisse:0.5.2-beta3'
     //glide

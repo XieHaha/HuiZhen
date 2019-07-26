@@ -73,7 +73,7 @@ import static com.yht.yihuantong.jpush.TagAliasOperatorHelper.ACTION_SET;
  * @author dundun
  */
 public class MainActivity extends BaseActivity
-        implements VersionPresenter.VersionViewListener, UpdateDialog.OnEnterClickListener, OnMessageUpdateListener {
+        implements  VersionPresenter.VersionViewListener, UpdateDialog.OnEnterClickListener, OnMessageUpdateListener {
     @BindView(R.id.act_main_tab1)
     RelativeLayout actMainTab1;
     @BindView(R.id.act_main_tab3)

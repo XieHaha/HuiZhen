@@ -116,7 +116,7 @@ public class WorkerFragment extends BaseFragment {
         super.initView(view, savedInstanceState);
         statusBarFix.setLayoutParams(
                 new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getStateBarHeight(getActivity())));
-        publicMainTitleScan.setVisibility(View.VISIBLE);
+        publicMainTitleScan.setVisibility(View.INVISIBLE);
         view.postOnAnimationDelayed(() -> initNotifyHint(), 2000);
     }
 

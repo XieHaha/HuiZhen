@@ -33,9 +33,6 @@ import java.io.FileReader;
 import java.io.IOException;
 
 import cn.jpush.android.api.JPushInterface;
-import me.jessyan.autosize.AutoSize;
-import me.jessyan.autosize.AutoSizeConfig;
-import me.jessyan.autosize.unit.Subunits;
 
 /**
  * 2018年4月4日16:40:23
@@ -85,8 +82,6 @@ public class ZycApplication extends LitePalApplication {
         //数据库
         LitePal.initialize(this);
         NoHttp.initialize(this);
-        //界面适配
-        initAndroidAutoSize();
     }
 
     @Override
@@ -211,15 +206,15 @@ public class ZycApplication extends LitePalApplication {
         //当 App 中出现多进程, 并且您需要适配所有的进程, 就需要在 App 初始化时调用 initCompatMultiProcess()
         //在 Demo 中跳转的三方库中的 DefaultErrorActivity 就是在另外一个进程中, 所以要想适配这个 Activity 就需要调用
         // initCompatMultiProcess()
-        AutoSize.initCompatMultiProcess(this);
-        AutoSizeConfig.getInstance().getUnitsManager().setSupportSP(false).setSupportSubunits(Subunits.MM);
-        AutoSizeConfig.getInstance()
-                      //是否让框架支持自定义 Fragment 的适配参数, 由于这个需求是比较少见的, 所以须要使用者手动开启
-                      //如果没有这个需求建议不开启
-                      .setCustomFragment(true)
-                      //是否屏蔽系统字体大小对 AndroidAutoSize 的影响, 如果为 true, App 内的字体的大小将不会跟随系统设置中字体大小的改变
-                      //如果为 false, 则会跟随系统设置中字体大小的改变, 默认为 false
-                      .setExcludeFontScale(true);
+//        AutoSize.initCompatMultiProcess(this);
+//        AutoSizeConfig.getInstance().getUnitsManager().setSupportSP(false).setSupportSubunits(Subunits.MM);
+//        AutoSizeConfig.getInstance()
+//                      //是否让框架支持自定义 Fragment 的适配参数, 由于这个需求是比较少见的, 所以须要使用者手动开启
+//                      //如果没有这个需求建议不开启
+//                      .setCustomFragment(true)
+//                      //是否屏蔽系统字体大小对 AndroidAutoSize 的影响, 如果为 true, App 内的字体的大小将不会跟随系统设置中字体大小的改变
+//                      //如果为 false, 则会跟随系统设置中字体大小的改变, 默认为 false
+//                      .setExcludeFontScale(true);
     }
 
     public static ZycApplication getInstance() {
