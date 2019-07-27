@@ -44,6 +44,7 @@ import com.yht.yihuantong.utils.NotifySettingUtils;
 import com.yzq.zxinglibrary.android.CaptureActivity;
 import com.yzq.zxinglibrary.common.Constant;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -117,6 +118,7 @@ public class WorkerFragment extends BaseFragment {
         statusBarFix.setLayoutParams(
                 new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getStateBarHeight(getActivity())));
         publicMainTitleScan.setVisibility(View.INVISIBLE);
+        initFlipper();
         view.postOnAnimationDelayed(() -> initNotifyHint(), 2000);
     }
 
@@ -180,6 +182,13 @@ public class WorkerFragment extends BaseFragment {
      */
     private void initFlipper() {
         viewFlipper.removeAllViews();
+        //添加默认值
+        if (bannerBeans == null || bannerBeans.size() == 0) {
+            bannerBeans = new ArrayList<>();
+            BannerBean bean = new BannerBean();
+            bean.setBannerRemark(getString(R.string.txt_view_flipper_hint));
+            bannerBeans.add(bean);
+        }
         for (int i = 0; i < bannerBeans.size(); i++) {
             View view = LayoutInflater.from(getContext()).inflate(R.layout.item_flipper, null);
             TextView textView = view.findViewById(R.id.tv_flipper);
@@ -287,9 +296,7 @@ public class WorkerFragment extends BaseFragment {
                 break;
             case GET_BANNER:
                 bannerBeans = (List<BannerBean>)response.getData();
-                if (bannerBeans != null) {
-                    initFlipper();
-                }
+                initFlipper();
                 break;
             case GET_VALIDATE_HOSPITAL_LIST:
                 ReservationValidateBean bean = (ReservationValidateBean)response.getData();
