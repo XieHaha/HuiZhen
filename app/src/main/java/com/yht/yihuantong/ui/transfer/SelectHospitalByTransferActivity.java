@@ -67,7 +67,7 @@ public class SelectHospitalByTransferActivity extends BaseActivity
      * 获取当前医生可接受转诊的医院
      */
     private void getHospitalListByDoctor() {
-        RequestUtils.getHospitalListByDoctor(this, loginBean.getToken(), this);
+        RequestUtils.getHospitalListByDoctor(this, loginBean.getToken(), "", this);
     }
 
     @Override

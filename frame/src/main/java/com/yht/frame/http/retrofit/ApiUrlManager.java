@@ -187,10 +187,12 @@ public interface ApiUrlManager {
      * 获取当前医生可进行转诊的医院列表。
      *
      * @param token token
+     * @param info  info
      * @return 返回值
      */
-    @GET("client/hospital/selectInput/forChange")
-    Observable<BaseResponse<List<HospitalBean>>> getHospitalListByDoctor(@Header("token") String token);
+    @POST("client/hospital/selectInput/forChange")
+    Observable<BaseResponse<List<HospitalBean>>> getHospitalListByDoctor(@Header("token") String token,
+            @Body Map<String, String> info);
 
     /**
      * 校验医生是否有预约检查和预约转诊的合作医院。

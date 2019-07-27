@@ -152,7 +152,7 @@ public class TransferAgainActivity extends BaseActivity {
                 if (tvSelect.getVisibility() == View.VISIBLE) {
                     intent = new Intent(this, SelectReceivingDoctorActivity.class);
                     intent.putExtra(CommonData.KEY_ORDER_ID, orderNo);
-                    intent.putExtra(CommonData.KEY_IS_RECEIVE_DOCTOR, true);
+                    intent.putExtra(CommonData.KEY_IS_TRANSFER_OTHER, true);
                     startActivityForResult(intent, REQUEST_CODE_SELECT_DOCTOR);
                 }
                 break;

@@ -155,7 +155,8 @@ public class TransferInitiateListActivity extends BaseActivity
     private void sortTransferData() {
         titleBars.clear();
         for (TransferBean bean : transferList) {
-            titleBars.add(bean.getTransferDate());
+            long time = BaseUtils.date2TimeStamp(bean.getTransferDate(), BaseUtils.YYYY_MM_DD_HH_MM);
+            titleBars.add(BaseUtils.formatDate(time, BaseUtils.YYYY_MM_DD));
         }
         //返回一个包含所有Tag字符串并赋值给tagsStr
         String tag = BaseUtils.getTimeTags(titleBars);

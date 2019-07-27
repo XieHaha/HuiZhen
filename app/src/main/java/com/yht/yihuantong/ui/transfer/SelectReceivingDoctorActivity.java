@@ -76,7 +76,7 @@ public class SelectReceivingDoctorActivity extends BaseActivity
     /**
      * 医院、科室适配器
      */
-    private ReserveTransferSelectDoctorAdapter reserveTransferSelectDoctorAdapter;
+    private ReserveTransferSelectDoctorAdapter adapter;
     /**
      * 医生适配器
      */
@@ -126,6 +126,10 @@ public class SelectReceivingDoctorActivity extends BaseActivity
      * 页码
      */
     private int page = 1;
+    /**
+     * 是否为转给他人
+     */
+    private boolean isTransferOther;
 
     @Override
     protected boolean isInitBackBtn() {
@@ -142,6 +146,7 @@ public class SelectReceivingDoctorActivity extends BaseActivity
         super.initView(savedInstanceState);
         if (getIntent() != null) {
             isReceiveDoctor = getIntent().getBooleanExtra(CommonData.KEY_IS_RECEIVE_DOCTOR, false);
+            isTransferOther = getIntent().getBooleanExtra(CommonData.KEY_IS_TRANSFER_OTHER, false);
             orderNo = getIntent().getStringExtra(CommonData.KEY_ORDER_ID);
         }
     }
@@ -151,9 +156,9 @@ public class SelectReceivingDoctorActivity extends BaseActivity
         super.initData(savedInstanceState);
         //科室医院列表
         selectRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        reserveTransferSelectDoctorAdapter = new ReserveTransferSelectDoctorAdapter(R.layout.item_depart, data);
-        reserveTransferSelectDoctorAdapter.setOnItemClickListener(this);
-        selectRecyclerView.setAdapter(reserveTransferSelectDoctorAdapter);
+        adapter = new ReserveTransferSelectDoctorAdapter(R.layout.item_depart, data);
+        adapter.setOnItemClickListener(this);
+        selectRecyclerView.setAdapter(adapter);
         //医生列表
         searchRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         doctorAdapter = new DoctorAdapter(R.layout.item_doctor, doctors);
@@ -190,7 +195,14 @@ public class SelectReceivingDoctorActivity extends BaseActivity
      * 获取医院列表
      */
     private void getHospitalListByReverse() {
-        RequestUtils.getHospitalListByReverse(this, loginBean.getToken(), this);
+        if (isTransferOther) {
+            //转给他人
+            RequestUtils.getHospitalListByDoctor(this, loginBean.getToken(), orderNo, this);
+        }
+        else {
+            // (创建预约服务订单)
+            RequestUtils.getHospitalListByReverse(this, loginBean.getToken(), this);
+        }
     }
 
     /**
@@ -310,7 +322,7 @@ public class SelectReceivingDoctorActivity extends BaseActivity
                 for (HospitalBean bean : hospitals) {
                     data.add(bean.getHospitalName());
                 }
-                reserveTransferSelectDoctorAdapter.setNewData(data);
+                adapter.setNewData(data);
                 getDoctorListByReverse(new HashMap<>(16));
                 initHospital();
                 break;
@@ -338,7 +350,7 @@ public class SelectReceivingDoctorActivity extends BaseActivity
                     break;
                 case 1:
                     curDepartOnePosition = position;
-                    reserveTransferSelectDoctorAdapter.setCurPosition(curDepartOnePosition);
+                    this.adapter.setCurPosition(curDepartOnePosition);
                     if (position != 0) {
                         curType = 2;
                         curHospitalDepartBean = departOne.get(position - 1);
@@ -359,7 +371,7 @@ public class SelectReceivingDoctorActivity extends BaseActivity
                     break;
                 case 2:
                     curDepartTwoPosition = position;
-                    reserveTransferSelectDoctorAdapter.setCurPosition(curDepartTwoPosition);
+                    this.adapter.setCurPosition(curDepartTwoPosition);
                     selectEnd();
                     params = new HashMap<>(16);
                     params.put("hospitalCode", curHospital.getHospitalCode());
@@ -405,7 +417,7 @@ public class SelectReceivingDoctorActivity extends BaseActivity
                 for (HospitalBean bean : hospitals) {
                     data.add(bean.getHospitalName());
                 }
-                reserveTransferSelectDoctorAdapter.setNewData(data);
+                adapter.setNewData(data);
                 initHospital();
                 break;
             case GET_DEPART_ONE_LIST_BY_REVERSE:
@@ -415,7 +427,7 @@ public class SelectReceivingDoctorActivity extends BaseActivity
                 for (HospitalDepartBean bean : departOne) {
                     data.add(bean.getDepartmentName());
                 }
-                reserveTransferSelectDoctorAdapter.setNewData(data);
+                adapter.setNewData(data);
                 initDepartOne();
                 break;
             case GET_DEPART_TWO_LIST_BY_REVERSE:
@@ -425,7 +437,7 @@ public class SelectReceivingDoctorActivity extends BaseActivity
                 for (HospitalDepartChildBean bean : departTwo) {
                     data.add(bean.getDepartmentName());
                 }
-                reserveTransferSelectDoctorAdapter.setNewData(data);
+                adapter.setNewData(data);
                 initDepartTwo();
                 break;
             case GET_RECEIVING_DOCTOR_LIST:

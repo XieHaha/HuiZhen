@@ -29,6 +29,10 @@ public interface CommonData {
      */
     String KEY_CHECK_OR_TRANSFER = "key_check_or_transfer";
     /**
+     * 是否为转给他人
+     */
+    String KEY_IS_TRANSFER_OTHER = "key_is_transfer_other";
+    /**
      * 变更接诊信息  or  接诊
      */
     String KEY_RECEIVE_OR_EDIT_VISIT = "key_receive_or_edit_visit";

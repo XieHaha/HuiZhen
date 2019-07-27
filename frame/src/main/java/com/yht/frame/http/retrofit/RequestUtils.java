@@ -167,10 +167,14 @@ public class RequestUtils {
                                                                  listener));
     }
 
-    public static void getHospitalListByDoctor(Context context, String token,
+    public static void getHospitalListByDoctor(Context context, String token, String orderNo,
             final ResponseListener<BaseResponse> listener) {
+        Map<String, String> params = new HashMap<>(16);
+        if (!TextUtils.isEmpty(orderNo)) {
+            params.put("orderNo", orderNo);
+        }
         RetrofitManager.getApiUrlManager()
-                       .getHospitalListByDoctor(token)
+                       .getHospitalListByDoctor(token, params)
                        .compose(RxJavaHelper.observableIO2Main(context))
                        .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_HOSPITAL_LIST_BY_DOCTOR,
                                                                  listener));
