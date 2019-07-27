@@ -25,7 +25,7 @@ package com.yht.yihuantong.scheme;
  * Email: lovejjfg@gmail.com
  */
 public class Constants {
-    public static final String KNOWN_SCHEME = "zyc://";
+    public static final String KNOWN_SCHEME = "doctorpro://";
     public static final String HTTP_SCHEME = "http://";
     public static final String HTTPS_SCHEME = "https://";
     public static final String URL = "URL";

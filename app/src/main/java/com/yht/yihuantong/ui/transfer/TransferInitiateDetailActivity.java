@@ -115,6 +115,10 @@ public class TransferInitiateDetailActivity extends BaseActivity
      * 取消转诊原因
      */
     private String cancelReason;
+    /**
+     * 是否为外链打开
+     */
+    private boolean isOuterChain;
 
     @Override
     protected boolean isInitBackBtn() {
@@ -139,6 +143,7 @@ public class TransferInitiateDetailActivity extends BaseActivity
         if (getIntent() != null) {
             transferBean = (TransferBean)getIntent().getSerializableExtra(CommonData.KEY_TRANSFER_ORDER_BEAN);
             orderNo = getIntent().getStringExtra(CommonData.KEY_ORDER_ID);
+            isOuterChain = getIntent().getBooleanExtra(CommonData.KEY_IS_OUTER_CHAIN, false);
         }
         if (transferBean != null) {
             orderNo = transferBean.getOrderNo();
@@ -258,11 +263,15 @@ public class TransferInitiateDetailActivity extends BaseActivity
     }
 
     @OnClick({
-            R.id.tv_transfer_again, R.id.tv_contact_patient, R.id.tv_contact_doctor, R.id.tv_contact_patient_one,
-            R.id.tv_contact_doctor_one })
+            R.id.public_title_bar_back, R.id.tv_transfer_again, R.id.tv_contact_patient, R.id.tv_contact_doctor,
+            R.id.tv_contact_patient_one, R.id.tv_contact_doctor_one })
     public void onViewClicked(View view) {
         if (transferBean == null) { return; }
         switch (view.getId()) {
+            case R.id.public_title_bar_back:
+                onFinish();
+                finish();
+                break;
             case R.id.tv_transfer_again:
                 if (TRANSFER_STATUS_WAIT == transferBean.getReceiveStatus()) {
                     new InputDialog(this).Builder()
@@ -338,22 +347,28 @@ public class TransferInitiateDetailActivity extends BaseActivity
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        if (ViewUtils.isLaunchedActivity(this, MainActivity.class)) {
-            Intent upIntent = NavUtils.getParentActivityIntent(this);
-            if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
-                TaskStackBuilder.create(this).addNextIntentWithParentStack(upIntent).startActivities();
+    private void onFinish() {
+        if (isOuterChain) {
+            if (ViewUtils.isLaunchedActivity(this, MainActivity.class)) {
+                Intent upIntent = NavUtils.getParentActivityIntent(this);
+                if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
+                    TaskStackBuilder.create(this).addNextIntentWithParentStack(upIntent).startActivities();
+                }
+                else {
+                    upIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    NavUtils.navigateUpTo(this, upIntent);
+                }
             }
             else {
-                upIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                NavUtils.navigateUpTo(this, upIntent);
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
             }
         }
-        else {
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        onFinish();
         super.onBackPressed();
     }
 }

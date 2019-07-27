@@ -156,4 +156,8 @@ public interface CommonData {
      * 环信消息未读状态
      */
     String KEY_EASE_MESSAGE_UNREAD_STATUS = "key_ease_message_unread_status";
+    /**
+     * 外链跳转页面销毁逻辑
+     */
+    String KEY_IS_OUTER_CHAIN = "key_is_outer_chain";
 }

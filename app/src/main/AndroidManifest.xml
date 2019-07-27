@@ -96,7 +96,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="zyc" />
+                <data android:scheme="doctorpro" />
             </intent-filter>
         </activity>
         <activity
@@ -241,9 +241,9 @@
             android:label="@string/title_transfer_detail"
             android:windowSoftInputMode="adjustResize|stateHidden"
             android:parentActivityName=".ui.main.MainActivity">
-            <!--<meta-data-->
-            <!--android:name="android.support.PARENT_ACTIVITY"-->
-            <!--android:value=".ui.main.MainActivity" />-->
+            <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".ui.main.MainActivity" />
 
             <!--<intent-filter>-->
             <!--<action android:name="android.intent.action.VIEW" />-->
@@ -270,11 +270,12 @@
             android:name=".ui.transfer.TransferReceiveDetailActivity"
             android:screenOrientation="portrait"
             android:label="@string/title_receiving_transfer_apply"
-            android:windowSoftInputMode="adjustResize|stateHidden">
+            android:windowSoftInputMode="adjustResize|stateHidden"
+            android:parentActivityName=".ui.main.MainActivity">
 
-            <!--<meta-data-->
-            <!--android:name="android.support.PARENT_ACTIVITY"-->
-            <!--android:value=".ui.main.MainActivity" />-->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.main.MainActivity" />
 
             <!--<intent-filter>-->
             <!--<action android:name="android.intent.action.VIEW" />-->

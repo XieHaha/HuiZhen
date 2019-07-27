@@ -7,9 +7,9 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.yht.frame.data.CommonData;
+import com.yht.frame.data.type.MessageType;
 import com.yht.yihuantong.ui.SplashActivity;
 import com.yht.yihuantong.ui.auth.AuthDoctorActivity;
-import com.yht.yihuantong.ui.check.ServiceDetailActivity;
 import com.yht.yihuantong.ui.personal.SettingActivity;
 import com.yht.yihuantong.ui.transfer.TransferInitiateDetailActivity;
 import com.yht.yihuantong.ui.transfer.TransferReceiveDetailActivity;
@@ -20,8 +20,8 @@ import com.yht.yihuantong.ui.transfer.TransferReceiveDetailActivity;
  * Email: lovejjfg@gmail.com
  */
 @SuppressWarnings({ "WeakerAccess", "unused" })
-public class JumpUtils {
-    private static final String TAG = JumpUtils.class.getSimpleName();
+public class JumpUtils implements MessageType {
+    private static final String TAG = "ZYC->OUTER";
 
     public static boolean isKnownSchemes(String url) {
         return !TextUtils.isEmpty(url) && (isYiEr(url) || isHttp(url));
@@ -77,24 +77,30 @@ public class JumpUtils {
     private static Intent parseSchemes(Context context, String msgType, String orderNo) {
         Intent intent;
         switch (msgType) {
-            case "0":
+            case MESSAGE_TRANSFER_APPLY:
+            case MESSAGE_TRANSFER_CANCEL:
+            case MESSAGE_TRANSFER_SYSTEM_CANCEL_R:
                 intent = new Intent(context, TransferReceiveDetailActivity.class);
                 intent.putExtra(CommonData.KEY_ORDER_ID, orderNo);
+                intent.putExtra(CommonData.KEY_IS_OUTER_CHAIN, true);
                 return intent;
-            case "1":
+            case MESSAGE_TRANSFER_UPDATE:
+            case MESSAGE_TRANSFER_REJECT:
+            case MESSAGE_TRANSFER_RECEIVED:
+            case MESSAGE_TRANSFER_OTHER:
+            case MESSAGE_TRANSFER_SYSTEM_CANCEL_T:
                 intent = new Intent(context, TransferInitiateDetailActivity.class);
                 intent.putExtra(CommonData.KEY_ORDER_ID, orderNo);
+                intent.putExtra(CommonData.KEY_IS_OUTER_CHAIN, true);
                 return intent;
-            case "2":
-                intent = new Intent(context, ServiceDetailActivity.class);
-                intent.putExtra(CommonData.KEY_ORDER_ID, orderNo);
-                return intent;
-            case "3":
+            case MESSAGE_DOCTOR_AUTH_SUCCESS:
+            case MESSAGE_DOCTOR_AUTH_FAILED:
                 intent = new Intent(context, AuthDoctorActivity.class);
                 return intent;
             default:
                 break;
         }
+        //默认启动APP
         intent = new Intent(context, SplashActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         return intent;

@@ -169,7 +169,9 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 super.onTextChanged(s, start, before, count);
                 otherString = s.toString();
-                reverseTransferBean.setTransferTarget(otherString);
+                if (reverseTransferBean != null) {
+                    reverseTransferBean.setTransferTarget(otherString);
+                }
                 initNextButton();
             }
         });

@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.NavUtils;
+import android.support.v4.app.TaskStackBuilder;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -27,6 +29,8 @@ import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.frame.widgets.dialog.InputDialog;
 import com.yht.frame.widgets.textview.JustifiedTextView;
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.scheme.ViewUtils;
+import com.yht.yihuantong.ui.main.MainActivity;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -119,6 +123,10 @@ public class TransferReceiveDetailActivity extends BaseActivity
      */
     private String rejectReason;
     /**
+     * 是否为外链打开
+     */
+    private boolean isOuterChain;
+    /**
      * 变更接诊信息
      */
     public static final int REQUEST_CODE_UPDATE_TRANSFER = 100;
@@ -153,6 +161,7 @@ public class TransferReceiveDetailActivity extends BaseActivity
         super.initData(savedInstanceState);
         if (getIntent() != null) {
             orderNo = getIntent().getStringExtra(CommonData.KEY_ORDER_ID);
+            isOuterChain = getIntent().getBooleanExtra(CommonData.KEY_IS_OUTER_CHAIN, false);
         }
         if (BaseUtils.isNetworkAvailable(this)) {
             getTransferOrderDetail();
@@ -271,12 +280,16 @@ public class TransferReceiveDetailActivity extends BaseActivity
     }
 
     @OnClick({
-            R.id.layout_call, R.id.layout_edit_transfer, R.id.tv_transfer_other, R.id.tv_refuse, R.id.tv_received,
-            R.id.tv_contact_doctor, R.id.tv_contact_patient })
+            R.id.public_title_bar_back, R.id.layout_call, R.id.layout_edit_transfer, R.id.tv_transfer_other,
+            R.id.tv_refuse, R.id.tv_received, R.id.tv_contact_doctor, R.id.tv_contact_patient })
     public void onViewClicked(View view) {
         if (transferBean == null) { return; }
         Intent intent;
         switch (view.getId()) {
+            case R.id.public_title_bar_back:
+                onFinish();
+                finish();
+                break;
             case R.id.layout_call:
                 new HintDialog(this).setPhone(getString(R.string.txt_contact_doctor_phone),
                                               transferBean.getSourceDoctorMobile())
@@ -375,5 +388,30 @@ public class TransferReceiveDetailActivity extends BaseActivity
             default:
                 break;
         }
+    }
+
+    private void onFinish() {
+        if (isOuterChain) {
+            if (ViewUtils.isLaunchedActivity(this, MainActivity.class)) {
+                Intent upIntent = NavUtils.getParentActivityIntent(this);
+                if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
+                    TaskStackBuilder.create(this).addNextIntentWithParentStack(upIntent).startActivities();
+                }
+                else {
+                    upIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    NavUtils.navigateUpTo(this, upIntent);
+                }
+            }
+            else {
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+            }
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        onFinish();
+        super.onBackPressed();
     }
 }
