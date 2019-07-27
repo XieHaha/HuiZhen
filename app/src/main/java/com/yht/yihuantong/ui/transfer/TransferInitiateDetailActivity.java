@@ -3,6 +3,8 @@ package com.yht.yihuantong.ui.transfer;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.NavUtils;
+import android.support.v4.app.TaskStackBuilder;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -26,6 +28,8 @@ import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.frame.widgets.dialog.InputDialog;
 import com.yht.frame.widgets.textview.JustifiedTextView;
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.scheme.ViewUtils;
+import com.yht.yihuantong.ui.main.MainActivity;
 import com.yht.yihuantong.ui.reservation.transfer.ReservationTransferActivity;
 import com.yht.yihuantong.utils.FileUrlUtil;
 
@@ -332,5 +336,24 @@ public class TransferInitiateDetailActivity extends BaseActivity
             default:
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (ViewUtils.isLaunchedActivity(this, MainActivity.class)) {
+            Intent upIntent = NavUtils.getParentActivityIntent(this);
+            if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
+                TaskStackBuilder.create(this).addNextIntentWithParentStack(upIntent).startActivities();
+            }
+            else {
+                upIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                NavUtils.navigateUpTo(this, upIntent);
+            }
+        }
+        else {
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        }
+        super.onBackPressed();
     }
 }

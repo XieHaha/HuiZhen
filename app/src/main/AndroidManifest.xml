@@ -190,9 +190,9 @@
             android:label="@string/txt_reserve_check_detail"
             android:windowSoftInputMode="adjustPan|stateHidden"
             android:parentActivityName=".ui.main.MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.main.MainActivity" />
+            <!--<meta-data-->
+            <!--android:name="android.support.PARENT_ACTIVITY"-->
+            <!--android:value=".ui.main.MainActivity" />-->
 
             <!--<intent-filter>-->
             <!--<action android:name="android.intent.action.VIEW" />-->
@@ -241,9 +241,9 @@
             android:label="@string/title_transfer_detail"
             android:windowSoftInputMode="adjustResize|stateHidden"
             android:parentActivityName=".ui.main.MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.main.MainActivity" />
+            <!--<meta-data-->
+            <!--android:name="android.support.PARENT_ACTIVITY"-->
+            <!--android:value=".ui.main.MainActivity" />-->
 
             <!--<intent-filter>-->
             <!--<action android:name="android.intent.action.VIEW" />-->
@@ -253,7 +253,7 @@
 
             <!--<data-->
             <!--android:scheme="doctorpro"-->
-            <!--android:host="transfer.com" />-->
+            <!--android:host="transfer_to.com" />-->
             <!--</intent-filter>-->
         </activity>
         <activity
@@ -270,7 +270,23 @@
             android:name=".ui.transfer.TransferReceiveDetailActivity"
             android:screenOrientation="portrait"
             android:label="@string/title_receiving_transfer_apply"
-            android:windowSoftInputMode="adjustResize|stateHidden" />
+            android:windowSoftInputMode="adjustResize|stateHidden">
+
+            <!--<meta-data-->
+            <!--android:name="android.support.PARENT_ACTIVITY"-->
+            <!--android:value=".ui.main.MainActivity" />-->
+
+            <!--<intent-filter>-->
+            <!--<action android:name="android.intent.action.VIEW" />-->
+
+            <!--<category android:name="android.intent.category.DEFAULT" />-->
+            <!--<category android:name="android.intent.category.BROWSABLE" />-->
+
+            <!--<data-->
+            <!--android:scheme="doctorpro"-->
+            <!--android:host="transfer_from.com" />-->
+            <!--</intent-filter>-->
+        </activity>
         <activity
             android:name=".ui.transfer.TransferEditActivity"
             android:screenOrientation="portrait"
