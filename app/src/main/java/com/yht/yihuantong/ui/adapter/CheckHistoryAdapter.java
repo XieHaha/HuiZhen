@@ -76,7 +76,9 @@ public class CheckHistoryAdapter extends BaseQuickAdapter<CheckBean, BaseViewHol
             ImageView imageDot = view.findViewById(R.id.iv_check_type_dot);
             ImageView imageView = view.findViewById(R.id.iv_check_type_status);
             textView.setText(bean.getName());
-            if (bean.getStatus() == CheckTypeStatus.CHECK_TYPE_STATUS_CANCEL) {
+            //如果订单为已取消，检查项不做处理
+            if (item.getStatus() != CHECK_ORDER_STATUS_CANCEL &&
+                bean.getStatus() == CheckTypeStatus.CHECK_TYPE_STATUS_CANCEL) {
                 imageView.setVisibility(View.VISIBLE);
                 textView.setSelected(true);
                 imageDot.setSelected(true);

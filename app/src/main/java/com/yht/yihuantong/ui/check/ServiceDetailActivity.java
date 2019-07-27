@@ -322,7 +322,7 @@ public class ServiceDetailActivity extends BaseActivity
         if (bean.getStatus() == CHECK_TYPE_STATUS_COMPLETE) {
             reportList.add(bean);
         }
-        if (bean.getStatus() == CHECK_TYPE_STATUS_CANCEL) {
+        if (checkDetailBean.getStatus() != CHECK_ORDER_STATUS_CANCEL && bean.getStatus() == CHECK_TYPE_STATUS_CANCEL) {
             tvType.append(appendImage(bean.getStatus(), bean.getName()));
             tvType.setSelected(true);
             imageView.setSelected(true);
