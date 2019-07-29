@@ -17,6 +17,8 @@ import com.yht.yihuantong.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.yht.frame.data.type.CheckOrderStatus.CHECK_ORDER_STATUS_CANCEL;
+
 /**
  * @author 顿顿
  * @date 19/6/5 14:25
@@ -166,7 +168,7 @@ public class PatientOrderAdapter extends BaseMultiItemQuickAdapter<PatientOrderB
                     reportList.add(checkTypeBean);
                 }
                 //检查项已取消
-                if (status == CHECK_TYPE_STATUS_CANCEL) {
+                if (item.getStatus() != CHECK_ORDER_STATUS_CANCEL && status == CHECK_TYPE_STATUS_CANCEL) {
                     textView.setSelected(true);
                     imageDot.setSelected(true);
                     imageView.setVisibility(View.VISIBLE);

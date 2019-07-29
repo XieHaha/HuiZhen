@@ -90,10 +90,6 @@ public class PatientFragment extends BaseFragment
      * 所有患者数据
      */
     private List<PatientBean> patientBeans = new ArrayList<>();
-    /**
-     * 搜索患者数据
-     */
-    private List<PatientBean> searchPatientBeans = new ArrayList<>();
     private List<String> indexs = new ArrayList<>();
     /**
      * 患者数据主动更新
@@ -148,14 +144,12 @@ public class PatientFragment extends BaseFragment
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (TextUtils.isEmpty(s.toString())) {
                     layoutBg.setVisibility(View.VISIBLE);
-                    sortData();
-                    patientAdapter.setNewData(patientBeans);
-                    patientAdapter.loadMoreEnd();
+                    getPatientsByLocal();
                 }
                 else {
                     sortSearchData(s.toString());
                     layoutBg.setVisibility(View.GONE);
-                    patientAdapter.setNewData(searchPatientBeans);
+                    patientAdapter.setNewData(patientBeans);
                     patientAdapter.loadMoreEnd();
                 }
             }
@@ -245,8 +239,8 @@ public class PatientFragment extends BaseFragment
     }
 
     private void sortSearchData(String tag) {
-        searchPatientBeans = LitePalHelper.findPatients(tag);
-        if (searchPatientBeans != null && searchPatientBeans.size() > 0) {
+        patientBeans = LitePalHelper.findPatients(tag);
+        if (patientBeans != null && patientBeans.size() > 0) {
             recyclerview.setVisibility(View.VISIBLE);
             tvNonePatient.setVisibility(View.GONE);
             layoutBg.setVisibility(View.VISIBLE);
@@ -258,16 +252,16 @@ public class PatientFragment extends BaseFragment
             tvNonePatient.setText(R.string.txt_search_none_patient);
         }
         //对数据源进行排序
-        BaseUtils.sortData(searchPatientBeans);
+        BaseUtils.sortData(patientBeans);
         //返回一个包含所有Tag字母在内的字符串并赋值给tagsStr
-        String tagsStr = BaseUtils.getTags(searchPatientBeans);
+        String tagsStr = BaseUtils.getTags(patientBeans);
         char[] tags = tagsStr.toCharArray();
         indexs.clear();
         for (char c : tags) {
             indexs.add(String.valueOf(c));
         }
         indexBarAdapter.setNewData(indexs);
-        decoration.setDatas(searchPatientBeans, tagsStr);
+        decoration.setDatas(patientBeans, tagsStr);
     }
 
     /**
