@@ -2,7 +2,11 @@ package com.yht.yihuantong.ui.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.content.FileProvider;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -10,8 +14,12 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.yht.frame.api.DirHelper;
 import com.yht.frame.ui.AppManager;
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.ZycApplication;
+
+import java.io.File;
 
 import static com.yht.yihuantong.version.ConstantsVersionMode.UPDATE_MUST;
 
@@ -71,6 +79,12 @@ public class UpdateDialog extends Dialog implements View.OnClickListener {
         if (upDateMode == UPDATE_MUST) {
             ivCancel.setVisibility(View.INVISIBLE);
         }
+        if (isDownNewAPK) {
+            tvUpdate.setText(R.string.txt_version_update);
+        }
+        else {
+            tvUpdate.setText(R.string.txt_version_install);
+        }
     }
 
     /**
@@ -112,7 +126,9 @@ public class UpdateDialog extends Dialog implements View.OnClickListener {
      */
     public void setProgressValue(long total, long current) {
         if (total == current) {
+            this.isDownNewAPK = false;
             tvUpdate.setVisibility(View.VISIBLE);
+            layoutProgress.setVisibility(View.GONE);
             tvUpdate.setText(R.string.txt_version_install);
         }
         else {
@@ -129,7 +145,7 @@ public class UpdateDialog extends Dialog implements View.OnClickListener {
                 dismiss();
                 break;
             case R.id.tv_update:
-                if (onEnterClickListener != null) {
+                if (isDownNewAPK && onEnterClickListener != null) {
                     if (upDateMode == UPDATE_MUST) {
                         onEnterClickListener.onEnter(true);
                         layoutProgress.setVisibility(View.VISIBLE);
@@ -139,6 +155,21 @@ public class UpdateDialog extends Dialog implements View.OnClickListener {
                         onEnterClickListener.onEnter(false);
                         dismiss();
                     }
+                }
+                else {
+                    File file = new File(DirHelper.getPathFile(), "ZYC.apk");
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    Uri uri = null;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        uri = FileProvider.getUriForFile(context, ZycApplication.getInstance().getPackageName() +
+                                                                  ".fileprovider", file);
+                    }
+                    else {
+                        uri = Uri.fromFile(file);
+                    }
+                    intent.setDataAndType(uri, "application/vnd.android.package-archive");
+                    context.startActivity(intent);
                 }
                 break;
             case R.id.tv_exit_app:

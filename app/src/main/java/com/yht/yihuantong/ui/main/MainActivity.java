@@ -73,7 +73,7 @@ import static com.yht.yihuantong.jpush.TagAliasOperatorHelper.ACTION_SET;
  * @author dundun
  */
 public class MainActivity extends BaseActivity
-        implements  VersionPresenter.VersionViewListener, UpdateDialog.OnEnterClickListener, OnMessageUpdateListener {
+        implements VersionPresenter.VersionViewListener, UpdateDialog.OnEnterClickListener, OnMessageUpdateListener {
     @BindView(R.id.act_main_tab1)
     RelativeLayout actMainTab1;
     @BindView(R.id.act_main_tab3)
@@ -498,13 +498,13 @@ public class MainActivity extends BaseActivity
 
     /*********************版本更新回调*************************/
     @Override
-    public void updateVersion(VersionBean version, int mode, boolean isDownLoading) {
+    public void updateVersion(VersionBean version, int mode, boolean isDownNewApk) {
         if (mode == -1) {
             return;
         }
         updateDialog = new UpdateDialog(this);
         updateDialog.setCancelable(false);
-        updateDialog.setUpdateMode(mode).setData(version.getNotes());
+        updateDialog.setUpdateMode(mode).setIsDownNewAPK(isDownNewApk).setData(version.getNotes());
         updateDialog.setOnEnterClickListener(this);
         updateDialog.show();
     }

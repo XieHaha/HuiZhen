@@ -79,7 +79,6 @@ public class VersionPresenter implements ConstantsVersionMode {
                     if (version == null) { return; }
                     nowVersion = version;
                     url = nowVersion.getDownloadUrl();
-                    url = "http://xzf.jc9559.com/tencent.mm7.0.3.apk";
                     checkVersion();
                 }
 

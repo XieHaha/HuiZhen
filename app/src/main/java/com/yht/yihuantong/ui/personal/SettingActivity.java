@@ -19,6 +19,7 @@ import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.dialog.UpdateDialog;
 import com.yht.yihuantong.utils.NotifySettingUtils;
+import com.yht.yihuantong.version.ConstantsVersionMode;
 import com.yht.yihuantong.version.presenter.VersionPresenter;
 
 import butterknife.BindView;
@@ -82,6 +83,7 @@ public class SettingActivity extends BaseActivity
         //检查更新
         mVersionPresenter = new VersionPresenter(this, loginBean.getToken());
         mVersionPresenter.setVersionViewListener(this);
+        mVersionPresenter.init();
         getAppVersionCode();
     }
 
@@ -107,7 +109,7 @@ public class SettingActivity extends BaseActivity
                 NotifySettingUtils.openNotifySetting(this);
                 break;
             case R.id.layout_version:
-                mVersionPresenter.init();
+                update();
                 break;
             case R.id.tv_exit:
                 new HintDialog(this).setTitleString(getString(R.string.txt_app_name))
@@ -122,17 +124,39 @@ public class SettingActivity extends BaseActivity
     }
 
     /*********************版本更新回调*************************/
-    @Override
-    public void updateVersion(VersionBean version, int mode, boolean isDownLoading) {
-        if (mode == -1) {
+    private VersionBean versionBean;
+    /**
+     * 更新模式
+     */
+    private int mode = -1;
+    /**
+     * 是否需要重新下载apk
+     */
+    private boolean isDownNewApk;
+
+    private void update() {
+        if (mode == -1 || versionBean == null) {
             ToastUtil.toast(this, R.string.toast_version_update_hint);
             return;
         }
         updateDialog = new UpdateDialog(this);
         updateDialog.setCancelable(false);
-        updateDialog.setUpdateMode(mode).setData(version.getNotes());
+        updateDialog.setUpdateMode(mode).setIsDownNewAPK(isDownNewApk).setData(versionBean.getNotes());
         updateDialog.setOnEnterClickListener(this);
         updateDialog.show();
+    }
+
+    @Override
+    public void updateVersion(VersionBean version, int mode, boolean isDownNewApk) {
+        this.mode = mode;
+        this.versionBean = version;
+        this.isDownNewApk = isDownNewApk;
+        if (mode == ConstantsVersionMode.UPDATE_CHOICE || mode == ConstantsVersionMode.UPDATE_MUST) {
+            dotNewVersion.setVisibility(View.VISIBLE);
+        }
+        else {
+            dotNewVersion.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
