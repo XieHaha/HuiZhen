@@ -15,11 +15,10 @@ import com.yht.frame.widgets.picker.wheelview.view.WheelView;
 import java.util.Calendar;
 
 /**
- * Created by xiaosongzeem on 2018/3/20.
+ * @author xiaosongzeem
+ * @date 2018/3/20
  */
-
 public class TimePickerBuilder {
-
     private PickerOptions mPickerOptions;
 
     //Required
@@ -141,18 +140,15 @@ public class TimePickerBuilder {
         return this;
     }
 
-
     /**
      * 设置起始时间
      * 因为系统Calendar的月份是从0-11的,所以如果是调用Calendar的set方法来设置时间,月份的范围也要是从0-11
      */
-
     public TimePickerBuilder setRangDate(Calendar startDate, Calendar endDate) {
         mPickerOptions.startDate = startDate;
         mPickerOptions.endDate = endDate;
         return this;
     }
-
 
     /**
      * 设置间距倍数,但是只能在1.0-4.0f之间
@@ -169,7 +165,6 @@ public class TimePickerBuilder {
      *
      * @param dividerColor
      */
-
     public TimePickerBuilder setDividerColor(@ColorInt int dividerColor) {
         mPickerOptions.dividerColor = dividerColor;
         return this;
@@ -241,8 +236,8 @@ public class TimePickerBuilder {
         return this;
     }
 
-
-    public TimePickerBuilder setLabel(String label_year, String label_month, String label_day, String label_hours, String label_mins, String label_seconds) {
+    public TimePickerBuilder setLabel(String label_year, String label_month, String label_day, String label_hours,
+            String label_mins, String label_seconds) {
         mPickerOptions.label_year = label_year;
         mPickerOptions.label_month = label_month;
         mPickerOptions.label_day = label_day;
@@ -263,8 +258,8 @@ public class TimePickerBuilder {
      * @param x_offset_seconds 秒
      * @return
      */
-    public TimePickerBuilder setTextXOffset(int x_offset_year, int x_offset_month, int x_offset_day,
-                                            int x_offset_hours, int x_offset_minutes, int x_offset_seconds) {
+    public TimePickerBuilder setTextXOffset(int x_offset_year, int x_offset_month, int x_offset_day, int x_offset_hours,
+            int x_offset_minutes, int x_offset_seconds) {
         mPickerOptions.x_offset_year = x_offset_year;
         mPickerOptions.x_offset_month = x_offset_month;
         mPickerOptions.x_offset_day = x_offset_day;
@@ -283,8 +278,7 @@ public class TimePickerBuilder {
      * @param listener 切换item项滚动停止时，实时回调监听。
      * @return
      */
-    public TimePickerBuilder setTimeSelectChangeListener(
-            OnTimeSelectChangeListener listener) {
+    public TimePickerBuilder setTimeSelectChangeListener(OnTimeSelectChangeListener listener) {
         mPickerOptions.timeSelectChangeListener = listener;
         return this;
     }
