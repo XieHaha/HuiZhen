@@ -143,7 +143,12 @@ public class TransferMaterialFragment extends BaseFragment implements View.OnFoc
                 editStatus(true);
                 age = BaseUtils.getAgeByCard(reverseTransferBean.getPatientIdCardNo());
                 sex = BaseUtils.getSexByCard(reverseTransferBean.getPatientIdCardNo());
-                reverseTransferBean.setPatientAge(Integer.valueOf(age));
+                if (!TextUtils.isEmpty(age)) {
+                    reverseTransferBean.setPatientAge(Integer.valueOf(age));
+                }
+                else {
+                    reverseTransferBean.setPatientAge(0);
+                }
                 reverseTransferBean.setSex(sex);
             }
             tvName.setText(reverseTransferBean.getPatientName());

@@ -143,7 +143,12 @@ public class ServiceMaterialFragment extends BaseFragment implements View.OnFocu
                 age = BaseUtils.getAgeByCard(reserveCheckBean.getIdCardNo());
                 sex = BaseUtils.getSexByCard(reserveCheckBean.getIdCardNo());
                 reserveCheckBean.setSex(sex);
-                reserveCheckBean.setAge(Integer.valueOf(age));
+                if (!TextUtils.isEmpty(age)) {
+                    reserveCheckBean.setAge(Integer.valueOf(age));
+                }
+                else {
+                    reserveCheckBean.setAge(0);
+                }
             }
             tvName.setText(reserveCheckBean.getPatientName());
             tvIdCard.setText(reserveCheckBean.getIdCardNo());

@@ -67,7 +67,9 @@ public abstract class EaseBaseFragment extends Fragment implements OnPermissionC
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
             @NonNull int[] grantResults) {
-        permissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (permissionHelper != null) {
+            permissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
     }
 
     @Override
@@ -84,7 +86,7 @@ public abstract class EaseBaseFragment extends Fragment implements OnPermissionC
 
     @Override
     public void onPermissionNeedExplanation(@NonNull String permissionName) {
-        permissionHelper.requestAfterExplanation(permissionName);
+        if (permissionHelper != null) { permissionHelper.requestAfterExplanation(permissionName); }
     }
 
     @Override
