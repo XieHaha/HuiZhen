@@ -6,9 +6,6 @@ import android.content.SharedPreferences.Editor;
 
 import com.google.gson.Gson;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -44,7 +41,7 @@ public class SharePreferenceUtil {
     public void putAlwaysString(String spKey, String spValue) {
         spEditor = mContext.getSharedPreferences(FILE_NAME_OTHER, 0).edit();
         spEditor.putString(spKey, spValue);
-        spEditor.commit();
+        spEditor.apply();
     }
 
     /**
@@ -71,7 +68,7 @@ public class SharePreferenceUtil {
     public void putAlwaysInteger(String spKey, int spValue) {
         spEditor = mContext.getSharedPreferences(FILE_NAME_OTHER, 0).edit();
         spEditor.putInt(spKey, spValue);
-        spEditor.commit();
+        spEditor.apply();
     }
 
     /**
@@ -99,7 +96,7 @@ public class SharePreferenceUtil {
     public void putString(String spKey, String spValue) {
         spEditor = mContext.getSharedPreferences(FILE_NAME, 0).edit();
         spEditor.putString(spKey, spValue);
-        spEditor.commit();
+        spEditor.apply();
     }
 
     /**
@@ -126,7 +123,7 @@ public class SharePreferenceUtil {
     public void putInt(String spKey, int spValue) {
         spEditor = mContext.getSharedPreferences(FILE_NAME, 0).edit();
         spEditor.putInt(spKey, spValue);
-        spEditor.commit();
+        spEditor.apply();
     }
 
     /**
@@ -153,7 +150,7 @@ public class SharePreferenceUtil {
     public void putBoolean(String spKey, boolean spValue) {
         spEditor = mContext.getSharedPreferences(FILE_NAME, 0).edit();
         spEditor.putBoolean(spKey, spValue);
-        spEditor.commit();
+        spEditor.apply();
     }
 
     /**
@@ -179,7 +176,7 @@ public class SharePreferenceUtil {
     public void clear(String spKey) {
         sp = mContext.getSharedPreferences(FILE_NAME, 0);
         if (sp != null) {
-            sp.edit().remove(spKey).commit();
+            sp.edit().remove(spKey).apply();
         }
     }
 
@@ -216,7 +213,7 @@ public class SharePreferenceUtil {
             else {
                 editor.putString(key, new Gson().toJson(object));
             }
-            SharedPreferencesCompat.apply(editor);
+            editor.apply();
         }
     }
 
@@ -259,7 +256,7 @@ public class SharePreferenceUtil {
         Editor editor = sp.edit();
         editor.putString(key, "");
         editor.remove(key);
-        SharedPreferencesCompat.apply(editor);
+        editor.apply();
     }
 
     /**
@@ -270,8 +267,7 @@ public class SharePreferenceUtil {
     public static void clear(Context context) {
         SharedPreferences sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
         Editor editor = sp.edit();
-        editor.clear();
-        SharedPreferencesCompat.apply(editor);
+        editor.clear().commit();
     }
 
     /**
@@ -284,60 +280,5 @@ public class SharePreferenceUtil {
     public boolean contains(Context context, String key) {
         SharedPreferences sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
         return sp.contains(key);
-    }
-
-    /**
-     * 返回所有的键值对
-     *
-     * @param context
-     * @return
-     */
-    public Map<String, ?> getAll(Context context) {
-        SharedPreferences sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
-        return sp.getAll();
-    }
-
-    /**
-     * 创建一个解决SharedPreferencesCompat.apply方法的一个兼容类
-     */
-    private static class SharedPreferencesCompat {
-        private static final Method S_APPLY_METHOD = findApplyMethod();
-
-        /**
-         * 反射查找apply的方法
-         *
-         * @return
-         */
-        @SuppressWarnings({ "unchecked", "rawtypes" })
-        private static Method findApplyMethod() {
-            try {
-                Class clz = Editor.class;
-                return clz.getMethod("apply");
-            }
-            catch (NoSuchMethodException e) {
-            }
-            return null;
-        }
-
-        /**
-         * 如果找到则使用apply执行，否则使用commit
-         *
-         * @param editor
-         */
-        public static void apply(Editor editor) {
-            try {
-                if (S_APPLY_METHOD != null) {
-                    S_APPLY_METHOD.invoke(editor);
-                    return;
-                }
-            }
-            catch (IllegalArgumentException e) {
-            }
-            catch (IllegalAccessException e) {
-            }
-            catch (InvocationTargetException e) {
-            }
-            editor.commit();
-        }
     }
 }

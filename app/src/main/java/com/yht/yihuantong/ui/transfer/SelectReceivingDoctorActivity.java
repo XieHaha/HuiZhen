@@ -262,6 +262,7 @@ public class SelectReceivingDoctorActivity extends BaseActivity
      * 一级科室数据处理
      */
     private void initDepartOne() {
+        curType = 1;
         tvHospitalTitle.setText(curHospital.getHospitalName());
         tvHospitalTitle.setSelected(false);
         viewHospitalBar.setVisibility(View.GONE);
@@ -274,6 +275,7 @@ public class SelectReceivingDoctorActivity extends BaseActivity
      * 二级科室数据处理
      */
     private void initDepartTwo() {
+        curType =2;
         tvDepartOneTitle.setText(curHospitalDepartBean.getDepartmentName());
         tvDepartOneTitle.setSelected(false);
         viewDepartOneBar.setVisibility(View.GONE);
@@ -340,7 +342,6 @@ public class SelectReceivingDoctorActivity extends BaseActivity
         else {
             switch (curType) {
                 case 0:
-                    curType = 1;
                     curHospital = hospitals.get(position);
                     tvSelect.setText(curHospital.getHospitalName());
                     getDepartOneListByReverse();
@@ -349,7 +350,6 @@ public class SelectReceivingDoctorActivity extends BaseActivity
                     curDepartOnePosition = position;
                     this.adapter.setCurPosition(curDepartOnePosition);
                     if (position != 0) {
-                        curType = 2;
                         curHospitalDepartBean = departOne.get(position - 1);
                         tvSelect.setText(
                                 curHospital.getHospitalName() + "-" + curHospitalDepartBean.getDepartmentName());

@@ -210,6 +210,7 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
     }
 
     private void tabAuthResultView() {
+        setResult(RESULT_OK);
         transaction = fragmentManager.beginTransaction();
         hideAll(transaction);
         if (authResultFragment == null) {
@@ -318,7 +319,6 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
         super.onResponseSuccess(task, response);
         switch (task) {
             case SUBMIT_DOCTOR_AUTH:
-                setResult(RESULT_OK);
                 //提交成功后需要更新用户code、token
                 LoginBean bean = (LoginBean)response.getData();
                 loginBean.setToken(bean.getToken());

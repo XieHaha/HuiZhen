@@ -230,7 +230,7 @@ public class ServiceDetailActivity extends BaseActivity
                 break;
             default:
                 ivCheckStatus.setImageResource(R.mipmap.ic_status_cancel);
-                layoutCancelResult.setVisibility(View.VISIBLE);
+                layoutCancelResult.setVisibility(View.GONE);
                 tvCheckStatus.setText(getString(R.string.txt_status_cancel));
                 break;
         }
