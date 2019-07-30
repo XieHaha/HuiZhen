@@ -182,7 +182,8 @@ public class PatientInfoFragment extends BaseFragment
     private void sortOrderList() {
         titleBars = new ArrayList<>();
         for (PatientOrderBean bean : patientOrderBeans) {
-            String time = BaseUtils.formatDate(bean.getCreateAt(), BaseUtils.YYYY_MM_DD);
+            String time = BaseUtils.formatDate(
+                    BaseUtils.date2TimeStamp(bean.getCreateAt(), BaseUtils.YYYY_MM_DD_HH_MM_SS), BaseUtils.YYYY_MM_DD);
             titleBars.add(time);
         }
         //返回一个包含所有Tag字母在内的字符串并赋值给tagsStr

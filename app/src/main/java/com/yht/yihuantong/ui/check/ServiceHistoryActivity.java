@@ -138,7 +138,8 @@ public class ServiceHistoryActivity extends BaseActivity
     private void sortTransferData() {
         titleBars.clear();
         for (CheckBean bean : checkedList) {
-            String time = BaseUtils.formatDate(bean.getCreateAt(), BaseUtils.YYYY_MM_DD);
+            String time = BaseUtils.formatDate(
+                    BaseUtils.date2TimeStamp(bean.getCreateAt(), BaseUtils.YYYY_MM_DD_HH_MM_SS), BaseUtils.YYYY_MM_DD);
             titleBars.add(time);
         }
         //返回一个包含所有Tag字符串并赋值给tagsStr

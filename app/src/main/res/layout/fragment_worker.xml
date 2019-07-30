@@ -308,9 +308,12 @@
 
                     <RelativeLayout
                         android:id="@+id/layout_receiving_transfer_num"
-                        android:layout_width="17dp"
-                        android:layout_height="17dp"
+                        android:layout_width="wrap_content"
+                        android:minWidth="18dp"
+                        android:layout_height="18dp"
                         android:layout_toEndOf="@id/image"
+                        android:paddingStart="3dp"
+                        android:paddingEnd="3dp"
                         android:layout_marginStart="2dp"
                         android:visibility="gone"
                         android:background="@drawable/circular_ff5452_point_bg">
@@ -321,7 +324,7 @@
                             android:layout_height="wrap_content"
                             android:textStyle="bold"
                             android:layout_centerInParent="true"
-                            tools:text="10"
+                            tools:text="100"
                             android:textColor="@color/color_ffffff"
                             android:textSize="@dimen/text_12" />
                     </RelativeLayout>

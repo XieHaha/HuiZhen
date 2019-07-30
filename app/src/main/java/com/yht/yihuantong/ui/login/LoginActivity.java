@@ -83,6 +83,10 @@ public class LoginActivity extends BaseActivity {
      * 协议结果
      */
     private static final int REQUEST_CODE_PROTOCOL = 100;
+    /**
+     * 认证状态  （如果提交了认证信息，就返回到登陆选择界面）
+     */
+    private static final int REQUEST_CODE_AUTH_STATUS = 200;
 
     @Override
     protected boolean isInitBackBtn() {
@@ -193,7 +197,7 @@ public class LoginActivity extends BaseActivity {
      * 医生认证
      */
     private void jumpAuth() {
-        startActivity(new Intent(this, AuthDoctorActivity.class));
+        startActivityForResult(new Intent(this, AuthDoctorActivity.class), REQUEST_CODE_AUTH_STATUS);
     }
 
     /**
@@ -282,10 +286,17 @@ public class LoginActivity extends BaseActivity {
         if (resultCode != Activity.RESULT_OK) {
             return;
         }
-        if (requestCode == REQUEST_CODE_PROTOCOL) {
-            sharePreferenceUtil.putAlwaysString(CommonData.KEY_IS_PROTOCOL_UPDATE_DATE, ptotocolUpdateTime);
-            isAgree = true;
-            login();
+        switch (requestCode) {
+            case REQUEST_CODE_PROTOCOL:
+                sharePreferenceUtil.putAlwaysString(CommonData.KEY_IS_PROTOCOL_UPDATE_DATE, ptotocolUpdateTime);
+                isAgree = true;
+                login();
+                break;
+            case REQUEST_CODE_AUTH_STATUS:
+                finish();
+                break;
+            default:
+                break;
         }
     }
 

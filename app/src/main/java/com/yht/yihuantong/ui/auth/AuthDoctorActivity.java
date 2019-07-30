@@ -114,7 +114,7 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
         if (data == DocAuthStatus.AUTH_FAILD) {
             pushStatus = true;
         }
-        getDoctorAuth();
+        runOnUiThread(() -> getDoctorAuth());
     };
 
     @Override
@@ -132,10 +132,12 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
         super.initData(savedInstanceState);
         iNotifyChangeListenerServer = ApiManager.getInstance().getServer();
         findViewById(R.id.public_title_bar_back).setOnClickListener(this);
-        curAuthStatus = loginBean.getApprovalStatus();
         fragmentManager = getSupportFragmentManager();
-        getDoctorAuth();
-        setJPushAlias(loginBean.getDoctorCode());
+        if (loginBean != null) {
+            curAuthStatus = loginBean.getApprovalStatus();
+            getDoctorAuth();
+            setJPushAlias(loginBean.getDoctorCode());
+        }
     }
 
     @Override
@@ -171,18 +173,6 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
         tagAliasBean.alias = alias;
         tagAliasBean.isAliasAction = true;
         TagAliasOperatorHelper.getInstance().handleAction(getApplicationContext(), BASE_ONE, tagAliasBean);
-    }
-
-    /**
-     * 初始化tabs
-     */
-    private void initTab() {
-        //        if (curAuthStatus == DocAuthStatus.AUTH_NONE) {
-        //            tabAuthBaseView();
-        //        }
-        //        else {
-        //            tabAuthResultView();
-        //        }
     }
 
     private void tabAuthBaseView() {
@@ -316,14 +306,10 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
     @Override
     public void onClick(View v) {
         super.onClick(v);
-        switch (v.getId()) {
-            case R.id.public_title_bar_back:
-                if (finishPage()) {
-                    finish();
-                }
-                break;
-            default:
-                break;
+        if (v.getId() == R.id.public_title_bar_back) {
+            if (finishPage()) {
+                finish();
+            }
         }
     }
 
@@ -332,6 +318,7 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
         super.onResponseSuccess(task, response);
         switch (task) {
             case SUBMIT_DOCTOR_AUTH:
+                setResult(RESULT_OK);
                 //提交成功后需要更新用户code、token
                 LoginBean bean = (LoginBean)response.getData();
                 loginBean.setToken(bean.getToken());

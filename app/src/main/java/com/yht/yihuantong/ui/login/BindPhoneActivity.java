@@ -157,21 +157,6 @@ public class BindPhoneActivity extends BaseActivity {
     }
 
     /**
-     * 医生认证
-     */
-    private void jumpAuth() {
-        startActivity(new Intent(this, AuthDoctorActivity.class));
-    }
-
-    /**
-     * 主页
-     */
-    private void jumpMain() {
-        setResult(RESULT_OK);
-        finish();
-    }
-
-    /**
      * 验证码再次获取倒计时
      */
     private void startVerifyCodeTimer() {

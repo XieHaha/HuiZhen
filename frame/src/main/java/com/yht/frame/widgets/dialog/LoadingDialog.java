@@ -25,7 +25,7 @@ public class LoadingDialog extends Dialog {
     }
 
     private void init() {
-        setCancelable(false);
-        setCanceledOnTouchOutside(false);
+        setCancelable(true);
+        setCanceledOnTouchOutside(true);
     }
 }

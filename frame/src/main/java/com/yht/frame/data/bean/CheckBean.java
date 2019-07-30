@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class CheckBean implements Serializable {
     private static final long serialVersionUID = 6353080025533815362L;
     private int status;
-    private long createAt;
+    private String createAt;
     private String orderNo;
     private String targetHospitalName;
     private String patientCode;
@@ -27,11 +27,11 @@ public class CheckBean implements Serializable {
         this.status = status;
     }
 
-    public long getCreateAt() {
+    public String getCreateAt() {
         return createAt;
     }
 
-    public void setCreateAt(long createAt) {
+    public void setCreateAt(String createAt) {
         this.createAt = createAt;
     }
 

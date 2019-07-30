@@ -208,11 +208,20 @@ public class WorkerFragment extends BaseFragment {
      * 订单数量
      */
     private void initStatistics() {
-        tvInitiateCheckNum.setText(String.valueOf(orderNumStatisticsBean.getInitiateOrderCheck()));
-        tvInitiateTransferNum.setText(String.valueOf(orderNumStatisticsBean.getInitiateOrderTransfer()));
-        tvAcceptedTransferNum.setText(String.valueOf(orderNumStatisticsBean.getReceiveOrderTransfer()));
+        tvInitiateCheckNum.setText(
+                orderNumStatisticsBean.getInitiateOrderCheck() <= BaseData.BASE_MEAASGE_DISPLAY_NUM ? String.valueOf(
+                        orderNumStatisticsBean.getInitiateOrderCheck()) : getString(R.string.txt_max_num));
+        tvInitiateTransferNum.setText(
+                orderNumStatisticsBean.getInitiateOrderTransfer() <= BaseData.BASE_MEAASGE_DISPLAY_NUM ? String.valueOf(
+                        orderNumStatisticsBean.getInitiateOrderTransfer()) : getString(R.string.txt_max_num));
+        tvAcceptedTransferNum.setText(
+                orderNumStatisticsBean.getReceiveOrderTransfer() <= BaseData.BASE_MEAASGE_DISPLAY_NUM ? String.valueOf(
+                        orderNumStatisticsBean.getReceiveOrderTransfer()) : getString(R.string.txt_max_num));
         if (orderNumStatisticsBean.getPendingOrderTransfer() != BaseData.BASE_ZERO) {
-            tvReceivingTransferNum.setText(String.valueOf(orderNumStatisticsBean.getPendingOrderTransfer()));
+            tvReceivingTransferNum.setText(
+                    orderNumStatisticsBean.getPendingOrderTransfer() <= BaseData.BASE_MEAASGE_DISPLAY_NUM
+                    ? String.valueOf(orderNumStatisticsBean.getPendingOrderTransfer())
+                    : getString(R.string.txt_max_num));
             layoutReceivingTransferNum.setVisibility(View.VISIBLE);
         }
         else {
