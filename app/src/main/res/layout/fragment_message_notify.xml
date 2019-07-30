@@ -26,8 +26,9 @@
         android:text="@string/txt_none_message"
         android:drawableTop="@mipmap/pic_none_message"
         android:gravity="center"
-        android:layout_centerInParent="true"
-        android:visibility="gone" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="66dp"
+        android:visibility="visible" />
 
 
 </RelativeLayout>

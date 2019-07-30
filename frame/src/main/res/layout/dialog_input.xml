@@ -38,7 +38,6 @@
             android:textSize="@dimen/text_15"
             android:minHeight="80dp"
             android:maxHeight="340dp"
-            android:hint="@string/txt_version_update"
             android:textColorHint="@color/color_a1a8b3"
             android:gravity="top"
             android:paddingTop="10dp"
@@ -46,7 +45,7 @@
             android:paddingStart="12dp"
             android:paddingBottom="10dp"
             android:maxLength="500"
-            android:background="@drawable/corner2_stroke1_a1a8b3" />
+            android:background="@drawable/corner2_f7f7f7_bg" />
 
         <View
             android:layout_width="match_parent"

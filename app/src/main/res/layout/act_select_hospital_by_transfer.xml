@@ -28,7 +28,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center_horizontal"
-        android:paddingTop="57dp"
+        android:paddingTop="66dp"
         android:visibility="gone">
 
         <TextView
@@ -38,7 +38,7 @@
             android:textSize="@dimen/text_15"
             android:text="@string/txt_none_hospital"
             android:drawableTop="@mipmap/pic_none_hospital"
-            android:drawablePadding="7dp"
+            android:drawablePadding="20dp"
             android:gravity="center" />
 
         <TextView

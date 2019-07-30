@@ -17,7 +17,9 @@
         android:text="@string/txt_none_patient"
         android:drawableTop="@mipmap/pic_none_paient"
         android:gravity="center"
-        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="66dp"
+        android:layout_below="@id/title_bar"
         android:background="@color/color_ffffff" />
 
     <android.support.v4.widget.SwipeRefreshLayout

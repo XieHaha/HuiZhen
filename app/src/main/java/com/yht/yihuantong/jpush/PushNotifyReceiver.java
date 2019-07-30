@@ -2,6 +2,7 @@ package com.yht.yihuantong.jpush;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.yht.frame.api.notify.NotifyChangeListenerManager;
@@ -14,6 +15,7 @@ import com.yht.yihuantong.LifecycleHandler;
 import com.yht.yihuantong.ZycApplication;
 import com.yht.yihuantong.ui.auth.AuthDoctorActivity;
 import com.yht.yihuantong.ui.check.ServiceDetailActivity;
+import com.yht.yihuantong.ui.login.LoginOptionsActivity;
 import com.yht.yihuantong.ui.main.MainActivity;
 import com.yht.yihuantong.ui.transfer.TransferInitiateDetailActivity;
 import com.yht.yihuantong.ui.transfer.TransferReceiveDetailActivity;
@@ -71,11 +73,14 @@ public class PushNotifyReceiver extends JPushMessageReceiver implements MessageT
      * @param type
      */
     private void jumpPageByType(Context context, String type, String msgId) {
-        if (ZycApplication.getInstance().getLoginBean() == null) {
-            return;
-        }
         Intent mainIntent, baseIntent;
         Intent[] intents;
+        if (TextUtils.isEmpty(type) || ZycApplication.getInstance().getLoginBean() == null) {
+            mainIntent = new Intent(context, LoginOptionsActivity.class);
+            mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(mainIntent);
+            return;
+        }
         switch (type) {
             case MESSAGE_DOCTOR_AUTH_SUCCESS:
             case MESSAGE_DOCTOR_AUTH_FAILED:

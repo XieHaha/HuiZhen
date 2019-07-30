@@ -255,7 +255,7 @@
         android:layout_height="match_parent"
         android:gravity="center_horizontal"
         android:visibility="gone"
-        android:paddingTop="100dp"
+        android:paddingTop="66dp"
         android:background="@color/color_ffffff"
         android:layout_below="@id/layout_search">
 
@@ -265,9 +265,8 @@
             android:textColor="@color/color_6a6f80"
             android:textSize="@dimen/text_15"
             android:drawableTop="@mipmap/pic_none_paient"
-            android:drawablePadding="16dp"
+            android:drawablePadding="20dp"
             android:gravity="center"
-            android:layout_marginTop="16dp"
             android:text="@string/txt_none_doctor" />
 
     </LinearLayout>

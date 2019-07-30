@@ -22,8 +22,6 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.hyphenate.EMConnectionListener;
-import com.hyphenate.EMError;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.yht.frame.api.ApiManager;
@@ -36,14 +34,12 @@ import com.yht.frame.data.Tasks;
 import com.yht.frame.data.bean.MessageTotalBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseFragment;
-import com.yht.frame.utils.HuiZhenLog;
-import com.yht.frame.utils.ToastUtil;
+import com.yht.frame.utils.BaseUtils;
+import com.yht.frame.utils.ScreenUtils;
 import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.frame.widgets.view.AbstractOnPageChangeListener;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.chat.EaseConversationListFragment;
-import com.yht.yihuantong.chat.listener.AbstractEMContactListener;
-import com.yht.yihuantong.chat.listener.AbstractEMMessageListener;
 import com.yht.yihuantong.ui.adapter.ViewPagerAdapter;
 import com.yht.yihuantong.ui.main.listener.OnMessageUpdateListener;
 import com.yht.yihuantong.ui.patient.PatientPersonalActivity;
@@ -126,23 +122,9 @@ public class MessageFragment extends BaseFragment
      */
     private NotifyMessageFragment notifyMessageFragment;
     /**
-     * 环信账号连接
-     */
-    private EaseConnectionListener connectionListener;
-    /**
-     * 消息监听
-     */
-    private AbstractEMMessageListener msgListener;
-    /**
-     * 联系人变化监听
-     */
-    private AbstractEMContactListener contactListener;
-    /**
      * 消息红点
      */
-    private IChange<String> messageUpdate = data -> {
-        getAppUnReadMessageTotal();
-    };
+    private IChange<String> messageUpdate = data -> getAppUnReadMessageTotal();
 
     @Override
     public int getLayoutID() {
@@ -169,6 +151,9 @@ public class MessageFragment extends BaseFragment
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
+        //弹窗参数初始化
+        screenHeight = ScreenUtils.getScreenHeight(getContext());
+        popupHeight = BaseUtils.dp2px(getContext(), 52 * 2);
         iNotifyChangeListenerServer = ApiManager.getInstance().getServer();
         getAppUnReadMessageTotal();
     }
@@ -286,7 +271,7 @@ public class MessageFragment extends BaseFragment
             vibrator.vibrate(30);
         }
         curConversation = conversation;
-        initPopwindow(view, popupLocation(view));
+        initPopWindow(view, popupLocation(view));
     }
 
     @Override
@@ -295,31 +280,10 @@ public class MessageFragment extends BaseFragment
     }
 
     /**
-     * 抢登录 或者删除账号
-     */
-    public class EaseConnectionListener implements EMConnectionListener {
-        @Override
-        public void onConnected() {
-        }
-
-        @Override
-        public void onDisconnected(final int error) {
-            getActivity().runOnUiThread(() -> {
-                if (error == EMError.USER_REMOVED) {
-                    HuiZhenLog.e(TAG, "账号被删除");
-                }
-                else if (error == EMError.USER_LOGIN_ANOTHER_DEVICE) {
-                    ToastUtil.toast(getContext(), "账号在其他设备登录");
-                }
-            });
-        }
-    }
-
-    /**
      * @param contentTv 弹框依赖view
      * @param location  弹框坐标
      */
-    public void initPopwindow(View contentTv, int[] location) {
+    public void initPopWindow(View contentTv, int[] location) {
         if (popupWindow == null) {
             popupWindow = new PopupWindow(LinearLayout.LayoutParams.WRAP_CONTENT,
                                           LinearLayout.LayoutParams.WRAP_CONTENT);

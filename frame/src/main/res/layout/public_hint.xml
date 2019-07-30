@@ -8,7 +8,7 @@
         android:id="@+id/public_hint_img"
         android:layout_width="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="110dp"
+        android:layout_marginTop="66dp"
         android:src="@mipmap/pic_network_error"
         android:layout_height="wrap_content" />
 
@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/color_373d4d"
         android:layout_below="@id/public_hint_img"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:layout_centerHorizontal="true"
         android:text="@string/txt_none_network"
         android:textSize="@dimen/text_16" />
