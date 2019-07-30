@@ -65,7 +65,7 @@ public class TransferReceiveDetailActivity extends BaseActivity
     @BindView(R.id.tv_transfer_time)
     TextView tvTransferTime;
     @BindView(R.id.tv_receiving_doctor)
-    TextView tvReceivingDoctor;
+    TextView tvSourceDoctorName;
     @BindView(R.id.tv_transfer_depart)
     TextView tvTransferDepart;
     @BindView(R.id.tv_transfer_hospital)
@@ -211,7 +211,6 @@ public class TransferReceiveDetailActivity extends BaseActivity
              .apply(GlideHelper.getOptions(BaseUtils.dp2px(this, 4)))
              .into(ivPatientImg);
         tvDoctorPhone.setText(transferBean.getSourceDoctorMobile());
-        tvReceivingDoctor.setText(transferBean.getTargetDoctorName());
         tvReceivingDepart.setText(transferBean.getTargetHospitalDepartmentName());
         tvReceivingHospital.setText(transferBean.getTargetHospitalName());
         tvReserveTime.setText(transferBean.getAppointAt());
@@ -227,6 +226,7 @@ public class TransferReceiveDetailActivity extends BaseActivity
         tvFamilyMedical.setText(transferBean.getFamilyHistory());
         tvAllergies.setText(transferBean.getAllergyHistory());
         tvTransferTime.setText(transferBean.getTransferDate());
+        tvSourceDoctorName.setText(transferBean.getSourceDoctorName());
         tvTransferDepart.setText(transferBean.getSourceHospitalDepartmentName());
         tvTransferHospital.setText(transferBean.getSourceHospitalName());
         tvTransferPurpose.setText(transferBean.getTransferTarget());

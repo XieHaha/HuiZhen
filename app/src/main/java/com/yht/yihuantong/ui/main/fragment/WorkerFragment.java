@@ -108,6 +108,12 @@ public class WorkerFragment extends BaseFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        fillNetWorkData();
+    }
+
+    @Override
     public int getLayoutID() {
         return R.layout.fragment_worker;
     }

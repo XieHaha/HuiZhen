@@ -113,10 +113,6 @@ public class SelectReceivingDoctorActivity extends BaseActivity
      * 当前选择列表  0为医院 1为大科室  2为小科室
      */
     private int curType;
-    /**
-     * 是否为接诊
-     */
-    private boolean isReceiveDoctor;
     private String orderNo;
     /**
      * 查询医生参数
@@ -145,7 +141,6 @@ public class SelectReceivingDoctorActivity extends BaseActivity
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
         if (getIntent() != null) {
-            isReceiveDoctor = getIntent().getBooleanExtra(CommonData.KEY_IS_RECEIVE_DOCTOR, false);
             isTransferOther = getIntent().getBooleanExtra(CommonData.KEY_IS_TRANSFER_OTHER, false);
             orderNo = getIntent().getStringExtra(CommonData.KEY_ORDER_ID);
         }
@@ -226,7 +221,7 @@ public class SelectReceivingDoctorActivity extends BaseActivity
      * @param params
      */
     private void getDoctorListByReverse(Map<String, Object> params) {
-        if (isReceiveDoctor) {
+        if (isTransferOther) {
             //重新转诊的接诊医生
             params.put("orderNo", orderNo);
             RequestUtils.getReceivingDoctorList(this, loginBean.getToken(), params, BaseData.BASE_PAGE_DATA_NUM, page,
@@ -319,8 +314,10 @@ public class SelectReceivingDoctorActivity extends BaseActivity
                 tvHospitalTitle.setText(R.string.txt_select_hint);
                 tvHospitalTitle.setSelected(false);
                 data = new ArrayList<>();
-                for (HospitalBean bean : hospitals) {
-                    data.add(bean.getHospitalName());
+                if (hospitals != null) {
+                    for (HospitalBean bean : hospitals) {
+                        data.add(bean.getHospitalName());
+                    }
                 }
                 adapter.setNewData(data);
                 getDoctorListByReverse(new HashMap<>(16));
@@ -411,6 +408,7 @@ public class SelectReceivingDoctorActivity extends BaseActivity
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
         switch (task) {
+            case GET_HOSPITAL_LIST_BY_DOCTOR:
             case GET_HOSPITAL_LIST_BY_RESERVE:
                 hospitals = (List<HospitalBean>)response.getData();
                 data = new ArrayList<>();

@@ -61,7 +61,7 @@ public interface BaseData {
     /**
      * 消息最大显示数字
      */
-    int BASE_MEAASGE_DISPLAY_NUM = 99;
+    int BASE_MEAASGE_DISPLAY_NUM = 9999;
 
     /**
      * 屏幕适配  默认宽度

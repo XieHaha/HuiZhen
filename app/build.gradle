@@ -10,7 +10,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 26
         versionCode 18
-        versionName "2.1.2"
+        versionName "2.1.3"
         flavorDimensions "default"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -24,8 +24,8 @@ android {
         zyc {
             dimension "zyc"
             applicationId "com.yht.yihuantong"
-            buildConfigField "String", "BASE_BASIC_URL", "\"http://192.168.0.126:7071/\""
-            resValue "string", "APP_NAME", "\"会珍医生版\""
+            buildConfigField "String", "BASE_BASIC_URL", "\"http://patient-t.med-value.com/api/\""
+            resValue "string", "APP_NAME", "\"会珍医生测试版\""
             manifestPlaceholders = [ease_appkey  : "1110180330253249#dpappproject",
                                     jpush_appkey : "8b803f7221a77f19b78b3523",
                                     jpush_channel: "zyc"]
@@ -35,7 +35,7 @@ android {
             dimension "zyc"
             applicationId "com.yht.yihuantong"
             buildConfigField "String", "BASE_BASIC_URL", "\"https://patient-pre.med-value.com/api/\""
-            resValue "string", "APP_NAME", "\"会珍医生版\""
+            resValue "string", "APP_NAME", "\"会珍医生灰度版\""
             manifestPlaceholders = [ease_appkey  : "1110180330253249#dpappproject",
                                     jpush_appkey : "8b803f7221a77f19b78b3523",
                                     jpush_channel: "develop"]

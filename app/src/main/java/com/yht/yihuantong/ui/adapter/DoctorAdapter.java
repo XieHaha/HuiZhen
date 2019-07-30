@@ -29,7 +29,7 @@ public class DoctorAdapter extends BaseQuickAdapter<DoctorInfoBean, BaseViewHold
               .setText(R.id.tv_receiving_doctor_title, item.getJobTitle())
               .setText(R.id.tv_receiving_doctor_hospital_depart,
                        item.getHospitalName() + "  " + item.getDepartmentName())
-              .addOnClickListener(R.id.iv_patient_call);
+              .addOnClickListener(R.id.iv_receiving_doctor_call);
         Glide.with(mContext)
              .load(item.getPhoto())
              .apply(GlideHelper.getOptions(BaseUtils.dp2px(mContext, 4)))
