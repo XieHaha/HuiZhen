@@ -135,8 +135,6 @@ public class InputDialog implements View.OnClickListener {
                     resultListener.onResult(string);
                 }
             }
-            hideSoftInputFromWindow(etContent);
-            dismiss();
         }
         else if (v == tvCancel) {
             if (onCancelClickListener != null) {
@@ -152,9 +150,9 @@ public class InputDialog implements View.OnClickListener {
                     resultListener.onResult(string);
                 }
             }
-            hideSoftInputFromWindow(etContent);
-            dismiss();
         }
+        hideSoftInputFromWindow(etContent);
+        dismiss();
     }
 
     public void show() {

@@ -148,7 +148,7 @@ public class SelectCheckTypeByHospitalActivity extends BaseActivity
     @OnClick(R.id.public_title_bar_more)
     public void onViewClicked() {
         if (publicTitleBarMore.isSelected()) {
-            hideSoftInputFromWindow(etSearchCheckType);
+            hideSoftInputFromWindow();
             Intent intent = new Intent();
             intent.putExtra(CommonData.KEY_RESERVE_CHECK_TYPE_LIST, selectCheckTypeBeans);
             setResult(RESULT_OK, intent);

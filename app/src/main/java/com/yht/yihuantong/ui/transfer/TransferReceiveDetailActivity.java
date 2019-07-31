@@ -309,6 +309,8 @@ public class TransferReceiveDetailActivity extends BaseActivity
                 break;
             case R.id.tv_refuse:
                 new InputDialog(this).Builder()
+                                     .setCancelable(false)
+                                     .setCanceledOnTouchOutside(false)
                                      .setEditHintText(getString(R.string.txt_reject_transfer_reason_hint))
                                      .setEnterBtnTxt(getString(R.string.txt_refuse))
                                      .setEnterSelect(true)
@@ -391,6 +393,7 @@ public class TransferReceiveDetailActivity extends BaseActivity
     }
 
     private void onFinish() {
+        hideSoftInputFromWindow();
         if (isOuterChain) {
             if (ViewUtils.isLaunchedActivity(this, MainActivity.class)) {
                 Intent upIntent = NavUtils.getParentActivityIntent(this);

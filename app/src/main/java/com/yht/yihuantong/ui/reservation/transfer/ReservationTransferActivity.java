@@ -355,6 +355,7 @@ public class ReservationTransferActivity extends BaseActivity implements OnTrans
         switch (v.getId()) {
             case R.id.public_title_bar_back:
                 if (finishPage()) {
+                    hideSoftInputFromWindow();
                     finish();
                 }
                 break;

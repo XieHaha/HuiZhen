@@ -147,7 +147,7 @@ public class TransferEditActivity extends BaseActivity {
                 startActivityForResult(intent, REQUEST_CODE_HOSPITAL);
                 break;
             case R.id.layout_time:
-                hideSoftInputFromWindow(etNotice);
+                hideSoftInputFromWindow();
                 initCustomTimePicker();
                 break;
             case R.id.tv_submit:

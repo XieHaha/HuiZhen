@@ -97,7 +97,7 @@ public class SelectCheckTypeActivity extends BaseActivity
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        hideSoftInputFromWindow(etSearchCheckType);
+        hideSoftInputFromWindow();
         curSelectCheckTypeBean = selectCheckTypeBeans.get(position);
         Intent intent = new Intent();
         intent.putExtra(CommonData.KEY_RESERVE_CHECK_TYPE_BEAN, curSelectCheckTypeBean);

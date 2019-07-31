@@ -333,7 +333,7 @@ public class SelectReceivingDoctorActivity extends BaseActivity
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         if (adapter.getItem(position) instanceof DoctorInfoBean) {
-            hideSoftInputFromWindow(etSearchCheckType);
+            hideSoftInputFromWindow();
             Intent intent = new Intent();
             intent.putExtra(CommonData.KEY_DOCTOR_BEAN, doctors.get(position));
             setResult(RESULT_OK, intent);

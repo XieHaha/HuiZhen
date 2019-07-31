@@ -142,7 +142,7 @@ public abstract class BaseActivity extends RxAppCompatActivity
         try {
             backBtn.setVisibility(View.VISIBLE);
             backBtn.setOnClickListener(v -> {
-                hideSoftInputFromWindow(v);
+                hideSoftInputFromWindow();
                 finish();
             });
             tvTitle.setSelected(true);
@@ -273,9 +273,12 @@ public abstract class BaseActivity extends RxAppCompatActivity
     /**
      * 隐藏软键盘
      */
-    public void hideSoftInputFromWindow(View editText) {
+    public void hideSoftInputFromWindow() {
+        Activity activity = AppManager.getInstance().getCurrentActivity();
+        if (activity == null || activity.getCurrentFocus() == null ||
+            activity.getCurrentFocus().getWindowToken() == null) { return; }
         InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+        inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
     }
 
     /**
@@ -283,7 +286,7 @@ public abstract class BaseActivity extends RxAppCompatActivity
      */
     public void showSoftInputFromWindow(View editText) {
         InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputMethodManager.showSoftInput(editText, InputMethodManager.SHOW_FORCED);
+        inputMethodManager.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
     }
 
     /**

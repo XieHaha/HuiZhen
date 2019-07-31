@@ -133,7 +133,7 @@ public class SelectHospitalByAuthActivity extends BaseActivity
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        hideSoftInputFromWindow(view);
+        hideSoftInputFromWindow();
         Intent intent = new Intent();
         intent.putExtra(CommonData.KEY_HOSPITAL_BEAN, searchHospitals.get(position));
         setResult(RESULT_OK, intent);

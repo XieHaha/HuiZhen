@@ -67,7 +67,7 @@ public class AddHospitalActivity extends BaseActivity {
         if (!publicTitleBarMore.isSelected()) {
             return;
         }
-        hideSoftInputFromWindow(etHospital.getEditText());
+        hideSoftInputFromWindow();
         String hospitalName = etHospital.getEditText().getText().toString().trim();
         HospitalBean bean = new HospitalBean();
         bean.setHospitalName(hospitalName);

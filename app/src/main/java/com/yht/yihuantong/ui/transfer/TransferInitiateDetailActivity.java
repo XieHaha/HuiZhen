@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -283,12 +284,15 @@ public class TransferInitiateDetailActivity extends BaseActivity
         if (transferBean == null) { return; }
         switch (view.getId()) {
             case R.id.public_title_bar_back:
+                hideSoftInputFromWindow();
                 onFinish();
                 finish();
                 break;
             case R.id.tv_transfer_again:
                 if (TRANSFER_STATUS_WAIT == transferBean.getReceiveStatus()) {
                     new InputDialog(this).Builder()
+                                         .setCancelable(false)
+                                         .setCanceledOnTouchOutside(false)
                                          .setEditHintText(getString(R.string.txt_cancel_transfer_reason_hint))
                                          .setCancleBtnTxt(getString(R.string.txt_sure_cancel))
                                          .setEnterBtnTxt(getString(R.string.txt_think_again))
@@ -372,6 +376,14 @@ public class TransferInitiateDetailActivity extends BaseActivity
             default:
                 break;
         }
+    }
+
+    public void hide() {
+        hideSoftInputFromWindow();
+    }
+
+    public void show(EditText etContent) {
+        showSoftInputFromWindow(etContent);
     }
 
     private void onFinish() {
