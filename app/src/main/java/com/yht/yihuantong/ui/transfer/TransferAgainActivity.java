@@ -3,6 +3,7 @@ package com.yht.yihuantong.ui.transfer;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.yht.frame.data.BaseNetConfig;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
@@ -179,6 +181,18 @@ public class TransferAgainActivity extends BaseActivity {
             ToastUtil.toast(this, response.getMsg());
             setResult(RESULT_OK);
             finish();
+        }
+    }
+
+    @Override
+    public void onResponseCode(Tasks task, BaseResponse response) {
+        super.onResponseCode(task, response);
+        if (response.getCode() == BaseNetConfig.REQUEST_ORDER_ERROR) {
+            ToastUtil.toast(this, response.getMsg());
+            (new Handler()).postDelayed(() -> {
+                setResult(RESULT_CANCELED);
+                finish();
+            }, 200);
         }
     }
 

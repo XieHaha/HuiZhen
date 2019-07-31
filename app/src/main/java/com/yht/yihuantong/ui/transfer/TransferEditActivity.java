@@ -3,12 +3,14 @@ package com.yht.yihuantong.ui.transfer;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
 import com.yht.frame.api.notify.NotifyChangeListenerManager;
+import com.yht.frame.data.BaseNetConfig;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
@@ -17,6 +19,7 @@ import com.yht.frame.data.bean.TransferBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
+import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.widgets.edittext.AbstractTextWatcher;
 import com.yht.frame.widgets.edittext.MultiLineEditText;
 import com.yht.yihuantong.R;
@@ -183,6 +186,18 @@ public class TransferEditActivity extends BaseActivity {
                 break;
             default:
                 break;
+        }
+    }
+
+    @Override
+    public void onResponseCode(Tasks task, BaseResponse response) {
+        super.onResponseCode(task, response);
+        if (response.getCode() == BaseNetConfig.REQUEST_ORDER_ERROR) {
+            ToastUtil.toast(this, response.getMsg());
+            (new Handler()).postDelayed(() -> {
+                setResult(RESULT_CANCELED);
+                finish();
+            }, 200);
         }
     }
 

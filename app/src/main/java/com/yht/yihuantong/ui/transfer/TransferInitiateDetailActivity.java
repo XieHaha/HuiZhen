@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -14,6 +13,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.yht.frame.data.BaseData;
+import com.yht.frame.data.BaseNetConfig;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
@@ -378,12 +378,13 @@ public class TransferInitiateDetailActivity extends BaseActivity
         }
     }
 
-    public void hide() {
-        hideSoftInputFromWindow();
-    }
-
-    public void show(EditText etContent) {
-        showSoftInputFromWindow(etContent);
+    @Override
+    public void onResponseCode(Tasks task, BaseResponse response) {
+        super.onResponseCode(task, response);
+        if (response.getCode() == BaseNetConfig.REQUEST_ORDER_ERROR) {
+            ToastUtil.toast(this, response.getMsg());
+            getTransferOrderDetail();
+        }
     }
 
     private void onFinish() {

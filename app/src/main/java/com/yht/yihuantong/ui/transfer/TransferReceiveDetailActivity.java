@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.yht.frame.data.BaseData;
+import com.yht.frame.data.BaseNetConfig;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
@@ -372,8 +373,21 @@ public class TransferReceiveDetailActivity extends BaseActivity
     }
 
     @Override
+    public void onResponseCode(Tasks task, BaseResponse response) {
+        super.onResponseCode(task, response);
+        if (response.getCode() == BaseNetConfig.REQUEST_ORDER_ERROR) {
+            ToastUtil.toast(this, response.getMsg());
+            getTransferOrderDetail();
+        }
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_CANCELED &&
+            (requestCode == REQUEST_CODE_TRANSFER_AGAIN || requestCode == REQUEST_CODE_RECEIVE_TRANSFER)) {
+            getTransferOrderDetail();
+        }
         if (resultCode != Activity.RESULT_OK) {
             return;
         }
