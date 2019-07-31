@@ -365,9 +365,8 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .getPatientDetailByPatientCode(token, code)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(
-                               new AbstractLoadViewObserver<>(context, true, Tasks.GET_PATIENT_DETAIL_BY_PATIENT_CODE,
-                                                              listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_PATIENT_DETAIL_BY_PATIENT_CODE,
+                                                                 listener));
     }
 
     public static void getPatientOrderListByPatientCode(Context context, String patientCode, String token, int pageSize,

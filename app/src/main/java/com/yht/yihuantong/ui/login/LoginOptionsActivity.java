@@ -337,7 +337,8 @@ public class LoginOptionsActivity extends BaseActivity
         SpannableString style = new SpannableString(s);
         //颜色
         ForegroundColorSpan colorSpan = new ForegroundColorSpan(ContextCompat.getColor(this, R.color.color_1491fc));
-        style.setSpan(colorSpan, 7, s.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        style.setSpan(colorSpan, 7, 13, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        style.setSpan(colorSpan, 14, s.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         //点击
         ClickableSpan clickSpan = new ClickableSpan() {
             @Override
@@ -358,7 +359,28 @@ public class LoginOptionsActivity extends BaseActivity
                 ds.clearShadowLayer();
             }
         };
-        style.setSpan(clickSpan, 7, s.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        //点击
+        ClickableSpan privacyClickSpan = new ClickableSpan() {
+            @Override
+            public void onClick(@NonNull View widget) {
+                //                isAgree = true;
+                Intent intent = new Intent(LoginOptionsActivity.this, WebViewActivity.class);
+                intent.putExtra(CommonData.KEY_PUBLIC,
+                                BuildConfig.BASE_BASIC_URL + BaseNetConfig.BASE_BASIC_USER_PROTOCOL_URL);
+                intent.putExtra(CommonData.KEY_TITLE, getString(R.string.txt_about_protocol));
+                startActivity(intent);
+                clearBackgroundColor(widget);
+            }
+
+            @Override
+            public void updateDrawState(@NonNull TextPaint ds) {
+                super.updateDrawState(ds);
+                ds.setUnderlineText(false);
+                ds.clearShadowLayer();
+            }
+        };
+        style.setSpan(clickSpan, 7, 13, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        style.setSpan(privacyClickSpan, 14, s.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         //配置给TextView
         tvLoginProtocol.setMovementMethod(LinkMovementMethod.getInstance());
         tvLoginProtocol.setText(style);

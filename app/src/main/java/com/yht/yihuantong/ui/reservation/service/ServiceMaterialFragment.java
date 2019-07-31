@@ -199,8 +199,15 @@ public class ServiceMaterialFragment extends BaseFragment implements View.OnFocu
      * @param mode 是否可以编辑基本信息
      */
     private void editStatus(boolean mode) {
-        etPhone.setFocusable(mode);
-        etPhone.setFocusableInTouchMode(mode);
+        //老用户未绑定手机号可以修改
+        if (!mode && reserveCheckBean.getIsBind() == BaseData.BASE_ZERO) {
+            etPhone.setFocusable(true);
+            etPhone.setFocusableInTouchMode(true);
+        }
+        else {
+            etPhone.setFocusable(mode);
+            etPhone.setFocusableInTouchMode(mode);
+        }
         etAge.setFocusable(mode);
         etAge.setFocusableInTouchMode(mode);
         rbFemale.setClickable(mode);
@@ -335,7 +342,6 @@ public class ServiceMaterialFragment extends BaseFragment implements View.OnFocu
             layoutAllergies.setVisibility(View.GONE);
             if (!getString(R.string.txt_allergies_not).equals(allergiesHis)) {
                 etAllergies.setText(allergiesHis);
-
             }
             tvAllergiesNum.setText(String.format(getString(R.string.txt_calc_num), allergiesHis.length()));
             reserveCheckBean.setAllergyHistory(allergiesHis);

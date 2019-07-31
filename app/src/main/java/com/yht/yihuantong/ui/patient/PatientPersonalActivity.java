@@ -71,6 +71,10 @@ public class PatientPersonalActivity extends BaseActivity implements EaseChatFra
      */
     private EaseChatFragment easeChatFragment;
     /**
+     * 患者信息
+     */
+    private PatientInfoFragment patientInfoFragment;
+    /**
      * 开启聊天倒计时广播
      */
     private TimerReceiver timerReceiver;
@@ -145,6 +149,14 @@ public class PatientPersonalActivity extends BaseActivity implements EaseChatFra
     @Override
     public int getLayoutID() {
         return R.layout.act_patient_personal;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //        if (patientInfoFragment != null) {
+        //            patientInfoFragment.onResume();
+        //        }
     }
 
     @Override
@@ -235,7 +247,7 @@ public class PatientPersonalActivity extends BaseActivity implements EaseChatFra
      */
     private void initFragment() {
         //患者信息
-        PatientInfoFragment patientInfoFragment = new PatientInfoFragment();
+        patientInfoFragment = new PatientInfoFragment();
         patientInfoFragment.setPatientCode(patientCode);
         //在线聊天
         easeChatFragment = new EaseChatFragment();

@@ -91,6 +91,12 @@ public class PatientInfoFragment extends BaseFragment
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        getPatientDetail();
+    }
+
+    @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
         initHeaderView();
@@ -101,7 +107,6 @@ public class PatientInfoFragment extends BaseFragment
     @Override
     public void fillNetWorkData() {
         super.fillNetWorkData();
-        getPatientDetail();
         getPatientOrderList();
         getValidateHospitalList();
         getPatientExistTransfer();

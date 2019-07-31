@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_16"
             android:textColor="@color/color_373d4d"
-            android:text="@string/txt_name"
+            android:text="@string/txt_patient_name"
             android:textStyle="bold" />
 
         <com.yht.frame.widgets.edittext.SuperEditText

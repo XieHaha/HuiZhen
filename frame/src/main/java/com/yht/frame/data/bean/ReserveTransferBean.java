@@ -13,6 +13,7 @@ public class ReserveTransferBean implements Serializable {
     private int patientAge;
     private int payType;
     private int transferType;
+    private int isBind;
     private String allergyHistory;
     private String confirmPhoto;
     private String familyHistory;
@@ -55,6 +56,14 @@ public class ReserveTransferBean implements Serializable {
 
     public void setPayType(int payType) {
         this.payType = payType;
+    }
+
+    public int getIsBind() {
+        return isBind;
+    }
+
+    public void setIsBind(int isBind) {
+        this.isBind = isBind;
     }
 
     public int getTransferType() {

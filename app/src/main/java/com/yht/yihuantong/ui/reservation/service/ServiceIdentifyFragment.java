@@ -198,6 +198,7 @@ public class ServiceIdentifyFragment extends BaseFragment implements View.OnFocu
         reserveCheckBean = new ReserveCheckBean();
         reserveCheckBean.setPatientName(name);
         reserveCheckBean.setIdCardNo(idCard);
+        reserveCheckBean.setIsBind(patientDetailBean.getIsBind());
         reserveCheckBean.setPatientCode(patientDetailBean.getCode());
         reserveCheckBean.setPhone(patientDetailBean.getMobile());
         reserveCheckBean.setAge(patientDetailBean.getAge());

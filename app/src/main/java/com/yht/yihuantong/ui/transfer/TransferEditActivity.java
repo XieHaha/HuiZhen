@@ -93,7 +93,7 @@ public class TransferEditActivity extends BaseActivity {
                 super.onTextChanged(s, start, before, count);
                 noticeText = s.toString();
                 tvNoticeNum.setText(String.format(getString(R.string.txt_calc_num), noticeText.length()));
-                initNextButton();
+                //                initNextButton();
             }
         });
     }
@@ -130,22 +130,11 @@ public class TransferEditActivity extends BaseActivity {
      * 判断
      */
     private void initNextButton() {
-        if (!isEditReceive) {
-            if (!TextUtils.isEmpty(receiveHospital) && !TextUtils.isEmpty(reserveTime)) {
-                tvSubmit.setSelected(true);
-            }
-            else {
-                tvSubmit.setSelected(false);
-            }
+        if (!TextUtils.isEmpty(receiveHospital) && !TextUtils.isEmpty(reserveTime)) {
+            tvSubmit.setSelected(true);
         }
         else {
-            if (!TextUtils.isEmpty(noticeText) && !TextUtils.isEmpty(receiveHospital) &&
-                !TextUtils.isEmpty(reserveTime)) {
-                tvSubmit.setSelected(true);
-            }
-            else {
-                tvSubmit.setSelected(false);
-            }
+            tvSubmit.setSelected(false);
         }
     }
 
