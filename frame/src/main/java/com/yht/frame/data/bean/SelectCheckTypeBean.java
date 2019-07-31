@@ -56,4 +56,10 @@ public class SelectCheckTypeBean extends DataSupport implements Serializable {
     public void setHospitalCode(String hospitalCode) {
         this.hospitalCode = hospitalCode;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        SelectCheckTypeBean bean = (SelectCheckTypeBean)obj;
+        return projectCode.equals(bean.getProjectCode());
+    }
 }

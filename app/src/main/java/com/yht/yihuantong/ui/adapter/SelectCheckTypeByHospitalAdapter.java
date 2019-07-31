@@ -18,10 +18,18 @@ import java.util.List;
  * @des 医院下检查项目 搜索适配器
  */
 public class SelectCheckTypeByHospitalAdapter extends BaseQuickAdapter<SelectCheckTypeBean, BaseViewHolder> {
-    private List<Integer> selectPosition = new ArrayList<>();
+    /**
+     * 已选中的检查项
+     */
+    private ArrayList<SelectCheckTypeBean> selectCheckTypeBeans = new ArrayList<>();
+    /**
+     * 已选中的检查项 名称
+     */
+    private ArrayList<String> selectCheckTypeCodes = new ArrayList<>();
 
-    public void setSelectPosition(List<Integer> selectPosition) {
-        this.selectPosition = selectPosition;
+    public void setSelectCheckTypeBeans(ArrayList<SelectCheckTypeBean> selectCheckTypeBeans) {
+        this.selectCheckTypeBeans = selectCheckTypeBeans;
+        initName();
     }
 
     public SelectCheckTypeByHospitalAdapter(int layoutResId, @Nullable List<SelectCheckTypeBean> data) {
@@ -31,8 +39,7 @@ public class SelectCheckTypeByHospitalAdapter extends BaseQuickAdapter<SelectChe
     @Override
     protected void convert(BaseViewHolder helper, SelectCheckTypeBean item) {
         ImageView imageView = helper.getView(R.id.iv_select);
-        Integer curPosition = helper.getLayoutPosition();
-        if (selectPosition.contains(curPosition)) {
+        if (selectCheckTypeCodes.contains(item.getProjectCode())) {
             imageView.setSelected(true);
         }
         else {
@@ -41,5 +48,12 @@ public class SelectCheckTypeByHospitalAdapter extends BaseQuickAdapter<SelectChe
         helper.setText(R.id.rb_check_type, item.getProjectName());
         helper.setText(R.id.tv_check_price,
                        String.format(mContext.getString(R.string.txt_price), BaseUtils.getPrice(item.getPrice())));
+    }
+
+    private void initName() {
+        selectCheckTypeCodes = new ArrayList<>();
+        for (SelectCheckTypeBean bean : selectCheckTypeBeans) {
+            selectCheckTypeCodes.add(bean.getProjectCode());
+        }
     }
 }

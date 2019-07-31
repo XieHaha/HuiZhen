@@ -53,10 +53,6 @@ public class SelectCheckTypeByHospitalActivity extends BaseActivity
      */
     private List<SelectCheckTypeBean> checkTypeBeans = new ArrayList<>();
     /**
-     * 选中的检查项index
-     */
-    private ArrayList<Integer> selectPosition = new ArrayList<>();
-    /**
      * 已选中的检查项
      */
     private ArrayList<SelectCheckTypeBean> selectCheckTypeBeans = new ArrayList<>();
@@ -154,11 +150,7 @@ public class SelectCheckTypeByHospitalActivity extends BaseActivity
         if (publicTitleBarMore.isSelected()) {
             hideSoftInputFromWindow(etSearchCheckType);
             Intent intent = new Intent();
-            ArrayList<SelectCheckTypeBean> list = new ArrayList<>();
-            for (Integer index : selectPosition) {
-                list.add(checkTypeBeans.get(index));
-            }
-            intent.putExtra(CommonData.KEY_RESERVE_CHECK_TYPE_LIST, list);
+            intent.putExtra(CommonData.KEY_RESERVE_CHECK_TYPE_LIST, selectCheckTypeBeans);
             setResult(RESULT_OK, intent);
             finish();
         }
@@ -197,20 +189,19 @@ public class SelectCheckTypeByHospitalActivity extends BaseActivity
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        Integer integer = position;
-        if (selectPosition.contains(integer)) {
-            selectPosition.remove(integer);
+        if (selectCheckTypeBeans.contains(checkTypeBeans.get(position))) {
+            selectCheckTypeBeans.remove(checkTypeBeans.get(position));
         }
         else {
-            selectPosition.add(integer);
+            selectCheckTypeBeans.add(checkTypeBeans.get(position));
         }
-        if (selectPosition.size() > 0) {
+        if (selectCheckTypeBeans.size() > 0) {
             publicTitleBarMore.setSelected(true);
         }
         else {
             publicTitleBarMore.setSelected(false);
         }
-        selectAdapter.setSelectPosition(selectPosition);
+        selectAdapter.setSelectCheckTypeBeans(selectCheckTypeBeans);
         selectAdapter.notifyDataSetChanged();
     }
 
