@@ -67,6 +67,8 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
     RadioButton rbOther;
     @BindView(R.id.et_other)
     EditText etOther;
+    @BindView(R.id.tv_notice_num)
+    TextView tvNoticeNum;
     @BindView(R.id.layout_other)
     ExpandableLayout layoutOther;
     @BindView(R.id.rb_self)
@@ -169,6 +171,7 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 super.onTextChanged(s, start, before, count);
                 otherString = s.toString();
+                tvNoticeNum.setText(String.format(getString(R.string.txt_calc_num_thirty), otherString.length()));
                 if (reverseTransferBean != null) {
                     reverseTransferBean.setTransferTarget(otherString);
                 }

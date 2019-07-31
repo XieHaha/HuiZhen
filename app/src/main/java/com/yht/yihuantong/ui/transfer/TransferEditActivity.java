@@ -119,7 +119,7 @@ public class TransferEditActivity extends BaseActivity {
      */
     private void initPage() {
         publicTitleBarTitle.setText(R.string.title_edit_transfer);
-        tvNotRequired.setVisibility(View.GONE);
+        //        tvNotRequired.setVisibility(View.GONE);
         tvHospital.setText(receiveHospital);
         tvHospital.setSelected(true);
         tvTime.setText(reserveTime);

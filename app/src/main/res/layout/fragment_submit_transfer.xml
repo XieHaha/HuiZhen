@@ -147,21 +147,37 @@
             android:paddingEnd="20dp"
             android:background="@color/color_ffffff">
 
-            <EditText
-                android:id="@+id/et_other"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="72dp"
-                android:paddingStart="12dp"
-                android:paddingEnd="12dp"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:gravity="top"
-                android:maxLength="30"
-                android:textColorHint="@color/color_a1a8b3"
-                android:hint="@string/txt_transfer_purpose_hint"
-                android:textSize="@dimen/text_16"
-                android:textColor="@color/color_373d4d"
-                android:background="@drawable/corner4_f8f9fa_bg" />
+                android:layout_height="match_parent">
+
+                <EditText
+                    android:id="@+id/et_other"
+                    android:layout_width="match_parent"
+                    android:layout_height="72dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:gravity="top"
+                    android:maxLength="30"
+                    android:textColorHint="@color/color_a1a8b3"
+                    android:hint="@string/txt_transfer_purpose_hint"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:background="@drawable/corner4_f8f9fa_bg" />
+
+                <TextView
+                    android:id="@+id/tv_notice_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="#c5c8cc"
+                    android:text="@string/txt_calc_num_thirty_zero"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="10dp" />
+            </RelativeLayout>
 
         </com.yht.frame.widgets.view.ExpandableLayout>
 

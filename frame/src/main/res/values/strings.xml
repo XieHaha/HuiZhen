@@ -71,6 +71,8 @@
     <string name="txt_contact_patient_phone">患者电话</string>
     <string name="txt_contact_doctor_phone">医生电话</string>
     <string name="txt_calc_num">%d/500</string>
+    <string name="txt_calc_num_thirty">%d/30</string>
+    <string name="txt_calc_num_thirty_zero">0/30</string>
     <string name="txt_yes">是</string>
     <string name="txt_no">否</string>
     <string name="txt_notice">注意事项</string>
@@ -320,7 +322,7 @@
     <string name="txt_wait">待处理</string>
     <string name="txt_reserve_visit_time">预约就诊时间</string>
     <string name="txt_edit_transfer">变更接诊信息</string>
-    <string name="txt_edit_transfer_hint">请输入转诊注意事项</string>
+    <string name="txt_edit_transfer_hint">请输入患者就诊的注意事项</string>
     <string name="txt_season">理由</string>
     <string name="txt_season_hint">请输入转诊理由</string>
 
