@@ -129,6 +129,9 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
     protected int[] itemIds = { ITEM_PICTURE, ITEM_TAKE_PICTURE };
     private boolean isMessageListInited;
     protected MyItemClickListener extendMenuItemClickListener;
+    /**
+     * 是否拉取离线消息
+     */
     protected boolean isRoaming = true;
     private ExecutorService fetchQueue;
     private EaseChatPrimaryMenuBase.OnStartRecordCallBack onStartRecordCallBack;
@@ -349,18 +352,16 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
         conversation.markAllMessagesAsRead();
         // the number of messages loaded into conversation is getChatOptions().getNumberOfMessagesLoaded
         // you can change this number
-        if (!isRoaming) {
-            final List<EMMessage> msgs = conversation.getAllMessages();
-            int msgCount = msgs != null ? msgs.size() : 0;
-            if (msgCount < conversation.getAllMsgCount() && msgCount < pagesize) {
-                String msgId = null;
-                if (msgs != null && msgs.size() > 0) {
-                    msgId = msgs.get(0).getMsgId();
-                }
-                conversation.loadMoreMsgFromDB(msgId, pagesize - msgCount);
+        final List<EMMessage> msgs = conversation.getAllMessages();
+        int msgCount = msgs != null ? msgs.size() : 0;
+        if (msgCount < conversation.getAllMsgCount() && msgCount < pagesize) {
+            String msgId = null;
+            if (msgs != null && msgs.size() > 0) {
+                msgId = msgs.get(0).getMsgId();
             }
+            conversation.loadMoreMsgFromDB(msgId, pagesize - msgCount);
         }
-        else {
+        if(msgCount==0) {
             fetchQueue.execute(new Runnable() {
                 @Override
                 public void run() {
@@ -444,12 +445,13 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if (!isRoaming) {
-                            loadMoreLocalMessage();
-                        }
-                        else {
-                            loadMoreRoamingMessages();
-                        }
+//                        if (!isRoaming) {
+//                            loadMoreLocalMessage();
+//                        }
+//                        else {
+//                            loadMoreRoamingMessages();
+//                        }
+                        loadMoreLocalMessage();
                     }
                 }, 600);
             }
@@ -475,6 +477,7 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
                 }
             }
             else {
+                loadMoreRoamingMessages();
                 haveMoreData = false;
             }
             isloading = false;

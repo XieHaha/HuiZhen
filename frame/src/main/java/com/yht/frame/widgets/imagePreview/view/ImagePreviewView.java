@@ -1278,7 +1278,9 @@ public class ImagePreviewView extends AppCompatImageView {
 
     public void clickFinish() {
         isBreak = true;
-        ((Activity)getContext()).finish();
-        ((Activity)getContext()).overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_fade_out);
+        if (getContext() instanceof Activity) {
+            ((Activity)getContext()).finish();
+            ((Activity)getContext()).overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_fade_out);
+        }
     }
 }

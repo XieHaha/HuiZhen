@@ -28,8 +28,6 @@
  *******************************************************************************/
 package com.hyphenate.easeui.widget.photoview;
 
-import java.lang.ref.WeakReference;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Matrix;
@@ -47,7 +45,9 @@ import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 
-class PhotoViewAttacher implements IPhotoView, View.OnTouchListener, VersionedGestureDetector.OnGestureListener,
+import java.lang.ref.WeakReference;
+
+public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener, VersionedGestureDetector.OnGestureListener,
         GestureDetector.OnDoubleTapListener, ViewTreeObserver.OnGlobalLayoutListener {
 
     static final String LOG_TAG = "PhotoViewAttacher";
