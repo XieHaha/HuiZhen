@@ -51,11 +51,15 @@ public class SelectCheckTypeByHospitalActivity extends BaseActivity
     /**
      * 检查项列表
      */
-    private List<SelectCheckTypeBean> selectCheckTypeBeans = new ArrayList<>();
+    private List<SelectCheckTypeBean> checkTypeBeans = new ArrayList<>();
     /**
      * 选中的检查项index
      */
     private ArrayList<Integer> selectPosition = new ArrayList<>();
+    /**
+     * 已选中的检查项
+     */
+    private ArrayList<SelectCheckTypeBean> selectCheckTypeBeans = new ArrayList<>();
     /**
      * 搜索关键字
      */
@@ -88,8 +92,7 @@ public class SelectCheckTypeByHospitalActivity extends BaseActivity
         super.initView(savedInstanceState);
         initTitle();
         recyclerview.setLayoutManager(new LinearLayoutManager(this));
-        selectAdapter = new SelectCheckTypeByHospitalAdapter(R.layout.item_check_by_hospital_select,
-                                                             selectCheckTypeBeans);
+        selectAdapter = new SelectCheckTypeByHospitalAdapter(R.layout.item_check_by_hospital_select, checkTypeBeans);
         selectAdapter.setLoadMoreView(new CustomLoadMoreView());
         selectAdapter.setOnLoadMoreListener(this, recyclerview);
         selectAdapter.setOnItemClickListener(this);
@@ -153,7 +156,7 @@ public class SelectCheckTypeByHospitalActivity extends BaseActivity
             Intent intent = new Intent();
             ArrayList<SelectCheckTypeBean> list = new ArrayList<>();
             for (Integer index : selectPosition) {
-                list.add(selectCheckTypeBeans.get(index));
+                list.add(checkTypeBeans.get(index));
             }
             intent.putExtra(CommonData.KEY_RESERVE_CHECK_TYPE_LIST, list);
             setResult(RESULT_OK, intent);
@@ -167,10 +170,10 @@ public class SelectCheckTypeByHospitalActivity extends BaseActivity
         if (task == Tasks.GET_CHECK_TYPE_BY_HOSPITAL) {
             List<SelectCheckTypeBean> list = (List<SelectCheckTypeBean>)response.getData();
             if (page == BaseData.BASE_ONE) {
-                selectCheckTypeBeans.clear();
+                checkTypeBeans.clear();
             }
-            selectCheckTypeBeans.addAll(list);
-            selectAdapter.setNewData(selectCheckTypeBeans);
+            checkTypeBeans.addAll(list);
+            selectAdapter.setNewData(checkTypeBeans);
             if (list != null && list.size() == BaseData.BASE_PAGE_DATA_NUM) {
                 selectAdapter.loadMoreComplete();
             }
