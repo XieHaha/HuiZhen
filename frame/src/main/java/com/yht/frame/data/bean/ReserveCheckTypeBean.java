@@ -9,15 +9,15 @@ import java.io.Serializable;
  */
 public class ReserveCheckTypeBean implements Serializable {
     private static final long serialVersionUID = -7335917258420482547L;
-    private int price;
+    private long price;
     private String hospitalCode;
     private String productCode;
 
-    public int getPrice() {
+    public long getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(long price) {
         this.price = price;
     }
 

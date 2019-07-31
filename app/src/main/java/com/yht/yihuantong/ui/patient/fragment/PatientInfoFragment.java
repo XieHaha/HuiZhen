@@ -18,6 +18,7 @@ import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.bean.PatientDetailBean;
 import com.yht.frame.data.bean.PatientOrderBean;
+import com.yht.frame.data.bean.ReservationValidateBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
@@ -26,7 +27,6 @@ import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.frame.widgets.recyclerview.decoration.TimeItemDecoration;
 import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.yht.yihuantong.R;
-import com.yht.yihuantong.ZycApplication;
 import com.yht.yihuantong.ui.adapter.PatientOrderAdapter;
 import com.yht.yihuantong.ui.check.ServiceDetailActivity;
 import com.yht.yihuantong.ui.patient.TransferDetailActivity;
@@ -73,6 +73,14 @@ public class PatientInfoFragment extends BaseFragment
      */
     private boolean exist;
     /**
+     * 是否能发起转诊
+     */
+    private boolean applyTransferAble = false;
+    /**
+     * 是否能发起服务
+     */
+    private boolean applyServiceAble = false;
+    /**
      * 页码
      */
     private int page = 1;
@@ -95,6 +103,7 @@ public class PatientInfoFragment extends BaseFragment
         super.fillNetWorkData();
         getPatientDetail();
         getPatientOrderList();
+        getValidateHospitalList();
         getPatientExistTransfer();
     }
 
@@ -115,6 +124,13 @@ public class PatientInfoFragment extends BaseFragment
     private void getPatientOrderList() {
         RequestUtils.getPatientOrderListByPatientCode(getContext(), patientCode, loginBean.getToken(),
                                                       BaseData.BASE_PAGE_DATA_NUM, page, this);
+    }
+
+    /**
+     * 校验医生是否有预约检查和预约转诊的合作医院
+     */
+    private void getValidateHospitalList() {
+        RequestUtils.getValidateHospitalList(getContext(), loginBean.getToken(), this);
     }
 
     /**
@@ -218,7 +234,7 @@ public class PatientInfoFragment extends BaseFragment
         Intent intent;
         switch (view.getId()) {
             case R.id.tv_reserve_check:
-                if (ZycApplication.getInstance().isServiceAble()) {
+                if (applyServiceAble) {
                     intent = new Intent(getContext(), ReservationServiceActivity.class);
                     intent.putExtra(CommonData.KEY_PATIENT_BEAN, patientDetailBean);
                     startActivity(intent);
@@ -233,7 +249,7 @@ public class PatientInfoFragment extends BaseFragment
                     ToastUtil.toast(getContext(), R.string.txt_patient_exist_transfer);
                 }
                 else {
-                    if (ZycApplication.getInstance().isTransferAble()) {
+                    if (applyTransferAble) {
                         intent = new Intent(getContext(), ReservationTransferActivity.class);
                         intent.putExtra(CommonData.KEY_PATIENT_BEAN, patientDetailBean);
                         startActivity(intent);
@@ -282,6 +298,13 @@ public class PatientInfoFragment extends BaseFragment
                 break;
             case GET_PATIENT_EXIST_TRANSFER:
                 exist = (boolean)response.getData();
+                break;
+            case GET_VALIDATE_HOSPITAL_LIST:
+                ReservationValidateBean bean = (ReservationValidateBean)response.getData();
+                if (bean != null) {
+                    applyTransferAble = bean.isZz();
+                    applyServiceAble = bean.isJc();
+                }
                 break;
             default:
                 break;

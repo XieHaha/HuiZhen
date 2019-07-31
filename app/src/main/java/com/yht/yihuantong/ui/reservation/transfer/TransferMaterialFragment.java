@@ -287,7 +287,9 @@ public class TransferMaterialFragment extends BaseFragment implements View.OnFoc
         if (status) {
             etPastMedicalHis.setVisibility(View.VISIBLE);
             layoutPastMedicalHis.setVisibility(View.GONE);
-            etPastMedicalHis.setText(pastMedicalHis);
+            if (!getString(R.string.txt_past_medical_his_not).equals(pastMedicalHis)) {
+                etPastMedicalHis.setText(pastMedicalHis);
+            }
             tvPastMedicalHisNum.setText(String.format(getString(R.string.txt_calc_num), pastMedicalHis.length()));
             reverseTransferBean.setPastHistory(pastMedicalHis);
         }
@@ -309,7 +311,9 @@ public class TransferMaterialFragment extends BaseFragment implements View.OnFoc
         if (status) {
             etFamilyMedicalHis.setVisibility(View.VISIBLE);
             layoutFamilyMedicalHis.setVisibility(View.GONE);
-            etFamilyMedicalHis.setText(familyMedicalHis);
+            if (!getString(R.string.txt_family_medical_his_not).equals(familyMedicalHis)) {
+                etFamilyMedicalHis.setText(familyMedicalHis);
+            }
             tvFamilyMedicalHisNum.setText(String.format(getString(R.string.txt_calc_num), familyMedicalHis.length()));
             reverseTransferBean.setFamilyHistory(familyMedicalHis);
         }
@@ -331,7 +335,10 @@ public class TransferMaterialFragment extends BaseFragment implements View.OnFoc
         if (status) {
             etAllergies.setVisibility(View.VISIBLE);
             layoutAllergies.setVisibility(View.GONE);
-            etAllergies.setText(allergiesHis);
+            if (!getString(R.string.txt_allergies_not).equals(allergiesHis)) {
+                etAllergies.setText(allergiesHis);
+
+            }
             tvAllergiesNum.setText(String.format(getString(R.string.txt_calc_num), allergiesHis.length()));
             reverseTransferBean.setAllergyHistory(allergiesHis);
         }

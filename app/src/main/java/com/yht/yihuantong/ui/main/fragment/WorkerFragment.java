@@ -124,7 +124,6 @@ public class WorkerFragment extends BaseFragment {
         statusBarFix.setLayoutParams(
                 new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getStateBarHeight(getActivity())));
         publicMainTitleScan.setVisibility(View.INVISIBLE);
-        initFlipper();
         view.postOnAnimationDelayed(() -> initNotifyHint(), 2000);
     }
 
@@ -143,7 +142,12 @@ public class WorkerFragment extends BaseFragment {
     @Override
     public void fillNetWorkData() {
         super.fillNetWorkData();
-        getBanner();
+        if (BaseUtils.isNetworkAvailable(getContext())) {
+            getBanner();
+        }
+        else {
+            initFlipper();
+        }
         getStudioOrderStatistics();
         getValidateHospitalList();
     }

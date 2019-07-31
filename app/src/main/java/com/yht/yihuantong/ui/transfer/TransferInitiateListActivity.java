@@ -16,6 +16,7 @@ import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
+import com.yht.frame.data.bean.ReservationValidateBean;
 import com.yht.frame.data.bean.TransferBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
@@ -24,7 +25,6 @@ import com.yht.frame.widgets.LoadViewHelper;
 import com.yht.frame.widgets.recyclerview.decoration.TimeItemDecoration;
 import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.yht.yihuantong.R;
-import com.yht.yihuantong.ZycApplication;
 import com.yht.yihuantong.ui.adapter.TransferInitiateAdapter;
 import com.yht.yihuantong.ui.patient.PatientPersonalActivity;
 import com.yht.yihuantong.ui.reservation.ReservationDisableActivity;
@@ -68,6 +68,10 @@ public class TransferInitiateListActivity extends BaseActivity
      * 时间title
      */
     private List<String> titleBars = new ArrayList<>();
+    /**
+     * 是否能发起转诊
+     */
+    private boolean applyTransferAble = false;
     /**
      * 页码
      */
@@ -115,6 +119,7 @@ public class TransferInitiateListActivity extends BaseActivity
         initAdapter();
         if (BaseUtils.isNetworkAvailable(this)) {
             getInitiateTransferOrderList();
+            getValidateHospitalList();
         }
         else {
             layoutReserveTransfer.setVisibility(View.GONE);
@@ -150,6 +155,13 @@ public class TransferInitiateListActivity extends BaseActivity
     }
 
     /**
+     * 校验医生是否有预约检查和预约转诊的合作医院
+     */
+    private void getValidateHospitalList() {
+        RequestUtils.getValidateHospitalList(this, loginBean.getToken(), this);
+    }
+
+    /**
      * 数据处理 排序
      */
     private void sortTransferData() {
@@ -166,7 +178,7 @@ public class TransferInitiateListActivity extends BaseActivity
     @OnClick(R.id.tv_check_next)
     public void onViewClicked() {
         Intent intent;
-        if (ZycApplication.getInstance().isTransferAble()) {
+        if (applyTransferAble) {
             intent = new Intent(this, ReservationTransferActivity.class);
             startActivity(intent);
         }
@@ -200,31 +212,41 @@ public class TransferInitiateListActivity extends BaseActivity
     @Override
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
-        if (task == Tasks.GET_INITIATE_TRANSFER_ORDER_LIST) {
-            layoutReserveTransfer.setVisibility(View.VISIBLE);
-            layoutNone.setVisibility(View.GONE);
-            List<TransferBean> list = (List<TransferBean>)response.getData();
-            if (page == BaseData.BASE_ONE) {
-                transferList.clear();
-            }
-            transferList.addAll(list);
-            sortTransferData();
-            transferInitiateAdapter.setNewData(transferList);
-            if (list != null && list.size() == BaseData.BASE_PAGE_DATA_NUM) {
-                transferInitiateAdapter.loadMoreComplete();
-            }
-            else {
-                transferInitiateAdapter.loadMoreEnd();
-            }
-            if (transferList != null && transferList.size() > 0) {
-                recyclerView.setVisibility(View.VISIBLE);
+        switch (task) {
+            case GET_INITIATE_TRANSFER_ORDER_LIST:
+                layoutReserveTransfer.setVisibility(View.VISIBLE);
                 layoutNone.setVisibility(View.GONE);
-            }
-            else {
-                recyclerView.setVisibility(View.GONE);
-                layoutNone.setVisibility(View.VISIBLE);
-                loadViewHelper.load(LoadViewHelper.NONE_RECORDING);
-            }
+                List<TransferBean> list = (List<TransferBean>)response.getData();
+                if (page == BaseData.BASE_ONE) {
+                    transferList.clear();
+                }
+                transferList.addAll(list);
+                sortTransferData();
+                transferInitiateAdapter.setNewData(transferList);
+                if (list != null && list.size() == BaseData.BASE_PAGE_DATA_NUM) {
+                    transferInitiateAdapter.loadMoreComplete();
+                }
+                else {
+                    transferInitiateAdapter.loadMoreEnd();
+                }
+                if (transferList != null && transferList.size() > 0) {
+                    recyclerView.setVisibility(View.VISIBLE);
+                    layoutNone.setVisibility(View.GONE);
+                }
+                else {
+                    recyclerView.setVisibility(View.GONE);
+                    layoutNone.setVisibility(View.VISIBLE);
+                    loadViewHelper.load(LoadViewHelper.NONE_RECORDING);
+                }
+                break;
+            case GET_VALIDATE_HOSPITAL_LIST:
+                ReservationValidateBean bean = (ReservationValidateBean)response.getData();
+                if (bean != null) {
+                    applyTransferAble = bean.isZz();
+                }
+                break;
+            default:
+                break;
         }
     }
 

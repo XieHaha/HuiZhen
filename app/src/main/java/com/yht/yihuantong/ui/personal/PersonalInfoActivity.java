@@ -50,9 +50,10 @@ public class PersonalInfoActivity extends BaseActivity {
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         tvInfoName.setText(loginBean.getDoctorName());
-        tvInfoSex.setText(
-                loginBean.getSex() == BaseData.BASE_MALE ? getString(R.string.txt_sex_male) : getString(R.string.txt_sex_female));
-        tvInfoPhone.setText(loginBean.getMobile());
+        tvInfoSex.setText(loginBean.getSex() == BaseData.BASE_MALE
+                          ? getString(R.string.txt_sex_male)
+                          : getString(R.string.txt_sex_female));
+        tvInfoPhone.setText(BaseUtils.asteriskUserPhone(loginBean.getMobile()));
         tvInfoTitle.setText(loginBean.getJobTitle());
         tvInfoDepart.setText(loginBean.getDepartmentName());
         tvInfoHospital.setText(loginBean.getHospitalName());

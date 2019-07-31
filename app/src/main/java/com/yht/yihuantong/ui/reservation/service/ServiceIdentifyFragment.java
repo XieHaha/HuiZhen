@@ -105,6 +105,7 @@ public class ServiceIdentifyFragment extends BaseFragment implements View.OnFocu
                         Selection.setSelection(editable, selEndIndex);
                     }
                 }
+                initNextButton();
             }
         });
     }
@@ -142,6 +143,7 @@ public class ServiceIdentifyFragment extends BaseFragment implements View.OnFocu
             if (!TextUtils.isEmpty(idCard) && !BaseUtils.isCardNum(idCard)) {
                 ToastUtil.toast(getContext(), R.string.toast_id_card_error);
             }
+            initNextButton();
         }
     }
 
@@ -150,6 +152,10 @@ public class ServiceIdentifyFragment extends BaseFragment implements View.OnFocu
      */
     public void onCardTextChanged(CharSequence s, int start, int before, int count) {
         idCard = s.toString().replace(" ", "");
+        initNextButton();
+    }
+
+    private void initNextButton() {
         if (!TextUtils.isEmpty(name) && BaseUtils.isCardNum(idCard)) {
             tvIdentifyNext.setSelected(true);
         }

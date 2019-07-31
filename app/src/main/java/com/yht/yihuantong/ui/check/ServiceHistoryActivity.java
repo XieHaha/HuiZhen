@@ -16,6 +16,7 @@ import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.bean.CheckBean;
+import com.yht.frame.data.bean.ReservationValidateBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
@@ -23,7 +24,6 @@ import com.yht.frame.widgets.LoadViewHelper;
 import com.yht.frame.widgets.recyclerview.decoration.TimeItemDecoration;
 import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.yht.yihuantong.R;
-import com.yht.yihuantong.ZycApplication;
 import com.yht.yihuantong.ui.adapter.CheckHistoryAdapter;
 import com.yht.yihuantong.ui.patient.PatientPersonalActivity;
 import com.yht.yihuantong.ui.reservation.ReservationDisableActivity;
@@ -61,6 +61,10 @@ public class ServiceHistoryActivity extends BaseActivity
     private TimeItemDecoration timeItemDecoration;
     private List<CheckBean> checkedList = new ArrayList<>();
     private List<String> titleBars = new ArrayList<>();
+    /**
+     * 是否能发起服务
+     */
+    private boolean applyServiceAble = false;
     /**
      * 页码
      */
@@ -105,6 +109,7 @@ public class ServiceHistoryActivity extends BaseActivity
         initAdapter();
         if (BaseUtils.isNetworkAvailable(this)) {
             getReserveCheckOrderList();
+            getValidateHospitalList();
         }
         else {
             layoutReserveService.setVisibility(View.GONE);
@@ -118,6 +123,13 @@ public class ServiceHistoryActivity extends BaseActivity
      */
     private void getReserveCheckOrderList() {
         RequestUtils.getReserveCheckOrderList(this, loginBean.getToken(), BaseData.BASE_PAGE_DATA_NUM, page, this);
+    }
+
+    /**
+     * 校验医生是否有预约检查和预约转诊的合作医院
+     */
+    private void getValidateHospitalList() {
+        RequestUtils.getValidateHospitalList(this, loginBean.getToken(), this);
     }
 
     /**
@@ -149,7 +161,7 @@ public class ServiceHistoryActivity extends BaseActivity
 
     @OnClick(R.id.tv_check_next)
     public void onViewClicked() {
-        if (ZycApplication.getInstance().isServiceAble()) {
+        if (applyServiceAble) {
             startActivity(new Intent(this, ReservationServiceActivity.class));
         }
         else {
@@ -180,31 +192,41 @@ public class ServiceHistoryActivity extends BaseActivity
     @Override
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
-        if (task == Tasks.GET_RESERVE_CHECK_ORDER_LIST) {
-            layoutReserveService.setVisibility(View.VISIBLE);
-            layoutNone.setVisibility(View.GONE);
-            List<CheckBean> list = (List<CheckBean>)response.getData();
-            if (page == BaseData.BASE_ONE) {
-                checkedList.clear();
-            }
-            checkedList.addAll(list);
-            sortTransferData();
-            checkHistoryAdapter.setNewData(checkedList);
-            if (list != null && list.size() == BaseData.BASE_PAGE_DATA_NUM) {
-                checkHistoryAdapter.loadMoreComplete();
-            }
-            else {
-                checkHistoryAdapter.loadMoreEnd();
-            }
-            if (checkedList != null && checkedList.size() > 0) {
-                recyclerView.setVisibility(View.VISIBLE);
+        switch (task) {
+            case GET_RESERVE_CHECK_ORDER_LIST:
+                layoutReserveService.setVisibility(View.VISIBLE);
                 layoutNone.setVisibility(View.GONE);
-            }
-            else {
-                recyclerView.setVisibility(View.GONE);
-                layoutNone.setVisibility(View.VISIBLE);
-                loadViewHelper.load(LoadViewHelper.NONE_RECORDING);
-            }
+                List<CheckBean> list = (List<CheckBean>)response.getData();
+                if (page == BaseData.BASE_ONE) {
+                    checkedList.clear();
+                }
+                checkedList.addAll(list);
+                sortTransferData();
+                checkHistoryAdapter.setNewData(checkedList);
+                if (list != null && list.size() == BaseData.BASE_PAGE_DATA_NUM) {
+                    checkHistoryAdapter.loadMoreComplete();
+                }
+                else {
+                    checkHistoryAdapter.loadMoreEnd();
+                }
+                if (checkedList != null && checkedList.size() > 0) {
+                    recyclerView.setVisibility(View.VISIBLE);
+                    layoutNone.setVisibility(View.GONE);
+                }
+                else {
+                    recyclerView.setVisibility(View.GONE);
+                    layoutNone.setVisibility(View.VISIBLE);
+                    loadViewHelper.load(LoadViewHelper.NONE_RECORDING);
+                }
+                break;
+            case GET_VALIDATE_HOSPITAL_LIST:
+                ReservationValidateBean bean = (ReservationValidateBean)response.getData();
+                if (bean != null) {
+                    applyServiceAble = bean.isJc();
+                }
+                break;
+            default:
+                break;
         }
     }
 

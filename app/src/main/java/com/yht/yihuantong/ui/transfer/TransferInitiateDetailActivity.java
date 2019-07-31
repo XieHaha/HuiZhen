@@ -16,6 +16,7 @@ import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
+import com.yht.frame.data.bean.ReservationValidateBean;
 import com.yht.frame.data.bean.TransferBean;
 import com.yht.frame.data.type.TransferOrderStatus;
 import com.yht.frame.http.retrofit.RequestUtils;
@@ -30,6 +31,7 @@ import com.yht.frame.widgets.textview.JustifiedTextView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.scheme.ViewUtils;
 import com.yht.yihuantong.ui.main.MainActivity;
+import com.yht.yihuantong.ui.reservation.ReservationDisableActivity;
 import com.yht.yihuantong.ui.reservation.transfer.ReservationTransferActivity;
 import com.yht.yihuantong.utils.FileUrlUtil;
 
@@ -119,6 +121,10 @@ public class TransferInitiateDetailActivity extends BaseActivity
      * 是否为外链打开
      */
     private boolean isOuterChain;
+    /**
+     * 是否能发起转诊
+     */
+    private boolean applyTransferAble = false;
 
     @Override
     protected boolean isInitBackBtn() {
@@ -151,6 +157,7 @@ public class TransferInitiateDetailActivity extends BaseActivity
         initDetailData();
         if (BaseUtils.isNetworkAvailable(this)) {
             getTransferOrderDetail();
+            getValidateHospitalList();
         }
         else {
             layoutHint.setVisibility(View.VISIBLE);
@@ -254,6 +261,13 @@ public class TransferInitiateDetailActivity extends BaseActivity
     }
 
     /**
+     * 校验医生是否有预约检查和预约转诊的合作医院
+     */
+    private void getValidateHospitalList() {
+        RequestUtils.getValidateHospitalList(this, loginBean.getToken(), this);
+    }
+
+    /**
      * 查询患者是否存在未完成的转诊单
      */
     private void getPatientExistTransfer() {
@@ -289,7 +303,14 @@ public class TransferInitiateDetailActivity extends BaseActivity
                                          .show();
                 }
                 else {
-                    getPatientExistTransfer();
+                    if (applyTransferAble) {
+                        getPatientExistTransfer();
+                    }
+                    else {
+                        Intent intent = new Intent(this, ReservationDisableActivity.class);
+                        intent.putExtra(CommonData.KEY_CHECK_OR_TRANSFER, true);
+                        startActivity(intent);
+                    }
                 }
                 break;
             case R.id.tv_contact_patient:
@@ -340,6 +361,12 @@ public class TransferInitiateDetailActivity extends BaseActivity
                     Intent intent = new Intent(this, ReservationTransferActivity.class);
                     intent.putExtra(CommonData.KEY_TRANSFER_ORDER_BEAN, transferBean);
                     startActivity(intent);
+                }
+                break;
+            case GET_VALIDATE_HOSPITAL_LIST:
+                ReservationValidateBean bean = (ReservationValidateBean)response.getData();
+                if (bean != null) {
+                    applyTransferAble = bean.isZz();
                 }
                 break;
             default:

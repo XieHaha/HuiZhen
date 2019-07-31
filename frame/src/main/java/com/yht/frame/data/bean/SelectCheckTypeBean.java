@@ -11,17 +11,17 @@ import java.io.Serializable;
  */
 public class SelectCheckTypeBean extends DataSupport implements Serializable {
     private static final long serialVersionUID = 2307028291664717958L;
-    private int price;
+    private long price;
     private String projectCode;
     private String projectName;
     private String hospitalName;
     private String hospitalCode;
 
-    public int getPrice() {
+    public long getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(long price) {
         this.price = price;
     }
 

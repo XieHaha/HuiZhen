@@ -105,6 +105,7 @@ public class TransferIdentifyFragment extends BaseFragment implements View.OnFoc
                         Selection.setSelection(editable, selEndIndex);
                     }
                 }
+                initNextButton();
             }
         });
     }
@@ -149,6 +150,7 @@ public class TransferIdentifyFragment extends BaseFragment implements View.OnFoc
             if (!TextUtils.isEmpty(idCard) && !BaseUtils.isCardNum(idCard)) {
                 ToastUtil.toast(getContext(), R.string.toast_id_card_error);
             }
+            initNextButton();
         }
     }
 
@@ -157,6 +159,10 @@ public class TransferIdentifyFragment extends BaseFragment implements View.OnFoc
      */
     public void onCardTextChanged(CharSequence s, int start, int before, int count) {
         idCard = s.toString().replace(" ", "");
+        initNextButton();
+    }
+
+    private void initNextButton() {
         if (!TextUtils.isEmpty(name) && BaseUtils.isCardNum(idCard)) {
             tvIdentifyNext.setSelected(true);
         }

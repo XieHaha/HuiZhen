@@ -393,7 +393,7 @@ public class BaseUtils {
      * @param price
      * @return
      */
-    public static String getPrice(int price) {
+    public static String getPrice(long price) {
         try {
             //#.00 表示两位小数
             DecimalFormat df = new DecimalFormat("#0.00");
