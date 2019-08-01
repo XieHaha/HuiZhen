@@ -383,6 +383,7 @@ public class TransferInitiateDetailActivity extends BaseActivity
         super.onResponseCode(task, response);
         if (response.getCode() == BaseNetConfig.REQUEST_ORDER_ERROR) {
             ToastUtil.toast(this, response.getMsg());
+            setResult(RESULT_OK);
             getTransferOrderDetail();
         }
     }

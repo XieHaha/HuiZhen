@@ -15,6 +15,9 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.bumptech.glide.Glide;
+import com.yht.frame.api.ApiManager;
+import com.yht.frame.api.notify.IChange;
+import com.yht.frame.api.notify.RegisterType;
 import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
@@ -93,6 +96,10 @@ public class WorkerFragment extends BaseFragment {
      * 扫码
      */
     private static final int REQUEST_CODE_SCAN = 100;
+    /**
+     * 消息红点
+     */
+    private IChange<String> transferApply = data -> getStudioOrderStatistics();
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
@@ -124,6 +131,7 @@ public class WorkerFragment extends BaseFragment {
         statusBarFix.setLayoutParams(
                 new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getStateBarHeight(getActivity())));
         publicMainTitleScan.setVisibility(View.INVISIBLE);
+        iNotifyChangeListenerServer = ApiManager.getInstance().getServer();
         view.postOnAnimationDelayed(() -> initNotifyHint(), 2000);
     }
 
@@ -137,6 +145,12 @@ public class WorkerFragment extends BaseFragment {
              .load(FileUrlUtil.addTokenToUrl(loginBean.getPhoto()))
              .apply(GlideHelper.getOptions(BaseUtils.dp2px(getContext(), 4)))
              .into(ivPersonalImage);
+    }
+
+    @Override
+    public void initListener() {
+        super.initListener();
+        iNotifyChangeListenerServer.registerDoctorTransferPatientListener(transferApply, RegisterType.REGISTER);
     }
 
     @Override
@@ -359,5 +373,11 @@ public class WorkerFragment extends BaseFragment {
                 openScan();
             }
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        iNotifyChangeListenerServer.registerMessageStatusChangeListener(transferApply, RegisterType.UNREGISTER);
     }
 }

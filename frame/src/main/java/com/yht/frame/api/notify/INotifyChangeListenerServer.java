@@ -48,7 +48,7 @@ public interface INotifyChangeListenerServer {
     void registerMessageStatusChangeListener(@NonNull IChange<String> listener, @NonNull RegisterType registerType);
 
     /**
-     * 消息红点
+     * 消息红点 （通知栏点击）
      *
      * @param listener     接收消息监听器
      * @param registerType 注册类型

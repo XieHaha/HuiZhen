@@ -60,6 +60,13 @@ public class PushNotifyReceiver extends JPushMessageReceiver implements MessageT
             case MESSAGE_DOCTOR_AUTH_FAILED:
                 NotifyChangeListenerManager.getInstance().notifyDoctorAuthStatus(DocAuthStatus.AUTH_FAILD);
                 break;
+            case MESSAGE_TRANSFER_APPLY:
+            case MESSAGE_TRANSFER_CANCEL:
+            case MESSAGE_TRANSFER_SYSTEM_CANCEL_R:
+                NotifyChangeListenerManager.getInstance().notifyDoctorTransferPatient("");
+                //系统消息列表
+                NotifyChangeListenerManager.getInstance().notifyMessageStatusChange("");
+                break;
             default:
                 //系统消息列表
                 NotifyChangeListenerManager.getInstance().notifyMessageStatusChange("");

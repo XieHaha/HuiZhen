@@ -386,6 +386,7 @@ public class TransferReceiveDetailActivity extends BaseActivity
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_CANCELED &&
             (requestCode == REQUEST_CODE_TRANSFER_AGAIN || requestCode == REQUEST_CODE_RECEIVE_TRANSFER)) {
+            setResult(RESULT_OK);
             getTransferOrderDetail();
         }
         if (resultCode != Activity.RESULT_OK) {

@@ -207,6 +207,7 @@ public class NotifyMessageFragment extends BaseFragment
                     messageList.clear();
                 }
                 messageList.addAll(list);
+                notifyMessageAdapter.setUpdateAll(false);
                 notifyMessageAdapter.setNewData(messageList);
                 if (list.size() >= BaseData.BASE_PAGE_DATA_NUM) {
                     notifyMessageAdapter.loadMoreComplete();
