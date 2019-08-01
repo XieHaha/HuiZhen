@@ -192,7 +192,7 @@ public class TransferAgainActivity extends BaseActivity {
             (new Handler()).postDelayed(() -> {
                 setResult(RESULT_CANCELED);
                 finish();
-            }, 200);
+            }, 2000);
         }
     }
 

@@ -78,9 +78,10 @@ public class TransferEditActivity extends BaseActivity {
         if (getIntent() != null) {
             isEditReceive = getIntent().getBooleanExtra(CommonData.KEY_RECEIVE_OR_EDIT_VISIT, false);
             transferBean = (TransferBean)getIntent().getSerializableExtra(CommonData.KEY_TRANSFER_ORDER_BEAN);
-            if (isEditReceive) {
+            if (isEditReceive && transferBean != null) {
                 receiveHospital = transferBean.getTargetHospitalName();
                 reserveTime = transferBean.getAppointAt();
+                noticeText = transferBean.getNote();
                 hospitalCode = transferBean.getTargetHospitalCode();
                 initPage();
             }
@@ -122,11 +123,14 @@ public class TransferEditActivity extends BaseActivity {
      */
     private void initPage() {
         publicTitleBarTitle.setText(R.string.title_edit_transfer);
-        //        tvNotRequired.setVisibility(View.GONE);
         tvHospital.setText(receiveHospital);
         tvHospital.setSelected(true);
         tvTime.setText(reserveTime);
         tvTime.setSelected(true);
+        if (!TextUtils.isEmpty(noticeText)) {
+            etNotice.setText(noticeText);
+            etNotice.setSelection(noticeText.length());
+        }
         initNextButton();
     }
 
@@ -134,11 +138,22 @@ public class TransferEditActivity extends BaseActivity {
      * 判断
      */
     private void initNextButton() {
-        if (!TextUtils.isEmpty(receiveHospital) && !TextUtils.isEmpty(reserveTime)) {
-            tvSubmit.setSelected(true);
+        if (isEditReceive && transferBean != null) {
+            if (receiveHospital.equals(transferBean.getTargetHospitalName()) &&
+                reserveTime.equals(transferBean.getAppointAt()) && noticeText.equals(transferBean.getNote())) {
+                tvSubmit.setSelected(false);
+            }
+            else {
+                tvSubmit.setSelected(true);
+            }
         }
         else {
-            tvSubmit.setSelected(false);
+            if (!TextUtils.isEmpty(receiveHospital) && !TextUtils.isEmpty(reserveTime)) {
+                tvSubmit.setSelected(true);
+            }
+            else {
+                tvSubmit.setSelected(false);
+            }
         }
     }
 
@@ -198,7 +213,7 @@ public class TransferEditActivity extends BaseActivity {
             (new Handler()).postDelayed(() -> {
                 setResult(RESULT_CANCELED);
                 finish();
-            }, 200);
+            }, 2000);
         }
     }
 

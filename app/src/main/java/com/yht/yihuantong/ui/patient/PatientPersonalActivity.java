@@ -167,14 +167,14 @@ public class PatientPersonalActivity extends BaseActivity implements EaseChatFra
             patientName = getIntent().getStringExtra(KEY_PATIENT_NAME);
             isChat = getIntent().getBooleanExtra(CommonData.KEY_PATIENT_CHAT, false);
         }
-        List<PatientBean> list = DataSupport.where("code = ?", patientCode).find(PatientBean.class);
-        if (list != null && list.size() > 0) {
-            PatientBean bean = list.get(0);
-            patientName = bean.getName();
-        }
-        publicTitleBarTitle.setText(patientName);
         //通知显示问题
         if (!TextUtils.isEmpty(patientCode)) {
+            List<PatientBean> list = DataSupport.where("code = ?", patientCode.toUpperCase()).find(PatientBean.class);
+            if (list != null && list.size() > 0) {
+                PatientBean bean = list.get(0);
+                patientName = bean.getName();
+            }
+            publicTitleBarTitle.setText(patientName);
             ZycApplication.getInstance().setChatId(patientCode.toLowerCase());
         }
     }
