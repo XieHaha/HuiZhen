@@ -114,6 +114,7 @@ public class LoginOptionsActivity extends BaseActivity
         protocolUpdateDate = BaseUtils.date2TimeStamp(
                 sharePreferenceUtil.getAlwaysString(CommonData.KEY_IS_PROTOCOL_UPDATE_DATE),
                 BaseUtils.YYYY_MM_DD_HH_MM_SS);
+        ZycApplication.getInstance().setLoginStatus(false);
     }
 
     @Override

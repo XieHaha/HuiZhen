@@ -12,7 +12,7 @@ import com.yht.frame.data.type.DocAuthStatus;
 import com.yht.frame.data.type.MessageType;
 import com.yht.frame.utils.HuiZhenLog;
 import com.yht.yihuantong.LifecycleHandler;
-import com.yht.yihuantong.scheme.ViewUtils;
+import com.yht.yihuantong.ZycApplication;
 import com.yht.yihuantong.ui.auth.AuthDoctorActivity;
 import com.yht.yihuantong.ui.check.ServiceDetailActivity;
 import com.yht.yihuantong.ui.login.LoginOptionsActivity;
@@ -82,7 +82,8 @@ public class PushNotifyReceiver extends JPushMessageReceiver implements MessageT
     private void jumpPageByType(Context context, String type, String msgId) {
         Intent mainIntent, baseIntent;
         Intent[] intents;
-        if (TextUtils.isEmpty(type) || !ViewUtils.isLaunchedActivity(context, MainActivity.class)) {
+        if (TextUtils.isEmpty(type) || !ZycApplication.getInstance().isLoginStatus() ||
+            ZycApplication.getInstance().getLoginBean() == null) {
             mainIntent = new Intent(context, LoginOptionsActivity.class);
             mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(mainIntent);

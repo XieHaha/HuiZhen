@@ -155,6 +155,7 @@ public class MainActivity extends BaseActivity
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
         largeIcon = ((BitmapDrawable)getResources().getDrawable(R.mipmap.logo_icon)).getBitmap();
+        ZycApplication.getInstance().setLoginStatus(true);
         boolean protocol = sharePreferenceUtil.getBoolean(CommonData.KEY_IS_PROTOCOL_UPDATE_DATE);
         if (protocol) {
             showProtocol();
