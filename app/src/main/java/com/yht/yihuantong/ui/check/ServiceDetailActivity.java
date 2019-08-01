@@ -290,8 +290,8 @@ public class ServiceDetailActivity extends BaseActivity
             //判断是否有已上传报告
             if (reportList.size() > 0) {
                 layoutCheckReportRoot.setVisibility(View.VISIBLE);
-                tvCheckReport.setText(
-                        String.format(getString(R.string.txt_report_num), reportList.size(), checkTypeList.size()));
+                //                tvCheckReport.setText(
+                //                        String.format(getString(R.string.txt_report_num), reportList.size(), checkTypeList.size()));
                 //拆分报告
                 splitReportUrl();
                 //添加报告

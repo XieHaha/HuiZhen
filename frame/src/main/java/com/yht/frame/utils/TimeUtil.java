@@ -78,8 +78,8 @@ public class TimeUtil {
                     else if (todayCalendar.get(Calendar.DAY_OF_YEAR) - calendar.get(Calendar.DAY_OF_YEAR) == 1) {
                         result = "昨天 " + getTime(timestamp, hourTimeFormat);
                     }
-                    else if (todayCalendar.get(Calendar.DAY_OF_YEAR) - calendar.get(Calendar.DAY_OF_YEAR) == 2) {
-                        result = "前天 " + getTime(timestamp, hourTimeFormat);
+                    else if (todayCalendar.get(Calendar.DAY_OF_YEAR) - calendar.get(Calendar.DAY_OF_YEAR) < 7) {
+                        result = "星期" + getWeek(calendar) + " " + getTime(timestamp, hourTimeFormat);
                     }
                     else {
                         result = getTime(timestamp, monthTimeFormat);
@@ -89,8 +89,8 @@ public class TimeUtil {
                     if (todayCalendar.get(Calendar.DAY_OF_YEAR) - calendar.get(Calendar.DAY_OF_YEAR) == 1) {
                         result = "昨天 " + getTime(timestamp, hourTimeFormat);
                     }
-                    else if (todayCalendar.get(Calendar.DAY_OF_YEAR) - calendar.get(Calendar.DAY_OF_YEAR) == 2) {
-                        result = "前天 " + getTime(timestamp, hourTimeFormat);
+                    else if (todayCalendar.get(Calendar.DAY_OF_YEAR) - calendar.get(Calendar.DAY_OF_YEAR) < 7) {
+                        result = "星期" + getWeek(calendar) + " " + getTime(timestamp, hourTimeFormat);
                     }
                     else {
                         result = getTime(timestamp, monthTimeFormat);
@@ -110,6 +110,32 @@ public class TimeUtil {
     private static String getTime(long time, String pattern) {
         Date date = new Date(time);
         return dateFormat(date, pattern);
+    }
+
+    private static String getWeek(Calendar calendar) {
+        String mWay = String.valueOf(calendar.get(Calendar.DAY_OF_WEEK));
+        if ("1".equals(mWay)) {
+            mWay = "天";
+        }
+        else if ("2".equals(mWay)) {
+            mWay = "一";
+        }
+        else if ("3".equals(mWay)) {
+            mWay = "二";
+        }
+        else if ("4".equals(mWay)) {
+            mWay = "三";
+        }
+        else if ("5".equals(mWay)) {
+            mWay = "四";
+        }
+        else if ("6".equals(mWay)) {
+            mWay = "五";
+        }
+        else if ("7".equals(mWay)) {
+            mWay = "六";
+        }
+        return mWay;
     }
 
     private static String dateFormat(Date date, String pattern) {

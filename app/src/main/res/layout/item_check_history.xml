@@ -113,6 +113,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_16"
+                    android:visibility="gone"
                     android:textColor="@color/color_1491fc"
                     android:text="@string/txt_report_num"
                     android:layout_toEndOf="@id/text"

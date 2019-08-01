@@ -181,9 +181,9 @@ public class PatientOrderAdapter extends BaseMultiItemQuickAdapter<PatientOrderB
                 layout.addView(view);
             }
             if (reportList.size() > 0) {
-                helper.setText(R.id.tv_check_report,
-                               String.format(mContext.getString(R.string.txt_report_num), reportList.size(),
-                                             list.size()));
+                //                helper.setText(R.id.tv_check_report,
+                //                               String.format(mContext.getString(R.string.txt_report_num), reportList.size(),
+                //                                             list.size()));
                 helper.setGone(R.id.layout_check_report_root, true);
                 addReportView(helper, reportList);
             }

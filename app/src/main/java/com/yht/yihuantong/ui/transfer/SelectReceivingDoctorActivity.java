@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -46,7 +47,7 @@ import butterknife.OnClick;
  */
 public class SelectReceivingDoctorActivity extends BaseActivity
         implements BaseQuickAdapter.OnItemClickListener, BaseQuickAdapter.RequestLoadMoreListener,
-                   BaseQuickAdapter.OnItemChildClickListener {
+                   BaseQuickAdapter.OnItemChildClickListener, View.OnTouchListener {
     @BindView(R.id.tv_select)
     TextView tvSelect;
     @BindView(R.id.layout_expand)
@@ -174,6 +175,8 @@ public class SelectReceivingDoctorActivity extends BaseActivity
     @Override
     public void initListener() {
         super.initListener();
+        selectRecyclerView.setOnTouchListener(this);
+        searchRecyclerView.setOnTouchListener(this);
         etSearchCheckType.addTextChangedListener(new AbstractTextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -303,6 +306,7 @@ public class SelectReceivingDoctorActivity extends BaseActivity
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_select:
+                hideSoftInputFromWindow();
                 if (tvSelect.isSelected()) {
                     layoutBg.postDelayed(() -> layoutBg.setVisibility(View.GONE), 200);
                     tvSelect.setSelected(false);
@@ -333,6 +337,12 @@ public class SelectReceivingDoctorActivity extends BaseActivity
             default:
                 break;
         }
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        hideSoftInputFromWindow();
+        return false;
     }
 
     @Override
