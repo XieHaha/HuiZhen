@@ -18,7 +18,7 @@ public class EaseVoiceRecorder {
     MediaRecorder recorder;
 
     static final String PREFIX = "voice";
-    static final String EXTENSION = ".amr";
+    static final String EXTENSION = ".mp3";
 
     private boolean isRecording = false;
     private long startTime;
@@ -45,8 +45,8 @@ public class EaseVoiceRecorder {
             }
             recorder = new MediaRecorder();
             recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-            recorder.setOutputFormat(MediaRecorder.OutputFormat.AMR_NB);
-            recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+            recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+            recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
             // MONO
             recorder.setAudioChannels(1);
             // 8000Hz

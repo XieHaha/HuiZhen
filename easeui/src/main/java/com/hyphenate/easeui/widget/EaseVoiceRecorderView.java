@@ -28,8 +28,8 @@ public class EaseVoiceRecorderView extends RelativeLayout {
     protected Context context;
     protected LayoutInflater inflater;
     protected Drawable[] micImages;
-    //    protected EaseVoiceRecorder voiceRecorder;
-    protected EaseVoiceAudioRecorder voiceAudioRecorder;
+        protected EaseVoiceRecorder voiceRecorder;
+//    protected EaseVoiceAudioRecorder voiceAudioRecorder;
     protected PowerManager.WakeLock wakeLock;
     protected ImageView micImage;
     protected TextView recordingHint;
@@ -61,8 +61,8 @@ public class EaseVoiceRecorderView extends RelativeLayout {
         LayoutInflater.from(context).inflate(R.layout.ease_widget_voice_recorder, this);
         micImage = (ImageView)findViewById(R.id.mic_image);
         recordingHint = (TextView)findViewById(R.id.recording_hint);
-        //        voiceRecorder = new EaseVoiceRecorder(micImageHandler);
-        voiceAudioRecorder = EaseVoiceAudioRecorder.getInstance(micImageHandler);
+                voiceRecorder = new EaseVoiceRecorder(micImageHandler);
+//        voiceAudioRecorder = EaseVoiceAudioRecorder.getInstance(micImageHandler);
         // animation resources, used for recording
         micImages = new Drawable[] {
                 getResources().getDrawable(R.drawable.ease_record_animate_01),
@@ -171,17 +171,18 @@ public class EaseVoiceRecorderView extends RelativeLayout {
             this.setVisibility(View.VISIBLE);
             recordingHint.setText(context.getString(R.string.move_up_to_cancel));
             recordingHint.setBackgroundColor(Color.TRANSPARENT);
-            //            voiceRecorder.startRecording(context);
-            voiceAudioRecorder.startRecordAndFile();
+                        voiceRecorder.startRecording(context);
+//            voiceAudioRecorder.startRecordAndFile();
         }
         catch (Exception e) {
             e.printStackTrace();
             if (wakeLock.isHeld()) { wakeLock.release(); }
-            //            if (voiceRecorder != null)
-            //                voiceRecorder.discardRecording();
-            if (voiceAudioRecorder != null) {
-                voiceAudioRecorder.stopRecordAndFile();
-            }
+                        if (voiceRecorder != null) {
+                            voiceRecorder.discardRecording();
+                        }
+//            if (voiceAudioRecorder != null) {
+//                voiceAudioRecorder.stopRecordAndFile();
+//            }
             this.setVisibility(View.INVISIBLE);
             Toast.makeText(context, R.string.recoding_fail, Toast.LENGTH_SHORT).show();
             return;
@@ -202,14 +203,14 @@ public class EaseVoiceRecorderView extends RelativeLayout {
         if (wakeLock.isHeld()) { wakeLock.release(); }
         try {
             // stop recording
-            //            if (voiceRecorder.isRecording()) {
-            //                voiceRecorder.discardRecording();
-            //                this.setVisibility(View.INVISIBLE);
-            //            }
-            if (voiceAudioRecorder.isRecord) {
-                voiceAudioRecorder.stopRecordAndFile();
-                this.setVisibility(View.INVISIBLE);
-            }
+                        if (voiceRecorder.isRecording()) {
+                            voiceRecorder.discardRecording();
+                            this.setVisibility(View.INVISIBLE);
+                        }
+//            if (voiceAudioRecorder.isRecord) {
+//                voiceAudioRecorder.stopRecordAndFile();
+//                this.setVisibility(View.INVISIBLE);
+//            }
         }
         catch (Exception e) {
         }
@@ -218,13 +219,13 @@ public class EaseVoiceRecorderView extends RelativeLayout {
     public int stopRecoding() {
         this.setVisibility(View.INVISIBLE);
         if (wakeLock.isHeld()) { wakeLock.release(); }
-        //        return voiceRecorder.stopRecoding();
-        return voiceAudioRecorder.stopRecordAndFile();
+                return voiceRecorder.stopRecoding();
+//        return voiceAudioRecorder.stopRecordAndFile();
     }
 
     public String getVoiceFilePath() {
-        //        return voiceRecorder.getVoiceFilePath();
-        return voiceAudioRecorder.getNewAudioName();
+                return voiceRecorder.getVoiceFilePath();
+//        return voiceAudioRecorder.getNewAudioName();
     }
     //    public String getVoiceFileName() {
     //        return voiceRecorder.getVoiceFileName();
