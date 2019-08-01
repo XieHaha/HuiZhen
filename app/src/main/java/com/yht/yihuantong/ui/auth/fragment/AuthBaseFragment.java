@@ -279,7 +279,8 @@ public class AuthBaseFragment extends BaseFragment
         Intent intent;
         switch (view.getId()) {
             case R.id.layout_upload_img:
-                new DownDialog(getContext()).setData(data).setOnMediaItemClickListener(this).show();
+                //                new DownDialog(getContext()).setData(data).setOnMediaItemClickListener(this).show();
+                permissionHelper.request(new String[] { Permission.CAMERA, Permission.STORAGE_WRITE });
                 break;
             case R.id.layout_base_hospital:
                 intent = new Intent(getContext(), SelectHospitalByAuthActivity.class);
@@ -378,7 +379,7 @@ public class AuthBaseFragment extends BaseFragment
      * 打开图片库
      */
     private void openPhoto() {
-        MatisseUtils.open(this, false);
+        MatisseUtils.open(this, true, 1);
     }
 
     /**
@@ -480,7 +481,8 @@ public class AuthBaseFragment extends BaseFragment
                 openPhoto();
             }
             else if (isSamePermission(Permission.CAMERA, ((String[])permissionName)[0])) {
-                openCamera();
+//                openCamera();
+                openPhoto();
             }
         }
     }

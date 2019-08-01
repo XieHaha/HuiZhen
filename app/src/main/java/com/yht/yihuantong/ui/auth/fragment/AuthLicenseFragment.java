@@ -7,6 +7,7 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -34,7 +35,6 @@ import com.yht.yihuantong.ZycApplication;
 import com.yht.yihuantong.ui.ImagePreviewActivity;
 import com.yht.yihuantong.ui.adapter.AddImageAdapter;
 import com.yht.yihuantong.ui.auth.listener.OnAuthStepListener;
-import com.yht.yihuantong.ui.dialog.DownDialog;
 import com.yht.yihuantong.ui.dialog.listener.OnMediaItemClickListener;
 import com.yht.yihuantong.utils.MatisseUtils;
 import com.zhihu.matisse.Matisse;
@@ -73,8 +73,20 @@ public class AuthLicenseFragment extends BaseFragment
      */
     private Uri mCurrentPhotoUri;
     private String mCurrentPhotoPath;
-    private File frontFile, backFile;
+    /**
+     * 已上传图片
+     */
     private ArrayList<NormImage> imagePaths;
+    /**
+     * 图片临时数据
+     */
+    private List<String> paths;
+    private int currentUploadImgIndex = -1;
+    private Handler dealImgHandler = new Handler(msg -> {
+        //图片显示完开始上传图片
+        uploadImage(new File(paths.get(currentUploadImgIndex)));
+        return true;
+    });
 
     @Override
     public int getLayoutID() {
@@ -193,7 +205,8 @@ public class AuthLicenseFragment extends BaseFragment
             getActivity().overridePendingTransition(R.anim.anim_fade_in, R.anim.keep);
         }
         else {
-            new DownDialog(getContext()).setData(data).setOnMediaItemClickListener(this).show();
+            //            new DownDialog(getContext()).setData(data).setOnMediaItemClickListener(this).show();
+            permissionHelper.request(new String[] { Permission.CAMERA, Permission.STORAGE_WRITE });
         }
     }
 
@@ -261,7 +274,13 @@ public class AuthLicenseFragment extends BaseFragment
      * 打开图片库
      */
     private void openPhoto() {
-        MatisseUtils.open(this, false);
+        int num = 2;
+        for (NormImage normImage : imagePaths) {
+            if (!TextUtils.isEmpty(normImage.getImageUrl())) {
+                num--;
+            }
+        }
+        MatisseUtils.open(this, true, num);
     }
 
     File tempFile;
@@ -305,8 +324,11 @@ public class AuthLicenseFragment extends BaseFragment
         super.onResponseSuccess(task, response);
         if (task == Tasks.UPLOAD_FILE) {
             String url = (String)response.getData();
-            if (imagePaths.size() == BaseData.BASE_ONE) {
-                imagePaths.get(0).setImageUrl(url);
+            if (imagePaths.size() == 0 || TextUtils.isEmpty(imagePaths.get(0).getImageUrl())) {
+                imagePaths.clear();
+                NormImage normImage = new NormImage();
+                normImage.setImageUrl(url);
+                imagePaths.add(normImage);
                 //占位
                 imagePaths.add(new NormImage());
             }
@@ -315,6 +337,13 @@ public class AuthLicenseFragment extends BaseFragment
             }
             addImageAdapter.setNewData(imagePaths);
             initNextButton();
+            if (currentUploadImgIndex == 0) {
+                currentUploadImgIndex = 1;
+                dealImgHandler.sendEmptyMessage(0);
+            }
+            else if (currentUploadImgIndex == 1) {
+                currentUploadImgIndex = -1;
+            }
         }
     }
 
@@ -325,12 +354,17 @@ public class AuthLicenseFragment extends BaseFragment
         }
         switch (requestCode) {
             case RC_PICK_IMG:
-                List<String> paths = Matisse.obtainPathResult(data);
-                if (null != paths && 0 != paths.size()) {
+                paths = Matisse.obtainPathResult(data);
+                if (1 == paths.size()) {
                     NormImage normImage = new NormImage();
                     normImage.setImagePath(paths.get(0));
                     imagePaths.set(imagePaths.size() - 1, normImage);
                     uploadImage(new File(paths.get(0)));
+                }
+                else {
+                    imagePaths.clear();
+                    currentUploadImgIndex = 0;
+                    dealImgHandler.sendEmptyMessage(0);
                 }
                 break;
             case RC_PICK_CAMERA:
@@ -352,7 +386,8 @@ public class AuthLicenseFragment extends BaseFragment
                 openPhoto();
             }
             else if (isSamePermission(Permission.CAMERA, ((String[])permissionName)[0])) {
-                openCamera();
+                //                openCamera();
+                openPhoto();
             }
         }
     }

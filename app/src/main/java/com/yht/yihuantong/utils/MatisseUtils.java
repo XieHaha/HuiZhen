@@ -46,7 +46,7 @@ public class MatisseUtils {
                .forResult(RC_PICK_IMG);
     }
 
-    public static void open(Fragment fragment, boolean isCapture) {
+    public static void open(Fragment fragment, boolean isCapture,int maxNum) {
         Matisse.from(fragment)
                // 选择 mime 的类型
                .choose(MimeType.ofImage())
@@ -59,7 +59,7 @@ public class MatisseUtils {
                // light
                .theme(R.style.Matisse_Zhihu)
                // 图片选择的最多数量
-               .maxSelectable(1)
+               .maxSelectable(maxNum)
                // 列表中显示的图片大小
                .gridExpectedSize(fragment.getResources().getDimensionPixelSize(R.dimen.app_picture_size))
                .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
