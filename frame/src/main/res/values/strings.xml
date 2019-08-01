@@ -291,6 +291,7 @@
     <string name="txt_transfer_again">重新转诊</string>
     <string name="txt_transfer_cancel">取消转诊</string>
     <string name="txt_transfer_other">转给他人</string>
+    <string name="txt_transfer_other_doctor">转给%s医生</string>
     <string name="txt_contact_doctor">联系接诊医生</string>
     <string name="txt_contact_transfer_doctor">联系转诊医生</string>
     <string name="txt_transfer_time">转诊时间</string>
@@ -325,8 +326,8 @@
     <string name="txt_reserve_visit_time">预约就诊时间</string>
     <string name="txt_edit_transfer">变更接诊信息</string>
     <string name="txt_edit_transfer_hint">请输入患者就诊的注意事项</string>
-    <string name="txt_season">理由</string>
-    <string name="txt_season_hint">请输入转诊理由</string>
+    <string name="txt_season">转诊说明</string>
+    <string name="txt_season_hint">请输入转诊说明</string>
 
     <!--消息-->
     <string name="txt_colon_patient">患者：</string>

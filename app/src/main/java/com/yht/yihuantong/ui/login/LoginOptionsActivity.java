@@ -225,12 +225,6 @@ public class LoginOptionsActivity extends BaseActivity
             case R.id.tv_login_wechat:
                 //判断手机是否安装微信
                 if (api.isWXAppInstalled()) {
-                    //                    if (isShowNewProtocol && !isAgree) {
-                    //                        showProtocol();
-                    //                    }
-                    //                    else {
-                    //                        sendReq();
-                    //                    }
                     sendReq();
                 }
                 else {

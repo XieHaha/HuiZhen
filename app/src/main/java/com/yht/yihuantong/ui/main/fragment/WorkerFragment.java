@@ -143,7 +143,7 @@ public class WorkerFragment extends BaseFragment {
         tvPersonalHospital.setText(loginBean.getHospitalName());
         Glide.with(this)
              .load(FileUrlUtil.addTokenToUrl(loginBean.getPhoto()))
-             .apply(GlideHelper.getOptions(BaseUtils.dp2px(getContext(), 4)))
+             .apply(GlideHelper.getOptions(BaseUtils.dp2px(Objects.requireNonNull(getContext()), 4)))
              .into(ivPersonalImage);
     }
 
@@ -156,7 +156,7 @@ public class WorkerFragment extends BaseFragment {
     @Override
     public void fillNetWorkData() {
         super.fillNetWorkData();
-        if (BaseUtils.isNetworkAvailable(getContext())) {
+        if (BaseUtils.isNetworkAvailable(Objects.requireNonNull(getContext()))) {
             getBanner();
         }
         else {
@@ -194,7 +194,7 @@ public class WorkerFragment extends BaseFragment {
         int type = sharePreferenceUtil.getAlwaysInteger(CommonData.KEY_NOTIFICATION_CONTROL);
         //表示用户未操作过
         if (type != BASE_TWO) {
-            if (!NotifySettingUtils.hasNotify(getActivity())) {
+            if (!NotifySettingUtils.hasNotify(Objects.requireNonNull(getActivity()))) {
                 startActivity(new Intent(getContext(), NotifyHintActivity.class));
                 getActivity().overridePendingTransition(R.anim.actionsheet_dialog_in, R.anim.keep);
             }

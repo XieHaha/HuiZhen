@@ -703,6 +703,43 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/layout_transfer_description"
+                android:layout_width="match_parent"
+                android:paddingTop="18dp"
+                android:layout_height="wrap_content"
+                android:paddingStart="20dp"
+                android:visibility="gone"
+                android:paddingEnd="20dp">
+
+                <TextView
+                    android:id="@+id/text19"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:textStyle="bold"
+                    android:text="@string/txt_season"
+                    android:paddingEnd="16dp" />
+
+                <TextView
+                    android:id="@+id/tv_transfer_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:layout_toEndOf="@id/text19"
+                    android:textColor="@color/color_373d4d"
+                    tools:text="" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/app_hei_line"
+                    android:background="@color/color_ebedf0"
+                    android:layout_below="@id/tv_transfer_description"
+                    android:layout_marginTop="18dp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:id="@+id/layout_cancel_result"
                 android:layout_width="match_parent"
                 android:paddingTop="18dp"

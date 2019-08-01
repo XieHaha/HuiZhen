@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -117,6 +118,10 @@ public class TransferReceiveDetailActivity extends BaseActivity
     RelativeLayout layoutCancelResult;
     @BindView(R.id.layout_hint)
     LinearLayout layoutHint;
+    @BindView(R.id.tv_transfer_description)
+    TextView tvTransferDescription;
+    @BindView(R.id.layout_transfer_description)
+    RelativeLayout layoutTransferDescription;
     private TransferBean transferBean;
     private String orderNo;
     /**
@@ -277,6 +282,14 @@ public class TransferReceiveDetailActivity extends BaseActivity
                 break;
             default:
                 break;
+        }
+        if (!TextUtils.equals(transferBean.getTargetDoctorCode(), loginBean.getDoctorCode())) {
+            layoutReceived.setVisibility(View.GONE);
+            layoutContact.setVisibility(View.GONE);
+            layoutTransferDescription.setVisibility(View.VISIBLE);
+            tvReceivingStatus.setText(
+                    String.format(getString(R.string.txt_transfer_other_doctor), transferBean.getTargetDoctorName()));
+            tvTransferDescription.setText(transferBean.getTransferReason());
         }
     }
 
