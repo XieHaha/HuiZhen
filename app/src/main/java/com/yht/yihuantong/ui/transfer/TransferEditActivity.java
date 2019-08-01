@@ -95,7 +95,7 @@ public class TransferEditActivity extends BaseActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 super.onTextChanged(s, start, before, count);
-                noticeText = s.toString();
+                noticeText = s.toString().trim();
                 tvNoticeNum.setText(String.format(getString(R.string.txt_calc_num), noticeText.length()));
                 initNextButton();
             }

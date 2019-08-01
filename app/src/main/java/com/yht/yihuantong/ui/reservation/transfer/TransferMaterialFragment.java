@@ -219,7 +219,7 @@ public class TransferMaterialFragment extends BaseFragment implements View.OnFoc
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 super.onTextChanged(s, start, before, count);
-                age = s.toString();
+                age = s.toString().trim();
                 initNextButton();
                 if (reverseTransferBean != null) {
                     if (!TextUtils.isEmpty(age)) {
@@ -236,7 +236,7 @@ public class TransferMaterialFragment extends BaseFragment implements View.OnFoc
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 super.onTextChanged(s, start, before, count);
-                phone = s.toString();
+                phone = s.toString().trim();
                 if (BaseUtils.isMobileNumber(phone) && reverseTransferBean != null) {
                     reverseTransferBean.setPatientMobile(phone);
                 }
@@ -248,7 +248,7 @@ public class TransferMaterialFragment extends BaseFragment implements View.OnFoc
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 super.onTextChanged(s, start, before, count);
-                pastMedicalHis = s.toString();
+                pastMedicalHis = s.toString().trim();
                 tvPastMedicalHisNum.setText(String.format(getString(R.string.txt_calc_num), pastMedicalHis.length()));
                 initNextButton();
                 if (reverseTransferBean != null) { reverseTransferBean.setPastHistory(pastMedicalHis); }
@@ -258,7 +258,7 @@ public class TransferMaterialFragment extends BaseFragment implements View.OnFoc
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 super.onTextChanged(s, start, before, count);
-                familyMedicalHis = s.toString();
+                familyMedicalHis = s.toString().trim();
                 tvFamilyMedicalHisNum.setText(
                         String.format(getString(R.string.txt_calc_num), familyMedicalHis.length()));
                 initNextButton();
@@ -269,7 +269,7 @@ public class TransferMaterialFragment extends BaseFragment implements View.OnFoc
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 super.onTextChanged(s, start, before, count);
-                allergiesHis = s.toString();
+                allergiesHis = s.toString().trim();
                 tvAllergiesNum.setText(String.format(getString(R.string.txt_calc_num), allergiesHis.length()));
                 initNextButton();
                 if (reverseTransferBean != null) { reverseTransferBean.setAllergyHistory(allergiesHis); }
@@ -279,7 +279,7 @@ public class TransferMaterialFragment extends BaseFragment implements View.OnFoc
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 super.onTextChanged(s, start, before, count);
-                diagnosisHis = s.toString();
+                diagnosisHis = s.toString().trim();
                 initNextButton();
                 initDiagnosis();
                 if (reverseTransferBean != null) { reverseTransferBean.setInitResult(diagnosisHis); }

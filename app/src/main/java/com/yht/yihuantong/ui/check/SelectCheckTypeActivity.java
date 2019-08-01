@@ -82,7 +82,7 @@ public class SelectCheckTypeActivity extends BaseActivity
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 super.onTextChanged(s, start, before, count);
                 page = 1;
-                searchKey = s.toString();
+                searchKey = s.toString().trim();
                 getCheckTypeList();
             }
         });

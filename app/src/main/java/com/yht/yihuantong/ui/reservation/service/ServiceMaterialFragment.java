@@ -219,7 +219,7 @@ public class ServiceMaterialFragment extends BaseFragment implements View.OnFocu
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 super.onTextChanged(s, start, before, count);
-                age = s.toString();
+                age = s.toString().trim();
                 initNextButton();
                 if (!TextUtils.isEmpty(age)) {
                     reserveCheckBean.setAge(Integer.valueOf(age));
@@ -234,7 +234,7 @@ public class ServiceMaterialFragment extends BaseFragment implements View.OnFocu
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 super.onTextChanged(s, start, before, count);
-                phone = s.toString();
+                phone = s.toString().trim();
                 if (BaseUtils.isMobileNumber(phone)) {
                     reserveCheckBean.setPhone(phone);
                 }
@@ -246,7 +246,7 @@ public class ServiceMaterialFragment extends BaseFragment implements View.OnFocu
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 super.onTextChanged(s, start, before, count);
-                pastMedicalHis = s.toString();
+                pastMedicalHis = s.toString().trim();
                 tvPastMedicalHisNum.setText(String.format(getString(R.string.txt_calc_num), pastMedicalHis.length()));
                 initNextButton();
                 reserveCheckBean.setPastHistory(pastMedicalHis);
@@ -256,7 +256,7 @@ public class ServiceMaterialFragment extends BaseFragment implements View.OnFocu
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 super.onTextChanged(s, start, before, count);
-                familyMedicalHis = s.toString();
+                familyMedicalHis = s.toString().trim();
                 tvFamilyMedicalHisNum.setText(
                         String.format(getString(R.string.txt_calc_num), familyMedicalHis.length()));
                 initNextButton();
@@ -267,7 +267,7 @@ public class ServiceMaterialFragment extends BaseFragment implements View.OnFocu
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 super.onTextChanged(s, start, before, count);
-                allergiesHis = s.toString();
+                allergiesHis = s.toString().trim();
                 tvAllergiesNum.setText(String.format(getString(R.string.txt_calc_num), allergiesHis.length()));
                 initNextButton();
                 reserveCheckBean.setAllergyHistory(allergiesHis);
@@ -277,7 +277,7 @@ public class ServiceMaterialFragment extends BaseFragment implements View.OnFocu
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 super.onTextChanged(s, start, before, count);
-                diagnosisHis = s.toString();
+                diagnosisHis = s.toString().trim();
                 initNextButton();
                 initDiagnosis();
                 reserveCheckBean.setInitResult(diagnosisHis);

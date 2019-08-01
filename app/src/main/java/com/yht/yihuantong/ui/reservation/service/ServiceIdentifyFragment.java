@@ -66,7 +66,7 @@ public class ServiceIdentifyFragment extends BaseFragment implements View.OnFocu
         etPatientName.addTextChangedListener(new AbstractTextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                name = s.toString();
+                name = s.toString().trim().trim();
                 if (!TextUtils.isEmpty(idCard) && !TextUtils.isEmpty(s)) {
                     tvIdentifyNext.setSelected(true);
                 }

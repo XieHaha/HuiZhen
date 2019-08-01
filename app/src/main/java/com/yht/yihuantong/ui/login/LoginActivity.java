@@ -133,7 +133,7 @@ public class LoginActivity extends BaseActivity {
         etLoginAccount.addTextChangedListener(new AbstractTextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                phone = s.toString();
+                phone = s.toString().trim();
                 if (BaseUtils.isMobileNumber(phone)) {
                     tvLoginObtainCode.setSelected(true);
                 }
@@ -146,7 +146,7 @@ public class LoginActivity extends BaseActivity {
         etLoginCode.addTextChangedListener(new AbstractTextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                verifyCode = s.toString();
+                verifyCode = s.toString().trim();
                 initNextButton();
             }
         });

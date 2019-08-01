@@ -87,7 +87,7 @@ public class SelectHospitalByAuthActivity extends BaseActivity
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 super.onTextChanged(s, start, before, count);
-                String tag = s.toString();
+                String tag = s.toString().trim();
                 if (TextUtils.isEmpty(tag)) {
                     rvHospital.setVisibility(View.GONE);
                 }

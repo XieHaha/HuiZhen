@@ -113,7 +113,7 @@ public class SelectCheckTypeByHospitalActivity extends BaseActivity
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 super.onTextChanged(s, start, before, count);
                 if (!TextUtils.isEmpty(s)) {
-                    searchKey = s.toString();
+                    searchKey = s.toString().trim();
                     getCheckTypeByHospitalList();
                 }
                 else {

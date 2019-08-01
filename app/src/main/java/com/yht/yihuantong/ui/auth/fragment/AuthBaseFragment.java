@@ -144,7 +144,7 @@ public class AuthBaseFragment extends BaseFragment
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 super.onTextChanged(s, start, before, count);
-                String name = s.toString();
+                String name = s.toString().trim();
                 doctorAuthBean.setDoctorName(name);
                 initNextButton();
                 int mTextMaxlenght = 0;

@@ -126,6 +126,10 @@ public class SelectReceivingDoctorActivity extends BaseActivity
      * 是否为转给他人
      */
     private boolean isTransferOther;
+    /**
+     * 只有第一次请求才判断是否显示无医生提示
+     */
+    boolean showNone = false;
 
     @Override
     protected boolean isInitBackBtn() {
@@ -163,6 +167,7 @@ public class SelectReceivingDoctorActivity extends BaseActivity
         doctorAdapter.setOnItemChildClickListener(this);
         searchRecyclerView.setAdapter(doctorAdapter);
         getHospitalListByReverse();
+        showNone = true;
         getDoctorListByReverse(new HashMap<>(16));
     }
 
@@ -275,7 +280,7 @@ public class SelectReceivingDoctorActivity extends BaseActivity
      * 二级科室数据处理
      */
     private void initDepartTwo() {
-        curType =2;
+        curType = 2;
         tvDepartOneTitle.setText(curHospitalDepartBean.getDepartmentName());
         tvDepartOneTitle.setSelected(false);
         viewDepartOneBar.setVisibility(View.GONE);
@@ -448,12 +453,20 @@ public class SelectReceivingDoctorActivity extends BaseActivity
                     doctors.clear();
                 }
                 doctors.addAll(list);
-                if (doctors.size() == 0) {
-                    //                    layoutNoneDoctor.setVisibility(View.VISIBLE);
+                if (doctors.size() > 0) {
+                    searchRecyclerView.setVisibility(View.VISIBLE);
+                }
+                if (showNone) {
+                    showNone = false;
+                    if (doctors.size() == 0) {
+                        layoutNoneDoctor.setVisibility(View.VISIBLE);
+                    }
+                    else {
+                        layoutNoneDoctor.setVisibility(View.GONE);
+                    }
                 }
                 else {
-                    //                    layoutNoneDoctor.setVisibility(View.GONE);
-                    searchRecyclerView.setVisibility(View.VISIBLE);
+                    layoutNoneDoctor.setVisibility(View.GONE);
                 }
                 doctorAdapter.setNewData(doctors);
                 if (list.size() >= BaseData.BASE_PAGE_DATA_NUM) {
