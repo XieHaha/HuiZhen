@@ -10,7 +10,7 @@ import com.yht.frame.data.CommonData;
 import com.yht.frame.data.bean.PatientBean;
 import com.yht.frame.ui.AppManager;
 import com.yht.frame.utils.SharePreferenceUtil;
-import com.yht.yihuantong.ui.HintLoginActivity;
+import com.yht.yihuantong.ui.hint.HintLoginActivity;
 import com.yht.yihuantong.ui.login.LoginOptionsActivity;
 
 import org.litepal.crud.DataSupport;

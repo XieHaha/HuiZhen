@@ -31,7 +31,6 @@ import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.ToastUtil;
-import com.yht.yihuantong.BuildConfig;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ZycApplication;
 import com.yht.yihuantong.ui.WebViewActivity;
@@ -220,7 +219,7 @@ public class LoginOptionsActivity extends BaseActivity
         }
     }
 
-    @OnClick({ R.id.tv_login_wechat, R.id.tv_login_phone })
+    @OnClick({ R.id.tv_login_wechat, R.id.tv_login_phone, R.id.url })
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_login_wechat:
@@ -246,10 +245,19 @@ public class LoginOptionsActivity extends BaseActivity
                 }
                 startActivityForResult(intent, REQUEST_CODE_LOGIN_STATUS);
                 break;
+            case R.id.url:
+                //                num++;
+                //                if (num == 5) {
+                //                    startActivity(new Intent(this, UrlManagerActivity.class));
+                //                    num = 0;
+                //                }
+                break;
             default:
                 break;
         }
     }
+
+    int num;
 
     @Override
     public void onResponseSuccess(Tasks task, BaseResponse response) {
@@ -347,7 +355,7 @@ public class LoginOptionsActivity extends BaseActivity
                 //                isAgree = true;
                 Intent intent = new Intent(LoginOptionsActivity.this, WebViewActivity.class);
                 intent.putExtra(CommonData.KEY_PUBLIC,
-                                BuildConfig.BASE_BASIC_URL + BaseNetConfig.BASE_BASIC_USER_PROTOCOL_URL);
+                                ZycApplication.getInstance().getBaseUrl() + BaseNetConfig.BASE_BASIC_USER_PROTOCOL_URL);
                 intent.putExtra(CommonData.KEY_TITLE, getString(R.string.txt_about_protocol));
                 startActivity(intent);
                 clearBackgroundColor(widget);
@@ -366,8 +374,8 @@ public class LoginOptionsActivity extends BaseActivity
             public void onClick(@NonNull View widget) {
                 //                isAgree = true;
                 Intent intent = new Intent(LoginOptionsActivity.this, WebViewActivity.class);
-                intent.putExtra(CommonData.KEY_PUBLIC,
-                                BuildConfig.BASE_BASIC_URL + BaseNetConfig.BASE_BASIC_PRIVATE_PROTOCOL_URL);
+                intent.putExtra(CommonData.KEY_PUBLIC, ZycApplication.getInstance().getBaseUrl() +
+                                                       BaseNetConfig.BASE_BASIC_PRIVATE_PROTOCOL_URL);
                 intent.putExtra(CommonData.KEY_TITLE, getString(R.string.txt_about_privacy));
                 startActivity(intent);
                 clearBackgroundColor(widget);

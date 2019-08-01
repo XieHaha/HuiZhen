@@ -1,4 +1,4 @@
-package com.yht.yihuantong.ui;
+package com.yht.yihuantong.ui.hint;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;

@@ -81,7 +81,7 @@
             android:exported="true" />
 
         <activity
-            android:name=".ui.IntentParseActivity"
+            android:name=".ui.hint.IntentParseActivity"
             android:screenOrientation="portrait"
             android:label=""
             android:windowSoftInputMode="adjustPan|stateHidden"
@@ -242,8 +242,8 @@
             android:windowSoftInputMode="adjustResize|stateHidden"
             android:parentActivityName=".ui.main.MainActivity">
             <meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value=".ui.main.MainActivity" />
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.main.MainActivity" />
 
             <!--<intent-filter>-->
             <!--<action android:name="android.intent.action.VIEW" />-->
@@ -356,14 +356,20 @@
             android:windowSoftInputMode="adjustResize|stateHidden" />
 
         <activity
-            android:name=".ui.HintLoginActivity"
+            android:name=".ui.hint.HintLoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/ActivityTransDialog"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ui.NotifyHintActivity"
+            android:name=".ui.hint.NotifyHintActivity"
             android:screenOrientation="portrait"
             android:label=""
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+
+        <activity
+            android:name=".ui.hint.UrlManagerActivity"
+            android:screenOrientation="portrait"
+            android:label="URL管理"
             android:windowSoftInputMode="adjustResize|stateHidden" />
 
         <!--腾讯X5-->

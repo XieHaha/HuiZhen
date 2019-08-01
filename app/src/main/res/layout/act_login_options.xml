@@ -9,6 +9,7 @@
     android:paddingEnd="35dp">
 
     <ImageView
+        android:id="@+id/url"
         android:layout_width="84dp"
         android:layout_height="84dp"
         android:src="@mipmap/logo_icon"

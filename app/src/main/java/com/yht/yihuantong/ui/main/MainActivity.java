@@ -43,7 +43,6 @@ import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.HuiZhenLog;
 import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.widgets.view.AbstractOnPageChangeListener;
-import com.yht.yihuantong.BuildConfig;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ZycApplication;
 import com.yht.yihuantong.chat.HxHelper;
@@ -51,10 +50,10 @@ import com.yht.yihuantong.chat.listener.AbstractEMContactListener;
 import com.yht.yihuantong.chat.listener.AbstractEMMessageListener;
 import com.yht.yihuantong.chat.receive.EaseMsgClickBroadCastReceiver;
 import com.yht.yihuantong.jpush.TagAliasOperatorHelper;
-import com.yht.yihuantong.ui.HintLoginActivity;
 import com.yht.yihuantong.ui.WebViewActivity;
 import com.yht.yihuantong.ui.adapter.ViewPagerAdapter;
 import com.yht.yihuantong.ui.dialog.UpdateDialog;
+import com.yht.yihuantong.ui.hint.HintLoginActivity;
 import com.yht.yihuantong.ui.main.fragment.MessageFragment;
 import com.yht.yihuantong.ui.main.fragment.PatientFragment;
 import com.yht.yihuantong.ui.main.fragment.WorkerFragment;
@@ -254,7 +253,7 @@ public class MainActivity extends BaseActivity
      */
     private void showProtocol() {
         Intent intent = new Intent(this, WebViewActivity.class);
-        intent.putExtra(CommonData.KEY_PUBLIC, BuildConfig.BASE_BASIC_URL + BaseNetConfig.BASE_BASIC_USER_PROTOCOL_URL);
+        intent.putExtra(CommonData.KEY_PUBLIC, ZycApplication.getInstance().getBaseUrl() + BaseNetConfig.BASE_BASIC_USER_PROTOCOL_URL);
         intent.putExtra(CommonData.KEY_IS_PROTOCOL, true);
         startActivity(intent);
     }

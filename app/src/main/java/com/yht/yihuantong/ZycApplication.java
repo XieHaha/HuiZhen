@@ -59,17 +59,18 @@ public class ZycApplication extends LitePalApplication {
      * 调试模式
      */
     private final boolean debugMode = true;
+    private String baseUrl;
 
     @Override
     public void onCreate() {
         MultiDex.install(this);
         super.onCreate();
         instance = this;
+        //基础URL
+        setBaseUrl(BuildConfig.BASE_BASIC_URL);
         registerActivityLifecycleCallbacks(new LifecycleHandler());
         //app 帮助类
         ApiManager.getInstance().init(this, debugMode);
-        //网络
-        RetrofitManager.getInstance().init(BuildConfig.BASE_BASIC_URL);
         //日志捕捉
         CrashHandler.init(this);
         //启动预加载的服务
@@ -206,6 +207,16 @@ public class ZycApplication extends LitePalApplication {
 
     public void setLoginStatus(boolean loginStatus) {
         this.loginStatus = loginStatus;
+    }
+
+    public String getBaseUrl() {
+        return baseUrl;
+    }
+
+    public void setBaseUrl(String baseUrl) {
+        this.baseUrl = baseUrl;
+        //网络
+        RetrofitManager.getInstance().init(baseUrl);
     }
 
     /**

@@ -9,7 +9,7 @@ import android.text.TextUtils;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.bean.LoginBean;
 import com.yht.frame.data.type.MessageType;
-import com.yht.yihuantong.ui.IntentParseActivity;
+import com.yht.yihuantong.ui.hint.IntentParseActivity;
 import com.yht.yihuantong.ui.WebViewActivity;
 import com.yht.yihuantong.ui.auth.AuthDoctorActivity;
 import com.yht.yihuantong.ui.transfer.TransferInitiateDetailActivity;

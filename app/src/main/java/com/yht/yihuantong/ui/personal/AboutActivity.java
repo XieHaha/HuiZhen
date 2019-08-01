@@ -6,8 +6,8 @@ import android.view.View;
 import com.yht.frame.data.BaseNetConfig;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.ui.BaseActivity;
-import com.yht.yihuantong.BuildConfig;
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.ZycApplication;
 import com.yht.yihuantong.ui.WebViewActivity;
 
 import butterknife.OnClick;
@@ -35,7 +35,7 @@ public class AboutActivity extends BaseActivity {
             case R.id.layout_service_protocol:
                 intent = new Intent(this, WebViewActivity.class);
                 intent.putExtra(CommonData.KEY_PUBLIC,
-                                BuildConfig.BASE_BASIC_URL + BaseNetConfig.BASE_BASIC_USER_PROTOCOL_URL);
+                                ZycApplication.getInstance().getBaseUrl() + BaseNetConfig.BASE_BASIC_USER_PROTOCOL_URL);
                 intent.putExtra(CommonData.KEY_TITLE,getString(R.string.txt_about_protocol));
                 startActivity(intent);
                 break;

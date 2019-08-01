@@ -118,7 +118,7 @@ public interface BaseData {
     /**
      * requestCode
      */
-    int BASE_PENDING_COUNT = 10000;
+    int BASE_PENDING_COUNT = 10;
     /**
      * 极光推送渠道
      */

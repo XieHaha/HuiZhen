@@ -33,7 +33,7 @@ import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ZycApplication;
-import com.yht.yihuantong.ui.NotifyHintActivity;
+import com.yht.yihuantong.ui.hint.NotifyHintActivity;
 import com.yht.yihuantong.ui.WebViewActivity;
 import com.yht.yihuantong.ui.check.ServiceHistoryActivity;
 import com.yht.yihuantong.ui.personal.PersonalNewActivity;
