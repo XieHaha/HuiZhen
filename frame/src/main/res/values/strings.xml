@@ -71,6 +71,7 @@
     <string name="txt_contact_patient_phone">患者电话</string>
     <string name="txt_contact_doctor_phone">医生电话</string>
     <string name="txt_calc_num">%d/500</string>
+    <string name="txt_calc_num_five">0/500</string>
     <string name="txt_calc_num_thirty">%d/30</string>
     <string name="txt_calc_num_thirty_zero">0/30</string>
     <string name="txt_yes">是</string>

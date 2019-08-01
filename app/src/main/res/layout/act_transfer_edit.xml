@@ -150,6 +150,7 @@
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_16"
             android:textColor="#c5c8cc"
+            android:text="@string/txt_calc_num_five"
             android:layout_below="@id/et_notice"
             android:gravity="center_vertical"
             android:layout_alignParentEnd="true"

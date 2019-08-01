@@ -101,7 +101,7 @@
             android:textSize="@dimen/text_16"
             android:textColor="#c5c8cc"
             android:layout_below="@id/et_notice"
-            android:text="@string/txt_calc_num"
+            android:text="@string/txt_calc_num_five"
             android:gravity="center_vertical"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="20dp"

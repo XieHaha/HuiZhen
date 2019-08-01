@@ -130,6 +130,7 @@ public class TransferEditActivity extends BaseActivity {
         if (!TextUtils.isEmpty(noticeText)) {
             etNotice.setText(noticeText);
             etNotice.setSelection(noticeText.length());
+            tvNoticeNum.setText(String.format(getString(R.string.txt_calc_num), noticeText.length()));
         }
         initNextButton();
     }
