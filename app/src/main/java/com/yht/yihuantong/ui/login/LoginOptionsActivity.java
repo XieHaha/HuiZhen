@@ -366,8 +366,8 @@ public class LoginOptionsActivity extends BaseActivity
                 //                isAgree = true;
                 Intent intent = new Intent(LoginOptionsActivity.this, WebViewActivity.class);
                 intent.putExtra(CommonData.KEY_PUBLIC,
-                                BuildConfig.BASE_BASIC_URL + BaseNetConfig.BASE_BASIC_USER_PROTOCOL_URL);
-                intent.putExtra(CommonData.KEY_TITLE, getString(R.string.txt_about_protocol));
+                                BuildConfig.BASE_BASIC_URL + BaseNetConfig.BASE_BASIC_PRIVATE_PROTOCOL_URL);
+                intent.putExtra(CommonData.KEY_TITLE, getString(R.string.txt_about_privacy));
                 startActivity(intent);
                 clearBackgroundColor(widget);
             }

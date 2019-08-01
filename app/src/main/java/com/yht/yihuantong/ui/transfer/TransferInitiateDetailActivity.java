@@ -238,7 +238,7 @@ public class TransferInitiateDetailActivity extends BaseActivity
                 layoutBottom.setVisibility(View.VISIBLE);
                 layoutBottomOne.setVisibility(View.GONE);
                 ivCheckStatus.setImageResource(R.mipmap.ic_status_be_rejected);
-                tvReceivingStatus.setText(getString(R.string.txt_status_reject));
+                tvReceivingStatus.setText(getString(R.string.txt_status_rejected));
                 layoutRejectResult.setVisibility(View.VISIBLE);
                 tvTransferReject.setText(transferBean.getRejectReason());
                 break;

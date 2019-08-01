@@ -188,6 +188,7 @@
     <string name="txt_set_exit">退出登录</string>
     <string name="txt_set_exit_sure">确认退出？</string>
     <string name="txt_about_protocol">服务协议</string>
+    <string name="txt_about_privacy">隐私协议</string>
     <string name="txt_about_understand">了解会珍</string>
     <string name="txt_info_head_img">头像</string>
     <string name="txt_info_sex">性别</string>
@@ -342,6 +343,7 @@
     <string name="txt_status_transfer">已转诊</string>
     <string name="txt_status_cancel">已取消</string>
     <string name="txt_status_reject">已拒绝</string>
+    <string name="txt_status_rejected">被拒绝</string>
 
     <!--toast-->
     <string name="toast_public_current_no_network">当前无网络连接</string>

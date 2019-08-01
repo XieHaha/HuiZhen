@@ -35,9 +35,13 @@ public interface BaseNetConfig {
     /**
      * 用户使用协议
      */
-    String BASE_BASIC_USER_PROTOCOL_URL = "/client/sys/protocol_by_doctor";
+    String BASE_BASIC_USER_PROTOCOL_URL = "client/sys/protocol_by_doctor";
+    /**
+     * 隐私协议
+     */
+    String BASE_BASIC_PRIVATE_PROTOCOL_URL = "client/sys/protocol_by_privacy";
     /**
      * 图片基础链接
      */
-    String BASE_URL_FILE = "/client/file/download_file?filePath=";
+    String BASE_URL_FILE = "client/file/download_file?filePath=";
 }

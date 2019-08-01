@@ -143,15 +143,12 @@ public class TransferWaitFragment extends BaseFragment
             if (transferBeans.size() == 0) {
                 layoutNoneRecord.setVisibility(View.VISIBLE);
                 loadViewHelper.load(LoadViewHelper.NONE_RECORDING);
-                if (listener != null) {
-                    listener.onPendingTransferOrder(false);
-                }
             }
             else {
                 layoutNoneRecord.setVisibility(View.GONE);
-                if (listener != null) {
-                    listener.onPendingTransferOrder(true);
-                }
+            }
+            if (listener != null) {
+                listener.onPendingTransferOrder(transferBeans.size());
             }
         }
     }
@@ -199,8 +196,8 @@ public class TransferWaitFragment extends BaseFragment
 
     public interface OnPendingTransferOrderListener {
         /**
-         * @param visible 小红点
+         * @param num 小红点
          */
-        void onPendingTransferOrder(boolean visible);
+        void onPendingTransferOrder(int num);
     }
 }

@@ -6,8 +6,8 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yht.frame.data.CommonData;
@@ -42,8 +42,10 @@ public class TransferReceiveListActivity extends BaseActivity
     View viewBar;
     @BindView(R.id.view_pager)
     ViewPager viewPager;
-    @BindView(R.id.iv_wait_dot)
-    ImageView ivWaitDot;
+    @BindView(R.id.tv_receiving_transfer_num)
+    TextView tvReceivingTransferNum;
+    @BindView(R.id.layout_receiving_transfer_num)
+    RelativeLayout layoutReceivingTransferNum;
     /**
      * true为 1  false 为 0
      */
@@ -117,12 +119,13 @@ public class TransferReceiveListActivity extends BaseActivity
     }
 
     @Override
-    public void onPendingTransferOrder(boolean visible) {
-        if (visible) {
-            ivWaitDot.setVisibility(View.VISIBLE);
+    public void onPendingTransferOrder(int num) {
+        if (num > 0) {
+            layoutReceivingTransferNum.setVisibility(View.VISIBLE);
+            tvReceivingTransferNum.setText(String.valueOf(num));
         }
         else {
-            ivWaitDot.setVisibility(View.GONE);
+            layoutReceivingTransferNum.setVisibility(View.GONE);
         }
     }
 

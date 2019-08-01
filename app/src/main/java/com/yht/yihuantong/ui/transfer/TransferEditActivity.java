@@ -96,7 +96,7 @@ public class TransferEditActivity extends BaseActivity {
                 super.onTextChanged(s, start, before, count);
                 noticeText = s.toString();
                 tvNoticeNum.setText(String.format(getString(R.string.txt_calc_num), noticeText.length()));
-                //                initNextButton();
+                initNextButton();
             }
         });
     }
@@ -127,6 +127,7 @@ public class TransferEditActivity extends BaseActivity {
         tvHospital.setSelected(true);
         tvTime.setText(reserveTime);
         tvTime.setSelected(true);
+        initNextButton();
     }
 
     /**
