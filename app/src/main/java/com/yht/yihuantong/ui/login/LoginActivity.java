@@ -134,7 +134,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 phone = s.toString().trim();
-                if (BaseUtils.isMobileNumber(phone)) {
+                if (phone.length() == BaseData.BASE_PHONE_DEFAULT_LENGTH) {
                     tvLoginObtainCode.setSelected(true);
                 }
                 else {
@@ -231,8 +231,8 @@ public class LoginActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_login_obtain_code:
-                phone = etLoginAccount.getText().toString();
                 if (!BaseUtils.isMobileNumber(phone)) {
+                    ToastUtil.toast(this, R.string.toast_phone_error);
                     return;
                 }
                 getVerifyCode();
