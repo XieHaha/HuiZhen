@@ -6,9 +6,9 @@ import com.yht.yihuantong.R;
 /**
  * @author 顿顿
  * @date 19/6/10 14:10
- * @des
+ * @des 会珍简介
  */
-public class About2Activity extends BaseActivity {
+public class AboutIntroductionActivity extends BaseActivity {
     @Override
     protected boolean isInitBackBtn() {
         return true;
@@ -16,6 +16,6 @@ public class About2Activity extends BaseActivity {
 
     @Override
     public int getLayoutID() {
-        return R.layout.act_about2;
+        return R.layout.act_about_introduction;
     }
 }

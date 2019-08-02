@@ -150,7 +150,7 @@
             android:label="@string/title_about"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.personal.About2Activity"
+            android:name=".ui.personal.AboutIntroductionActivity"
             android:screenOrientation="portrait"
             android:label="@string/title_about2"
             android:windowSoftInputMode="adjustPan|stateHidden" />

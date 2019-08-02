@@ -71,6 +71,8 @@ public class ZycApplication extends LitePalApplication {
         registerActivityLifecycleCallbacks(new LifecycleHandler());
         //app 帮助类
         ApiManager.getInstance().init(this, debugMode);
+        //网络
+        RetrofitManager.getInstance().init(BuildConfig.BASE_BASIC_URL);
         //日志捕捉
         CrashHandler.init(this);
         //启动预加载的服务
@@ -215,8 +217,6 @@ public class ZycApplication extends LitePalApplication {
 
     public void setBaseUrl(String baseUrl) {
         this.baseUrl = baseUrl;
-        //网络
-        RetrofitManager.getInstance().init(baseUrl);
     }
 
     /**

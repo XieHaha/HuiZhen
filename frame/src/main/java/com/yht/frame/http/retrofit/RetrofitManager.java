@@ -38,22 +38,33 @@ public class RetrofitManager {
     public static class RetrofitServer {
         private static OkHttpClient okHttpClient;
         private static Retrofit retrofit;
+        private static LogInterceptor interceptor;
 
         /**
          * 初始化
          */
         public void init(String url) {
             baseUrl = url;
-            initOkHttp();
+            initOkHttp(baseUrl);
             initRetrofit(baseUrl);
             initApiUrlManager();
         }
 
-        private ApiUrlManager initApiUrlManager() {
-            if (retrofit == null) {
-                init(baseUrl);
-            }
-            return retrofit.create(ApiUrlManager.class);
+        /**
+         * 初始化okhttp
+         */
+        private void initOkHttp(String baseUrl) {
+            okHttpClient = new OkHttpClient().newBuilder()
+                                             //设置读取超时时间
+                                             .readTimeout(BaseNetConfig.DEFAULT_TIME, TimeUnit.SECONDS)
+                                             //设置请求超时时间
+                                             .connectTimeout(BaseNetConfig.DEFAULT_TIME, TimeUnit.SECONDS)
+                                             //设置写入超时时间
+                                             .writeTimeout(BaseNetConfig.DEFAULT_TIME, TimeUnit.SECONDS)
+                                             //添加打印拦截器
+                                             .addInterceptor(interceptor = new LogInterceptor())
+                                             //设置出现错误进行重新连接。
+                                             .retryOnConnectionFailure(true).build();
         }
 
         /**
@@ -67,21 +78,11 @@ public class RetrofitManager {
                                              .build();
         }
 
-        /**
-         * 初始化okhttp
-         */
-        private void initOkHttp() {
-            okHttpClient = new OkHttpClient().newBuilder()
-                                             //设置读取超时时间
-                                             .readTimeout(BaseNetConfig.DEFAULT_TIME, TimeUnit.SECONDS)
-                                             //设置请求超时时间
-                                             .connectTimeout(BaseNetConfig.DEFAULT_TIME, TimeUnit.SECONDS)
-                                             //设置写入超时时间
-                                             .writeTimeout(BaseNetConfig.DEFAULT_TIME, TimeUnit.SECONDS)
-                                             //添加打印拦截器
-                                             .addInterceptor(new LogInterceptor())
-                                             //设置出现错误进行重新连接。
-                                             .retryOnConnectionFailure(true).build();
+        private ApiUrlManager initApiUrlManager() {
+            if (retrofit == null) {
+                init(baseUrl);
+            }
+            return retrofit.create(ApiUrlManager.class);
         }
     }
 }

@@ -59,6 +59,36 @@
         android:layout_marginStart="10dp" />
 
     <LinearLayout
+        android:id="@+id/layout_privacy_protocol"
+        android:layout_width="match_parent"
+        android:layout_height="62dp"
+        android:background="@color/color_ffffff"
+        android:gravity="center_vertical"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@string/txt_about_privacy"
+            android:textColor="@color/color_373d4d"
+            android:textSize="@dimen/text_16" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_right" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/app_hei_line"
+        android:background="@color/color_ebedf0"
+        android:layout_marginStart="10dp" />
+
+    <LinearLayout
         android:id="@+id/layout_about_understand"
         android:layout_width="match_parent"
         android:layout_height="62dp"

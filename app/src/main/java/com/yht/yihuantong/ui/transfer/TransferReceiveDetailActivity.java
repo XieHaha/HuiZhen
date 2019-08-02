@@ -284,12 +284,14 @@ public class TransferReceiveDetailActivity extends BaseActivity
                 break;
         }
         if (!TextUtils.equals(transferBean.getTargetDoctorCode(), loginBean.getDoctorCode())) {
-            layoutReceived.setVisibility(View.GONE);
-            layoutContact.setVisibility(View.GONE);
-            layoutTransferDescription.setVisibility(View.VISIBLE);
             tvReceivingStatus.setText(
                     String.format(getString(R.string.txt_transfer_other_doctor), transferBean.getTargetDoctorName()));
             tvTransferDescription.setText(transferBean.getTransferReason());
+            layoutTransferDescription.setVisibility(View.VISIBLE);
+            layoutContact.setVisibility(View.GONE);
+            layoutReceived.setVisibility(View.GONE);
+            ivCheckStatus.setVisibility(View.GONE);
+            layoutCancelResult.setVisibility(View.GONE);
         }
     }
 

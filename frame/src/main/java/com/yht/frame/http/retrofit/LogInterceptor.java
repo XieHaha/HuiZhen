@@ -1,5 +1,7 @@
 package com.yht.frame.http.retrofit;
 
+import android.text.TextUtils;
+
 import com.yht.frame.utils.HuiZhenLog;
 
 import java.io.EOFException;
@@ -28,6 +30,14 @@ public class LogInterceptor implements Interceptor {
     private static final String TAG = "ZYC->HTTP";
     private static final Charset UTF8 = Charset.forName("UTF-8");
     private String fileType = "multipart";
+    /**
+     * 现有url
+     */
+    private String baseUrl;
+    /**
+     * 最新url
+     */
+    private String newBaseUrl;
 
     @Override
     public Response intercept(Chain chain) throws IOException {
@@ -36,6 +46,7 @@ public class LogInterceptor implements Interceptor {
         boolean hasRequestBody = requestBody != null;
         Connection connection = chain.connection();
         Protocol protocol = connection != null ? connection.protocol() : Protocol.HTTP_1_1;
+        //        request = initNewRequest(request);
         HuiZhenLog.i(TAG, "请求开始-->" + request.method() + ' ' + request.url() + ' ' + protocol);
         if (!hasRequestBody) {
             HuiZhenLog.i(TAG, "--> END " + request.method());
@@ -137,5 +148,35 @@ public class LogInterceptor implements Interceptor {
     private boolean bodyEncoded(Headers headers) {
         String contentEncoding = headers.get("Content-Encoding");
         return contentEncoding != null && !"identity".equalsIgnoreCase(contentEncoding);
+    }
+
+    /**
+     * @return
+     */
+    private Request initNewRequest(Request request) {
+        String nowRequestUrl = request.url().toString();
+        if (TextUtils.isEmpty(baseUrl) || TextUtils.equals(baseUrl, newBaseUrl)) {
+            baseUrl = newBaseUrl;
+            newBaseUrl = null;
+            return request;
+        }
+        String newUrl = newBaseUrl + nowRequestUrl.substring(baseUrl.length());
+        return request.newBuilder().url(newUrl).build();
+    }
+
+    public String getBaseUrl() {
+        return baseUrl;
+    }
+
+    public void setBaseUrl(String baseUrl) {
+        this.baseUrl = baseUrl;
+    }
+
+    public String getNewBaseUrl() {
+        return newBaseUrl;
+    }
+
+    public void setNewBaseUrl(String newBaseUrl) {
+        this.newBaseUrl = newBaseUrl;
     }
 }

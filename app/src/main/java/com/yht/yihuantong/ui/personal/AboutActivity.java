@@ -28,7 +28,7 @@ public class AboutActivity extends BaseActivity {
         return R.layout.act_about;
     }
 
-    @OnClick({ R.id.layout_service_protocol, R.id.layout_about_understand })
+    @OnClick({ R.id.layout_service_protocol, R.id.layout_privacy_protocol, R.id.layout_about_understand })
     public void onViewClicked(View view) {
         Intent intent;
         switch (view.getId()) {
@@ -36,11 +36,18 @@ public class AboutActivity extends BaseActivity {
                 intent = new Intent(this, WebViewActivity.class);
                 intent.putExtra(CommonData.KEY_PUBLIC,
                                 ZycApplication.getInstance().getBaseUrl() + BaseNetConfig.BASE_BASIC_USER_PROTOCOL_URL);
-                intent.putExtra(CommonData.KEY_TITLE,getString(R.string.txt_about_protocol));
+                intent.putExtra(CommonData.KEY_TITLE, getString(R.string.txt_about_protocol));
+                startActivity(intent);
+                break;
+            case R.id.layout_privacy_protocol:
+                intent = new Intent(this, WebViewActivity.class);
+                intent.putExtra(CommonData.KEY_PUBLIC, ZycApplication.getInstance().getBaseUrl() +
+                                                       BaseNetConfig.BASE_BASIC_PRIVATE_PROTOCOL_URL);
+                intent.putExtra(CommonData.KEY_TITLE, getString(R.string.txt_about_privacy));
                 startActivity(intent);
                 break;
             case R.id.layout_about_understand:
-                startActivity(new Intent(this, About2Activity.class));
+                startActivity(new Intent(this, AboutIntroductionActivity.class));
                 break;
             default:
                 break;

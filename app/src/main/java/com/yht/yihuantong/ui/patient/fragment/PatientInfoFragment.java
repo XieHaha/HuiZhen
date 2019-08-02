@@ -109,7 +109,6 @@ public class PatientInfoFragment extends BaseFragment
         super.fillNetWorkData();
         getPatientOrderList();
         getValidateHospitalList();
-        getPatientExistTransfer();
     }
 
     public void setPatientCode(String patientCode) {
@@ -250,21 +249,7 @@ public class PatientInfoFragment extends BaseFragment
                 }
                 break;
             case R.id.tv_reserve_transfer:
-                if (exist) {
-                    ToastUtil.toast(getContext(), R.string.txt_patient_exist_transfer);
-                }
-                else {
-                    if (applyTransferAble) {
-                        intent = new Intent(getContext(), ReservationTransferActivity.class);
-                        intent.putExtra(CommonData.KEY_PATIENT_BEAN, patientDetailBean);
-                        startActivity(intent);
-                    }
-                    else {
-                        intent = new Intent(getContext(), ReservationDisableActivity.class);
-                        intent.putExtra(CommonData.KEY_CHECK_OR_TRANSFER, true);
-                        startActivity(intent);
-                    }
-                }
+                getPatientExistTransfer();
                 break;
             default:
                 break;
@@ -303,6 +288,22 @@ public class PatientInfoFragment extends BaseFragment
                 break;
             case GET_PATIENT_EXIST_TRANSFER:
                 exist = (boolean)response.getData();
+                if (exist) {
+                    ToastUtil.toast(getContext(), R.string.txt_patient_exist_transfer);
+                }
+                else {
+                    Intent intent;
+                    if (applyTransferAble) {
+                        intent = new Intent(getContext(), ReservationTransferActivity.class);
+                        intent.putExtra(CommonData.KEY_PATIENT_BEAN, patientDetailBean);
+                        startActivity(intent);
+                    }
+                    else {
+                        intent = new Intent(getContext(), ReservationDisableActivity.class);
+                        intent.putExtra(CommonData.KEY_CHECK_OR_TRANSFER, true);
+                        startActivity(intent);
+                    }
+                }
                 break;
             case GET_VALIDATE_HOSPITAL_LIST:
                 ReservationValidateBean bean = (ReservationValidateBean)response.getData();
