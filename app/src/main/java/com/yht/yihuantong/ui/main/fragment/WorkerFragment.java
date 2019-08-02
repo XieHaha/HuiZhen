@@ -117,7 +117,10 @@ public class WorkerFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        fillNetWorkData();
+        //当前用户可见才刷新列表
+        if (getUserVisibleHint()) {
+            fillNetWorkData();
+        }
     }
 
     @Override
@@ -219,7 +222,9 @@ public class WorkerFragment extends BaseFragment {
             textView.setText(bannerBeans.get(i).getBannerRemark());
             viewFlipper.addView(view);
         }
-        viewFlipper.startFlipping();
+        if (bannerBeans.size() > 1) {
+            viewFlipper.postDelayed(() -> viewFlipper.startFlipping(), 200);
+        }
     }
 
     /**

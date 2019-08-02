@@ -81,6 +81,7 @@
     <string name="txt_doctor_phone">医生手机\n号</string>
     <string name="txt_detail">查看详情</string>
     <string name="txt_max_num">9999+</string>
+    <string name="txt_middle_num">99+</string>
     <string name="txt_min_num">0</string>
     <string name="txt_plus">+%s</string>
     <string name="txt_space">%s&#160;&#160;</string>

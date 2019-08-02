@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import com.yht.frame.data.BaseData;
 import com.yht.frame.data.CommonData;
 import com.yht.yihuantong.ZycApplication;
 import com.yht.yihuantong.ui.main.MainActivity;
@@ -16,7 +17,7 @@ import com.yht.yihuantong.ui.patient.PatientPersonalActivity;
 public class EaseMsgClickBroadCastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        if ("ease.msg.android.intent.CLICK".equals(intent.getAction())) {
+        if (BaseData.EASE_MSG_ANDROID_INTENT_CLICK.equals(intent.getAction())) {
             if (ZycApplication.getInstance().getLoginBean() == null) {
                 return;
             }

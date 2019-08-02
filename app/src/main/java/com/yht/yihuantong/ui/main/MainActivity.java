@@ -253,7 +253,8 @@ public class MainActivity extends BaseActivity
      */
     private void showProtocol() {
         Intent intent = new Intent(this, WebViewActivity.class);
-        intent.putExtra(CommonData.KEY_PUBLIC, ZycApplication.getInstance().getBaseUrl() + BaseNetConfig.BASE_BASIC_USER_PROTOCOL_URL);
+        intent.putExtra(CommonData.KEY_PUBLIC,
+                        ZycApplication.getInstance().getBaseUrl() + BaseNetConfig.BASE_BASIC_USER_PROTOCOL_URL);
         intent.putExtra(CommonData.KEY_IS_PROTOCOL, true);
         startActivity(intent);
     }
@@ -327,7 +328,7 @@ public class MainActivity extends BaseActivity
         pendingCount++;
         Intent intent = new Intent(MainActivity.this, EaseMsgClickBroadCastReceiver.class);
         intent.putExtra(CommonData.KEY_CHAT_ID, message.getFrom());
-        intent.setAction("ease.msg.android.intent.CLICK");
+        intent.setAction(BaseData.EASE_MSG_ANDROID_INTENT_CLICK);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this, pendingCount, intent,
                                                                  PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Builder builder;

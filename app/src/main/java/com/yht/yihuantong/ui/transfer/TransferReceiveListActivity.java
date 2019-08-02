@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.yht.frame.data.BaseData;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.ScreenUtils;
@@ -122,7 +123,9 @@ public class TransferReceiveListActivity extends BaseActivity
     public void onPendingTransferOrder(int num) {
         if (num > 0) {
             layoutReceivingTransferNum.setVisibility(View.VISIBLE);
-            tvReceivingTransferNum.setText(String.valueOf(num));
+            tvReceivingTransferNum.setText(num > BaseData.BASE_MEAASGE_DISPLAY_MIDDLE_NUM
+                                           ? getString(R.string.txt_middle_num)
+                                           : String.valueOf(num));
         }
         else {
             layoutReceivingTransferNum.setVisibility(View.GONE);

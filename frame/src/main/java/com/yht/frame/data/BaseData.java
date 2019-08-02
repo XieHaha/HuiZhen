@@ -62,6 +62,10 @@ public interface BaseData {
      * 消息最大显示数字
      */
     int BASE_MEAASGE_DISPLAY_NUM = 9999;
+    /**
+     * 消息最大显示数字
+     */
+    int BASE_MEAASGE_DISPLAY_MIDDLE_NUM = 99;
 
     /**
      * 屏幕适配  默认宽度
@@ -95,6 +99,10 @@ public interface BaseData {
      * token失效
      */
     String BASE_TOKEN_ERROR_ACTION = "zyc.doctor.token.action";
+    /**
+     * 环信消息通知点击action
+     */
+    String EASE_MSG_ANDROID_INTENT_CLICK = "ease.msg.android.intent.CLICK";
     /**
      * 微信登录APP_ID
      */

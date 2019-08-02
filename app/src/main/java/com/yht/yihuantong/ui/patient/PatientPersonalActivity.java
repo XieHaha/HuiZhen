@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.hyphenate.easeui.EaseConstant;
+import com.hyphenate.easeui.widget.chatrow.EaseChatRowVoicePlayer;
 import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
@@ -367,6 +368,19 @@ public class PatientPersonalActivity extends BaseActivity implements EaseChatFra
             //开启聊天
             runOnUiThread(() -> startChat());
         }
+    }
+
+    private void stopVoice() {
+        EaseChatRowVoicePlayer voicePlayer = EaseChatRowVoicePlayer.getInstance(this);
+        if (voicePlayer != null && voicePlayer.isPlaying()) {
+            voicePlayer.stop();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        stopVoice();
     }
 
     @Override
