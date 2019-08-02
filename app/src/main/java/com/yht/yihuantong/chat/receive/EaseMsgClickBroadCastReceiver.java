@@ -27,6 +27,7 @@ public class EaseMsgClickBroadCastReceiver extends BroadcastReceiver {
             mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             baseIntent = new Intent(context, PatientPersonalActivity.class);
             baseIntent.putExtra(CommonData.KEY_PATIENT_CODE, chatId);
+            baseIntent.putExtra(CommonData.KEY_PATIENT_CHAT, true);
             intents = new Intent[] { mainIntent, baseIntent };
             context.startActivities(intents);
         }

@@ -354,6 +354,7 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
                 }
                 else if (doctorAuthBean.getApprovalStatus() == DocAuthStatus.AUTH_FAILD) {
                     loginBean.setApprovalStatus(doctorAuthBean.getApprovalStatus());
+                    loginBean.setRejectReason(doctorAuthBean.getApprovalRejectReason());
                     ZycApplication.getInstance().setLoginBean(loginBean);
                     if (authAgain && !pushStatus) {
                         tabAuthBaseView();
@@ -365,6 +366,7 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
                 }
                 else if (doctorAuthBean.getApprovalStatus() == DocAuthStatus.AUTH_WAITTING) {
                     loginBean.setApprovalStatus(doctorAuthBean.getApprovalStatus());
+                    loginBean.setRejectReason(doctorAuthBean.getApprovalRejectReason());
                     ZycApplication.getInstance().setLoginBean(loginBean);
                     tabAuthResultView();
                 }
