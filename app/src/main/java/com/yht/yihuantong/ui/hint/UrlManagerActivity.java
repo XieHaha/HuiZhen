@@ -58,14 +58,17 @@ public class UrlManagerActivity extends BaseActivity implements AdapterView.OnIt
     public void onViewClicked() {
         String url = editUrl.getText().toString().trim();
         if (!TextUtils.isEmpty(url)) {
-            ZycApplication.getInstance().setBaseUrl(url);
-            finish();
+            update(url);
         }
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        ZycApplication.getInstance().setBaseUrl(urls.get(position));
+        update(urls.get(position));
+    }
+
+    private void update(String baseUrl) {
+        ZycApplication.getInstance().setBaseUrl(baseUrl);
         finish();
     }
 

@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -47,7 +46,7 @@ import butterknife.OnClick;
  */
 public class SelectReceivingDoctorActivity extends BaseActivity
         implements BaseQuickAdapter.OnItemClickListener, BaseQuickAdapter.RequestLoadMoreListener,
-                   BaseQuickAdapter.OnItemChildClickListener, View.OnTouchListener {
+                   BaseQuickAdapter.OnItemChildClickListener {
     @BindView(R.id.tv_select)
     TextView tvSelect;
     @BindView(R.id.layout_expand)
@@ -175,8 +174,20 @@ public class SelectReceivingDoctorActivity extends BaseActivity
     @Override
     public void initListener() {
         super.initListener();
-        selectRecyclerView.setOnTouchListener(this);
-        searchRecyclerView.setOnTouchListener(this);
+        selectRecyclerView.setOnFlingListener(new RecyclerView.OnFlingListener() {
+            @Override
+            public boolean onFling(int velocityX, int velocityY) {
+                hideSoftInputFromWindow();
+                return false;
+            }
+        });
+        searchRecyclerView.setOnFlingListener(new RecyclerView.OnFlingListener() {
+            @Override
+            public boolean onFling(int velocityX, int velocityY) {
+                hideSoftInputFromWindow();
+                return false;
+            }
+        });
         etSearchCheckType.addTextChangedListener(new AbstractTextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -337,12 +348,6 @@ public class SelectReceivingDoctorActivity extends BaseActivity
             default:
                 break;
         }
-    }
-
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
-        hideSoftInputFromWindow();
-        return false;
     }
 
     @Override

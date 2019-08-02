@@ -41,6 +41,17 @@ public class RetrofitManager {
         private static LogInterceptor interceptor;
 
         /**
+         * 更新url
+         *
+         * @param url
+         */
+        public void updateBaseUrl(String url) {
+            if (interceptor != null) {
+                interceptor.setNewBaseUrl(url);
+            }
+        }
+
+        /**
          * 初始化
          */
         public void init(String url) {
@@ -62,7 +73,7 @@ public class RetrofitManager {
                                              //设置写入超时时间
                                              .writeTimeout(BaseNetConfig.DEFAULT_TIME, TimeUnit.SECONDS)
                                              //添加打印拦截器
-                                             .addInterceptor(interceptor = new LogInterceptor())
+                                             .addInterceptor(interceptor = new LogInterceptor(baseUrl))
                                              //设置出现错误进行重新连接。
                                              .retryOnConnectionFailure(true).build();
         }

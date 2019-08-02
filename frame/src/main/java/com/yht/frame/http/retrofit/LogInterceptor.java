@@ -39,6 +39,10 @@ public class LogInterceptor implements Interceptor {
      */
     private String newBaseUrl;
 
+    public LogInterceptor(String baseUrl) {
+        this.baseUrl = baseUrl;
+    }
+
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
@@ -154,22 +158,12 @@ public class LogInterceptor implements Interceptor {
      * @return
      */
     private Request initNewRequest(Request request) {
-        String nowRequestUrl = request.url().toString();
-        if (TextUtils.isEmpty(baseUrl) || TextUtils.equals(baseUrl, newBaseUrl)) {
-            baseUrl = newBaseUrl;
-            newBaseUrl = null;
+        if (TextUtils.isEmpty(baseUrl) || TextUtils.isEmpty(newBaseUrl) || TextUtils.equals(baseUrl, newBaseUrl)) {
             return request;
         }
+        String nowRequestUrl = request.url().toString();
         String newUrl = newBaseUrl + nowRequestUrl.substring(baseUrl.length());
         return request.newBuilder().url(newUrl).build();
-    }
-
-    public String getBaseUrl() {
-        return baseUrl;
-    }
-
-    public void setBaseUrl(String baseUrl) {
-        this.baseUrl = baseUrl;
     }
 
     public String getNewBaseUrl() {

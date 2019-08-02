@@ -97,6 +97,13 @@ public class SelectHospitalByAuthActivity extends BaseActivity
             }
         });
         etSearchHospital.setOnDeleteClickListener(this);
+        rvHospital.setOnFlingListener(new RecyclerView.OnFlingListener() {
+            @Override
+            public boolean onFling(int velocityX, int velocityY) {
+                hideSoftInputFromWindow();
+                return false;
+            }
+        });
     }
 
     /**
