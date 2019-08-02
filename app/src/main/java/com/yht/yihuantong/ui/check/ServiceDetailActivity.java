@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -97,6 +98,8 @@ public class ServiceDetailActivity extends BaseActivity
     RelativeLayout layoutCheckReportRoot;
     @BindView(R.id.layout_hint)
     LinearLayout layoutHint;
+    @BindView(R.id.scroll_view)
+    ScrollView scrollView;
     /**
      * 检查详情
      */
@@ -122,6 +125,10 @@ public class ServiceDetailActivity extends BaseActivity
      * 头部底部判断
      */
     private boolean isShowBottom;
+    /**
+     * 是否滚动到底部
+     */
+    private boolean isScrollBottom;
 
     @Override
     protected boolean isInitBackBtn() {
@@ -145,6 +152,7 @@ public class ServiceDetailActivity extends BaseActivity
         super.initData(savedInstanceState);
         if (getIntent() != null) {
             isShowBottom = getIntent().getBooleanExtra(CommonData.KEY_PUBLIC, false);
+            isScrollBottom = getIntent().getBooleanExtra(CommonData.KEY_INTENT_BOOLEAN, false);
             orderNo = getIntent().getStringExtra(CommonData.KEY_ORDER_ID);
         }
         initBitmap();
@@ -249,6 +257,11 @@ public class ServiceDetailActivity extends BaseActivity
         }
         else {
             tvCheckPayment.setText(getString(R.string.txt_self_medicare));
+        }
+        if (isScrollBottom) {
+            scrollView.post(() -> scrollView.fullScroll(ScrollView.FOCUS_DOWN));
+            //            滚动到顶部
+            //            scrollView.fullScroll(ScrollView.FOCUS_UP);
         }
     }
 

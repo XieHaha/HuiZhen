@@ -60,9 +60,10 @@ public class PatientOrderAdapter extends BaseMultiItemQuickAdapter<PatientOrderB
      * @param item
      */
     private void initCheckData(BaseViewHolder helper, PatientOrderBean item) {
-        helper.setText(R.id.tv_check_name, R.string.txt_reserve_check);
-        helper.setImageResource(R.id.iv_check_img, R.mipmap.ic_check);
-        helper.setText(R.id.tv_check_hospital, item.getTargetHospitalName());
+        helper.setText(R.id.tv_check_name, R.string.txt_reserve_check)
+              .setImageResource(R.id.iv_check_img, R.mipmap.ic_check)
+              .setText(R.id.tv_check_hospital, item.getTargetHospitalName())
+              .addOnClickListener(R.id.layout_check_report_root);
         //订单状态
         int status = item.getStatus();
         switch (status) {

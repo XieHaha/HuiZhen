@@ -17,6 +17,10 @@ public interface CommonData {
      */
     String KEY_PUBLIC_STRING = "key_public_string";
     /**
+     * 是否执行某种意图
+     */
+    String KEY_INTENT_BOOLEAN = "key_intent_boolean";
+    /**
      * 环信登录状态
      */
     String KEY_EASE_LOGIN_STATUS = "key_ease_login_status";

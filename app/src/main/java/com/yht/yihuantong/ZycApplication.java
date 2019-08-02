@@ -66,6 +66,7 @@ public class ZycApplication extends LitePalApplication {
         MultiDex.install(this);
         super.onCreate();
         instance = this;
+        setBaseUrl(BuildConfig.BASE_BASIC_URL);
         registerActivityLifecycleCallbacks(new LifecycleHandler());
         //app 帮助类
         ApiManager.getInstance().init(this, debugMode);
@@ -215,7 +216,7 @@ public class ZycApplication extends LitePalApplication {
 
     public void setBaseUrl(String baseUrl) {
         this.baseUrl = baseUrl;
-        RetrofitManager.getInstance().updateBaseUrl(baseUrl);
+        //        RetrofitManager.getInstance().updateBaseUrl(baseUrl);
     }
 
     /**

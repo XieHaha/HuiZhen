@@ -47,7 +47,8 @@ import butterknife.OnClick;
  * @des 患者资料
  */
 public class PatientInfoFragment extends BaseFragment
-        implements BaseQuickAdapter.RequestLoadMoreListener, BaseQuickAdapter.OnItemClickListener {
+        implements BaseQuickAdapter.RequestLoadMoreListener, BaseQuickAdapter.OnItemClickListener,
+                   BaseQuickAdapter.OnItemChildClickListener {
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
     private TextView tvName, tvAge, tvSex, tvPastMedical, familyMedical, tvAllergies, tvNoneRecord;
@@ -172,6 +173,7 @@ public class PatientInfoFragment extends BaseFragment
         recyclerView.addItemDecoration(timeItemDecoration);
         patientOrderAdapter = new PatientOrderAdapter(patientOrderBeans);
         patientOrderAdapter.setOnItemClickListener(this);
+        patientOrderAdapter.setOnItemChildClickListener(this);
         patientOrderAdapter.setLoadMoreView(new CustomLoadMoreView());
         patientOrderAdapter.setOnLoadMoreListener(this, recyclerView);
         patientOrderAdapter.addHeaderView(headerView);
@@ -230,6 +232,14 @@ public class PatientInfoFragment extends BaseFragment
             default:
                 break;
         }
+        startActivity(intent);
+    }
+
+    @Override
+    public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+        Intent intent = new Intent(getContext(), ServiceDetailActivity.class);
+        intent.putExtra(CommonData.KEY_ORDER_ID, patientOrderBeans.get(position).getOrderNo());
+        intent.putExtra(CommonData.KEY_INTENT_BOOLEAN, true);
         startActivity(intent);
     }
 
