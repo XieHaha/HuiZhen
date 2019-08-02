@@ -108,7 +108,7 @@ public class ServiceHistoryActivity extends BaseActivity
         recyclerView.addItemDecoration(timeItemDecoration);
         initAdapter();
         if (BaseUtils.isNetworkAvailable(this)) {
-            getReserveCheckOrderList();
+            getReserveCheckOrderList(true);
             getValidateHospitalList();
         }
         else {
@@ -121,8 +121,9 @@ public class ServiceHistoryActivity extends BaseActivity
     /**
      * 获取订单列表
      */
-    private void getReserveCheckOrderList() {
-        RequestUtils.getReserveCheckOrderList(this, loginBean.getToken(), BaseData.BASE_PAGE_DATA_NUM, page, this);
+    private void getReserveCheckOrderList(boolean showLoading) {
+        RequestUtils.getReserveCheckOrderList(this, loginBean.getToken(), BaseData.BASE_PAGE_DATA_NUM, page,
+                                              showLoading, this);
     }
 
     /**
@@ -186,7 +187,7 @@ public class ServiceHistoryActivity extends BaseActivity
 
     @Override
     public void onNextClick() {
-        getReserveCheckOrderList();
+        getReserveCheckOrderList(true);
     }
 
     @Override
@@ -242,7 +243,7 @@ public class ServiceHistoryActivity extends BaseActivity
     @Override
     public void onRefresh() {
         page = 1;
-        getReserveCheckOrderList();
+        getReserveCheckOrderList(false);
     }
 
     /**
@@ -251,6 +252,6 @@ public class ServiceHistoryActivity extends BaseActivity
     @Override
     public void onLoadMoreRequested() {
         page++;
-        getReserveCheckOrderList();
+        getReserveCheckOrderList(false);
     }
 }

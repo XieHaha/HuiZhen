@@ -20,7 +20,7 @@ import io.reactivex.disposables.Disposable;
  * @author dundun
  */
 public class AbstractLoadViewObserver<T> extends AbstractDataObserver<T> {
-    private boolean mShowDialog;
+    private boolean mShowDialog, mCancelAble;
     private LoadingDialog loadingDialog;
     private Context mContext;
     private Disposable d;
@@ -29,9 +29,15 @@ public class AbstractLoadViewObserver<T> extends AbstractDataObserver<T> {
         this(context, false, task, listener);
     }
 
-    public AbstractLoadViewObserver(Context context, Boolean showDialog, Tasks task, ResponseListener listener) {
+    public AbstractLoadViewObserver(Context context, boolean mShowDialog, Tasks task, ResponseListener listener) {
+        this(context, mShowDialog, true, task, listener);
+    }
+
+    public AbstractLoadViewObserver(Context context, boolean showDialog, boolean cancelAble, Tasks task,
+            ResponseListener listener) {
         mContext = context;
         mShowDialog = showDialog;
+        mCancelAble = cancelAble;
         super.setParams(task, listener);
     }
 
@@ -47,6 +53,8 @@ public class AbstractLoadViewObserver<T> extends AbstractDataObserver<T> {
         else {
             if (loadingDialog == null && mShowDialog) {
                 loadingDialog = new LoadingDialog(mContext);
+                loadingDialog.setCancelable(mCancelAble);
+                loadingDialog.setCanceledOnTouchOutside(mCancelAble);
                 loadingDialog.show();
             }
         }

@@ -21,11 +21,5 @@ public class LoadingDialog extends Dialog {
         //状态栏透明
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         setContentView(R.layout.dialog_loading);
-        init();
-    }
-
-    private void init() {
-        setCancelable(true);
-        setCanceledOnTouchOutside(true);
     }
 }

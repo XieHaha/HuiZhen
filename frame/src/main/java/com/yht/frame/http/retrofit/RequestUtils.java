@@ -71,7 +71,8 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .login(params)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.LOGIN_AND_REGISTER, listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, false, Tasks.LOGIN_AND_REGISTER,
+                                                                 listener));
     }
 
     public static void getProtocolUpdateDate(Context context, final ResponseListener<BaseResponse> listener) {
@@ -252,7 +253,8 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .submitDoctorAuth(token, params)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.SUBMIT_DOCTOR_AUTH, listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, false, Tasks.SUBMIT_DOCTOR_AUTH,
+                                                                 listener));
     }
 
     public static void getDoctorInfo(Context context, String token, String phone,
@@ -422,20 +424,21 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .addReserveCheckOrder(token, params)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(
-                               new AbstractLoadViewObserver<>(context, true, Tasks.ADD_RESERVE_CHECK_ORDER, listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, false, Tasks.ADD_RESERVE_CHECK_ORDER,
+                                                                 listener));
     }
 
     public static void getReserveCheckOrderList(Context context, String token, int pageSize, int startPage,
-            final ResponseListener<BaseResponse> listener) {
+            boolean showLoading, final ResponseListener<BaseResponse> listener) {
         Map<String, Integer> params = new HashMap<>(16);
         params.put("pageSize", pageSize);
         params.put("startPage", startPage);
         RetrofitManager.getApiUrlManager()
                        .getReserveCheckOrderList(token, params)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_RESERVE_CHECK_ORDER_LIST,
-                                                                 listener));
+                       .subscribe(
+                               new AbstractLoadViewObserver<>(context, showLoading, Tasks.GET_RESERVE_CHECK_ORDER_LIST,
+                                                              listener));
     }
 
     public static void getReserveCheckOrderDetail(Context context, String token, String orderNo,
@@ -500,7 +503,7 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .addReserveTransferOrder(token, params)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.ADD_RESERVE_TRANSFER_ORDER,
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, false, Tasks.ADD_RESERVE_TRANSFER_ORDER,
                                                                  listener));
     }
 
@@ -512,8 +515,9 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .cancelReserveTransferOrder(token, params)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.CANCEL_RESERVE_TRANSFER_ORDER,
-                                                                 listener));
+                       .subscribe(
+                               new AbstractLoadViewObserver<>(context, true, false, Tasks.CANCEL_RESERVE_TRANSFER_ORDER,
+                                                              listener));
     }
 
     public static void receiveReserveTransferOrder(Context context, String token, String receiveHospitalCode,
@@ -526,8 +530,8 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .receiveReserveTransferOrder(token, params)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.RECEIVE_RESERVE_TRANSFER_ORDER,
-                                                                 listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, false,
+                                                                 Tasks.RECEIVE_RESERVE_TRANSFER_ORDER, listener));
     }
 
     public static void updateReserveTransferOrder(Context context, String token, String receiveHospitalCode,
@@ -540,8 +544,9 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .updateReserveTransferOrder(token, params)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.UPDATE_RESERVE_TRANSFER_ORDER,
-                                                                 listener));
+                       .subscribe(
+                               new AbstractLoadViewObserver<>(context, true, false, Tasks.UPDATE_RESERVE_TRANSFER_ORDER,
+                                                              listener));
     }
 
     public static void rejectReserveTransferOrder(Context context, String token, String rejectReason, String orderNo,
@@ -552,8 +557,9 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .rejectReserveTransferOrder(token, params)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.REJECT_RESERVE_TRANSFER_ORDER,
-                                                                 listener));
+                       .subscribe(
+                               new AbstractLoadViewObserver<>(context, true, false, Tasks.REJECT_RESERVE_TRANSFER_ORDER,
+                                                              listener));
     }
 
     public static void transferAgainOtherDoctor(Context context, String token, String orderNo, String targetDoctorCode,
@@ -565,20 +571,21 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .transferAgainOtherDoctor(token, params)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.TRANSFER_AGAIN_OTHER_DOCTOR,
-                                                                 listener));
+                       .subscribe(
+                               new AbstractLoadViewObserver<>(context, true, false, Tasks.TRANSFER_AGAIN_OTHER_DOCTOR,
+                                                              listener));
     }
 
     public static void getInitiateTransferOrderList(Context context, String token, int pageSize, int startPage,
-            final ResponseListener<BaseResponse> listener) {
+            boolean showLoading, final ResponseListener<BaseResponse> listener) {
         Map<String, Integer> params = new HashMap<>(16);
         params.put("pageSize", pageSize);
         params.put("startPage", startPage);
         RetrofitManager.getApiUrlManager()
                        .getInitiateTransferOrderList(token, params)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_INITIATE_TRANSFER_ORDER_LIST,
-                                                                 listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, showLoading,
+                                                                 Tasks.GET_INITIATE_TRANSFER_ORDER_LIST, listener));
     }
 
     public static void getTransferStatusOrderList(Context context, String token, int receiveStatus, int pageSize,

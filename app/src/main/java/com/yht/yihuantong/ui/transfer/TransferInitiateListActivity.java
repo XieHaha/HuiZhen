@@ -118,7 +118,7 @@ public class TransferInitiateListActivity extends BaseActivity
         recyclerView.addItemDecoration(timeItemDecoration);
         initAdapter();
         if (BaseUtils.isNetworkAvailable(this)) {
-            getInitiateTransferOrderList();
+            getInitiateTransferOrderList(true);
             getValidateHospitalList();
         }
         else {
@@ -150,8 +150,9 @@ public class TransferInitiateListActivity extends BaseActivity
     /**
      * 查询发起的转诊记录
      */
-    private void getInitiateTransferOrderList() {
-        RequestUtils.getInitiateTransferOrderList(this, loginBean.getToken(), BaseData.BASE_PAGE_DATA_NUM, page, this);
+    private void getInitiateTransferOrderList(boolean showLoading) {
+        RequestUtils.getInitiateTransferOrderList(this, loginBean.getToken(), BaseData.BASE_PAGE_DATA_NUM, page,
+                                                  showLoading, this);
     }
 
     /**
@@ -204,9 +205,12 @@ public class TransferInitiateListActivity extends BaseActivity
         startActivity(intent);
     }
 
+    /**
+     * 重新加载
+     */
     @Override
     public void onNextClick() {
-        getInitiateTransferOrderList();
+        getInitiateTransferOrderList(true);
     }
 
     @Override
@@ -263,7 +267,7 @@ public class TransferInitiateListActivity extends BaseActivity
             return;
         }
         if (requestCode == REQUEST_CODE_UPDATE) {
-            getInitiateTransferOrderList();
+            getInitiateTransferOrderList(true);
         }
     }
 
@@ -273,7 +277,7 @@ public class TransferInitiateListActivity extends BaseActivity
     @Override
     public void onRefresh() {
         page = 1;
-        getInitiateTransferOrderList();
+        getInitiateTransferOrderList(false);
     }
 
     /**
@@ -282,6 +286,6 @@ public class TransferInitiateListActivity extends BaseActivity
     @Override
     public void onLoadMoreRequested() {
         page++;
-        getInitiateTransferOrderList();
+        getInitiateTransferOrderList(false);
     }
 }
