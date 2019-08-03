@@ -5,10 +5,12 @@ import android.content.pm.ActivityInfo;
 import android.support.v4.app.Fragment;
 
 import com.yht.frame.R;
+import com.yht.yihuantong.ZycApplication;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.internal.entity.CaptureStrategy;
-import com.yht.yihuantong.ZycApplication;
+
+import java.util.EnumSet;
 
 /**
  * @author 顿顿
@@ -24,7 +26,7 @@ public class MatisseUtils {
     public static void open(Activity activity) {
         Matisse.from(activity)
                // 选择 mime 的类型
-               .choose(MimeType.ofImage())
+               .choose(EnumSet.of(MimeType.JPEG, MimeType.PNG))
                // 显示选择的数量
                .countable(true)
                //相机
@@ -46,10 +48,10 @@ public class MatisseUtils {
                .forResult(RC_PICK_IMG);
     }
 
-    public static void open(Fragment fragment, boolean isCapture,int maxNum) {
+    public static void open(Fragment fragment, boolean isCapture, int maxNum) {
         Matisse.from(fragment)
                // 选择 mime 的类型
-               .choose(MimeType.ofImage())
+               .choose(EnumSet.of(MimeType.JPEG, MimeType.PNG))
                // 显示选择的数量
                .countable(false)
                //相机

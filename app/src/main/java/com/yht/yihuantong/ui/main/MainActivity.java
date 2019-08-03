@@ -28,7 +28,11 @@ import com.hyphenate.EMCallBack;
 import com.hyphenate.EMConnectionListener;
 import com.hyphenate.EMError;
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMImageMessageBody;
 import com.hyphenate.chat.EMMessage;
+import com.hyphenate.chat.EMMessageBody;
+import com.hyphenate.chat.EMTextMessageBody;
+import com.hyphenate.chat.EMVoiceMessageBody;
 import com.hyphenate.easeui.EaseUI;
 import com.hyphenate.easeui.domain.EaseUser;
 import com.yht.frame.api.ApiManager;
@@ -38,6 +42,7 @@ import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseNetConfig;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.bean.LoginBean;
+import com.yht.frame.data.bean.PatientBean;
 import com.yht.frame.data.bean.VersionBean;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.HuiZhenLog;
@@ -60,6 +65,8 @@ import com.yht.yihuantong.ui.main.fragment.WorkerFragment;
 import com.yht.yihuantong.ui.main.listener.OnMessageUpdateListener;
 import com.yht.yihuantong.version.presenter.VersionPresenter;
 import com.zyc.shortcutbadge.ShortcutBadger;
+
+import org.litepal.crud.DataSupport;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -277,6 +284,15 @@ public class MainActivity extends BaseActivity
                     public void onSuccess() {
                         EMClient.getInstance().groupManager().loadAllGroups();
                         EMClient.getInstance().chatManager().loadAllConversations();
+                        if (loginBean != null) {
+                            // update current user's display name for APNs
+                            boolean updatenick = EMClient.getInstance()
+                                                         .pushManager()
+                                                         .updatePushNickname(loginBean.getDoctorName());
+                            if (!updatenick) {
+                                HuiZhenLog.e(TAG, getString(R.string.txt_update_ease_nick_fail));
+                            }
+                        }
                         runOnUiThread(() -> HuiZhenLog.i(TAG, getString(R.string.txt_login_ease_success)));
                     }
 
@@ -322,6 +338,26 @@ public class MainActivity extends BaseActivity
         if (message.getFrom().equals(ZycApplication.getInstance().getChatId())) {
             return;
         }
+        String nickName = "";
+        List<PatientBean> list = DataSupport.where("code = ?", message.getFrom().toUpperCase()).find(PatientBean.class);
+        if (list != null && list.size() > 0) {
+            PatientBean bean = list.get(0);
+            nickName = bean.getName();
+        }
+        String text;
+        EMMessageBody body = message.getBody();
+        if (body instanceof EMTextMessageBody) {
+            text = ((EMTextMessageBody)body).getMessage();
+        }
+        else if (body instanceof EMImageMessageBody) {
+            text = getString(R.string.picture);
+        }
+        else if (body instanceof EMVoiceMessageBody) {
+            text = getString(R.string.voice_prefix);
+        }
+        else {
+            text = getString(R.string.txt_receive_ease_message);
+        }
         if (pendingCount > BaseData.BASE_PENDING_COUNT) {
             pendingCount = 1;
         }
@@ -348,8 +384,13 @@ public class MainActivity extends BaseActivity
         }
         builder.setAutoCancel(true);
         builder.setPriority(NotificationCompat.PRIORITY_HIGH);
-        builder.setContentTitle("会珍");
-        builder.setContentText("收到新的消息");
+        builder.setContentTitle(getString(R.string.APP_NAME));
+        if (TextUtils.isEmpty(nickName)) {
+            builder.setContentText(getString(R.string.txt_receive_ease_message));
+        }
+        else {
+            builder.setContentText(nickName + ":" + text);
+        }
         builder.setContentIntent(pendingIntent);
         builder.setDefaults(NotificationCompat.DEFAULT_ALL);
         builder.setWhen(System.currentTimeMillis());

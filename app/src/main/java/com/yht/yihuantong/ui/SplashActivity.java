@@ -10,6 +10,7 @@ import com.hyphenate.chat.EMClient;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.type.DocAuthStatus;
 import com.yht.frame.ui.BaseActivity;
+import com.yht.frame.utils.HuiZhenLog;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.auth.AuthDoctorActivity;
 import com.yht.yihuantong.ui.login.LoginOptionsActivity;
@@ -54,6 +55,13 @@ public class SplashActivity extends BaseActivity implements DocAuthStatus {
         super.initView(savedInstanceState);
         EMClient.getInstance().groupManager().loadAllGroups();
         EMClient.getInstance().chatManager().loadAllConversations();
+        if (loginBean != null) {
+            // update current user's display name for APNs
+            boolean updatenick = EMClient.getInstance().pushManager().updatePushNickname(loginBean.getDoctorName());
+            if (!updatenick) {
+                HuiZhenLog.e(TAG, getString(R.string.txt_update_ease_nick_fail));
+            }
+        }
         hideBottomUIMenu();
         try {
             GifDrawable gifDrawable = new GifDrawable(getResources(), R.mipmap.pic_splash_gif);
