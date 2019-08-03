@@ -384,12 +384,13 @@ public class MainActivity extends BaseActivity
         }
         builder.setAutoCancel(true);
         builder.setPriority(NotificationCompat.PRIORITY_HIGH);
-        builder.setContentTitle(getString(R.string.APP_NAME));
         if (TextUtils.isEmpty(nickName)) {
+            builder.setContentTitle(getString(R.string.APP_NAME));
             builder.setContentText(getString(R.string.txt_receive_ease_message));
         }
         else {
-            builder.setContentText(nickName + ":" + text);
+            builder.setContentTitle(nickName);
+            builder.setContentText(text);
         }
         builder.setContentIntent(pendingIntent);
         builder.setDefaults(NotificationCompat.DEFAULT_ALL);
@@ -403,6 +404,7 @@ public class MainActivity extends BaseActivity
         mNotificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         channel.setLightColor(Color.GREEN);
         channel.enableVibration(true);
+//        channel.setShowBadge(true);
         mNotificationManager.createNotificationChannel(channel);
     }
 
@@ -415,8 +417,15 @@ public class MainActivity extends BaseActivity
         int easeMessage = sharePreferenceUtil.getInt(CommonData.KEY_EASE_MESSAGE_UNREAD_STATUS);
         if (systemMessage > 0 || easeMessage > 0) {
             ivMessageDot.setVisibility(View.VISIBLE);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                //                sendSubscribeMsg(msgUnReadCount);
+            }
+            else {
+                setShortcutBadge(easeMessage);
+            }
         }
         else {
+            removeShortcutBadge();
             ivMessageDot.setVisibility(View.INVISIBLE);
         }
     }

@@ -383,6 +383,6 @@ public class WorkerFragment extends BaseFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        iNotifyChangeListenerServer.registerMessageStatusChangeListener(transferApply, RegisterType.UNREGISTER);
+        iNotifyChangeListenerServer.registerDoctorTransferPatientListener(transferApply, RegisterType.UNREGISTER);
     }
 }

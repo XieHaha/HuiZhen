@@ -43,13 +43,11 @@ public class ReservationDisableActivity extends BaseActivity {
         }
         if (isTransfer) {
             publicTitleBarTitle.setText(R.string.txt_reserve_transfer);
-            tvDisableHint.setText(String.format(getString(R.string.txt_none_hospital_by_reserve),
-                                                getString(R.string.txt_reserve_transfer)));
+            tvDisableHint.setText(R.string.txt_none_hospital_by_reserve_transfer);
         }
         else {
             publicTitleBarTitle.setText(R.string.txt_reserve_check);
-            tvDisableHint.setText(String.format(getString(R.string.txt_none_hospital_by_reserve),
-                                                getString(R.string.txt_reserve_check)));
+            tvDisableHint.setText(R.string.txt_none_hospital_by_reserve);
         }
     }
 }
