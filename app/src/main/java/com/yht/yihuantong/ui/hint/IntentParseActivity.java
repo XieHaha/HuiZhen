@@ -1,6 +1,5 @@
 package com.yht.yihuantong.ui.hint;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -8,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AppCompatActivity;
 
-import com.yht.frame.ui.AppManager;
 import com.yht.yihuantong.BuildConfig;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ZycApplication;
@@ -40,19 +38,19 @@ public class IntentParseActivity extends AppCompatActivity {
                     finish();
                     return;
                 }
-                Activity curActivity = AppManager.getInstance().getCurrentActivity();
+                //                Activity curActivity = AppManager.getInstance().getCurrentActivity();
                 if (ViewUtils.isLaunchedActivity(this, MainActivity.class)) {
-                    if (curActivity != null) {
-                        AppManager.getInstance().removeActivity(curActivity);
-                        resultIntent.setComponent(curActivity.getComponentName());
-                    }
+                    //                        if (curActivity != null) {
+                    //                            curActivity.finish();
+                    //                            resultIntent.setComponent(curActivity.getComponentName());
+                    //                        }
                     startActivity(resultIntent);
                 }
                 else if (ViewUtils.isLaunchedActivity(this, LoginOptionsActivity.class)) {
-                    if (curActivity != null) {
-                        AppManager.getInstance().removeActivity(curActivity);
-                        resultIntent.setComponent(curActivity.getComponentName());
-                    }
+                    //                        if (curActivity != null) {
+                    //                            curActivity.finish();
+                    //                            resultIntent.setComponent(curActivity.getComponentName());
+                    //                        }
                     startActivity(resultIntent);
                 }
                 else {

@@ -57,12 +57,12 @@ public class SplashActivity extends BaseActivity implements DocAuthStatus {
         EMClient.getInstance().chatManager().loadAllConversations();
         if (loginBean != null) {
             // update current user's display name for APNs
-            boolean updatenick = EMClient.getInstance().pushManager().updatePushNickname(loginBean.getDoctorName());
-            if (!updatenick) {
+            boolean updateNick = EMClient.getInstance().pushManager().updatePushNickname(loginBean.getDoctorName());
+            if (!updateNick) {
                 HuiZhenLog.e(TAG, getString(R.string.txt_update_ease_nick_fail));
             }
         }
-        hideBottomUIMenu();
+//        hideBottomUIMenu();
         try {
             GifDrawable gifDrawable = new GifDrawable(getResources(), R.mipmap.pic_splash_gif);
             initScheduledThread(gifDrawable.getDuration());
@@ -113,7 +113,8 @@ public class SplashActivity extends BaseActivity implements DocAuthStatus {
     }
 
     private void initScheduledThread(int duration) {
-        time = Math.round(duration / 1000f) + 1;
+        time = Math.round(duration / 1000f) + 2;
+        HuiZhenLog.i(TAG, "time:" + time);
         executorService = new ScheduledThreadPoolExecutor(1, new BasicThreadFactory.Builder().namingPattern(
                 "yht-thread-pool-%d").daemon(true).build());
         executorService.scheduleAtFixedRate(() -> {

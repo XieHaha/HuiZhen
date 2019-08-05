@@ -80,7 +80,7 @@ public class AppManager {
      * 得到当前的activity
      */
     public Activity getCurrentActivity() {
-        if (activityList == null) {
+        if (activityList == null || activityList.size() == 0) {
             return null;
         }
         return activityList.get(activityList.size() - 1);
