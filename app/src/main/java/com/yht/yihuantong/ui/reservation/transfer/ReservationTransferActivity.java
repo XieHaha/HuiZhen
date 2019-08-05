@@ -124,11 +124,7 @@ public class ReservationTransferActivity extends BaseActivity implements OnTrans
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-        if (hasHistoryData()) {
-            //重新转诊直接进入到第二步 或者在患者页面预约转诊
-            tabReservationLicenseView();
-        }
-        else {
+        if (!hasHistoryData()) {
             tabReservationBaseView();
         }
     }
@@ -138,6 +134,14 @@ public class ReservationTransferActivity extends BaseActivity implements OnTrans
      */
     private void addReserveTransferOrder() {
         RequestUtils.addReserveTransferOrder(this, loginBean.getToken(), reverseTransferBean, this);
+    }
+
+    /**
+     * 患者验证
+     * (重新转诊，需要校验用户)
+     */
+    private void verifyPatient() {
+        RequestUtils.verifyPatient(this, loginBean.getToken(), transferBean.getPatientIdCardNo(), this);
     }
 
     /**
@@ -161,10 +165,12 @@ public class ReservationTransferActivity extends BaseActivity implements OnTrans
     private boolean hasHistoryData() {
         if (patientDetailBean != null) {
             initPatientBaseData();
+            //直接进入到第二步 或者在患者页面预约转诊
+            tabReservationLicenseView();
             return true;
         }
         else if (transferBean != null) {
-            initTransferOrderData();
+            verifyPatient();
             return true;
         }
         else {
@@ -195,8 +201,10 @@ public class ReservationTransferActivity extends BaseActivity implements OnTrans
 
     /**
      * 订单数据回填
+     *
+     * @param bean
      */
-    private void initTransferOrderData() {
+    private void initTransferOrderData(PatientDetailBean bean) {
         //数据回填 患者信息
         reverseTransferBean = new ReserveTransferBean();
         reverseTransferBean.setPatientName(transferBean.getPatientName());
@@ -209,6 +217,9 @@ public class ReservationTransferActivity extends BaseActivity implements OnTrans
         reverseTransferBean.setFamilyHistory(transferBean.getFamilyHistory());
         reverseTransferBean.setAllergyHistory(transferBean.getAllergyHistory());
         reverseTransferBean.setInitResult(transferBean.getInitResult());
+        if (bean != null) {
+            reverseTransferBean.setIsBind(bean.getIsBind());
+        }
         //接诊医生信息
         reverseTransferBean.setReceiveDoctorCode(transferBean.getTargetDoctorCode());
         reverseTransferBean.setReceiveDoctorName(transferBean.getTargetDoctorName());
@@ -410,6 +421,10 @@ public class ReservationTransferActivity extends BaseActivity implements OnTrans
                 intent.putExtra(CommonData.KEY_ORDER_ID, orderNo);
                 startActivity(intent);
                 finish();
+                break;
+            case VERIFY_PATIENT:
+                PatientDetailBean bean = (PatientDetailBean)response.getData();
+                initTransferOrderData(bean);
                 break;
             default:
                 break;

@@ -64,7 +64,6 @@ import com.yht.yihuantong.ui.main.fragment.PatientFragment;
 import com.yht.yihuantong.ui.main.fragment.WorkerFragment;
 import com.yht.yihuantong.ui.main.listener.OnMessageUpdateListener;
 import com.yht.yihuantong.version.presenter.VersionPresenter;
-import com.zyc.shortcutbadge.ShortcutBadger;
 
 import org.litepal.crud.DataSupport;
 
@@ -72,6 +71,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import me.leolin.shortcutbadger.ShortcutBadger;
 
 import static com.yht.yihuantong.jpush.TagAliasOperatorHelper.ACTION_SET;
 
@@ -404,7 +404,7 @@ public class MainActivity extends BaseActivity
         mNotificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         channel.setLightColor(Color.GREEN);
         channel.enableVibration(true);
-//        channel.setShowBadge(true);
+        //        channel.setShowBadge(true);
         mNotificationManager.createNotificationChannel(channel);
     }
 

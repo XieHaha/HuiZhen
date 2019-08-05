@@ -70,6 +70,8 @@ dependencies {
     //汉字排序
     api 'com.github.promeg:tinypinyin:2.0.3'
     api 'com.github.promeg:tinypinyin-lexicons-android-cncity:2.0.3'
+    //角标
+    api "me.leolin:ShortcutBadger:1.1.22@aar"
     //buggly
     api 'com.tencent.bugly:crashreport:latest.release'
     api 'com.tencent.bugly:nativecrashreport:latest.release'
