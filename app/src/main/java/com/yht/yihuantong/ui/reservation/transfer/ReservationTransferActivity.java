@@ -125,7 +125,7 @@ public class ReservationTransferActivity extends BaseActivity implements OnTrans
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         if (hasHistoryData()) {
-            //重新转诊直接进入到第二步
+            //重新转诊直接进入到第二步 或者在患者页面预约转诊
             tabReservationLicenseView();
         }
         else {
@@ -187,6 +187,7 @@ public class ReservationTransferActivity extends BaseActivity implements OnTrans
         reverseTransferBean.setPastHistory(patientDetailBean.getPast());
         reverseTransferBean.setFamilyHistory(patientDetailBean.getFamily());
         reverseTransferBean.setAllergyHistory(patientDetailBean.getAllergy());
+        reverseTransferBean.setIsBind(patientDetailBean.getIsBind());
         //给个默认值 防止回填数据冲突（区分转诊订单详情、患者的个人页面）
         reverseTransferBean.setTransferType(-1);
         reverseTransferBean.setPayType(-1);

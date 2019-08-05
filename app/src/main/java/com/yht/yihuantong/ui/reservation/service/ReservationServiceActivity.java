@@ -176,6 +176,7 @@ public class ReservationServiceActivity extends BaseActivity implements OnCheckL
         reserveCheckBean.setPastHistory(patientDetailBean.getPast());
         reserveCheckBean.setFamilyHistory(patientDetailBean.getFamily());
         reserveCheckBean.setAllergyHistory(patientDetailBean.getAllergy());
+        reserveCheckBean.setIsBind(patientDetailBean.getIsBind());
     }
 
     private void tabReservationBaseView() {
