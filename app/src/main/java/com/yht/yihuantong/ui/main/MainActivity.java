@@ -35,6 +35,8 @@ import com.hyphenate.chat.EMTextMessageBody;
 import com.hyphenate.chat.EMVoiceMessageBody;
 import com.hyphenate.easeui.EaseUI;
 import com.hyphenate.easeui.domain.EaseUser;
+import com.tencent.stat.StatConfig;
+import com.tencent.stat.StatService;
 import com.yht.frame.api.ApiManager;
 import com.yht.frame.api.notify.IChange;
 import com.yht.frame.api.notify.RegisterType;
@@ -191,6 +193,7 @@ public class MainActivity extends BaseActivity
         //环信登录
         loginEaseChat();
         setJPushAlias(loginBean.getDoctorCode());
+        initStat();
         //检查更新
         mVersionPresenter = new VersionPresenter(this, loginBean.getToken());
         mVersionPresenter.setVersionViewListener(this);
@@ -253,6 +256,13 @@ public class MainActivity extends BaseActivity
         tagAliasBean.alias = alias;
         tagAliasBean.isAliasAction = true;
         TagAliasOperatorHelper.getInstance().handleAction(getApplicationContext(), BASE_ONE, tagAliasBean);
+    }
+
+    private void initStat() {
+        // [可选]设置是否打开debug输出，上线时请关闭，Logcat标签为"MtaSDK"
+        StatConfig.setDebugEnable(true);
+        // 基础统计API
+        StatService.registerActivityLifecycleCallbacks(this.getApplication());
     }
 
     /**

@@ -1,5 +1,7 @@
 apply plugin: 'com.android.application'
 
+//apply plugin: 'walle'
+
 def releaseTime() {
     return new Date().format("MM月dd日", TimeZone.getTimeZone("UTC"))
 }
@@ -9,14 +11,19 @@ android {
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 26
-        versionCode 18
-        versionName "2.1.9"
+        versionCode 20
+        versionName "3.0.0"
         flavorDimensions "default"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
             abiFilters "armeabi-v7a", "armeabi"
         }
+        manifestPlaceholders = [
+                MTA_APPKEY : "A2FT55EPW4SX",
+                //标注应用推广渠道用以区分新用户来源，可填写如应用宝，豌豆荚等
+                MTA_CHANNEL: "渠道名称"
+        ]
     }
 
     flavorDimensions "zyc"
@@ -51,7 +58,14 @@ android {
                                     jpush_channel: "beta"]
         }
     }
-
+//    walle {
+//        // 指定渠道包的输出路径
+//        apkOutputFolder = new File("${project.buildDir}/outputs/channels")
+//        // 定制渠道包的APK的文件名称
+//        apkFileNameFormat = '${APP_NAME}-${channel}-${buildType}-v${versionName}-${releaseTime()}.apk'
+//        // 渠道配置文件
+//        channelFile = new File("${project.getProjectDir()}/channel")
+//    }
     signingConfigs {
         release {
             storeFile file('F:/HuiZhen/app/zyc.jks')
@@ -66,6 +80,7 @@ android {
             storePassword 'android'
         }
     }
+
 
     buildTypes {
         release {
@@ -114,4 +129,6 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.0'
     //gif动图
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.17'
+//    //多渠道打包
+//    implementation 'com.meituan.android.walle:library:1.1.6'
 }

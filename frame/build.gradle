@@ -1,10 +1,6 @@
 apply plugin: 'com.android.library'
 
-apply plugin: 'kotlin-android'
-
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'bugly'
-
 bugly {
     debug = true
     appId = '43524227c9'
@@ -32,7 +28,6 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
         sourceCompatibility JavaVersion.VERSION_1_8
     }
-
 }
 
 dependencies {
@@ -43,8 +38,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     //注解
     api 'com.jakewharton:butterknife:8.8.0'
-    //kotlin 2019年4月12日16:45:52
-    api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     //retrofit网络请求框架
     api 'com.squareup.retrofit2:retrofit:2.5.0'
     //retrofit添加Json解析返回数据
@@ -75,4 +68,9 @@ dependencies {
     //buggly
     api 'com.tencent.bugly:crashreport:latest.release'
     api 'com.tencent.bugly:nativecrashreport:latest.release'
+    //移动应用分析
+    //MTA主包
+    api 'com.qq.mta:mta:3.4.2'
+    //MID基础包
+    api 'com.tencent.mid:mid:3.73-release'
 }
