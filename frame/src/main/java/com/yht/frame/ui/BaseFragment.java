@@ -19,6 +19,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.google.gson.Gson;
+import com.umeng.analytics.MobclickAgent;
 import com.yht.frame.R;
 import com.yht.frame.api.notify.INotifyChangeListenerServer;
 import com.yht.frame.data.BaseData;
@@ -273,6 +274,18 @@ public abstract class BaseFragment extends Fragment
         intent.putExtra(CommonData.KEY_PUBLIC_STRING, errorHint);
         intent.setPackage(getActivity().getPackageName());
         getActivity().sendBroadcast(intent);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart(this.getClass().getSimpleName());
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd(this.getClass().getSimpleName());
     }
 
     /**

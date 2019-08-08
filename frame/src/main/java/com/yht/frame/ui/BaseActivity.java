@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
+import com.umeng.analytics.MobclickAgent;
 import com.yht.frame.R;
 import com.yht.frame.api.notify.INotifyChangeListenerServer;
 import com.yht.frame.data.BaseData;
@@ -330,11 +331,13 @@ public abstract class BaseActivity extends RxAppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
+        MobclickAgent.onResume(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     @Override

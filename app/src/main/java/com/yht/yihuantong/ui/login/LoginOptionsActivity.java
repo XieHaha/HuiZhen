@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.umeng.analytics.AnalyticsConfig;
 import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseNetConfig;
 import com.yht.frame.data.BaseResponse;
@@ -30,6 +31,7 @@ import com.yht.frame.data.type.DocAuthStatus;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
+import com.yht.frame.utils.HuiZhenLog;
 import com.yht.frame.utils.ToastUtil;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ZycApplication;
@@ -125,6 +127,7 @@ public class LoginOptionsActivity extends BaseActivity
         mVersionPresenter.init();
         registerToWeChat();
         spannableString(getString(R.string.txt_login_protocol));
+        HuiZhenLog.i(TAG, "channel:" + AnalyticsConfig.getChannel(this));
     }
 
     /**

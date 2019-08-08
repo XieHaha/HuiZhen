@@ -21,35 +21,41 @@ android {
 
     flavorDimensions "zyc"
     productFlavors {
-        zyc {
-            dimension "zyc"
-            applicationId "com.yht.yihuantong"
-            buildConfigField "String", "BASE_BASIC_URL", "\"http://doctor.med-value.com/\""
-            resValue "string", "APP_NAME", "\"会珍医生版\""
-            manifestPlaceholders = [ease_appkey  : "1110180330253249#dpappproject",
-                                    jpush_appkey : "8b803f7221a77f19b78b3523",
-                                    jpush_channel: "zyc"]
-        }
+        zyc {}
+        develop {}
+        beta {}
+        Tencent {}
+        Huawei {}
+        Xiaomi {}
+        Oppo {}
+        Vivo {}
+    }
 
-        develop {
-            dimension "zyc"
+    productFlavors.all { flavor ->
+        dimension "zyc"
+        if ("develop" == name) {
             applicationId "com.yht.yihuantong"
             buildConfigField "String", "BASE_BASIC_URL", "\"https://doctor-pre.med-value.com/\""
             resValue "string", "APP_NAME", "\"会珍医生灰度版\""
-            manifestPlaceholders = [ease_appkey  : "1110180330253249#dpappproject",
-                                    jpush_appkey : "8b803f7221a77f19b78b3523",
-                                    jpush_channel: "develop"]
-        }
-
-        beta {
-            dimension "zyc"
+            manifestPlaceholders = [ease_appkey        : "1110180330253249#dpappproject",
+                                    jpush_appkey       : "8b803f7221a77f19b78b3523",
+                                    UMENG_CHANNEL_VALUE: "develop"]
+        } else if ("beta" == name) {
             applicationId "com.yht.yihuantong_test"
             buildConfigField "String", "BASE_BASIC_URL", "\"http://doctor-t.med-value.com/api/\""
             resValue "string", "APP_NAME", "\"会珍医生测试版\""
-            manifestPlaceholders = [ease_appkey  : "1105190122042534#dp-test-app",
-                                    jpush_appkey : "ad21b958f6040b2b0ae89f46",
-                                    jpush_channel: "beta"]
+            manifestPlaceholders = [ease_appkey        : "1105190122042534#dp-test-app",
+                                    jpush_appkey       : "ad21b958f6040b2b0ae89f46",
+                                    UMENG_CHANNEL_VALUE: "beta"]
+        } else {
+            applicationId "com.yht.yihuantong"
+            buildConfigField "String", "BASE_BASIC_URL", "\"http://doctor.med-value.com/\""
+            resValue "string", "APP_NAME", "\"会珍医生版\""
+            flavor.manifestPlaceholders = [ease_appkey        : "1110180330253249#dpappproject",
+                                           jpush_appkey       : "8b803f7221a77f19b78b3523",
+                                           UMENG_CHANNEL_VALUE: name]
         }
+
     }
 
     signingConfigs {
@@ -82,7 +88,13 @@ android {
 
     android.applicationVariants.all { variant ->
         variant.outputs.all {
-            outputFileName = "${variant.productFlavors[0].name}_会珍医生版V${variant.versionName}-${releaseTime()}.apk"
+            if (variant.name.endsWith("Debug")) {
+                //debug包
+                outputFileName = "DEBUG_${variant.productFlavors[0].name}V${variant.versionName}-${releaseTime()}.apk"
+            } else {
+                //release包
+                outputFileName = "RELEASE_${variant.productFlavors[0].name}V${variant.versionName}-${releaseTime()}.apk"
+            }
         }
     }
     compileOptions {

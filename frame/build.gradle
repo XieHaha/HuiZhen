@@ -58,7 +58,7 @@ dependencies {
     api 'com.github.promeg:tinypinyin-lexicons-android-cncity:2.0.3'
     //角标
     api "me.leolin:ShortcutBadger:1.1.22@aar"
-    //buggly
-    api 'com.tencent.bugly:crashreport:latest.release'
-    api 'com.tencent.bugly:nativecrashreport:latest.release'
+    //友盟
+    api  'com.umeng.umsdk:analytics:8.0.0'
+    api  'com.umeng.umsdk:common:2.0.0'
 }
