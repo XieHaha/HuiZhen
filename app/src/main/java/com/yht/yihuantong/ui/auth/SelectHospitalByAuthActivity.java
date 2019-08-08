@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.yht.frame.api.LitePalHelper;
+import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
@@ -124,7 +125,12 @@ public class SelectHospitalByAuthActivity extends BaseActivity
             rvHospital.setVisibility(View.VISIBLE);
             layoutNoneHospital.setVisibility(View.GONE);
             hospitalAdapter.setNewData(searchHospitals);
-            hospitalAdapter.loadMoreEnd();
+            if (searchHospitals.size() > BaseData.BASE_PAGE_DATA_NUM) {
+                hospitalAdapter.loadMoreEnd();
+            }
+            else {
+                hospitalAdapter.setEnableLoadMore(false);
+            }
         }
         else {
             rvHospital.setVisibility(View.GONE);
@@ -154,16 +160,6 @@ public class SelectHospitalByAuthActivity extends BaseActivity
             hospitals = (List<HospitalBean>)response.getData();
             //更新数据库
             new LitePalHelper().updateAll(hospitals, HospitalBean.class);
-            //            if (hospitals != null && hospitals.size() > 0) {
-            //                layoutNoneHospital.setVisibility(View.GONE);
-            //                rvHospital.setVisibility(View.VISIBLE);
-            //                hospitalAdapter.setNewData(hospitals);
-            //                hospitalAdapter.loadMoreEnd();
-            //            }
-            //            else {
-            //                layoutNoneHospital.setVisibility(View.VISIBLE);
-            //                rvHospital.setVisibility(View.GONE);
-            //            }
         }
     }
 

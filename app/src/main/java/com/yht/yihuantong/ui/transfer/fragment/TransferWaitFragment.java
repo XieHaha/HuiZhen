@@ -134,11 +134,16 @@ public class TransferWaitFragment extends BaseFragment
             }
             transferBeans.addAll(list);
             transferWaitAdapter.setNewData(transferBeans);
-            if (list != null && list.size() == BaseData.BASE_PAGE_DATA_NUM) {
+            if (list != null && list.size() >= BaseData.BASE_PAGE_DATA_NUM) {
                 transferWaitAdapter.loadMoreComplete();
             }
             else {
-                transferWaitAdapter.loadMoreEnd();
+                if (transferBeans.size() > BaseData.BASE_PAGE_DATA_NUM) {
+                    transferWaitAdapter.loadMoreEnd();
+                }
+                else {
+                    transferWaitAdapter.setEnableLoadMore(false);
+                }
             }
             if (transferBeans.size() == 0) {
                 layoutNoneRecord.setVisibility(View.VISIBLE);

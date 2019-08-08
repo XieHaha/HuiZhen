@@ -21,6 +21,7 @@ import com.yht.frame.api.ApiManager;
 import com.yht.frame.api.LitePalHelper;
 import com.yht.frame.api.notify.IChange;
 import com.yht.frame.api.notify.RegisterType;
+import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
@@ -187,7 +188,6 @@ public class PatientFragment extends BaseFragment
         patientAdapter.addHeaderView(headerView);
         patientAdapter.setLoadMoreView(new CustomLoadMoreView());
         patientAdapter.setOnLoadMoreListener(this, recyclerview);
-        patientAdapter.loadMoreEnd();
         recyclerview.setAdapter(patientAdapter);
     }
 
@@ -207,7 +207,12 @@ public class PatientFragment extends BaseFragment
         if (patientBeans != null) {
             sortData();
             patientAdapter.setNewData(patientBeans);
-            patientAdapter.loadMoreEnd();
+            if (patientBeans.size() > BaseData.BASE_PAGE_DATA_NUM) {
+                patientAdapter.loadMoreEnd();
+            }
+            else {
+                patientAdapter.setEnableLoadMore(false);
+            }
             publicMainTitle.setText(String.format(getString(R.string.title_patient), patientBeans.size()));
         }
     }
@@ -348,7 +353,12 @@ public class PatientFragment extends BaseFragment
                 sharePreferenceUtil.putBoolean(CommonData.KEY_UPDATE_PATIENT_DATA, true);
                 sortData();
                 patientAdapter.setNewData(patientBeans);
-                patientAdapter.loadMoreEnd();
+                if (patientBeans.size() > BaseData.BASE_PAGE_DATA_NUM) {
+                    patientAdapter.loadMoreEnd();
+                }
+                else {
+                    patientAdapter.setEnableLoadMore(false);
+                }
                 publicMainTitle.setText(String.format(getString(R.string.title_patient), patientBeans.size()));
                 break;
             default:

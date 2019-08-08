@@ -227,11 +227,16 @@ public class TransferInitiateListActivity extends BaseActivity
                 transferList.addAll(list);
                 sortTransferData();
                 transferInitiateAdapter.setNewData(transferList);
-                if (list != null && list.size() == BaseData.BASE_PAGE_DATA_NUM) {
+                if (list != null && list.size() >= BaseData.BASE_PAGE_DATA_NUM) {
                     transferInitiateAdapter.loadMoreComplete();
                 }
                 else {
-                    transferInitiateAdapter.loadMoreEnd();
+                    if (transferList.size() > BaseData.BASE_PAGE_DATA_NUM) {
+                        transferInitiateAdapter.loadMoreEnd();
+                    }
+                    else {
+                        transferInitiateAdapter.setEnableLoadMore(false);
+                    }
                 }
                 if (transferList != null && transferList.size() > 0) {
                     recyclerView.setVisibility(View.VISIBLE);

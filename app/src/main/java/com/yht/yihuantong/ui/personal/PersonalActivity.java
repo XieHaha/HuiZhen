@@ -264,7 +264,12 @@ public class PersonalActivity extends BaseActivity
                 doctorCurrencyDetailBeans.addAll(list);
                 currencyDetailAdapter.setNewData(doctorCurrencyDetailBeans);
                 if (list.size() < BaseData.BASE_PAGE_DATA_NUM) {
-                    currencyDetailAdapter.loadMoreEnd();
+                    if (doctorCurrencyDetailBeans.size() > BaseData.BASE_PAGE_DATA_NUM) {
+                        currencyDetailAdapter.loadMoreEnd();
+                    }
+                    else {
+                        currencyDetailAdapter.setEnableLoadMore(false);
+                    }
                 }
                 else {
                     currencyDetailAdapter.loadMoreComplete();

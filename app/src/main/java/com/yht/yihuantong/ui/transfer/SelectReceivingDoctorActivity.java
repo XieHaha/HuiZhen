@@ -488,7 +488,12 @@ public class SelectReceivingDoctorActivity extends BaseActivity
                     doctorAdapter.loadMoreComplete();
                 }
                 else {
-                    doctorAdapter.loadMoreEnd();
+                    if (doctors.size() > BaseData.BASE_PAGE_DATA_NUM) {
+                        doctorAdapter.loadMoreEnd();
+                    }
+                    else {
+                        doctorAdapter.setEnableLoadMore(false);
+                    }
                 }
                 break;
             default:

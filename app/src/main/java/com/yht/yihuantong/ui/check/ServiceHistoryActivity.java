@@ -204,11 +204,16 @@ public class ServiceHistoryActivity extends BaseActivity
                 checkedList.addAll(list);
                 sortTransferData();
                 checkHistoryAdapter.setNewData(checkedList);
-                if (list != null && list.size() == BaseData.BASE_PAGE_DATA_NUM) {
+                if (list != null && list.size() >= BaseData.BASE_PAGE_DATA_NUM) {
                     checkHistoryAdapter.loadMoreComplete();
                 }
                 else {
-                    checkHistoryAdapter.loadMoreEnd();
+                    if (checkedList.size() > BaseData.BASE_PAGE_DATA_NUM) {
+                        checkHistoryAdapter.loadMoreEnd();
+                    }
+                    else {
+                        checkHistoryAdapter.setEnableLoadMore(false);
+                    }
                 }
                 if (checkedList != null && checkedList.size() > 0) {
                     recyclerView.setVisibility(View.VISIBLE);

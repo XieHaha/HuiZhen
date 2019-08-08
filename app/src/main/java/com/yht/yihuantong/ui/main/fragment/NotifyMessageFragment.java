@@ -213,7 +213,12 @@ public class NotifyMessageFragment extends BaseFragment
                     notifyMessageAdapter.loadMoreComplete();
                 }
                 else {
-                    notifyMessageAdapter.loadMoreEnd();
+                    if (messageList.size() > BaseData.BASE_PAGE_DATA_NUM) {
+                        notifyMessageAdapter.loadMoreEnd();
+                    }
+                    else {
+                        notifyMessageAdapter.setEnableLoadMore(false);
+                    }
                 }
                 if (messageList != null && messageList.size() > 0) {
                     tvNoneMessage.setVisibility(View.GONE);

@@ -108,7 +108,7 @@ public class PatientInfoFragment extends BaseFragment
     @Override
     public void fillNetWorkData() {
         super.fillNetWorkData();
-        getPatientOrderList();
+        getPatientOrderList(true);
         getValidateHospitalList();
     }
 
@@ -126,9 +126,9 @@ public class PatientInfoFragment extends BaseFragment
     /**
      * 获取患者订单记录
      */
-    private void getPatientOrderList() {
+    private void getPatientOrderList(boolean showLoadView) {
         RequestUtils.getPatientOrderListByPatientCode(getContext(), patientCode, loginBean.getToken(),
-                                                      BaseData.BASE_PAGE_DATA_NUM, page, this);
+                                                      BaseData.BASE_PAGE_DATA_NUM, page, showLoadView, this);
     }
 
     /**
@@ -282,9 +282,13 @@ public class PatientInfoFragment extends BaseFragment
                 patientOrderBeans.addAll(list);
                 sortOrderList();
                 patientOrderAdapter.setNewData(patientOrderBeans);
-                //数据不足10条  已加载完成
                 if (list != null && list.size() < BASE_PAGE_DATA_NUM) {
-                    patientOrderAdapter.loadMoreEnd();
+                    if (patientOrderBeans.size() > BASE_PAGE_DATA_NUM) {
+                        patientOrderAdapter.loadMoreEnd();
+                    }
+                    else {
+                        patientOrderAdapter.setEnableLoadMore(false);
+                    }
                 }
                 else {
                     patientOrderAdapter.loadMoreComplete();
@@ -330,6 +334,6 @@ public class PatientInfoFragment extends BaseFragment
     @Override
     public void onLoadMoreRequested() {
         page++;
-        getPatientOrderList();
+        getPatientOrderList(false);
     }
 }

@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
@@ -85,7 +86,12 @@ public class SelectHospitalByTransferActivity extends BaseActivity
             case GET_HOSPITAL_LIST_BY_DOCTOR:
                 hospitals = (List<HospitalBean>)response.getData();
                 hospitalAdapter.setNewData(hospitals);
-                hospitalAdapter.loadMoreEnd();
+                if (hospitals.size() > BaseData.BASE_PAGE_DATA_NUM) {
+                    hospitalAdapter.loadMoreEnd();
+                }
+                else {
+                    hospitalAdapter.setEnableLoadMore(false);
+                }
                 break;
             default:
                 break;

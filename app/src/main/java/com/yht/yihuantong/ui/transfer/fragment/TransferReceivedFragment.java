@@ -134,11 +134,16 @@ public class TransferReceivedFragment extends BaseFragment
             }
             transferBeans.addAll(list);
             transferReceivedAdapter.setNewData(transferBeans);
-            if (list != null && list.size() == BaseData.BASE_PAGE_DATA_NUM) {
+            if (list != null && list.size() >= BaseData.BASE_PAGE_DATA_NUM) {
                 transferReceivedAdapter.loadMoreComplete();
             }
             else {
-                transferReceivedAdapter.loadMoreEnd();
+                if (transferBeans.size() > BaseData.BASE_PAGE_DATA_NUM) {
+                    transferReceivedAdapter.loadMoreEnd();
+                }
+                else {
+                    transferReceivedAdapter.setEnableLoadMore(false);
+                }
             }
             if (transferBeans.size() == 0) {
                 layoutNoneRecord.setVisibility(View.VISIBLE);

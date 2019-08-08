@@ -156,7 +156,12 @@ public class CurrencyActivity extends BaseActivity
                 doctorCurrencyDetailBeans.addAll(list);
                 currencyIncomeAdapter.setNewData(doctorCurrencyDetailBeans);
                 if (list.size() < BaseData.BASE_PAGE_DATA_NUM) {
-                    currencyIncomeAdapter.loadMoreEnd();
+                    if (doctorCurrencyDetailBeans.size() > BaseData.BASE_PAGE_DATA_NUM) {
+                        currencyIncomeAdapter.loadMoreEnd();
+                    }
+                    else {
+                        currencyIncomeAdapter.setEnableLoadMore(false);
+                    }
                 }
                 else {
                     currencyIncomeAdapter.loadMoreComplete();

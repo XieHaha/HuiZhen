@@ -118,11 +118,16 @@ public class SelectCheckTypeActivity extends BaseActivity
             }
             selectCheckTypeBeans.addAll(list);
             selectCheckTypeAdapter.setNewData(selectCheckTypeBeans);
-            if (list.size() >= 20) {
+            if (list.size() >= BaseData.BASE_PAGE_DATA_NUM) {
                 selectCheckTypeAdapter.loadMoreComplete();
             }
             else {
-                selectCheckTypeAdapter.loadMoreEnd();
+                if (selectCheckTypeBeans.size() > BaseData.BASE_PAGE_DATA_NUM) {
+                    selectCheckTypeAdapter.loadMoreEnd();
+                }
+                else {
+                    selectCheckTypeAdapter.setEnableLoadMore(false);
+                }
             }
         }
     }

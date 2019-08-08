@@ -21,6 +21,7 @@ import com.hyphenate.EMError;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.easeui.widget.EaseConversationList;
+import com.yht.frame.data.BaseData;
 import com.yht.yihuantong.R;
 
 import java.util.ArrayList;
@@ -97,7 +98,9 @@ public class EaseConversationListFragment extends EaseBaseFragment implements Sw
             }
         }
         EMClient.getInstance().addConnectionListener(connectionListener);
-        conversationListView.addFooterView(footerView);
+        if (conversationList.size() > BaseData.BASE_PAGE_DATA_NUM) {
+            conversationListView.addFooterView(footerView);
+        }
         conversationListView.setOnTouchListener((v, event) -> {
             hideSoftKeyboard();
             return false;

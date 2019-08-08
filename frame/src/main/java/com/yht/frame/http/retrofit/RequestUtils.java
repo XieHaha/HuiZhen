@@ -372,7 +372,7 @@ public class RequestUtils {
     }
 
     public static void getPatientOrderListByPatientCode(Context context, String patientCode, String token, int pageSize,
-            int startPage, final ResponseListener<BaseResponse> listener) {
+            int startPage, boolean showLoadView, final ResponseListener<BaseResponse> listener) {
         Map<String, Object> params = new HashMap<>(16);
         params.put("patientCode", patientCode);
         params.put("pageSize", pageSize);
@@ -380,7 +380,7 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .getPatientOrderListByPatientCode(token, params)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractLoadViewObserver<>(context, true,
+                       .subscribe(new AbstractLoadViewObserver<>(context, showLoadView,
                                                                  Tasks.GET_PATIENT_ORDER_LIST_BY_PATIENT_CODE,
                                                                  listener));
     }

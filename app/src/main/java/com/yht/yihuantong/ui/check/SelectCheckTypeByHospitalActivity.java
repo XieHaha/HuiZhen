@@ -166,11 +166,16 @@ public class SelectCheckTypeByHospitalActivity extends BaseActivity
             }
             checkTypeBeans.addAll(list);
             selectAdapter.setNewData(checkTypeBeans);
-            if (list != null && list.size() == BaseData.BASE_PAGE_DATA_NUM) {
+            if (list != null && list.size() >= BaseData.BASE_PAGE_DATA_NUM) {
                 selectAdapter.loadMoreComplete();
             }
             else {
-                selectAdapter.loadMoreEnd();
+                if (checkTypeBeans.size() > BaseData.BASE_PAGE_DATA_NUM) {
+                    selectAdapter.loadMoreEnd();
+                }
+                else {
+                    selectAdapter.setEnableLoadMore(false);
+                }
             }
         }
     }

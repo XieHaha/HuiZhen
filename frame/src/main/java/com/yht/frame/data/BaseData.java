@@ -29,7 +29,7 @@ public interface BaseData {
     /**
      * 列表单页请求数据
      */
-    int BASE_PAGE_DATA_NUM = 10;
+    int BASE_PAGE_DATA_NUM = 20;
     /**
      * 昵称的最大长度
      */
