@@ -3,6 +3,7 @@ package com.yht.yihuantong.chat;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -127,9 +128,9 @@ public class EaseConversationListFragment extends EaseBaseFragment implements Sw
     };
     private EaseConversationListItemClickListener listItemClickListener;
     private EaseConversationListItemLongClickListener listItemLongClickListener;
-    protected Handler handler = new Handler() {
+    protected Handler handler = new Handler(new Handler.Callback() {
         @Override
-        public void handleMessage(android.os.Message msg) {
+        public boolean handleMessage(Message msg) {
             switch (msg.what) {
                 case 0:
                     onConnectionDisconnected();
@@ -147,8 +148,9 @@ public class EaseConversationListFragment extends EaseBaseFragment implements Sw
                 default:
                     break;
             }
+            return true;
         }
-    };
+    });
 
     /**
      * connected to server

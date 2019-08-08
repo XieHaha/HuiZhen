@@ -31,11 +31,13 @@ import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.utils.glide.GlideHelper;
+import com.yht.frame.widgets.menu.MenuItem;
+import com.yht.frame.widgets.menu.TopRightMenu;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ZycApplication;
-import com.yht.yihuantong.ui.hint.NotifyHintActivity;
 import com.yht.yihuantong.ui.WebViewActivity;
 import com.yht.yihuantong.ui.check.ServiceHistoryActivity;
+import com.yht.yihuantong.ui.hint.NotifyHintActivity;
 import com.yht.yihuantong.ui.personal.PersonalNewActivity;
 import com.yht.yihuantong.ui.reservation.ReservationDisableActivity;
 import com.yht.yihuantong.ui.reservation.service.ReservationServiceActivity;
@@ -59,7 +61,7 @@ import butterknife.OnClick;
  * @date 19/5/17 14:55
  * @des 工作室
  */
-public class WorkerFragment extends BaseFragment {
+public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuItemClickListener {
     @BindView(R.id.status_bar_fix)
     View statusBarFix;
     @BindView(R.id.public_main_title)
@@ -84,6 +86,7 @@ public class WorkerFragment extends BaseFragment {
     TextView tvReceivingTransferNum;
     @BindView(R.id.layout_receiving_transfer_num)
     RelativeLayout layoutReceivingTransferNum;
+    private TopRightMenu mTopRightMenu;
     /**
      * 订单统计
      */
@@ -133,7 +136,7 @@ public class WorkerFragment extends BaseFragment {
         super.initView(view, savedInstanceState);
         statusBarFix.setLayoutParams(
                 new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getStateBarHeight(getActivity())));
-        publicMainTitleScan.setVisibility(View.INVISIBLE);
+        publicMainTitleScan.setVisibility(View.VISIBLE);
         iNotifyChangeListenerServer = ApiManager.getInstance().getServer();
         view.postOnAnimationDelayed(() -> initNotifyHint(), 2000);
     }
@@ -252,6 +255,18 @@ public class WorkerFragment extends BaseFragment {
         }
     }
 
+    private void initMenu() {
+        mTopRightMenu = new TopRightMenu(getActivity());
+        List<MenuItem> menuItems = new ArrayList<>();
+        menuItems.add(new MenuItem(R.mipmap.ic_camera, "多人聊天"));
+        menuItems.add(new MenuItem(R.mipmap.ic_camera, "加好友"));
+        menuItems.add(new MenuItem(R.mipmap.ic_camera, "扫一扫"));
+        mTopRightMenu.setHeight(BaseUtils.dp2px(getContext(), 152))
+                     .addMenuList(menuItems)
+                     .setOnMenuItemClickListener(this)
+                     .showAsDropDown(publicMainTitleScan, -BaseUtils.dp2px(getContext(),114), 10);
+    }
+
     @OnClick({
             R.id.public_main_title_scan, R.id.layout_personal_base, R.id.layout_check, R.id.layout_transfer,
             R.id.view_flipper, R.id.layout_initiate_check, R.id.layout_initiate_transfer, R.id.layout_accepted_transfer,
@@ -260,7 +275,7 @@ public class WorkerFragment extends BaseFragment {
         Intent intent;
         switch (view.getId()) {
             case R.id.public_main_title_scan:
-                permissionHelper.request(new String[] { Permission.CAMERA });
+                initMenu();
                 break;
             case R.id.layout_personal_base:
                 startActivity(new Intent(getContext(), PersonalNewActivity.class));
@@ -318,6 +333,28 @@ public class WorkerFragment extends BaseFragment {
             case R.id.layout_accepted_transfer:
                 intent = new Intent(getContext(), TransferReceiveListActivity.class);
                 startActivity(intent);
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
+     * 菜单
+     *
+     * @param position
+     */
+    @Override
+    public void onMenuItemClick(int position) {
+        switch (position) {
+            case BASE_ZERO:
+                permissionHelper.request(new String[] { Permission.CAMERA });
+                break;
+            case BASE_ONE:
+                permissionHelper.request(new String[] { Permission.CAMERA });
+                break;
+            case BASE_TWO:
+                permissionHelper.request(new String[] { Permission.CAMERA });
                 break;
             default:
                 break;
