@@ -32,10 +32,11 @@ import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.frame.widgets.edittext.AbstractTextWatcher;
 import com.yht.frame.widgets.edittext.SuperEditText;
+import com.yht.frame.widgets.recyclerview.IndexBar;
+import com.yht.frame.widgets.recyclerview.SideBar;
 import com.yht.frame.widgets.recyclerview.decoration.SideBarItemDecoration;
 import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.yht.yihuantong.R;
-import com.yht.yihuantong.ui.adapter.IndexBarAdapter;
 import com.yht.yihuantong.ui.adapter.PatientAdapter;
 import com.yht.yihuantong.ui.patient.PatientPersonalActivity;
 
@@ -71,14 +72,15 @@ public class PatientFragment extends BaseFragment
     TextView tvNonePatient;
     @BindView(R.id.layout_refresh)
     SwipeRefreshLayout layoutRefresh;
-    @BindView(R.id.recycler_view)
-    RecyclerView indexRecyclerView;
+    @BindView(R.id.side_bar)
+    SideBar sideBar;
+    @BindView(R.id.index_bar)
+    IndexBar indexBar;
     private View headerView;
     /**
      * 适配器
      */
     private PatientAdapter patientAdapter;
-    private IndexBarAdapter indexBarAdapter;
     /**
      * recycler
      */
@@ -119,6 +121,7 @@ public class PatientFragment extends BaseFragment
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         iNotifyChangeListenerServer = ApiManager.getInstance().getServer();
+        initEvents();
         initAdapter();
         initPatientData();
     }
@@ -155,16 +158,6 @@ public class PatientFragment extends BaseFragment
                 }
             }
         });
-        indexBarAdapter.setOnItemClickListener((adapter, view, position) -> {
-            String tag = indexs.get(position);
-            if (TextUtils.isEmpty(tag) || patientBeans.size() <= 0) { return; }
-            for (int i = 0; i < patientBeans.size(); i++) {
-                if (tag.equals(patientBeans.get(i).getIndexTag())) {
-                    layoutManager.scrollToPositionWithOffset(i + 1, 0);
-                    return;
-                }
-            }
-        });
         //注册患者状态监听
         iNotifyChangeListenerServer.registerPatientListChangeListener(patientDataUpdate, RegisterType.REGISTER);
     }
@@ -173,10 +166,6 @@ public class PatientFragment extends BaseFragment
      * 适配器
      */
     private void initAdapter() {
-        //侧边bar
-        indexRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        indexBarAdapter = new IndexBarAdapter(R.layout.item_index_tag, indexs);
-        indexRecyclerView.setAdapter(indexBarAdapter);
         //患者列表
         patientAdapter = new PatientAdapter(R.layout.item_patient, patientBeans);
         patientAdapter.setOnItemClickListener(this);
@@ -234,12 +223,7 @@ public class PatientFragment extends BaseFragment
         BaseUtils.sortData(patientBeans);
         //返回一个包含所有Tag字母在内的字符串并赋值给tagsStr
         String tagsStr = BaseUtils.getTags(patientBeans);
-        char[] tags = tagsStr.toCharArray();
-        indexs.clear();
-        for (char c : tags) {
-            indexs.add(String.valueOf(c));
-        }
-        indexBarAdapter.setNewData(indexs);
+        sideBar.setIndexStr(tagsStr);
         decoration.setDatas(patientBeans, tagsStr);
     }
 
@@ -260,12 +244,7 @@ public class PatientFragment extends BaseFragment
         BaseUtils.sortData(patientBeans);
         //返回一个包含所有Tag字母在内的字符串并赋值给tagsStr
         String tagsStr = BaseUtils.getTags(patientBeans);
-        char[] tags = tagsStr.toCharArray();
-        indexs.clear();
-        for (char c : tags) {
-            indexs.add(String.valueOf(c));
-        }
-        indexBarAdapter.setNewData(indexs);
+        sideBar.setIndexStr(tagsStr);
         decoration.setDatas(patientBeans, tagsStr);
     }
 
@@ -302,6 +281,39 @@ public class PatientFragment extends BaseFragment
         //开启隐藏动画
         hideSearchLayout();
     }
+
+    /**
+     * 列表侧边栏附表滚动
+     */
+    public void initEvents() {
+        sideBar.setIndexChangeListener(new SideBar.IndexChangeListener() {
+            @Override
+            public void indexChanged(String tag) {
+                if (TextUtils.isEmpty(tag) || patientBeans.size() <= 0) { return; }
+                for (int i = 0; i < patientBeans.size(); i++) {
+                    if (tag.equals(patientBeans.get(i).getIndexTag())) {
+                        layoutManager.scrollToPositionWithOffset(i + 1, 0);
+                        return;
+                    }
+                }
+            }
+
+            @Override
+            public void indexShow(float y, String tag, int position) {
+                indexBar.setDrawData(y, tag, position);
+            }
+
+            @Override
+            public void indexHide() {
+                if (mDelay != null) {
+                    indexBar.removeCallbacks(mDelay);
+                }
+                indexBar.postDelayed(mDelay = () -> indexBar.setTagStatus(false), 1000);
+            }
+        });
+    }
+
+    private Runnable mDelay;
 
     @Override
     public void onClick(View v) {

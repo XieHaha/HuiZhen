@@ -131,7 +131,7 @@ public class IndexBar extends ViewGroup {
             //根据位置来不断变换Paint的颜色
             ColorUtil.setPaintColor(mPaint, position);
             //绘制圆和文字
-            canvas.drawCircle((mWidth - childWidth) / 2, centerY, circleRadius, mPaint);
+            canvas.drawCircle((mWidth - childWidth) / 2f, centerY, circleRadius, mPaint);
             mPaint.setColor(Color.WHITE);
             mPaint.setTextSize(80);
             canvas.drawText(tag, (mWidth - childWidth - mPaint.measureText(tag)) / 2,

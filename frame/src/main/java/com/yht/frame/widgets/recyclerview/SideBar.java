@@ -13,6 +13,7 @@ import android.view.View;
 
 import com.yht.frame.R;
 import com.yht.frame.utils.BaseUtils;
+import com.yht.frame.utils.ScreenUtils;
 
 /**
  * @author MQ
@@ -23,6 +24,14 @@ public class SideBar extends View {
     private Paint mPaint;
     private int mWidth, mHeight;
     private IndexChangeListener listener;
+    /**
+     * 屏幕总高度
+     */
+    private int height;
+    /**
+     * 绘制的起始高度
+     */
+    private int startHeight;
     /**
      * 单个字符高度
      */
@@ -57,43 +66,43 @@ public class SideBar extends View {
     private void init() {
         marginTop = BaseUtils.dp2px(mContext, TOP_MARGIN);
         marginTotal = BaseUtils.dp2px(mContext, TOTAL_MARGIN);
+        height = ScreenUtils.getScreenHeight(mContext);
         mPaint = new Paint();
         mPaint.setDither(true);
         mPaint.setAntiAlias(true);
         mPaint.setColor(Color.GRAY);
-        mPaint.setTextSize(35);
-    }
-
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        mPaint.setTextSize(BaseUtils.sp2px(mContext, 14));
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         //导航栏居中显示，上下各有80dp的边距
-        mHeight = (h - marginTotal);
+        //        mHeight = (h - marginTotal);
         mWidth = w;
         singleHeight = marginTop;
         mHeight = singleHeight * indexStr.length();
+        startHeight = height / 2 - mHeight / 2 + marginTop;
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        if (TextUtils.isEmpty(indexStr)) {
-            canvas.drawText("", 0, 0, mPaint);
+        if (!TextUtils.isEmpty(indexStr)) {
+            for (int i = 0; i < indexStr.length(); i++) {
+                String textTag = indexStr.substring(i, i + 1);
+                float xPos = (mWidth - mPaint.measureText(textTag)) / 2;
+                if (i == curPosition) {
+                    mPaint.setColor(ContextCompat.getColor(getContext(), R.color.color_1491fc));
+                }
+                else {
+                    mPaint.setColor(ContextCompat.getColor(getContext(), R.color.color_373d4d));
+                }
+                canvas.drawText(textTag, xPos, singleHeight * (i + 1) + startHeight, mPaint);
+            }
         }
-        for (int i = 0; i < indexStr.length(); i++) {
-            String textTag = indexStr.substring(i, i + 1);
-            float xPos = (mWidth - mPaint.measureText(textTag)) / 2;
-            if (i == curPosition) {
-                mPaint.setColor(ContextCompat.getColor(getContext(), R.color.color_1491fc));
-            }
-            else {
-                mPaint.setColor(ContextCompat.getColor(getContext(), R.color.color_373d4d));
-            }
-            canvas.drawText(textTag, xPos, singleHeight * (i + 1) + marginTop, mPaint);
+        else {
+            //清空数据
+            canvas.drawText("", 0, 0, mPaint);
         }
     }
 
@@ -111,25 +120,24 @@ public class SideBar extends View {
                 invalidate();
             case MotionEvent.ACTION_MOVE:
                 //滑动 event.getY()得到在父View中的Y坐标，通过和总高度的比例再乘以字符个数总长度得到按下的位置
-                float y = event.getY() - getTop() - marginTop + 200;
+                float y = event.getY() - startHeight;
                 if (y > 0) {
                     curPosition = (int)(y / mHeight * indexStr.toCharArray().length);
                     if (curPosition >= 0 && curPosition < indexStr.length()) {
-                        /**
-                         * 绘制浮窗圆
-                         */
-                        //                        ((IndexBar)getParent()).setDrawData(event.getY(),
-                        //                                                            String.valueOf(indexStr.toCharArray()[curPosition]),
-                        //                                                            curPosition);
                         if (listener != null) {
                             listener.indexChanged(indexStr.substring(curPosition, curPosition + 1));
+                            listener.indexShow((height - mHeight) / 2f,
+                                               String.valueOf(indexStr.toCharArray()[curPosition]), curPosition);
                         }
                     }
                 }
+                invalidate();
                 break;
             case MotionEvent.ACTION_UP:
                 //抬起
-                ((IndexBar)getParent()).setTagStatus(false);
+                if (listener != null) {
+                    listener.indexHide();
+                }
                 mPaint.setColor(ContextCompat.getColor(getContext(), R.color.color_373d4d));
                 curPosition = -1;
                 invalidate();
@@ -142,6 +150,10 @@ public class SideBar extends View {
 
     public interface IndexChangeListener {
         void indexChanged(String tag);
+
+        void indexShow(float y, String tag, int position);
+
+        void indexHide();
     }
 
     public void setIndexChangeListener(IndexChangeListener listener) {

@@ -42,7 +42,7 @@ android {
                                     UMENG_CHANNEL_VALUE: "develop"]
         } else if ("beta" == name) {
             applicationId "com.yht.yihuantong_test"
-            buildConfigField "String", "BASE_BASIC_URL", "\"http://doctor-t.med-value.com/api/\""
+            buildConfigField "String", "BASE_BASIC_URL", "\"http://192.168.0.126:7071/\""
             resValue "string", "APP_NAME", "\"会珍医生测试版\""
             manifestPlaceholders = [ease_appkey        : "1105190122042534#dp-test-app",
                                     jpush_appkey       : "ad21b958f6040b2b0ae89f46",
