@@ -59,8 +59,8 @@ import com.yht.yihuantong.ui.WebViewActivity;
 import com.yht.yihuantong.ui.adapter.ViewPagerAdapter;
 import com.yht.yihuantong.ui.dialog.UpdateDialog;
 import com.yht.yihuantong.ui.hint.HintLoginActivity;
+import com.yht.yihuantong.ui.main.fragment.FriendsFragment;
 import com.yht.yihuantong.ui.main.fragment.MessageFragment;
-import com.yht.yihuantong.ui.main.fragment.PatientFragment;
 import com.yht.yihuantong.ui.main.fragment.WorkerFragment;
 import com.yht.yihuantong.ui.main.listener.OnMessageUpdateListener;
 import com.yht.yihuantong.version.presenter.VersionPresenter;
@@ -107,7 +107,7 @@ public class MainActivity extends BaseActivity
     /**
      * 患者碎片
      */
-    private PatientFragment patientFragment;
+    private FriendsFragment friendsFragment;
     /**
      * 环信
      */
@@ -479,11 +479,11 @@ public class MainActivity extends BaseActivity
         //工作室
         workerFragment = new WorkerFragment();
         //患者列表
-        patientFragment = new PatientFragment();
+        friendsFragment = new FriendsFragment();
         List<Fragment> fragmentList = new ArrayList<>();
         fragmentList.add(messageFragment);
         fragmentList.add(workerFragment);
-        fragmentList.add(patientFragment);
+        fragmentList.add(friendsFragment);
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), fragmentList);
         viewPager.setAdapter(viewPagerAdapter);
         selectTab(BASE_ONE);

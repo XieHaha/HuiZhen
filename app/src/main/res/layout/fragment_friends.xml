@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <View
+        android:id="@+id/status_bar_fix"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/color_ffffff" />
+
+    <RelativeLayout
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_below="@id/status_bar_fix"
+        android:background="@color/color_ffffff">
+
+        <LinearLayout
+            android:id="@+id/layout_title"
+            android:layout_width="wrap_content"
+            android:minWidth="142dp"
+            android:layout_height="52dp">
+
+            <RelativeLayout
+                android:id="@+id/layout_left"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/tv_left"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="@string/txt_patient"
+                    android:textColor="@color/txt_color_373d4d_17242d_selector"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/iv_message_dot"
+                    android:layout_width="6dp"
+                    android:layout_height="6dp"
+                    android:background="@drawable/circular_red_point_bg"
+                    android:layout_toEndOf="@id/tv_left"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginTop="10dp"
+                    android:visibility="invisible" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/layout_right"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/tv_right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="@string/txt_doctor"
+                    android:textColor="@color/txt_color_373d4d_17242d_selector"
+                    android:textStyle="bold"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:id="@+id/iv_notify_dot"
+                    android:layout_width="6dp"
+                    android:layout_height="6dp"
+                    android:background="@drawable/circular_red_point_bg"
+                    android:layout_toEndOf="@id/tv_right"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginTop="10dp"
+                    android:visibility="invisible" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <View
+            android:id="@+id/view_bar"
+            android:layout_width="20dp"
+            android:layout_height="3dp"
+            android:background="@color/color_17242D"
+            android:layout_alignParentBottom="true" />
+
+    </RelativeLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/title_bar" />
+
+</RelativeLayout>

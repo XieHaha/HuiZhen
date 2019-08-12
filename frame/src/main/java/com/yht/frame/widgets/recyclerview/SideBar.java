@@ -82,7 +82,8 @@ public class SideBar extends View {
         mWidth = w;
         singleHeight = marginTop;
         mHeight = singleHeight * indexStr.length();
-        startHeight = height / 2 - mHeight / 2 + marginTop;
+        //屏幕高度/2 - sidebar高度/2 + margintop的高度 - 标题栏高度
+        startHeight = height / 2 - mHeight / 2 + marginTop - (marginTotal - marginTop);
     }
 
     @Override
