@@ -93,7 +93,6 @@ public class PatientFragment extends BaseFragment
      * 所有患者数据
      */
     private List<PatientBean> patientBeans = new ArrayList<>();
-    private List<String> indexs = new ArrayList<>();
     /**
      * 患者数据主动更新
      */

@@ -3,7 +3,9 @@ package com.yht.yihuantong.ui.reservation.transfer;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.Selection;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
@@ -22,6 +24,9 @@ import com.yht.frame.widgets.edittext.SuperEditText;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.transfer.listener.OnTransferListener;
 import com.yht.yihuantong.utils.text.BankCardTextWatcher;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -63,6 +68,7 @@ public class TransferIdentifyFragment extends BaseFragment implements View.OnFoc
     public void initListener() {
         super.initListener();
         etPatientIdCard.setOnFocusChangeListener(this);
+        etPatientName.setFilters(new InputFilter[] { emojiFilter });
         etPatientName.addTextChangedListener(new AbstractTextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -230,11 +236,20 @@ public class TransferIdentifyFragment extends BaseFragment implements View.OnFoc
         onTransferListener.onTransferStepOne(reverseTransferBean);
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
+    InputFilter emojiFilter = new InputFilter() {
+        private String filterImoji = "[^a-zA-Z ·.\u4E00-\u9FA5]";
+        Pattern emoji = Pattern.compile(filterImoji, Pattern.UNICODE_CASE | Pattern.CASE_INSENSITIVE);
 
+        @Override
+        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+            Matcher emojiMatcher = emoji.matcher(source);
+            if (emojiMatcher.find()) {
+                ToastUtil.toast(getContext(), "不支持输入");
+                return "";
+            }
+            return null;
+        }
+    };
     private OnTransferListener onTransferListener;
 
     public void setOnTransferListener(OnTransferListener onTransferListener) {

@@ -86,7 +86,6 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
     TextView tvReceivingTransferNum;
     @BindView(R.id.layout_receiving_transfer_num)
     RelativeLayout layoutReceivingTransferNum;
-    private TopRightMenu mTopRightMenu;
     /**
      * 订单统计
      */
@@ -138,7 +137,7 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
                 new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getStateBarHeight(getActivity())));
         publicMainTitleScan.setVisibility(View.VISIBLE);
         iNotifyChangeListenerServer = ApiManager.getInstance().getServer();
-        view.postOnAnimationDelayed(() -> initNotifyHint(), 2000);
+        view.postOnAnimationDelayed(this::initNotifyHint, 2000);
     }
 
     @Override
@@ -256,7 +255,7 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
     }
 
     private void initMenu() {
-        mTopRightMenu = new TopRightMenu(getActivity());
+        TopRightMenu mTopRightMenu = new TopRightMenu(getActivity());
         List<MenuItem> menuItems = new ArrayList<>();
         menuItems.add(new MenuItem(R.mipmap.ic_camera, "多人聊天"));
         menuItems.add(new MenuItem(R.mipmap.ic_camera, "加好友"));
@@ -264,7 +263,7 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
         mTopRightMenu.setHeight(BaseUtils.dp2px(getContext(), 152))
                      .addMenuList(menuItems)
                      .setOnMenuItemClickListener(this)
-                     .showAsDropDown(publicMainTitleScan, -BaseUtils.dp2px(getContext(),114), 10);
+                     .showAsDropDown(publicMainTitleScan, -BaseUtils.dp2px(getContext(), 114), 10);
     }
 
     @OnClick({
@@ -342,7 +341,7 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
     /**
      * 菜单
      *
-     * @param position
+     * @param position index
      */
     @Override
     public void onMenuItemClick(int position) {
