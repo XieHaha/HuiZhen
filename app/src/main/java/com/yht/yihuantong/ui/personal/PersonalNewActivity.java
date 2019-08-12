@@ -13,6 +13,7 @@ import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.ui.hospital.CooperateHospitalListActivity;
 import com.yht.yihuantong.utils.FileUrlUtil;
 
 import butterknife.BindView;
@@ -55,11 +56,14 @@ public class PersonalNewActivity extends BaseActivity {
              .into(ivHeadImg);
     }
 
-    @OnClick({ R.id.layout_personal_info, R.id.layout_setting, R.id.tv_exit })
+    @OnClick({ R.id.layout_personal_info, R.id.layout_personal_cooperate_hospital, R.id.layout_setting, R.id.tv_exit })
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.layout_personal_info:
                 startActivity(new Intent(this, PersonalInfoActivity.class));
+                break;
+            case R.id.layout_personal_cooperate_hospital:
+                startActivity(new Intent(this, CooperateHospitalListActivity.class));
                 break;
             case R.id.layout_setting:
                 startActivity(new Intent(this, SettingActivity.class));

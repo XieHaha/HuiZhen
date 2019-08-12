@@ -9,6 +9,7 @@
     <include layout="@layout/public_title" />
 
     <RelativeLayout
+        android:id="@+id/layout_personal_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/color_ffffff"
@@ -20,7 +21,8 @@
         <ImageView
             android:id="@+id/iv_head_img"
             android:layout_width="54dp"
-            android:layout_height="54dp" />
+            android:layout_height="54dp"
+            android:src="@mipmap/ic_default_header_r" />
 
         <TextView
             android:id="@+id/tv_name"
@@ -54,10 +56,18 @@
             android:layout_marginTop="4dp"
             android:paddingStart="8dp" />
 
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:src="@mipmap/ic_right" />
+
     </RelativeLayout>
 
     <LinearLayout
-        android:id="@+id/layout_personal_info"
+        android:id="@+id/layout_personal_cooperate_hospital"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="@color/color_ffffff"
@@ -70,7 +80,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="@string/title_personal_info"
+            android:text="@string/title_cooperate_hospital"
             android:textColor="@color/color_373d4d"
             android:textSize="@dimen/text_16" />
 

@@ -30,6 +30,7 @@
     <string name="title_edit_transfer">变更接诊信息</string>
     <string name="title_transfer_again">再次转诊</string>
     <string name="title_remote_detail">远程会诊详情</string>
+    <string name="title_cooperate_hospital">合作医院</string>
 
     <!--公用-->
     <string name="txt_app_name">会珍</string>

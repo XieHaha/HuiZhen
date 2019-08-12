@@ -106,10 +106,6 @@ public class MessageFragment extends BaseFragment
      */
     private int popupHeight;
     /**
-     * 未读消息总数
-     */
-    private int msgUnReadCount = 0;
-    /**
      * 当前选中会话
      */
     private EMConversation curConversation;
@@ -224,14 +220,14 @@ public class MessageFragment extends BaseFragment
             easeConversationListFragment.refresh();
         }
         //主线程更新UI
-        getActivity().runOnUiThread(() -> updateUnReadCount());
+        getActivity().runOnUiThread(this::updateUnReadCount);
     }
 
     /**
      * 未读消息
      */
     public void updateUnReadCount() {
-        msgUnReadCount = EMClient.getInstance().chatManager().getUnreadMessageCount();
+        int msgUnReadCount = EMClient.getInstance().chatManager().getUnreadMessageCount();
         if (msgUnReadCount > 0) {
             ivMessageDot.setVisibility(View.VISIBLE);
         }
@@ -258,9 +254,6 @@ public class MessageFragment extends BaseFragment
 
     /**
      * 会话列表长按
-     *
-     * @param view
-     * @param conversation
      */
     @Override
     public void onListItemLongClick(View view, EMConversation conversation) {
@@ -299,9 +292,6 @@ public class MessageFragment extends BaseFragment
 
     /**
      * popup位置计算
-     *
-     * @param view
-     * @return
      */
     private int[] popupLocation(View view) {
         view.getLocationOnScreen(location);
@@ -320,8 +310,6 @@ public class MessageFragment extends BaseFragment
 
     /**
      * 让popupwindow以外区域阴影显示
-     *
-     * @param popupWindow
      */
     private void popOutShadow(PopupWindow popupWindow) {
         WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
