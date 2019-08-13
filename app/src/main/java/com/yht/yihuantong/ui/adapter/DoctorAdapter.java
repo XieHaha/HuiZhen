@@ -26,9 +26,8 @@ public class DoctorAdapter extends BaseQuickAdapter<DoctorInfoBean, BaseViewHold
     @Override
     protected void convert(BaseViewHolder helper, DoctorInfoBean item) {
         helper.setText(R.id.tv_receiving_doctor_name, item.getDoctorName())
-              .setText(R.id.tv_receiving_doctor_title, item.getJobTitle())
-              .setText(R.id.tv_receiving_doctor_hospital_depart,
-                       item.getHospitalName() + "  " + item.getDepartmentName())
+              .setText(R.id.tv_receiving_doctor_title, item.getHospitalName())
+              .setText(R.id.tv_receiving_doctor_hospital_depart, item.getJobTitle() + "  " + item.getDepartmentName())
               .addOnClickListener(R.id.iv_receiving_doctor_call);
         Glide.with(mContext)
              .load(item.getPhoto())

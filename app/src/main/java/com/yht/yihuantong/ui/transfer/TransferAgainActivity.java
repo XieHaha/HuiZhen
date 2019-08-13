@@ -8,7 +8,7 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -47,8 +47,8 @@ public class TransferAgainActivity extends BaseActivity {
     TextView tvReceivingDoctorHospitalDepart;
     @BindView(R.id.iv_receiving_doctor_call)
     ImageView ivReceivingDoctorCall;
-    @BindView(R.id.layout_receiving_doctor)
-    RelativeLayout layoutReceivingDoctor;
+    @BindView(R.id.layout_selected_doctor)
+    LinearLayout layoutReceivingDoctor;
     @BindView(R.id.et_notice)
     MultiLineEditText etNotice;
     @BindView(R.id.tv_notice_num)
@@ -125,10 +125,10 @@ public class TransferAgainActivity extends BaseActivity {
                  .apply(GlideHelper.getOptions(BaseUtils.dp2px(this, 4)))
                  .into(ivReceivingDoctor);
             tvReceivingDoctorName.setText(curReceiveDoctor.getDoctorName());
-            tvReceivingDoctorTitle.setText(curReceiveDoctor.getJobTitle());
+            tvReceivingDoctorTitle.setText(curReceiveDoctor.getHospitalName());
             tvReceivingDoctorHospitalDepart.setText(
-                    curReceiveDoctor.getHospitalName() + "  " + curReceiveDoctor.getDepartmentName());
-            ivReceivingDoctorCall.setImageResource(R.mipmap.ic_delete);
+                    curReceiveDoctor.getJobTitle() + "  " + curReceiveDoctor.getDepartmentName());
+            ivReceivingDoctorCall.setImageResource(R.mipmap.ic_delete_red);
         }
         initNextButton();
     }

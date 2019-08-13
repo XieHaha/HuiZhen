@@ -14,6 +14,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
@@ -25,8 +26,8 @@ import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.bean.DoctorInfoBean;
-import com.yht.frame.data.bean.ReserveTransferBean;
 import com.yht.frame.data.bean.NormImage;
+import com.yht.frame.data.bean.ReserveTransferBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.permission.Permission;
 import com.yht.frame.ui.BaseFragment;
@@ -89,8 +90,8 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
     TextView tvReceivingDoctorHospitalDepart;
     @BindView(R.id.iv_receiving_doctor_call)
     ImageView ivReceivingDoctorDelete;
-    @BindView(R.id.layout_receiving_doctor)
-    RelativeLayout layoutReceivingDoctor;
+    @BindView(R.id.layout_selected_doctor)
+    LinearLayout layoutReceivingDoctor;
     @BindView(R.id.iv_upload_one)
     ImageView ivUploadOne;
     @BindView(R.id.iv_delete_one)
@@ -352,10 +353,10 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
                  .apply(GlideHelper.getOptions(BaseUtils.dp2px(getContext(), 4)))
                  .into(ivReceivingDoctor);
             tvReceivingDoctorName.setText(curReceiveDoctor.getDoctorName());
-            tvReceivingDoctorTitle.setText(curReceiveDoctor.getJobTitle());
+            tvReceivingDoctorTitle.setText(curReceiveDoctor.getHospitalName());
             tvReceivingDoctorHospitalDepart.setText(
-                    curReceiveDoctor.getHospitalName() + "  " + curReceiveDoctor.getDepartmentName());
-            ivReceivingDoctorDelete.setImageResource(R.mipmap.ic_delete);
+                    curReceiveDoctor.getJobTitle() + "  " + curReceiveDoctor.getDepartmentName());
+            ivReceivingDoctorDelete.setImageResource(R.mipmap.ic_delete_red);
         }
         if (refresh) { initNextButton(); }
     }

@@ -4,10 +4,10 @@
     android:id="@+id/layout_receiving_doctor"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/color_ffffff"
-    android:paddingStart="20dp"
-    android:paddingEnd="15dp"
-    android:paddingTop="9dp"
+    android:background="@drawable/corner6_stroke1_e0e0e0"
+    android:paddingStart="12dp"
+    android:paddingEnd="8dp"
+    android:paddingTop="4dp"
     android:paddingBottom="20dp"
     android:visibility="visible">
 
@@ -15,6 +15,7 @@
         android:id="@+id/iv_receiving_doctor"
         android:layout_width="44dp"
         android:layout_height="44dp"
+        android:layout_marginTop="16dp"
         android:src="@mipmap/ic_default_header_r" />
 
     <LinearLayout
@@ -23,6 +24,7 @@
         android:orientation="horizontal"
         android:layout_height="wrap_content"
         android:layout_marginEnd="35dp"
+        android:layout_marginTop="16dp"
         android:layout_toEndOf="@id/iv_receiving_doctor">
 
         <TextView
