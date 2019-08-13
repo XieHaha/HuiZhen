@@ -1,36 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minHeight="62dp"
     android:orientation="vertical"
-    android:paddingTop="20dp"
-    android:paddingBottom="20dp"
-    android:paddingStart="20dp">
-
-
-    <TextView
-        android:id="@+id/tv_check_type_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/color_373d4d"
-        android:textSize="@dimen/text_16"
-        android:layout_marginEnd="20dp" />
+    android:minHeight="82dp"
+    android:paddingTop="20dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingEnd="20dp"
-        android:layout_marginTop="10dp">
+        android:orientation="horizontal"
+        android:paddingStart="35dp"
+        android:paddingEnd="20dp">
 
         <TextView
-            android:id="@+id/tv_hospital_name"
+            android:id="@+id/tv_check_type_name"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:textColor="@color/color_373d4d"
             android:textSize="@dimen/text_16"
-            android:layout_marginEnd="20dp" />
+            android:layout_marginEnd="20dp"
+            tools:text="检查名字" />
 
         <TextView
             android:id="@+id/tv_price"
@@ -38,12 +30,27 @@
             android:layout_height="wrap_content"
             android:textColor="@color/color_373d4d"
             android:textSize="@dimen/text_16"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:text="100.00" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_hospital_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="35dp"
+        android:paddingEnd="20dp"
+        android:layout_marginTop="2dp"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:textColor="@color/color_a1a8b3"
+        android:textSize="@dimen/text_13"
+        tools:text="地址" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/app_hei_line"
         android:background="@color/color_ebedf0"
+        android:layout_marginStart="35dp"
         android:layout_marginTop="20dp" />
 </LinearLayout>

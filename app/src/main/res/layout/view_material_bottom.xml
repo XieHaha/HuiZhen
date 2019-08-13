@@ -58,7 +58,6 @@
             android:id="@+id/et_past_medical_his"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="60dp"
             android:layout_below="@id/line"
             android:background="@null"
             android:textSize="@dimen/text_16"
@@ -79,7 +78,7 @@
             android:text="@string/txt_calc_num_five"
             android:gravity="center_vertical"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp" />
 
     </RelativeLayout>
@@ -143,7 +142,6 @@
             android:id="@+id/et_family_medical_his"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="60dp"
             android:layout_below="@id/line1"
             android:background="@null"
             android:textSize="@dimen/text_16"
@@ -164,7 +162,7 @@
             android:text="@string/txt_calc_num_five"
             android:gravity="center_vertical"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp" />
 
     </RelativeLayout>
@@ -241,7 +239,6 @@
             android:id="@+id/et_allergies"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="60dp"
             android:layout_below="@id/line2"
             android:background="@null"
             android:textSize="@dimen/text_16"
@@ -262,7 +259,7 @@
             android:text="@string/txt_calc_num_five"
             android:gravity="center_vertical"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp" />
 
     </RelativeLayout>
