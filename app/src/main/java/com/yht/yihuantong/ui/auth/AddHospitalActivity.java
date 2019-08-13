@@ -27,6 +27,7 @@ public class AddHospitalActivity extends BaseActivity {
     EditTextLayout etHospital;
     @BindView(R.id.public_title_bar_more)
     TextView publicTitleBarMore;
+    private String name;
 
     @Override
     protected boolean isInitBackBtn() {
@@ -39,10 +40,21 @@ public class AddHospitalActivity extends BaseActivity {
     }
 
     @Override
-    public void initData(@NonNull Bundle savedInstanceState) {
-        super.initData(savedInstanceState);
+    public void initView(@NonNull Bundle savedInstanceState) {
+        super.initView(savedInstanceState);
         publicTitleBarMore.setVisibility(View.VISIBLE);
         publicTitleBarMore.setText(R.string.txt_add);
+    }
+
+    @Override
+    public void initData(@NonNull Bundle savedInstanceState) {
+        super.initData(savedInstanceState);
+        if (getIntent() != null) {
+            name = getIntent().getStringExtra(CommonData.KEY_PUBLIC_STRING);
+        }
+        if (!TextUtils.isEmpty(name)) {
+            etHospital.getEditText().setText(name);
+        }
     }
 
     @Override
