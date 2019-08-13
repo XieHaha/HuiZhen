@@ -147,7 +147,7 @@
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_16"
             android:textColor="@color/color_373d4d"
-            android:text="@string/txt_patient_id_card"
+            android:text="@string/txt_id_card_hint"
             android:textStyle="bold" />
 
         <com.yht.frame.widgets.edittext.SuperEditText

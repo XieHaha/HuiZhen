@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
-import com.yht.frame.data.bean.PatientDetailBean;
+import com.yht.frame.data.bean.PatientBean;
 import com.yht.frame.data.bean.ReserveCheckBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
@@ -83,7 +83,7 @@ public class ReservationServiceActivity extends BaseActivity implements OnCheckL
     /**
      * 患者回填数据
      */
-    private PatientDetailBean patientDetailBean;
+    private PatientBean patientBean;
     /**
      * 当前预约检查数据
      */
@@ -109,7 +109,7 @@ public class ReservationServiceActivity extends BaseActivity implements OnCheckL
         fragmentManager = getSupportFragmentManager();
         if (getIntent() != null) {
             //患者详情页面回传数据
-            patientDetailBean = (PatientDetailBean)getIntent().getSerializableExtra(CommonData.KEY_PATIENT_BEAN);
+            patientBean = (PatientBean)getIntent().getSerializableExtra(CommonData.KEY_PATIENT_BEAN);
         }
         initTitlePage();
     }
@@ -152,7 +152,7 @@ public class ReservationServiceActivity extends BaseActivity implements OnCheckL
      * 返回true  表示有数据需要回填
      */
     private boolean hasHistoryData() {
-        if (patientDetailBean != null) {
+        if (patientBean != null) {
             initPatientBaseData();
             return true;
         }
@@ -167,16 +167,16 @@ public class ReservationServiceActivity extends BaseActivity implements OnCheckL
     private void initPatientBaseData() {
         //预约检查
         reserveCheckBean = new ReserveCheckBean();
-        reserveCheckBean.setPatientName(patientDetailBean.getName());
-        reserveCheckBean.setIdCardNo(patientDetailBean.getIdCard());
-        reserveCheckBean.setPatientCode(patientDetailBean.getCode());
-        reserveCheckBean.setSex(patientDetailBean.getSex());
-        reserveCheckBean.setAge(patientDetailBean.getAge());
-        reserveCheckBean.setPhone(patientDetailBean.getMobile());
-        reserveCheckBean.setPastHistory(patientDetailBean.getPast());
-        reserveCheckBean.setFamilyHistory(patientDetailBean.getFamily());
-        reserveCheckBean.setAllergyHistory(patientDetailBean.getAllergy());
-        reserveCheckBean.setIsBind(patientDetailBean.getIsBind());
+        reserveCheckBean.setPatientName(patientBean.getName());
+        reserveCheckBean.setIdCardNo(patientBean.getIdCard());
+        reserveCheckBean.setPatientCode(patientBean.getCode());
+        reserveCheckBean.setSex(patientBean.getSex());
+        reserveCheckBean.setAge(patientBean.getAge());
+        reserveCheckBean.setPhone(patientBean.getMobile());
+        reserveCheckBean.setPastHistory(patientBean.getPast());
+        reserveCheckBean.setFamilyHistory(patientBean.getFamily());
+        reserveCheckBean.setAllergyHistory(patientBean.getAllergy());
+        reserveCheckBean.setIsBind(patientBean.getIsBind());
     }
 
     private void tabReservationBaseView() {
@@ -381,7 +381,7 @@ public class ReservationServiceActivity extends BaseActivity implements OnCheckL
             return false;
         }
         else if (curPage == 1) {
-            if (patientDetailBean != null) {
+            if (patientBean != null) {
                 return true;
             }
             if (materialFragment != null) {
@@ -407,23 +407,56 @@ public class ReservationServiceActivity extends BaseActivity implements OnCheckL
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
             @NonNull int[] grantResults) {
-        if (submitCheckFragment != null) {
-            submitCheckFragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (curPage) {
+            case BASE_ZERO:
+                if (identifyFragment != null) {
+                    identifyFragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
+                }
+                break;
+            case BASE_TWO:
+                if (submitCheckFragment != null) {
+                    submitCheckFragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
+                }
+                break;
+            default:
+                break;
         }
     }
 
     @Override
     public void onPermissionNeedExplanation(@NonNull String permissionName) {
-        if (submitCheckFragment != null) {
-            submitCheckFragment.onPermissionNeedExplanation(permissionName);
+        switch (curPage) {
+            case BASE_ZERO:
+                if (identifyFragment != null) {
+                    identifyFragment.onPermissionNeedExplanation(permissionName);
+                }
+                break;
+            case BASE_TWO:
+                if (submitCheckFragment != null) {
+                    submitCheckFragment.onPermissionNeedExplanation(permissionName);
+                }
+                break;
+            default:
+                break;
         }
     }
 
     @Override
     public void onNoPermissionNeeded(@NonNull Object permissionName) {
         super.onNoPermissionNeeded(permissionName);
-        if (submitCheckFragment != null) {
-            submitCheckFragment.onNoPermissionNeeded(permissionName);
+        switch (curPage) {
+            case BASE_ZERO:
+                if (identifyFragment != null) {
+                    identifyFragment.onNoPermissionNeeded(permissionName);
+                }
+                break;
+            case BASE_TWO:
+                if (submitCheckFragment != null) {
+                    submitCheckFragment.onNoPermissionNeeded(permissionName);
+                }
+                break;
+            default:
+                break;
         }
     }
 }

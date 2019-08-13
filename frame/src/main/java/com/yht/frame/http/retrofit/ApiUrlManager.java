@@ -18,7 +18,6 @@ import com.yht.frame.data.bean.LoginBean;
 import com.yht.frame.data.bean.MessageTotalBean;
 import com.yht.frame.data.bean.OrderNumStatisticsBean;
 import com.yht.frame.data.bean.PatientBean;
-import com.yht.frame.data.bean.PatientDetailBean;
 import com.yht.frame.data.bean.PatientOrderBean;
 import com.yht.frame.data.bean.ProtocolBean;
 import com.yht.frame.data.bean.ReservationValidateBean;
@@ -396,7 +395,7 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @GET("client/patient/getbypatcode")
-    Observable<BaseResponse<PatientDetailBean>> getPatientDetailByPatientCode(@Header("token") String token,
+    Observable<BaseResponse<PatientBean>> getPatientDetailByPatientCode(@Header("token") String token,
             @Query("code") String info);
 
     /**
@@ -418,7 +417,7 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @GET("client/patient/getpatbyidcardname")
-    Observable<BaseResponse<PatientDetailBean>> verifyPatient(@Header("token") String token,
+    Observable<BaseResponse<PatientBean>> verifyPatient(@Header("token") String token,
             @QueryMap Map<String, String> info);
 
     /**

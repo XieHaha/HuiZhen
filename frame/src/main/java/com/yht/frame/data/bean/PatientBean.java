@@ -11,11 +11,18 @@ import java.io.Serializable;
  */
 public class PatientBean extends DataSupport implements Serializable {
     private static final long serialVersionUID = -8620697034094662215L;
+    private int age;
+    private int sex;
+    private int isBind;
     private String code;
     private String name;
     private String mobile;
     private String wxPhoto;
     private String photo;
+    private String idCard;
+    private String past;
+    private String family;
+    private String allergy;
     /**
      * 排序
      */
@@ -59,6 +66,62 @@ public class PatientBean extends DataSupport implements Serializable {
 
     public void setPhoto(String photo) {
         this.photo = photo;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public int getSex() {
+        return sex;
+    }
+
+    public void setSex(int sex) {
+        this.sex = sex;
+    }
+
+    public int getIsBind() {
+        return isBind;
+    }
+
+    public void setIsBind(int isBind) {
+        this.isBind = isBind;
+    }
+
+    public String getIdCard() {
+        return idCard;
+    }
+
+    public void setIdCard(String idCard) {
+        this.idCard = idCard;
+    }
+
+    public String getPast() {
+        return past;
+    }
+
+    public void setPast(String past) {
+        this.past = past;
+    }
+
+    public String getFamily() {
+        return family;
+    }
+
+    public void setFamily(String family) {
+        this.family = family;
+    }
+
+    public String getAllergy() {
+        return allergy;
+    }
+
+    public void setAllergy(String allergy) {
+        this.allergy = allergy;
     }
 
     public String getIndexTag() {

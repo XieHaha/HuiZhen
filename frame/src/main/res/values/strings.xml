@@ -262,7 +262,6 @@
     <string name="txt_patient_name_hint">姓名必须和身份证一致</string>
     <string name="txt_patient_id_card_hint">请填写患者身份证号码</string>
     <string name="txt_id_card_hint">身份证号</string>
-    <string name="txt_patient_id_card">身份证号</string>
     <string name="txt_identify">确认身份</string>
     <string name="txt_material">完善资料</string>
     <string name="txt_sure_submit">确认提交</string>
@@ -317,6 +316,7 @@
     <string name="txt_sure_cancel">确认取消</string>
     <string name="txt_think_again">再想想</string>
     <string name="txt_open_other_report">查看相关报告</string>
+    <string name="txt_scan_patient_hint">扫描患者二维码，快速录入患者信息</string>
 
     <!--远程相关-->
     <string name="txt_condition_description">病情描述</string>

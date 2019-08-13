@@ -1,5 +1,7 @@
 package com.yht.yihuantong.ui.reservation.service;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.Editable;
@@ -8,23 +10,33 @@ import android.text.Selection;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.yht.frame.api.LitePalHelper;
 import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.Tasks;
-import com.yht.frame.data.bean.PatientDetailBean;
+import com.yht.frame.data.bean.PatientBean;
 import com.yht.frame.data.bean.ReserveCheckBean;
 import com.yht.frame.http.retrofit.RequestUtils;
+import com.yht.frame.permission.Permission;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.widgets.edittext.AbstractTextWatcher;
 import com.yht.frame.widgets.edittext.SuperEditText;
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.ui.adapter.SearchPatientAdapter;
 import com.yht.yihuantong.ui.check.listener.OnCheckListener;
 import com.yht.yihuantong.utils.text.BankCardTextWatcher;
+import com.yzq.zxinglibrary.android.CaptureActivity;
+import com.yzq.zxinglibrary.common.Constant;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -36,22 +48,37 @@ import butterknife.OnClick;
  * @date 19/6/14 14:23
  * @des 身份确认
  */
-public class ServiceIdentifyFragment extends BaseFragment implements View.OnFocusChangeListener {
+public class ServiceIdentifyFragment extends BaseFragment
+        implements View.OnFocusChangeListener, AdapterView.OnItemClickListener {
     @BindView(R.id.et_patient_name)
     SuperEditText etPatientName;
     @BindView(R.id.et_patient_id_card)
     SuperEditText etPatientIdCard;
     @BindView(R.id.tv_identify_next)
     TextView tvIdentifyNext;
+    @BindView(R.id.list_view)
+    ListView listView;
     private String name, idCard;
+    /**
+     * 搜索候选
+     */
+    private SearchPatientAdapter searchPatientAdapter;
     /**
      * 当前患者
      */
-    private PatientDetailBean patientDetailBean;
+    private PatientBean patientBean;
+    /**
+     * 搜索结果
+     */
+    private List<PatientBean> searchPatients = new ArrayList<>();
     /**
      * 当前预约检查信息
      */
     private ReserveCheckBean reserveCheckBean;
+    /**
+     * 扫码
+     */
+    private static final int REQUEST_CODE_SCAN = 100;
 
     @Override
     public int getLayoutID() {
@@ -62,6 +89,9 @@ public class ServiceIdentifyFragment extends BaseFragment implements View.OnFocu
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         BankCardTextWatcher.bind(etPatientIdCard, this);
+        searchPatientAdapter = new SearchPatientAdapter(getContext());
+        listView.setOnItemClickListener(this);
+        listView.setAdapter(searchPatientAdapter);
     }
 
     @Override
@@ -111,6 +141,7 @@ public class ServiceIdentifyFragment extends BaseFragment implements View.OnFocu
                         Selection.setSelection(editable, selEndIndex);
                     }
                 }
+                searchPatient(etPatientName.getText().toString().trim());
                 initNextButton();
             }
         });
@@ -127,18 +158,52 @@ public class ServiceIdentifyFragment extends BaseFragment implements View.OnFocu
         RequestUtils.verifyPatient(getContext(), loginBean.getToken(), idCard, this);
     }
 
-    @OnClick(R.id.tv_identify_next)
-    public void onViewClicked() {
-        if (tvIdentifyNext.isSelected()) {
-            //已经校验过  不在校验
-            if (reserveCheckBean != null && idCard.equals(reserveCheckBean.getIdCardNo())) {
-                if (checkListener != null) {
-                    checkListener.onCheckStepOne(reserveCheckBean);
+    /**
+     * 患者搜索
+     */
+    private void searchPatient(String tag) {
+        if (!TextUtils.isEmpty(tag)) {
+            searchPatients = LitePalHelper.findPatients(tag);
+            initSearchList(searchPatients, tag);
+        }
+        else {
+            initSearchList(null, "");
+        }
+    }
+
+    private void initSearchList(List<PatientBean> list, String tag) {
+        if (list != null && list.size() > 0) {
+            listView.setVisibility(View.VISIBLE);
+            searchPatientAdapter.setSearchKey(tag);
+            searchPatientAdapter.setList(list);
+        }
+        else {
+            searchPatientAdapter.setSearchKey(tag);
+            listView.setVisibility(View.GONE);
+        }
+    }
+
+    @OnClick({ R.id.tv_identify_next, R.id.layout_scan })
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.tv_identify_next:
+                if (tvIdentifyNext.isSelected()) {
+                    //已经校验过  不在校验
+                    if (reserveCheckBean != null && idCard.equals(reserveCheckBean.getIdCardNo())) {
+                        if (checkListener != null) {
+                            checkListener.onCheckStepOne(reserveCheckBean);
+                        }
+                    }
+                    else {
+                        verifyPatient();
+                    }
                 }
-            }
-            else {
-                verifyPatient();
-            }
+                break;
+            case R.id.layout_scan:
+                permissionHelper.request(new String[] { Permission.CAMERA });
+                break;
+            default:
+                break;
         }
     }
 
@@ -170,13 +235,39 @@ public class ServiceIdentifyFragment extends BaseFragment implements View.OnFocu
         }
     }
 
+    /**
+     * 搜索、扫码数据回填
+     */
+    private void resultData(PatientBean bean) {
+        etPatientName.setText(name = bean.getName());
+        etPatientName.setSelection(name.length());
+        etPatientIdCard.setText(idCard = bean.getIdCard());
+        initNextButton();
+    }
+
+    /**
+     * 开启扫一扫
+     */
+    private void openScan() {
+        Intent intent = new Intent(getContext(), CaptureActivity.class);
+        startActivityForResult(intent, REQUEST_CODE_SCAN);
+        Objects.requireNonNull(getActivity()).overridePendingTransition(R.anim.keep, R.anim.keep);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        resultData(searchPatients.get(position));
+        searchPatient("");
+        hideSoftInputFromWindow(getContext(), etPatientName);
+    }
+
     @Override
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
         if (task == Tasks.VERIFY_PATIENT) {
-            patientDetailBean = (PatientDetailBean)response.getData();
+            patientBean = (PatientBean)response.getData();
             //新用户
-            if (patientDetailBean == null) {
+            if (patientBean == null) {
                 if (checkListener != null) {
                     reserveCheckBean = new ReserveCheckBean();
                     reserveCheckBean.setPatientName(name);
@@ -185,7 +276,7 @@ public class ServiceIdentifyFragment extends BaseFragment implements View.OnFocu
                 }
             }
             else {
-                if (!name.equals(patientDetailBean.getName())) {
+                if (!name.equals(patientBean.getName())) {
                     ToastUtil.toast(getContext(), R.string.txt_identity_information_error);
                 }
                 else {
@@ -197,6 +288,27 @@ public class ServiceIdentifyFragment extends BaseFragment implements View.OnFocu
         }
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+        if (requestCode == REQUEST_CODE_SCAN) {
+            if (data != null) {
+                String content = data.getStringExtra(Constant.CODED_CONTENT);
+                ToastUtil.toast(getContext(), content);
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onNoPermissionNeeded(@NonNull Object permissionName) {
+        if (permissionName instanceof String[]) {
+            openScan();
+        }
+    }
+
     /**
      * 检查数据
      */
@@ -204,15 +316,15 @@ public class ServiceIdentifyFragment extends BaseFragment implements View.OnFocu
         reserveCheckBean = new ReserveCheckBean();
         reserveCheckBean.setPatientName(name);
         reserveCheckBean.setIdCardNo(idCard);
-        reserveCheckBean.setIsBind(patientDetailBean.getIsBind());
-        reserveCheckBean.setPatientCode(patientDetailBean.getCode());
-        reserveCheckBean.setPhone(patientDetailBean.getMobile());
-        reserveCheckBean.setAge(patientDetailBean.getAge());
-        reserveCheckBean.setSex(patientDetailBean.getSex());
-        reserveCheckBean.setConfirmPhoto(patientDetailBean.getPhoto());
-        reserveCheckBean.setPastHistory(patientDetailBean.getPast());
-        reserveCheckBean.setFamilyHistory(patientDetailBean.getFamily());
-        reserveCheckBean.setAllergyHistory(patientDetailBean.getAllergy());
+        reserveCheckBean.setIsBind(patientBean.getIsBind());
+        reserveCheckBean.setPatientCode(patientBean.getCode());
+        reserveCheckBean.setPhone(patientBean.getMobile());
+        reserveCheckBean.setAge(patientBean.getAge());
+        reserveCheckBean.setSex(patientBean.getSex());
+        reserveCheckBean.setConfirmPhoto(patientBean.getPhoto());
+        reserveCheckBean.setPastHistory(patientBean.getPast());
+        reserveCheckBean.setFamilyHistory(patientBean.getFamily());
+        reserveCheckBean.setAllergyHistory(patientBean.getAllergy());
         checkListener.onCheckStepOne(reserveCheckBean);
     }
 

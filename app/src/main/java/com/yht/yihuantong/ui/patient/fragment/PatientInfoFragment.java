@@ -16,7 +16,7 @@ import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
-import com.yht.frame.data.bean.PatientDetailBean;
+import com.yht.frame.data.bean.PatientBean;
 import com.yht.frame.data.bean.PatientOrderBean;
 import com.yht.frame.data.bean.ReservationValidateBean;
 import com.yht.frame.http.retrofit.RequestUtils;
@@ -59,7 +59,7 @@ public class PatientInfoFragment extends BaseFragment
      * 时间分隔
      */
     private TimeItemDecoration timeItemDecoration;
-    private PatientDetailBean patientDetailBean;
+    private PatientBean patientBean;
     /**
      * 当前患者code
      */
@@ -184,16 +184,16 @@ public class PatientInfoFragment extends BaseFragment
      * 患者基础数据
      */
     private void initPatientBaseInfo() {
-        tvName.setText(patientDetailBean.getName());
-        tvAge.setText(String.valueOf(patientDetailBean.getAge()));
-        tvSex.setText(patientDetailBean.getSex() == BaseData.BASE_MALE
+        tvName.setText(patientBean.getName());
+        tvAge.setText(String.valueOf(patientBean.getAge()));
+        tvSex.setText(patientBean.getSex() == BaseData.BASE_MALE
                       ? getString(R.string.txt_sex_male)
                       : getString(R.string.txt_sex_female));
-        tvPastMedical.setText(patientDetailBean.getPast());
-        familyMedical.setText(patientDetailBean.getFamily());
-        tvAllergies.setText(patientDetailBean.getAllergy());
+        tvPastMedical.setText(patientBean.getPast());
+        familyMedical.setText(patientBean.getFamily());
+        tvAllergies.setText(patientBean.getAllergy());
         Glide.with(this)
-             .load(patientDetailBean.getPhoto())
+             .load(patientBean.getPhoto())
              .apply(GlideHelper.getOptions(BaseUtils.dp2px(getContext(), 4)))
              .into(ivHeadImg);
     }
@@ -250,7 +250,7 @@ public class PatientInfoFragment extends BaseFragment
             case R.id.tv_reserve_check:
                 if (applyServiceAble) {
                     intent = new Intent(getContext(), ReservationServiceActivity.class);
-                    intent.putExtra(CommonData.KEY_PATIENT_BEAN, patientDetailBean);
+                    intent.putExtra(CommonData.KEY_PATIENT_BEAN, patientBean);
                     startActivity(intent);
                 }
                 else {
@@ -271,7 +271,7 @@ public class PatientInfoFragment extends BaseFragment
         super.onResponseSuccess(task, response);
         switch (task) {
             case GET_PATIENT_DETAIL_BY_PATIENT_CODE:
-                patientDetailBean = (PatientDetailBean)response.getData();
+                patientBean = (PatientBean)response.getData();
                 initPatientBaseInfo();
                 break;
             case GET_PATIENT_ORDER_LIST_BY_PATIENT_CODE:
@@ -309,7 +309,7 @@ public class PatientInfoFragment extends BaseFragment
                     Intent intent;
                     if (applyTransferAble) {
                         intent = new Intent(getContext(), ReservationTransferActivity.class);
-                        intent.putExtra(CommonData.KEY_PATIENT_BEAN, patientDetailBean);
+                        intent.putExtra(CommonData.KEY_PATIENT_BEAN, patientBean);
                         startActivity(intent);
                     }
                     else {

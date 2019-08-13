@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
-import com.yht.frame.data.bean.PatientDetailBean;
+import com.yht.frame.data.bean.PatientBean;
 import com.yht.frame.data.bean.ReserveTransferBean;
 import com.yht.frame.data.bean.TransferBean;
 import com.yht.frame.http.retrofit.RequestUtils;
@@ -84,7 +84,7 @@ public class ReservationTransferActivity extends BaseActivity implements OnTrans
     /**
      * 患者回填数据
      */
-    private PatientDetailBean patientDetailBean;
+    private PatientBean patientBean;
     /**
      * 重新转诊 数据回填
      */
@@ -114,7 +114,7 @@ public class ReservationTransferActivity extends BaseActivity implements OnTrans
         fragmentManager = getSupportFragmentManager();
         if (getIntent() != null) {
             //患者详情页面回传数据
-            patientDetailBean = (PatientDetailBean)getIntent().getSerializableExtra(CommonData.KEY_PATIENT_BEAN);
+            patientBean = (PatientBean)getIntent().getSerializableExtra(CommonData.KEY_PATIENT_BEAN);
             //转诊详情页面回传数据(重新转诊)
             transferBean = (TransferBean)getIntent().getSerializableExtra(CommonData.KEY_TRANSFER_ORDER_BEAN);
         }
@@ -163,7 +163,7 @@ public class ReservationTransferActivity extends BaseActivity implements OnTrans
      * 返回true  表示有数据需要回填
      */
     private boolean hasHistoryData() {
-        if (patientDetailBean != null) {
+        if (patientBean != null) {
             initPatientBaseData();
             //直接进入到第二步 或者在患者页面预约转诊
             tabReservationLicenseView();
@@ -184,16 +184,16 @@ public class ReservationTransferActivity extends BaseActivity implements OnTrans
     private void initPatientBaseData() {
         //转诊 数据回填
         reverseTransferBean = new ReserveTransferBean();
-        reverseTransferBean.setPatientName(patientDetailBean.getName());
-        reverseTransferBean.setPatientIdCardNo(patientDetailBean.getIdCard());
-        reverseTransferBean.setPatientCode(patientDetailBean.getCode());
-        reverseTransferBean.setSex(patientDetailBean.getSex());
-        reverseTransferBean.setPatientAge(patientDetailBean.getAge());
-        reverseTransferBean.setPatientMobile(patientDetailBean.getMobile());
-        reverseTransferBean.setPastHistory(patientDetailBean.getPast());
-        reverseTransferBean.setFamilyHistory(patientDetailBean.getFamily());
-        reverseTransferBean.setAllergyHistory(patientDetailBean.getAllergy());
-        reverseTransferBean.setIsBind(patientDetailBean.getIsBind());
+        reverseTransferBean.setPatientName(patientBean.getName());
+        reverseTransferBean.setPatientIdCardNo(patientBean.getIdCard());
+        reverseTransferBean.setPatientCode(patientBean.getCode());
+        reverseTransferBean.setSex(patientBean.getSex());
+        reverseTransferBean.setPatientAge(patientBean.getAge());
+        reverseTransferBean.setPatientMobile(patientBean.getMobile());
+        reverseTransferBean.setPastHistory(patientBean.getPast());
+        reverseTransferBean.setFamilyHistory(patientBean.getFamily());
+        reverseTransferBean.setAllergyHistory(patientBean.getAllergy());
+        reverseTransferBean.setIsBind(patientBean.getIsBind());
         //给个默认值 防止回填数据冲突（区分转诊订单详情、患者的个人页面）
         reverseTransferBean.setTransferType(-1);
         reverseTransferBean.setPayType(-1);
@@ -204,7 +204,7 @@ public class ReservationTransferActivity extends BaseActivity implements OnTrans
      *
      * @param bean
      */
-    private void initTransferOrderData(PatientDetailBean bean) {
+    private void initTransferOrderData(PatientBean bean) {
         //数据回填 患者信息
         reverseTransferBean = new ReserveTransferBean();
         reverseTransferBean.setPatientName(transferBean.getPatientName());
@@ -423,7 +423,7 @@ public class ReservationTransferActivity extends BaseActivity implements OnTrans
                 finish();
                 break;
             case VERIFY_PATIENT:
-                PatientDetailBean bean = (PatientDetailBean)response.getData();
+                PatientBean bean = (PatientBean)response.getData();
                 initTransferOrderData(bean);
                 break;
             default:
@@ -446,7 +446,7 @@ public class ReservationTransferActivity extends BaseActivity implements OnTrans
             return false;
         }
         else if (curPage == 1) {
-            if (transferBean != null || patientDetailBean != null) {
+            if (transferBean != null || patientBean != null) {
                 return true;
             }
             if (materialFragment != null) {
@@ -472,23 +472,56 @@ public class ReservationTransferActivity extends BaseActivity implements OnTrans
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
             @NonNull int[] grantResults) {
-        if (submitTransferFragment != null) {
-            submitTransferFragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (curPage) {
+            case BASE_ZERO:
+                if (identifyFragment != null) {
+                    identifyFragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
+                }
+                break;
+            case BASE_TWO:
+                if (submitTransferFragment != null) {
+                    submitTransferFragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
+                }
+                break;
+            default:
+                break;
         }
     }
 
     @Override
     public void onPermissionNeedExplanation(@NonNull String permissionName) {
-        if (submitTransferFragment != null) {
-            submitTransferFragment.onPermissionNeedExplanation(permissionName);
+        switch (curPage) {
+            case BASE_ZERO:
+                if (identifyFragment != null) {
+                    identifyFragment.onPermissionNeedExplanation(permissionName);
+                }
+                break;
+            case BASE_TWO:
+                if (submitTransferFragment != null) {
+                    submitTransferFragment.onPermissionNeedExplanation(permissionName);
+                }
+                break;
+            default:
+                break;
         }
     }
 
     @Override
     public void onNoPermissionNeeded(@NonNull Object permissionName) {
         super.onNoPermissionNeeded(permissionName);
-        if (submitTransferFragment != null) {
-            submitTransferFragment.onNoPermissionNeeded(permissionName);
+        switch (curPage) {
+            case BASE_ZERO:
+                if (identifyFragment != null) {
+                    identifyFragment.onNoPermissionNeeded(permissionName);
+                }
+                break;
+            case BASE_TWO:
+                if (submitTransferFragment != null) {
+                    submitTransferFragment.onNoPermissionNeeded(permissionName);
+                }
+                break;
+            default:
+                break;
         }
     }
 }
