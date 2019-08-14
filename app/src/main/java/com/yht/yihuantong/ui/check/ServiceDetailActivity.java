@@ -28,6 +28,7 @@ import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.frame.widgets.LoadViewHelper;
 import com.yht.frame.widgets.dialog.HintDialog;
+import com.yht.frame.widgets.textview.JustifiedTextView;
 import com.yht.frame.widgets.view.CenterImageSpan;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.x5.FileDisplayActivity;
@@ -101,11 +102,11 @@ public class ServiceDetailActivity extends BaseActivity
     @BindView(R.id.scroll_view)
     ScrollView scrollView;
     @BindView(R.id.tv_past_medical)
-    TextView tvPastMedical;
+    JustifiedTextView tvPastMedical;
     @BindView(R.id.tv_family_medical)
-    TextView tvFamilyMedical;
+    JustifiedTextView tvFamilyMedical;
     @BindView(R.id.tv_allergies)
-    TextView tvAllergies;
+    JustifiedTextView tvAllergies;
     /**
      * 检查详情
      */

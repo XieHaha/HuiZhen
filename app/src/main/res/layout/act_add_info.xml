@@ -23,6 +23,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="48dp" />
+
+        <TextView
+            android:id="@+id/tv_calc_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:textSize="@dimen/text_16"
+            android:visibility="gone"
+            android:textColor="#c5c8cc"
+            android:layout_marginTop="10dp"
+            android:text="@string/txt_calc_num_five"
+            android:layout_below="@id/edit_layout" />
     </RelativeLayout>
 
 </LinearLayout>

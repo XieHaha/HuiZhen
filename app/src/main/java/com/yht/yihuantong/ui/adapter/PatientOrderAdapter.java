@@ -68,18 +68,13 @@ public class PatientOrderAdapter extends BaseMultiItemQuickAdapter<PatientOrderB
         int status = item.getStatus();
         switch (status) {
             case PATIENT_ORDER_INCOMPLETE:
-                helper.setVisible(R.id.iv_check_status_out, false);
-                helper.setVisible(R.id.iv_check_status_in, true);
+                helper.setImageResource(R.id.iv_check_status_in, R.mipmap.ic_tag_status_check_incomplete);
                 break;
             case PATIENT_ORDER_COMPLETE:
-                helper.setImageResource(R.id.iv_check_status_out, R.mipmap.ic_status_complete);
-                helper.setVisible(R.id.iv_check_status_out, true);
-                helper.setVisible(R.id.iv_check_status_in, false);
+                helper.setImageResource(R.id.iv_check_status_in, R.mipmap.ic_tag_status_complete);
                 break;
             case PATIENT_ORDER_CANCEL:
-                helper.setVisible(R.id.iv_check_status_out, true);
-                helper.setVisible(R.id.iv_check_status_in, false);
-                helper.setImageResource(R.id.iv_check_status_out, R.mipmap.ic_status_cancel);
+                helper.setImageResource(R.id.iv_check_status_in, R.mipmap.ic_tag_status_cancel);
                 break;
             default:
                 break;
@@ -108,23 +103,16 @@ public class PatientOrderAdapter extends BaseMultiItemQuickAdapter<PatientOrderB
         int status = item.getStatus();
         switch (status) {
             case PATIENT_ORDER_INCOMPLETE:
-                helper.setVisible(R.id.iv_transfer_status_out, false);
-                helper.setVisible(R.id.iv_transfer_status_in, true);
+                helper.setImageResource(R.id.iv_transfer_status_in, R.mipmap.ic_tag_status_wait_transfer);
                 break;
             case PATIENT_ORDER_COMPLETE:
-                helper.setImageResource(R.id.iv_transfer_status_out, R.mipmap.ic_status_received);
-                helper.setVisible(R.id.iv_transfer_status_out, true);
-                helper.setVisible(R.id.iv_transfer_status_in, false);
+                helper.setImageResource(R.id.iv_transfer_status_in, R.mipmap.ic_tag_status_received);
                 break;
             case PATIENT_ORDER_CANCEL:
-                helper.setVisible(R.id.iv_transfer_status_out, true);
-                helper.setVisible(R.id.iv_transfer_status_in, false);
-                helper.setImageResource(R.id.iv_transfer_status_out, R.mipmap.ic_status_cancel);
+                helper.setImageResource(R.id.iv_transfer_status_in, R.mipmap.ic_tag_status_cancel);
                 break;
             case PATIENT_ORDER_REJECT:
-                helper.setVisible(R.id.iv_transfer_status_out, true);
-                helper.setVisible(R.id.iv_transfer_status_in, false);
-                helper.setImageResource(R.id.iv_transfer_status_out, R.mipmap.ic_status_be_rejected);
+                helper.setImageResource(R.id.iv_transfer_status_in, R.mipmap.ic_tag_status_reject);
                 break;
             default:
                 break;

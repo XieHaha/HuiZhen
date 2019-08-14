@@ -140,7 +140,7 @@ public class SelectHospitalByAuthActivity extends BaseActivity
 
     @OnClick(R.id.tv_add_hospital_next)
     public void onViewClicked() {
-        Intent intent = new Intent(this, AddHospitalActivity.class);
+        Intent intent = new Intent(this, AddInfoActivity.class);
         intent.putExtra(CommonData.KEY_PUBLIC_STRING, etSearchHospital.getText().toString().trim());
         startActivityForResult(intent, REQUEST_CODE_HOSPITAL);
     }

@@ -31,6 +31,7 @@
     <string name="title_transfer_again">再次转诊</string>
     <string name="title_remote_detail">远程会诊详情</string>
     <string name="title_cooperate_hospital">合作医院</string>
+    <string name="title_doctor_info">医生详情</string>
     <string name="title_my_qr_code">我的二维码</string>
 
     <!--公用-->
@@ -41,6 +42,7 @@
     <string name="txt_cancel">取消</string>
     <string name="txt_call">呼叫</string>
     <string name="txt_sure">确定</string>
+    <string name="txt_sure_add">确认添加</string>
     <string name="txt_save">保存</string>
     <string name="txt_open">去开启</string>
     <string name="txt_exit">退出</string>
@@ -162,6 +164,8 @@
     <string name="txt_hospital">医院</string>
     <string name="txt_depart">科室</string>
     <string name="txt_title">职称</string>
+    <string name="txt_introduction">简介</string>
+    <string name="txt_introduction_hint">介绍一下你自己</string>
     <string name="txt_contact_type">联系方式</string>
     <string name="txt_select_hint">请选择</string>
     <string name="txt_search_hospital_hint">请输入医院名称搜索</string>

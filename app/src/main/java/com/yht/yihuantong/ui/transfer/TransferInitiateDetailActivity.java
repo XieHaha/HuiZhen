@@ -107,11 +107,11 @@ public class TransferInitiateDetailActivity extends BaseActivity
     @BindView(R.id.layout_hint)
     LinearLayout layoutHint;
     @BindView(R.id.tv_past_medical)
-    TextView tvPastMedical;
+    JustifiedTextView tvPastMedical;
     @BindView(R.id.tv_family_medical)
-    TextView tvFamilyMedical;
+    JustifiedTextView tvFamilyMedical;
     @BindView(R.id.tv_allergies)
-    TextView tvAllergies;
+    JustifiedTextView tvAllergies;
     /**
      * 订单 详情
      */

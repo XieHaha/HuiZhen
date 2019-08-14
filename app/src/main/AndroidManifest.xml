@@ -125,7 +125,7 @@
             android:label="@string/title_select_hospital"
             android:windowSoftInputMode="stateAlwaysVisible" />
         <activity
-            android:name=".ui.auth.AddHospitalActivity"
+            android:name=".ui.auth.AddInfoActivity"
             android:screenOrientation="portrait"
             android:label="@string/title_add_hospital"
             android:windowSoftInputMode="stateAlwaysVisible" />
@@ -363,6 +363,11 @@
             android:name=".ui.main.QrCodeActivity"
             android:screenOrientation="portrait"
             android:label=""
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".ui.doctor.DoctorInfoActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/title_doctor_info"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.hint.HintLoginActivity"

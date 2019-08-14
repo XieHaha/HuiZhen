@@ -44,17 +44,13 @@ public class CheckHistoryAdapter extends BaseQuickAdapter<CheckBean, BaseViewHol
         int status = item.getStatus();
         switch (status) {
             case CHECK_ORDER_STATUS_INCOMPLETE:
-                helper.setGone(R.id.iv_check_status_in, true).setGone(R.id.iv_check_status_out, false);
+                helper.setImageResource(R.id.iv_check_status_in, R.mipmap.ic_tag_status_check_incomplete);
                 break;
             case CHECK_ORDER_STATUS_COMPLETE:
-                helper.setGone(R.id.iv_check_status_in, false)
-                      .setGone(R.id.iv_check_status_out, true)
-                      .setImageResource(R.id.iv_check_status_out, R.mipmap.ic_status_complete);
+                helper.setImageResource(R.id.iv_check_status_in, R.mipmap.ic_tag_status_complete);
                 break;
             case CHECK_ORDER_STATUS_CANCEL:
-                helper.setGone(R.id.iv_check_status_in, false)
-                      .setGone(R.id.iv_check_status_out, true)
-                      .setImageResource(R.id.iv_check_status_out, R.mipmap.ic_status_cancel);
+                helper.setImageResource(R.id.iv_check_status_in, R.mipmap.ic_tag_status_cancel);
                 break;
             default:
                 break;

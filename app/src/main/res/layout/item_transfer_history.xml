@@ -229,20 +229,12 @@
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/iv_transfer_status_out"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:src="@mipmap/ic_status_complete"
-        android:visibility="visible" />
-
-    <ImageView
         android:id="@+id/iv_transfer_status_in"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:src="@mipmap/ic_tag_status_wait_transfer"
         android:layout_marginTop="12dp"
-        android:visibility="gone" />
+        android:visibility="visible" />
 
 </RelativeLayout>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:background="@color/color_ffffff">
+
+    <include
+        layout="@layout/public_title"
+        android:id="@+id/title_bar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:scrollbars="none"
+        android:layout_below="@id/title_bar"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="66dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:paddingTop="30dp"
+            android:paddingBottom="20dp"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv_head_img"
+                android:layout_width="58dp"
+                android:layout_height="58dp"
+                android:src="@mipmap/ic_default_header_r" />
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:textSize="@dimen/text_20"
+                android:textColor="@color/color_373d4d"
+                android:textStyle="bold"
+                tools:text="姓名" />
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textSize="@dimen/text_15"
+                android:textColor="#faa05a"
+                tools:text="职称" />
+
+            <TextView
+                android:id="@+id/tv_depart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:textSize="@dimen/text_15"
+                android:layout_marginStart="55dp"
+                android:layout_marginEnd="55dp"
+                android:gravity="center"
+                android:textColor="@color/color_373d4d"
+                tools:text="科室" />
+
+            <TextView
+                android:id="@+id/tv_hospital"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:layout_marginStart="55dp"
+                android:layout_marginEnd="55dp"
+                android:gravity="center"
+                android:textSize="@dimen/text_15"
+                android:textColor="@color/color_373d4d"
+                tools:text="医院" />
+
+            <com.yht.frame.widgets.textview.JustifiedTextView
+                android:id="@+id/tv_introduction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                android:lineSpacingMultiplier="1.5"
+                android:textSize="@dimen/text_15"
+                android:textColor="@color/color_6a6f80"
+                tools:text="个人简介" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="66dp"
+        android:layout_alignParentBottom="true">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/app_hei_line"
+            android:background="@color/color_ebedf0" />
+
+        <TextView
+            android:id="@+id/tv_next"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:layout_marginStart="35dp"
+            android:layout_marginEnd="35dp"
+            android:textColor="@color/color_ffffff"
+            android:textSize="@dimen/text_16"
+            android:gravity="center"
+            android:text="@string/txt_sure_add"
+            android:layout_centerInParent="true"
+            android:background="@drawable/corner28_1491fc_bg" />
+    </RelativeLayout>
+
+</RelativeLayout>

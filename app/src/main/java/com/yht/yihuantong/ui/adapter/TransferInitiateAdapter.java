@@ -39,38 +39,31 @@ public class TransferInitiateAdapter extends BaseQuickAdapter<TransferBean, Base
         int receiveStatus = item.getReceiveStatus();
         switch (receiveStatus) {
             case TRANSFER_STATUS_WAIT:
-                helper.setGone(R.id.iv_transfer_status_in, true)
-                      .setGone(R.id.iv_transfer_status_out, false)
-                      .setGone(R.id.layout_receiving_doctor, false)
+                helper.setGone(R.id.layout_receiving_doctor, false)
                       .setGone(R.id.layout_receiving_depart, false)
-                      .setGone(R.id.layout_receiving_hospital, false);
+                      .setGone(R.id.layout_receiving_hospital, false)
+                      .setImageResource(R.id.iv_transfer_status_in, R.mipmap.ic_tag_status_wait_transfer);
                 break;
             case TRANSFER_STATUS_RECEIVED:
-                helper.setGone(R.id.iv_transfer_status_in, false)
-                      .setGone(R.id.iv_transfer_status_out, true)
-                      .setGone(R.id.layout_receiving_doctor, true)
+                helper.setGone(R.id.layout_receiving_doctor, true)
                       .setGone(R.id.layout_receiving_depart, true)
                       .setGone(R.id.layout_receiving_hospital, true)
                       .setText(R.id.tv_receiving_doctor, item.getTargetDoctorName())
                       .setText(R.id.tv_receiving_depart, item.getTargetHospitalDepartmentName())
                       .setText(R.id.tv_receiving_hospital, item.getTargetHospitalName())
-                      .setImageResource(R.id.iv_transfer_status_out, R.mipmap.ic_status_received);
+                      .setImageResource(R.id.iv_transfer_status_in, R.mipmap.ic_tag_status_received);
                 break;
             case TRANSFER_STATUS_CANCEL:
-                helper.setGone(R.id.iv_transfer_status_in, false)
-                      .setGone(R.id.iv_transfer_status_out, true)
-                      .setGone(R.id.layout_receiving_doctor, false)
+                helper.setGone(R.id.layout_receiving_doctor, false)
                       .setGone(R.id.layout_receiving_depart, false)
                       .setGone(R.id.layout_receiving_hospital, false)
-                      .setImageResource(R.id.iv_transfer_status_out, R.mipmap.ic_status_cancel);
+                      .setImageResource(R.id.iv_transfer_status_in, R.mipmap.ic_tag_status_cancel);
                 break;
             case TRANSFER_STATUS_REFUSE:
-                helper.setGone(R.id.iv_transfer_status_in, false)
-                      .setGone(R.id.layout_receiving_doctor, false)
+                helper.setGone(R.id.layout_receiving_doctor, false)
                       .setGone(R.id.layout_receiving_depart, false)
                       .setGone(R.id.layout_receiving_hospital, false)
-                      .setGone(R.id.iv_transfer_status_out, true)
-                      .setImageResource(R.id.iv_transfer_status_out, R.mipmap.ic_status_be_rejected);
+                      .setImageResource(R.id.iv_transfer_status_in, R.mipmap.ic_tag_status_reject);
                 break;
             default:
                 break;
