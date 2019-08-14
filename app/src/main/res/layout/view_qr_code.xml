@@ -7,14 +7,14 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="26dp"
+        android:paddingTop="20dp"
         android:background="@mipmap/pic_qr_bg">
 
         <ImageView
             android:id="@+id/iv_head_img"
             android:layout_width="56dp"
             android:layout_height="56dp"
-            android:layout_marginStart="32dp"
+            android:layout_marginStart="12dp"
             android:src="@mipmap/ic_default_header_r" />
 
         <TextView
@@ -63,19 +63,19 @@
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/tv_scan_mode"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:background="@drawable/corner8_1491fc_bg"
-            android:text="@string/txt_menu_doctor"
-            android:gravity="center"
-            android:layout_marginStart="12dp"
-            android:layout_marginEnd="12dp"
-            android:layout_marginBottom="18dp"
-            android:textColor="@color/color_ffffff"
-            android:textSize="@dimen/text_16"
-            android:layout_alignParentBottom="true" />
-
     </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_scan_mode"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/corner8_1491fc_bg"
+        android:text="@string/txt_menu_doctor"
+        android:gravity="center"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="18dp"
+        android:textColor="@color/color_ffffff"
+        android:textSize="@dimen/text_16"
+        android:layout_alignParentBottom="true" />
 </RelativeLayout>
