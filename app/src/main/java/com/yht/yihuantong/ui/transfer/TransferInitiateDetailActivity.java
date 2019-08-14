@@ -106,6 +106,12 @@ public class TransferInitiateDetailActivity extends BaseActivity
     RelativeLayout layoutRejectResult;
     @BindView(R.id.layout_hint)
     LinearLayout layoutHint;
+    @BindView(R.id.tv_past_medical)
+    TextView tvPastMedical;
+    @BindView(R.id.tv_family_medical)
+    TextView tvFamilyMedical;
+    @BindView(R.id.tv_allergies)
+    TextView tvAllergies;
     /**
      * 订单 详情
      */
@@ -173,6 +179,9 @@ public class TransferInitiateDetailActivity extends BaseActivity
         if (transferBean == null) {
             return;
         }
+        tvPastMedical.setText("测试");
+        tvFamilyMedical.setText("测试");
+        tvAllergies.setText("测试");
         Glide.with(this)
              .load(FileUrlUtil.addTokenToUrl(transferBean.getPhoto()))
              .apply(GlideHelper.getOptions(BaseUtils.dp2px(this, 4)))

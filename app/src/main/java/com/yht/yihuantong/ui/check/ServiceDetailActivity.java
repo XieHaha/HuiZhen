@@ -100,6 +100,12 @@ public class ServiceDetailActivity extends BaseActivity
     LinearLayout layoutHint;
     @BindView(R.id.scroll_view)
     ScrollView scrollView;
+    @BindView(R.id.tv_past_medical)
+    TextView tvPastMedical;
+    @BindView(R.id.tv_family_medical)
+    TextView tvFamilyMedical;
+    @BindView(R.id.tv_allergies)
+    TextView tvAllergies;
     /**
      * 检查详情
      */
@@ -205,6 +211,9 @@ public class ServiceDetailActivity extends BaseActivity
             return;
         }
         initCheckType();
+        tvPastMedical.setText("测试");
+        tvFamilyMedical.setText("测试");
+        tvAllergies.setText("测试");
         Glide.with(this)
              .load(FileUrlUtil.addTokenToUrl(checkDetailBean.getPatientPhoto()))
              .apply(GlideHelper.getOptions(BaseUtils.dp2px(this, 4)))

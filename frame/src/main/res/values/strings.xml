@@ -103,6 +103,7 @@
     <!--主页-->
     <string name="txt_message">消息</string>
     <string name="txt_worker">工作室</string>
+    <string name="txt_contacts">通讯录</string>
     <string name="txt_patient">患者</string>
     <string name="txt_doctor">医生</string>
     <string name="txt_patient_hint">请输入患者姓名</string>
