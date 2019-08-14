@@ -91,12 +91,12 @@ public class QrCodePageAdapter extends PagerAdapter {
         //二维码信息
         //这里设置第一页靠左，最后一页靠右，其他居中的效果
         if (position == 0) {
-            view.setPadding(BaseUtils.dp2px(context, 20), BaseUtils.dp2px(context, 29), BaseUtils.dp2px(context, 10),
-                            (int)(ScreenUtils.getScreenHeight(context) * 0.16));
+            view.setPadding(BaseUtils.dp2px(context, 8), BaseUtils.dp2px(context, 23), -BaseUtils.dp2px(context, 2),
+                            (int)(ScreenUtils.getScreenHeight(context) * 0.136));
         }
         else {
-            view.setPadding(BaseUtils.dp2px(context, 10), BaseUtils.dp2px(context, 29), BaseUtils.dp2px(context, 20),
-                            (int)(ScreenUtils.getScreenHeight(context) * 0.16));
+            view.setPadding(-BaseUtils.dp2px(context, 2), BaseUtils.dp2px(context, 23), BaseUtils.dp2px(context, 8),
+                            (int)(ScreenUtils.getScreenHeight(context) * 0.136));
         }
         if (position == 0) {
             scanMode.setBackgroundResource(R.drawable.corner8_2bc593_bg);
