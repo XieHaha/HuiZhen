@@ -1,4 +1,4 @@
-package com.yht.frame.widgets.imagePreview.utils;
+package com.yht.frame.widgets.imagepreview.utils;
 
 import android.content.Context;
 import android.content.res.TypedArray;

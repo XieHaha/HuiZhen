@@ -1,6 +1,5 @@
-package com.yht.frame.widgets.imagePreview.transformer;
+package com.yht.frame.widgets.imagepreview.transformer;
 
-import android.graphics.Camera;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
@@ -8,11 +7,8 @@ import android.view.View;
  * @author dundun
  * @date 16/10/20
  */
-public class CustomTransformer implements ViewPager.PageTransformer {
+public class ImageTransformer implements ViewPager.PageTransformer {
     private static final float MIN_SCALE = 0.85f;
-    private static final float MIN_ALPHA = 0.5f;
-    private static final float MAX_ROTATE = 30;
-    private Camera camera = new Camera();
 
     @Override
     public void transformPage(View page, float position) {

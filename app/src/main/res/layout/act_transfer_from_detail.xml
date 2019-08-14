@@ -88,7 +88,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:src="@mipmap/ic_wait_transfer" />
+                    android:src="@mipmap/ic_tag_status_wait_transfer" />
 
             </RelativeLayout>
 

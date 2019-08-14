@@ -15,10 +15,10 @@ import android.widget.LinearLayout;
 
 import com.yht.frame.data.bean.NormImage;
 import com.yht.frame.utils.ToastUtil;
-import com.yht.frame.widgets.imagePreview.transformer.CustomTransformer;
-import com.yht.frame.widgets.imagePreview.utils.NavigatorPageIndex;
-import com.yht.frame.widgets.imagePreview.view.ImageLoadingView;
-import com.yht.frame.widgets.imagePreview.view.ImagePreviewView;
+import com.yht.frame.widgets.imagepreview.transformer.ImageTransformer;
+import com.yht.frame.widgets.imagepreview.utils.NavigatorPageIndex;
+import com.yht.frame.widgets.imagepreview.view.ImageLoadingView;
+import com.yht.frame.widgets.imagepreview.view.ImagePreviewView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.utils.FileUrlUtil;
 
@@ -115,7 +115,7 @@ public class ImagePreviewActivity extends Activity implements ViewPager.OnPageCh
         }
         imgViewPager = findViewById(R.id.act_image_view_viewpager);
         //滑动效果
-        imgViewPager.setPageTransformer(true, new CustomTransformer());
+        imgViewPager.setPageTransformer(true, new ImageTransformer());
         imgViewPager.addOnPageChangeListener(this);
         imgViewPager.setAdapter(new TouchImageAdapter());
         imgViewPager.setCurrentItem(currentIndex);

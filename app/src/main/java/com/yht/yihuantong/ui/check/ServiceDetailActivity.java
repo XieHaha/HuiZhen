@@ -227,7 +227,7 @@ public class ServiceDetailActivity extends BaseActivity
         int status = checkDetailBean.getStatus();
         switch (status) {
             case CHECK_ORDER_STATUS_INCOMPLETE:
-                ivCheckStatus.setImageResource(R.mipmap.ic_check_incomplete);
+                ivCheckStatus.setImageResource(R.mipmap.ic_tag_status_check_incomplete);
                 layoutCancelResult.setVisibility(View.GONE);
                 tvCheckStatus.setText(getString(R.string.txt_status_incomplete));
                 break;

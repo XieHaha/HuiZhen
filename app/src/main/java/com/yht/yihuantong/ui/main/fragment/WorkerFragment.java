@@ -38,6 +38,7 @@ import com.yht.yihuantong.ZycApplication;
 import com.yht.yihuantong.ui.WebViewActivity;
 import com.yht.yihuantong.ui.check.ServiceHistoryActivity;
 import com.yht.yihuantong.ui.hint.NotifyHintActivity;
+import com.yht.yihuantong.ui.main.QrCodeActivity;
 import com.yht.yihuantong.ui.personal.PersonalNewActivity;
 import com.yht.yihuantong.ui.reservation.ReservationDisableActivity;
 import com.yht.yihuantong.ui.reservation.service.ReservationServiceActivity;
@@ -257,19 +258,19 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
     private void initMenu() {
         TopRightMenu mTopRightMenu = new TopRightMenu(getActivity());
         List<MenuItem> menuItems = new ArrayList<>();
-        menuItems.add(new MenuItem(R.mipmap.ic_camera, "多人聊天"));
-        menuItems.add(new MenuItem(R.mipmap.ic_camera, "加好友"));
-        menuItems.add(new MenuItem(R.mipmap.ic_camera, "扫一扫"));
-        mTopRightMenu.setHeight(BaseUtils.dp2px(getContext(), 152))
+        menuItems.add(new MenuItem(R.mipmap.ic_patient_richscan, getString(R.string.txt_menu_patient)));
+        menuItems.add(new MenuItem(R.mipmap.ic_doctor_richscan, getString(R.string.txt_menu_doctor)));
+        menuItems.add(new MenuItem(R.mipmap.ic_richscan, getString(R.string.title_camera_scan)));
+        mTopRightMenu.setHeight(BaseUtils.dp2px(getContext(), 200))
                      .addMenuList(menuItems)
                      .setOnMenuItemClickListener(this)
-                     .showAsDropDown(publicMainTitleScan, -BaseUtils.dp2px(getContext(), 114), 10);
+                     .showAsDropDown(publicMainTitleScan, -BaseUtils.dp2px(getContext(), 124), 10);
     }
 
     @OnClick({
             R.id.public_main_title_scan, R.id.layout_personal_base, R.id.layout_check, R.id.layout_transfer,
-            R.id.view_flipper, R.id.layout_initiate_check, R.id.layout_initiate_transfer, R.id.layout_accepted_transfer,
-            R.id.layout_transfer_apply })
+            R.id.layout_remote, R.id.view_flipper, R.id.layout_initiate_check, R.id.layout_initiate_transfer,
+            R.id.layout_accepted_transfer, R.id.layout_transfer_apply })
     public void onViewClicked(View view) {
         Intent intent;
         switch (view.getId()) {
@@ -299,6 +300,9 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
                     intent.putExtra(CommonData.KEY_CHECK_OR_TRANSFER, true);
                     startActivity(intent);
                 }
+                break;
+            case R.id.layout_remote:
+                // TODO 远程会诊
                 break;
             case R.id.layout_transfer_apply:
                 intent = new Intent(getContext(), TransferReceiveListActivity.class);
@@ -345,12 +349,16 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
      */
     @Override
     public void onMenuItemClick(int position) {
+        Intent intent;
         switch (position) {
             case BASE_ZERO:
-                permissionHelper.request(new String[] { Permission.CAMERA });
+                intent = new Intent(getContext(), QrCodeActivity.class);
+                startActivity(intent);
                 break;
             case BASE_ONE:
-                permissionHelper.request(new String[] { Permission.CAMERA });
+                intent = new Intent(getContext(), QrCodeActivity.class);
+                intent.putExtra(CommonData.KEY_INTENT_BOOLEAN, true);
+                startActivity(intent);
                 break;
             case BASE_TWO:
                 permissionHelper.request(new String[] { Permission.CAMERA });

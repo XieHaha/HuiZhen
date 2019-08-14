@@ -1,4 +1,4 @@
-package com.yht.frame.widgets.imagePreview.view;
+package com.yht.frame.widgets.imagepreview.view;
 
 import android.annotation.TargetApi;
 import android.app.Activity;

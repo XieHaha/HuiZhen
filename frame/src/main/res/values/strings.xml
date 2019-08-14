@@ -18,7 +18,7 @@
     <string name="title_income_detail">收入详情</string>
     <string name="title_message">消息</string>
     <string name="title_patient">患者(%d)</string>
-    <string name="title_camera">扫一扫</string>
+    <string name="title_camera_scan">扫一扫</string>
     <string name="title_add_check">添加服务项目</string>
     <string name="title_add_transfer">发起转诊(%d)</string>
     <string name="title_add_service">发起服务(%d)</string>
@@ -31,6 +31,7 @@
     <string name="title_transfer_again">再次转诊</string>
     <string name="title_remote_detail">远程会诊详情</string>
     <string name="title_cooperate_hospital">合作医院</string>
+    <string name="title_my_qr_code">我的二维码</string>
 
     <!--公用-->
     <string name="txt_app_name">会珍</string>
@@ -111,6 +112,10 @@
     <string name="txt_initiate_check">发起服务</string>
     <string name="txt_initiate_transfer">发起转诊</string>
     <string name="txt_my_accepted_transfer">已接收转诊</string>
+    <string name="txt_menu_patient">患者添加我</string>
+    <string name="txt_menu_doctor">医生添加我</string>
+    <string name="txt_scan_hint">会珍医生版扫一扫，添加我</string>
+    <string name="txt_wechat_scan_hint">微信扫一扫，添加我</string>
 
     <!--相机-->
     <string name="txt_camera_hint">将二维码放入框中，即可自动扫描</string>
@@ -258,6 +263,7 @@
     <string name="txt_first_diagnosis">初步诊断</string>
     <string name="txt_remote_billing">远程开单</string>
     <string name="txt_remote_consultation">远程会诊</string>
+    <string name="txt_remote_multi">多方会诊</string>
     <string name="txt_contact_patient">联系患者</string>
     <string name="txt_patient_name_hint">姓名必须和身份证一致</string>
     <string name="txt_patient_id_card_hint">请填写患者身份证号码</string>

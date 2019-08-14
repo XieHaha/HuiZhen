@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -160,7 +161,7 @@ public class MainActivity extends BaseActivity
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        largeIcon = ((BitmapDrawable)getResources().getDrawable(R.mipmap.logo_icon)).getBitmap();
+        largeIcon = ((BitmapDrawable)ContextCompat.getDrawable(this,R.mipmap.logo_icon)).getBitmap();
         ZycApplication.getInstance().setLoginStatus(true);
         boolean protocol = sharePreferenceUtil.getBoolean(CommonData.KEY_IS_PROTOCOL_UPDATE_DATE);
         if (protocol) {

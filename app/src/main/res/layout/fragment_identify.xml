@@ -108,7 +108,7 @@
             android:gravity="center"
             android:layout_centerInParent="true"
             android:textSize="@dimen/text_13"
-            android:drawableStart="@mipmap/ic_chat_time"
+            android:drawableStart="@mipmap/ic_scan_blue"
             android:drawablePadding="8dp"
             android:textColor="@color/color_6a6f80" />
     </RelativeLayout>

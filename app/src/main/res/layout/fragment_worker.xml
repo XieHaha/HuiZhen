@@ -57,7 +57,7 @@
                         android:layout_marginEnd="80dp"
                         tools:text="医院"
                         android:layout_below="@id/tv_personal_depart"
-                        android:layout_marginTop="9dp" />
+                        android:layout_marginTop="8dp" />
 
                     <ImageView
                         android:id="@+id/iv_personal_image"
@@ -182,7 +182,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginStart="14dp"
                     android:layout_marginEnd="7dp"
-                    android:flipInterval="3000"
+                    android:flipInterval="5000"
                     android:inAnimation="@anim/anim_marquee_in"
                     android:outAnimation="@anim/anim_marquee_out" />
             </LinearLayout>
@@ -201,7 +201,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
-                android:layout_height="151dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="14dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp">
@@ -214,7 +214,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/corner4_ffffff_bg"
                     android:paddingStart="20dp"
-                    android:paddingTop="18dp"
+                    android:paddingTop="30dp"
                     android:paddingBottom="18dp"
                     android:layout_marginEnd="13dp">
 
@@ -230,7 +230,7 @@
                         android:textSize="@dimen/text_16"
                         android:text="@string/txt_reserve_check"
                         android:textStyle="bold"
-                        android:layout_marginTop="38dp" />
+                        android:layout_marginTop="23dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -251,7 +251,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/corner4_ffffff_bg"
                     android:paddingStart="20dp"
-                    android:paddingTop="18dp"
+                    android:paddingTop="30dp"
                     android:paddingBottom="18dp">
 
                     <ImageView
@@ -266,7 +266,7 @@
                         android:textSize="@dimen/text_16"
                         android:text="@string/txt_reserve_transfer"
                         android:textStyle="bold"
-                        android:layout_marginTop="38dp" />
+                        android:layout_marginTop="23dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -282,7 +282,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
-                android:layout_height="151dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="13dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp">
@@ -295,7 +295,7 @@
                     android:layout_height="match_parent"
                     android:background="@drawable/corner4_ffffff_bg"
                     android:paddingStart="20dp"
-                    android:paddingTop="10dp"
+                    android:paddingTop="22dp"
                     android:paddingBottom="18dp"
                     android:layout_marginEnd="13dp">
 
@@ -324,7 +324,7 @@
                             android:layout_height="wrap_content"
                             android:textStyle="bold"
                             android:layout_centerInParent="true"
-                            tools:text="100"
+                            tools:text="10"
                             android:textColor="@color/color_ffffff"
                             android:textSize="@dimen/text_12" />
                     </RelativeLayout>
@@ -337,7 +337,7 @@
                         android:textSize="@dimen/text_16"
                         android:text="@string/title_transfer_apply"
                         android:textStyle="bold"
-                        android:layout_marginTop="38dp"
+                        android:layout_marginTop="23dp"
                         android:layout_below="@id/image" />
 
                     <TextView
@@ -351,18 +351,40 @@
                 </RelativeLayout>
 
                 <LinearLayout
+                    android:id="@+id/layout_remote"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:orientation="vertical"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:background="@drawable/corner4_dot">
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/corner4_ffffff_bg"
+                    android:paddingStart="20dp"
+                    android:paddingTop="30dp"
+                    android:paddingBottom="18dp">
 
                     <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@mipmap/ic_remote" />
+
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@mipmap/ic_home_more" />
+                        android:textColor="@color/color_373d4d"
+                        android:textSize="@dimen/text_16"
+                        android:text="@string/txt_remote_consultation"
+                        android:textStyle="bold"
+                        android:layout_marginTop="23dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/color_a1a8b3"
+                        android:textSize="@dimen/text_13"
+                        android:text="@string/txt_remote_multi"
+                        android:layout_marginTop="3dp" />
+
                 </LinearLayout>
+
             </LinearLayout>
 
             <View

@@ -360,6 +360,11 @@
             android:label="@string/title_cooperate_hospital"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
+            android:name=".ui.main.QrCodeActivity"
+            android:screenOrientation="portrait"
+            android:label=""
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
             android:name=".ui.hint.HintLoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/ActivityTransDialog"
