@@ -52,6 +52,7 @@
     </LinearLayout>
 
     <View
+        android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/app_hei_line"
         android:background="@color/color_ebedf0"

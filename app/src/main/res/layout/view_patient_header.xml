@@ -1,34 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingStart="16dp"
-    android:paddingEnd="16dp"
-    android:paddingTop="20dp"
-    android:paddingBottom="20dp">
+    android:orientation="vertical"
+    android:paddingTop="10dp">
 
-    <TextView
-        android:id="@+id/tv_search_patient"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="38dp"
-        android:hint="@string/txt_patient_hint"
-        android:textSize="@dimen/text_16"
-        android:textColorHint="@color/color_a1a8b3"
-        android:textColor="@color/color_373d4d"
-        android:singleLine="true"
-        android:focusable="false"
-        android:gravity="center_vertical"
-        android:focusableInTouchMode="false"
-        android:background="@drawable/corner4_f0f3fa_bg"
-        android:paddingStart="39dp"
-        android:paddingEnd="16dp" />
-
-    <ImageView
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/ic_search"
-        android:layout_centerVertical="true"
-        android:paddingStart="16dp" />
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/tv_search_patient"
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:hint="@string/txt_patient_hint"
+            android:textSize="@dimen/text_16"
+            android:textColorHint="@color/color_a1a8b3"
+            android:textColor="@color/color_373d4d"
+            android:singleLine="true"
+            android:focusable="false"
+            android:gravity="center_vertical"
+            android:focusableInTouchMode="false"
+            android:background="@drawable/corner4_f0f3fa_bg"
+            android:paddingStart="39dp"
+            android:paddingEnd="16dp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_search"
+            android:layout_centerVertical="true"
+            android:paddingStart="16dp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_recently"
+        android:layout_width="match_parent"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:gravity="center_vertical"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_friend_recently" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_16"
+            android:textStyle="bold"
+            android:text="@string/txt_recently_add"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/color_373d4d" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_patient_tag"
+        android:layout_width="match_parent"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:gravity="center_vertical"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_friend_tag" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_16"
+            android:textStyle="bold"
+            android:text="@string/txt_patient_label"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/color_373d4d" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/color_f8f9fa" />
+
+</LinearLayout>

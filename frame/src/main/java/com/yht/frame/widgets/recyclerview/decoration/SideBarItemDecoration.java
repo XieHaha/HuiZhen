@@ -49,6 +49,7 @@ public class SideBarItemDecoration extends RecyclerView.ItemDecoration {
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mPaint.setDither(true);
+        mPaint.setColor(ContextCompat.getColor(mContext, R.color.color_373d4d));
         mPaint.setTextAlign(Paint.Align.CENTER);
     }
 
@@ -109,7 +110,7 @@ public class SideBarItemDecoration extends RecyclerView.ItemDecoration {
         mPaint.setColor(ContextCompat.getColor(mContext, R.color.color_373d4d));
         Typeface font = Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD);
         mPaint.setTypeface(font);
-        canvas.drawText(bean.getIndexTag(), BaseUtils.dp2px(mContext, 30), bottom - BaseUtils.dp2px(mContext, 5),
+        canvas.drawText(bean.getIndexTag(), BaseUtils.dp2px(mContext, 26), bottom - BaseUtils.dp2px(mContext, 5),
                         mPaint);
     }
 
@@ -140,12 +141,12 @@ public class SideBarItemDecoration extends RecyclerView.ItemDecoration {
         mPaint.setColor(Color.WHITE);
         canvas.drawRect(parent.getLeft(), parent.getPaddingTop(), parent.getRight() - parent.getPaddingRight(),
                         bottom / 2 * 3, mPaint);
-        mPaint.setTextSize(BaseUtils.sp2px(mContext,14));
+        mPaint.setTextSize(BaseUtils.sp2px(mContext, 14));
         mPaint.setColor(ContextCompat.getColor(mContext, R.color.color_373d4d));
         Typeface font = Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD);
         mPaint.setTypeface(font);
         //悬浮窗字母位置
-        canvas.drawText(patientBeans.get(realPosition).getIndexTag(), BaseUtils.dp2px(mContext, 30),
+        canvas.drawText(patientBeans.get(realPosition).getIndexTag(), BaseUtils.dp2px(mContext, 26),
                         bottom - BaseUtils.dp2px(mContext, 5), mPaint);
     }
 

@@ -30,5 +30,11 @@ public class CooperateHospitalAdapter extends BaseQuickAdapter<HospitalBean, Bas
         else {
             helper.setImageResource(R.id.iv_status, R.mipmap.ic_no_cooperation);
         }
+        if (mData.size() - 1 == helper.getAdapterPosition()) {
+            helper.setGone(R.id.view, false);
+        }
+        else {
+            helper.setGone(R.id.view, true);
+        }
     }
 }

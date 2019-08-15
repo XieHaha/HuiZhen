@@ -1,4 +1,4 @@
-package com.yht.yihuantong.ui.main.fragment;
+package com.yht.yihuantong.ui.patient.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -71,6 +71,7 @@ public class PatientFragment extends BaseFragment
     @BindView(R.id.index_bar)
     IndexBar indexBar;
     private View headerView;
+    private TextView searchText;
     /**
      * 适配器
      */
@@ -162,7 +163,7 @@ public class PatientFragment extends BaseFragment
         patientAdapter.setOnItemChildClickListener(this);
         headerView = LayoutInflater.from(getContext()).inflate(R.layout.view_patient_header, null);
         //头部搜索按钮
-        TextView searchText = headerView.findViewById(R.id.tv_search_patient);
+        searchText = headerView.findViewById(R.id.tv_search_patient);
         searchText.setOnClickListener(this);
         patientAdapter.addHeaderView(headerView);
         patientAdapter.setLoadMoreView(new CustomLoadMoreView());
@@ -192,7 +193,8 @@ public class PatientFragment extends BaseFragment
             else {
                 patientAdapter.setEnableLoadMore(false);
             }
-            etSearchPatient.setHint(String.format(getString(R.string.title_patient), patientBeans.size()));
+            etSearchPatient.setHint(String.format(getString(R.string.txt_patient_search_hint), patientBeans.size()));
+            searchText.setHint(String.format(getString(R.string.txt_patient_search_hint), patientBeans.size()));
         }
     }
 
@@ -361,7 +363,9 @@ public class PatientFragment extends BaseFragment
                 else {
                     patientAdapter.setEnableLoadMore(false);
                 }
-                etSearchPatient.setHint(String.format(getString(R.string.title_patient), patientBeans.size()));
+                etSearchPatient.setHint(
+                        String.format(getString(R.string.txt_patient_search_hint), patientBeans.size()));
+                searchText.setHint(String.format(getString(R.string.txt_patient_search_hint), patientBeans.size()));
                 break;
             default:
                 break;

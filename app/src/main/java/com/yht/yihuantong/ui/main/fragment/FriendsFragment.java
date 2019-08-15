@@ -18,6 +18,8 @@ import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.widgets.view.AbstractOnPageChangeListener;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.adapter.ViewPagerAdapter;
+import com.yht.yihuantong.ui.doctor.DoctorFragment;
+import com.yht.yihuantong.ui.patient.fragment.PatientFragment;
 
 import java.util.ArrayList;
 import java.util.List;

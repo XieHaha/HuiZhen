@@ -17,7 +17,6 @@
     <string name="title_withdraw_detail">提现详情</string>
     <string name="title_income_detail">收入详情</string>
     <string name="title_message">消息</string>
-    <string name="title_patient">患者(%d)</string>
     <string name="title_camera_scan">扫一扫</string>
     <string name="title_add_check">添加服务项目</string>
     <string name="title_add_transfer">发起转诊(%d)</string>
@@ -72,7 +71,7 @@
     <string name="txt_contact">联系我们</string>
     <string name="txt_contact_hotline">您将要拨打%s：\n%s</string>
     <string name="txt_contact_service">医助热线</string>
-    <string name="txt_contact_service_phone">02887582622</string>
+    <string name="txt_contact_service_phone">4000280024</string>
     <string name="txt_contact_patient_phone">患者电话</string>
     <string name="txt_contact_doctor_phone">医生电话</string>
     <string name="txt_calc_num">%d/500</string>
@@ -209,11 +208,15 @@
     <string name="txt_info_sex">性别</string>
     <string name="txt_info_phone">手机号</string>
 
-    <!--患者相关-->
+    <!--患者/医生相关-->
     <string name="txt_patient_info">患者资料</string>
     <string name="txt_chat_online">在线聊天</string>
     <string name="txt_chat_start">开始对话</string>
     <string name="txt_chat_time">点击结束本次对话%s</string>
+    <string name="txt_recently_add">最近添加</string>
+    <string name="txt_patient_label">患者标签</string>
+    <string name="txt_patient_search_hint">请在%d名患者中搜索</string>
+    <string name="txt_doctor_search_hint">请在%d名医生好友中搜索</string>
 
     <!--会珍币管理-->
     <string name="txt_currency_arrival">已到账</string>
@@ -381,7 +384,7 @@
     <string name="dialog_no_camera_permission_tip">无法打开摄像头，请检查是否已经打开摄像头权限</string>
     <string name="dialog_no_storage_permission_tip">无法访问存储空间，请检查是否已经打开存储权限</string>
     <string name="dialog_no_audio_permission_tip">无法启用录音，请检查是否已经打开录音权限</string>
-    <string name="dialog_no_location_permission_tip">无法获取位置信息，请检查是否已经打开位置信息权限</string>
+    <string name="dialog_no_location_permission_tip" translatable="false">无法获取位置信息，请检查是否已经打开位置信息权限</string>
     <string name="dialog_no_audio_camera_permission_tip">无法启用相机和录音，请检查是否已经打开相机和录音权限</string>
     <string name="dialog_no_read_phone_state_tip">无法获取手机信息，请检查是否已经打开电话权限</string>
     <string name="dialog_no_camera_tip">无法打开摄像头</string>

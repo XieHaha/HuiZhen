@@ -2,7 +2,6 @@ package com.yht.frame.widgets.recyclerview;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -70,7 +69,7 @@ public class SideBar extends View {
         mPaint = new Paint();
         mPaint.setDither(true);
         mPaint.setAntiAlias(true);
-        mPaint.setColor(Color.GRAY);
+        mPaint.setColor(ContextCompat.getColor(mContext, R.color.color_373d4d));
         mPaint.setTextSize(BaseUtils.sp2px(mContext, 14));
     }
 

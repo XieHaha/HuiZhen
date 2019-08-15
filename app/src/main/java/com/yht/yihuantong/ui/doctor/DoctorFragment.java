@@ -1,4 +1,4 @@
-package com.yht.yihuantong.ui.main.fragment;
+package com.yht.yihuantong.ui.doctor;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -71,6 +71,7 @@ public class DoctorFragment extends BaseFragment
     @BindView(R.id.index_bar)
     IndexBar indexBar;
     private View headerView;
+    private TextView searchText;
     /**
      * 适配器
      */
@@ -160,9 +161,9 @@ public class DoctorFragment extends BaseFragment
         patientAdapter = new PatientAdapter(R.layout.item_patient, patientBeans);
         patientAdapter.setOnItemClickListener(this);
         patientAdapter.setOnItemChildClickListener(this);
-        headerView = LayoutInflater.from(getContext()).inflate(R.layout.view_patient_header, null);
+        headerView = LayoutInflater.from(getContext()).inflate(R.layout.view_doctor_header, null);
         //头部搜索按钮
-        TextView searchText = headerView.findViewById(R.id.tv_search_patient);
+        searchText = headerView.findViewById(R.id.tv_search_patient);
         searchText.setOnClickListener(this);
         patientAdapter.addHeaderView(headerView);
         patientAdapter.setLoadMoreView(new CustomLoadMoreView());
@@ -192,7 +193,8 @@ public class DoctorFragment extends BaseFragment
             else {
                 patientAdapter.setEnableLoadMore(false);
             }
-            etSearchPatient.setHint(String.format(getString(R.string.title_patient), patientBeans.size()));
+            etSearchPatient.setHint(String.format(getString(R.string.txt_doctor_search_hint), patientBeans.size()));
+            searchText.setHint(String.format(getString(R.string.txt_doctor_search_hint), patientBeans.size()));
         }
     }
 
@@ -361,7 +363,8 @@ public class DoctorFragment extends BaseFragment
                 else {
                     patientAdapter.setEnableLoadMore(false);
                 }
-                etSearchPatient.setHint(String.format(getString(R.string.title_patient), patientBeans.size()));
+                etSearchPatient.setHint(String.format(getString(R.string.txt_doctor_search_hint), patientBeans.size()));
+                searchText.setHint(String.format(getString(R.string.txt_doctor_search_hint), patientBeans.size()));
                 break;
             default:
                 break;
