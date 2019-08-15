@@ -7,6 +7,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.yht.frame.data.BaseData;
@@ -15,13 +16,13 @@ import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.bean.BaseListBean;
 import com.yht.frame.data.bean.CooperateHospitalBean;
+import com.yht.frame.data.bean.HospitalProductBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
-import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.widgets.LoadViewHelper;
 import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.yht.yihuantong.R;
-import com.yht.yihuantong.ui.adapter.CooperateHospitalAdapter;
+import com.yht.yihuantong.ui.adapter.HospitalProductAdapter;
 
 import java.util.ArrayList;
 
@@ -30,17 +31,23 @@ import butterknife.BindView;
 /**
  * @author 顿顿
  * @date 19/8/12 15:34
- * @des 合作医院列表
+ * @des 医院服务项
  */
-public class CooperateHospitalListActivity extends BaseActivity
+public class HospitalProductListActivity extends BaseActivity
         implements BaseQuickAdapter.RequestLoadMoreListener, BaseQuickAdapter.OnItemClickListener,
                    SwipeRefreshLayout.OnRefreshListener, LoadViewHelper.OnNextClickListener {
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.refresh_layout)
     SwipeRefreshLayout refreshLayout;
-    private CooperateHospitalAdapter cooperateHospitalAdapter;
-    private ArrayList<CooperateHospitalBean> hospitalBeans = new ArrayList<>();
+    @BindView(R.id.public_title_bar_title)
+    TextView publicTitleBarTitle;
+    private HospitalProductAdapter hospitalProjectAdapter;
+    private ArrayList<HospitalProductBean> hospitalProductBeans = new ArrayList<>();
+    /**
+     * 当前医院
+     */
+    private CooperateHospitalBean curHospital;
     /**
      * 默认第一页
      */
@@ -53,7 +60,7 @@ public class CooperateHospitalListActivity extends BaseActivity
 
     @Override
     public int getLayoutID() {
-        return R.layout.act_cooperate_hospital;
+        return R.layout.act_hospital_product;
     }
 
     @Override
@@ -63,12 +70,22 @@ public class CooperateHospitalListActivity extends BaseActivity
         loadViewHelper.setOnNextClickListener(this);
         refreshLayout.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light,
                                               android.R.color.holo_orange_light, android.R.color.holo_green_light);
-        cooperateHospitalAdapter = new CooperateHospitalAdapter(R.layout.item_cooperate_hospital, hospitalBeans);
-        cooperateHospitalAdapter.setLoadMoreView(new CustomLoadMoreView());
-        cooperateHospitalAdapter.setOnLoadMoreListener(this, recyclerView);
-        cooperateHospitalAdapter.setOnItemClickListener(this);
+        hospitalProjectAdapter = new HospitalProductAdapter(R.layout.item_hospital_project, hospitalProductBeans);
+        hospitalProjectAdapter.setLoadMoreView(new CustomLoadMoreView());
+        hospitalProjectAdapter.setOnLoadMoreListener(this, recyclerView);
+        hospitalProjectAdapter.setOnItemClickListener(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(cooperateHospitalAdapter);
+        recyclerView.setAdapter(hospitalProjectAdapter);
+    }
+
+    @Override
+    public void initData(@NonNull Bundle savedInstanceState) {
+        super.initData(savedInstanceState);
+        if (getIntent() != null) {
+            curHospital = (CooperateHospitalBean)getIntent().getSerializableExtra(CommonData.KEY_HOSPITAL_BEAN);
+            publicTitleBarTitle.setText(curHospital.getHospitalName());
+            getHospitalProduct(true);
+        }
     }
 
     @Override
@@ -77,55 +94,44 @@ public class CooperateHospitalListActivity extends BaseActivity
         refreshLayout.setOnRefreshListener(this);
     }
 
-    @Override
-    public void fillNetWorkData() {
-        super.fillNetWorkData();
-        if (BaseUtils.isNetworkAvailable(this)) {
-            getCooperateHospital(true);
-        }
-        else {
-            refreshLayout.setVisibility(View.GONE);
-            loadViewHelper.load(LoadViewHelper.NONE_NETWORK);
-        }
-    }
-
     /**
-     * 获取合作医院
+     * 获取合作医院下服务项
      */
-    private void getCooperateHospital(boolean show) {
-        RequestUtils.getCooperateHospitalList(this, loginBean.getToken(), BaseData.BASE_PAGE_DATA_NUM, page, show,
-                                              this);
+    private void getHospitalProduct(boolean show) {
+        RequestUtils.getCooperateHospitalProjectList(this, loginBean.getToken(), curHospital.getHospitalCode(),
+                                                     BaseData.BASE_PAGE_DATA_NUM, 1, show, this);
     }
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        Intent intent = new Intent(this, HospitalDetailActivity.class);
-        intent.putExtra(CommonData.KEY_HOSPITAL_BEAN, hospitalBeans.get(position));
+        Intent intent = new Intent(this, ProductDetailActivity.class);
+        intent.putExtra(CommonData.KEY_PUBLIC_STRING, curHospital.getHospitalName());
+        intent.putExtra(CommonData.KEY_HOSPITAL_PRODUCT_BEAN, hospitalProductBeans.get(position));
         startActivity(intent);
     }
 
     @Override
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
-        if (task == Tasks.GET_COOPERATE_HOSPITAL_LIST) {
-            BaseListBean<CooperateHospitalBean> baseListBean = (BaseListBean<CooperateHospitalBean>)response.getData();
+        if (task == Tasks.GET_COOPERATE_HOSPITAL_PROJECT_LIST) {
+            BaseListBean<HospitalProductBean> baseListBean = (BaseListBean<HospitalProductBean>)response.getData();
             if (page == BaseData.BASE_ONE) {
-                hospitalBeans.clear();
+                hospitalProductBeans.clear();
             }
-            hospitalBeans.addAll(baseListBean.getRecords());
-            cooperateHospitalAdapter.setNewData(hospitalBeans);
-            if (hospitalBeans.size() > 0) {
+            hospitalProductBeans.addAll(baseListBean.getRecords());
+            hospitalProjectAdapter.setNewData(hospitalProductBeans);
+            if (hospitalProductBeans.size() > 0) {
                 refreshLayout.setVisibility(View.VISIBLE);
                 if (baseListBean.getRecords() != null &&
                     baseListBean.getRecords().size() >= BaseData.BASE_PAGE_DATA_NUM) {
-                    cooperateHospitalAdapter.loadMoreComplete();
+                    hospitalProjectAdapter.loadMoreComplete();
                 }
                 else {
-                    if (hospitalBeans.size() > BaseData.BASE_PAGE_DATA_NUM) {
-                        cooperateHospitalAdapter.loadMoreEnd();
+                    if (hospitalProductBeans.size() > BaseData.BASE_PAGE_DATA_NUM) {
+                        hospitalProjectAdapter.loadMoreEnd();
                     }
                     else {
-                        cooperateHospitalAdapter.setEnableLoadMore(false);
+                        hospitalProjectAdapter.setEnableLoadMore(false);
                     }
                 }
             }
@@ -137,26 +143,20 @@ public class CooperateHospitalListActivity extends BaseActivity
     }
 
     @Override
-    public void onResponseEnd(Tasks task) {
-        super.onResponseEnd(task);
-        refreshLayout.setRefreshing(false);
-    }
-
-    @Override
     public void onRefresh() {
         page = 1;
-        getCooperateHospital(false);
+        getHospitalProduct(false);
     }
 
     @Override
     public void onLoadMoreRequested() {
         page++;
-        getCooperateHospital(false);
+        getHospitalProduct(false);
     }
 
     @Override
     public void onNextClick() {
         page = 1;
-        getCooperateHospital(true);
+        getHospitalProduct(true);
     }
 }

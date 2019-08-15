@@ -127,45 +127,56 @@
                 android:background="@color/color_f8f9fa" />
 
             <LinearLayout
-                android:id="@+id/layout_more_project"
+                android:id="@+id/layout_product"
+                android:orientation="vertical"
+                android:visibility="visible"
                 android:layout_width="match_parent"
-                android:paddingTop="20dp"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
                 android:layout_height="wrap_content">
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:textStyle="bold"
-                    android:textColor="@color/color_373d4d"
-                    android:textSize="@dimen/text_18"
-                    android:text="@string/txt_hospital_provide_project"
+                <LinearLayout
+                    android:id="@+id/layout_more_project"
+                    android:layout_width="match_parent"
+                    android:paddingTop="20dp"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:textStyle="bold"
+                        android:textColor="@color/color_373d4d"
+                        android:textSize="@dimen/text_18"
+                        android:text="@string/txt_hospital_provide_project"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/tv_product_more"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/text_13"
+                        android:textColor="@color/color_a1a8b3"
+                        android:text="@string/txt_look_more"
+                        android:drawableEnd="@mipmap/ic_right"
+                        android:drawablePadding="4dp"
+                        android:gravity="center" />
+                </LinearLayout>
+
+                <ListView
+                    android:id="@+id/full_list_view"
+                    android:layout_width="match_parent"
+                    android:divider="@null"
                     android:layout_height="wrap_content" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_13"
-                    android:textColor="@color/color_a1a8b3"
-                    android:text="@string/txt_look_more"
-                    android:drawableEnd="@mipmap/ic_right"
-                    android:drawablePadding="4dp"
-                    android:gravity="center" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    android:background="@color/color_f8f9fa" />
+
             </LinearLayout>
 
-            <com.yht.frame.widgets.recyclerview.FullListView
-                android:id="@+id/full_list_view"
-                android:layout_width="match_parent"
-                android:divider="@null"
-                android:layout_height="wrap_content" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="10dp"
-                android:background="@color/color_f8f9fa" />
 
             <TextView
                 android:layout_width="wrap_content"

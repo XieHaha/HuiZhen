@@ -231,6 +231,9 @@
     <string name="txt_project_introduction">服务简介</string>
     <string name="txt_project_introduction_hint">医院未填写服务简介。</string>
     <string name="txt_project_notice_hint">医院未填写注意事项。</string>
+    <string name="txt_business_support">业务支持：</string>
+    <string name="txt_business_support_not">不可预约该医院服务</string>
+    <string name="txt_item">%d项</string>
 
     <!--会珍币管理-->
     <string name="txt_currency_arrival">已到账</string>

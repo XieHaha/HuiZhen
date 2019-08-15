@@ -113,6 +113,10 @@ public interface CommonData {
      */
     String KEY_HOSPITAL_BEAN = "key_hospital_bean";
     /**
+     * hospital product bean
+     */
+    String KEY_HOSPITAL_PRODUCT_BEAN = "key_hospital_product_bean";
+    /**
      * hospital CODE
      */
     String KEY_HOSPITAL_CODE = "key_hospital_code";

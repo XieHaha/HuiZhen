@@ -233,6 +233,10 @@ WE_CHAT_LOGIN,
      * 获取当前医生的合作医院
      */
     GET_COOPERATE_HOSPITAL_LIST,
+    /**
+     * 获取当前医生的合作医院下服务项
+     */
+    GET_COOPERATE_HOSPITAL_PROJECT_LIST,
 }
 
 

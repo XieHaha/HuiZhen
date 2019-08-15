@@ -37,17 +37,34 @@
                 android:src="@mipmap/ic_cooperation" />
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/tv_reserve"
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="wrap_content"
-            android:textColor="@color/color_a1a8b3"
-            android:textSize="@dimen/text_13"
-            tools:text="业务范围"
-            android:layout_marginTop="1dp"
-            android:singleLine="true"
-            android:layout_marginEnd="27dp"
-            android:ellipsize="end"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_reserve"
+                android:layout_width="wrap_content"
+                android:textColor="@color/color_a1a8b3"
+                android:textSize="@dimen/text_13"
+                android:text="@string/txt_business_support"
+                android:layout_marginTop="1dp"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/tv_reserve_content"
+                android:layout_width="wrap_content"
+                android:textColor="@color/color_a1a8b3"
+                android:textSize="@dimen/text_13"
+                android:layout_marginTop="1dp"
+                android:singleLine="true"
+                android:layout_marginEnd="27dp"
+                android:ellipsize="end"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
 
     </LinearLayout>
 

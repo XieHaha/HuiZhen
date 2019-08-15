@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/color_ffffff"
     android:fitsSystemWindows="true">
 
     <include layout="@layout/public_title" />
@@ -18,6 +19,6 @@
             android:layout_height="match_parent" />
     </android.support.v4.widget.SwipeRefreshLayout>
 
-    <include layout="@layout/public_hint"/>
+    <include layout="@layout/public_hint" />
 
 </LinearLayout>

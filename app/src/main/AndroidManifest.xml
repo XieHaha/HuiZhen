@@ -360,7 +360,7 @@
             android:label="@string/title_cooperate_hospital"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
-            android:name=".ui.hospital.HospitalProjectListActivity"
+            android:name=".ui.hospital.HospitalProductListActivity"
             android:screenOrientation="portrait"
             android:label=""
             android:windowSoftInputMode="adjustResize|stateHidden" />
@@ -381,7 +381,7 @@
             android:label=""
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
-            android:name=".ui.hospital.ProjectDetailActivity"
+            android:name=".ui.hospital.ProductDetailActivity"
             android:screenOrientation="portrait"
             android:label=""
             android:windowSoftInputMode="adjustResize|stateHidden" />
