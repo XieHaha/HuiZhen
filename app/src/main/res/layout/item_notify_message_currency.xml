@@ -1,104 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:background="@drawable/corner4_ffffff_bg"
+    android:paddingStart="10dp"
     android:layout_marginStart="12dp"
     android:layout_marginEnd="12dp"
+    android:paddingEnd="20dp"
+    android:paddingBottom="20dp"
     android:layout_marginTop="12dp">
-
-    <TextView
-        android:id="@+id/tv_time_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:background="@drawable/corner2_cccccc_bg"
-        android:text="@string/time_just"
-        android:paddingStart="8dp"
-        android:textColor="@color/color_ffffff"
-        android:textSize="12sp"
-        android:paddingEnd="8dp"
-        android:paddingTop="1dp"
-        android:paddingBottom="2dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@drawable/corner4_ffffff_bg"
-        android:paddingStart="10dp"
-        android:paddingEnd="20dp"
-        android:layout_marginTop="12dp">
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_height="44dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_height="44dp">
-
-            <ImageView
-                android:id="@+id/iv_new_message"
-                android:layout_width="6dp"
-                android:layout_height="6dp"
-                android:background="@drawable/circular_red_point_bg" />
-
-            <TextView
-                android:id="@+id/tv_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/txt_currency_hint"
-                android:textStyle="bold"
-                android:textSize="@dimen/text_16"
-                android:textColor="@color/color_373d4d"
-                android:layout_marginStart="4dp" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/app_hei_line"
-            android:background="@color/color_ebedf0"
-            android:layout_marginStart="10dp" />
+        <ImageView
+            android:id="@+id/iv_new_message"
+            android:layout_width="6dp"
+            android:layout_height="6dp"
+            android:background="@drawable/circular_red_point_bg" />
 
         <TextView
-            android:id="@+id/tv_content"
-            android:layout_width="match_parent"
+            android:id="@+id/tv_title"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="10dp"
             android:layout_height="wrap_content"
-            android:text="@string/txt_hint"
-            android:layout_marginTop="10dp"
-            android:paddingStart="10dp"
+            android:text="@string/txt_currency_hint"
+            android:textStyle="bold"
             android:textSize="@dimen/text_16"
-            android:textColor="@color/color_373d4d" />
+            android:textColor="@color/color_373d4d"
+            android:layout_marginStart="4dp" />
 
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/app_hei_line"
-            android:background="@color/color_ebedf0"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="10dp" />
-
-        <LinearLayout
-            android:id="@+id/layout_detail"
-            android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_height="42dp"
-            android:paddingStart="10dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/txt_detail"
-                android:textSize="@dimen/text_13"
-                android:textColor="@color/color_a1a8b3" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/ic_right" />
-        </LinearLayout>
+        <TextView
+            android:id="@+id/tv_time_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/time_just"
+            android:textColor="@color/color_a1a8b3"
+            android:textSize="@dimen/text_12" />
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/app_hei_line"
+        android:background="@color/color_ebedf0"
+        android:layout_marginStart="10dp" />
+
+    <TextView
+        android:id="@+id/tv_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/txt_hint"
+        android:layout_marginTop="10dp"
+        android:paddingStart="10dp"
+        android:textSize="@dimen/text_16"
+        android:textColor="@color/color_373d4d" />
 
 </LinearLayout>

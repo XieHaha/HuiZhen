@@ -46,8 +46,8 @@ import static com.yht.frame.data.Tasks.GET_APP_MESSAGE_LIST;
  * @des 消息列表
  */
 public class NotifyMessageFragment extends BaseFragment
-        implements SwipeRefreshLayout.OnRefreshListener, BaseQuickAdapter.RequestLoadMoreListener,
-                   BaseQuickAdapter.OnItemChildClickListener, MessageType {
+        implements SwipeRefreshLayout.OnRefreshListener, BaseQuickAdapter.RequestLoadMoreListener, MessageType,
+                   BaseQuickAdapter.OnItemClickListener {
     @BindView(R.id.layout_refresh)
     SwipeRefreshLayout layoutRefresh;
     @BindView(R.id.recycler_view)
@@ -137,7 +137,7 @@ public class NotifyMessageFragment extends BaseFragment
         notifyMessageAdapter = new NotifyMessageAdapter(R.layout.item_notify_message_currency, messageList);
         notifyMessageAdapter.setLoadMoreView(new CustomLoadMoreView());
         notifyMessageAdapter.setOnLoadMoreListener(this, recyclerView);
-        notifyMessageAdapter.setOnItemChildClickListener(this);
+        notifyMessageAdapter.setOnItemClickListener(this);
         recyclerView.setAdapter(notifyMessageAdapter);
     }
 
@@ -150,7 +150,7 @@ public class NotifyMessageFragment extends BaseFragment
     }
 
     @Override
-    public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         NotifyMessageBean bean = messageList.get(position);
         if (bean.getState() == BASE_ZERO) {
             //单条消息已读

@@ -32,8 +32,7 @@ public class NotifyMessageAdapter extends BaseQuickAdapter<NotifyMessageBean, Ba
         helper.setText(R.id.tv_title, item.getTitle())
               .setText(R.id.tv_content, item.getContent())
               .setText(R.id.tv_time_bar, TimeUtil.getTimeString(
-                      BaseUtils.date2TimeStamp(item.getCreateAt(), BaseUtils.YYYY_MM_DD_HH_MM_SS)))
-              .addOnClickListener(R.id.layout_detail);
+                      BaseUtils.date2TimeStamp(item.getCreateAt(), BaseUtils.YYYY_MM_DD_HH_MM_SS)));
         if (item.getState() == BaseData.BASE_ZERO && !updateAll) {
             helper.setVisible(R.id.iv_new_message, true);
         }
