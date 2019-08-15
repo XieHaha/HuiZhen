@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    android:background="@color/color_ffffff">
+
+    <include layout="@layout/public_title" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:scrollbars="none"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:orientation="horizontal"
+                android:paddingBottom="8dp"
+                android:gravity="center_vertical"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:textStyle="bold"
+                    android:textColor="@color/color_373d4d"
+                    android:textSize="@dimen/text_18"
+                    android:text="@string/txt_hospital_overview"
+                    android:layout_height="wrap_content" />
+
+                <ImageView
+                    android:id="@+id/iv_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/ic_cooperation" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:paddingTop="12dp"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:textStyle="bold"
+                    android:textColor="@color/color_373d4d"
+                    android:textSize="@dimen/text_16"
+                    android:text="@string/txt_hospital_address"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/tv_hospital_address"
+                    android:layout_width="wrap_content"
+                    android:textColor="@color/color_373d4d"
+                    android:layout_marginStart="20dp"
+                    android:textSize="@dimen/text_16"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:paddingTop="12dp"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:textStyle="bold"
+                    android:textColor="@color/color_373d4d"
+                    android:textSize="@dimen/text_16"
+                    android:text="@string/txt_hospital_business"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/tv_hospital_business"
+                    android:layout_width="wrap_content"
+                    android:textColor="@color/color_373d4d"
+                    android:layout_marginStart="20dp"
+                    android:textSize="@dimen/text_16"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="20dp"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:textStyle="bold"
+                    android:textColor="@color/color_373d4d"
+                    android:textSize="@dimen/text_16"
+                    android:text="@string/txt_hospital_project"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/tv_hospital_project"
+                    android:layout_width="wrap_content"
+                    android:textColor="@color/color_373d4d"
+                    android:layout_marginStart="20dp"
+                    android:textSize="@dimen/text_16"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="@color/color_f8f9fa" />
+
+            <LinearLayout
+                android:id="@+id/layout_more_project"
+                android:layout_width="match_parent"
+                android:paddingTop="20dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:textStyle="bold"
+                    android:textColor="@color/color_373d4d"
+                    android:textSize="@dimen/text_18"
+                    android:text="@string/txt_hospital_provide_project"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_13"
+                    android:textColor="@color/color_a1a8b3"
+                    android:text="@string/txt_look_more"
+                    android:drawableEnd="@mipmap/ic_right"
+                    android:drawablePadding="4dp"
+                    android:gravity="center" />
+            </LinearLayout>
+
+            <com.yht.frame.widgets.recyclerview.FullListView
+                android:id="@+id/full_list_view"
+                android:layout_width="match_parent"
+                android:divider="@null"
+                android:layout_height="wrap_content" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="@color/color_f8f9fa" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:textStyle="bold"
+                android:layout_marginTop="20dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="1dp"
+                android:textColor="@color/color_373d4d"
+                android:textSize="@dimen/text_18"
+                android:text="@string/txt_hospital_introduction"
+                android:layout_height="wrap_content" />
+
+            <com.yht.frame.widgets.textview.JustifiedTextView
+                android:id="@+id/tv_hospital_introduction"
+                android:layout_width="match_parent"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:lineSpacingMultiplier="1.5"
+                android:layout_marginTop="12dp"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/tv_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:textColor="#c5c8cc"
+                android:text="@string/txt_pack_down"
+                android:textSize="@dimen/text_13"
+                android:layout_marginTop="10dp"
+                android:drawablePadding="7dp"
+                android:drawableEnd="@drawable/selector_arrow_tab"
+                android:layout_gravity="center_horizontal" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

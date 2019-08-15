@@ -11,7 +11,9 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.Selection;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -54,6 +56,8 @@ import com.zhihu.matisse.Matisse;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -140,6 +144,7 @@ public class AuthBaseFragment extends BaseFragment
     @Override
     public void initListener() {
         super.initListener();
+        etAuthBaseName.setFilters(new InputFilter[] { emojiFilter });
         etAuthBaseName.addTextChangedListener(new AbstractTextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -481,12 +486,26 @@ public class AuthBaseFragment extends BaseFragment
                 openPhoto();
             }
             else if (isSamePermission(Permission.CAMERA, ((String[])permissionName)[0])) {
-//                openCamera();
+                //                openCamera();
                 openPhoto();
             }
         }
     }
 
+    InputFilter emojiFilter = new InputFilter() {
+        private String filterImoji = "[^a-zA-Z ·.\u4E00-\u9FA5]";
+        Pattern emoji = Pattern.compile(filterImoji, Pattern.UNICODE_CASE | Pattern.CASE_INSENSITIVE);
+
+        @Override
+        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+            Matcher emojiMatcher = emoji.matcher(source);
+            if (emojiMatcher.find()) {
+                ToastUtil.toast(getContext(), "不支持输入");
+                return "";
+            }
+            return null;
+        }
+    };
     private OnAuthStepListener onAuthStepListener;
 
     public void setOnAuthStepListener(OnAuthStepListener onAuthStepListener) {

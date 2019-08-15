@@ -3,11 +3,11 @@ package com.yht.frame.data.bean;
 import java.io.Serializable;
 
 /**
- * 医生绑定的合作医院
+ * 接诊医生绑定的合作医院
  *
  * @author dundun
  */
-public class CooperateHospitalBean implements Serializable {
+public class ReceiverDoctorHospitalBean implements Serializable {
     private static final long serialVersionUID = -5825956356939935298L;
     private String hospitalCode;
     private String hospitalName;

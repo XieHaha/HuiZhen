@@ -16,7 +16,7 @@ import com.yht.frame.data.BaseNetConfig;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
-import com.yht.frame.data.bean.DoctorInfoBean;
+import com.yht.frame.data.bean.ReceiverDoctorBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
@@ -58,7 +58,7 @@ public class TransferAgainActivity extends BaseActivity {
     /**
      * 当前选中的医生
      */
-    private DoctorInfoBean curReceiveDoctor;
+    private ReceiverDoctorBean curReceiveDoctor;
     /**
      * 理由
      */
@@ -203,7 +203,7 @@ public class TransferAgainActivity extends BaseActivity {
         }
         if (requestCode == REQUEST_CODE_SELECT_DOCTOR) {
             if (data != null) {
-                curReceiveDoctor = (DoctorInfoBean)data.getSerializableExtra(CommonData.KEY_DOCTOR_BEAN);
+                curReceiveDoctor = (ReceiverDoctorBean)data.getSerializableExtra(CommonData.KEY_DOCTOR_BEAN);
             }
             initReceiveDoctor();
         }

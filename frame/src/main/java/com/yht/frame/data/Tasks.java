@@ -228,6 +228,11 @@ WE_CHAT_LOGIN,
     /**
      * 结束聊天
      */
-    END_CHAT,}
+    END_CHAT,
+    /**
+     * 获取当前医生的合作医院
+     */
+    GET_COOPERATE_HOSPITAL_LIST,
+}
 
 

@@ -16,7 +16,7 @@ import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
-import com.yht.frame.data.bean.DoctorInfoBean;
+import com.yht.frame.data.bean.ReceiverDoctorBean;
 import com.yht.frame.data.bean.HospitalBean;
 import com.yht.frame.data.bean.HospitalDepartBean;
 import com.yht.frame.data.bean.HospitalDepartChildBean;
@@ -28,7 +28,7 @@ import com.yht.frame.widgets.edittext.SuperEditText;
 import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.yht.frame.widgets.view.ExpandableLayout;
 import com.yht.yihuantong.R;
-import com.yht.yihuantong.ui.adapter.DoctorAdapter;
+import com.yht.yihuantong.ui.adapter.ReceiverDoctorAdapter;
 import com.yht.yihuantong.ui.adapter.ReserveTransferSelectDoctorAdapter;
 
 import java.util.ArrayList;
@@ -80,14 +80,14 @@ public class SelectReceivingDoctorActivity extends BaseActivity
     /**
      * 医生适配器
      */
-    private DoctorAdapter doctorAdapter;
+    private ReceiverDoctorAdapter doctorAdapter;
     /**
      * 医院列表
      */
     private List<HospitalBean> hospitals;
     private List<HospitalDepartBean> departOne;
     private List<HospitalDepartChildBean> departTwo;
-    private List<DoctorInfoBean> doctors = new ArrayList<>();
+    private List<ReceiverDoctorBean> doctors = new ArrayList<>();
     private List<String> data;
     /**
      * 当前选中的医院
@@ -160,7 +160,7 @@ public class SelectReceivingDoctorActivity extends BaseActivity
         selectRecyclerView.setAdapter(adapter);
         //医生列表
         searchRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        doctorAdapter = new DoctorAdapter(R.layout.item_doctor, doctors);
+        doctorAdapter = new ReceiverDoctorAdapter(R.layout.item_receiver_doctor, doctors);
         doctorAdapter.setLoadMoreView(new CustomLoadMoreView());
         doctorAdapter.setOnLoadMoreListener(this, searchRecyclerView);
         doctorAdapter.setOnItemClickListener(this);
@@ -352,7 +352,7 @@ public class SelectReceivingDoctorActivity extends BaseActivity
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        if (adapter.getItem(position) instanceof DoctorInfoBean) {
+        if (adapter.getItem(position) instanceof ReceiverDoctorBean) {
             hideSoftInputFromWindow();
             Intent intent = new Intent();
             intent.putExtra(CommonData.KEY_DOCTOR_BEAN, doctors.get(position));
@@ -418,7 +418,7 @@ public class SelectReceivingDoctorActivity extends BaseActivity
 
     @Override
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-        DoctorInfoBean bean = doctors.get(position);
+        ReceiverDoctorBean bean = doctors.get(position);
         new HintDialog(this).setPhone(getString(R.string.txt_contact_doctor_phone), bean.getDoctorPhone())
                             .setOnEnterClickListener(() -> callPhone(bean.getDoctorPhone()))
                             .show();
@@ -460,7 +460,7 @@ public class SelectReceivingDoctorActivity extends BaseActivity
                 break;
             case GET_RECEIVING_DOCTOR_LIST:
             case GET_DOCTOR_LIST_BY_REVERSE:
-                List<DoctorInfoBean> list = (List<DoctorInfoBean>)response.getData();
+                List<ReceiverDoctorBean> list = (List<ReceiverDoctorBean>)response.getData();
                 if (list == null) {
                     list = new ArrayList<>();
                 }

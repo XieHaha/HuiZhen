@@ -55,6 +55,9 @@
     <string name="txt_delete_all">全部删除</string>
     <string name="txt_next">下一步</string>
     <string name="txt_last">上一步</string>
+    <string name="txt_pack_up">收起</string>
+    <string name="txt_pack_down">展开更多</string>
+    <string name="txt_look_more">查看更多</string>
     <string name="txt_loading_again">重新加载</string>
     <string name="txt_none_network">抱歉，好像网络出问题了</string>
     <string name="txt_none_message">暂无消息</string>
@@ -217,6 +220,17 @@
     <string name="txt_patient_label">患者标签</string>
     <string name="txt_patient_search_hint">请在%d名患者中搜索</string>
     <string name="txt_doctor_search_hint">请在%d名医生好友中搜索</string>
+
+    <!--医院相关-->
+    <string name="txt_hospital_overview">医院概况</string>
+    <string name="txt_hospital_address">医院地址</string>
+    <string name="txt_hospital_business">院间业务</string>
+    <string name="txt_hospital_project">服务项目</string>
+    <string name="txt_hospital_provide_project">提供的服务</string>
+    <string name="txt_hospital_introduction">医院简介</string>
+    <string name="txt_project_introduction">服务简介</string>
+    <string name="txt_project_introduction_hint">医院未填写服务简介。</string>
+    <string name="txt_project_notice_hint">医院未填写注意事项。</string>
 
     <!--会珍币管理-->
     <string name="txt_currency_arrival">已到账</string>

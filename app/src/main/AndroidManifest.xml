@@ -360,6 +360,11 @@
             android:label="@string/title_cooperate_hospital"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
+            android:name=".ui.hospital.HospitalProjectListActivity"
+            android:screenOrientation="portrait"
+            android:label=""
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
             android:name=".ui.main.QrCodeActivity"
             android:screenOrientation="portrait"
             android:label=""
@@ -368,6 +373,17 @@
             android:name=".ui.doctor.DoctorInfoActivity"
             android:screenOrientation="portrait"
             android:label="@string/title_doctor_info"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+
+        <activity
+            android:name=".ui.hospital.HospitalDetailActivity"
+            android:screenOrientation="portrait"
+            android:label=""
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".ui.hospital.ProjectDetailActivity"
+            android:screenOrientation="portrait"
+            android:label=""
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.hint.HintLoginActivity"

@@ -2,13 +2,14 @@ package com.yht.frame.http.retrofit;
 
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.bean.BannerBean;
+import com.yht.frame.data.bean.BaseListBean;
 import com.yht.frame.data.bean.ChatTimeBean;
 import com.yht.frame.data.bean.CheckBean;
 import com.yht.frame.data.bean.CheckDetailBean;
 import com.yht.frame.data.bean.DoctorAuthBean;
 import com.yht.frame.data.bean.DoctorCurrencyBean;
 import com.yht.frame.data.bean.DoctorCurrencyDetailBean;
-import com.yht.frame.data.bean.DoctorInfoBean;
+import com.yht.frame.data.bean.ReceiverDoctorBean;
 import com.yht.frame.data.bean.HospitalBean;
 import com.yht.frame.data.bean.HospitalDepartBean;
 import com.yht.frame.data.bean.HospitalDepartChildBean;
@@ -233,7 +234,7 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @POST("client/doctor/zzDoctors")
-    Observable<BaseResponse<List<DoctorInfoBean>>> getDoctorListByReverse(@Header("token") String token,
+    Observable<BaseResponse<List<ReceiverDoctorBean>>> getDoctorListByReverse(@Header("token") String token,
             @Body Map<String, Object> info);
 
     /**
@@ -244,7 +245,7 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @POST("client/doctor/jzDoctors")
-    Observable<BaseResponse<List<DoctorInfoBean>>> getReceivingDoctorList(@Header("token") String token,
+    Observable<BaseResponse<List<ReceiverDoctorBean>>> getReceivingDoctorList(@Header("token") String token,
             @Body Map<String, Object> info);
 
     /**
@@ -287,7 +288,7 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @GET("client/doctor/model/{mobile}")
-    Observable<BaseResponse<DoctorInfoBean>> getDoctorInfo(@Header("token") String token,
+    Observable<BaseResponse<ReceiverDoctorBean>> getDoctorInfo(@Header("token") String token,
             @Path("mobile") String mobile);
 
     /**
@@ -643,4 +644,16 @@ public interface ApiUrlManager {
      */
     @POST("client/chatcountdown/updatestoptime")
     Observable<BaseResponse<String>> endChat(@Header("token") String token, @Body Map<String, String> info);
+    //二期 3.0.1
+
+    /**
+     * 获取当前医生的合作医院列表
+     *
+     * @param info  map参数
+     * @param token token
+     * @return 返回值
+     */
+    @POST("client/hospital/cooperate/list")
+    Observable<BaseResponse<List<BaseListBean<HospitalBean>>>> getCooperateHospitalList(@Header("token") String token,
+            @Body Map<String, Integer> info);
 }

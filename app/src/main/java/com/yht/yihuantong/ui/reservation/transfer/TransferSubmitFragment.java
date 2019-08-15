@@ -25,7 +25,7 @@ import com.yht.frame.api.DirHelper;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
-import com.yht.frame.data.bean.DoctorInfoBean;
+import com.yht.frame.data.bean.ReceiverDoctorBean;
 import com.yht.frame.data.bean.NormImage;
 import com.yht.frame.data.bean.ReserveTransferBean;
 import com.yht.frame.http.retrofit.RequestUtils;
@@ -113,7 +113,7 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
      * 当前预约转诊数据
      */
     private ReserveTransferBean reverseTransferBean;
-    private DoctorInfoBean curReceiveDoctor;
+    private ReceiverDoctorBean curReceiveDoctor;
     /**
      * 拍照确认图片url
      */
@@ -273,7 +273,7 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
             }
             //接诊医生
             if (!TextUtils.isEmpty(reverseTransferBean.getReceiveDoctorCode())) {
-                curReceiveDoctor = new DoctorInfoBean();
+                curReceiveDoctor = new ReceiverDoctorBean();
                 curReceiveDoctor.setDoctorCode(reverseTransferBean.getReceiveDoctorCode());
                 curReceiveDoctor.setDoctorName(reverseTransferBean.getReceiveDoctorName());
                 curReceiveDoctor.setPhoto(reverseTransferBean.getReceiveDoctorPhoto());
@@ -504,7 +504,7 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
                 break;
             case REQUEST_CODE_SELECT_DOCTOR:
                 if (data != null) {
-                    curReceiveDoctor = (DoctorInfoBean)data.getSerializableExtra(CommonData.KEY_DOCTOR_BEAN);
+                    curReceiveDoctor = (ReceiverDoctorBean)data.getSerializableExtra(CommonData.KEY_DOCTOR_BEAN);
                 }
                 reverseTransferBean.setReceiveDoctorCode(curReceiveDoctor.getDoctorCode());
                 reverseTransferBean.setReceiveDoctorName(curReceiveDoctor.getDoctorName());

@@ -664,5 +664,16 @@ public class RequestUtils {
                        .compose(RxJavaHelper.observableIO2Main(context))
                        .subscribe(new AbstractLoadViewObserver<>(context, Tasks.END_CHAT, listener));
     }
+
+    public static void getCooperateHospitalList(Context context, String token, int pageSize, int startPage, boolean show,
+            final ResponseListener<BaseResponse> listener) {
+        Map<String, Integer> params = new HashMap<>(16);
+        params.put("pageSize", pageSize);
+        params.put("startPage", startPage);
+        RetrofitManager.getApiUrlManager()
+                       .getCooperateHospitalList(token, params)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, show, Tasks.GET_COOPERATE_HOSPITAL_LIST, listener));
+    }
 }
 

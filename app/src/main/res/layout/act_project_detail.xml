@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    android:background="@color/color_ffffff">
+
+    <include layout="@layout/public_title" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:padding="20dp"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:textStyle="bold"
+                android:textColor="@color/color_373d4d"
+                android:textSize="@dimen/text_18"
+                android:text="@string/txt_project_introduction"
+                android:layout_height="wrap_content" />
+
+            <com.yht.frame.widgets.textview.JustifiedTextView
+                android:id="@+id/tv_project_introduction"
+                android:layout_width="match_parent"
+                android:lineSpacingMultiplier="1.5"
+                android:layout_marginTop="12dp"
+                android:text="@string/txt_project_introduction_hint"
+                android:textSize="@dimen/text_15"
+                android:textColor="@color/color_6a6f80"
+                android:layout_height="wrap_content" />
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/app_hei_line"
+                android:layout_marginTop="20dp"
+                android:background="@color/color_ebedf0" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:textStyle="bold"
+                android:textColor="@color/color_373d4d"
+                android:textSize="@dimen/text_18"
+                android:layout_marginTop="20dp"
+                android:text="@string/txt_notice"
+                android:layout_height="wrap_content" />
+
+            <com.yht.frame.widgets.textview.JustifiedTextView
+                android:id="@+id/tv_project_notice"
+                android:layout_width="match_parent"
+                android:lineSpacingMultiplier="1.5"
+                android:layout_marginTop="12dp"
+                android:textSize="@dimen/text_15"
+                android:text="@string/txt_project_notice_hint"
+                android:textColor="@color/color_6a6f80"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>

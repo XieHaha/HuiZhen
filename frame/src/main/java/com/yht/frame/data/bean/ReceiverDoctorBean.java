@@ -6,9 +6,9 @@ import java.util.List;
 /**
  * @author 顿顿
  * @date 19/7/4 21:11
- * @des 医生详细信息
+ * @des 接诊医生详细信息
  */
-public class DoctorInfoBean implements Serializable {
+public class ReceiverDoctorBean implements Serializable {
     private static final long serialVersionUID = 5575806448053952083L;
     /**
      * 1为男性 2为女性
@@ -30,7 +30,7 @@ public class DoctorInfoBean implements Serializable {
     private String directHospitalName;
     private String directHospitalCode;
     private String directDepartmentName;
-    private List<CooperateHospitalBean> cooperateDepartmentList;
+    private List<ReceiverDoctorHospitalBean> cooperateDepartmentList;
     //2019年7月9日20:12:00
     private String departmentName;
     private String hospitalName;
@@ -172,11 +172,11 @@ public class DoctorInfoBean implements Serializable {
         this.enable = enable;
     }
 
-    public List<CooperateHospitalBean> getCooperateDepartmentList() {
+    public List<ReceiverDoctorHospitalBean> getCooperateDepartmentList() {
         return cooperateDepartmentList;
     }
 
-    public void setCooperateDepartmentList(List<CooperateHospitalBean> cooperateDepartmentList) {
+    public void setCooperateDepartmentList(List<ReceiverDoctorHospitalBean> cooperateDepartmentList) {
         this.cooperateDepartmentList = cooperateDepartmentList;
     }
 

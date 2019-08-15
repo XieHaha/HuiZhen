@@ -3,6 +3,7 @@ package com.yht.yihuantong.ui.auth;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
@@ -63,12 +64,16 @@ public class AddInfoActivity extends BaseActivity {
             publicTitleBarTitle.setText(R.string.txt_introduction);
             publicTitleBarMore.setText(R.string.txt_save);
             etHospital.getEditText().setHint(R.string.txt_introduction_hint);
+            //最大输入长度
+            etHospital.getEditText().setFilters(new InputFilter[] { new InputFilter.LengthFilter(500) });
             tvCalcNum.setVisibility(View.VISIBLE);
         }
         else {
             publicTitleBarMore.setText(R.string.txt_add);
             publicTitleBarTitle.setText(R.string.title_add_hospital);
             etHospital.getEditText().setHint(R.string.txt_search_hospital);
+            //最大输入长度
+            etHospital.getEditText().setFilters(new InputFilter[] { new InputFilter.LengthFilter(20) });
             tvCalcNum.setVisibility(View.GONE);
         }
         if (!TextUtils.isEmpty(name)) {

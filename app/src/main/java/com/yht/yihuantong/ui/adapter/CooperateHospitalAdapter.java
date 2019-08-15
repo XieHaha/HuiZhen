@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.yht.frame.data.bean.HospitalBean;
-import com.yht.frame.data.type.CurrencyDetailType;
 import com.yht.yihuantong.R;
 
 import java.util.List;
@@ -15,8 +14,7 @@ import java.util.List;
  * @date 19/6/10 12:18
  * @des 合作医院列表
  */
-public class CooperateHospitalAdapter extends BaseQuickAdapter<HospitalBean, BaseViewHolder>
-        implements CurrencyDetailType {
+public class CooperateHospitalAdapter extends BaseQuickAdapter<HospitalBean, BaseViewHolder> {
     public CooperateHospitalAdapter(int layoutResId, @Nullable List<HospitalBean> data) {
         super(layoutResId, data);
     }
