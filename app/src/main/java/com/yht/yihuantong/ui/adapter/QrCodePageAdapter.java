@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.yht.frame.data.bean.LoginBean;
 import com.yht.frame.data.bean.QrCodeBean;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.ScreenUtils;
@@ -27,10 +28,12 @@ import java.util.List;
  */
 public class QrCodePageAdapter extends PagerAdapter {
     private Context context;
+    private LoginBean loginBean;
     private List<QrCodeBean> list = new ArrayList<>();
 
-    public QrCodePageAdapter(Context context) {
+    public QrCodePageAdapter(Context context, LoginBean loginBean) {
         this.context = context;
+        this.loginBean = loginBean;
     }
 
     public void setList(List<QrCodeBean> list) {
@@ -83,11 +86,11 @@ public class QrCodePageAdapter extends PagerAdapter {
         BarCodeImageView barCodeImageView = view.findViewById(R.id.iv_qr);
         //基础信息
         Glide.with(context)
-             .load(item.getHeader())
+             .load(loginBean.getPhoto())
              .apply(GlideHelper.getOptions(BaseUtils.dp2px(context, 4)))
              .into(header);
-        name.setText(item.getName());
-        jobTitle.setText(item.getJobTitle());
+        name.setText(loginBean.getDoctorName());
+        jobTitle.setText(loginBean.getJobTitle());
         //二维码信息
         //这里设置第一页靠左，最后一页靠右，其他居中的效果
         if (position == 0) {

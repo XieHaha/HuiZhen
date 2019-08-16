@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +18,7 @@ import com.yht.frame.api.ApiManager;
 import com.yht.frame.api.notify.IChange;
 import com.yht.frame.api.notify.RegisterType;
 import com.yht.frame.data.BaseData;
+import com.yht.frame.data.BaseNetConfig;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
@@ -217,6 +217,7 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
             bannerBeans = new ArrayList<>();
             BannerBean bean = new BannerBean();
             bean.setBannerRemark(getString(R.string.txt_view_flipper_hint));
+            bean.setBannerId(-1);
             bannerBeans.add(bean);
         }
         for (int i = 0; i < bannerBeans.size(); i++) {
@@ -311,10 +312,11 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
                 break;
             case R.id.view_flipper:
                 BannerBean bean = bannerBeans.get(viewFlipper.getDisplayedChild());
-                String url = bean.getBannerUrl();
-                if (!TextUtils.isEmpty(url)) {
+                if (bean.getBannerId() != -1) {
                     intent = new Intent(getContext(), WebViewActivity.class);
-                    intent.putExtra(CommonData.KEY_PUBLIC, url);
+                    intent.putExtra(CommonData.KEY_PUBLIC,
+                                    ZycApplication.getInstance().getBaseUrl() + BaseNetConfig.BASE_BASIC_BANNER_URL +
+                                    bean.getBannerId());
                     intent.putExtra(CommonData.KEY_TITLE, bean.getBannerRemark());
                     startActivity(intent);
                 }
@@ -392,6 +394,15 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
         }
     }
 
+    /**
+     * 开启扫一扫
+     */
+    private void openScan() {
+        Intent intent = new Intent(getContext(), CaptureActivity.class);
+        startActivityForResult(intent, REQUEST_CODE_SCAN);
+        Objects.requireNonNull(getActivity()).overridePendingTransition(R.anim.keep, R.anim.keep);
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode != Activity.RESULT_OK) {
@@ -404,15 +415,6 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    /**
-     * 开启扫一扫
-     */
-    private void openScan() {
-        Intent intent = new Intent(getContext(), CaptureActivity.class);
-        startActivityForResult(intent, REQUEST_CODE_SCAN);
-        Objects.requireNonNull(getActivity()).overridePendingTransition(R.anim.keep, R.anim.keep);
     }
 
     @Override

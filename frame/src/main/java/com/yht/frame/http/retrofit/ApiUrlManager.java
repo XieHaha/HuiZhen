@@ -608,12 +608,12 @@ public interface ApiUrlManager {
     Observable<BaseResponse<OrderNumStatisticsBean>> getStudioOrderStatistics(@Header("token") String token);
 
     /**
-     * 工作室 banner
+     * 工作室 banner 列表
      *
      * @param token token
      * @return 返回值
      */
-    @GET("client/banner/banner_by_doctor")
+    @GET("client/banner/banner_list")
     Observable<BaseResponse<List<BannerBean>>> getBanner(@Header("token") String token);
 
     /**
@@ -679,4 +679,22 @@ public interface ApiUrlManager {
     @POST("client/product/list")
     Observable<BaseResponse<BaseListBean<HospitalProductBean>>> getCooperateHospitalProjectList(
             @Header("token") String token, @Body Map<String, Object> info);
+
+    /**
+     * 获取医生二维码（医生端扫描）
+     *
+     * @param token token
+     * @return 返回值
+     */
+    @GET("client/doctor/qr/user")
+    Observable<BaseResponse<VersionBean>> getDoctorQrCode(@Header("token") String token);
+
+    /**
+     * 获取医生二维码（微信端扫描）
+     *
+     * @param token token
+     * @return 返回值
+     */
+    @GET("client/doctor/qr/wx")
+    Observable<BaseResponse<VersionBean>> getDoctorQrCodeByWeChat(@Header("token") String token);
 }

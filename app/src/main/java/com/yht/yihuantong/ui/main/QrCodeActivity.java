@@ -7,10 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
+import com.yht.frame.data.Tasks;
 import com.yht.frame.data.bean.QrCodeBean;
+import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
-import com.yht.frame.widgets.qrcode.QrCodeTransformer;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.adapter.QrCodePageAdapter;
 
@@ -30,6 +32,9 @@ public class QrCodeActivity extends BaseActivity {
     @BindView(R.id.status_bar_fix)
     View statusBarFix;
     private QrCodePageAdapter qrCodePageAdapter;
+    /**
+     * TRUE 显示医生二维码
+     */
     private boolean mode;
 
     @Override
@@ -55,13 +60,22 @@ public class QrCodeActivity extends BaseActivity {
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-        qrCodePageAdapter = new QrCodePageAdapter(this);
+        qrCodePageAdapter = new QrCodePageAdapter(this, loginBean);
         qrCodePageAdapter.setList(initQrCodeData());
-        viewPager.setPageTransformer(true, new QrCodeTransformer(this));
         viewPager.setAdapter(qrCodePageAdapter);
         if (mode) {
             viewPager.setCurrentItem(1);
         }
+    }
+
+    /**
+     * 获取二维码
+     */
+    private void getDoctorQrCode() {
+        //医生端扫描使用
+        RequestUtils.getDoctorQrCode(this, loginBean.getToken(), this);
+        //微信端扫描使用
+        RequestUtils.getDoctorQrCodeByWeChat(this, loginBean.getToken(), this);
     }
 
     /**
@@ -70,16 +84,10 @@ public class QrCodeActivity extends BaseActivity {
     private ArrayList<QrCodeBean> initQrCodeData() {
         ArrayList<QrCodeBean> list = new ArrayList<>();
         QrCodeBean one = new QrCodeBean();
-        one.setHeader(loginBean.getPhoto());
-        one.setName(loginBean.getDoctorName());
-        one.setJobTitle(loginBean.getJobTitle());
         one.setTitle(getString(R.string.txt_wechat_scan_hint));
         one.setMode(getString(R.string.txt_menu_patient));
         one.setContent("患者添加我");
         QrCodeBean two = new QrCodeBean();
-        two.setHeader(loginBean.getPhoto());
-        two.setName(loginBean.getDoctorName());
-        two.setJobTitle(loginBean.getJobTitle());
         two.setTitle(getString(R.string.txt_scan_hint));
         two.setMode(getString(R.string.txt_menu_doctor));
         two.setContent("医生添加我");
@@ -91,5 +99,19 @@ public class QrCodeActivity extends BaseActivity {
     @OnClick(R.id.public_title_bar_back)
     public void onViewClicked() {
         finish();
+    }
+
+    @Override
+    public void onResponseSuccess(Tasks task, BaseResponse response) {
+        super.onResponseSuccess(task, response);
+        switch (task) {
+            case GET_DOCTOR_QR_CODE:
+
+                break;
+            case GET_DOCTOR_QR_CODE_BY_WECHAT:
+                break;
+            default:
+                break;
+        }
     }
 }

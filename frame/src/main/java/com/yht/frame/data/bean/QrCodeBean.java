@@ -10,36 +10,10 @@ import java.io.Serializable;
 public class QrCodeBean implements Serializable {
     private static final long serialVersionUID = 5071743849994487696L;
 
-    private String header;
-    private String name;
-    private String jobTitle;
     private String title;
     private String mode;
     private String content;
 
-    public String getHeader() {
-        return header;
-    }
-
-    public void setHeader(String header) {
-        this.header = header;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getJobTitle() {
-        return jobTitle;
-    }
-
-    public void setJobTitle(String jobTitle) {
-        this.jobTitle = jobTitle;
-    }
 
     public String getTitle() {
         return title;

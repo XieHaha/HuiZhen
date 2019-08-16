@@ -240,6 +240,14 @@ WE_CHAT_LOGIN,
     /**
      * 获取当前医生的合作医院下服务项
      */
-    GET_COOPERATE_HOSPITAL_PROJECT_LIST,}
-
+    GET_COOPERATE_HOSPITAL_PROJECT_LIST,
+    /**
+     * 获取医生二维码（医生端扫描）
+     */
+    GET_DOCTOR_QR_CODE,
+    /**
+     * 获取医生二维码（微信端扫描）
+     */
+    GET_DOCTOR_QR_CODE_BY_WECHAT,
+}
 

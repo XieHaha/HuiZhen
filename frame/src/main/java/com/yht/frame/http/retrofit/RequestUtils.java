@@ -367,8 +367,7 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .getDoctorListByDoctorCode(token)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(
-                               new AbstractLoadViewObserver<>(context, Tasks.GET_DOCTOR_LIST, listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_DOCTOR_LIST, listener));
     }
 
     public static void getPatientDetailByPatientCode(Context context, String code, String token,
@@ -698,6 +697,22 @@ public class RequestUtils {
                        .subscribe(
                                new AbstractLoadViewObserver<>(context, show, Tasks.GET_COOPERATE_HOSPITAL_PROJECT_LIST,
                                                               listener));
+    }
+
+    public static void getDoctorQrCode(Context context, String token, final ResponseListener<BaseResponse> listener) {
+        RetrofitManager.getApiUrlManager()
+                       .getDoctorQrCode(token)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_DOCTOR_QR_CODE, listener));
+    }
+
+    public static void getDoctorQrCodeByWeChat(Context context, String token,
+            final ResponseListener<BaseResponse> listener) {
+        RetrofitManager.getApiUrlManager()
+                       .getDoctorQrCodeByWeChat(token)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(
+                               new AbstractLoadViewObserver<>(context, Tasks.GET_DOCTOR_QR_CODE_BY_WECHAT, listener));
     }
 }
 

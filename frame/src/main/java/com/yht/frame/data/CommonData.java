@@ -172,4 +172,8 @@ public interface CommonData {
      * 外链跳转页面销毁逻辑
      */
     String KEY_IS_OUTER_CHAIN = "key_is_outer_chain";
+    /**
+     * banner
+     */
+    String KEY_BANNER_ID = "key_banner_id";
 }

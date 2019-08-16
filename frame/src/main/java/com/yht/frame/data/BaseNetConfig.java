@@ -41,6 +41,10 @@ public interface BaseNetConfig {
      */
     String BASE_BASIC_PRIVATE_PROTOCOL_URL = "client/sys/protocol_by_privacy";
     /**
+     * banner详情
+     */
+    String BASE_BASIC_BANNER_URL = "client/banner/banner_desc?bannerId=";
+    /**
      * 图片基础链接
      */
     String BASE_URL_FILE = "client/file/download_file?filePath=";

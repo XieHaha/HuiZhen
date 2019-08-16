@@ -10,8 +10,8 @@ import java.io.Serializable;
 public class BannerBean implements Serializable {
     private static final long serialVersionUID = -6912693721076342355L;
     private int intervalTime;
+    private int bannerId;
     private String bannerRemark;
-    private String bannerUrl;
 
     public int getIntervalTime() {
         return intervalTime;
@@ -21,19 +21,19 @@ public class BannerBean implements Serializable {
         this.intervalTime = intervalTime;
     }
 
+    public int getBannerId() {
+        return bannerId;
+    }
+
+    public void setBannerId(int bannerId) {
+        this.bannerId = bannerId;
+    }
+
     public String getBannerRemark() {
         return bannerRemark;
     }
 
     public void setBannerRemark(String bannerRemark) {
         this.bannerRemark = bannerRemark;
-    }
-
-    public String getBannerUrl() {
-        return bannerUrl;
-    }
-
-    public void setBannerUrl(String bannerUrl) {
-        this.bannerUrl = bannerUrl;
     }
 }
