@@ -161,7 +161,7 @@ public class MainActivity extends BaseActivity
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        largeIcon = ((BitmapDrawable)ContextCompat.getDrawable(this,R.mipmap.logo_icon)).getBitmap();
+        largeIcon = ((BitmapDrawable)ContextCompat.getDrawable(this, R.mipmap.logo_icon)).getBitmap();
         ZycApplication.getInstance().setLoginStatus(true);
         boolean protocol = sharePreferenceUtil.getBoolean(CommonData.KEY_IS_PROTOCOL_UPDATE_DATE);
         if (protocol) {
@@ -496,7 +496,7 @@ public class MainActivity extends BaseActivity
     private void selectTab(int index) {
         switch (index) {
             case BASE_ZERO:
-                viewPager.setCurrentItem(index);
+                viewPager.setCurrentItem(index, false);
                 tvMessage.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
                 tvWorker.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
                 tvPatient.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
@@ -505,7 +505,7 @@ public class MainActivity extends BaseActivity
                 actMainTab3.setSelected(false);
                 break;
             case BASE_TWO:
-                viewPager.setCurrentItem(index);
+                viewPager.setCurrentItem(index, false);
                 tvMessage.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
                 tvWorker.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
                 tvPatient.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
@@ -515,7 +515,7 @@ public class MainActivity extends BaseActivity
                 break;
             case BASE_ONE:
             default:
-                viewPager.setCurrentItem(1);
+                viewPager.setCurrentItem(1, false);
                 tvMessage.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
                 tvWorker.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
                 tvPatient.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));

@@ -6,93 +6,106 @@
     android:orientation="vertical"
     android:paddingTop="10dp">
 
-    <RelativeLayout
+    <LinearLayout
+        android:id="@+id/layout_header"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp">
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/tv_search_patient"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="38dp"
-            android:hint="@string/txt_patient_hint"
-            android:textSize="@dimen/text_16"
-            android:textColorHint="@color/color_a1a8b3"
-            android:textColor="@color/color_373d4d"
-            android:singleLine="true"
-            android:focusable="false"
+            android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
+
+            <TextView
+                android:id="@+id/tv_search_patient"
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
+                android:hint="@string/txt_patient_hint"
+                android:textSize="@dimen/text_16"
+                android:textColorHint="@color/color_a1a8b3"
+                android:textColor="@color/color_373d4d"
+                android:singleLine="true"
+                android:focusable="false"
+                android:gravity="center_vertical"
+                android:focusableInTouchMode="false"
+                android:background="@drawable/corner4_f0f3fa_bg"
+                android:paddingStart="39dp"
+                android:paddingEnd="16dp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_search"
+                android:layout_centerVertical="true"
+                android:paddingStart="16dp" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_recently"
+            android:layout_width="match_parent"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
             android:gravity="center_vertical"
-            android:focusableInTouchMode="false"
-            android:background="@drawable/corner4_f0f3fa_bg"
-            android:paddingStart="39dp"
-            android:paddingEnd="16dp" />
+            android:layout_height="wrap_content">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/ic_search"
-            android:layout_centerVertical="true"
-            android:paddingStart="16dp" />
-    </RelativeLayout>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_friend_recently" />
 
-    <LinearLayout
-        android:id="@+id/layout_recently"
-        android:layout_width="match_parent"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
-        android:gravity="center_vertical"
-        android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_16"
+                android:textStyle="bold"
+                android:text="@string/txt_recently_add"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/color_373d4d" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/ic_friend_recently" />
+        </LinearLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/text_16"
-            android:textStyle="bold"
-            android:text="@string/txt_recently_add"
-            android:layout_marginStart="10dp"
-            android:textColor="@color/color_373d4d" />
+        <LinearLayout
+            android:id="@+id/layout_patient_tag"
+            android:layout_width="match_parent"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:gravity="center_vertical"
+            android:layout_height="wrap_content">
 
-    </LinearLayout>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_friend_tag" />
 
-    <LinearLayout
-        android:id="@+id/layout_patient_tag"
-        android:layout_width="match_parent"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
-        android:gravity="center_vertical"
-        android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_16"
+                android:textStyle="bold"
+                android:text="@string/txt_patient_label"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/color_373d4d" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/ic_friend_tag" />
+        </LinearLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/text_16"
-            android:textStyle="bold"
-            android:text="@string/txt_patient_label"
-            android:layout_marginStart="10dp"
-            android:textColor="@color/color_373d4d" />
-
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:background="@color/color_f8f9fa" />
     </LinearLayout>
 
     <View
+        android:id="@+id/view_space"
         android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:background="@color/color_f8f9fa" />
+        android:visibility="gone"
+        android:layout_height="20dp" />
 
 </LinearLayout>

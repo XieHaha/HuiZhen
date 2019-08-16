@@ -64,6 +64,7 @@
     <string name="txt_none_patient">暂无患者</string>
     <string name="txt_none_doctor_friend">暂无医生好友</string>
     <string name="txt_search_none_patient">没找到该患者</string>
+    <string name="txt_search_none_doctor">没找到该医生好友</string>
     <string name="txt_none_recording">暂无记录</string>
     <string name="txt_none_medical_recording">暂无诊疗记录</string>
     <string name="txt_none_upgrade">功能升级</string>

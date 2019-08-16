@@ -9,8 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -29,14 +27,13 @@ import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.widgets.dialog.HintDialog;
-import com.yht.frame.widgets.edittext.AbstractTextWatcher;
-import com.yht.frame.widgets.edittext.SuperEditText;
 import com.yht.frame.widgets.recyclerview.IndexBar;
 import com.yht.frame.widgets.recyclerview.SideBar;
 import com.yht.frame.widgets.recyclerview.decoration.SideBarDoctorDecoration;
 import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.adapter.DoctorAdapter;
+import com.yht.yihuantong.ui.main.listener.OnSearchListener;
 import com.yht.yihuantong.ui.patient.PatientPersonalActivity;
 
 import org.litepal.crud.DataSupport;
@@ -45,7 +42,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 
 /**
  * @author 顿顿
@@ -57,12 +53,6 @@ public class DoctorFragment extends BaseFragment
                    BaseQuickAdapter.RequestLoadMoreListener, SwipeRefreshLayout.OnRefreshListener {
     @BindView(R.id.recyclerview)
     RecyclerView recyclerview;
-    @BindView(R.id.layout_bg)
-    RelativeLayout layoutBg;
-    @BindView(R.id.et_search_patient)
-    SuperEditText etSearchPatient;
-    @BindView(R.id.layout_search)
-    RelativeLayout layoutSearch;
     @BindView(R.id.tv_none_patient)
     TextView tvNonePatient;
     @BindView(R.id.layout_refresh)
@@ -71,8 +61,9 @@ public class DoctorFragment extends BaseFragment
     SideBar sideBar;
     @BindView(R.id.index_bar)
     IndexBar indexBar;
-    private View headerView;
+    private View headerView, spaceView;
     private TextView searchText;
+    private RelativeLayout layoutHeader;
     /**
      * 适配器
      */
@@ -85,6 +76,10 @@ public class DoctorFragment extends BaseFragment
      * 分隔线
      */
     private SideBarDoctorDecoration decoration;
+    /**
+     * 搜索回调
+     */
+    private OnSearchListener onSearchListener;
     /**
      * 所有患者数据
      */
@@ -135,21 +130,6 @@ public class DoctorFragment extends BaseFragment
     @Override
     public void initListener() {
         super.initListener();
-        etSearchPatient.addTextChangedListener(new AbstractTextWatcher() {
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (TextUtils.isEmpty(s.toString())) {
-                    layoutBg.setVisibility(View.VISIBLE);
-                    getDoctorsByLocal();
-                }
-                else {
-                    sortSearchData(s.toString());
-                    layoutBg.setVisibility(View.GONE);
-                    doctorAdapter.setNewData(doctorBeans);
-                    doctorAdapter.loadMoreEnd();
-                }
-            }
-        });
         //注册患者状态监听
         iNotifyChangeListenerServer.registerPatientListChangeListener(patientDataUpdate, RegisterType.REGISTER);
     }
@@ -163,6 +143,8 @@ public class DoctorFragment extends BaseFragment
         doctorAdapter.setOnItemClickListener(this);
         doctorAdapter.setOnItemChildClickListener(this);
         headerView = LayoutInflater.from(getContext()).inflate(R.layout.view_doctor_header, null);
+        layoutHeader = headerView.findViewById(R.id.layout_header);
+        spaceView = headerView.findViewById(R.id.view_space);
         //头部搜索按钮
         searchText = headerView.findViewById(R.id.tv_search_patient);
         searchText.setOnClickListener(this);
@@ -179,10 +161,14 @@ public class DoctorFragment extends BaseFragment
         RequestUtils.getDoctorListByDoctorCode(getContext(), loginBean.getToken(), this);
     }
 
+    public void setOnSearchListener(OnSearchListener onSearchListener) {
+        this.onSearchListener = onSearchListener;
+    }
+
     /**
      * 本地取缓存数据
      */
-    private void getDoctorsByLocal() {
+    public void getDoctorsByLocal() {
         //先从本地取
         doctorBeans = DataSupport.findAll(DoctorBean.class);
         if (doctorBeans != null) {
@@ -194,7 +180,6 @@ public class DoctorFragment extends BaseFragment
             else {
                 doctorAdapter.setEnableLoadMore(false);
             }
-            etSearchPatient.setHint(String.format(getString(R.string.txt_doctor_search_hint), doctorBeans.size()));
             searchText.setHint(String.format(getString(R.string.txt_doctor_search_hint), doctorBeans.size()));
         }
     }
@@ -210,7 +195,7 @@ public class DoctorFragment extends BaseFragment
         else {
             recyclerview.setVisibility(View.GONE);
             tvNonePatient.setVisibility(View.VISIBLE);
-            tvNonePatient.setText(R.string.txt_none_patient);
+            tvNonePatient.setText(R.string.txt_none_doctor_friend);
         }
         //对数据源进行排序
         BaseUtils.sortDoctorData(doctorBeans);
@@ -220,18 +205,16 @@ public class DoctorFragment extends BaseFragment
         decoration.setDatas(doctorBeans, tagsStr);
     }
 
-    private void sortSearchData(String tag) {
+    public void sortSearchData(String tag) {
         doctorBeans = LitePalHelper.findDoctors(tag);
         if (doctorBeans != null && doctorBeans.size() > 0) {
             recyclerview.setVisibility(View.VISIBLE);
             tvNonePatient.setVisibility(View.GONE);
-            layoutBg.setVisibility(View.VISIBLE);
         }
         else {
             recyclerview.setVisibility(View.GONE);
-            layoutBg.setVisibility(View.GONE);
             tvNonePatient.setVisibility(View.VISIBLE);
-            tvNonePatient.setText(R.string.txt_search_none_patient);
+            tvNonePatient.setText(R.string.txt_search_none_doctor);
         }
         //对数据源进行排序
         BaseUtils.sortDoctorData(doctorBeans);
@@ -239,40 +222,35 @@ public class DoctorFragment extends BaseFragment
         String tagsStr = BaseUtils.getDoctorTags(doctorBeans);
         sideBar.setIndexStr(tagsStr);
         decoration.setDatas(doctorBeans, tagsStr);
+        doctorAdapter.setNewData(doctorBeans);
+        if (doctorBeans.size() > BaseData.BASE_PAGE_DATA_NUM) {
+            doctorAdapter.loadMoreEnd();
+        }
+        else {
+            doctorAdapter.setEnableLoadMore(false);
+        }
     }
 
     /**
      * 开启搜索
      */
     private void openSearch() {
+        if (onSearchListener != null) {
+            onSearchListener.onSearch(BASE_TWO, doctorBeans.size());
+        }
         //搜索时 关闭下拉刷新
         layoutRefresh.setEnabled(false);
-        layoutSearch.setVisibility(View.VISIBLE);
-        layoutBg.setVisibility(View.VISIBLE);
-        etSearchPatient.requestFocus();
-        showSoftInputFromWindow(getContext(), etSearchPatient);
-        //显示输入框 隐藏原有输入框
-        decoration.setHasHeader(false);
-        doctorAdapter.removeHeaderView(headerView);
-        displaySearchLayout();
+        layoutHeader.setVisibility(View.GONE);
+        spaceView.setVisibility(View.VISIBLE);
     }
 
     /**
      * 关闭搜索
      */
-    private void closeSearch() {
+    public void closeSearch() {
         layoutRefresh.setEnabled(true);
-        //隐藏搜索框时重新添加头部
-        decoration.setHasHeader(true);
-        if (doctorAdapter.getHeaderLayoutCount() == 0) {
-            doctorAdapter.addHeaderView(headerView);
-        }
-        doctorAdapter.notifyDataSetChanged();
-        etSearchPatient.setText("");
-        //隐藏软键盘
-        hideSoftInputFromWindow(getContext(), etSearchPatient);
-        //开启隐藏动画
-        hideSearchLayout();
+        layoutHeader.setVisibility(View.GONE);
+        spaceView.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -316,18 +294,6 @@ public class DoctorFragment extends BaseFragment
         }
     }
 
-    @OnClick({ R.id.tv_search_cancel, R.id.layout_bg })
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.tv_search_cancel:
-            case R.id.layout_bg:
-                closeSearch();
-                break;
-            default:
-                break;
-        }
-    }
-
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         Intent intent = new Intent(getContext(), PatientPersonalActivity.class);
@@ -363,7 +329,6 @@ public class DoctorFragment extends BaseFragment
             else {
                 doctorAdapter.setEnableLoadMore(false);
             }
-            etSearchPatient.setHint(String.format(getString(R.string.txt_doctor_search_hint), doctorBeans.size()));
             searchText.setHint(String.format(getString(R.string.txt_doctor_search_hint), doctorBeans.size()));
         }
     }
@@ -380,41 +345,6 @@ public class DoctorFragment extends BaseFragment
     @Override
     public void onRefresh() {
         getDoctorsByNetWork();
-    }
-
-    /**
-     * 显示搜索框
-     */
-    private void displaySearchLayout() {
-        Animation toUp = AnimationUtils.loadAnimation(getContext(), R.anim.anim_top_in);
-        Animation alpha = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
-        layoutBg.startAnimation(alpha);
-        layoutSearch.startAnimation(toUp);
-    }
-
-    /**
-     * 隐藏搜索框
-     */
-    private void hideSearchLayout() {
-        Animation toUp = AnimationUtils.loadAnimation(getContext(), R.anim.anim_top_out);
-        Animation alpha = AnimationUtils.loadAnimation(getContext(), R.anim.fade_out);
-        toUp.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                layoutSearch.setVisibility(View.GONE);
-                layoutBg.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-            }
-        });
-        layoutBg.startAnimation(alpha);
-        layoutSearch.startAnimation(toUp);
     }
 
     @Override

@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:background="@color/color_ffffff"
     android:id="@+id/layout_search"
-    android:paddingTop="10dp">
+    android:paddingTop="47dp">
 
     <LinearLayout
         android:id="@+id/layout"
@@ -16,10 +16,9 @@
         android:layout_marginEnd="15dp">
 
         <com.yht.frame.widgets.edittext.SuperEditText
-            android:id="@+id/et_search_patient"
+            android:id="@+id/et_search"
             android:layout_width="match_parent"
             android:layout_height="38dp"
-            android:hint="@string/txt_patient_hint"
             android:textSize="@dimen/text_16"
             android:textColorHint="@color/color_a1a8b3"
             android:textColor="@color/color_373d4d"
