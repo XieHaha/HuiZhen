@@ -12,7 +12,7 @@
         android:id="@+id/tv_search_patient"
         android:layout_width="match_parent"
         android:layout_height="38dp"
-        android:hint="@string/txt_patient_hint"
+        android:hint="@string/txt_doctor_hint"
         android:textSize="@dimen/text_16"
         android:textColorHint="@color/color_a1a8b3"
         android:textColor="@color/color_373d4d"

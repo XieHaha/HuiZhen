@@ -8,6 +8,7 @@ import com.yht.frame.data.bean.CheckBean;
 import com.yht.frame.data.bean.CheckDetailBean;
 import com.yht.frame.data.bean.CooperateHospitalBean;
 import com.yht.frame.data.bean.DoctorAuthBean;
+import com.yht.frame.data.bean.DoctorBean;
 import com.yht.frame.data.bean.DoctorCurrencyBean;
 import com.yht.frame.data.bean.DoctorCurrencyDetailBean;
 import com.yht.frame.data.bean.HospitalBean;
@@ -389,6 +390,15 @@ public interface ApiUrlManager {
     @GET("client/patient/getbydoccode")
     Observable<BaseResponse<List<PatientBean>>> getPatientListByDoctorCode(@Header("token") String token,
             @Query("code") String info);
+
+    /**
+     * 获取医生好友列表信息
+     *
+     * @param token token
+     * @return 返回值
+     */
+    @GET("client/doctor/friends")
+    Observable<BaseResponse<List<DoctorBean>>> getDoctorListByDoctorCode(@Header("token") String token);
 
     /**
      * 根据患者编码获取患者信息

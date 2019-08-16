@@ -62,6 +62,7 @@
     <string name="txt_none_network">抱歉，好像网络出问题了</string>
     <string name="txt_none_message">暂无消息</string>
     <string name="txt_none_patient">暂无患者</string>
+    <string name="txt_none_doctor_friend">暂无医生好友</string>
     <string name="txt_search_none_patient">没找到该患者</string>
     <string name="txt_none_recording">暂无记录</string>
     <string name="txt_none_medical_recording">暂无诊疗记录</string>
@@ -111,6 +112,7 @@
     <string name="txt_patient">患者</string>
     <string name="txt_doctor">医生</string>
     <string name="txt_patient_hint">请输入患者姓名</string>
+    <string name="txt_doctor_hint">请输入医生好友姓名</string>
     <string name="txt_message_status">全部已读</string>
     <string name="txt_my_patient">我的患者</string>
     <string name="txt_my_consulting_room">我的诊疗室</string>

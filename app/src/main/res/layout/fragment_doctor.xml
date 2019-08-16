@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:textSize="@dimen/text_15"
         android:textColor="@color/color_6a6f80"
-        android:text="@string/txt_none_patient"
+        android:text="@string/txt_none_doctor_friend"
         android:drawableTop="@mipmap/pic_none_paient"
         android:gravity="center"
         android:layout_centerHorizontal="true"

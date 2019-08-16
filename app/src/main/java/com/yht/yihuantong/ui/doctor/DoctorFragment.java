@@ -23,6 +23,7 @@ import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
+import com.yht.frame.data.bean.DoctorBean;
 import com.yht.frame.data.bean.PatientBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseFragment;
@@ -32,10 +33,10 @@ import com.yht.frame.widgets.edittext.AbstractTextWatcher;
 import com.yht.frame.widgets.edittext.SuperEditText;
 import com.yht.frame.widgets.recyclerview.IndexBar;
 import com.yht.frame.widgets.recyclerview.SideBar;
-import com.yht.frame.widgets.recyclerview.decoration.SideBarItemDecoration;
+import com.yht.frame.widgets.recyclerview.decoration.SideBarDoctorDecoration;
 import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.yht.yihuantong.R;
-import com.yht.yihuantong.ui.adapter.PatientAdapter;
+import com.yht.yihuantong.ui.adapter.DoctorAdapter;
 import com.yht.yihuantong.ui.patient.PatientPersonalActivity;
 
 import org.litepal.crud.DataSupport;
@@ -75,7 +76,7 @@ public class DoctorFragment extends BaseFragment
     /**
      * 适配器
      */
-    private PatientAdapter patientAdapter;
+    private DoctorAdapter doctorAdapter;
     /**
      * recycler
      */
@@ -83,15 +84,15 @@ public class DoctorFragment extends BaseFragment
     /**
      * 分隔线
      */
-    private SideBarItemDecoration decoration;
+    private SideBarDoctorDecoration decoration;
     /**
      * 所有患者数据
      */
-    private List<PatientBean> patientBeans = new ArrayList<>();
+    private List<DoctorBean> doctorBeans = new ArrayList<>();
     /**
      * 患者数据主动更新
      */
-    private IChange<String> patientDataUpdate = data -> getPatients();
+    private IChange<String> patientDataUpdate = data -> getDoctorsByNetWork();
 
     @Override
     public int getLayoutID() {
@@ -105,7 +106,7 @@ public class DoctorFragment extends BaseFragment
                                               android.R.color.holo_orange_light, android.R.color.holo_green_light);
         layoutRefresh.setOnRefreshListener(this);
         recyclerview.setLayoutManager(layoutManager = new LinearLayoutManager(getContext()));
-        recyclerview.addItemDecoration(decoration = new SideBarItemDecoration(getContext()));
+        recyclerview.addItemDecoration(decoration = new SideBarDoctorDecoration(getContext()));
     }
 
     @Override
@@ -114,20 +115,20 @@ public class DoctorFragment extends BaseFragment
         iNotifyChangeListenerServer = ApiManager.getInstance().getServer();
         initEvents();
         initAdapter();
-        initPatientData();
+        initDoctorData();
     }
 
     /**
      * 患者数据处理
      */
-    private void initPatientData() {
+    private void initDoctorData() {
         //是否有缓存
-        boolean cache = sharePreferenceUtil.getBoolean(CommonData.KEY_UPDATE_PATIENT_DATA);
+        boolean cache = sharePreferenceUtil.getBoolean(CommonData.KEY_UPDATE_DOCTOR_DATA);
         if (cache) {
-            getPatientsByLocal();
+            getDoctorsByLocal();
         }
         else {
-            getPatients();
+            getDoctorsByNetWork();
         }
     }
 
@@ -139,13 +140,13 @@ public class DoctorFragment extends BaseFragment
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (TextUtils.isEmpty(s.toString())) {
                     layoutBg.setVisibility(View.VISIBLE);
-                    getPatientsByLocal();
+                    getDoctorsByLocal();
                 }
                 else {
                     sortSearchData(s.toString());
                     layoutBg.setVisibility(View.GONE);
-                    patientAdapter.setNewData(patientBeans);
-                    patientAdapter.loadMoreEnd();
+                    doctorAdapter.setNewData(doctorBeans);
+                    doctorAdapter.loadMoreEnd();
                 }
             }
         });
@@ -158,43 +159,43 @@ public class DoctorFragment extends BaseFragment
      */
     private void initAdapter() {
         //患者列表
-        patientAdapter = new PatientAdapter(R.layout.item_patient, patientBeans);
-        patientAdapter.setOnItemClickListener(this);
-        patientAdapter.setOnItemChildClickListener(this);
+        doctorAdapter = new DoctorAdapter(R.layout.item_patient, doctorBeans);
+        doctorAdapter.setOnItemClickListener(this);
+        doctorAdapter.setOnItemChildClickListener(this);
         headerView = LayoutInflater.from(getContext()).inflate(R.layout.view_doctor_header, null);
         //头部搜索按钮
         searchText = headerView.findViewById(R.id.tv_search_patient);
         searchText.setOnClickListener(this);
-        patientAdapter.addHeaderView(headerView);
-        patientAdapter.setLoadMoreView(new CustomLoadMoreView());
-        patientAdapter.setOnLoadMoreListener(this, recyclerview);
-        recyclerview.setAdapter(patientAdapter);
+        doctorAdapter.addHeaderView(headerView);
+        doctorAdapter.setLoadMoreView(new CustomLoadMoreView());
+        doctorAdapter.setOnLoadMoreListener(this, recyclerview);
+        recyclerview.setAdapter(doctorAdapter);
     }
 
     /**
      * 获取最新数据
      */
-    private void getPatients() {
-        RequestUtils.getPatientListByDoctorCode(getContext(), loginBean.getDoctorCode(), loginBean.getToken(), this);
+    private void getDoctorsByNetWork() {
+        RequestUtils.getDoctorListByDoctorCode(getContext(), loginBean.getToken(), this);
     }
 
     /**
      * 本地取缓存数据
      */
-    private void getPatientsByLocal() {
+    private void getDoctorsByLocal() {
         //先从本地取
-        patientBeans = DataSupport.findAll(PatientBean.class);
-        if (patientBeans != null) {
+        doctorBeans = DataSupport.findAll(DoctorBean.class);
+        if (doctorBeans != null) {
             sortData();
-            patientAdapter.setNewData(patientBeans);
-            if (patientBeans.size() > BaseData.BASE_PAGE_DATA_NUM) {
-                patientAdapter.loadMoreEnd();
+            doctorAdapter.setNewData(doctorBeans);
+            if (doctorBeans.size() > BaseData.BASE_PAGE_DATA_NUM) {
+                doctorAdapter.loadMoreEnd();
             }
             else {
-                patientAdapter.setEnableLoadMore(false);
+                doctorAdapter.setEnableLoadMore(false);
             }
-            etSearchPatient.setHint(String.format(getString(R.string.txt_doctor_search_hint), patientBeans.size()));
-            searchText.setHint(String.format(getString(R.string.txt_doctor_search_hint), patientBeans.size()));
+            etSearchPatient.setHint(String.format(getString(R.string.txt_doctor_search_hint), doctorBeans.size()));
+            searchText.setHint(String.format(getString(R.string.txt_doctor_search_hint), doctorBeans.size()));
         }
     }
 
@@ -202,7 +203,7 @@ public class DoctorFragment extends BaseFragment
      * 对数据进行排序
      */
     private void sortData() {
-        if (patientBeans != null && patientBeans.size() > 0) {
+        if (doctorBeans != null && doctorBeans.size() > 0) {
             recyclerview.setVisibility(View.VISIBLE);
             tvNonePatient.setVisibility(View.GONE);
         }
@@ -212,16 +213,16 @@ public class DoctorFragment extends BaseFragment
             tvNonePatient.setText(R.string.txt_none_patient);
         }
         //对数据源进行排序
-        BaseUtils.sortData(patientBeans);
+        BaseUtils.sortDoctorData(doctorBeans);
         //返回一个包含所有Tag字母在内的字符串并赋值给tagsStr
-        String tagsStr = BaseUtils.getTags(patientBeans);
+        String tagsStr = BaseUtils.getDoctorTags(doctorBeans);
         sideBar.setIndexStr(tagsStr);
-        decoration.setDatas(patientBeans, tagsStr);
+        decoration.setDatas(doctorBeans, tagsStr);
     }
 
     private void sortSearchData(String tag) {
-        patientBeans = LitePalHelper.findPatients(tag);
-        if (patientBeans != null && patientBeans.size() > 0) {
+        doctorBeans = LitePalHelper.findDoctors(tag);
+        if (doctorBeans != null && doctorBeans.size() > 0) {
             recyclerview.setVisibility(View.VISIBLE);
             tvNonePatient.setVisibility(View.GONE);
             layoutBg.setVisibility(View.VISIBLE);
@@ -233,11 +234,11 @@ public class DoctorFragment extends BaseFragment
             tvNonePatient.setText(R.string.txt_search_none_patient);
         }
         //对数据源进行排序
-        BaseUtils.sortData(patientBeans);
+        BaseUtils.sortDoctorData(doctorBeans);
         //返回一个包含所有Tag字母在内的字符串并赋值给tagsStr
-        String tagsStr = BaseUtils.getTags(patientBeans);
+        String tagsStr = BaseUtils.getDoctorTags(doctorBeans);
         sideBar.setIndexStr(tagsStr);
-        decoration.setDatas(patientBeans, tagsStr);
+        decoration.setDatas(doctorBeans, tagsStr);
     }
 
     /**
@@ -252,7 +253,7 @@ public class DoctorFragment extends BaseFragment
         showSoftInputFromWindow(getContext(), etSearchPatient);
         //显示输入框 隐藏原有输入框
         decoration.setHasHeader(false);
-        patientAdapter.removeHeaderView(headerView);
+        doctorAdapter.removeHeaderView(headerView);
         displaySearchLayout();
     }
 
@@ -263,10 +264,10 @@ public class DoctorFragment extends BaseFragment
         layoutRefresh.setEnabled(true);
         //隐藏搜索框时重新添加头部
         decoration.setHasHeader(true);
-        if (patientAdapter.getHeaderLayoutCount() == 0) {
-            patientAdapter.addHeaderView(headerView);
+        if (doctorAdapter.getHeaderLayoutCount() == 0) {
+            doctorAdapter.addHeaderView(headerView);
         }
-        patientAdapter.notifyDataSetChanged();
+        doctorAdapter.notifyDataSetChanged();
         etSearchPatient.setText("");
         //隐藏软键盘
         hideSoftInputFromWindow(getContext(), etSearchPatient);
@@ -281,9 +282,9 @@ public class DoctorFragment extends BaseFragment
         sideBar.setIndexChangeListener(new SideBar.IndexChangeListener() {
             @Override
             public void indexChanged(String tag) {
-                if (TextUtils.isEmpty(tag) || patientBeans.size() <= 0) { return; }
-                for (int i = 0; i < patientBeans.size(); i++) {
-                    if (tag.equals(patientBeans.get(i).getIndexTag())) {
+                if (TextUtils.isEmpty(tag) || doctorBeans.size() <= 0) { return; }
+                for (int i = 0; i < doctorBeans.size(); i++) {
+                    if (tag.equals(doctorBeans.get(i).getIndexTag())) {
                         layoutManager.scrollToPositionWithOffset(i + 1, 0);
                         return;
                     }
@@ -330,44 +331,40 @@ public class DoctorFragment extends BaseFragment
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         Intent intent = new Intent(getContext(), PatientPersonalActivity.class);
-        intent.putExtra(CommonData.KEY_PATIENT_CODE, patientBeans.get(position).getCode());
-        intent.putExtra(CommonData.KEY_PATIENT_NAME, patientBeans.get(position).getName());
+        intent.putExtra(CommonData.KEY_PATIENT_CODE, doctorBeans.get(position).getDoctorCode());
+        intent.putExtra(CommonData.KEY_PATIENT_NAME, doctorBeans.get(position).getDoctorName());
         startActivity(intent);
     }
 
     @Override
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-        new HintDialog(getContext()).setPhone(getString(R.string.txt_contact_patient_phone),
-                                              patientBeans.get(position).getMobile())
-                                    .setOnEnterClickListener(() -> callPhone(patientBeans.get(position).getMobile()))
+        new HintDialog(getContext()).setPhone(getString(R.string.txt_contact_doctor_phone),
+                                              doctorBeans.get(position).getPhoto())
+                                    .setOnEnterClickListener(() -> callPhone(doctorBeans.get(position).getPhoto()))
                                     .show();
     }
 
     @Override
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
-        switch (task) {
-            case GET_PATIENT_LIST_BY_DOCTOR_CODE:
-                patientBeans = (List<PatientBean>)response.getData();
-                if (patientBeans == null) {
-                    patientBeans = new ArrayList<>();
-                }
-                //更新数据库
-                new LitePalHelper().updateAll(patientBeans, PatientBean.class);
-                sharePreferenceUtil.putBoolean(CommonData.KEY_UPDATE_PATIENT_DATA, true);
-                sortData();
-                patientAdapter.setNewData(patientBeans);
-                if (patientBeans.size() > BaseData.BASE_PAGE_DATA_NUM) {
-                    patientAdapter.loadMoreEnd();
-                }
-                else {
-                    patientAdapter.setEnableLoadMore(false);
-                }
-                etSearchPatient.setHint(String.format(getString(R.string.txt_doctor_search_hint), patientBeans.size()));
-                searchText.setHint(String.format(getString(R.string.txt_doctor_search_hint), patientBeans.size()));
-                break;
-            default:
-                break;
+        if (task == Tasks.GET_DOCTOR_LIST) {
+            doctorBeans = (List<DoctorBean>)response.getData();
+            if (doctorBeans == null) {
+                doctorBeans = new ArrayList<>();
+            }
+            //更新数据库
+            new LitePalHelper().updateAll(doctorBeans, PatientBean.class);
+            sharePreferenceUtil.putBoolean(CommonData.KEY_UPDATE_DOCTOR_DATA, true);
+            sortData();
+            doctorAdapter.setNewData(doctorBeans);
+            if (doctorBeans.size() > BaseData.BASE_PAGE_DATA_NUM) {
+                doctorAdapter.loadMoreEnd();
+            }
+            else {
+                doctorAdapter.setEnableLoadMore(false);
+            }
+            etSearchPatient.setHint(String.format(getString(R.string.txt_doctor_search_hint), doctorBeans.size()));
+            searchText.setHint(String.format(getString(R.string.txt_doctor_search_hint), doctorBeans.size()));
         }
     }
 
@@ -382,7 +379,7 @@ public class DoctorFragment extends BaseFragment
      */
     @Override
     public void onRefresh() {
-        getPatients();
+        getDoctorsByNetWork();
     }
 
     /**

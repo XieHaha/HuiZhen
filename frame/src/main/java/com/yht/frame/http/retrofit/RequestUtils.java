@@ -362,6 +362,15 @@ public class RequestUtils {
                                                                  listener));
     }
 
+    public static void getDoctorListByDoctorCode(Context context, String token,
+            final ResponseListener<BaseResponse> listener) {
+        RetrofitManager.getApiUrlManager()
+                       .getDoctorListByDoctorCode(token)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(
+                               new AbstractLoadViewObserver<>(context, Tasks.GET_DOCTOR_LIST, listener));
+    }
+
     public static void getPatientDetailByPatientCode(Context context, String code, String token,
             final ResponseListener<BaseResponse> listener) {
         RetrofitManager.getApiUrlManager()

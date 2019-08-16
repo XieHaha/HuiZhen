@@ -134,6 +134,10 @@ WE_CHAT_LOGIN,
      */
     GET_PATIENT_LIST_BY_DOCTOR_CODE,
     /**
+     * 获取医生好友列表信息
+     */
+    GET_DOCTOR_LIST,
+    /**
      * 根据患者编码获取患者信息
      */
     GET_PATIENT_DETAIL_BY_PATIENT_CODE,
@@ -236,7 +240,6 @@ WE_CHAT_LOGIN,
     /**
      * 获取当前医生的合作医院下服务项
      */
-    GET_COOPERATE_HOSPITAL_PROJECT_LIST,
-}
+    GET_COOPERATE_HOSPITAL_PROJECT_LIST,}
 
 

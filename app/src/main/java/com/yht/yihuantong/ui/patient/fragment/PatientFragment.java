@@ -212,7 +212,7 @@ public class PatientFragment extends BaseFragment
             tvNonePatient.setText(R.string.txt_none_patient);
         }
         //对数据源进行排序
-        BaseUtils.sortData(patientBeans);
+        BaseUtils.sortPatientData(patientBeans);
         //返回一个包含所有Tag字母在内的字符串并赋值给tagsStr
         String tagsStr = BaseUtils.getTags(patientBeans);
         sideBar.setIndexStr(tagsStr);
@@ -233,7 +233,7 @@ public class PatientFragment extends BaseFragment
             tvNonePatient.setText(R.string.txt_search_none_patient);
         }
         //对数据源进行排序
-        BaseUtils.sortData(patientBeans);
+        BaseUtils.sortPatientData(patientBeans);
         //返回一个包含所有Tag字母在内的字符串并赋值给tagsStr
         String tagsStr = BaseUtils.getTags(patientBeans);
         sideBar.setIndexStr(tagsStr);
