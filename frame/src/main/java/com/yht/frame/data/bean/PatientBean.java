@@ -3,6 +3,7 @@ package com.yht.frame.data.bean;
 import org.litepal.crud.DataSupport;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * 患者
@@ -27,6 +28,10 @@ public class PatientBean extends DataSupport implements Serializable {
      * 排序
      */
     private String indexTag;
+    /**
+     * 患者标签
+     */
+    private ArrayList<String> tagList;
 
     public String getCode() {
         return code;
@@ -130,5 +135,13 @@ public class PatientBean extends DataSupport implements Serializable {
 
     public void setIndexTag(String indexTag) {
         this.indexTag = indexTag;
+    }
+
+    public ArrayList<String> getTagList() {
+        return tagList;
+    }
+
+    public void setTagList(ArrayList<String> tagList) {
+        this.tagList = tagList;
     }
 }

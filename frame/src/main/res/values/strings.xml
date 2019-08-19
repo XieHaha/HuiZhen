@@ -226,6 +226,7 @@
     <string name="txt_input_label_hint">请输入标签</string>
     <string name="txt_label_selected">已选标签</string>
     <string name="txt_label_all">全部标签</string>
+    <string name="txt_no_label">暂无标签</string>
     <string name="txt_patient_search_hint">请在%d名患者中搜索</string>
     <string name="txt_doctor_search_hint">请在%d名医生好友中搜索</string>
 

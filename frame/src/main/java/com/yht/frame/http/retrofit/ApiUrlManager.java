@@ -17,6 +17,7 @@ import com.yht.frame.data.bean.HospitalDepartChildBean;
 import com.yht.frame.data.bean.HospitalProductBean;
 import com.yht.frame.data.bean.HospitalTitleBean;
 import com.yht.frame.data.bean.IncomeDetailBean;
+import com.yht.frame.data.bean.LabelSetBean;
 import com.yht.frame.data.bean.LoginBean;
 import com.yht.frame.data.bean.MessageTotalBean;
 import com.yht.frame.data.bean.NotifyMessageBean;
@@ -697,4 +698,25 @@ public interface ApiUrlManager {
      */
     @GET("client/doctor/qr/wx")
     Observable<BaseResponse<VersionBean>> getDoctorQrCodeByWeChat(@Header("token") String token);
+
+    /**
+     * 获取标签
+     *
+     * @param patientCode patientCode
+     * @param token       token
+     * @return 返回值
+     */
+    @GET("client/tag/patient/{patientCode}")
+    Observable<BaseResponse<LabelSetBean>> getLabel(@Header("token") String token,
+            @Path("patientCode") String patientCode);
+
+    /**
+     * 保存患者标签
+     *
+     * @param info  map参数
+     * @param token token
+     * @return 返回值
+     */
+    @POST("client/tag/patient/save")
+    Observable<BaseResponse<String>> savePatientLabel(@Header("token") String token, @Body Map<String, Object> info);
 }

@@ -13,6 +13,7 @@ import com.yht.frame.http.listener.ResponseListener;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.MediaType;
@@ -713,6 +714,25 @@ public class RequestUtils {
                        .compose(RxJavaHelper.observableIO2Main(context))
                        .subscribe(
                                new AbstractLoadViewObserver<>(context, Tasks.GET_DOCTOR_QR_CODE_BY_WECHAT, listener));
+    }
+
+    public static void getLabel(Context context, String token, String patientCode,
+            final ResponseListener<BaseResponse> listener) {
+        RetrofitManager.getApiUrlManager()
+                       .getLabel(token, patientCode)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_LABEL, listener));
+    }
+
+    public static void savePatientLabel(Context context, String token, String patientCode, List<String> tagList,
+            final ResponseListener<BaseResponse> listener) {
+        Map<String, Object> params = new HashMap<>(16);
+        params.put("patientCode", patientCode);
+        params.put("tagList", tagList);
+        RetrofitManager.getApiUrlManager()
+                       .savePatientLabel(token, params)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.SAVE_PATIENT_LABEL, listener));
     }
 }
 

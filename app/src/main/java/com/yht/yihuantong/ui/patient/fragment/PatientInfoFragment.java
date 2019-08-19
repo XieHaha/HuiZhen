@@ -1,5 +1,6 @@
 package com.yht.yihuantong.ui.patient.fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -7,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -38,6 +40,8 @@ import com.yht.yihuantong.ui.reservation.ReservationDisableActivity;
 import com.yht.yihuantong.ui.reservation.service.ReservationServiceActivity;
 import com.yht.yihuantong.ui.reservation.transfer.ReservationTransferActivity;
 import com.zhy.view.flowlayout.FlowLayout;
+import com.zhy.view.flowlayout.TagAdapter;
+import com.zhy.view.flowlayout.TagFlowLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,10 +59,10 @@ public class PatientInfoFragment extends BaseFragment
                    BaseQuickAdapter.OnItemChildClickListener {
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
-    private TextView tvName, tvAge, tvSex, tvNoneRecord;
+    private TextView tvName, tvAge, tvSex, tvNoLabel, tvNoneRecord;
     private JustifiedTextView tvPastMedical, familyMedical, tvAllergies;
     private LinearLayout layoutEditLabel;
-    private FlowLayout flowLayout;
+    private TagFlowLayout flowLayout;
     private ImageView ivHeadImg;
     private View headerView, footerView;
     private PatientOrderAdapter patientOrderAdapter;
@@ -170,6 +174,7 @@ public class PatientInfoFragment extends BaseFragment
         tvPastMedical = headerView.findViewById(R.id.tv_past_medical);
         familyMedical = headerView.findViewById(R.id.tv_family_medical);
         tvAllergies = headerView.findViewById(R.id.tv_allergies);
+        tvNoLabel = headerView.findViewById(R.id.tv_no_label);
         tvNoneRecord = headerView.findViewById(R.id.tv_none_medical_recording);
         layoutEditLabel.setOnClickListener(this);
     }
@@ -210,6 +215,41 @@ public class PatientInfoFragment extends BaseFragment
              .load(patientBean.getPhoto())
              .apply(GlideHelper.getOptions(BaseUtils.dp2px(getContext(), 4)))
              .into(ivHeadImg);
+        if (patientBean.getTagList() != null && patientBean.getTagList().size() > 0) {
+            //初始化适配器
+            TagAdapter<String> tagAdapter = new TagAdapter<String>(patientBean.getTagList()) {
+                @Override
+                public View getView(FlowLayout parent, int position, String s) {
+                    return createNewLabel(s, flowLayout, false);
+                }
+            };
+            flowLayout.setAdapter(tagAdapter);
+            tvNoLabel.setVisibility(View.GONE);
+            flowLayout.setVisibility(View.VISIBLE);
+        }
+        else {
+            tvNoLabel.setVisibility(View.VISIBLE);
+            flowLayout.setVisibility(View.GONE);
+        }
+    }
+
+    /**
+     * 创建一个正常状态的标签
+     */
+    private TextView createNewLabel(String label, ViewGroup parent, boolean selected) {
+        TextView textView = (TextView)getLayoutInflater().inflate(R.layout.item_text_label, parent, false);
+        textView.setSelected(selected);
+        //设置边界
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                                                                         ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.setMargins(BaseUtils.dp2px(getContext(), 6), BaseUtils.dp2px(getContext(), 10),
+                          BaseUtils.dp2px(getContext(), 6), 0);
+        textView.setLayoutParams(params);
+        if (parent != null) {
+            textView.setCompoundDrawables(null, null, null, null);
+        }
+        textView.setText(label);
+        return textView;
     }
 
     /**
@@ -285,6 +325,7 @@ public class PatientInfoFragment extends BaseFragment
         super.onClick(v);
         if (v.getId() == layoutEditLabel.getId()) {
             Intent intent = new Intent(getContext(), EditLabelActivity.class);
+            intent.putExtra(CommonData.KEY_PATIENT_CODE, patientCode);
             startActivityForResult(intent, REQUEST_CODE_EDIT_LABEL);
         }
     }
@@ -351,6 +392,17 @@ public class PatientInfoFragment extends BaseFragment
                 break;
             default:
                 break;
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+        if (requestCode == REQUEST_CODE_EDIT_LABEL) {
+            getPatientDetail();
         }
     }
 

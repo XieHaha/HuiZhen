@@ -13,8 +13,15 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.yht.frame.data.BaseResponse;
+import com.yht.frame.data.CommonData;
+import com.yht.frame.data.Tasks;
+import com.yht.frame.data.bean.LabelBean;
+import com.yht.frame.data.bean.LabelSetBean;
+import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
+import com.yht.frame.utils.ToastUtil;
 import com.yht.yihuantong.R;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
@@ -26,6 +33,7 @@ import java.util.List;
 import java.util.Set;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * @author 顿顿
@@ -40,6 +48,19 @@ public class EditLabelActivity extends BaseActivity
     TagFlowLayout allFlow;
     @BindView(R.id.layout_all)
     LinearLayout layoutAll;
+    @BindView(R.id.public_title_bar_more)
+    TextView publicTitleBarMore;
+    /**
+     * 当前患者
+     */
+    private String patientCode;
+    /**
+     * 标签集合
+     */
+    private LabelSetBean labelSetBean;
+    /**
+     * 标签输入框
+     */
     private AppCompatEditText inputEditText;
     /**
      * 当前处于高亮状态的TextView
@@ -88,6 +109,11 @@ public class EditLabelActivity extends BaseActivity
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
+        publicTitleBarMore.setVisibility(View.VISIBLE);
+        publicTitleBarMore.setText(R.string.txt_save);
+        if (getIntent() != null) {
+            patientCode = getIntent().getStringExtra(CommonData.KEY_PATIENT_CODE);
+        }
         //设置边界
         params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                                                ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -107,7 +133,8 @@ public class EditLabelActivity extends BaseActivity
             }
         };
         allFlow.setAdapter(tagAdapter);
-        initTempData();
+        getAllLabel();
+        initLabelData();
     }
 
     @Override
@@ -124,25 +151,42 @@ public class EditLabelActivity extends BaseActivity
     }
 
     /**
+     * 获取所有标签
+     */
+    private void getAllLabel() {
+        RequestUtils.getLabel(this, loginBean.getToken(), patientCode, this);
+    }
+
+    /**
+     * 获取所有标签
+     */
+    private void savePatientLabel() {
+        RequestUtils.savePatientLabel(this, loginBean.getToken(), patientCode, selectedLabelList, this);
+    }
+
+    /**
      * 初始化数据
      */
-    private void initTempData() {
-        //初始化上面标签
-        ArrayList<String> list = new ArrayList<>();
-        list.add("同事");
-        list.add("亲人");
-        list.add("同学");
-        list.add("朋友");
-        list.add("知己");
+    private void initLabelData() {
         //初始化下面标签列表
-        allLabelList.addAll(list);
-        allLabelList.add("异性朋友");
-        allLabelList.add("高中同学");
-        allLabelList.add("大学同学");
-        allLabelList.add("社会朋友");
-        for (int i = 0; i < list.size(); i++) {
-            //初始化已有标签
-            addLabel(list.get(i));
+        if (labelSetBean != null) {
+            ArrayList<LabelBean> allLabels = labelSetBean.getDoctorTag();
+            for (LabelBean labelTag : allLabels) {
+                allLabelList.add(labelTag.getTagName());
+            }
+            ArrayList<LabelBean> list = labelSetBean.getPatientTag();
+            if (list != null) {
+                for (int i = 0; i < list.size(); i++) {
+                    //初始化已有标签
+                    addLabel(list.get(i).getTagName());
+                }
+            }
+        }
+        if (allLabelList != null && allLabelList.size() > 0) {
+            layoutAll.setVisibility(View.VISIBLE);
+        }
+        else {
+            layoutAll.setVisibility(View.GONE);
         }
     }
 
@@ -162,6 +206,13 @@ public class EditLabelActivity extends BaseActivity
         }
         tagAdapter.setSelectedList(selectedPosition);
         tagAdapter.notifyDataChanged();
+    }
+
+    @OnClick(R.id.public_title_bar_more)
+    public void onViewClicked() {
+        if (publicTitleBarMore.isSelected()) {
+            savePatientLabel();
+        }
     }
 
     /**
@@ -259,6 +310,8 @@ public class EditLabelActivity extends BaseActivity
         }
         //重新将新的标签添加在最后（顺序重排）
         selectedLabelList.add(content);
+        //
+        publicTitleBarMore.setSelected(true);
         updateAllLabelSelectStatus();
     }
 
@@ -337,5 +390,23 @@ public class EditLabelActivity extends BaseActivity
         inputEditText.setOnKeyListener(this);
         inputEditText.setLayoutParams(params);
         return inputEditText;
+    }
+
+    @Override
+    public void onResponseSuccess(Tasks task, BaseResponse response) {
+        super.onResponseSuccess(task, response);
+        switch (task) {
+            case GET_LABEL:
+                labelSetBean = (LabelSetBean)response.getData();
+                initLabelData();
+                break;
+            case SAVE_PATIENT_LABEL:
+                ToastUtil.toast(this, response.getMsg());
+                setResult(RESULT_OK);
+                finish();
+                break;
+            default:
+                break;
+        }
     }
 }

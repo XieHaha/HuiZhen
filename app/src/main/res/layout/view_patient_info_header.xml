@@ -97,10 +97,26 @@
             android:text="@string/txt_edit" />
     </LinearLayout>
 
-    <com.zhy.view.flowlayout.FlowLayout
+    <TextView
+        android:id="@+id/tv_no_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_ffffff"
+        android:textSize="@dimen/text_15"
+        android:paddingBottom="20dp"
+        android:paddingTop="12dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="1dp"
+        android:textColor="@color/color_6a6f80"
+        android:text="@string/txt_no_label" />
+
+    <com.zhy.view.flowlayout.TagFlowLayout
         android:id="@+id/layout_flow"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingStart="14dp"
+        android:paddingEnd="14dp"
+        android:paddingBottom="20dp"
         android:background="@color/color_ffffff" />
 
     <View
