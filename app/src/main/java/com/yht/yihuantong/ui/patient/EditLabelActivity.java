@@ -179,6 +179,8 @@ public class EditLabelActivity extends BaseActivity
      */
     @Override
     public boolean onTagClick(View view, int position, FlowLayout parent) {
+        //输入框重新获取焦点后，取消标签高亮状态
+        setLabelHighLight(false);
         List<String> list = new ArrayList<>();
         for (int i = 0; i < textViewLabels.size(); i++) {
             list.add(textViewLabels.get(i).getText().toString());
@@ -205,9 +207,7 @@ public class EditLabelActivity extends BaseActivity
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
         if (actionId == EditorInfo.IME_ACTION_DONE) {
             String content = inputEditText.getText().toString();
-            if (!TextUtils.isEmpty(content)) {
-                addLabel(content);
-            }
+            addLabel(content);
         }
         return true;
     }
@@ -253,6 +253,11 @@ public class EditLabelActivity extends BaseActivity
             //清空编辑框
             inputEditText.setText("");
         }
+        if (selectedLabelList.contains(content)) {
+            //防止重复添加
+            selectedLabelList.remove(content);
+        }
+        //重新将新的标签添加在最后（顺序重排）
         selectedLabelList.add(content);
         updateAllLabelSelectStatus();
     }
