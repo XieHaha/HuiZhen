@@ -48,7 +48,7 @@ public class EditLabelActivity extends BaseActivity
     /**
      * 当前高亮状态view的index
      */
-    private int curHighLightposition;
+    private int curHighLightPosition;
     /**
      * 高亮状态
      */
@@ -128,30 +128,35 @@ public class EditLabelActivity extends BaseActivity
      */
     private void initTempData() {
         //初始化上面标签
-        selectedLabelList.add("同事");
-        selectedLabelList.add("亲人");
-        selectedLabelList.add("同学");
-        selectedLabelList.add("朋友");
-        selectedLabelList.add("知己");
+        ArrayList<String> list = new ArrayList<>();
+        list.add("同事");
+        list.add("亲人");
+        list.add("同学");
+        list.add("朋友");
+        list.add("知己");
         //初始化下面标签列表
-        allLabelList.addAll(selectedLabelList);
+        allLabelList.addAll(list);
         allLabelList.add("异性朋友");
         allLabelList.add("高中同学");
         allLabelList.add("大学同学");
         allLabelList.add("社会朋友");
-        for (int i = 0; i < selectedLabelList.size(); i++) {
+        for (int i = 0; i < list.size(); i++) {
             //初始化已有标签
-            addLabel(selectedLabelList.get(i));
+            addLabel(list.get(i));
         }
     }
 
+    /**
+     * 更新所有标签选中状态
+     */
     private void updateAllLabelSelectStatus() {
+        selectedPosition.clear();
         //根据上面标签来判断下面的标签是否含有上面的标签
         for (int i = 0; i < selectedLabelList.size(); i++) {
             for (int j = 0; j < allLabelList.size(); j++) {
                 if (selectedLabelList.get(i).equals(allLabelList.get(j))) {
                     //设为选中
-                    selectedPosition.add(i);
+                    selectedPosition.add(j);
                 }
             }
         }
@@ -215,12 +220,12 @@ public class EditLabelActivity extends BaseActivity
         String s = inputEditText.getText().toString();
         if (textViewLabels.size() == 0 || !TextUtils.isEmpty(s)) { return false; }
         if (keyCode == KeyEvent.KEYCODE_DEL && event.getAction() == KeyEvent.ACTION_DOWN) {
-            curHighLightposition = textViewLabels.size() - 1;
-            curHighLightTextView = textViewLabels.get(curHighLightposition);
+            curHighLightPosition = textViewLabels.size() - 1;
+            curHighLightTextView = textViewLabels.get(curHighLightPosition);
             if (curHighLight) {
                 //显示光标
                 inputEditText.setCursorVisible(true);
-                removeSelectedLabel(curHighLightposition, curHighLightTextView);
+                removeSelectedLabel(curHighLightPosition, curHighLightTextView);
             }
             else {
                 //隐藏输入框光标
@@ -240,14 +245,15 @@ public class EditLabelActivity extends BaseActivity
             //添加标签
             final TextView textLabel = createNewLabel(content, null, true);
             textViewLabels.add(textLabel);
+            selectedFlow.addView(textLabel);
             //添加点击事件，点击变成选中状态，选中状态下被点击则删除
             textLabel.setOnClickListener(this);
-            selectedFlow.addView(textLabel);
             //让输入框在最后一个位置上
             inputEditText.bringToFront();
             //清空编辑框
             inputEditText.setText("");
         }
+        selectedLabelList.add(content);
         updateAllLabelSelectStatus();
     }
 
@@ -300,7 +306,6 @@ public class EditLabelActivity extends BaseActivity
         selectedLabelList.remove(target.getText().toString());
         selectedFlow.removeView(target);
         textViewLabels.remove(position);
-        selectedPosition.clear();
         updateAllLabelSelectStatus();
     }
 
