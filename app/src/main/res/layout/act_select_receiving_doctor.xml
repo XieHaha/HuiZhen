@@ -61,7 +61,7 @@
             android:paddingEnd="20dp"
             android:gravity="center"
             android:text="@string/txt_select_hospital_depart"
-            android:drawableEnd="@drawable/selector_down_box"
+            android:drawableEnd="@drawable/selector_arrow_tab"
             android:drawablePadding="10dp"
             android:visibility="visible" />
 

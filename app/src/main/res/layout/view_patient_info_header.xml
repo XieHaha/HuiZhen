@@ -9,18 +9,14 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="20dp"
-        android:paddingTop="20dp"
-        android:paddingEnd="20dp"
-        android:paddingBottom="20dp"
+        android:padding="20dp"
         android:background="@color/color_ffffff">
 
         <ImageView
             android:id="@+id/iv_patient_img"
             android:layout_width="56dp"
             android:layout_height="56dp"
-            android:src="@mipmap/ic_default_header_r"
-            android:layout_marginStart="12dp" />
+            android:src="@mipmap/ic_default_header_r" />
 
         <TextView
             android:id="@+id/tv_patient_name"
@@ -69,13 +65,47 @@
 
     </RelativeLayout>
 
+    <LinearLayout
+        android:id="@+id/layout_edit_label"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="10dp"
+        android:gravity="center_vertical"
+        android:background="@color/color_ffffff">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:textColor="@color/color_373d4d"
+            android:textSize="@dimen/text_18"
+            android:textStyle="bold"
+            android:text="@string/txt_patient_label"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_1491fc"
+            android:textSize="@dimen/text_15"
+            android:drawableStart="@mipmap/ic_edit"
+            android:drawablePadding="3dp"
+            android:gravity="center"
+            android:text="@string/txt_edit" />
+    </LinearLayout>
+
+    <com.zhy.view.flowlayout.FlowLayout
+        android:id="@+id/layout_flow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_ffffff" />
+
     <View
         android:layout_width="match_parent"
-        android:layout_height="@dimen/app_hei_line"
-        android:background="@color/color_ebedf0"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp" />
-
+        android:layout_height="10dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -94,16 +124,17 @@
             android:textStyle="bold"
             android:text="@string/txt_past_medical_his" />
 
-        <TextView
+        <com.yht.frame.widgets.textview.JustifiedTextView
             android:id="@+id/tv_past_medical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_16"
+            android:lineSpacingMultiplier="1.5"
             android:textColor="@color/color_373d4d"
             android:layout_marginTop="10dp"
             tools:text="病史">
 
-        </TextView>
+        </com.yht.frame.widgets.textview.JustifiedTextView>
 
         <View
             android:layout_width="match_parent"
@@ -130,16 +161,17 @@
             android:textStyle="bold"
             android:text="@string/txt_family_medical_his" />
 
-        <TextView
+        <com.yht.frame.widgets.textview.JustifiedTextView
             android:id="@+id/tv_family_medical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:lineSpacingMultiplier="1.5"
             android:textSize="@dimen/text_16"
             android:textColor="@color/color_373d4d"
             android:layout_marginTop="10dp"
             tools:text="病史">
 
-        </TextView>
+        </com.yht.frame.widgets.textview.JustifiedTextView>
 
         <View
             android:layout_width="match_parent"
@@ -167,16 +199,17 @@
             android:textStyle="bold"
             android:text="@string/txt_allergies" />
 
-        <TextView
+        <com.yht.frame.widgets.textview.JustifiedTextView
             android:id="@+id/tv_allergies"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:lineSpacingMultiplier="1.5"
             android:textSize="@dimen/text_16"
             android:textColor="@color/color_373d4d"
             android:layout_marginTop="10dp"
             tools:text="病史">
 
-        </TextView>
+        </com.yht.frame.widgets.textview.JustifiedTextView>
     </LinearLayout>
 
     <TextView

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.AppCompatEditText xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingBottom="4dp"
+    android:paddingTop="4dp"
+    android:minWidth="60dp"
+    android:hint="@string/txt_input_label_hint"
+    android:textSize="@dimen/text_15"
+    android:singleLine="true"
+    android:imeOptions="actionDone"
+    android:inputType="text"
+    android:maxLength="14"
+    android:background="@null"
+    android:textColorHint="@color/color_a1a8b3"
+    android:textColor="@color/color_6a6f80" />

@@ -32,6 +32,7 @@
     <string name="title_cooperate_hospital">合作医院</string>
     <string name="title_doctor_info">医生详情</string>
     <string name="title_my_qr_code">我的二维码</string>
+    <string name="title_edit_patient_label">编辑患者标签</string>
 
     <!--公用-->
     <string name="txt_app_name">会珍</string>
@@ -52,6 +53,7 @@
     <string name="txt_submit">提交</string>
     <string name="txt_agree">同意</string>
     <string name="txt_disagree">不同意</string>
+    <string name="txt_edit">编辑</string>
     <string name="txt_delete_all">全部删除</string>
     <string name="txt_next">下一步</string>
     <string name="txt_last">上一步</string>
@@ -221,6 +223,9 @@
     <string name="txt_chat_time">点击结束本次对话%s</string>
     <string name="txt_recently_add">最近添加</string>
     <string name="txt_patient_label">患者标签</string>
+    <string name="txt_input_label_hint">请输入标签</string>
+    <string name="txt_label_selected">已选标签</string>
+    <string name="txt_label_all">全部标签</string>
     <string name="txt_patient_search_hint">请在%d名患者中搜索</string>
     <string name="txt_doctor_search_hint">请在%d名医生好友中搜索</string>
 

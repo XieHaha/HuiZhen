@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:paddingBottom="4dp"
+    android:paddingTop="4dp"
+    android:paddingStart="14dp"
+    android:paddingEnd="14dp"
+    android:textSize="@dimen/text_15"
+    android:drawableEnd="@mipmap/ic_delete_blue"
+    android:drawablePadding="6dp"
+    android:textColor="@color/txt_color_6a6f80_1491fc_selector"
+    android:background="@drawable/selector_label">
+
+</TextView>

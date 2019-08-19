@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -26,14 +27,17 @@ import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.frame.widgets.recyclerview.decoration.TimeItemDecoration;
 import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
+import com.yht.frame.widgets.textview.JustifiedTextView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.adapter.PatientOrderAdapter;
 import com.yht.yihuantong.ui.check.ServiceDetailActivity;
+import com.yht.yihuantong.ui.patient.EditLabelActivity;
 import com.yht.yihuantong.ui.patient.TransferDetailActivity;
 import com.yht.yihuantong.ui.remote.RemoteDetailActivity;
 import com.yht.yihuantong.ui.reservation.ReservationDisableActivity;
 import com.yht.yihuantong.ui.reservation.service.ReservationServiceActivity;
 import com.yht.yihuantong.ui.reservation.transfer.ReservationTransferActivity;
+import com.zhy.view.flowlayout.FlowLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +55,10 @@ public class PatientInfoFragment extends BaseFragment
                    BaseQuickAdapter.OnItemChildClickListener {
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
-    private TextView tvName, tvAge, tvSex, tvPastMedical, familyMedical, tvAllergies, tvNoneRecord;
+    private TextView tvName, tvAge, tvSex, tvNoneRecord;
+    private JustifiedTextView tvPastMedical, familyMedical, tvAllergies;
+    private LinearLayout layoutEditLabel;
+    private FlowLayout flowLayout;
     private ImageView ivHeadImg;
     private View headerView, footerView;
     private PatientOrderAdapter patientOrderAdapter;
@@ -85,6 +92,10 @@ public class PatientInfoFragment extends BaseFragment
      * 页码
      */
     private int page = 1;
+    /**
+     * 标签刷新
+     */
+    public static final int REQUEST_CODE_EDIT_LABEL = 100;
 
     @Override
     public int getLayoutID() {
@@ -150,6 +161,8 @@ public class PatientInfoFragment extends BaseFragment
      */
     private void initHeaderView() {
         headerView = LayoutInflater.from(getContext()).inflate(R.layout.view_patient_info_header, null);
+        layoutEditLabel = headerView.findViewById(R.id.layout_edit_label);
+        flowLayout = headerView.findViewById(R.id.layout_flow);
         ivHeadImg = headerView.findViewById(R.id.iv_patient_img);
         tvName = headerView.findViewById(R.id.tv_patient_name);
         tvAge = headerView.findViewById(R.id.tv_patient_age);
@@ -158,6 +171,7 @@ public class PatientInfoFragment extends BaseFragment
         familyMedical = headerView.findViewById(R.id.tv_family_medical);
         tvAllergies = headerView.findViewById(R.id.tv_allergies);
         tvNoneRecord = headerView.findViewById(R.id.tv_none_medical_recording);
+        layoutEditLabel.setOnClickListener(this);
     }
 
     /**
@@ -263,6 +277,15 @@ public class PatientInfoFragment extends BaseFragment
                 break;
             default:
                 break;
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        super.onClick(v);
+        if (v.getId() == layoutEditLabel.getId()) {
+            Intent intent = new Intent(getContext(), EditLabelActivity.class);
+            startActivityForResult(intent, REQUEST_CODE_EDIT_LABEL);
         }
     }
 
