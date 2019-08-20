@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -238,6 +239,8 @@ public class PatientInfoFragment extends BaseFragment
      */
     private TextView createNewLabel(String label, ViewGroup parent, boolean selected) {
         TextView textView = (TextView)getLayoutInflater().inflate(R.layout.item_text_label, parent, false);
+        textView.setBackgroundResource(R.drawable.corner28_stroke1_c5c8cc);
+        textView.setTextColor(ContextCompat.getColor(getContext(), R.color.color_6a6f80));
         textView.setSelected(selected);
         //设置边界
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,

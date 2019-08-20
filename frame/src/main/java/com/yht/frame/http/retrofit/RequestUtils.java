@@ -754,5 +754,20 @@ public class RequestUtils {
                        .compose(RxJavaHelper.observableIO2Main(context))
                        .subscribe(new AbstractLoadViewObserver<>(context, Tasks.DELETE_PATIENT_LABEL, listener));
     }
+
+    public static void getExistLabel(Context context, String token, final ResponseListener<BaseResponse> listener) {
+        RetrofitManager.getApiUrlManager()
+                       .getExistLabel(token)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_EXIST_LABEL, listener));
+    }
+
+    public static void getPatientByLabel(Context context, String token, long tagId,
+            final ResponseListener<BaseResponse> listener) {
+        RetrofitManager.getApiUrlManager()
+                       .getPatientByLabel(token, tagId)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_PATIENT_BY_LABEL, listener));
+    }
 }
 

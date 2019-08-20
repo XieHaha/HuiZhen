@@ -65,7 +65,7 @@ public class AuthResultFragment extends BaseFragment {
         switch (view.getId()) {
             case R.id.tv_auth_result_contact:
                 new HintDialog(getContext()).setPhone(getString(R.string.txt_contact_service),
-                                                      getString(R.string.txt_contact_service_phone))
+                                                      getString(R.string.txt_contact_service_phone),false)
                                             .setOnEnterClickListener(
                                                     () -> callPhone(getString(R.string.txt_contact_service_phone)))
                                             .show();

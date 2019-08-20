@@ -11,11 +11,15 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.lijiankun24.shadowlayout.ShadowLayout;
+import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
+import com.yht.frame.data.Tasks;
 import com.yht.frame.data.bean.LabelBean;
 import com.yht.frame.data.bean.PatientBean;
+import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
+import com.yht.frame.utils.HuiZhenLog;
 import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.frame.widgets.recyclerview.SideBar;
 import com.yht.frame.widgets.recyclerview.decoration.SideBarItemDecoration;
@@ -67,7 +71,11 @@ public class LabelPatientActivity extends BaseActivity
     /**
      * 所有患者数据
      */
-    private List<PatientBean> patientBeans;
+    private List<PatientBean> patientBeans = new ArrayList<>();
+    /**
+     * 是否需要重新获取
+     */
+    private boolean isUpdate;
 
     @Override
     protected boolean isInitBackBtn() {
@@ -84,6 +92,8 @@ public class LabelPatientActivity extends BaseActivity
         super.initView(savedInstanceState);
         recyclerview.setLayoutManager(layoutManager = new LinearLayoutManager(this));
         recyclerview.addItemDecoration(decoration = new SideBarItemDecoration(this));
+        initEvents();
+        initAdapter();
     }
 
     @Override
@@ -91,22 +101,31 @@ public class LabelPatientActivity extends BaseActivity
         super.initData(savedInstanceState);
         if (getIntent() != null) {
             labelBean = (LabelBean)getIntent().getSerializableExtra(CommonData.KEY_LABEL_BEAN);
+            isUpdate = getIntent().getBooleanExtra(CommonData.KEY_INTENT_BOOLEAN, false);
         }
         if (labelBean != null) {
-            patientBeans = labelBean.getPatientList();
             publicTitleBarTitle.setText(labelBean.getTagName());
+            if (isUpdate) {
+                getPatientByLabel();
+            }
+            else {
+                patientBeans = labelBean.getPatientList();
+                sortData();
+            }
         }
-        if (patientBeans == null) { patientBeans = new ArrayList<>(); }
-        initEvents();
-        initAdapter();
+    }
+
+    /**
+     * 根据标签获取患者
+     */
+    private void getPatientByLabel() {
+        RequestUtils.getPatientByLabel(this, loginBean.getToken(), labelBean.getId(), this);
     }
 
     /**
      * 适配器
      */
     private void initAdapter() {
-        sortData();
-        //患者列表
         patientAdapter = new PatientAdapter(R.layout.item_patient, patientBeans);
         View space = getLayoutInflater().inflate(R.layout.view_space, null, false);
         patientAdapter.addHeaderView(space);
@@ -134,7 +153,10 @@ public class LabelPatientActivity extends BaseActivity
         //返回一个包含所有Tag字母在内的字符串并赋值给tagsStr
         String tagsStr = BaseUtils.getTags(patientBeans);
         sideBar.setIndexStr(tagsStr);
+        HuiZhenLog.i(TAG, "test-tagsStr:" + tagsStr);
         decoration.setDatas(patientBeans, tagsStr);
+        //更新数据源
+        patientAdapter.setNewData(patientBeans);
     }
 
     /**
@@ -192,5 +214,17 @@ public class LabelPatientActivity extends BaseActivity
                                       patientBeans.get(position).getMobile())
                             .setOnEnterClickListener(() -> callPhone(patientBeans.get(position).getMobile()))
                             .show();
+    }
+
+    @Override
+    public void onResponseSuccess(Tasks task, BaseResponse response) {
+        super.onResponseSuccess(task, response);
+        if (task == Tasks.GET_PATIENT_BY_LABEL) {
+            List<LabelBean> list = (List<LabelBean>)response.getData();
+            if (list != null && list.size() > 0) {
+                patientBeans = list.get(0).getPatientList();
+                recyclerview.post(this::sortData);
+            }
+        }
     }
 }

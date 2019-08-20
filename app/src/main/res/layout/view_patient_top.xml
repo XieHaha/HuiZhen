@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="38dp"
         android:paddingStart="16dp"
+        android:layout_marginBottom="7dp"
         android:layout_toStartOf="@id/tv_search_cancel"
         android:layout_marginEnd="15dp">
 
@@ -49,11 +50,32 @@
         android:layout_alignParentEnd="true"
         android:visibility="visible" />
 
-    <View
+    <LinearLayout
+        android:id="@+id/layout_all"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/app_hei_line"
-        android:background="@color/color_ebedf0"
-        android:layout_marginTop="7dp"
-        android:layout_below="@id/layout" />
+        android:orientation="vertical"
+        android:layout_below="@id/layout"
+        android:layout_marginTop="20dp"
+        android:visibility="gone"
+        android:paddingBottom="20dp"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/txt_label_filter"
+            android:layout_marginStart="20dp"
+            android:textColor="@color/color_a1a8b3"
+            android:textSize="@dimen/text_13" />
+
+        <com.zhy.view.flowlayout.TagFlowLayout
+            android:id="@+id/all_flow"
+            android:layout_marginTop="2dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp"
+            android:orientation="horizontal" />
+    </LinearLayout>
 
 </RelativeLayout>

@@ -227,6 +227,7 @@
     <string name="txt_input_label_hint">请输入标签</string>
     <string name="txt_label_selected">已选标签</string>
     <string name="txt_label_all">全部标签</string>
+    <string name="txt_label_filter">通过患者标签筛选</string>
     <string name="txt_no_label">暂无标签</string>
     <string name="txt_label_title">%s&#160;(%d)</string>
     <string name="txt_label_delete_hint">删除后该标签不能恢复</string>

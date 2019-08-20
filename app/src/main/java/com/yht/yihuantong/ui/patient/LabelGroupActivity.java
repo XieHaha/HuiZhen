@@ -135,7 +135,7 @@ public class LabelGroupActivity extends BaseActivity
         new HintDialog(this).setTitleString(getString(R.string.txt_hint))
                             .setContentString(getString(R.string.txt_label_delete_hint))
                             .setEnterBtnTxt(getString(R.string.txt_sure_delete))
-                            .setOnEnterClickListener(() -> deletePatientLabel(labelBeans.get(position).getTagId()))
+                            .setOnEnterClickListener(() -> deletePatientLabel(labelBeans.get(position).getId()))
                             .show();
         return true;
     }

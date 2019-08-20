@@ -265,5 +265,13 @@ WE_CHAT_LOGIN,
      * 删除患者标签
      */
     DELETE_PATIENT_LABEL,
+    /**
+     * 获取已存在患者标签
+     */
+    GET_EXIST_LABEL,
+    /**
+     * 根据标签获取患者
+     */
+    GET_PATIENT_BY_LABEL,
 }
 

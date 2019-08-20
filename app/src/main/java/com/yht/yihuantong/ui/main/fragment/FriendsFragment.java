@@ -1,8 +1,10 @@
 package com.yht.yihuantong.ui.main.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.View;
@@ -15,8 +17,12 @@ import android.widget.TextView;
 
 import com.yht.frame.api.ApiManager;
 import com.yht.frame.data.BaseResponse;
+import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
+import com.yht.frame.data.bean.LabelBean;
+import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseFragment;
+import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.widgets.edittext.AbstractTextWatcher;
 import com.yht.frame.widgets.edittext.SuperEditText;
 import com.yht.frame.widgets.view.AbstractOnPageChangeListener;
@@ -25,7 +31,11 @@ import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.adapter.ViewPagerAdapter;
 import com.yht.yihuantong.ui.doctor.DoctorFragment;
 import com.yht.yihuantong.ui.main.listener.OnSearchListener;
+import com.yht.yihuantong.ui.patient.LabelPatientActivity;
 import com.yht.yihuantong.ui.patient.fragment.PatientFragment;
+import com.zhy.view.flowlayout.FlowLayout;
+import com.zhy.view.flowlayout.TagAdapter;
+import com.zhy.view.flowlayout.TagFlowLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +48,7 @@ import butterknife.OnClick;
  * @date 19/5/17 14:55
  * @des 好友
  */
-public class FriendsFragment extends BaseFragment implements OnSearchListener {
+public class FriendsFragment extends BaseFragment implements OnSearchListener, TagFlowLayout.OnTagClickListener {
     @BindView(R.id.status_bar_fix)
     View statusBarFix;
     @BindView(R.id.layout_title)
@@ -61,6 +71,10 @@ public class FriendsFragment extends BaseFragment implements OnSearchListener {
     RelativeLayout layoutSearch;
     @BindView(R.id.layout_bg)
     RelativeLayout layoutBg;
+    @BindView(R.id.all_flow)
+    TagFlowLayout allFlow;
+    @BindView(R.id.layout_all)
+    LinearLayout layoutAll;
     /**
      * 患者列表
      */
@@ -69,6 +83,10 @@ public class FriendsFragment extends BaseFragment implements OnSearchListener {
      * 医生列表
      */
     private DoctorFragment doctorFragment;
+    /**
+     * 已存在标签
+     */
+    private List<LabelBean> labelBeans = new ArrayList<>();
     /**
      * 搜索源  1为患者  2为医生
      */
@@ -138,6 +156,64 @@ public class FriendsFragment extends BaseFragment implements OnSearchListener {
                 }
             }
         });
+    }
+
+    /**
+     * 获取已存在的标签
+     */
+    private void getExistLabel() {
+        RequestUtils.getExistLabel(getContext(), loginBean.getToken(), this);
+    }
+
+    /**
+     * 标签
+     */
+    private void initLabel() {
+        if (labelBeans != null && labelBeans.size() > 0) {
+            layoutAll.setVisibility(View.VISIBLE);
+            //初始化适配器
+            TagAdapter<LabelBean> tagAdapter = new TagAdapter<LabelBean>(labelBeans) {
+                @Override
+                public View getView(FlowLayout parent, int position, LabelBean s) {
+                    return createNewLabel(s.getTagName(), allFlow, false);
+                }
+            };
+            allFlow.setOnTagClickListener(this);
+            allFlow.setAdapter(tagAdapter);
+        }
+        else {
+            layoutAll.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public boolean onTagClick(View view, int position, FlowLayout parent) {
+        Intent intent = new Intent(getContext(), LabelPatientActivity.class);
+        intent.putExtra(CommonData.KEY_LABEL_BEAN, labelBeans.get(position));
+        intent.putExtra(CommonData.KEY_INTENT_BOOLEAN, true);
+        startActivity(intent);
+        return false;
+    }
+
+    /**
+     * 创建一个正常状态的标签
+     */
+    private TextView createNewLabel(String label, ViewGroup parent, boolean selected) {
+        TextView textView = (TextView)getLayoutInflater().inflate(R.layout.item_text_label, parent, false);
+        textView.setBackgroundResource(R.drawable.corner28_stroke1_c5c8cc);
+        textView.setTextColor(ContextCompat.getColor(getContext(), R.color.color_6a6f80));
+        textView.setSelected(selected);
+        //设置边界
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                                                                         ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.setMargins(BaseUtils.dp2px(getContext(), 6), BaseUtils.dp2px(getContext(), 10),
+                          BaseUtils.dp2px(getContext(), 6), 0);
+        textView.setLayoutParams(params);
+        if (parent != null) {
+            textView.setCompoundDrawables(null, null, null, null);
+        }
+        textView.setText(label);
+        return textView;
     }
 
     /**
@@ -266,14 +342,15 @@ public class FriendsFragment extends BaseFragment implements OnSearchListener {
     @Override
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
-        switch (task) {
-            default:
-                break;
+        if (task == Tasks.GET_EXIST_LABEL) {
+            labelBeans = (List<LabelBean>)response.getData();
+            initLabel();
         }
     }
 
     @Override
     public void onSearch(int mode, int num) {
+        getExistLabel();
         searchSource = mode;
         openSearch();
         switch (mode) {

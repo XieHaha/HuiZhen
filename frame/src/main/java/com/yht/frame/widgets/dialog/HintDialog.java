@@ -174,9 +174,18 @@ public class HintDialog extends Dialog implements OnClickListener {
      * 拨打电话封装
      */
     public HintDialog setPhone(String key, String phone) {
+        setPhone(key, phone, true);
+        return this;
+    }
+
+    /**
+     * 拨打电话封装
+     * asterisk 是否加密显示
+     */
+    public HintDialog setPhone(String key, String phone, boolean asterisk) {
         setTitleString(R.string.txt_hint);
         setContentString(String.format(context.getString(R.string.txt_contact_hotline), key,
-                                       BaseUtils.asteriskUserPhone(phone)));
+                                       asterisk ? BaseUtils.asteriskUserPhone(phone) : phone));
         setEnterBtnTxt(R.string.txt_call);
         setEnterSelect(true);
         return this;

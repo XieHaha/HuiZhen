@@ -10,18 +10,11 @@ import java.util.ArrayList;
  */
 public class LabelBean implements Serializable {
     private static final long serialVersionUID = 3822264313226879908L;
-    private long tagId;
+    private long id;
     private String tagName;
     private int patientNum;
+    private int searchCount;
     private ArrayList<PatientBean> patientList;
-
-    public long getTagId() {
-        return tagId;
-    }
-
-    public void setTagId(long tagId) {
-        this.tagId = tagId;
-    }
 
     public String getTagName() {
         return tagName;
@@ -37,6 +30,22 @@ public class LabelBean implements Serializable {
 
     public void setPatientNum(int patientNum) {
         this.patientNum = patientNum;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public int getSearchCount() {
+        return searchCount;
+    }
+
+    public void setSearchCount(int searchCount) {
+        this.searchCount = searchCount;
     }
 
     public ArrayList<PatientBean> getPatientList() {

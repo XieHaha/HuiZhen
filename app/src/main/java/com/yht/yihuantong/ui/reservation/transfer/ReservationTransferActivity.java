@@ -373,7 +373,7 @@ public class ReservationTransferActivity extends BaseActivity implements OnTrans
                 break;
             case R.id.public_title_bar_more:
                 new HintDialog(this).setPhone(getString(R.string.txt_contact_service),
-                                              getString(R.string.txt_contact_service_phone))
+                                              getString(R.string.txt_contact_service_phone),false)
                                     .setOnEnterClickListener(
                                             () -> callPhone(getString(R.string.txt_contact_service_phone)))
                                     .show();

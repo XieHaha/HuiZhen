@@ -741,4 +741,24 @@ public interface ApiUrlManager {
      */
     @GET("client/tag/doctor/tag/delete/{tagId}")
     Observable<BaseResponse<LabelSetBean>> deleteLabel(@Header("token") String token, @Path("tagId") long tagId);
+
+    /**
+     * 获取已存在的标签（筛选）
+     *
+     * @param token token
+     * @return 返回值
+     */
+    @GET("client/tag/doctor/tag/exist")
+    Observable<BaseResponse<List<LabelBean>>> getExistLabel(@Header("token") String token);
+
+    /**
+     * 根据标签获取患者
+     *
+     * @param tagId tagId
+     * @param token token
+     * @return 返回值
+     */
+    @GET("client/tag/group/{tagId}")
+    Observable<BaseResponse<List<LabelBean>>> getPatientByLabel(@Header("token") String token,
+            @Path("tagId") long tagId);
 }
