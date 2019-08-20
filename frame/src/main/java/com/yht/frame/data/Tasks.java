@@ -273,5 +273,9 @@ WE_CHAT_LOGIN,
      * 根据标签获取患者
      */
     GET_PATIENT_BY_LABEL,
+    /**
+     * 获取最近添加的患者
+     */
+    GET_RECENT_ADD_PATIENT,
 }
 

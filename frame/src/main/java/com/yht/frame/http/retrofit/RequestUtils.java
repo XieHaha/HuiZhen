@@ -769,5 +769,13 @@ public class RequestUtils {
                        .compose(RxJavaHelper.observableIO2Main(context))
                        .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_PATIENT_BY_LABEL, listener));
     }
+
+    public static void getRecentAddPatient(Context context, String token,
+            final ResponseListener<BaseResponse> listener) {
+        RetrofitManager.getApiUrlManager()
+                       .getRecentAddPatient(token)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_RECENT_ADD_PATIENT, listener));
+    }
 }
 

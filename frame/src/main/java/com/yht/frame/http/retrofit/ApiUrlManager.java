@@ -27,6 +27,7 @@ import com.yht.frame.data.bean.PatientBean;
 import com.yht.frame.data.bean.PatientOrderBean;
 import com.yht.frame.data.bean.ProtocolBean;
 import com.yht.frame.data.bean.ReceiverDoctorBean;
+import com.yht.frame.data.bean.RecentPatientBean;
 import com.yht.frame.data.bean.ReservationValidateBean;
 import com.yht.frame.data.bean.SelectCheckTypeBean;
 import com.yht.frame.data.bean.TransferBean;
@@ -761,4 +762,13 @@ public interface ApiUrlManager {
     @GET("client/tag/group/{tagId}")
     Observable<BaseResponse<List<LabelBean>>> getPatientByLabel(@Header("token") String token,
             @Path("tagId") long tagId);
+
+    /**
+     * 获取最近添加的患者
+     *
+     * @param token token
+     * @return 返回值
+     */
+    @GET("client/doctor/patient/recent")
+    Observable<BaseResponse<RecentPatientBean>> getRecentAddPatient(@Header("token") String token);
 }

@@ -1,5 +1,7 @@
 package com.yht.frame.data.bean;
 
+import com.chad.library.adapter.base.entity.MultiItemEntity;
+
 import org.litepal.crud.DataSupport;
 
 import java.io.Serializable;
@@ -10,7 +12,7 @@ import java.util.ArrayList;
  *
  * @author dundun
  */
-public class PatientBean extends DataSupport implements Serializable {
+public class PatientBean extends DataSupport implements Serializable, MultiItemEntity {
     private static final long serialVersionUID = -8620697034094662215L;
     private int age;
     private int sex;
@@ -143,5 +145,10 @@ public class PatientBean extends DataSupport implements Serializable {
 
     public void setTagList(ArrayList<String> tagList) {
         this.tagList = tagList;
+    }
+
+    @Override
+    public int getItemType() {
+        return 1;
     }
 }

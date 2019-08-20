@@ -33,6 +33,7 @@
     <string name="title_doctor_info">医生详情</string>
     <string name="title_my_qr_code">我的二维码</string>
     <string name="title_edit_patient_label">编辑患者标签</string>
+    <string name="title_recent_patient">最近添加</string>
 
     <!--公用-->
     <string name="txt_app_name">会珍</string>
@@ -233,6 +234,12 @@
     <string name="txt_label_delete_hint">删除后该标签不能恢复</string>
     <string name="txt_patient_search_hint">请在%d名患者中搜索</string>
     <string name="txt_doctor_search_hint">请在%d名医生好友中搜索</string>
+    <string name="txt_recent_today">今天&#160;(%d)</string>
+    <string name="txt_recent_yesterday">昨天&#160;(%d)</string>
+    <string name="txt_recent_week">1周内&#160;(%d)</string>
+    <string name="txt_recent_one_month">1个月内&#160;(%d)</string>
+    <string name="txt_recent_three_month">3个月内&#160;(%d)</string>
+    <string name="txt_recent_six_month">6个月内&#160;(%d)</string>
 
     <!--医院相关-->
     <string name="txt_hospital_overview">医院概况</string>

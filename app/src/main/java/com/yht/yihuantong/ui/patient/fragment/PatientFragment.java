@@ -35,6 +35,7 @@ import com.yht.yihuantong.ui.adapter.PatientAdapter;
 import com.yht.yihuantong.ui.main.listener.OnSearchListener;
 import com.yht.yihuantong.ui.patient.LabelGroupActivity;
 import com.yht.yihuantong.ui.patient.PatientPersonalActivity;
+import com.yht.yihuantong.ui.patient.RecentPatientGroupActivity;
 
 import org.litepal.crud.DataSupport;
 
@@ -312,6 +313,7 @@ public class PatientFragment extends BaseFragment
                 openSearch();
                 break;
             case R.id.layout_recently:
+                startActivity(new Intent(getContext(), RecentPatientGroupActivity.class));
                 break;
             case R.id.layout_patient_tag:
                 startActivity(new Intent(getContext(), LabelGroupActivity.class));
