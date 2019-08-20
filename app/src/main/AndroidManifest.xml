@@ -391,6 +391,16 @@
             android:label="@string/title_edit_patient_label"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
+            android:name=".ui.patient.LabelGroupActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/txt_patient_label"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".ui.patient.LabelPatientActivity"
+            android:screenOrientation="portrait"
+            android:label=""
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
             android:name=".ui.hint.HintLoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/ActivityTransDialog"

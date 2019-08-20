@@ -17,6 +17,7 @@ import com.yht.frame.data.bean.HospitalDepartChildBean;
 import com.yht.frame.data.bean.HospitalProductBean;
 import com.yht.frame.data.bean.HospitalTitleBean;
 import com.yht.frame.data.bean.IncomeDetailBean;
+import com.yht.frame.data.bean.LabelBean;
 import com.yht.frame.data.bean.LabelSetBean;
 import com.yht.frame.data.bean.LoginBean;
 import com.yht.frame.data.bean.MessageTotalBean;
@@ -719,4 +720,25 @@ public interface ApiUrlManager {
      */
     @POST("client/tag/patient/save")
     Observable<BaseResponse<String>> savePatientLabel(@Header("token") String token, @Body Map<String, Object> info);
+
+    /**
+     * 获取患者标签
+     *
+     * @param info  map参数
+     * @param token token
+     * @return 返回值
+     */
+    @POST("client/tag/group")
+    Observable<BaseResponse<BaseListBean<LabelBean>>> getPatientLabel(@Header("token") String token,
+            @Body Map<String, Integer> info);
+
+    /**
+     * 删除标签
+     *
+     * @param tagId tagId
+     * @param token token
+     * @return 返回值
+     */
+    @GET("client/tag/doctor/tag/delete/{tagId}")
+    Observable<BaseResponse<LabelSetBean>> deleteLabel(@Header("token") String token, @Path("tagId") long tagId);
 }

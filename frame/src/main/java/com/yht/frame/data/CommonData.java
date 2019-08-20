@@ -173,7 +173,7 @@ public interface CommonData {
      */
     String KEY_IS_OUTER_CHAIN = "key_is_outer_chain";
     /**
-     * banner
+     * 标签分组
      */
-    String KEY_BANNER_ID = "key_banner_id";
+    String KEY_LABEL_BEAN = "key_label_bean";
 }

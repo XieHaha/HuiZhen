@@ -2,13 +2,14 @@ package com.yht.frame.widgets.recyclerview;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.yht.frame.utils.ColorUtil;
+import com.yht.frame.R;
+import com.yht.frame.utils.BaseUtils;
 
 /**
  * @author MQ
@@ -21,8 +22,7 @@ public class IndexBar extends ViewGroup {
     private float centerY;
     private String tag = "";
     private boolean isShowTag;
-    private int position;
-    private final float circleRadius = 100;
+    private final int circleRadius = 8;
 
     public IndexBar(Context context) {
         this(context, null);
@@ -40,9 +40,7 @@ public class IndexBar extends ViewGroup {
 
     private void init(AttributeSet attrs) {
         setWillNotDraw(false);
-        mPaint = new Paint();
-        mPaint.setColor(Color.RED);
-        mPaint.setAntiAlias(true);
+        mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setDither(true);
     }
 
@@ -102,12 +100,10 @@ public class IndexBar extends ViewGroup {
     }
 
     /**
-     * @param centerY  要绘制的圆的Y坐标
-     * @param tag      要绘制的字母Tag
-     * @param position 字母Tag所在位置
+     * @param centerY 要绘制的圆的Y坐标
+     * @param tag     要绘制的字母Tag
      */
     public void setDrawData(float centerY, String tag, int position) {
-        this.position = position;
         this.centerY = centerY;
         this.tag = tag;
         isShowTag = true;
@@ -128,12 +124,10 @@ public class IndexBar extends ViewGroup {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         if (isShowTag) {
-            //根据位置来不断变换Paint的颜色
-            ColorUtil.setPaintColor(mPaint, position);
             //绘制圆和文字
-            canvas.drawCircle((mWidth - childWidth) / 2f, centerY, circleRadius, mPaint);
-            mPaint.setColor(Color.WHITE);
-            mPaint.setTextSize(80);
+            canvas.drawCircle((mWidth - childWidth) / 2f, centerY, BaseUtils.dp2px(mContext, circleRadius), mPaint);
+            mPaint.setColor(ContextCompat.getColor(mContext, R.color.color_373d4d));
+            mPaint.setTextSize(BaseUtils.sp2px(mContext, 24));
             canvas.drawText(tag, (mWidth - childWidth - mPaint.measureText(tag)) / 2,
                             centerY - (mPaint.ascent() + mPaint.descent()) / 2, mPaint);
         }

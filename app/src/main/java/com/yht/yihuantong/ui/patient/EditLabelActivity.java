@@ -188,6 +188,7 @@ public class EditLabelActivity extends BaseActivity
         else {
             layoutAll.setVisibility(View.GONE);
         }
+        tagAdapter.notifyDataChanged();
     }
 
     /**

@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.lijiankun24.shadowlayout.ShadowLayout;
 import com.yht.frame.api.ApiManager;
 import com.yht.frame.api.LitePalHelper;
 import com.yht.frame.api.notify.IChange;
@@ -27,7 +28,6 @@ import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.widgets.dialog.HintDialog;
-import com.yht.frame.widgets.recyclerview.IndexBar;
 import com.yht.frame.widgets.recyclerview.SideBar;
 import com.yht.frame.widgets.recyclerview.decoration.SideBarDoctorDecoration;
 import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
@@ -59,8 +59,10 @@ public class DoctorFragment extends BaseFragment
     SwipeRefreshLayout layoutRefresh;
     @BindView(R.id.side_bar)
     SideBar sideBar;
-    @BindView(R.id.index_bar)
-    IndexBar indexBar;
+    @BindView(R.id.tv_index)
+    TextView tvIndex;
+    @BindView(R.id.layout_index)
+    ShadowLayout layoutIndex;
     private View headerView, spaceView;
     private TextView searchText;
     private RelativeLayout layoutHeader;
@@ -271,20 +273,30 @@ public class DoctorFragment extends BaseFragment
 
             @Override
             public void indexShow(float y, String tag, int position) {
-                indexBar.setDrawData(y, tag, position);
+                indexBarVisible(tag, true);
             }
 
             @Override
             public void indexHide() {
                 if (mDelay != null) {
-                    indexBar.removeCallbacks(mDelay);
+                    layoutIndex.removeCallbacks(mDelay);
                 }
-                indexBar.postDelayed(mDelay = () -> indexBar.setTagStatus(false), 1000);
+                layoutIndex.postDelayed(mDelay = () -> indexBarVisible("", false), 1000);
             }
         });
     }
 
     private Runnable mDelay;
+
+    private void indexBarVisible(String text, boolean show) {
+        if (show) {
+            tvIndex.setText(text);
+            layoutIndex.setVisibility(View.VISIBLE);
+        }
+        else {
+            layoutIndex.setVisibility(View.GONE);
+        }
+    }
 
     @Override
     public void onClick(View v) {

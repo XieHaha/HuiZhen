@@ -43,6 +43,7 @@
     <string name="txt_call">呼叫</string>
     <string name="txt_sure">确定</string>
     <string name="txt_sure_add">确认添加</string>
+    <string name="txt_sure_delete">确认删除</string>
     <string name="txt_save">保存</string>
     <string name="txt_open">去开启</string>
     <string name="txt_exit">退出</string>
@@ -227,6 +228,8 @@
     <string name="txt_label_selected">已选标签</string>
     <string name="txt_label_all">全部标签</string>
     <string name="txt_no_label">暂无标签</string>
+    <string name="txt_label_title">%s&#160;(%d)</string>
+    <string name="txt_label_delete_hint">删除后该标签不能恢复</string>
     <string name="txt_patient_search_hint">请在%d名患者中搜索</string>
     <string name="txt_doctor_search_hint">请在%d名医生好友中搜索</string>
 

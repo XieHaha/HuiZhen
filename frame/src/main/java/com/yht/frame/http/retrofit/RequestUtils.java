@@ -734,5 +734,25 @@ public class RequestUtils {
                        .compose(RxJavaHelper.observableIO2Main(context))
                        .subscribe(new AbstractLoadViewObserver<>(context, Tasks.SAVE_PATIENT_LABEL, listener));
     }
+
+    public static void getPatientLabel(Context context, String token, int pageSize, int startPage, boolean showLoading,
+            final ResponseListener<BaseResponse> listener) {
+        Map<String, Integer> params = new HashMap<>(16);
+        params.put("pageSize", pageSize);
+        params.put("startPage", startPage);
+        RetrofitManager.getApiUrlManager()
+                       .getPatientLabel(token, params)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(
+                               new AbstractLoadViewObserver<>(context, showLoading, Tasks.GET_PATIENT_LABEL, listener));
+    }
+
+    public static void deleteLabel(Context context, String token, long tagId,
+            final ResponseListener<BaseResponse> listener) {
+        RetrofitManager.getApiUrlManager()
+                       .deleteLabel(token, tagId)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.DELETE_PATIENT_LABEL, listener));
+    }
 }
 

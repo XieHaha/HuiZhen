@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.lijiankun24.shadowlayout.ShadowLayout;
 import com.yht.frame.api.ApiManager;
 import com.yht.frame.api.LitePalHelper;
 import com.yht.frame.api.notify.IChange;
@@ -26,13 +27,13 @@ import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.widgets.dialog.HintDialog;
-import com.yht.frame.widgets.recyclerview.IndexBar;
 import com.yht.frame.widgets.recyclerview.SideBar;
 import com.yht.frame.widgets.recyclerview.decoration.SideBarItemDecoration;
 import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.adapter.PatientAdapter;
 import com.yht.yihuantong.ui.main.listener.OnSearchListener;
+import com.yht.yihuantong.ui.patient.LabelGroupActivity;
 import com.yht.yihuantong.ui.patient.PatientPersonalActivity;
 
 import org.litepal.crud.DataSupport;
@@ -58,11 +59,13 @@ public class PatientFragment extends BaseFragment
     SwipeRefreshLayout layoutRefresh;
     @BindView(R.id.side_bar)
     SideBar sideBar;
-    @BindView(R.id.index_bar)
-    IndexBar indexBar;
-    private View headerView, spaceView;
+    @BindView(R.id.tv_index)
+    TextView tvIndex;
+    @BindView(R.id.layout_index)
+    ShadowLayout layoutIndex;
+    private View spaceView;
     private TextView searchText;
-    private LinearLayout layoutHeader;
+    private LinearLayout layoutHeader, layoutRecently, layoutPatientLabel;
     /**
      * 适配器
      */
@@ -79,6 +82,10 @@ public class PatientFragment extends BaseFragment
      * 分隔线
      */
     private SideBarItemDecoration decoration;
+    /**
+     * tag显示延迟
+     */
+    private Runnable mDelay;
     /**
      * 所有患者数据
      */
@@ -141,12 +148,16 @@ public class PatientFragment extends BaseFragment
         patientAdapter = new PatientAdapter(R.layout.item_patient, patientBeans);
         patientAdapter.setOnItemClickListener(this);
         patientAdapter.setOnItemChildClickListener(this);
-        headerView = LayoutInflater.from(getContext()).inflate(R.layout.view_patient_header, null);
+        View headerView = LayoutInflater.from(getContext()).inflate(R.layout.view_patient_header, null);
         layoutHeader = headerView.findViewById(R.id.layout_header);
+        layoutRecently = headerView.findViewById(R.id.layout_recently);
+        layoutPatientLabel = headerView.findViewById(R.id.layout_patient_tag);
         spaceView = headerView.findViewById(R.id.view_space);
         //头部搜索按钮
         searchText = headerView.findViewById(R.id.tv_search_patient);
         searchText.setOnClickListener(this);
+        layoutRecently.setOnClickListener(this);
+        layoutPatientLabel.setOnClickListener(this);
         patientAdapter.addHeaderView(headerView);
         patientAdapter.setLoadMoreView(new CustomLoadMoreView());
         patientAdapter.setOnLoadMoreListener(this, recyclerview);
@@ -270,26 +281,43 @@ public class PatientFragment extends BaseFragment
 
             @Override
             public void indexShow(float y, String tag, int position) {
-                indexBar.setDrawData(y, tag, position);
+                indexBarVisible(tag, true);
             }
 
             @Override
             public void indexHide() {
                 if (mDelay != null) {
-                    indexBar.removeCallbacks(mDelay);
+                    layoutIndex.removeCallbacks(mDelay);
                 }
-                indexBar.postDelayed(mDelay = () -> indexBar.setTagStatus(false), 1000);
+                layoutIndex.postDelayed(mDelay = () -> indexBarVisible("", false), 1000);
             }
         });
     }
 
-    private Runnable mDelay;
+    private void indexBarVisible(String text, boolean show) {
+        if (show) {
+            tvIndex.setText(text);
+            layoutIndex.setVisibility(View.VISIBLE);
+        }
+        else {
+            layoutIndex.setVisibility(View.GONE);
+        }
+    }
 
     @Override
     public void onClick(View v) {
         super.onClick(v);
-        if (v.getId() == R.id.tv_search_patient) {
-            openSearch();
+        switch (v.getId()) {
+            case R.id.tv_search_patient:
+                openSearch();
+                break;
+            case R.id.layout_recently:
+                break;
+            case R.id.layout_patient_tag:
+                startActivity(new Intent(getContext(), LabelGroupActivity.class));
+                break;
+            default:
+                break;
         }
     }
 

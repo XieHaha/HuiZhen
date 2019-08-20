@@ -257,5 +257,13 @@ WE_CHAT_LOGIN,
      * 保存患者标签
      */
     SAVE_PATIENT_LABEL,
+    /**
+     * 获取患者标签
+     */
+    GET_PATIENT_LABEL,
+    /**
+     * 删除患者标签
+     */
+    DELETE_PATIENT_LABEL,
 }
 

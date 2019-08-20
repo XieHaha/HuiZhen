@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     android:background="@color/color_ffffff">
+
+    <include
+        layout="@layout/public_title"
+        android:id="@+id/title_bar" />
 
     <TextView
         android:id="@+id/tv_none_patient"
@@ -15,20 +20,16 @@
         android:text="@string/txt_none_patient"
         android:drawableTop="@mipmap/pic_none_paient"
         android:gravity="center"
+        android:layout_below="@id/title_bar"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="66dp"
         android:background="@color/color_ffffff" />
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/layout_refresh"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </android.support.v4.widget.SwipeRefreshLayout>
+        android:layout_height="match_parent"
+        android:layout_below="@id/title_bar" />
 
     <com.lijiankun24.shadowlayout.ShadowLayout
         android:id="@+id/layout_index"
@@ -56,11 +57,13 @@
             android:textColor="@color/color_373d4d" />
     </com.lijiankun24.shadowlayout.ShadowLayout>
 
+
     <com.yht.frame.widgets.recyclerview.SideBar
         android:id="@+id/side_bar"
         android:layout_width="30dp"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/title_bar" />
 
 </RelativeLayout>

@@ -99,9 +99,7 @@ public abstract class BaseActivity extends RxAppCompatActivity
         ButterKnife.bind(this);
         loginBean = getLoginBean();
         sharePreferenceUtil = new SharePreferenceUtil(this);
-        /**
-         * 权限管理类
-         */
+        //权限管理类
         permissionHelper = PermissionHelper.getInstance(this);
         init(savedInstanceState);
     }
@@ -111,8 +109,6 @@ public abstract class BaseActivity extends RxAppCompatActivity
      * 1.initView
      * 3.initData
      * 4.initListener
-     *
-     * @param savedInstanceState
      */
     private void init(@NonNull Bundle savedInstanceState) {
         initBaseViews();
@@ -123,7 +119,7 @@ public abstract class BaseActivity extends RxAppCompatActivity
         initView(savedInstanceState);
         initData(savedInstanceState);
         initListener();
-        runOnUiThread(() -> fillNetWorkData());
+        runOnUiThread(this::fillNetWorkData);
     }
 
     private void initBaseViews() {
@@ -188,8 +184,6 @@ public abstract class BaseActivity extends RxAppCompatActivity
 
     /**
      * 显示进度条
-     *
-     * @param cancel 是否可取消
      */
     public void showLoadingView(final boolean cancel) {
         runOnUiThread(() -> {
@@ -223,8 +217,6 @@ public abstract class BaseActivity extends RxAppCompatActivity
 
     /**
      * 初始化login数据
-     *
-     * @return
      */
     public LoginBean getLoginBean() {
         String userStr = (String)SharePreferenceUtil.getObject(this, CommonData.KEY_LOGIN_BEAN, "");
@@ -236,9 +228,6 @@ public abstract class BaseActivity extends RxAppCompatActivity
 
     /**
      * 获取状态栏高度,在页面还没有显示出来之前
-     *
-     * @param a
-     * @return
      */
     public static int getStateBarHeight(Activity a) {
         int result = 0;
@@ -251,8 +240,6 @@ public abstract class BaseActivity extends RxAppCompatActivity
 
     /**
      * 修改状态栏为全透明
-     *
-     * @param activity
      */
     @TargetApi(19)
     public void transparencyBar(Activity activity) {
@@ -292,8 +279,6 @@ public abstract class BaseActivity extends RxAppCompatActivity
 
     /**
      * 拨打电话（跳转到拨号界面，用户手动点击拨打）
-     *
-     * @param phoneNum 电话号码
      */
     public void callPhone(String phoneNum) {
         Intent intent = new Intent(Intent.ACTION_DIAL);
@@ -321,13 +306,6 @@ public abstract class BaseActivity extends RxAppCompatActivity
         sendBroadcast(intent);
     }
 
-    /**
-     * 得到返回按钮控件
-     */
-    public ImageView getBackBtnView() {
-        return backBtn;
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -348,16 +326,6 @@ public abstract class BaseActivity extends RxAppCompatActivity
 
     @Override
     public void onClick(View v) {
-        onClick(v, v.getId());
-    }
-
-    /**
-     * 单击回调
-     *
-     * @param v       点击的view
-     * @param clickID 点击的控件id
-     */
-    public void onClick(View v, int clickID) {
     }
 
     /**
@@ -405,9 +373,6 @@ public abstract class BaseActivity extends RxAppCompatActivity
         else if (response.getCode() == BaseNetConfig.REQUEST_OTHER_ERROR) {
             ToastUtil.toast(this, response.getMsg());
         }
-        else {
-            //不提示
-        }
     }
 
     @Override
@@ -430,9 +395,6 @@ public abstract class BaseActivity extends RxAppCompatActivity
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
             @NonNull int[] grantResults) {
-        if (permissions == null) {
-            return;
-        }
         for (String per : permissions) {
             if (Permission.STORAGE_WRITE.equals(per)) {
                 permissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -460,9 +422,6 @@ public abstract class BaseActivity extends RxAppCompatActivity
 
     @Override
     public void onPermissionDeclined(@NonNull String[] permissionName) {
-        if (permissionName == null) {
-            return;
-        }
         for (String permission : permissionName) {
             if (Permission.STORAGE_WRITE.equals(permission)) {
                 ToastUtil.toast(getApplicationContext(), R.string.dialog_no_storage_permission_tip);
