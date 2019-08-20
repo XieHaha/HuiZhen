@@ -44,4 +44,17 @@
         android:textColor="@color/txt_color_373d4d_1491fc_selector"
         android:visibility="gone"
         tools:text="联系我们" />
+
+    <ImageView
+        android:id="@+id/public_title_bar_right_img"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:paddingRight="16dp"
+        android:layout_alignParentEnd="true"
+        android:paddingLeft="16dp"
+        android:visibility="gone"
+        android:src="@mipmap/ic_call"
+        android:layout_centerVertical="true" />
 </RelativeLayout>

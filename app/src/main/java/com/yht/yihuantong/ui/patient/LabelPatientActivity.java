@@ -202,9 +202,9 @@ public class LabelPatientActivity extends BaseActivity
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        Intent intent = new Intent(this, PatientPersonalActivity.class);
-        intent.putExtra(CommonData.KEY_PATIENT_CODE, patientBeans.get(position).getCode());
-        intent.putExtra(CommonData.KEY_PATIENT_NAME, patientBeans.get(position).getName());
+        Intent intent = new Intent(this, ChatContainerActivity.class);
+        intent.putExtra(CommonData.KEY_CHAT_ID, patientBeans.get(position).getCode());
+        intent.putExtra(CommonData.KEY_CHAT_NAME, patientBeans.get(position).getName());
         startActivity(intent);
     }
 

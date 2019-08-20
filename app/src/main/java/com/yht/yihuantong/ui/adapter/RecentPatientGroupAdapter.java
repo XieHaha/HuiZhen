@@ -14,10 +14,11 @@ import com.yht.frame.data.CommonData;
 import com.yht.frame.data.bean.PatientBean;
 import com.yht.frame.data.bean.RecentPatientTitleBean;
 import com.yht.frame.utils.BaseUtils;
+import com.yht.frame.utils.TimeUtil;
 import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.yihuantong.R;
-import com.yht.yihuantong.ui.patient.PatientPersonalActivity;
+import com.yht.yihuantong.ui.patient.ChatContainerActivity;
 
 import java.util.List;
 
@@ -31,7 +32,7 @@ public class RecentPatientGroupAdapter extends BaseMultiItemQuickAdapter<MultiIt
     public RecentPatientGroupAdapter(@Nullable List<MultiItemEntity> data) {
         super(data);
         addItemType(BASE_ZERO, R.layout.item_recent_patient_group);
-        addItemType(BASE_ONE, R.layout.item_patient);
+        addItemType(BASE_ONE, R.layout.item_recent_patient);
     }
 
     @Override
@@ -53,15 +54,17 @@ public class RecentPatientGroupAdapter extends BaseMultiItemQuickAdapter<MultiIt
                 break;
             case BASE_ONE:
                 PatientBean patientBean = (PatientBean)item;
-                helper.setText(R.id.tv_patient_name, patientBean.getName());
+                helper.setText(R.id.tv_patient_name, patientBean.getName())
+                      .setText(R.id.tv_time, TimeUtil.getTimeString(
+                              BaseUtils.date2TimeStamp(patientBean.getAddTime(), BaseUtils.YYYY_MM_DD_HH_MM)));
                 Glide.with(mContext)
                      .load(patientBean.getPhoto())
                      .apply(GlideHelper.getOptions(BaseUtils.dp2px(mContext, 4)))
                      .into((ImageView)helper.getView(R.id.iv_patient_img));
                 helper.itemView.setOnClickListener(v -> {
-                    Intent intent = new Intent(mContext, PatientPersonalActivity.class);
-                    intent.putExtra(CommonData.KEY_PATIENT_CODE, patientBean.getCode());
-                    intent.putExtra(CommonData.KEY_PATIENT_NAME, patientBean.getName());
+                    Intent intent = new Intent(mContext, ChatContainerActivity.class);
+                    intent.putExtra(CommonData.KEY_CHAT_ID, patientBean.getCode());
+                    intent.putExtra(CommonData.KEY_CHAT_NAME, patientBean.getName());
                     mContext.startActivity(intent);
                 });
                 ImageView imageView = helper.getView(R.id.iv_patient_call);

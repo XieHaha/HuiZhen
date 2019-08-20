@@ -21,6 +21,7 @@ public class DoctorBean extends DataSupport implements Serializable {
     private String nickName;
     private String photo;
     private String sex;
+    private String mobile;
     /**
      * 排序
      */
@@ -104,6 +105,14 @@ public class DoctorBean extends DataSupport implements Serializable {
 
     public void setSex(String sex) {
         this.sex = sex;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 
     public String getIndexTag() {

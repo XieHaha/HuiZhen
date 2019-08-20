@@ -140,6 +140,9 @@ public class FriendsFragment extends BaseFragment implements OnSearchListener, T
                     layoutBg.setVisibility(View.VISIBLE);
                     if (searchSource == BASE_ONE) {
                         patientFragment.getPatientsByLocal();
+                        if (labelBeans != null && labelBeans.size() > 0) {
+                            layoutAll.setVisibility(View.VISIBLE);
+                        }
                     }
                     else {
                         doctorFragment.getDoctorsByLocal();
@@ -149,6 +152,7 @@ public class FriendsFragment extends BaseFragment implements OnSearchListener, T
                     layoutBg.setVisibility(View.GONE);
                     if (searchSource == BASE_ONE) {
                         patientFragment.sortSearchData(s.toString());
+                        layoutAll.setVisibility(View.GONE);
                     }
                     else {
                         doctorFragment.sortSearchData(s.toString());
@@ -350,14 +354,15 @@ public class FriendsFragment extends BaseFragment implements OnSearchListener, T
 
     @Override
     public void onSearch(int mode, int num) {
-        getExistLabel();
         searchSource = mode;
         openSearch();
         switch (mode) {
             case BASE_ONE:
+                getExistLabel();
                 etSearch.setHint(String.format(getString(R.string.txt_patient_search_hint), num));
                 break;
             case BASE_TWO:
+                layoutAll.setVisibility(View.GONE);
                 etSearch.setHint(String.format(getString(R.string.txt_doctor_search_hint), num));
                 break;
             default:

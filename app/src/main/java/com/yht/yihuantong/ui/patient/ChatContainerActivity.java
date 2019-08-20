@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -22,11 +23,13 @@ import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.bean.ChatTimeBean;
+import com.yht.frame.data.bean.DoctorBean;
 import com.yht.frame.data.bean.PatientBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.ScreenUtils;
+import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.frame.widgets.view.AbstractOnPageChangeListener;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ZycApplication;
@@ -46,15 +49,15 @@ import java.util.concurrent.TimeUnit;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-import static com.yht.frame.data.CommonData.KEY_PATIENT_CODE;
-import static com.yht.frame.data.CommonData.KEY_PATIENT_NAME;
+import static com.yht.frame.data.CommonData.KEY_CHAT_ID;
+import static com.yht.frame.data.CommonData.KEY_CHAT_NAME;
 
 /**
  * @author 顿顿
  * @date 19/6/27 14:17
- * @des 患者页面（基础信息、聊天）
+ * @des 聊天容器界面（包含患者页面（基础信息、聊天）、医生聊天）
  */
-public class PatientPersonalActivity extends BaseActivity implements EaseChatFragment.OnTimeLayoutClickListener {
+public class ChatContainerActivity extends BaseActivity implements EaseChatFragment.OnTimeLayoutClickListener {
     @BindView(R.id.tv_left)
     TextView tvLeft;
     @BindView(R.id.tv_right)
@@ -67,6 +70,10 @@ public class PatientPersonalActivity extends BaseActivity implements EaseChatFra
     ViewPager viewPager;
     @BindView(R.id.public_title_bar_title)
     TextView publicTitleBarTitle;
+    @BindView(R.id.line)
+    View line;
+    @BindView(R.id.public_title_bar_right_img)
+    ImageView publicTitleBarRightImg;
     /**
      * 在线聊天
      */
@@ -79,12 +86,16 @@ public class PatientPersonalActivity extends BaseActivity implements EaseChatFra
      * 开启聊天倒计时广播
      */
     private TimerReceiver timerReceiver;
-    private String patientCode, patientName;
+    private String chatCode, chatName, doctorPhone;
     private ScheduledExecutorService executorService;
     /**
      * 聊天
      */
     private boolean isChat;
+    /**
+     * 医生聊天
+     */
+    private boolean isDoctor;
     /**
      * 倒计时
      */
@@ -153,40 +164,57 @@ public class PatientPersonalActivity extends BaseActivity implements EaseChatFra
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        //        if (patientInfoFragment != null) {
-        //            patientInfoFragment.onResume();
-        //        }
-    }
-
-    @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
         if (getIntent() != null) {
-            patientCode = getIntent().getStringExtra(KEY_PATIENT_CODE);
-            patientName = getIntent().getStringExtra(KEY_PATIENT_NAME);
+            chatCode = getIntent().getStringExtra(KEY_CHAT_ID);
+            chatName = getIntent().getStringExtra(KEY_CHAT_NAME);
             isChat = getIntent().getBooleanExtra(CommonData.KEY_PATIENT_CHAT, false);
+            isDoctor = getIntent().getBooleanExtra(CommonData.KEY_DOCTOR_CHAT, false);
         }
         //通知显示问题
-        if (!TextUtils.isEmpty(patientCode)) {
-            List<PatientBean> list = DataSupport.where("code = ?", patientCode.toUpperCase()).find(PatientBean.class);
-            if (list != null && list.size() > 0) {
-                PatientBean bean = list.get(0);
-                patientName = bean.getName();
+        if (!TextUtils.isEmpty(chatCode)) {
+            if (isDoctor) {
+                List<DoctorBean> list = DataSupport.where("doctorCode = ?", chatCode.toUpperCase())
+                                                   .find(DoctorBean.class);
+                if (list != null && list.size() > 0) {
+                    DoctorBean bean = list.get(0);
+                    chatName = bean.getDoctorName();
+                    doctorPhone = bean.getMobile();
+                }
+                publicTitleBarRightImg.setVisibility(View.VISIBLE);
             }
-            publicTitleBarTitle.setText(patientName);
-            ZycApplication.getInstance().setChatId(patientCode.toLowerCase());
+            else {
+                List<PatientBean> list = DataSupport.where("code = ?", chatCode.toUpperCase()).find(PatientBean.class);
+                if (list != null && list.size() > 0) {
+                    PatientBean bean = list.get(0);
+                    chatName = bean.getName();
+                }
+            }
+            publicTitleBarTitle.setText(chatName);
+            ZycApplication.getInstance().setChatId(chatCode.toLowerCase());
         }
     }
 
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-        viewBar.setTranslationX(calcViewBarOffset());
         initFragment();
-        initReceiver();
-        getChatLastTime();
+        if (isDoctor) {
+            layoutButton.setVisibility(View.GONE);
+            viewBar.setVisibility(View.GONE);
+            line.setVisibility(View.GONE);
+            publicTitleBarTitle.post(() -> {
+                if (easeChatFragment != null && easeChatFragment.isAdded()) {
+                    easeChatFragment.hideStartButton();
+                }
+            });
+        }
+        else {
+            viewBar.setTranslationX(calcViewBarOffset());
+            initReceiver();
+            getChatLastTime();
+        }
     }
 
     @Override
@@ -217,21 +245,21 @@ public class PatientPersonalActivity extends BaseActivity implements EaseChatFra
      * 开始聊天
      */
     private void startChat() {
-        RequestUtils.startChat(this, loginBean.getToken(), loginBean.getDoctorCode(), patientCode, this);
+        RequestUtils.startChat(this, loginBean.getToken(), loginBean.getDoctorCode(), chatCode, this);
     }
 
     /**
      * 获取聊天剩余时间
      */
     private void getChatLastTime() {
-        RequestUtils.getChatLastTime(this, loginBean.getToken(), loginBean.getDoctorCode(), patientCode, this);
+        RequestUtils.getChatLastTime(this, loginBean.getToken(), loginBean.getDoctorCode(), chatCode, this);
     }
 
     /**
      * 结束聊天
      */
     private void endChat() {
-        RequestUtils.endChat(this, loginBean.getToken(), loginBean.getDoctorCode(), patientCode, this);
+        RequestUtils.endChat(this, loginBean.getToken(), loginBean.getDoctorCode(), chatCode, this);
     }
 
     /**
@@ -249,18 +277,20 @@ public class PatientPersonalActivity extends BaseActivity implements EaseChatFra
     private void initFragment() {
         //患者信息
         patientInfoFragment = new PatientInfoFragment();
-        patientInfoFragment.setPatientCode(patientCode);
+        patientInfoFragment.setPatientCode(chatCode);
         //在线聊天
         easeChatFragment = new EaseChatFragment();
         easeChatFragment.setOnTimeLayoutClickListener(this);
         //传入参数
         Bundle args = new Bundle();
         args.putInt(EaseConstant.EXTRA_CHAT_TYPE, EaseConstant.CHATTYPE_SINGLE);
-        args.putString(EaseConstant.EXTRA_USER_ID, patientCode.toLowerCase());
+        args.putString(EaseConstant.EXTRA_USER_ID, chatCode.toLowerCase());
         easeChatFragment.hideTitleBar();
         easeChatFragment.setArguments(args);
         List<Fragment> fragmentList = new ArrayList<>();
-        fragmentList.add(patientInfoFragment);
+        if (!isDoctor) {
+            fragmentList.add(patientInfoFragment);
+        }
         fragmentList.add(easeChatFragment);
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), fragmentList);
         viewPager.setAdapter(viewPagerAdapter);
@@ -357,6 +387,13 @@ public class PatientPersonalActivity extends BaseActivity implements EaseChatFra
     @Override
     public void onTimeLayoutClick() {
         endChat();
+    }
+
+    @OnClick(R.id.public_title_bar_right_img)
+    public void onViewClicked() {
+        new HintDialog(this).setPhone(getString(R.string.txt_contact_doctor_phone), doctorPhone)
+                            .setOnEnterClickListener(() -> callPhone(doctorPhone))
+                            .show();
     }
 
     /**

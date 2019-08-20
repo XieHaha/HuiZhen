@@ -28,6 +28,7 @@ import com.yht.frame.api.ApiManager;
 import com.yht.frame.api.notify.IChange;
 import com.yht.frame.api.notify.NotifyChangeListenerManager;
 import com.yht.frame.api.notify.RegisterType;
+import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
@@ -42,7 +43,7 @@ import com.yht.yihuantong.R;
 import com.yht.yihuantong.chat.EaseConversationListFragment;
 import com.yht.yihuantong.ui.adapter.ViewPagerAdapter;
 import com.yht.yihuantong.ui.main.listener.OnMessageUpdateListener;
-import com.yht.yihuantong.ui.patient.PatientPersonalActivity;
+import com.yht.yihuantong.ui.patient.ChatContainerActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -246,9 +247,15 @@ public class MessageFragment extends BaseFragment
     @Override
     public void onListItemClicked(EMConversation conversation) {
         if (conversation == null) { return; }
-        Intent intent = new Intent(getContext(), PatientPersonalActivity.class);
-        intent.putExtra(CommonData.KEY_PATIENT_CODE, conversation.conversationId().toUpperCase());
-        intent.putExtra(CommonData.KEY_PATIENT_CHAT, true);
+        String chatId = conversation.conversationId().toUpperCase();
+        Intent intent = new Intent(getContext(), ChatContainerActivity.class);
+        intent.putExtra(CommonData.KEY_CHAT_ID, chatId);
+        if (chatId.startsWith(BaseData.BASE_DOCTOR_CODE)) {
+            intent.putExtra(CommonData.KEY_DOCTOR_CHAT, true);
+        }
+        else {
+            intent.putExtra(CommonData.KEY_PATIENT_CHAT, true);
+        }
         startActivity(intent);
     }
 

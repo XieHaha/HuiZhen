@@ -65,6 +65,10 @@ public interface CommonData {
      */
     String KEY_CHAT_ID = "key_chat_id";
     /**
+     * 聊天 name
+     */
+    String KEY_CHAT_NAME = "key_chat_name";
+    /**
      * 金额是否显示
      */
     String KEY_SHOW_CURRENCY = "key_show_currency";
@@ -100,6 +104,10 @@ public interface CommonData {
      * patient 聊天
      */
     String KEY_PATIENT_CHAT = "key_patient_chat";
+    /**
+     * 医生 聊天
+     */
+    String KEY_DOCTOR_CHAT = "key_doctor_chat";
     /**
      * patient name
      */

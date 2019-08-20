@@ -8,7 +8,7 @@ import com.yht.frame.data.BaseData;
 import com.yht.frame.data.CommonData;
 import com.yht.yihuantong.ZycApplication;
 import com.yht.yihuantong.ui.main.MainActivity;
-import com.yht.yihuantong.ui.patient.PatientPersonalActivity;
+import com.yht.yihuantong.ui.patient.ChatContainerActivity;
 
 /**
  * @author dundun
@@ -26,9 +26,14 @@ public class EaseMsgClickBroadCastReceiver extends BroadcastReceiver {
             Intent[] intents;
             mainIntent = new Intent(context, MainActivity.class);
             mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            baseIntent = new Intent(context, PatientPersonalActivity.class);
-            baseIntent.putExtra(CommonData.KEY_PATIENT_CODE, chatId);
-            baseIntent.putExtra(CommonData.KEY_PATIENT_CHAT, true);
+            baseIntent = new Intent(context, ChatContainerActivity.class);
+            baseIntent.putExtra(CommonData.KEY_CHAT_ID, chatId.toUpperCase());
+            if (chatId.toUpperCase().startsWith(BaseData.BASE_DOCTOR_CODE)) {
+                baseIntent.putExtra(CommonData.KEY_DOCTOR_CHAT, true);
+            }
+            else {
+                baseIntent.putExtra(CommonData.KEY_PATIENT_CHAT, true);
+            }
             intents = new Intent[] { mainIntent, baseIntent };
             context.startActivities(intents);
         }

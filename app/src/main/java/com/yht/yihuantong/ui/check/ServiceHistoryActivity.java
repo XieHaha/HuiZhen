@@ -25,7 +25,7 @@ import com.yht.frame.widgets.recyclerview.decoration.TimeItemDecoration;
 import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.adapter.CheckHistoryAdapter;
-import com.yht.yihuantong.ui.patient.PatientPersonalActivity;
+import com.yht.yihuantong.ui.patient.ChatContainerActivity;
 import com.yht.yihuantong.ui.reservation.ReservationDisableActivity;
 import com.yht.yihuantong.ui.reservation.service.ReservationServiceActivity;
 
@@ -179,9 +179,9 @@ public class ServiceHistoryActivity extends BaseActivity
 
     @Override
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-        Intent intent = new Intent(this, PatientPersonalActivity.class);
-        intent.putExtra(CommonData.KEY_PATIENT_CODE, checkedList.get(position).getPatientCode());
-        intent.putExtra(CommonData.KEY_PATIENT_NAME, checkedList.get(position).getPatientName());
+        Intent intent = new Intent(this, ChatContainerActivity.class);
+        intent.putExtra(CommonData.KEY_CHAT_ID, checkedList.get(position).getPatientCode());
+        intent.putExtra(CommonData.KEY_CHAT_NAME, checkedList.get(position).getPatientName());
         startActivity(intent);
     }
 

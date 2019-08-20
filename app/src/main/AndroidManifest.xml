@@ -304,7 +304,7 @@
             android:label="@string/title_transfer_again"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
-            android:name=".ui.patient.PatientPersonalActivity"
+            android:name=".ui.patient.ChatContainerActivity"
             android:screenOrientation="portrait"
             android:label=""
             android:windowSoftInputMode="adjustResize|stateHidden" />

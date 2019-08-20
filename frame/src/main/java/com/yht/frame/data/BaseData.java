@@ -66,11 +66,14 @@ public interface BaseData {
      * 消息最大显示数字
      */
     int BASE_MEAASGE_DISPLAY_MIDDLE_NUM = 99;
-
     /**
      * 屏幕适配  默认宽度
      */
     int BASE_DEVICE_DEFAULT_WIDTH = 667;
+    /**
+     * 医生code 第一个字母
+     */
+    String BASE_DOCTOR_CODE = "D";
     /**
      * 环信默认登录密码
      */

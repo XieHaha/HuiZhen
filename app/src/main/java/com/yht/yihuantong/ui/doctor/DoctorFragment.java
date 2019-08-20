@@ -23,7 +23,6 @@ import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.bean.DoctorBean;
-import com.yht.frame.data.bean.PatientBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
@@ -34,7 +33,7 @@ import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.adapter.DoctorAdapter;
 import com.yht.yihuantong.ui.main.listener.OnSearchListener;
-import com.yht.yihuantong.ui.patient.PatientPersonalActivity;
+import com.yht.yihuantong.ui.patient.ChatContainerActivity;
 
 import org.litepal.crud.DataSupport;
 
@@ -251,8 +250,8 @@ public class DoctorFragment extends BaseFragment
      */
     public void closeSearch() {
         layoutRefresh.setEnabled(true);
-        layoutHeader.setVisibility(View.GONE);
-        spaceView.setVisibility(View.VISIBLE);
+        layoutHeader.setVisibility(View.VISIBLE);
+        spaceView.setVisibility(View.GONE);
     }
 
     /**
@@ -308,17 +307,18 @@ public class DoctorFragment extends BaseFragment
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        Intent intent = new Intent(getContext(), PatientPersonalActivity.class);
-        intent.putExtra(CommonData.KEY_PATIENT_CODE, doctorBeans.get(position).getDoctorCode());
-        intent.putExtra(CommonData.KEY_PATIENT_NAME, doctorBeans.get(position).getDoctorName());
+        Intent intent = new Intent(getContext(), ChatContainerActivity.class);
+        intent.putExtra(CommonData.KEY_CHAT_ID, doctorBeans.get(position).getDoctorCode());
+        intent.putExtra(CommonData.KEY_CHAT_NAME, doctorBeans.get(position).getDoctorName());
+        intent.putExtra(CommonData.KEY_DOCTOR_CHAT, true);
         startActivity(intent);
     }
 
     @Override
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
         new HintDialog(getContext()).setPhone(getString(R.string.txt_contact_doctor_phone),
-                                              doctorBeans.get(position).getPhoto())
-                                    .setOnEnterClickListener(() -> callPhone(doctorBeans.get(position).getPhoto()))
+                                              doctorBeans.get(position).getMobile())
+                                    .setOnEnterClickListener(() -> callPhone(doctorBeans.get(position).getMobile()))
                                     .show();
     }
 
@@ -331,7 +331,7 @@ public class DoctorFragment extends BaseFragment
                 doctorBeans = new ArrayList<>();
             }
             //更新数据库
-            new LitePalHelper().updateAll(doctorBeans, PatientBean.class);
+            new LitePalHelper().updateAll(doctorBeans, DoctorBean.class);
             sharePreferenceUtil.putBoolean(CommonData.KEY_UPDATE_DOCTOR_DATA, true);
             sortData();
             doctorAdapter.setNewData(doctorBeans);

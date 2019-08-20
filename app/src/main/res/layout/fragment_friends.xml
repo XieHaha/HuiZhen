@@ -100,7 +100,7 @@
         android:visibility="gone" />
 
     <include
-        layout="@layout/view_patient_top"
+        layout="@layout/view_search_top"
         android:visibility="gone" />
 
 </RelativeLayout>

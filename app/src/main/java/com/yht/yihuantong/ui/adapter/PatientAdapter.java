@@ -11,6 +11,8 @@ import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.yihuantong.R;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.List;
 
 /**
@@ -25,7 +27,10 @@ public class PatientAdapter extends BaseQuickAdapter<PatientBean, BaseViewHolder
 
     @Override
     protected void convert(BaseViewHolder helper, PatientBean item) {
-        helper.setText(R.id.tv_patient_name, item.getName()).addOnClickListener(R.id.iv_patient_call);
+        String label = StringUtils.join(item.getTagList(), "，");
+        helper.setText(R.id.tv_patient_name, item.getName())
+              .setText(R.id.tv_label, label)
+              .addOnClickListener(R.id.iv_patient_call);
         Glide.with(mContext)
              .load(item.getPhoto())
              .apply(GlideHelper.getOptions(BaseUtils.dp2px(mContext, 4)))

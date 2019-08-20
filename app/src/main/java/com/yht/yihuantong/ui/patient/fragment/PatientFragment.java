@@ -34,7 +34,7 @@ import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.adapter.PatientAdapter;
 import com.yht.yihuantong.ui.main.listener.OnSearchListener;
 import com.yht.yihuantong.ui.patient.LabelGroupActivity;
-import com.yht.yihuantong.ui.patient.PatientPersonalActivity;
+import com.yht.yihuantong.ui.patient.ChatContainerActivity;
 import com.yht.yihuantong.ui.patient.RecentPatientGroupActivity;
 
 import org.litepal.crud.DataSupport;
@@ -325,9 +325,9 @@ public class PatientFragment extends BaseFragment
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        Intent intent = new Intent(getContext(), PatientPersonalActivity.class);
-        intent.putExtra(CommonData.KEY_PATIENT_CODE, patientBeans.get(position).getCode());
-        intent.putExtra(CommonData.KEY_PATIENT_NAME, patientBeans.get(position).getName());
+        Intent intent = new Intent(getContext(), ChatContainerActivity.class);
+        intent.putExtra(CommonData.KEY_CHAT_ID, patientBeans.get(position).getCode());
+        intent.putExtra(CommonData.KEY_CHAT_NAME, patientBeans.get(position).getName());
         startActivity(intent);
     }
 

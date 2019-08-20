@@ -26,7 +26,7 @@ import com.yht.frame.widgets.recyclerview.decoration.TimeItemDecoration;
 import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.adapter.TransferInitiateAdapter;
-import com.yht.yihuantong.ui.patient.PatientPersonalActivity;
+import com.yht.yihuantong.ui.patient.ChatContainerActivity;
 import com.yht.yihuantong.ui.reservation.ReservationDisableActivity;
 import com.yht.yihuantong.ui.reservation.transfer.ReservationTransferActivity;
 
@@ -199,9 +199,9 @@ public class TransferInitiateListActivity extends BaseActivity
 
     @Override
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-        Intent intent = new Intent(this, PatientPersonalActivity.class);
-        intent.putExtra(CommonData.KEY_PATIENT_CODE, transferList.get(position).getPatientCode());
-        intent.putExtra(CommonData.KEY_PATIENT_NAME, transferList.get(position).getPatientName());
+        Intent intent = new Intent(this, ChatContainerActivity.class);
+        intent.putExtra(CommonData.KEY_CHAT_ID, transferList.get(position).getPatientCode());
+        intent.putExtra(CommonData.KEY_CHAT_NAME, transferList.get(position).getPatientName());
         startActivity(intent);
     }
 

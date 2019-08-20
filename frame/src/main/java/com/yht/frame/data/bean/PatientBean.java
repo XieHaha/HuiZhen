@@ -31,6 +31,10 @@ public class PatientBean extends DataSupport implements Serializable, MultiItemE
      */
     private String indexTag;
     /**
+     * 添加时间
+     */
+    private String addTime;
+    /**
      * 患者标签
      */
     private ArrayList<String> tagList;
@@ -137,6 +141,14 @@ public class PatientBean extends DataSupport implements Serializable, MultiItemE
 
     public void setIndexTag(String indexTag) {
         this.indexTag = indexTag;
+    }
+
+    public String getAddTime() {
+        return addTime;
+    }
+
+    public void setAddTime(String addTime) {
+        this.addTime = addTime;
     }
 
     public ArrayList<String> getTagList() {

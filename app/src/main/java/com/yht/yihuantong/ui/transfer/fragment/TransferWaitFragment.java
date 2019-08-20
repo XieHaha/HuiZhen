@@ -24,7 +24,7 @@ import com.yht.frame.widgets.LoadViewHelper;
 import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.adapter.TransferWaitAdapter;
-import com.yht.yihuantong.ui.patient.PatientPersonalActivity;
+import com.yht.yihuantong.ui.patient.ChatContainerActivity;
 import com.yht.yihuantong.ui.transfer.TransferReceiveDetailActivity;
 
 import java.util.ArrayList;
@@ -113,9 +113,9 @@ public class TransferWaitFragment extends BaseFragment
 
     @Override
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-        Intent intent = new Intent(getContext(), PatientPersonalActivity.class);
-        intent.putExtra(CommonData.KEY_PATIENT_CODE, transferBeans.get(position).getPatientCode());
-        intent.putExtra(CommonData.KEY_PATIENT_NAME, transferBeans.get(position).getPatientName());
+        Intent intent = new Intent(getContext(), ChatContainerActivity.class);
+        intent.putExtra(CommonData.KEY_CHAT_ID, transferBeans.get(position).getPatientCode());
+        intent.putExtra(CommonData.KEY_CHAT_NAME, transferBeans.get(position).getPatientName());
         startActivity(intent);
     }
 

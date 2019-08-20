@@ -224,6 +224,7 @@
     <string name="txt_chat_start">开始对话</string>
     <string name="txt_chat_time">点击结束本次对话%s</string>
     <string name="txt_recently_add">最近添加</string>
+    <string name="txt_recently_add_time">添加时间：</string>
     <string name="txt_patient_label">患者标签</string>
     <string name="txt_input_label_hint">请输入标签</string>
     <string name="txt_label_selected">已选标签</string>

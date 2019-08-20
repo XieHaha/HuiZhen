@@ -162,6 +162,13 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
     }
 
     /**
+     * 何医生聊天需要隐藏开始聊天按钮
+     */
+    public void hideStartButton() {
+        inputMenu.getPrimaryMenu().setLayoutChatStartVisible(View.GONE);
+    }
+
+    /**
      * 倒计时布局
      */
     public void startTimer() {
@@ -361,7 +368,7 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
             }
             conversation.loadMoreMsgFromDB(msgId, pagesize - msgCount);
         }
-        if(msgCount==0) {
+        if (msgCount == 0) {
             fetchQueue.execute(new Runnable() {
                 @Override
                 public void run() {
@@ -445,12 +452,12 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-//                        if (!isRoaming) {
-//                            loadMoreLocalMessage();
-//                        }
-//                        else {
-//                            loadMoreRoamingMessages();
-//                        }
+                        //                        if (!isRoaming) {
+                        //                            loadMoreLocalMessage();
+                        //                        }
+                        //                        else {
+                        //                            loadMoreRoamingMessages();
+                        //                        }
                         loadMoreLocalMessage();
                     }
                 }, 600);
