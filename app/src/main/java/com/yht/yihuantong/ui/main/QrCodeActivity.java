@@ -55,17 +55,14 @@ public class QrCodeActivity extends BaseActivity {
         if (getIntent() != null) {
             mode = getIntent().getBooleanExtra(CommonData.KEY_INTENT_BOOLEAN, false);
         }
+        getDoctorQrCode();
     }
 
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         qrCodePageAdapter = new QrCodePageAdapter(this, loginBean);
-        qrCodePageAdapter.setList(initQrCodeData());
         viewPager.setAdapter(qrCodePageAdapter);
-        if (mode) {
-            viewPager.setCurrentItem(1);
-        }
     }
 
     /**
@@ -74,26 +71,30 @@ public class QrCodeActivity extends BaseActivity {
     private void getDoctorQrCode() {
         //医生端扫描使用
         RequestUtils.getDoctorQrCode(this, loginBean.getToken(), this);
-        //微信端扫描使用
-        RequestUtils.getDoctorQrCodeByWeChat(this, loginBean.getToken(), this);
     }
 
     /**
      * 初始化二维码数据
+     *
+     * @param bean
      */
-    private ArrayList<QrCodeBean> initQrCodeData() {
+    private void initQrCodeData(QrCodeBean bean) {
         ArrayList<QrCodeBean> list = new ArrayList<>();
         QrCodeBean one = new QrCodeBean();
         one.setTitle(getString(R.string.txt_wechat_scan_hint));
         one.setMode(getString(R.string.txt_menu_patient));
-        one.setContent("患者添加我");
+        one.setContent(bean.getWxQr().getWxQrUrl());
         QrCodeBean two = new QrCodeBean();
         two.setTitle(getString(R.string.txt_scan_hint));
         two.setMode(getString(R.string.txt_menu_doctor));
-        two.setContent("医生添加我");
+        two.setContent(bean.getUserQr());
         list.add(one);
         list.add(two);
-        return list;
+        qrCodePageAdapter.setList(list);
+        qrCodePageAdapter.notifyDataSetChanged();
+        if (mode) {
+            viewPager.setCurrentItem(1);
+        }
     }
 
     @OnClick(R.id.public_title_bar_back)
@@ -104,14 +105,9 @@ public class QrCodeActivity extends BaseActivity {
     @Override
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
-        switch (task) {
-            case GET_DOCTOR_QR_CODE:
-
-                break;
-            case GET_DOCTOR_QR_CODE_BY_WECHAT:
-                break;
-            default:
-                break;
+        if (task == Tasks.GET_DOCTOR_QR_CODE) {
+            QrCodeBean bean = (QrCodeBean)response.getData();
+            initQrCodeData(bean);
         }
     }
 }

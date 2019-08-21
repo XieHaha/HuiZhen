@@ -12,10 +12,13 @@ import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.bean.HospitalBean;
+import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
+import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.widgets.edittext.AbstractTextWatcher;
 import com.yht.frame.widgets.edittext.EditTextLayout;
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.ZycApplication;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -34,7 +37,10 @@ public class AddInfoActivity extends BaseActivity {
     TextView publicTitleBarTitle;
     @BindView(R.id.tv_calc_num)
     TextView tvCalcNum;
-    private String name;
+    private String inputValue;
+    /**
+     * true 添加个人简介
+     */
     private boolean mode;
 
     @Override
@@ -52,7 +58,7 @@ public class AddInfoActivity extends BaseActivity {
         super.initView(savedInstanceState);
         if (getIntent() != null) {
             mode = getIntent().getBooleanExtra(CommonData.KEY_INTENT_BOOLEAN, false);
-            name = getIntent().getStringExtra(CommonData.KEY_PUBLIC_STRING);
+            inputValue = getIntent().getStringExtra(CommonData.KEY_PUBLIC_STRING);
         }
         publicTitleBarMore.setVisibility(View.VISIBLE);
     }
@@ -76,9 +82,12 @@ public class AddInfoActivity extends BaseActivity {
             etHospital.getEditText().setFilters(new InputFilter[] { new InputFilter.LengthFilter(20) });
             tvCalcNum.setVisibility(View.GONE);
         }
-        if (!TextUtils.isEmpty(name)) {
-            etHospital.getEditText().setText(name);
-            etHospital.getEditText().setSelection(name.length());
+        if (!TextUtils.isEmpty(inputValue)) {
+            etHospital.getEditText().setText(inputValue);
+            etHospital.getEditText().setSelection(inputValue.length());
+            if (mode) {
+                tvCalcNum.setText(String.format(getString(R.string.txt_calc_num), inputValue.length()));
+            }
         }
     }
 
@@ -89,17 +98,23 @@ public class AddInfoActivity extends BaseActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 super.onTextChanged(s, start, before, count);
-                if (TextUtils.isEmpty(s.toString())) {
-                    if (mode) {
-                        //个人简介可以为空
-                        publicTitleBarMore.setSelected(true);
-                    }
-                    else {
+                if (mode) {
+                    //个人简介可以为空
+                    if (TextUtils.equals(s.toString(), inputValue)) {
                         publicTitleBarMore.setSelected(false);
                     }
+                    else {
+                        publicTitleBarMore.setSelected(true);
+                    }
+                    tvCalcNum.setText(String.format(getString(R.string.txt_calc_num), s.toString().trim().length()));
                 }
                 else {
-                    publicTitleBarMore.setSelected(true);
+                    if (TextUtils.isEmpty(s.toString())) {
+                        publicTitleBarMore.setSelected(false);
+                    }
+                    else {
+                        publicTitleBarMore.setSelected(true);
+                    }
                 }
             }
         });
@@ -108,7 +123,8 @@ public class AddInfoActivity extends BaseActivity {
     /**
      * 更新个人简介
      */
-    private void updateIntroduction() {
+    private void updateIntroduction(String value) {
+        RequestUtils.updateIntroduce(this, loginBean.getToken(), value, this);
     }
 
     @OnClick(R.id.public_title_bar_more)
@@ -117,13 +133,13 @@ public class AddInfoActivity extends BaseActivity {
             return;
         }
         hideSoftInputFromWindow();
-        String content = etHospital.getEditText().getText().toString().trim();
+        inputValue = etHospital.getEditText().getText().toString().trim();
         if (mode) {
-            updateIntroduction();
+            updateIntroduction(inputValue);
         }
         else {
             HospitalBean bean = new HospitalBean();
-            bean.setHospitalName(content);
+            bean.setHospitalName(inputValue);
             Intent intent = new Intent();
             intent.putExtra(CommonData.KEY_HOSPITAL_BEAN, bean);
             setResult(RESULT_OK, intent);
@@ -134,5 +150,14 @@ public class AddInfoActivity extends BaseActivity {
     @Override
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
+        if (task == Tasks.UPDATE_INTRODUCE) {
+            ToastUtil.toast(this, response.getMsg());
+            loginBean.setIntroduce(inputValue);
+            ZycApplication.getInstance().setLoginBean(loginBean);
+            Intent intent = new Intent();
+            intent.putExtra(CommonData.KEY_PUBLIC_STRING, inputValue);
+            setResult(RESULT_OK, intent);
+            finish();
+        }
     }
 }

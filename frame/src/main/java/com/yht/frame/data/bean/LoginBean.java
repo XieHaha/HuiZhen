@@ -23,6 +23,7 @@ public class LoginBean implements Serializable {
     private String hospitalCode;
     private String hospitalName;
     private String departmentName;
+    private String introduce;
     /**
      * 认证失败原因
      */
@@ -119,6 +120,14 @@ public class LoginBean implements Serializable {
 
     public void setDepartmentName(String departmentName) {
         this.departmentName = departmentName;
+    }
+
+    public String getIntroduce() {
+        return introduce;
+    }
+
+    public void setIntroduce(String introduce) {
+        this.introduce = introduce;
     }
 
     public String getRejectReason() {

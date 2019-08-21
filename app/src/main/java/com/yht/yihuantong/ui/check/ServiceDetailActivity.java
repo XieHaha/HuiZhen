@@ -212,9 +212,9 @@ public class ServiceDetailActivity extends BaseActivity
             return;
         }
         initCheckType();
-        tvPastMedical.setText("测试");
-        tvFamilyMedical.setText("测试");
-        tvAllergies.setText("测试");
+        tvPastMedical.setText(checkDetailBean.getPastHistory());
+        tvFamilyMedical.setText(checkDetailBean.getFamilyHistory());
+        tvAllergies.setText(checkDetailBean.getAllergyHistory());
         Glide.with(this)
              .load(FileUrlUtil.addTokenToUrl(checkDetailBean.getPatientPhoto()))
              .apply(GlideHelper.getOptions(BaseUtils.dp2px(this, 4)))

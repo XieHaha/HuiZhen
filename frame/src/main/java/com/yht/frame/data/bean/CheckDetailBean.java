@@ -32,7 +32,34 @@ public class CheckDetailBean implements Serializable {
     private String finishAt;
     private String notes;
     private String doctorName;
+    private String pastHistory;
+    private String familyHistory;
+    private String allergyHistory;
     private ArrayList<CheckTypeByDetailBean> tranList;
+
+    public String getPastHistory() {
+        return pastHistory;
+    }
+
+    public void setPastHistory(String pastHistory) {
+        this.pastHistory = pastHistory;
+    }
+
+    public String getFamilyHistory() {
+        return familyHistory;
+    }
+
+    public void setFamilyHistory(String familyHistory) {
+        this.familyHistory = familyHistory;
+    }
+
+    public String getAllergyHistory() {
+        return allergyHistory;
+    }
+
+    public void setAllergyHistory(String allergyHistory) {
+        this.allergyHistory = allergyHistory;
+    }
 
     public int getSex() {
         return sex;

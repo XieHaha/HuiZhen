@@ -76,6 +76,17 @@ public class RequestUtils {
                                                                  listener));
     }
 
+    public static void updateIntroduce(Context context, String token, String introduce,
+            final ResponseListener<BaseResponse> listener) {
+        Map<String, String> params = new HashMap<>(16);
+        params.put("introduce", introduce);
+        RetrofitManager.getApiUrlManager()
+                       .updateIntroduce(token, params)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(
+                               new AbstractLoadViewObserver<>(context, true, false, Tasks.UPDATE_INTRODUCE, listener));
+    }
+
     public static void getProtocolUpdateDate(Context context, final ResponseListener<BaseResponse> listener) {
         RetrofitManager.getApiUrlManager()
                        .getProtocolUpdateDate()
@@ -705,15 +716,6 @@ public class RequestUtils {
                        .getDoctorQrCode(token)
                        .compose(RxJavaHelper.observableIO2Main(context))
                        .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_DOCTOR_QR_CODE, listener));
-    }
-
-    public static void getDoctorQrCodeByWeChat(Context context, String token,
-            final ResponseListener<BaseResponse> listener) {
-        RetrofitManager.getApiUrlManager()
-                       .getDoctorQrCodeByWeChat(token)
-                       .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(
-                               new AbstractLoadViewObserver<>(context, Tasks.GET_DOCTOR_QR_CODE_BY_WECHAT, listener));
     }
 
     public static void getLabel(Context context, String token, String patientCode,

@@ -55,7 +55,7 @@
                 android:textSize="@dimen/text_13"
                 android:text="@string/txt_scan_hint" />
 
-            <com.yht.frame.widgets.qrcode.BarCodeImageView
+            <ImageView
                 android:id="@+id/iv_qr"
                 android:layout_width="209dp"
                 android:layout_height="209dp"

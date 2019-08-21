@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -75,6 +76,10 @@ public class PersonalInfoActivity extends BaseActivity {
         tvInfoTitle.setText(loginBean.getJobTitle());
         tvInfoDepart.setText(loginBean.getDepartmentName());
         tvInfoHospital.setText(loginBean.getHospitalName());
+        if (!TextUtils.isEmpty(loginBean.getIntroduce())) {
+            tvIntroduction.setHint("");
+            tvIntroduction.setText(loginBean.getIntroduce());
+        }
         Glide.with(this)
              .load(FileUrlUtil.addTokenToUrl(loginBean.getPhoto()))
              .apply(GlideHelper.getOptions(BaseUtils.dp2px(this, 4)))
@@ -84,7 +89,7 @@ public class PersonalInfoActivity extends BaseActivity {
     @OnClick(R.id.layout_introduction)
     public void onViewClicked() {
         Intent intent = new Intent(this, AddInfoActivity.class);
-        intent.putExtra(CommonData.KEY_PUBLIC_STRING, "");
+        intent.putExtra(CommonData.KEY_PUBLIC_STRING, loginBean.getIntroduce());
         intent.putExtra(CommonData.KEY_INTENT_BOOLEAN, true);
         startActivityForResult(intent, REQUEST_CODE_INTRODUCTION);
     }
@@ -96,7 +101,15 @@ public class PersonalInfoActivity extends BaseActivity {
             return;
         }
         if (requestCode == REQUEST_CODE_INTRODUCTION) {
-            bindData();
+            String introduce = data.getStringExtra(CommonData.KEY_PUBLIC_STRING);
+            tvIntroduction.setText(introduce);
+            if (!TextUtils.isEmpty(introduce)) {
+                tvIntroduction.setHint("");
+            }
+            else {
+                tvIntroduction.setHint(R.string.txt_introduction_hint);
+            }
+            loginBean = getLoginBean();
         }
     }
 }

@@ -249,7 +249,7 @@
             android:textSize="@dimen/text_16"
             android:textColor="@color/color_373d4d"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="11dp"
+            android:layout_marginEnd="20dp"
             android:maxLines="2"
             android:hint="@string/txt_introduction_hint"
             android:textColorHint="@color/color_a1a8b3"

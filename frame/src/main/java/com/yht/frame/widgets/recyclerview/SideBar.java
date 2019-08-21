@@ -12,7 +12,6 @@ import android.view.View;
 
 import com.yht.frame.R;
 import com.yht.frame.utils.BaseUtils;
-import com.yht.frame.utils.HuiZhenLog;
 import com.yht.frame.utils.ScreenUtils;
 
 /**
@@ -82,7 +81,6 @@ public class SideBar extends View {
         mWidth = w;
         singleHeight = marginTop;
         mHeight = singleHeight * indexStr.length();
-        HuiZhenLog.i("ZYC", "test-mHeight:" + mHeight);
         //屏幕高度/2 - sidebar高度/2 + margintop的高度 - 标题栏高度
         startHeight = height / 2 - mHeight / 2 + marginTop - (marginTotal - marginTop);
     }

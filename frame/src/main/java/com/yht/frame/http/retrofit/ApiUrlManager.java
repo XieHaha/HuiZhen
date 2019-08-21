@@ -26,6 +26,7 @@ import com.yht.frame.data.bean.OrderNumStatisticsBean;
 import com.yht.frame.data.bean.PatientBean;
 import com.yht.frame.data.bean.PatientOrderBean;
 import com.yht.frame.data.bean.ProtocolBean;
+import com.yht.frame.data.bean.QrCodeBean;
 import com.yht.frame.data.bean.ReceiverDoctorBean;
 import com.yht.frame.data.bean.RecentPatientBean;
 import com.yht.frame.data.bean.ReservationValidateBean;
@@ -53,6 +54,13 @@ import retrofit2.http.QueryMap;
 
 /**
  * @author dundun
+ * Path是网址中的参数,例如:trades/{userId}
+ * Query是问号后面的参数,例如:trades/{userId}?token={token}
+ * QueryMap 相当于多个@Query
+ * Field用于Post请求,提交单个数据,然后要加@FormUrlEncoded
+ * Body相当于多个@Field,以对象的方式提交
+ * @Streaming:用于下载大文件
+ * @Header,@Headers、加请求头 ————————————————
  */
 public interface ApiUrlManager {
     /**
@@ -92,7 +100,17 @@ public interface ApiUrlManager {
     Observable<BaseResponse<LoginBean>> login(@Body Map<String, String> info);
 
     /**
-     * 登录
+     * 更新个人简介
+     *
+     * @param token token
+     * @param info  参数
+     * @return 返回值
+     */
+    @POST("client/doctor/introduce")
+    Observable<BaseResponse<LoginBean>> updateIntroduce(@Header("token") String token, @Body Map<String, String> info);
+
+    /**
+     * 用户协议最后更新时间
      *
      * @return 返回值
      */
@@ -689,17 +707,8 @@ public interface ApiUrlManager {
      * @param token token
      * @return 返回值
      */
-    @GET("client/doctor/qr/user")
-    Observable<BaseResponse<VersionBean>> getDoctorQrCode(@Header("token") String token);
-
-    /**
-     * 获取医生二维码（微信端扫描）
-     *
-     * @param token token
-     * @return 返回值
-     */
-    @GET("client/doctor/qr/wx")
-    Observable<BaseResponse<VersionBean>> getDoctorQrCodeByWeChat(@Header("token") String token);
+    @GET("client/doctor/qr")
+    Observable<BaseResponse<QrCodeBean>> getDoctorQrCode(@Header("token") String token);
 
     /**
      * 获取标签

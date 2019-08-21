@@ -15,7 +15,6 @@ import com.yht.frame.data.bean.QrCodeBean;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.ScreenUtils;
 import com.yht.frame.utils.glide.GlideHelper;
-import com.yht.frame.widgets.qrcode.BarCodeImageView;
 import com.yht.yihuantong.R;
 
 import java.util.ArrayList;
@@ -83,7 +82,7 @@ public class QrCodePageAdapter extends PagerAdapter {
         TextView jobTitle = view.findViewById(R.id.tv_title);
         TextView scanTitle = view.findViewById(R.id.tv_scan_title);
         TextView scanMode = view.findViewById(R.id.tv_scan_mode);
-        BarCodeImageView barCodeImageView = view.findViewById(R.id.iv_qr);
+        ImageView barCodeImageView = view.findViewById(R.id.iv_qr);
         //基础信息
         Glide.with(context)
              .load(loginBean.getPhoto())
@@ -109,6 +108,6 @@ public class QrCodePageAdapter extends PagerAdapter {
         }
         scanMode.setText(item.getMode());
         scanTitle.setText(item.getTitle());
-        barCodeImageView.setContent(item.getContent());
+        Glide.with(context).load(item.getContent()).apply(GlideHelper.getOptionsPic(1)).into(barCodeImageView);
     }
 }

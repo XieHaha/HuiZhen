@@ -179,9 +179,9 @@ public class TransferInitiateDetailActivity extends BaseActivity
         if (transferBean == null) {
             return;
         }
-        tvPastMedical.setText("测试");
-        tvFamilyMedical.setText("测试");
-        tvAllergies.setText("测试");
+        tvPastMedical.setText(transferBean.getPastHistory());
+        tvFamilyMedical.setText(transferBean.getFamilyHistory());
+        tvAllergies.setText(transferBean.getAllergyHistory());
         Glide.with(this)
              .load(FileUrlUtil.addTokenToUrl(transferBean.getPhoto()))
              .apply(GlideHelper.getOptions(BaseUtils.dp2px(this, 4)))

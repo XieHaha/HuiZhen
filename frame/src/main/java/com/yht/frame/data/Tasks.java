@@ -22,6 +22,10 @@ WE_CHAT_LOGIN,
      */
     LOGIN_AND_REGISTER,
     /**
+     * 个人简介
+     */
+    UPDATE_INTRODUCE,
+    /**
      * 用户协议最后更新时间
      */
     GET_PROTOCOL_UPDATE_DATE,
@@ -245,10 +249,6 @@ WE_CHAT_LOGIN,
      * 获取医生二维码（医生端扫描）
      */
     GET_DOCTOR_QR_CODE,
-    /**
-     * 获取医生二维码（微信端扫描）
-     */
-    GET_DOCTOR_QR_CODE_BY_WECHAT,
     /**
      * 获取标签
      */

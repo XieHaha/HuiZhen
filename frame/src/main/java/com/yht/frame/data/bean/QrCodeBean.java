@@ -9,11 +9,11 @@ import java.io.Serializable;
  */
 public class QrCodeBean implements Serializable {
     private static final long serialVersionUID = 5071743849994487696L;
-
     private String title;
     private String mode;
     private String content;
-
+    private String userQr;
+    private QrWeChatCodeBean wxQr;
 
     public String getTitle() {
         return title;
@@ -37,5 +37,21 @@ public class QrCodeBean implements Serializable {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getUserQr() {
+        return userQr;
+    }
+
+    public void setUserQr(String userQr) {
+        this.userQr = userQr;
+    }
+
+    public QrWeChatCodeBean getWxQr() {
+        return wxQr;
+    }
+
+    public void setWxQr(QrWeChatCodeBean wxQr) {
+        this.wxQr = wxQr;
     }
 }
