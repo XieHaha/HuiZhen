@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -60,6 +61,8 @@ public class DoctorFragment extends BaseFragment
     SideBar sideBar;
     @BindView(R.id.tv_index)
     TextView tvIndex;
+    @BindView(R.id.iv_search)
+    ImageView ivSearch;
     @BindView(R.id.layout_index)
     ShadowLayout layoutIndex;
     private View headerView, spaceView;
@@ -108,7 +111,7 @@ public class DoctorFragment extends BaseFragment
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 //第一个可见的位置
                 int findFirstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
-                sideBar.setCurPosition(findFirstVisibleItemPosition - 1);
+                sideBar.setCurPosition(findFirstVisibleItemPosition);
             }
         });
     }
@@ -209,7 +212,7 @@ public class DoctorFragment extends BaseFragment
         //对数据源进行排序
         BaseUtils.sortDoctorData(doctorBeans);
         //返回一个包含所有Tag字母在内的字符串并赋值给tagsStr
-        String tagsStr = BaseUtils.getDoctorTags(doctorBeans);
+        String tagsStr = BASE_SEARCH_TAG + BaseUtils.getDoctorTags(doctorBeans);
         sideBar.setIndexStr(tagsStr);
         decoration.setDatas(doctorBeans, tagsStr);
     }
@@ -270,10 +273,15 @@ public class DoctorFragment extends BaseFragment
             @Override
             public void indexChanged(String tag) {
                 if (TextUtils.isEmpty(tag) || doctorBeans.size() <= 0) { return; }
-                for (int i = 0; i < doctorBeans.size(); i++) {
-                    if (tag.equals(doctorBeans.get(i).getIndexTag())) {
-                        layoutManager.scrollToPositionWithOffset(i + 1, 0);
-                        return;
+                if (tag.equals(BASE_SEARCH_TAG)) {
+                    layoutManager.scrollToPositionWithOffset(0, 0);
+                }
+                else {
+                    for (int i = 0; i < doctorBeans.size(); i++) {
+                        if (tag.equals(doctorBeans.get(i).getIndexTag())) {
+                            layoutManager.scrollToPositionWithOffset(i + 1, 0);
+                            return;
+                        }
                     }
                 }
             }
@@ -297,7 +305,15 @@ public class DoctorFragment extends BaseFragment
 
     private void indexBarVisible(String text, boolean show) {
         if (show) {
-            tvIndex.setText(text);
+            if (BASE_SEARCH_TAG.equals(text)) {
+                ivSearch.setVisibility(View.VISIBLE);
+                tvIndex.setText("");
+            }
+            else {
+                ivSearch.setVisibility(View.GONE);
+                tvIndex.setVisibility(View.VISIBLE);
+                tvIndex.setText(text);
+            }
             layoutIndex.setVisibility(View.VISIBLE);
         }
         else {

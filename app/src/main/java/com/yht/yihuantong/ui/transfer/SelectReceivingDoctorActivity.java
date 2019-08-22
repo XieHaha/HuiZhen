@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -83,6 +84,8 @@ public class SelectReceivingDoctorActivity extends BaseActivity
     ShadowLayout layoutIndex;
     @BindView(R.id.side_bar)
     SideBar sideBar;
+    @BindView(R.id.iv_search)
+    ImageView ivSearch;
     /**
      * 医院、科室适配器
      */
@@ -456,7 +459,15 @@ public class SelectReceivingDoctorActivity extends BaseActivity
 
     private void indexBarVisible(String text, boolean show) {
         if (show) {
-            tvIndex.setText(text);
+            if (BASE_SEARCH_TAG.equals(text)) {
+                ivSearch.setVisibility(View.VISIBLE);
+                tvIndex.setText("");
+            }
+            else {
+                ivSearch.setVisibility(View.GONE);
+                tvIndex.setVisibility(View.VISIBLE);
+                tvIndex.setText(text);
+            }
             layoutIndex.setVisibility(View.VISIBLE);
         }
         else {
@@ -479,7 +490,7 @@ public class SelectReceivingDoctorActivity extends BaseActivity
         if (tempList.size() > 0) {
             doctors.addAll(0, tempList);
         }
-        String tagsStr = BaseUtils.getReceiveDoctorTags(doctors);
+        String tagsStr = BASE_SEARCH_TAG + BaseUtils.getReceiveDoctorTags(doctors);
         //返回一个包含所有Tag字母在内的字符串并赋值给tagsStr
         sideBar.setIndexStr(tagsStr);
         decoration.setHasHeader(false);

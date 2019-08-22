@@ -1,8 +1,11 @@
 package com.yht.frame.widgets.recyclerview;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
@@ -11,6 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.yht.frame.R;
+import com.yht.frame.data.BaseData;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.ScreenUtils;
 
@@ -47,6 +51,7 @@ public class SideBar extends View {
      * value
      */
     private String indexStr = "";
+    private Bitmap bitmap;
 
     public SideBar(Context context) {
         this(context, null);
@@ -71,6 +76,9 @@ public class SideBar extends View {
         mPaint.setAntiAlias(true);
         mPaint.setColor(ContextCompat.getColor(mContext, R.color.color_373d4d));
         mPaint.setTextSize(BaseUtils.sp2px(mContext, 14));
+        //扫描线 bitmap
+        Drawable drawable = ContextCompat.getDrawable(getContext(), R.mipmap.ic_search);
+        bitmap = ((BitmapDrawable)drawable).getBitmap();
     }
 
     @Override
@@ -97,7 +105,12 @@ public class SideBar extends View {
                 else {
                     mPaint.setColor(ContextCompat.getColor(getContext(), R.color.color_373d4d));
                 }
-                canvas.drawText(textTag, xPos, singleHeight * (i + 1) + startHeight, mPaint);
+                if (BaseData.BASE_SEARCH_TAG.equals(textTag)) {
+                    canvas.drawBitmap(bitmap, xPos, startHeight, mPaint);
+                }
+                else {
+                    canvas.drawText(textTag, xPos, singleHeight * (i + 1) + startHeight, mPaint);
+                }
             }
         }
         else {

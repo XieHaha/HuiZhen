@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -33,8 +34,8 @@ import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.adapter.PatientAdapter;
 import com.yht.yihuantong.ui.main.listener.OnSearchListener;
-import com.yht.yihuantong.ui.patient.LabelGroupActivity;
 import com.yht.yihuantong.ui.patient.ChatContainerActivity;
+import com.yht.yihuantong.ui.patient.LabelGroupActivity;
 import com.yht.yihuantong.ui.patient.RecentPatientGroupActivity;
 
 import org.litepal.crud.DataSupport;
@@ -64,6 +65,8 @@ public class PatientFragment extends BaseFragment
     TextView tvIndex;
     @BindView(R.id.layout_index)
     ShadowLayout layoutIndex;
+    @BindView(R.id.iv_search)
+    ImageView ivSearch;
     private View spaceView;
     private TextView searchText;
     private LinearLayout layoutHeader, layoutRecently, layoutPatientLabel;
@@ -114,7 +117,7 @@ public class PatientFragment extends BaseFragment
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 //第一个可见的位置
                 int findFirstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
-                sideBar.setCurPosition(findFirstVisibleItemPosition - 1);
+                sideBar.setCurPosition(findFirstVisibleItemPosition);
             }
         });
     }
@@ -219,7 +222,7 @@ public class PatientFragment extends BaseFragment
         //对数据源进行排序
         BaseUtils.sortPatientData(patientBeans);
         //返回一个包含所有Tag字母在内的字符串并赋值给tagsStr
-        String tagsStr = BaseUtils.getTags(patientBeans);
+        String tagsStr = BASE_SEARCH_TAG + BaseUtils.getTags(patientBeans);
         sideBar.setIndexStr(tagsStr);
         decoration.setDatas(patientBeans, tagsStr);
     }
@@ -280,10 +283,15 @@ public class PatientFragment extends BaseFragment
             @Override
             public void indexChanged(String tag) {
                 if (TextUtils.isEmpty(tag) || patientBeans.size() <= 0) { return; }
-                for (int i = 0; i < patientBeans.size(); i++) {
-                    if (tag.equals(patientBeans.get(i).getIndexTag())) {
-                        layoutManager.scrollToPositionWithOffset(i + 1, 0);
-                        return;
+                if (BASE_SEARCH_TAG.equals(tag)) {
+                    layoutManager.scrollToPositionWithOffset(0, 0);
+                }
+                else {
+                    for (int i = 0; i < patientBeans.size(); i++) {
+                        if (tag.equals(patientBeans.get(i).getIndexTag())) {
+                            layoutManager.scrollToPositionWithOffset(i + 1, 0);
+                            return;
+                        }
                     }
                 }
             }
@@ -305,7 +313,15 @@ public class PatientFragment extends BaseFragment
 
     private void indexBarVisible(String text, boolean show) {
         if (show) {
-            tvIndex.setText(text);
+            if (BASE_SEARCH_TAG.equals(text)) {
+                ivSearch.setVisibility(View.VISIBLE);
+                tvIndex.setText("");
+            }
+            else {
+                ivSearch.setVisibility(View.GONE);
+                tvIndex.setVisibility(View.VISIBLE);
+                tvIndex.setText(text);
+            }
             layoutIndex.setVisibility(View.VISIBLE);
         }
         else {

@@ -107,6 +107,14 @@
             android:layout_centerInParent="true"
             tools:text="A"
             android:textColor="@color/color_373d4d" />
+
+        <ImageView
+            android:id="@+id/iv_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_search"
+            android:layout_centerInParent="true"
+            android:visibility="gone" />
     </com.lijiankun24.shadowlayout.ShadowLayout>
 
     <com.yht.frame.widgets.recyclerview.SideBar

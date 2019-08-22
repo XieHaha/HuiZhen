@@ -71,6 +71,10 @@ public interface BaseData {
      */
     int BASE_DEVICE_DEFAULT_WIDTH = 667;
     /**
+     * 搜索图标 标志位
+     */
+    String BASE_SEARCH_TAG = "#";
+    /**
      * 医生code 第一个字母
      */
     String BASE_DOCTOR_CODE = "D";
