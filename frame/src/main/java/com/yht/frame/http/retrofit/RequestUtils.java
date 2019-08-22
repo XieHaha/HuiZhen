@@ -779,5 +779,59 @@ public class RequestUtils {
                        .compose(RxJavaHelper.observableIO2Main(context))
                        .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_RECENT_ADD_PATIENT, listener));
     }
+
+    public static void applyRemote(Context context, String token, String codeContent,
+            final ResponseListener<BaseResponse> listener) {
+        Map<String, String> params = new HashMap<>(16);
+        params.put("codeContent", codeContent);
+        RetrofitManager.getApiUrlManager()
+                       .applyRemote(token, params)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, false, Tasks.APPLY_REMOTE, listener));
+    }
+
+    public static void applyRemoteAdvice(Context context, String token, String codeContent,
+            final ResponseListener<BaseResponse> listener) {
+        Map<String, String> params = new HashMap<>(16);
+        params.put("codeContent", codeContent);
+        RetrofitManager.getApiUrlManager()
+                       .applyRemoteAdvice(token, params)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, false, Tasks.APPLY_REMOTE_ADVICE,
+                                                                 listener));
+    }
+
+    public static void getPatientByQrId(Context context, String token, String patientId, int createRelation,
+            final ResponseListener<BaseResponse> listener) {
+        Map<String, Object> params = new HashMap<>(16);
+        params.put("createRelation", createRelation);
+        params.put("patientId", patientId);
+        RetrofitManager.getApiUrlManager()
+                       .getPatientByQrId(token, params)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, false, Tasks.GET_PATIENT_BY_QR_ID,
+                                                                 listener));
+    }
+
+    public static void getDoctorByQrId(Context context, String token, String doctorId,
+            final ResponseListener<BaseResponse> listener) {
+        Map<String, Object> params = new HashMap<>(16);
+        params.put("doctorId", doctorId);
+        RetrofitManager.getApiUrlManager()
+                       .getDoctorByQrId(token, params)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_DOCTOR_BY_QR_ID, listener));
+    }
+
+    public static void addDoctorFriend(Context context, String token, String doctorId,
+            final ResponseListener<BaseResponse> listener) {
+        Map<String, Object> params = new HashMap<>(16);
+        params.put("doctorId", doctorId);
+        RetrofitManager.getApiUrlManager()
+                       .addDoctorFriend(token, params)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(
+                               new AbstractLoadViewObserver<>(context, true, false, Tasks.ADD_DOCTOR_FRIEND, listener));
+    }
 }
 

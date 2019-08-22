@@ -310,7 +310,7 @@ public final class ViewfinderView extends View {
     private void drawHintText(Canvas canvas, Rect textRect, Rect rect, int width) {
         wordsPaint.getTextBounds(hintText, 0, hintText.length(), textRect);
         int wordWidth = textRect.width();
-        canvas.drawText(hintText, width / 2 - wordWidth / 2, rect.bottom + dp2px(60), wordsPaint);
+        canvas.drawText(hintText, width / 2f - wordWidth / 2f, rect.bottom + dp2px(60), wordsPaint);
     }
 
     public void drawViewfinder() {

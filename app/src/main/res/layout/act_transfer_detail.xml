@@ -14,9 +14,7 @@
         android:scrollbars="none"
         android:layout_height="match_parent"
         android:layout_below="@id/title_bar"
-        android:background="@color/color_ffffff"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp">
+        android:background="@color/color_ffffff">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -26,7 +24,9 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="56dp">
+                android:layout_height="56dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp">
 
                 <ImageView
                     android:id="@+id/iv_patient_img"
@@ -93,6 +93,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/app_hei_line"
+                android:layout_marginStart="20dp"
                 android:background="@color/color_ebedf0"
                 android:layout_marginTop="20dp" />
 
@@ -100,6 +101,111 @@
                 android:layout_width="match_parent"
                 android:orientation="vertical"
                 android:paddingTop="20dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:textStyle="bold"
+                    android:text="@string/txt_past_medical_his" />
+
+                <com.yht.frame.widgets.textview.JustifiedTextView
+                    android:id="@+id/tv_past_medical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:lineSpacingMultiplier="1.5"
+                    android:textColor="@color/color_373d4d"
+                    android:layout_marginTop="12dp"
+                    tools:text="医生" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/app_hei_line"
+                    android:background="@color/color_ebedf0"
+                    android:layout_marginTop="20dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:paddingTop="20dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:textStyle="bold"
+                    android:text="@string/txt_family_medical_his" />
+
+                <com.yht.frame.widgets.textview.JustifiedTextView
+                    android:id="@+id/tv_family_medical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:lineSpacingMultiplier="1.5"
+                    android:textColor="@color/color_373d4d"
+                    android:layout_marginTop="12dp"
+                    tools:text="医生" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/app_hei_line"
+                    android:background="@color/color_ebedf0"
+                    android:layout_marginTop="20dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:textStyle="bold"
+                    android:text="@string/txt_allergies" />
+
+                <com.yht.frame.widgets.textview.JustifiedTextView
+                    android:id="@+id/tv_allergies"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:lineSpacingMultiplier="1.5"
+                    android:textColor="@color/color_373d4d"
+                    android:layout_marginTop="12dp"
+                    tools:text="医生" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="@color/color_f8f9fa" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:paddingTop="20dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
                 android:layout_height="wrap_content">
 
                 <TextView
@@ -133,6 +239,8 @@
                 android:layout_width="match_parent"
                 android:orientation="vertical"
                 android:paddingTop="20dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
                 android:layout_height="wrap_content">
 
                 <TextView
@@ -166,6 +274,8 @@
                 android:layout_width="match_parent"
                 android:orientation="vertical"
                 android:paddingTop="20dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
                 android:layout_height="wrap_content">
 
                 <TextView
@@ -199,6 +309,8 @@
                 android:layout_width="match_parent"
                 android:orientation="vertical"
                 android:paddingTop="20dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
                 android:layout_height="wrap_content">
 
                 <TextView
@@ -232,6 +344,8 @@
                 android:layout_width="match_parent"
                 android:orientation="vertical"
                 android:paddingTop="20dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
                 android:layout_height="wrap_content">
 
                 <TextView
@@ -265,6 +379,8 @@
                 android:layout_width="match_parent"
                 android:orientation="vertical"
                 android:paddingTop="20dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
                 android:layout_height="wrap_content">
 
                 <TextView
@@ -298,6 +414,8 @@
                 android:layout_width="match_parent"
                 android:orientation="vertical"
                 android:paddingTop="20dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
                 android:layout_height="wrap_content">
 
                 <TextView
@@ -331,6 +449,8 @@
                 android:layout_width="match_parent"
                 android:orientation="vertical"
                 android:paddingTop="20dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
                 android:layout_height="wrap_content">
 
                 <TextView
@@ -364,6 +484,8 @@
                 android:layout_width="match_parent"
                 android:orientation="vertical"
                 android:paddingTop="20dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
                 android:layout_height="wrap_content">
 
                 <TextView
@@ -397,6 +519,8 @@
                 android:layout_width="match_parent"
                 android:orientation="vertical"
                 android:paddingTop="20dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
                 android:layout_height="wrap_content">
 
                 <TextView

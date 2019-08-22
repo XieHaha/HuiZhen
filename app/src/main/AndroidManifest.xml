@@ -406,6 +406,11 @@
             android:label="@string/title_recent_patient"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
+            android:name=".ui.remote.ErrorActivity"
+            android:screenOrientation="portrait"
+            android:label=""
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
             android:name=".ui.hint.HintLoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/ActivityTransDialog"

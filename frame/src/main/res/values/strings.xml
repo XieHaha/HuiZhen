@@ -131,8 +131,10 @@
 
     <!--相机-->
     <string name="txt_camera_hint">将二维码放入框中，即可自动扫描</string>
-    <string name="txt_camera_error">二维码有误</string>
+    <string name="txt_camera_error">无法识别此二维码</string>
+    <string name="txt_camera_patient_error">请扫描【会珍】公众号中的患者二维码</string>
     <string name="txt_camera_qr">二维码</string>
+    <string name="txt_camera_qr_again">重新扫描</string>
 
     <!--启动页 引导页-->
     <string name="txt_splash_time_hint">跳过(%ds)</string>

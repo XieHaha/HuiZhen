@@ -32,6 +32,7 @@ public class QrCodeActivity extends BaseActivity {
     @BindView(R.id.status_bar_fix)
     View statusBarFix;
     private QrCodePageAdapter qrCodePageAdapter;
+    private ArrayList<QrCodeBean> qrCodeBeans = new ArrayList<>();
     /**
      * TRUE 显示医生二维码
      */
@@ -55,46 +56,44 @@ public class QrCodeActivity extends BaseActivity {
         if (getIntent() != null) {
             mode = getIntent().getBooleanExtra(CommonData.KEY_INTENT_BOOLEAN, false);
         }
-        getDoctorQrCode();
+        qrCodePageAdapter = new QrCodePageAdapter(this, loginBean);
+        viewPager.setAdapter(qrCodePageAdapter);
     }
 
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-        qrCodePageAdapter = new QrCodePageAdapter(this, loginBean);
-        viewPager.setAdapter(qrCodePageAdapter);
+        getDoctorQrCode();
     }
 
     /**
      * 获取二维码
      */
     private void getDoctorQrCode() {
-        //医生端扫描使用
         RequestUtils.getDoctorQrCode(this, loginBean.getToken(), this);
     }
 
     /**
      * 初始化二维码数据
-     *
-     * @param bean
      */
-    private void initQrCodeData(QrCodeBean bean) {
-        ArrayList<QrCodeBean> list = new ArrayList<>();
+    private ArrayList<QrCodeBean> initQrCodeData(QrCodeBean bean) {
+        qrCodeBeans.clear();
         QrCodeBean one = new QrCodeBean();
         one.setTitle(getString(R.string.txt_wechat_scan_hint));
         one.setMode(getString(R.string.txt_menu_patient));
-        one.setContent(bean.getWxQr().getWxQrUrl());
+        if (bean != null) { one.setContent(bean.getWxQr().getWxQrUrl()); }
         QrCodeBean two = new QrCodeBean();
         two.setTitle(getString(R.string.txt_scan_hint));
         two.setMode(getString(R.string.txt_menu_doctor));
-        two.setContent(bean.getUserQr());
-        list.add(one);
-        list.add(two);
-        qrCodePageAdapter.setList(list);
+        if (bean != null) { two.setContent(bean.getUserQr()); }
+        qrCodeBeans.add(one);
+        qrCodeBeans.add(two);
+        qrCodePageAdapter.setList(qrCodeBeans);
         qrCodePageAdapter.notifyDataSetChanged();
         if (mode) {
             viewPager.setCurrentItem(1);
         }
+        return qrCodeBeans;
     }
 
     @OnClick(R.id.public_title_bar_back)

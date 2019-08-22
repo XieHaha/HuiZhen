@@ -334,7 +334,8 @@ public abstract class BaseFragment extends Fragment
         if (response.getCode() == BaseNetConfig.REQUEST_TOKEN_ERROR) {
             token(response.getMsg());
         }
-        else if (response.getCode() == BaseNetConfig.REQUEST_OTHER_ERROR) {
+        else if (response.getCode() == BaseNetConfig.REQUEST_OTHER_ERROR ||
+                 response.getCode() == BaseNetConfig.REQUEST_SERVER_ERROR) {
             ToastUtil.toast(getContext(), response.getMsg());
         }
         else {

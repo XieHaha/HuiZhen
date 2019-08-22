@@ -277,5 +277,25 @@ WE_CHAT_LOGIN,
      * 获取最近添加的患者
      */
     GET_RECENT_ADD_PATIENT,
+    /**
+     * 远程会诊
+     */
+    APPLY_REMOTE,
+    /**
+     * 远程会诊发布意见
+     */
+    APPLY_REMOTE_ADVICE,
+    /**
+     * 扫码获取患者信息
+     */
+    GET_PATIENT_BY_QR_ID,
+    /**
+     * 扫码获取医生信息
+     */
+    GET_DOCTOR_BY_QR_ID,
+    /**
+     * 添加好友
+     */
+    ADD_DOCTOR_FRIEND,
 }
 

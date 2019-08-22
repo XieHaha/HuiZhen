@@ -780,4 +780,57 @@ public interface ApiUrlManager {
      */
     @GET("client/doctor/patient/recent")
     Observable<BaseResponse<RecentPatientBean>> getRecentAddPatient(@Header("token") String token);
+
+    /**
+     * 远程会诊确认
+     *
+     * @param info  map参数
+     * @param token token
+     * @return 返回值
+     */
+    @POST("remote/join")
+    Observable<BaseResponse<BaseListBean<LabelBean>>> applyRemote(@Header("token") String token,
+            @Body Map<String, String> info);
+
+    /**
+     * 远程会诊发布意见确认
+     *
+     * @param info  map参数
+     * @param token token
+     * @return 返回值
+     */
+    @POST("remote/publish-result")
+    Observable<BaseResponse<BaseListBean<LabelBean>>> applyRemoteAdvice(@Header("token") String token,
+            @Body Map<String, String> info);
+
+    /**
+     * 通过扫码添加患者 查询患者信息
+     *
+     * @param info  map参数
+     * @param token token
+     * @return 返回值
+     */
+    @POST("client/doctor/scan/patient")
+    Observable<BaseResponse<PatientBean>> getPatientByQrId(@Header("token") String token,
+            @Body Map<String, Object> info);
+
+    /**
+     * 通过扫码添加医生 查询医生信息
+     *
+     * @param info  map参数
+     * @param token token
+     * @return 返回值
+     */
+    @POST("client/doctor/scan/doctor")
+    Observable<BaseResponse<DoctorBean>> getDoctorByQrId(@Header("token") String token, @Body Map<String, Object> info);
+
+    /**
+     * 医生添加医生为好友
+     *
+     * @param info  map参数
+     * @param token token
+     * @return 返回值
+     */
+    @POST("client/doctor/friend/add/doctor")
+    Observable<BaseResponse<String>> addDoctorFriend(@Header("token") String token, @Body Map<String, Object> info);
 }

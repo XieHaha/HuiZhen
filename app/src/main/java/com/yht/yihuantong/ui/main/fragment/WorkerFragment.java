@@ -2,8 +2,10 @@ package com.yht.yihuantong.ui.main.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,12 +26,12 @@ import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.bean.BannerBean;
 import com.yht.frame.data.bean.OrderNumStatisticsBean;
+import com.yht.frame.data.bean.PatientBean;
 import com.yht.frame.data.bean.ReservationValidateBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.permission.Permission;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
-import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.frame.widgets.menu.MenuItem;
 import com.yht.frame.widgets.menu.TopRightMenu;
@@ -37,9 +39,13 @@ import com.yht.yihuantong.R;
 import com.yht.yihuantong.ZycApplication;
 import com.yht.yihuantong.ui.WebViewActivity;
 import com.yht.yihuantong.ui.check.ServiceHistoryActivity;
+import com.yht.yihuantong.ui.doctor.DoctorInfoActivity;
 import com.yht.yihuantong.ui.hint.NotifyHintActivity;
 import com.yht.yihuantong.ui.main.QrCodeActivity;
+import com.yht.yihuantong.ui.patient.ChatContainerActivity;
 import com.yht.yihuantong.ui.personal.PersonalNewActivity;
+import com.yht.yihuantong.ui.remote.ErrorActivity;
+import com.yht.yihuantong.ui.remote.RemoteLoginActivity;
 import com.yht.yihuantong.ui.reservation.ReservationDisableActivity;
 import com.yht.yihuantong.ui.reservation.service.ReservationServiceActivity;
 import com.yht.yihuantong.ui.reservation.transfer.ReservationTransferActivity;
@@ -170,6 +176,13 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
         }
         getStudioOrderStatistics();
         getValidateHospitalList();
+    }
+
+    /**
+     * 扫码后获取患者信息
+     */
+    private void getPatientByQrId(String qrId) {
+        RequestUtils.getPatientByQrId(getContext(), loginBean.getToken(), qrId, BaseData.BASE_ONE, this);
     }
 
     /**
@@ -389,6 +402,13 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
                     ZycApplication.getInstance().setTransferAble(bean.isZz());
                 }
                 break;
+            case GET_PATIENT_BY_QR_ID:
+                PatientBean patientBean = (PatientBean)response.getData();
+                Intent intent = new Intent(getContext(), ChatContainerActivity.class);
+                intent.putExtra(CommonData.KEY_CHAT_ID, patientBean.getCode());
+                intent.putExtra(CommonData.KEY_CHAT_NAME, patientBean.getName());
+                startActivity(intent);
+                break;
             default:
                 break;
         }
@@ -408,13 +428,50 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
         if (resultCode != Activity.RESULT_OK) {
             return;
         }
-        if (requestCode == REQUEST_CODE_SCAN) {
-            if (data != null) {
-                String content = data.getStringExtra(Constant.CODED_CONTENT);
-                ToastUtil.toast(getContext(), content);
+        Intent intent;
+        if (requestCode == REQUEST_CODE_SCAN && data != null) {
+            String content = data.getStringExtra(Constant.CODED_CONTENT);
+            if (!TextUtils.isEmpty(content)) {
+                if (content.startsWith(BaseData.BASE_REMOTE) || content.startsWith(BASE_REMOTE_ADVICE)) {
+                    intent = new Intent(getContext(), RemoteLoginActivity.class);
+                    intent.putExtra(CommonData.KEY_PUBLIC_STRING, content);
+                    startActivity(intent);
+                }
+                else {
+                    //患者、医生二维码
+                    Uri uri = Uri.parse(content);
+                    if (uri != null && !uri.isOpaque()) {
+                        String mode = uri.getQueryParameter("t");
+                        String value = uri.getQueryParameter("p");
+                        if (!TextUtils.isEmpty(value) && !TextUtils.isEmpty(mode)) {
+                            //1为医生  2为患者
+                            if ("1".equals(mode)) {
+                                intent = new Intent(getContext(), DoctorInfoActivity.class);
+                                intent.putExtra(CommonData.KEY_DOCTOR_ID, value);
+                                startActivity(intent);
+                            }
+                            else {
+                                getPatientByQrId(value);
+                            }
+                        }
+                        else {
+                            qrError();
+                        }
+                    }
+                    else {
+                        qrError();
+                    }
+                }
+            }
+            else {
+                qrError();
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void qrError() {
+        startActivityForResult(new Intent(getContext(), ErrorActivity.class), REQUEST_CODE_SCAN);
     }
 
     @Override

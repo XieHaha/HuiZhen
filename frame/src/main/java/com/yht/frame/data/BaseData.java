@@ -138,4 +138,12 @@ public interface BaseData {
      * 聊天
      */
     String BASE_CHAT_CHANNEL = "d_base_chat_channel";
+    /**
+     * 发起远程会诊
+     */
+    String BASE_REMOTE = "remoteStart";
+    /**
+     * 发起远程会诊意见
+     */
+    String BASE_REMOTE_ADVICE = "remoteResult";
 }

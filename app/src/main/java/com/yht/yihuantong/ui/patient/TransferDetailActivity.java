@@ -10,12 +10,13 @@ import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
-import com.yht.frame.data.type.TransferOrderStatus;
 import com.yht.frame.data.bean.TransferBean;
+import com.yht.frame.data.type.TransferOrderStatus;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.glide.GlideHelper;
+import com.yht.frame.widgets.textview.JustifiedTextView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.utils.FileUrlUtil;
 
@@ -57,6 +58,12 @@ public class TransferDetailActivity extends BaseActivity implements TransferOrde
     TextView tvReceivingHospital;
     @BindView(R.id.tv_receiving_status)
     TextView tvReceivingStatus;
+    @BindView(R.id.tv_past_medical)
+    JustifiedTextView tvPastMedical;
+    @BindView(R.id.tv_family_medical)
+    JustifiedTextView tvFamilyMedical;
+    @BindView(R.id.tv_allergies)
+    JustifiedTextView tvAllergies;
     /**
      * 订单
      */
@@ -109,6 +116,10 @@ public class TransferDetailActivity extends BaseActivity implements TransferOrde
                              : getString(R.string.txt_sex_female));
         tvPatientAge.setText(String.valueOf(transferBean.getPatientAge()));
         tvTransferTime.setText(transferBean.getTransferDate());
+        //病史
+        tvPastMedical.setText(transferBean.getPastHistory());
+        tvFamilyMedical.setText(transferBean.getFamilyHistory());
+        tvAllergies.setText(transferBean.getAllergyHistory());
         //转诊医生信息
         tvTransferDoctor.setText(transferBean.getSourceDoctorName());
         tvTransferDepart.setText(transferBean.getSourceHospitalDepartmentName());

@@ -18,6 +18,10 @@ public interface BaseNetConfig {
      */
     int REQUEST_TOKEN_ERROR = 4001;
     /**
+     * 服务器
+     */
+    int REQUEST_SERVER_ERROR = 4010;
+    /**
      * 微信未绑定
      */
     int REQUEST_WE_CHAT_BIND_ERROR = 4004;

@@ -49,9 +49,6 @@ import java.util.concurrent.TimeUnit;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-import static com.yht.frame.data.CommonData.KEY_CHAT_ID;
-import static com.yht.frame.data.CommonData.KEY_CHAT_NAME;
-
 /**
  * @author 顿顿
  * @date 19/6/27 14:17
@@ -167,8 +164,8 @@ public class ChatContainerActivity extends BaseActivity implements EaseChatFragm
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
         if (getIntent() != null) {
-            chatCode = getIntent().getStringExtra(KEY_CHAT_ID);
-            chatName = getIntent().getStringExtra(KEY_CHAT_NAME);
+            chatCode = getIntent().getStringExtra(CommonData.KEY_CHAT_ID);
+            chatName = getIntent().getStringExtra(CommonData.KEY_CHAT_NAME);
             isChat = getIntent().getBooleanExtra(CommonData.KEY_PATIENT_CHAT, false);
             isDoctor = getIntent().getBooleanExtra(CommonData.KEY_DOCTOR_CHAT, false);
         }
@@ -240,6 +237,7 @@ public class ChatContainerActivity extends BaseActivity implements EaseChatFragm
             }
         });
     }
+
 
     /**
      * 开始聊天
