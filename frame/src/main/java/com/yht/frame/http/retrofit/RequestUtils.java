@@ -801,6 +801,14 @@ public class RequestUtils {
                                                                  listener));
     }
 
+    public static void getRemoteDetail(Context context, String token, String orderNo,
+            final ResponseListener<BaseResponse> listener) {
+        RetrofitManager.getApiUrlManager()
+                       .getRemoteDetail(token, orderNo)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_REMOTE_DETAIL, listener));
+    }
+
     public static void getPatientByQrId(Context context, String token, String patientId, int createRelation,
             final ResponseListener<BaseResponse> listener) {
         Map<String, Object> params = new HashMap<>(16);

@@ -349,7 +349,7 @@ public final class ViewfinderView extends View {
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         if (scanLineBitmap != null || !scanLineBitmap.isRecycled()) {
-            scanLineBitmap.recycle();
+//            scanLineBitmap.recycle();
             scanLineBitmap = null;
             System.gc();
         }

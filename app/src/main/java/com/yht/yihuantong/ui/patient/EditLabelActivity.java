@@ -13,6 +13,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.yht.frame.api.notify.NotifyChangeListenerManager;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
@@ -402,6 +403,8 @@ public class EditLabelActivity extends BaseActivity
                 initLabelData();
                 break;
             case SAVE_PATIENT_LABEL:
+                //标签保存成功后 刷新患者列表
+                NotifyChangeListenerManager.getInstance().notifyPatientStatusChange("");
                 ToastUtil.toast(this, response.getMsg());
                 setResult(RESULT_OK);
                 finish();

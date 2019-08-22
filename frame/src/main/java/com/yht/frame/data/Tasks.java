@@ -286,6 +286,10 @@ WE_CHAT_LOGIN,
      */
     APPLY_REMOTE_ADVICE,
     /**
+     * 远程会诊详情
+     */
+    GET_REMOTE_DETAIL,
+    /**
      * 扫码获取患者信息
      */
     GET_PATIENT_BY_QR_ID,

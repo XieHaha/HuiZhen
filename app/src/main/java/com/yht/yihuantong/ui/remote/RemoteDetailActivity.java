@@ -5,6 +5,10 @@ import android.support.annotation.NonNull;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.yht.frame.data.BaseResponse;
+import com.yht.frame.data.CommonData;
+import com.yht.frame.data.Tasks;
+import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.yihuantong.R;
 
@@ -46,6 +50,10 @@ public class RemoteDetailActivity extends BaseActivity {
     TextView tvConsultationTime;
     @BindView(R.id.tv_consultation_advice)
     TextView tvConsultationAdvice;
+    /**
+     * id
+     */
+    private String orderNo;
 
     @Override
     protected boolean isInitBackBtn() {
@@ -58,7 +66,30 @@ public class RemoteDetailActivity extends BaseActivity {
     }
 
     @Override
-    public void initData(@NonNull Bundle savedInstanceState) {
-        super.initData(savedInstanceState);
+    public void initView(@NonNull Bundle savedInstanceState) {
+        super.initView(savedInstanceState);
+        if (getIntent() != null) {
+            orderNo = getIntent().getStringExtra(CommonData.KEY_ORDER_ID);
+        }
+    }
+
+    @Override
+    public void fillNetWorkData() {
+        getRemoteDetail();
+    }
+
+    private void getRemoteDetail() {
+        RequestUtils.getRemoteDetail(this, loginBean.getToken(), orderNo, this);
+    }
+
+    @Override
+    public void onResponseSuccess(Tasks task, BaseResponse response) {
+        super.onResponseSuccess(task, response);
+        switch (task) {
+            case GET_REMOTE_DETAIL:
+                break;
+            default:
+                break;
+        }
     }
 }

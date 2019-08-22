@@ -805,6 +805,17 @@ public interface ApiUrlManager {
             @Body Map<String, String> info);
 
     /**
+     * 远程会诊详情
+     *
+     * @param orderNo 参数
+     * @param token   token
+     * @return 返回值
+     */
+    @POST("remote/query-detail")
+    Observable<BaseResponse<BaseListBean<LabelBean>>> getRemoteDetail(@Header("token") String token,
+            @Query("orderNo") String orderNo);
+
+    /**
      * 通过扫码添加患者 查询患者信息
      *
      * @param info  map参数
@@ -823,7 +834,8 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @POST("client/doctor/scan/doctor")
-    Observable<BaseResponse<DoctorQrCodeBean>> getDoctorByQrId(@Header("token") String token, @Body Map<String, Object> info);
+    Observable<BaseResponse<DoctorQrCodeBean>> getDoctorByQrId(@Header("token") String token,
+            @Body Map<String, Object> info);
 
     /**
      * 医生添加医生为好友
