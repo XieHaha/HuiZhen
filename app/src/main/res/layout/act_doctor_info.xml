@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:orientation="vertical"
             android:gravity="center_horizontal"
-            android:paddingTop="30dp"
+            android:paddingTop="37dp"
             android:paddingBottom="20dp"
             android:layout_height="wrap_content">
 
@@ -81,10 +81,23 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginStart="30dp"
                 android:layout_marginEnd="30dp"
-                android:lineSpacingMultiplier="1.5"
+                android:lineSpacingMultiplier="1.3"
                 android:textSize="@dimen/text_15"
                 android:textColor="@color/color_6a6f80"
                 tools:text="个人简介" />
+
+            <TextView
+                android:id="@+id/tv_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:textColor="#c5c8cc"
+                android:text="@string/txt_pack_down"
+                android:textSize="@dimen/text_13"
+                android:layout_marginTop="10dp"
+                android:drawablePadding="7dp"
+                android:drawableEnd="@drawable/selector_arrow_tab"
+                android:layout_gravity="center_horizontal" />
 
         </LinearLayout>
 

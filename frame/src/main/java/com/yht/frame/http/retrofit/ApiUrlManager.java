@@ -11,6 +11,7 @@ import com.yht.frame.data.bean.DoctorAuthBean;
 import com.yht.frame.data.bean.DoctorBean;
 import com.yht.frame.data.bean.DoctorCurrencyBean;
 import com.yht.frame.data.bean.DoctorCurrencyDetailBean;
+import com.yht.frame.data.bean.DoctorQrCodeBean;
 import com.yht.frame.data.bean.HospitalBean;
 import com.yht.frame.data.bean.HospitalDepartBean;
 import com.yht.frame.data.bean.HospitalDepartChildBean;
@@ -822,7 +823,7 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @POST("client/doctor/scan/doctor")
-    Observable<BaseResponse<DoctorBean>> getDoctorByQrId(@Header("token") String token, @Body Map<String, Object> info);
+    Observable<BaseResponse<DoctorQrCodeBean>> getDoctorByQrId(@Header("token") String token, @Body Map<String, Object> info);
 
     /**
      * 医生添加医生为好友

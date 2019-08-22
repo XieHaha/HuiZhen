@@ -2,14 +2,16 @@ package com.yht.yihuantong.ui.doctor;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.yht.frame.api.notify.NotifyChangeListenerManager;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
-import com.yht.frame.data.bean.DoctorBean;
+import com.yht.frame.data.bean.DoctorQrCodeBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
@@ -41,11 +43,13 @@ public class DoctorInfoActivity extends BaseActivity {
     TextView tvHospital;
     @BindView(R.id.tv_introduction)
     JustifiedTextView tvIntroduction;
-    private DoctorBean doctorBean;
+    @BindView(R.id.tv_more)
+    TextView tvMore;
+    private DoctorQrCodeBean doctorBean;
     /**
-     * 扫码结果
+     * 最多显示行数
      */
-    private String qrId;
+    public static final int MAX_NUM = 5;
 
     @Override
     protected boolean isInitBackBtn() {
@@ -61,23 +65,16 @@ public class DoctorInfoActivity extends BaseActivity {
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
         if (getIntent() != null) {
-            qrId = getIntent().getStringExtra(CommonData.KEY_DOCTOR_ID);
+            doctorBean = (DoctorQrCodeBean)getIntent().getSerializableExtra(CommonData.KEY_DOCTOR_QR_CODE_BEAN);
         }
-        getDoctorByQrId();
-    }
-
-    /**
-     * 扫码获取医生信息
-     */
-    private void getDoctorByQrId() {
-        RequestUtils.getDoctorByQrId(this, loginBean.getToken(), qrId, this);
+        if (doctorBean != null) { bindData(); }
     }
 
     /**
      * 扫码获取医生信息
      */
     private void addDoctorFriend() {
-        RequestUtils.addDoctorFriend(this, loginBean.getToken(), doctorBean.getDoctorCode(), this);
+        RequestUtils.addDoctorFriend(this, loginBean.getToken(), doctorBean.getCode(), this);
     }
 
     private void bindData() {
@@ -89,28 +86,58 @@ public class DoctorInfoActivity extends BaseActivity {
         tvTitle.setText(doctorBean.getJobTitle());
         tvDepart.setText(doctorBean.getDepartmentName());
         tvHospital.setText(doctorBean.getHospitalName());
-        //        tvIntroduction.setText(doctorBean.get);
+        tvIntroduction.setText(doctorBean.getIntroduce());
+        tvIntroduction.post(() -> {
+            if (tvIntroduction.getLineCount() > MAX_NUM) {
+                tvMore.setVisibility(View.VISIBLE);
+                initIntroduction(true);
+            }
+            else {
+                tvMore.setVisibility(View.GONE);
+            }
+        });
     }
 
-    @OnClick(R.id.tv_next)
-    public void onViewClicked() {
-        if (doctorBean != null) { addDoctorFriend(); }
+    /**
+     * 简介  展开or收起
+     *
+     * @param mode true为展开
+     */
+    private void initIntroduction(boolean mode) {
+        if (mode) {
+            tvMore.setSelected(false);
+            tvMore.setText(R.string.txt_pack_down);
+            tvIntroduction.setMaxLines(MAX_NUM);
+        }
+        else {
+            tvMore.setSelected(true);
+            tvMore.setText(R.string.txt_pack_up);
+            tvIntroduction.setMaxLines(Integer.MAX_VALUE);
+        }
+    }
+
+    @OnClick({ R.id.tv_next, R.id.tv_more })
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.tv_next:
+                if (doctorBean != null) { addDoctorFriend(); }
+                break;
+            case R.id.tv_more:
+                initIntroduction(tvMore.isSelected());
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
-        switch (task) {
-            case GET_DOCTOR_BY_QR_ID:
-                doctorBean = (DoctorBean)response.getData();
-                bindData();
-                break;
-            case ADD_DOCTOR_FRIEND:
-                ToastUtil.toast(this, response.getMsg());
-                finish();
-                break;
-            default:
-                break;
+        if (task == Tasks.ADD_DOCTOR_FRIEND) {
+            //医生添加成功后  刷新医生列表
+            NotifyChangeListenerManager.getInstance().notifyDoctorStatusChange("");
+            ToastUtil.toast(this, response.getMsg());
+            finish();
         }
     }
 }

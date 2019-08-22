@@ -18,6 +18,7 @@ import android.widget.ViewFlipper;
 import com.bumptech.glide.Glide;
 import com.yht.frame.api.ApiManager;
 import com.yht.frame.api.notify.IChange;
+import com.yht.frame.api.notify.NotifyChangeListenerManager;
 import com.yht.frame.api.notify.RegisterType;
 import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseNetConfig;
@@ -25,6 +26,7 @@ import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.bean.BannerBean;
+import com.yht.frame.data.bean.DoctorQrCodeBean;
 import com.yht.frame.data.bean.OrderNumStatisticsBean;
 import com.yht.frame.data.bean.PatientBean;
 import com.yht.frame.data.bean.ReservationValidateBean;
@@ -183,6 +185,13 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
      */
     private void getPatientByQrId(String qrId) {
         RequestUtils.getPatientByQrId(getContext(), loginBean.getToken(), qrId, BaseData.BASE_ONE, this);
+    }
+
+    /**
+     * 扫码后获取医生信息
+     */
+    private void getDoctorByQrId(String qrId) {
+        RequestUtils.getDoctorByQrId(getContext(), loginBean.getToken(), qrId, this);
     }
 
     /**
@@ -404,10 +413,28 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
                 break;
             case GET_PATIENT_BY_QR_ID:
                 PatientBean patientBean = (PatientBean)response.getData();
+                //添加成功  刷新患者列表
+                NotifyChangeListenerManager.getInstance().notifyPatientStatusChange("");
+                //跳转到患者信息界面
                 Intent intent = new Intent(getContext(), ChatContainerActivity.class);
                 intent.putExtra(CommonData.KEY_CHAT_ID, patientBean.getCode());
                 intent.putExtra(CommonData.KEY_CHAT_NAME, patientBean.getName());
                 startActivity(intent);
+                break;
+            case GET_DOCTOR_BY_QR_ID:
+                DoctorQrCodeBean doctorBean = (DoctorQrCodeBean)response.getData();
+                if (doctorBean.isFriend()) {
+                    intent = new Intent(getContext(), ChatContainerActivity.class);
+                    intent.putExtra(CommonData.KEY_CHAT_ID, doctorBean.getCode());
+                    intent.putExtra(CommonData.KEY_CHAT_NAME, doctorBean.getDoctorName());
+                    intent.putExtra(CommonData.KEY_DOCTOR_CHAT, true);
+                    startActivity(intent);
+                }
+                else {
+                    intent = new Intent(getContext(), DoctorInfoActivity.class);
+                    intent.putExtra(CommonData.KEY_DOCTOR_QR_CODE_BEAN, doctorBean);
+                    startActivity(intent);
+                }
                 break;
             default:
                 break;
@@ -446,9 +473,7 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
                         if (!TextUtils.isEmpty(value) && !TextUtils.isEmpty(mode)) {
                             //1为医生  2为患者
                             if ("1".equals(mode)) {
-                                intent = new Intent(getContext(), DoctorInfoActivity.class);
-                                intent.putExtra(CommonData.KEY_DOCTOR_ID, value);
-                                startActivity(intent);
+                                getDoctorByQrId(value);
                             }
                             else {
                                 getPatientByQrId(value);

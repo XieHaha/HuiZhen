@@ -27,6 +27,10 @@ public class NotifyChangeListenerManager {
          */
         private List<IChange<String>> mPatientListChangeListeners = new CopyOnWriteArrayList<>();
         /**
+         * 医生列表添加状态
+         */
+        private List<IChange<String>> mDoctorListChangeListeners = new CopyOnWriteArrayList<>();
+        /**
          * 服务协议更新
          */
         private List<IChange<String>> mProtocolChangeListeners = new CopyOnWriteArrayList<>();
@@ -62,6 +66,20 @@ public class NotifyChangeListenerManager {
             }
             else {
                 mPatientListChangeListeners.remove(listener);
+            }
+        }
+
+        @Override
+        public void registerDoctorListChangeListener(@NonNull IChange<String> listener,
+                @NonNull RegisterType registerType) {
+            if (listener == null) {
+                return;
+            }
+            if (RegisterType.REGISTER == registerType) {
+                mDoctorListChangeListeners.add(listener);
+            }
+            else {
+                mDoctorListChangeListeners.remove(listener);
             }
         }
 
@@ -159,6 +177,27 @@ public class NotifyChangeListenerManager {
                 for (int i = 0, size = mPatientListChangeListeners.size(); i < size; i++) {
                     try {
                         final IChange<String> change = mPatientListChangeListeners.get(i);
+                        if (null != change) {
+                            change.onChange(data);
+                        }
+                    }
+                    catch (Exception e) {
+                        HuiZhenLog.w(TAG, "notifyStatusChange error", e);
+                    }
+                }
+            }
+        }
+
+        /**
+         * 医生添加
+         *
+         * @param data
+         */
+        public void notifyDoctorStatusChange(final String data) {
+            synchronized (mDoctorListChangeListeners) {
+                for (int i = 0, size = mDoctorListChangeListeners.size(); i < size; i++) {
+                    try {
+                        final IChange<String> change = mDoctorListChangeListeners.get(i);
                         if (null != change) {
                             change.onChange(data);
                         }

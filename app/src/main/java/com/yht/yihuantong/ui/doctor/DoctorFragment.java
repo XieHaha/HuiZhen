@@ -82,13 +82,13 @@ public class DoctorFragment extends BaseFragment
      */
     private OnSearchListener onSearchListener;
     /**
-     * 所有患者数据
+     * 所有医生数据
      */
     private List<DoctorBean> doctorBeans = new ArrayList<>();
     /**
-     * 患者数据主动更新
+     * 医生数据主动更新
      */
-    private IChange<String> patientDataUpdate = data -> getDoctorsByNetWork();
+    private IChange<String> doctorDataUpdate = data -> getDoctorsByNetWork();
 
     @Override
     public int getLayoutID() {
@@ -115,7 +115,7 @@ public class DoctorFragment extends BaseFragment
     }
 
     /**
-     * 患者数据处理
+     * 医生数据处理
      */
     private void initDoctorData() {
         //是否有缓存
@@ -131,15 +131,15 @@ public class DoctorFragment extends BaseFragment
     @Override
     public void initListener() {
         super.initListener();
-        //注册患者状态监听
-        iNotifyChangeListenerServer.registerPatientListChangeListener(patientDataUpdate, RegisterType.REGISTER);
+        //注册医生状态监听
+        iNotifyChangeListenerServer.registerDoctorListChangeListener(doctorDataUpdate, RegisterType.REGISTER);
     }
 
     /**
      * 适配器
      */
     private void initAdapter() {
-        //患者列表
+        //医生列表
         doctorAdapter = new DoctorAdapter(R.layout.item_patient, doctorBeans);
         doctorAdapter.setOnItemClickListener(this);
         doctorAdapter.setOnItemChildClickListener(this);
@@ -366,7 +366,7 @@ public class DoctorFragment extends BaseFragment
     @Override
     public void onDestroy() {
         super.onDestroy();
-        //注销患者状态监听
-        iNotifyChangeListenerServer.registerPatientListChangeListener(patientDataUpdate, RegisterType.UNREGISTER);
+        //注销医生状态监听
+        iNotifyChangeListenerServer.registerDoctorListChangeListener(doctorDataUpdate, RegisterType.UNREGISTER);
     }
 }
