@@ -36,6 +36,7 @@ public class ReceiverDoctorBean implements Serializable {
     private String hospitalName;
     private String hospitalCode;
     private String photo;
+    private String indexTag;
 
     public String getCertBack() {
         return certBack;
@@ -211,5 +212,13 @@ public class ReceiverDoctorBean implements Serializable {
 
     public void setPhoto(String photo) {
         this.photo = photo;
+    }
+
+    public String getIndexTag() {
+        return indexTag;
+    }
+
+    public void setIndexTag(String indexTag) {
+        this.indexTag = indexTag;
     }
 }

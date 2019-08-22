@@ -12,20 +12,24 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.lijiankun24.shadowlayout.ShadowLayout;
 import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
-import com.yht.frame.data.bean.ReceiverBean;
-import com.yht.frame.data.bean.ReceiverDoctorBean;
 import com.yht.frame.data.bean.HospitalBean;
 import com.yht.frame.data.bean.HospitalDepartBean;
 import com.yht.frame.data.bean.HospitalDepartChildBean;
+import com.yht.frame.data.bean.ReceiverBean;
+import com.yht.frame.data.bean.ReceiverDoctorBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
+import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.frame.widgets.edittext.AbstractTextWatcher;
 import com.yht.frame.widgets.edittext.SuperEditText;
+import com.yht.frame.widgets.recyclerview.SideBar;
+import com.yht.frame.widgets.recyclerview.decoration.SideBarReceiveDoctorDecoration;
 import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.yht.frame.widgets.view.ExpandableLayout;
 import com.yht.yihuantong.R;
@@ -73,6 +77,12 @@ public class SelectReceivingDoctorActivity extends BaseActivity
     View viewDepartTwoBar;
     @BindView(R.id.layout_none_doctor)
     LinearLayout layoutNoneDoctor;
+    @BindView(R.id.tv_index)
+    TextView tvIndex;
+    @BindView(R.id.layout_index)
+    ShadowLayout layoutIndex;
+    @BindView(R.id.side_bar)
+    SideBar sideBar;
     /**
      * 医院、科室适配器
      */
@@ -81,6 +91,10 @@ public class SelectReceivingDoctorActivity extends BaseActivity
      * 医生适配器
      */
     private ReceiverDoctorAdapter doctorAdapter;
+    /**
+     * recycler
+     */
+    private LinearLayoutManager layoutManager;
     /**
      * 医院列表
      */
@@ -97,6 +111,10 @@ public class SelectReceivingDoctorActivity extends BaseActivity
      * 当前选中的一级科室
      */
     private HospitalDepartBean curHospitalDepartBean;
+    /**
+     * 分隔线
+     */
+    private SideBarReceiveDoctorDecoration decoration;
     /**
      * 当前选择列表  0为医院 1为大科室  2为小科室
      */
@@ -139,12 +157,14 @@ public class SelectReceivingDoctorActivity extends BaseActivity
         adapter.setOnItemClickListener(this);
         selectRecyclerView.setAdapter(adapter);
         //医生列表
-        searchRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        searchRecyclerView.setLayoutManager(layoutManager = new LinearLayoutManager(this));
+        searchRecyclerView.addItemDecoration(decoration = new SideBarReceiveDoctorDecoration(this));
         doctorAdapter = new ReceiverDoctorAdapter(R.layout.item_receiver_doctor, doctors);
         doctorAdapter.setLoadMoreView(new CustomLoadMoreView());
         doctorAdapter.setOnItemClickListener(this);
         doctorAdapter.setOnItemChildClickListener(this);
         searchRecyclerView.setAdapter(doctorAdapter);
+        initEvents();
         getHospitalListByReverse();
         getDoctorListByReverse(new HashMap<>(16));
     }
@@ -291,7 +311,6 @@ public class SelectReceivingDoctorActivity extends BaseActivity
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_select:
-                etSearchCheckType.setText("");
                 hideSoftInputFromWindow();
                 if (tvSelect.isSelected()) {
                     layoutBg.postDelayed(() -> layoutBg.setVisibility(View.GONE), 200);
@@ -394,6 +413,71 @@ public class SelectReceivingDoctorActivity extends BaseActivity
                             .show();
     }
 
+    /**
+     * 列表侧边栏附表滚动
+     */
+    public void initEvents() {
+        sideBar.setIndexChangeListener(new SideBar.IndexChangeListener() {
+            @Override
+            public void indexChanged(String tag) {
+                if (TextUtils.isEmpty(tag) || doctors.size() <= 0) { return; }
+                for (int i = 0; i < doctors.size(); i++) {
+                    if (tag.equals(doctors.get(i).getIndexTag())) {
+                        layoutManager.scrollToPositionWithOffset(i, 0);
+                        return;
+                    }
+                }
+            }
+
+            @Override
+            public void indexShow(float y, String tag, int position) {
+                indexBarVisible(tag, true);
+            }
+
+            @Override
+            public void indexHide() {
+                if (mDelay != null) {
+                    layoutIndex.removeCallbacks(mDelay);
+                }
+                layoutIndex.postDelayed(mDelay = () -> indexBarVisible("", false), 1000);
+            }
+        });
+    }
+
+    private Runnable mDelay;
+
+    private void indexBarVisible(String text, boolean show) {
+        if (show) {
+            tvIndex.setText(text);
+            layoutIndex.setVisibility(View.VISIBLE);
+        }
+        else {
+            layoutIndex.setVisibility(View.GONE);
+        }
+    }
+
+    /**
+     * 对数据进行排序
+     */
+    private void sortData(ReceiverBean receiverBean) {
+        doctors.addAll(receiverBean.getOther());
+        //对数据源进行排序
+        BaseUtils.sortReceiveDoctorData(doctors);
+        ArrayList<ReceiverDoctorBean> tempList = new ArrayList<>();
+        for (ReceiverDoctorBean bean : receiverBean.getFriend()) {
+            bean.setIndexTag("*");
+            tempList.add(bean);
+        }
+        if (tempList.size() > 0) {
+            doctors.addAll(0, tempList);
+        }
+        String tagsStr = BaseUtils.getReceiveDoctorTags(doctors);
+        //返回一个包含所有Tag字母在内的字符串并赋值给tagsStr
+        sideBar.setIndexStr(tagsStr);
+        decoration.setHasHeader(false);
+        decoration.setDatas(doctors, tagsStr);
+    }
+
     @Override
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
@@ -432,8 +516,7 @@ public class SelectReceivingDoctorActivity extends BaseActivity
             case GET_DOCTOR_LIST_BY_REVERSE:
                 ReceiverBean receiverBean = (ReceiverBean)response.getData();
                 doctors.clear();
-                doctors.addAll(receiverBean.getFriend());
-                doctors.addAll(receiverBean.getOther());
+                sortData(receiverBean);
                 doctorAdapter.setNewData(doctors);
                 if (doctors.size() > 0) {
                     if (doctors.size() > BaseData.BASE_PAGE_DATA_NUM) {

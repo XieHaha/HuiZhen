@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
@@ -81,6 +82,39 @@
         android:layout_below="@id/view">
 
     </android.support.v7.widget.RecyclerView>
+
+
+    <com.lijiankun24.shadowlayout.ShadowLayout
+        android:id="@+id/layout_index"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        app:shadowColor="#1a000000"
+        app:shadowDx="0dp"
+        app:shadowDy="0dp"
+        app:shadowRadius="8dp"
+        app:shadowShape="rectangle"
+        app:shadowSide="all">
+
+        <TextView
+            android:id="@+id/tv_index"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="@dimen/text_24"
+            android:gravity="center"
+            android:background="@drawable/corner8_ffffff_bg"
+            android:layout_centerInParent="true"
+            tools:text="A"
+            android:textColor="@color/color_373d4d" />
+    </com.lijiankun24.shadowlayout.ShadowLayout>
+
+    <com.yht.frame.widgets.recyclerview.SideBar
+        android:id="@+id/side_bar"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true" />
 
 
     <LinearLayout

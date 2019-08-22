@@ -35,7 +35,6 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_centerInParent="true"
-        android:background="@color/color_ffffff"
         android:visibility="gone"
         app:shadowColor="#1a000000"
         app:shadowDx="0dp"
