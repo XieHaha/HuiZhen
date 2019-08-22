@@ -46,6 +46,7 @@
     <string name="txt_sure_add">确认添加</string>
     <string name="txt_sure_delete">确认删除</string>
     <string name="txt_save">保存</string>
+    <string name="txt_not_save">不保存</string>
     <string name="txt_open">去开启</string>
     <string name="txt_exit">退出</string>
     <string name="txt_exit_app">退出应用</string>
@@ -219,6 +220,7 @@
     <string name="txt_info_head_img">头像</string>
     <string name="txt_info_sex">性别</string>
     <string name="txt_info_phone">手机号</string>
+    <string name="txt_save_edit">保存本次编辑？</string>
 
     <!--患者/医生相关-->
     <string name="txt_patient_info">患者资料</string>

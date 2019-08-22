@@ -64,7 +64,11 @@ WE_CHAT_LOGIN,
     /**
      * 获取当前医生可进行转诊的医院列表。
      */
-    GET_HOSPITAL_LIST_BY_DOCTOR,
+    GET_HOSPITAL_LIST_BY_TRANSFER_OTHER,
+    /**
+     * 医生接诊时选择接诊医院或者改变接诊信息时选择医院 。
+     */
+    GET_HOSPITAL_LIST_BY_RECEIVE,
     /**
      * 校验医生是否有预约检查和预约转诊的合作医院。
      */

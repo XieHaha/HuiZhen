@@ -16,6 +16,7 @@ import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
+import com.yht.frame.data.bean.ReceiverBean;
 import com.yht.frame.data.bean.ReceiverDoctorBean;
 import com.yht.frame.data.bean.HospitalBean;
 import com.yht.frame.data.bean.HospitalDepartBean;
@@ -45,8 +46,7 @@ import butterknife.OnClick;
  * @des 选择接诊医生
  */
 public class SelectReceivingDoctorActivity extends BaseActivity
-        implements BaseQuickAdapter.OnItemClickListener, BaseQuickAdapter.RequestLoadMoreListener,
-                   BaseQuickAdapter.OnItemChildClickListener {
+        implements BaseQuickAdapter.OnItemClickListener, BaseQuickAdapter.OnItemChildClickListener {
     @BindView(R.id.tv_select)
     TextView tvSelect;
     @BindView(R.id.layout_expand)
@@ -98,18 +98,6 @@ public class SelectReceivingDoctorActivity extends BaseActivity
      */
     private HospitalDepartBean curHospitalDepartBean;
     /**
-     * 当前选中的二级科室
-     */
-    private HospitalDepartChildBean curHospitalDepartChildBean;
-    /**
-     * 一级科室选中
-     */
-    private int curDepartOnePosition = -1;
-    /**
-     * 二级科室选中
-     */
-    private int curDepartTwoPosition = -1;
-    /**
      * 当前选择列表  0为医院 1为大科室  2为小科室
      */
     private int curType;
@@ -119,17 +107,9 @@ public class SelectReceivingDoctorActivity extends BaseActivity
      */
     private Map<String, Object> params = new HashMap<>();
     /**
-     * 页码
-     */
-    private int page = 1;
-    /**
      * 是否为转给他人
      */
     private boolean isTransferOther;
-    /**
-     * 只有第一次请求才判断是否显示无医生提示
-     */
-    boolean showNone = false;
 
     @Override
     protected boolean isInitBackBtn() {
@@ -162,12 +142,10 @@ public class SelectReceivingDoctorActivity extends BaseActivity
         searchRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         doctorAdapter = new ReceiverDoctorAdapter(R.layout.item_receiver_doctor, doctors);
         doctorAdapter.setLoadMoreView(new CustomLoadMoreView());
-        doctorAdapter.setOnLoadMoreListener(this, searchRecyclerView);
         doctorAdapter.setOnItemClickListener(this);
         doctorAdapter.setOnItemChildClickListener(this);
         searchRecyclerView.setAdapter(doctorAdapter);
         getHospitalListByReverse();
-        showNone = true;
         getDoctorListByReverse(new HashMap<>(16));
     }
 
@@ -192,7 +170,6 @@ public class SelectReceivingDoctorActivity extends BaseActivity
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (!TextUtils.isEmpty(s)) {
-                    page = 1;
                     doctors.clear();
                     searchDoctor(s.toString());
                     selectEnd();
@@ -211,10 +188,10 @@ public class SelectReceivingDoctorActivity extends BaseActivity
     private void getHospitalListByReverse() {
         if (isTransferOther) {
             //转给他人
-            RequestUtils.getHospitalListByDoctor(this, loginBean.getToken(), orderNo, this);
+            RequestUtils.getHospitalListByTransferOther(this, loginBean.getToken(), orderNo, this);
         }
         else {
-            // (创建预约服务订单)
+            // (创建预约订单)
             RequestUtils.getHospitalListByReverse(this, loginBean.getToken(), this);
         }
     }
@@ -243,13 +220,11 @@ public class SelectReceivingDoctorActivity extends BaseActivity
         if (isTransferOther) {
             //重新转诊的接诊医生
             params.put("orderNo", orderNo);
-            RequestUtils.getReceivingDoctorList(this, loginBean.getToken(), params, BaseData.BASE_PAGE_DATA_NUM, page,
-                                                this);
+            RequestUtils.getReceivingDoctorList(this, loginBean.getToken(), params, this);
         }
         else {
             //预约转诊的接诊医生
-            RequestUtils.getDoctorListByReverse(this, loginBean.getToken(), params, BaseData.BASE_PAGE_DATA_NUM, page,
-                                                this);
+            RequestUtils.getDoctorListByReverse(this, loginBean.getToken(), params, this);
         }
     }
 
@@ -307,7 +282,6 @@ public class SelectReceivingDoctorActivity extends BaseActivity
      * 医生搜索
      */
     private void searchDoctor(String key) {
-        tvSelect.setVisibility(View.GONE);
         params = new HashMap<>(16);
         params.put("doctorName", key);
         getDoctorListByReverse(params);
@@ -317,6 +291,7 @@ public class SelectReceivingDoctorActivity extends BaseActivity
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_select:
+                etSearchCheckType.setText("");
                 hideSoftInputFromWindow();
                 if (tvSelect.isSelected()) {
                     layoutBg.postDelayed(() -> layoutBg.setVisibility(View.GONE), 200);
@@ -330,7 +305,6 @@ public class SelectReceivingDoctorActivity extends BaseActivity
                 }
                 break;
             case R.id.tv_reset:
-                page = 1;
                 curType = 0;
                 tvSelect.setText(R.string.txt_select_hospital_depart);
                 tvHospitalTitle.setText(R.string.txt_select_hint);
@@ -367,8 +341,7 @@ public class SelectReceivingDoctorActivity extends BaseActivity
                     getDepartOneListByReverse();
                     break;
                 case 1:
-                    curDepartOnePosition = position;
-                    this.adapter.setCurPosition(curDepartOnePosition);
+                    this.adapter.setCurPosition(position);
                     if (position != 0) {
                         curHospitalDepartBean = departOne.get(position - 1);
                         tvSelect.setText(
@@ -381,24 +354,22 @@ public class SelectReceivingDoctorActivity extends BaseActivity
                         tvSelect.setText(curHospital.getHospitalName() + "-全部科室");
                         params = new HashMap<>(16);
                         params.put("hospitalCode", curHospital.getHospitalCode());
-                        page = 1;
                         doctors.clear();
                         getDoctorListByReverse(params);
                     }
                     break;
                 case 2:
-                    curDepartTwoPosition = position;
-                    this.adapter.setCurPosition(curDepartTwoPosition);
+                    this.adapter.setCurPosition(position);
                     selectEnd();
                     params = new HashMap<>(16);
                     params.put("hospitalCode", curHospital.getHospitalCode());
                     params.put("pid", curHospitalDepartBean.getDepartmentId());
                     if (position != 0) {
-                        curHospitalDepartChildBean = departTwo.get(position - 1);
-                        params.put("id", curHospitalDepartChildBean.getDepartmentId());
+                        HospitalDepartChildBean bean = departTwo.get(position - 1);
+                        params.put("id", bean.getDepartmentId());
                         tvSelect.setText(
                                 curHospital.getHospitalName() + "-" + curHospitalDepartBean.getDepartmentName() + "-" +
-                                curHospitalDepartChildBean.getDepartmentName());
+                                bean.getDepartmentName());
                     }
                     else {
                         //选择全部的二级科室
@@ -406,7 +377,6 @@ public class SelectReceivingDoctorActivity extends BaseActivity
                                 curHospital.getHospitalName() + "-" + curHospitalDepartBean.getDepartmentName() +
                                 "-全部子科室");
                     }
-                    page = 1;
                     doctors.clear();
                     getDoctorListByReverse(params);
                     break;
@@ -428,7 +398,7 @@ public class SelectReceivingDoctorActivity extends BaseActivity
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
         switch (task) {
-            case GET_HOSPITAL_LIST_BY_DOCTOR:
+            case GET_HOSPITAL_LIST_BY_TRANSFER_OTHER:
             case GET_HOSPITAL_LIST_BY_RESERVE:
                 hospitals = (List<HospitalBean>)response.getData();
                 data = new ArrayList<>();
@@ -460,50 +430,27 @@ public class SelectReceivingDoctorActivity extends BaseActivity
                 break;
             case GET_RECEIVING_DOCTOR_LIST:
             case GET_DOCTOR_LIST_BY_REVERSE:
-                List<ReceiverDoctorBean> list = (List<ReceiverDoctorBean>)response.getData();
-                if (list == null) {
-                    list = new ArrayList<>();
-                }
-                if (page == BaseData.BASE_ONE) {
-                    doctors.clear();
-                }
-                doctors.addAll(list);
-                if (doctors.size() > 0) {
-                    searchRecyclerView.setVisibility(View.VISIBLE);
-                }
-                if (showNone) {
-                    showNone = false;
-                    if (doctors.size() == 0) {
-                        layoutNoneDoctor.setVisibility(View.VISIBLE);
-                    }
-                    else {
-                        layoutNoneDoctor.setVisibility(View.GONE);
-                    }
-                }
-                else {
-                    layoutNoneDoctor.setVisibility(View.GONE);
-                }
+                ReceiverBean receiverBean = (ReceiverBean)response.getData();
+                doctors.clear();
+                doctors.addAll(receiverBean.getFriend());
+                doctors.addAll(receiverBean.getOther());
                 doctorAdapter.setNewData(doctors);
-                if (list.size() >= BaseData.BASE_PAGE_DATA_NUM) {
-                    doctorAdapter.loadMoreComplete();
-                }
-                else {
+                if (doctors.size() > 0) {
                     if (doctors.size() > BaseData.BASE_PAGE_DATA_NUM) {
                         doctorAdapter.loadMoreEnd();
                     }
                     else {
                         doctorAdapter.setEnableLoadMore(false);
                     }
+                    searchRecyclerView.setVisibility(View.VISIBLE);
+                    layoutNoneDoctor.setVisibility(View.GONE);
+                }
+                else {
+                    layoutNoneDoctor.setVisibility(View.VISIBLE);
                 }
                 break;
             default:
                 break;
         }
-    }
-
-    @Override
-    public void onLoadMoreRequested() {
-        page++;
-        getDoctorListByReverse(params);
     }
 }

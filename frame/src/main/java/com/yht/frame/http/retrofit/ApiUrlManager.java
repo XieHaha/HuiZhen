@@ -28,6 +28,7 @@ import com.yht.frame.data.bean.PatientBean;
 import com.yht.frame.data.bean.PatientOrderBean;
 import com.yht.frame.data.bean.ProtocolBean;
 import com.yht.frame.data.bean.QrCodeBean;
+import com.yht.frame.data.bean.ReceiverBean;
 import com.yht.frame.data.bean.ReceiverDoctorBean;
 import com.yht.frame.data.bean.RecentPatientBean;
 import com.yht.frame.data.bean.ReservationValidateBean;
@@ -205,19 +206,28 @@ public interface ApiUrlManager {
      * @param token token
      * @return 返回值
      */
-    @GET("client/hospital/selectInput/forSelect")
+    @GET("client/hospital/selectInput/startZZ")
     Observable<BaseResponse<List<HospitalBean>>> getHospitalListByReverse(@Header("token") String token);
 
     /**
-     * 获取当前医生可进行转诊的医院列表。
+     * 转给他人时 获取医院列表
      *
-     * @param token token
-     * @param info  info
+     * @param token   token
+     * @param orderNo orderNo
      * @return 返回值
      */
-    @POST("client/hospital/selectInput/forChange")
-    Observable<BaseResponse<List<HospitalBean>>> getHospitalListByDoctor(@Header("token") String token,
-            @Body Map<String, String> info);
+    @GET("client/hospital/selectInput/transToOther/{orderNo}")
+    Observable<BaseResponse<List<HospitalBean>>> getHospitalListByTransferOther(@Header("token") String token,
+            @Path("orderNo") String orderNo);
+
+    /**
+     * 医生接诊时选择接诊医院或者改变接诊信息时选择医院
+     *
+     * @param token token
+     * @return 返回值
+     */
+    @GET("client/hospital/selectInput/receiveOrChange")
+    Observable<BaseResponse<List<HospitalBean>>> getHospitalListByReceive(@Header("token") String token);
 
     /**
      * 校验医生是否有预约检查和预约转诊的合作医院。
@@ -258,8 +268,8 @@ public interface ApiUrlManager {
      * @param info  code
      * @return 返回值
      */
-    @POST("client/doctor/zzDoctors")
-    Observable<BaseResponse<List<ReceiverDoctorBean>>> getDoctorListByReverse(@Header("token") String token,
+    @POST("client/doctor/v2/zzDoctors")
+    Observable<BaseResponse<ReceiverBean>> getDoctorListByReverse(@Header("token") String token,
             @Body Map<String, Object> info);
 
     /**
@@ -269,8 +279,8 @@ public interface ApiUrlManager {
      * @param info  code
      * @return 返回值
      */
-    @POST("client/doctor/jzDoctors")
-    Observable<BaseResponse<List<ReceiverDoctorBean>>> getReceivingDoctorList(@Header("token") String token,
+    @POST("client/doctor/v2/jzDoctors")
+    Observable<BaseResponse<ReceiverBean>> getReceivingDoctorList(@Header("token") String token,
             @Body Map<String, Object> info);
 
     /**

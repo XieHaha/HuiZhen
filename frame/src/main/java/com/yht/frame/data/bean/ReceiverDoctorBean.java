@@ -34,6 +34,7 @@ public class ReceiverDoctorBean implements Serializable {
     //2019年7月9日20:12:00
     private String departmentName;
     private String hospitalName;
+    private String hospitalCode;
     private String photo;
 
     public String getCertBack() {
@@ -194,6 +195,14 @@ public class ReceiverDoctorBean implements Serializable {
 
     public void setHospitalName(String hospitalName) {
         this.hospitalName = hospitalName;
+    }
+
+    public String getHospitalCode() {
+        return hospitalCode;
+    }
+
+    public void setHospitalCode(String hospitalCode) {
+        this.hospitalCode = hospitalCode;
     }
 
     public String getPhoto() {

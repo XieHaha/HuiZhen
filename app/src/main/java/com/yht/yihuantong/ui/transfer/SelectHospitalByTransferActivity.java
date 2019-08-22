@@ -61,14 +61,14 @@ public class SelectHospitalByTransferActivity extends BaseActivity
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-        getHospitalListByDoctor();
+        getHospitalListByReceive();
     }
 
     /**
      * 获取当前医生可接受转诊的医院
      */
-    private void getHospitalListByDoctor() {
-        RequestUtils.getHospitalListByDoctor(this, loginBean.getToken(), "", this);
+    private void getHospitalListByReceive() {
+        RequestUtils.getHospitalListByReceive(this, loginBean.getToken(), this);
     }
 
     @Override
@@ -83,7 +83,7 @@ public class SelectHospitalByTransferActivity extends BaseActivity
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
         switch (task) {
-            case GET_HOSPITAL_LIST_BY_DOCTOR:
+            case GET_HOSPITAL_LIST_BY_RECEIVE:
                 hospitals = (List<HospitalBean>)response.getData();
                 hospitalAdapter.setNewData(hospitals);
                 if (hospitals.size() > BaseData.BASE_PAGE_DATA_NUM) {

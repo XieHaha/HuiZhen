@@ -180,16 +180,22 @@ public class RequestUtils {
                                                                  listener));
     }
 
-    public static void getHospitalListByDoctor(Context context, String token, String orderNo,
+    public static void getHospitalListByTransferOther(Context context, String token, String orderNo,
             final ResponseListener<BaseResponse> listener) {
-        Map<String, String> params = new HashMap<>(16);
-        if (!TextUtils.isEmpty(orderNo)) {
-            params.put("orderNo", orderNo);
-        }
         RetrofitManager.getApiUrlManager()
-                       .getHospitalListByDoctor(token, params)
+                       .getHospitalListByTransferOther(token, orderNo)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_HOSPITAL_LIST_BY_DOCTOR,
+                       .subscribe(
+                               new AbstractLoadViewObserver<>(context, true, Tasks.GET_HOSPITAL_LIST_BY_TRANSFER_OTHER,
+                                                              listener));
+    }
+
+    public static void getHospitalListByReceive(Context context, String token,
+            final ResponseListener<BaseResponse> listener) {
+        RetrofitManager.getApiUrlManager()
+                       .getHospitalListByReceive(token)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_HOSPITAL_LIST_BY_RECEIVE,
                                                                  listener));
     }
 
@@ -219,20 +225,16 @@ public class RequestUtils {
                                new AbstractLoadViewObserver<>(context, Tasks.GET_DEPART_TWO_LIST_BY_REVERSE, listener));
     }
 
-    public static void getDoctorListByReverse(Context context, String token, Map<String, Object> params, int pageSize,
-            int startPage, final ResponseListener<BaseResponse> listener) {
-        params.put("pageSize", pageSize);
-        params.put("startPage", startPage);
+    public static void getDoctorListByReverse(Context context, String token, Map<String, Object> params,
+            final ResponseListener<BaseResponse> listener) {
         RetrofitManager.getApiUrlManager()
                        .getDoctorListByReverse(token, params)
                        .compose(RxJavaHelper.observableIO2Main(context))
                        .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_DOCTOR_LIST_BY_REVERSE, listener));
     }
 
-    public static void getReceivingDoctorList(Context context, String token, Map<String, Object> params, int pageSize,
-            int startPage, final ResponseListener<BaseResponse> listener) {
-        params.put("pageSize", pageSize);
-        params.put("startPage", startPage);
+    public static void getReceivingDoctorList(Context context, String token, Map<String, Object> params,
+            final ResponseListener<BaseResponse> listener) {
         RetrofitManager.getApiUrlManager()
                        .getReceivingDoctorList(token, params)
                        .compose(RxJavaHelper.observableIO2Main(context))

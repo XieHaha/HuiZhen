@@ -64,29 +64,54 @@
             android:drawableEnd="@drawable/selector_arrow_tab"
             android:drawablePadding="10dp"
             android:visibility="visible" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/app_hei_line"
-            android:background="@color/color_ebedf0"
-            android:layout_marginStart="20dp" />
     </LinearLayout>
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_below="@id/layout_select"
+        android:background="@color/color_f8f9fa" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/search_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="visible"
-        android:layout_below="@id/layout_select">
+        android:layout_below="@id/view">
 
     </android.support.v7.widget.RecyclerView>
+
+
+    <LinearLayout
+        android:id="@+id/layout_none_doctor"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:visibility="gone"
+        android:paddingTop="46dp"
+        android:background="@color/color_ffffff"
+        android:layout_below="@id/view">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_6a6f80"
+            android:textSize="@dimen/text_15"
+            android:drawableTop="@mipmap/pic_none_paient"
+            android:drawablePadding="20dp"
+            android:gravity="center"
+            android:text="@string/txt_none_doctor" />
+
+    </LinearLayout>
 
 
     <RelativeLayout
         android:id="@+id/layout_bg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/layout_select"
+        android:layout_below="@id/view"
         android:background="@color/color_30000000"
         android:visibility="gone" />
 
@@ -245,29 +270,6 @@
 
             </LinearLayout>
         </com.yht.frame.widgets.view.ExpandableLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/layout_none_doctor"
-        android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:layout_height="match_parent"
-        android:gravity="center_horizontal"
-        android:visibility="gone"
-        android:paddingTop="66dp"
-        android:background="@color/color_ffffff"
-        android:layout_below="@id/layout_search">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/color_6a6f80"
-            android:textSize="@dimen/text_15"
-            android:drawableTop="@mipmap/pic_none_paient"
-            android:drawablePadding="20dp"
-            android:gravity="center"
-            android:text="@string/txt_none_doctor" />
 
     </LinearLayout>
 

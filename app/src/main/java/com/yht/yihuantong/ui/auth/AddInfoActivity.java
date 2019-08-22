@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.yht.frame.data.BaseResponse;
@@ -15,6 +16,7 @@ import com.yht.frame.data.bean.HospitalBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.ToastUtil;
+import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.frame.widgets.edittext.AbstractTextWatcher;
 import com.yht.frame.widgets.edittext.EditTextLayout;
 import com.yht.yihuantong.R;
@@ -35,6 +37,8 @@ public class AddInfoActivity extends BaseActivity {
     TextView publicTitleBarMore;
     @BindView(R.id.public_title_bar_title)
     TextView publicTitleBarTitle;
+    @BindView(R.id.public_title_bar_back)
+    ImageView publicTitleBarBack;
     @BindView(R.id.tv_calc_num)
     TextView tvCalcNum;
     private String inputValue;
@@ -61,6 +65,7 @@ public class AddInfoActivity extends BaseActivity {
             inputValue = getIntent().getStringExtra(CommonData.KEY_PUBLIC_STRING);
         }
         publicTitleBarMore.setVisibility(View.VISIBLE);
+        publicTitleBarBack.setOnClickListener(this);
     }
 
     @Override
@@ -127,11 +132,38 @@ public class AddInfoActivity extends BaseActivity {
         RequestUtils.updateIntroduce(this, loginBean.getToken(), value, this);
     }
 
-    @OnClick(R.id.public_title_bar_more)
+    @Override
+    public void onClick(View v) {
+        super.onClick(v);
+        if (v.getId() == R.id.public_title_bar_back) {
+            onFinish();
+        }
+    }
+
+    @OnClick({ R.id.public_title_bar_more })
     public void onViewClicked() {
-        if (!publicTitleBarMore.isSelected()) {
+        if (publicTitleBarMore.isSelected()) { save(); }
+    }
+
+    private void onFinish() {
+        if (mode && publicTitleBarMore.isSelected()) {
+            new HintDialog(this).setContentString(R.string.txt_save_edit)
+                                .setCancleBtnTxt(R.string.txt_not_save)
+                                .setOnCancelClickListener(this::finish)
+                                .setEnterBtnTxt(R.string.txt_save)
+                                .setEnterSelect(true)
+                                .setOnEnterClickListener(this::save)
+                                .show();
             return;
         }
+        hideSoftInputFromWindow();
+        finish();
+    }
+
+    /**
+     * 保存
+     */
+    private void save() {
         hideSoftInputFromWindow();
         inputValue = etHospital.getEditText().getText().toString().trim();
         if (mode) {
@@ -159,5 +191,10 @@ public class AddInfoActivity extends BaseActivity {
             setResult(RESULT_OK, intent);
             finish();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        onFinish();
     }
 }
