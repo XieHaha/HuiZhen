@@ -296,6 +296,7 @@ public class TransferMaterialFragment extends BaseFragment implements View.OnFoc
             layoutPastMedicalHis.setVisibility(View.GONE);
             if (!getString(R.string.txt_past_medical_his_not).equals(pastMedicalHis)) {
                 etPastMedicalHis.setText(pastMedicalHis);
+                etPastMedicalHis.setSelection(pastMedicalHis.length());
             }
             tvPastMedicalHisNum.setText(String.format(getString(R.string.txt_calc_num), pastMedicalHis.length()));
             reverseTransferBean.setPastHistory(pastMedicalHis);
@@ -320,6 +321,7 @@ public class TransferMaterialFragment extends BaseFragment implements View.OnFoc
             layoutFamilyMedicalHis.setVisibility(View.GONE);
             if (!getString(R.string.txt_family_medical_his_not).equals(familyMedicalHis)) {
                 etFamilyMedicalHis.setText(familyMedicalHis);
+                etFamilyMedicalHis.setSelection(familyMedicalHis.length());
             }
             tvFamilyMedicalHisNum.setText(String.format(getString(R.string.txt_calc_num), familyMedicalHis.length()));
             reverseTransferBean.setFamilyHistory(familyMedicalHis);
@@ -344,6 +346,7 @@ public class TransferMaterialFragment extends BaseFragment implements View.OnFoc
             layoutAllergies.setVisibility(View.GONE);
             if (!getString(R.string.txt_allergies_not).equals(allergiesHis)) {
                 etAllergies.setText(allergiesHis);
+                etAllergies.setSelection(allergiesHis.length());
             }
             tvAllergiesNum.setText(String.format(getString(R.string.txt_calc_num), allergiesHis.length()));
             reverseTransferBean.setAllergyHistory(allergiesHis);
@@ -364,6 +367,7 @@ public class TransferMaterialFragment extends BaseFragment implements View.OnFoc
      */
     private void initDiagnosis() {
         tvDiagnosisNum.setText(String.format(getString(R.string.txt_calc_num), diagnosisHis.length()));
+        etDiagnosis.setSelection(diagnosisHis.length());
     }
 
     /**

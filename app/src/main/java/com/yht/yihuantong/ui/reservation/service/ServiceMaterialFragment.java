@@ -294,6 +294,7 @@ public class ServiceMaterialFragment extends BaseFragment implements View.OnFocu
             layoutPastMedicalHis.setVisibility(View.GONE);
             if (!getString(R.string.txt_past_medical_his_not).equals(pastMedicalHis)) {
                 etPastMedicalHis.setText(pastMedicalHis);
+                etPastMedicalHis.setSelection(pastMedicalHis.length());
             }
             tvPastMedicalHisNum.setText(String.format(getString(R.string.txt_calc_num), pastMedicalHis.length()));
             reserveCheckBean.setPastHistory(pastMedicalHis);
@@ -318,6 +319,7 @@ public class ServiceMaterialFragment extends BaseFragment implements View.OnFocu
             layoutFamilyMedicalHis.setVisibility(View.GONE);
             if (!getString(R.string.txt_family_medical_his_not).equals(familyMedicalHis)) {
                 etFamilyMedicalHis.setText(familyMedicalHis);
+                etFamilyMedicalHis.setSelection(familyMedicalHis.length());
             }
             tvFamilyMedicalHisNum.setText(String.format(getString(R.string.txt_calc_num), familyMedicalHis.length()));
             reserveCheckBean.setFamilyHistory(familyMedicalHis);
@@ -342,6 +344,7 @@ public class ServiceMaterialFragment extends BaseFragment implements View.OnFocu
             layoutAllergies.setVisibility(View.GONE);
             if (!getString(R.string.txt_allergies_not).equals(allergiesHis)) {
                 etAllergies.setText(allergiesHis);
+                etAllergies.setSelection(allergiesHis.length());
             }
             tvAllergiesNum.setText(String.format(getString(R.string.txt_calc_num), allergiesHis.length()));
             reserveCheckBean.setAllergyHistory(allergiesHis);
@@ -362,6 +365,7 @@ public class ServiceMaterialFragment extends BaseFragment implements View.OnFocu
      */
     private void initDiagnosis() {
         tvDiagnosisNum.setText(String.format(getString(R.string.txt_calc_num), diagnosisHis.length()));
+        etDiagnosis.setSelection(diagnosisHis.length());
     }
 
     /**

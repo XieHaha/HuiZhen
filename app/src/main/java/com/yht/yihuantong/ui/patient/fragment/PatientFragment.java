@@ -109,6 +109,14 @@ public class PatientFragment extends BaseFragment
         layoutRefresh.setOnRefreshListener(this);
         recyclerview.setLayoutManager(layoutManager = new LinearLayoutManager(getContext()));
         recyclerview.addItemDecoration(decoration = new SideBarItemDecoration(getContext()));
+        recyclerview.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                //第一个可见的位置
+                int findFirstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
+                sideBar.setCurPosition(findFirstVisibleItemPosition - 1);
+            }
+        });
     }
 
     @Override

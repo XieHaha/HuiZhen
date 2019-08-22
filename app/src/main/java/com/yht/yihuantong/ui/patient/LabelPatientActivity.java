@@ -91,6 +91,14 @@ public class LabelPatientActivity extends BaseActivity
         super.initView(savedInstanceState);
         recyclerview.setLayoutManager(layoutManager = new LinearLayoutManager(this));
         recyclerview.addItemDecoration(decoration = new SideBarItemDecoration(this));
+        recyclerview.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                //第一个可见的位置
+                int findFirstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
+                sideBar.setCurPosition(findFirstVisibleItemPosition);
+            }
+        });
         initEvents();
         initAdapter();
     }

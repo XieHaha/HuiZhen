@@ -200,6 +200,14 @@ public class SelectReceivingDoctorActivity extends BaseActivity
                 }
             }
         });
+        searchRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                //第一个可见的位置
+                int findFirstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
+                sideBar.setCurPosition(findFirstVisibleItemPosition);
+            }
+        });
     }
 
     /**

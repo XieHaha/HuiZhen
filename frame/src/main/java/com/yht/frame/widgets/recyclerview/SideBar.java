@@ -114,6 +114,11 @@ public class SideBar extends View {
         invalidate();
     }
 
+    public void setCurPosition(int curPosition) {
+        this.curPosition = curPosition;
+        invalidate();
+    }
+
     private int curPosition = -1;
 
     @Override
@@ -141,9 +146,9 @@ public class SideBar extends View {
                 if (listener != null) {
                     listener.indexHide();
                 }
-                mPaint.setColor(ContextCompat.getColor(getContext(), R.color.color_373d4d));
-                curPosition = -1;
-                invalidate();
+                //                mPaint.setColor(ContextCompat.getColor(getContext(), R.color.color_373d4d));
+                //                curPosition = -1;
+                //                invalidate();
                 break;
             default:
                 break;
