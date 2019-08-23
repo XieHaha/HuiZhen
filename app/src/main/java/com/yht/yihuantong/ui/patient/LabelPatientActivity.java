@@ -113,7 +113,7 @@ public class LabelPatientActivity extends BaseActivity
         if (labelBean != null) {
             publicTitleBarTitle.setText(labelBean.getTagName());
             if (isUpdate) {
-                getPatientByLabel();
+                getPatientByLabel(labelBean.getId());
             }
             else {
                 patientBeans = labelBean.getPatientList();
@@ -125,8 +125,8 @@ public class LabelPatientActivity extends BaseActivity
     /**
      * 根据标签获取患者
      */
-    private void getPatientByLabel() {
-        RequestUtils.getPatientByLabel(this, loginBean.getToken(), labelBean.getId(), this);
+    private void getPatientByLabel(long tagId) {
+        RequestUtils.getPatientByLabel(this, loginBean.getToken(), tagId, this);
     }
 
     /**

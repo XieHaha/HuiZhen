@@ -59,7 +59,7 @@ public class ReservationSuccessActivity extends BaseActivity {
             orderNo = getIntent().getStringExtra(CommonData.KEY_ORDER_ID);
         }
         //预约订单成功  刷新患者列表数据
-        NotifyChangeListenerManager.getInstance().notifyPatientStatusChange("");
+        NotifyChangeListenerManager.getInstance().notifyPatientListChanged("");
         initPage();
     }
 

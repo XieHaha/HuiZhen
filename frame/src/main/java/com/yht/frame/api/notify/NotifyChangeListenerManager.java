@@ -172,7 +172,7 @@ public class NotifyChangeListenerManager {
          *
          * @param data
          */
-        public void notifyPatientStatusChange(final String data) {
+        public void notifyPatientListChanged(final String data) {
             synchronized (mPatientListChangeListeners) {
                 for (int i = 0, size = mPatientListChangeListeners.size(); i < size; i++) {
                     try {

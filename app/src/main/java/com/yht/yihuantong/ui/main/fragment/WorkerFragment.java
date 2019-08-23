@@ -414,7 +414,7 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
             case GET_PATIENT_BY_QR_ID:
                 PatientBean patientBean = (PatientBean)response.getData();
                 //添加成功  刷新患者列表
-                NotifyChangeListenerManager.getInstance().notifyPatientStatusChange("");
+                NotifyChangeListenerManager.getInstance().notifyPatientListChanged("");
                 //跳转到患者信息界面
                 Intent intent = new Intent(getContext(), ChatContainerActivity.class);
                 intent.putExtra(CommonData.KEY_CHAT_ID, patientBean.getCode());

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 public class LabelBean implements Serializable {
     private static final long serialVersionUID = 3822264313226879908L;
     private long id;
+    private long tagId;
     private String tagName;
     private int patientNum;
     private int searchCount;
@@ -38,6 +39,14 @@ public class LabelBean implements Serializable {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public long getTagId() {
+        return tagId;
+    }
+
+    public void setTagId(long tagId) {
+        this.tagId = tagId;
     }
 
     public int getSearchCount() {

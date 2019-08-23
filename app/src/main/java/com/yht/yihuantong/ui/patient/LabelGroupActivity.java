@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.yht.frame.api.notify.NotifyChangeListenerManager;
 import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
@@ -135,7 +136,7 @@ public class LabelGroupActivity extends BaseActivity
         new HintDialog(this).setTitleString(getString(R.string.txt_hint))
                             .setContentString(getString(R.string.txt_label_delete_hint))
                             .setEnterBtnTxt(getString(R.string.txt_sure_delete))
-                            .setOnEnterClickListener(() -> deletePatientLabel(labelBeans.get(position).getId()))
+                            .setOnEnterClickListener(() -> deletePatientLabel(labelBeans.get(position).getTagId()))
                             .show();
         return true;
     }
@@ -182,6 +183,8 @@ public class LabelGroupActivity extends BaseActivity
             case DELETE_PATIENT_LABEL:
                 ToastUtil.toast(this, response.getMsg());
                 getPatientLabel(false);
+                //标签删除成功后 刷新患者列表
+                NotifyChangeListenerManager.getInstance().notifyPatientListChanged("");
                 break;
             default:
                 break;

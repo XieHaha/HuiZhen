@@ -404,7 +404,7 @@ public class EditLabelActivity extends BaseActivity
                 break;
             case SAVE_PATIENT_LABEL:
                 //标签保存成功后 刷新患者列表
-                NotifyChangeListenerManager.getInstance().notifyPatientStatusChange("");
+                NotifyChangeListenerManager.getInstance().notifyPatientListChanged("");
                 ToastUtil.toast(this, response.getMsg());
                 setResult(RESULT_OK);
                 finish();
