@@ -11,21 +11,29 @@ import android.view.View;
 public interface UiInterface {
     /**
      * 得到布局的id
+     *
+     * @return 布局资源id
      */
     int getLayoutID();
 
     /**
      * 得到布局的view
+     *
+     * @return 得到布局的view
      */
     View getLayoutView();
 
     /**
      * 初始化类，调用顺序为2
+     *
+     * @param savedInstanceState a
      */
     void initView(@NonNull Bundle savedInstanceState);
 
     /**
      * 初始化数据，调用顺序为3
+     *
+     * @param savedInstanceState a
      */
     void initData(@NonNull Bundle savedInstanceState);
 
@@ -41,6 +49,8 @@ public interface UiInterface {
 
     /**
      * setContentView调用前调用
+     *
+     * @param savedInstanceState a
      */
     void beforeCreateView(@NonNull Bundle savedInstanceState);
 }

@@ -25,10 +25,12 @@ public class DoctorAdapter extends BaseQuickAdapter<DoctorBean, BaseViewHolder> 
 
     @Override
     protected void convert(BaseViewHolder helper, DoctorBean item) {
-        helper.setText(R.id.tv_patient_name, item.getDoctorName()).addOnClickListener(R.id.iv_patient_call);
+        helper.setText(R.id.tv_doctor_name, item.getDoctorName())
+              .setText(R.id.tv_title, item.getJobTitle())
+              .setText(R.id.tv_depart, item.getDepartmentName());
         Glide.with(mContext)
              .load(item.getPhoto())
              .apply(GlideHelper.getOptions(BaseUtils.dp2px(mContext, 4)))
-             .into((ImageView)helper.getView(R.id.iv_patient_img));
+             .into((ImageView)helper.getView(R.id.iv_doctor_img));
     }
 }

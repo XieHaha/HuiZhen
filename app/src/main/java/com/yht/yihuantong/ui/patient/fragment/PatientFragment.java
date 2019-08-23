@@ -372,7 +372,7 @@ public class PatientFragment extends BaseFragment
                 patientBeans = new ArrayList<>();
             }
             //更新数据库
-            new LitePalHelper().updateAll(patientBeans, PatientBean.class);
+            new LitePalHelper<PatientBean>().updateAll(patientBeans, PatientBean.class);
             sharePreferenceUtil.putBoolean(CommonData.KEY_UPDATE_PATIENT_DATA, true);
             sortData();
             patientAdapter.setNewData(patientBeans);

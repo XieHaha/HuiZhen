@@ -242,6 +242,7 @@ public abstract class BaseActivity extends RxAppCompatActivity
      * 修改状态栏为全透明
      */
     @TargetApi(19)
+    @Deprecated
     public void transparencyBar(Activity activity) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = activity.getWindow();
@@ -266,15 +267,20 @@ public abstract class BaseActivity extends RxAppCompatActivity
         if (activity == null || activity.getCurrentFocus() == null ||
             activity.getCurrentFocus().getWindowToken() == null) { return; }
         InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+        if (inputMethodManager != null) {
+            inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+        }
     }
 
     /**
      * 打开软键盘
      */
+    @Deprecated
     public void showSoftInputFromWindow(View editText) {
         InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputMethodManager.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
+        if (inputMethodManager != null) {
+            inputMethodManager.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
+        }
     }
 
     /**

@@ -26,6 +26,7 @@ import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.adapter.HospitalSelectAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -50,10 +51,6 @@ public class SelectHospitalByAuthActivity extends BaseActivity
     @BindView(R.id.layout_none_hospital)
     LinearLayout layoutNoneHospital;
     private HospitalSelectAdapter hospitalAdapter;
-    /**
-     * 所有医院
-     */
-    private List<HospitalBean> hospitals;
     /**
      * 搜索结果
      */
@@ -116,8 +113,6 @@ public class SelectHospitalByAuthActivity extends BaseActivity
 
     /**
      * 模糊搜索
-     *
-     * @param tag
      */
     private void searchHospital(String tag) {
         searchHospitals = LitePalHelper.findHospitals(tag);
@@ -158,9 +153,9 @@ public class SelectHospitalByAuthActivity extends BaseActivity
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
         if (task == Tasks.GET_HOSPITAL_LIST_BY_AUTH) {
-            hospitals = (List<HospitalBean>)response.getData();
+            ArrayList<HospitalBean> hospitals = (ArrayList<HospitalBean>)response.getData();
             //更新数据库
-            new LitePalHelper().updateAll(hospitals, HospitalBean.class);
+            new LitePalHelper<HospitalBean>().updateAll(hospitals, HospitalBean.class);
         }
     }
 
@@ -183,13 +178,9 @@ public class SelectHospitalByAuthActivity extends BaseActivity
         if (resultCode != Activity.RESULT_OK) {
             return;
         }
-        switch (requestCode) {
-            case REQUEST_CODE_HOSPITAL:
-                setResult(RESULT_OK, data);
-                finish();
-                break;
-            default:
-                break;
+        if (requestCode == REQUEST_CODE_HOSPITAL) {
+            setResult(RESULT_OK, data);
+            finish();
         }
     }
 }

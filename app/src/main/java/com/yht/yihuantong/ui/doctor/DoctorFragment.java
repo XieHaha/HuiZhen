@@ -27,7 +27,6 @@ import com.yht.frame.data.bean.DoctorBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
-import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.frame.widgets.recyclerview.SideBar;
 import com.yht.frame.widgets.recyclerview.decoration.SideBarDoctorDecoration;
 import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
@@ -49,8 +48,8 @@ import butterknife.BindView;
  * @des 医生列表
  */
 public class DoctorFragment extends BaseFragment
-        implements BaseQuickAdapter.OnItemClickListener, BaseQuickAdapter.OnItemChildClickListener,
-                   BaseQuickAdapter.RequestLoadMoreListener, SwipeRefreshLayout.OnRefreshListener {
+        implements BaseQuickAdapter.OnItemClickListener, BaseQuickAdapter.RequestLoadMoreListener,
+                   SwipeRefreshLayout.OnRefreshListener {
     @BindView(R.id.recyclerview)
     RecyclerView recyclerview;
     @BindView(R.id.tv_none_patient)
@@ -151,9 +150,8 @@ public class DoctorFragment extends BaseFragment
      */
     private void initAdapter() {
         //医生列表
-        doctorAdapter = new DoctorAdapter(R.layout.item_patient, doctorBeans);
+        doctorAdapter = new DoctorAdapter(R.layout.item_doctor, doctorBeans);
         doctorAdapter.setOnItemClickListener(this);
-        doctorAdapter.setOnItemChildClickListener(this);
         headerView = LayoutInflater.from(getContext()).inflate(R.layout.view_doctor_header, null);
         layoutHeader = headerView.findViewById(R.id.layout_header);
         spaceView = headerView.findViewById(R.id.view_space);
@@ -339,14 +337,6 @@ public class DoctorFragment extends BaseFragment
     }
 
     @Override
-    public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-        new HintDialog(getContext()).setPhone(getString(R.string.txt_contact_doctor_phone),
-                                              doctorBeans.get(position).getMobile())
-                                    .setOnEnterClickListener(() -> callPhone(doctorBeans.get(position).getMobile()))
-                                    .show();
-    }
-
-    @Override
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
         if (task == Tasks.GET_DOCTOR_LIST) {
@@ -355,7 +345,7 @@ public class DoctorFragment extends BaseFragment
                 doctorBeans = new ArrayList<>();
             }
             //更新数据库
-            new LitePalHelper().updateAll(doctorBeans, DoctorBean.class);
+            new LitePalHelper<DoctorBean>().updateAll(doctorBeans, DoctorBean.class);
             sharePreferenceUtil.putBoolean(CommonData.KEY_UPDATE_DOCTOR_DATA, true);
             sortData();
             doctorAdapter.setNewData(doctorBeans);

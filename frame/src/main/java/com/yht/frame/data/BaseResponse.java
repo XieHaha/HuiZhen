@@ -52,6 +52,6 @@ public class BaseResponse<T> implements Serializable {
     @Override
     public String toString() {
         return "BaseResponse{" + "code=" + code + ", '" + (msg == null ? "msg为空" : "msg=" + msg) + '\'' + ", " +
-               (data == null ? "data为空" : "data=" + (data == null ? "null" : data.toString())) + '}';
+               (data == null ? "data为空" : "data=" + data.toString()) + '}';
     }
 }
