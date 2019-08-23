@@ -71,6 +71,14 @@ public interface BaseData {
      */
     int BASE_DEVICE_DEFAULT_WIDTH = 667;
     /**
+     * 单个患者拥有的最大标签数
+     */
+    int BASE_PATIENT_LABEL_NUM = 10;
+    /**
+     * 单个医生拥有的最大标签数
+     */
+    int BASE_DOCTOR_LABEL_NUM = 50;
+    /**
      * 搜索图标 标志位
      */
     String BASE_SEARCH_TAG = "#";

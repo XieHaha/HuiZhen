@@ -17,6 +17,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.yht.frame.api.notify.NotifyChangeListenerManager;
+import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
@@ -335,7 +336,14 @@ public class EditLabelActivity extends BaseActivity
             }
         }
         else {
-            addLabel(allLabelList.get(position));
+            //判断患者标签是否达到上限  患者最多拥有10个标签
+            if (selectedLabelList.size() >= BaseData.BASE_PATIENT_LABEL_NUM) {
+                ToastUtil.toast(this, R.string.txt_patient_label_over);
+                updateAllLabelSelectStatus();
+            }
+            else {
+                addLabel(allLabelList.get(position));
+            }
         }
         return false;
     }
@@ -381,6 +389,19 @@ public class EditLabelActivity extends BaseActivity
     private void addLabel(String content) {
         if (TextUtils.isEmpty(content)) { return; }
         if (!isExist(content)) {
+            //医生总标签数最多50个
+            if (!allLabelList.contains(content)) {
+                int allLabelNum = selectedLabelList.size() - selectedPosition.size() + allLabelList.size();
+                if (allLabelNum >= BaseData.BASE_DOCTOR_LABEL_NUM) {
+                    ToastUtil.toast(this, R.string.txt_doctor_label_over);
+                    return;
+                }
+            }
+            //患者最多拥有10个标签
+            if (selectedLabelList.size() >= BaseData.BASE_PATIENT_LABEL_NUM) {
+                ToastUtil.toast(this, R.string.txt_patient_label_over);
+                return;
+            }
             //添加标签
             final TextView textLabel = createNewLabel(content, null, true);
             textViewLabels.add(textLabel);

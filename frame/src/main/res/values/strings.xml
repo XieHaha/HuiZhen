@@ -235,6 +235,8 @@
     <string name="txt_label_all">全部标签</string>
     <string name="txt_label_filter">通过患者标签筛选</string>
     <string name="txt_no_label">暂无标签</string>
+    <string name="txt_patient_label_over">最多为患者添加10个标签</string>
+    <string name="txt_doctor_label_over">您的标签数已达到上限，无法再添加新标签</string>
     <string name="txt_label_title">%s&#160;(%d)</string>
     <string name="txt_label_delete_hint">删除后该标签不能恢复</string>
     <string name="txt_patient_search_hint">请在%d名患者中搜索</string>

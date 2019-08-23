@@ -32,7 +32,6 @@
         android:id="@+id/list_view"
         android:layout_width="match_parent"
         android:divider="@null"
-        android:background="@color/color_ffffff"
         android:visibility="gone"
         android:layout_height="match_parent" />
 
@@ -51,13 +50,18 @@
             android:textColor="@color/color_a1a8b3"
             android:textSize="@dimen/text_13" />
 
-        <com.zhy.view.flowlayout.TagFlowLayout
-            android:id="@+id/all_flow"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingStart="14dp"
-            android:paddingEnd="14dp"
-            android:orientation="horizontal" />
+            android:layout_height="wrap_content">
+
+            <com.zhy.view.flowlayout.TagFlowLayout
+                android:id="@+id/all_flow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
+                android:orientation="horizontal" />
+        </ScrollView>
     </LinearLayout>
 
 
