@@ -100,7 +100,23 @@ public class HospitalDetailActivity extends BaseActivity implements AdapterView.
         if (curHospital != null) {
             publicTitleBarTitle.setText(curHospital.getHospitalName());
             tvHospitalAddress.setText(curHospital.getAddress());
-            tvHospitalBusiness.setText(StringUtils.join(curHospital.getServiceList(), ","));
+            ArrayList<String> values = new ArrayList<>();
+            for (String string : curHospital.getServiceList()) {
+                switch (string) {
+                    case "1":
+                        values.add(getString(R.string.txt_reserve_check));
+                        break;
+                    case "2":
+                        values.add(getString(R.string.txt_reserve_transfer));
+                        break;
+                    case "3":
+                        values.add(getString(R.string.txt_remote_consultation));
+                        break;
+                    default:
+                        break;
+                }
+            }
+            tvHospitalBusiness.setText(StringUtils.join(values, ","));
             tvHospitalProject.setText(String.format(getString(R.string.txt_item), hospitalProductBeans.size()));
             tvHospitalIntroduction.setText(curHospital.getIntroduce());
             tvHospitalIntroduction.post(() -> {

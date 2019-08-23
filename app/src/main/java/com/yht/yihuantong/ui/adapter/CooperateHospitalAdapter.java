@@ -10,6 +10,7 @@ import com.yht.yihuantong.R;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,8 +28,24 @@ public class CooperateHospitalAdapter extends BaseQuickAdapter<CooperateHospital
         helper.setText(R.id.tv_hospital, item.getHospitalName());
         if (TextUtils.equals(item.getCooperateStatus(), "1")) {
             helper.setImageResource(R.id.iv_status, R.mipmap.ic_cooperation);
-            helper.setText(R.id.tv_reserve, R.string.txt_business_support)
-                  .setText(R.id.tv_reserve_content, StringUtils.join(item.getServiceList(), ","));
+            helper.setText(R.id.tv_reserve, R.string.txt_business_support);
+            ArrayList<String> values = new ArrayList<>();
+            for (String string : item.getServiceList()) {
+                switch (string) {
+                    case "1":
+                        values.add(mContext.getString(R.string.txt_reserve_check));
+                        break;
+                    case "2":
+                        values.add(mContext.getString(R.string.txt_reserve_transfer));
+                        break;
+                    case "3":
+                        values.add(mContext.getString(R.string.txt_remote_consultation));
+                        break;
+                    default:
+                        break;
+                }
+            }
+            helper.setText(R.id.tv_reserve_content, StringUtils.join(values, ","));
         }
         else {
             helper.setImageResource(R.id.iv_status, R.mipmap.ic_no_cooperation);
