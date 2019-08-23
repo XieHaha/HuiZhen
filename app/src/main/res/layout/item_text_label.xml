@@ -8,6 +8,7 @@
     android:paddingStart="14dp"
     android:paddingEnd="14dp"
     android:textSize="@dimen/text_15"
+    android:id="@+id/tv_label"
     android:drawableEnd="@mipmap/ic_delete_blue"
     android:drawablePadding="6dp"
     android:textColor="@color/txt_color_6a6f80_1491fc_selector"
