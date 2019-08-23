@@ -75,6 +75,14 @@ public interface BaseData {
      */
     String BASE_SEARCH_TAG = "#";
     /**
+     * 医生 标志位
+     */
+    String BASE_DOCTOR_TAG = "1";
+    /**
+     * 患者 标志位
+     */
+    String BASE_PATIENT_TAG = "2";
+    /**
      * 医生code 第一个字母
      */
     String BASE_DOCTOR_CODE = "D";

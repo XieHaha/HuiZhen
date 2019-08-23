@@ -2,6 +2,7 @@ package com.yht.yihuantong.ui.reservation.service;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.Editable;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import com.yht.frame.api.LitePalHelper;
 import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
+import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.bean.PatientBean;
 import com.yht.frame.data.bean.ReserveCheckBean;
@@ -30,6 +32,7 @@ import com.yht.frame.widgets.edittext.SuperEditText;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.adapter.SearchPatientAdapter;
 import com.yht.yihuantong.ui.check.listener.OnCheckListener;
+import com.yht.yihuantong.ui.remote.ErrorActivity;
 import com.yht.yihuantong.utils.text.BankCardTextWatcher;
 import com.yzq.zxinglibrary.android.CaptureActivity;
 import com.yzq.zxinglibrary.common.Constant;
@@ -75,6 +78,10 @@ public class ServiceIdentifyFragment extends BaseFragment
      * 当前预约检查信息
      */
     private ReserveCheckBean reserveCheckBean;
+    /**
+     * 是否为扫码结果
+     */
+    private boolean scanResult;
     /**
      * 扫码
      */
@@ -141,7 +148,13 @@ public class ServiceIdentifyFragment extends BaseFragment
                         Selection.setSelection(editable, selEndIndex);
                     }
                 }
-                searchPatient(etPatientName.getText().toString().trim());
+                //扫码不做处理
+                if (!scanResult) {
+                    searchPatient(etPatientName.getText().toString().trim());
+                }
+                else {
+                    scanResult = false;
+                }
                 initNextButton();
             }
         });
@@ -149,6 +162,13 @@ public class ServiceIdentifyFragment extends BaseFragment
 
     public void setReserveCheckBean(ReserveCheckBean reserveCheckBean) {
         this.reserveCheckBean = reserveCheckBean;
+    }
+
+    /**
+     * 扫码后获取患者信息
+     */
+    private void getPatientByQrId(String qrId) {
+        RequestUtils.getPatientByQrId(getContext(), loginBean.getToken(), qrId, BaseData.BASE_ZERO, this);
     }
 
     /**
@@ -264,27 +284,44 @@ public class ServiceIdentifyFragment extends BaseFragment
     @Override
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
-        if (task == Tasks.VERIFY_PATIENT) {
-            patientBean = (PatientBean)response.getData();
-            //新用户
-            if (patientBean == null) {
-                if (checkListener != null) {
-                    reserveCheckBean = new ReserveCheckBean();
-                    reserveCheckBean.setPatientName(name);
-                    reserveCheckBean.setIdCardNo(idCard);
-                    checkListener.onCheckStepOne(reserveCheckBean);
-                }
-            }
-            else {
-                if (!name.equals(patientBean.getName())) {
-                    ToastUtil.toast(getContext(), R.string.txt_identity_information_error);
-                }
-                else {
+        switch (task) {
+            case VERIFY_PATIENT:
+                patientBean = (PatientBean)response.getData();
+                //新用户
+                if (patientBean == null) {
                     if (checkListener != null) {
-                        checkData();
+                        reserveCheckBean = new ReserveCheckBean();
+                        reserveCheckBean.setPatientName(name);
+                        reserveCheckBean.setIdCardNo(idCard);
+                        checkListener.onCheckStepOne(reserveCheckBean);
                     }
                 }
-            }
+                else {
+                    if (!name.equals(patientBean.getName())) {
+                        ToastUtil.toast(getContext(), R.string.txt_identity_information_error);
+                    }
+                    else {
+                        if (checkListener != null) {
+                            checkData();
+                        }
+                    }
+                }
+                break;
+            case GET_PATIENT_BY_QR_ID:
+                PatientBean patientBean = (PatientBean)response.getData();
+                if (patientBean != null) {
+                    scanResult = true;
+                    name = patientBean.getName();
+                    idCard = patientBean.getIdCard();
+                    etPatientName.setText(name);
+                    etPatientName.setSelection(name.length());
+                    etPatientIdCard.setText(idCard);
+                    etPatientIdCard.setSelection(etPatientIdCard.getText().toString().length());
+                    initNextButton();
+                }
+                break;
+            default:
+                break;
         }
     }
 
@@ -293,13 +330,39 @@ public class ServiceIdentifyFragment extends BaseFragment
         if (resultCode != Activity.RESULT_OK) {
             return;
         }
-        if (requestCode == REQUEST_CODE_SCAN) {
-            if (data != null) {
-                String content = data.getStringExtra(Constant.CODED_CONTENT);
-                ToastUtil.toast(getContext(), content);
+        if (requestCode == REQUEST_CODE_SCAN && data != null) {
+            String content = data.getStringExtra(Constant.CODED_CONTENT);
+            if (!TextUtils.isEmpty(content)) {
+                //患者、医生二维码
+                Uri uri = Uri.parse(content);
+                if (uri != null && !uri.isOpaque()) {
+                    String mode = uri.getQueryParameter("t");
+                    String value = uri.getQueryParameter("p");
+                    if (!TextUtils.isEmpty(value) && BASE_PATIENT_TAG.equals(mode)) {
+                        getPatientByQrId(value);
+                    }
+                    else {
+                        qrError();
+                    }
+                }
+                else {
+                    qrError();
+                }
+            }
+            else {
+                qrError();
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    /**
+     * 二维码错误页面提示
+     */
+    private void qrError() {
+        Intent intent = new Intent(getContext(), ErrorActivity.class);
+        intent.putExtra(CommonData.KEY_INTENT_BOOLEAN, true);
+        startActivityForResult(intent, REQUEST_CODE_SCAN);
     }
 
     @Override

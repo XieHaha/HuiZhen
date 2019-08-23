@@ -814,8 +814,9 @@ public class RequestUtils {
     public static void getPatientByQrId(Context context, String token, String patientId, int createRelation,
             final ResponseListener<BaseResponse> listener) {
         Map<String, Object> params = new HashMap<>(16);
-        params.put("createRelation", createRelation);
         params.put("patientId", patientId);
+        // 是否创建医患关系 0:不需要 开单第一步 1：需要 扫码添加医生
+        params.put("createRelation", createRelation);
         RetrofitManager.getApiUrlManager()
                        .getPatientByQrId(token, params)
                        .compose(RxJavaHelper.observableIO2Main(context))
