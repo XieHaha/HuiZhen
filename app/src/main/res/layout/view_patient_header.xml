@@ -65,7 +65,7 @@
                 android:textSize="@dimen/text_16"
                 android:textStyle="bold"
                 android:text="@string/txt_recently_add"
-                android:layout_marginStart="10dp"
+                android:paddingStart="10dp"
                 android:textColor="@color/color_373d4d" />
 
         </LinearLayout>
@@ -91,7 +91,7 @@
                 android:textSize="@dimen/text_16"
                 android:textStyle="bold"
                 android:text="@string/txt_patient_label"
-                android:layout_marginStart="10dp"
+                android:paddingStart="10dp"
                 android:textColor="@color/color_373d4d" />
 
         </LinearLayout>

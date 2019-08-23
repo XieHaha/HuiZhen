@@ -106,7 +106,7 @@ public class SideBar extends View {
                     mPaint.setColor(ContextCompat.getColor(getContext(), R.color.color_373d4d));
                 }
                 if (BaseData.BASE_SEARCH_TAG.equals(textTag)) {
-                    canvas.drawBitmap(bitmap, xPos, startHeight, mPaint);
+                    canvas.drawBitmap(bitmap, xPos - BaseUtils.dp2px(mContext, 3), startHeight, mPaint);
                 }
                 else {
                     canvas.drawText(textTag, xPos, singleHeight * (i + 1) + startHeight, mPaint);
