@@ -152,6 +152,7 @@ public class AddInfoActivity extends BaseActivity {
                                 .setOnCancelClickListener(this::finish)
                                 .setEnterBtnTxt(R.string.txt_save)
                                 .setEnterSelect(true)
+                                .setDeleteVisible(View.VISIBLE)
                                 .setOnEnterClickListener(this::save)
                                 .show();
             return;

@@ -7,6 +7,7 @@ import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.yht.frame.R;
@@ -20,6 +21,7 @@ import com.yht.frame.widgets.dialog.listener.OnEnterClickListener;
 public class HintDialog extends Dialog implements OnClickListener {
     private Context context;
     private TextView tvEnter, tvCancel, tvTitle, tvContent;
+    private ImageView ivDelete;
     private View line;
     /**
      * 初始值
@@ -35,6 +37,7 @@ public class HintDialog extends Dialog implements OnClickListener {
     private boolean enterSelect = false;
     private boolean isShow = false;
     private boolean cancelAble = true;
+    private int showDeleteIcon;
 
     public HintDialog(Context context) {
         super(context, R.style.normal_dialog);
@@ -55,10 +58,12 @@ public class HintDialog extends Dialog implements OnClickListener {
         tvCancel = findViewById(R.id.dialog_simple_hint_cancel);
         tvTitle = findViewById(R.id.dialog_simple_hint_title);
         tvContent = findViewById(R.id.dialog_simple_hint_content);
+        ivDelete = findViewById(R.id.dialog_simple_hint_delete);
         line = findViewById(R.id.view_line);
         tvContent.setMovementMethod(ScrollingMovementMethod.getInstance());
         tvCancel.setOnClickListener(this);
         tvEnter.setOnClickListener(this);
+        ivDelete.setOnClickListener(this);
         setCanceledOnTouchOutside(cancelAble);
         setCancelable(cancelAble);
     }
@@ -75,6 +80,9 @@ public class HintDialog extends Dialog implements OnClickListener {
             if (onCancelClickListener != null) {
                 onCancelClickListener.onCancel();
             }
+            dismiss();
+        }
+        else if (v == ivDelete) {
             dismiss();
         }
     }
@@ -129,6 +137,14 @@ public class HintDialog extends Dialog implements OnClickListener {
     }
 
     /**
+     * 是否显示删除按钮
+     */
+    public HintDialog setDeleteVisible(int visible) {
+        showDeleteIcon = visible;
+        return this;
+    }
+
+    /**
      * 设置取消按钮的文本
      */
     public HintDialog setCancleBtnTxt(String str) {
@@ -159,6 +175,7 @@ public class HintDialog extends Dialog implements OnClickListener {
             tvContent.setText(contentString);
             tvEnter.setText(enterString);
             tvEnter.setSelected(enterSelect);
+            ivDelete.setVisibility(showDeleteIcon);
             if (cancelGone) {
                 tvCancel.setVisibility(View.GONE);
                 line.setVisibility(View.GONE);

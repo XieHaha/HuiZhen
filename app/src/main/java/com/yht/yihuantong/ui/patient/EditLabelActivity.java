@@ -388,6 +388,7 @@ public class EditLabelActivity extends BaseActivity
      */
     private void addLabel(String content) {
         if (TextUtils.isEmpty(content)) { return; }
+        setLabelHighLight(false);
         if (!isExist(content)) {
             //医生总标签数最多50个
             if (!allLabelList.contains(content)) {
@@ -431,6 +432,8 @@ public class EditLabelActivity extends BaseActivity
         for (TextView tag : textViewLabels) {
             String tempStr = tag.getText().toString();
             if (tempStr.equals(content)) {
+                textViewLabels.remove(tag);
+                textViewLabels.add(tag);
                 tag.bringToFront();
                 //让输入框在最后一个位置上
                 inputEditText.bringToFront();
@@ -508,6 +511,7 @@ public class EditLabelActivity extends BaseActivity
                                 .setOnCancelClickListener(this::finish)
                                 .setEnterBtnTxt(R.string.txt_save)
                                 .setEnterSelect(true)
+                                .setDeleteVisible(View.VISIBLE)
                                 .setOnEnterClickListener(this::savePatientLabel)
                                 .show();
             return;

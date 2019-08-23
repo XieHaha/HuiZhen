@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
@@ -17,16 +18,22 @@
         android:textColor="@color/color_a1a8b3"
         android:textSize="@dimen/text_13" />
 
-    <com.zhy.view.flowlayout.FlowLayout
-        android:id="@+id/selected_flow"
+    <com.yht.frame.widgets.scrollview.CustomHeightScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/color_ffffff"
-        android:paddingStart="14dp"
-        android:paddingEnd="14dp"
-        android:paddingBottom="10dp"
         android:layout_marginTop="10dp"
-        android:orientation="horizontal" />
+        app:customHeight="127dp">
+
+        <com.zhy.view.flowlayout.FlowLayout
+            android:id="@+id/selected_flow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_ffffff"
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp"
+            android:paddingBottom="10dp"
+            android:orientation="horizontal" />
+    </com.yht.frame.widgets.scrollview.CustomHeightScrollView>
 
     <ListView
         android:id="@+id/list_view"
