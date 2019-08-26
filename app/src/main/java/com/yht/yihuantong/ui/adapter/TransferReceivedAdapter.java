@@ -7,7 +7,7 @@ import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.yht.frame.data.BaseData;
-import com.yht.frame.data.bean.TransferBean;
+import com.yht.frame.data.bean.TransferDetailBean;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.yihuantong.R;
@@ -20,13 +20,13 @@ import java.util.List;
  * @date 19/6/5 14:25
  * @des 已接收转诊
  */
-public class TransferReceivedAdapter extends BaseQuickAdapter<TransferBean, BaseViewHolder> {
-    public TransferReceivedAdapter(int layoutResId, @Nullable List<TransferBean> data) {
+public class TransferReceivedAdapter extends BaseQuickAdapter<TransferDetailBean, BaseViewHolder> {
+    public TransferReceivedAdapter(int layoutResId, @Nullable List<TransferDetailBean> data) {
         super(layoutResId, data);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, TransferBean item) {
+    protected void convert(BaseViewHolder helper, TransferDetailBean item) {
         Glide.with(mContext)
              .load(FileUrlUtil.addTokenToUrl(item.getPhoto()))
              .apply(GlideHelper.getOptions(BaseUtils.dp2px(mContext, 4)))

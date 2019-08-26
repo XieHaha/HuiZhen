@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:fitsSystemWindows="true">
 
     <include
@@ -394,9 +396,11 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/layout_advice"
                 android:layout_width="match_parent"
                 android:orientation="vertical"
                 android:paddingTop="20dp"
+                android:paddingBottom="20dp"
                 android:layout_height="wrap_content">
 
                 <TextView
@@ -407,22 +411,11 @@
                     android:textStyle="bold"
                     android:text="@string/txt_consultation_advice" />
 
-                <TextView
-                    android:id="@+id/tv_consultation_advice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_16"
-                    android:textColor="@color/color_373d4d"
-                    android:layout_marginTop="12dp"
-                    tools:text="没钱">
-
-                </TextView>
-
-                <View
+                <com.yht.frame.widgets.recyclerview.FullListView
+                    android:id="@+id/list_view"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/app_hei_line"
-                    android:background="@color/color_ebedf0"
-                    android:layout_marginTop="20dp" />
+                    android:divider="@null"
+                    android:layout_height="wrap_content" />
 
             </LinearLayout>
         </LinearLayout>

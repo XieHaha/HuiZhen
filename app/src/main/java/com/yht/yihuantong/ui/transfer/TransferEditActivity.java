@@ -15,7 +15,7 @@ import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.bean.HospitalBean;
-import com.yht.frame.data.bean.TransferBean;
+import com.yht.frame.data.bean.TransferDetailBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
@@ -52,7 +52,7 @@ public class TransferEditActivity extends BaseActivity {
      * true 为变更接诊信息  false为接诊
      */
     private boolean isEditReceive;
-    private TransferBean transferBean;
+    private TransferDetailBean transferBean;
     /**
      * 接诊医院  预约就诊时间
      */
@@ -77,7 +77,7 @@ public class TransferEditActivity extends BaseActivity {
         super.initData(savedInstanceState);
         if (getIntent() != null) {
             isEditReceive = getIntent().getBooleanExtra(CommonData.KEY_RECEIVE_OR_EDIT_VISIT, false);
-            transferBean = (TransferBean)getIntent().getSerializableExtra(CommonData.KEY_TRANSFER_ORDER_BEAN);
+            transferBean = (TransferDetailBean)getIntent().getSerializableExtra(CommonData.KEY_TRANSFER_ORDER_BEAN);
             if (isEditReceive && transferBean != null) {
                 receiveHospital = transferBean.getTargetHospitalName();
                 reserveTime = transferBean.getAppointAt();

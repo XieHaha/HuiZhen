@@ -18,7 +18,7 @@ import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.bean.ReservationValidateBean;
-import com.yht.frame.data.bean.TransferBean;
+import com.yht.frame.data.bean.TransferDetailBean;
 import com.yht.frame.data.type.TransferOrderStatus;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
@@ -115,7 +115,7 @@ public class TransferInitiateDetailActivity extends BaseActivity
     /**
      * 订单 详情
      */
-    private TransferBean transferBean;
+    private TransferDetailBean transferBean;
     /**
      * 订单编号
      */
@@ -154,7 +154,7 @@ public class TransferInitiateDetailActivity extends BaseActivity
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         if (getIntent() != null) {
-            transferBean = (TransferBean)getIntent().getSerializableExtra(CommonData.KEY_TRANSFER_ORDER_BEAN);
+            transferBean = (TransferDetailBean)getIntent().getSerializableExtra(CommonData.KEY_TRANSFER_ORDER_BEAN);
             orderNo = getIntent().getStringExtra(CommonData.KEY_ORDER_ID);
             isOuterChain = getIntent().getBooleanExtra(CommonData.KEY_IS_OUTER_CHAIN, false);
         }
@@ -356,7 +356,7 @@ public class TransferInitiateDetailActivity extends BaseActivity
         switch (task) {
             case GET_TRANSFER_ORDER_DETAIL:
                 layoutHint.setVisibility(View.GONE);
-                transferBean = (TransferBean)response.getData();
+                transferBean = (TransferDetailBean)response.getData();
                 initDetailData();
                 break;
             case CANCEL_RESERVE_TRANSFER_ORDER:

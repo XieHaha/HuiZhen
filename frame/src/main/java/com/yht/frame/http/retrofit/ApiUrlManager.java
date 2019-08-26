@@ -31,9 +31,10 @@ import com.yht.frame.data.bean.QrCodeBean;
 import com.yht.frame.data.bean.ReceiverBean;
 import com.yht.frame.data.bean.ReceiverDoctorBean;
 import com.yht.frame.data.bean.RecentPatientBean;
+import com.yht.frame.data.bean.RemoteDetailBean;
 import com.yht.frame.data.bean.ReservationValidateBean;
 import com.yht.frame.data.bean.SelectCheckTypeBean;
-import com.yht.frame.data.bean.TransferBean;
+import com.yht.frame.data.bean.TransferDetailBean;
 import com.yht.frame.data.bean.VerifyCodeBean;
 import com.yht.frame.data.bean.VersionBean;
 import com.yht.frame.data.bean.WithDrawDetailBean;
@@ -605,7 +606,7 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @GET("order-transfer/initiate/list")
-    Observable<BaseResponse<List<TransferBean>>> getInitiateTransferOrderList(@Header("token") String token,
+    Observable<BaseResponse<List<TransferDetailBean>>> getInitiateTransferOrderList(@Header("token") String token,
             @QueryMap Map<String, Integer> info);
 
     /**
@@ -616,7 +617,7 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @GET("order-transfer/status/list")
-    Observable<BaseResponse<List<TransferBean>>> getTransferStatusOrderList(@Header("token") String token,
+    Observable<BaseResponse<List<TransferDetailBean>>> getTransferStatusOrderList(@Header("token") String token,
             @QueryMap Map<String, Integer> info);
 
     /**
@@ -627,7 +628,7 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @GET("order-transfer/detail/get")
-    Observable<BaseResponse<TransferBean>> getTransferOrderDetail(@Header("token") String token,
+    Observable<BaseResponse<TransferDetailBean>> getTransferOrderDetail(@Header("token") String token,
             @Query("orderNo") String info);
 
     /**
@@ -822,7 +823,7 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @POST("remote/query-detail")
-    Observable<BaseResponse<BaseListBean<LabelBean>>> getRemoteDetail(@Header("token") String token,
+    Observable<BaseResponse<RemoteDetailBean>> getRemoteDetail(@Header("token") String token,
             @Query("orderNo") String orderNo);
 
     /**

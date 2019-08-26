@@ -7,7 +7,7 @@ import java.io.Serializable;
  * @date 19/7/10 13:44
  * @des 转诊数据
  */
-public class TransferBean implements Serializable {
+public class TransferDetailBean implements Serializable {
     private static final long serialVersionUID = -4842399083649318736L;
     private int receiveStatus;
     private int patientAge;

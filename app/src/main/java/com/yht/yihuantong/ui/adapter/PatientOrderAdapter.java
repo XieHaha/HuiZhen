@@ -10,6 +10,7 @@ import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.yht.frame.data.bean.CheckTypeBean;
 import com.yht.frame.data.bean.PatientOrderBean;
+import com.yht.frame.data.bean.RemoteAdviceBean;
 import com.yht.frame.data.type.CheckTypeStatus;
 import com.yht.frame.data.type.PatientOrderStatus;
 import com.yht.yihuantong.R;
@@ -126,8 +127,44 @@ public class PatientOrderAdapter extends BaseMultiItemQuickAdapter<PatientOrderB
      * @param item
      */
     private void initRemoteData(BaseViewHolder helper, PatientOrderBean item) {
-        helper.setText(R.id.tv_remote_name, R.string.txt_remote_consultation)
-              .setImageResource(R.id.iv_remote_img, R.mipmap.ic_remote);
+        helper.setImageResource(R.id.iv_remote_img, R.mipmap.ic_remote)
+              .setText(R.id.tv_remote_name, R.string.txt_remote_consultation)
+              .setText(R.id.tv_initiate_doctor, item.getSourceDoctorName())
+              .setText(R.id.tv_initiate_depart, item.getSourceHospitalDepartmentName())
+              .setText(R.id.tv_initiate_hospital, item.getSourceHospitalName());
+        ArrayList<RemoteAdviceBean> list = item.getInvitationList();
+        StringBuilder consultationDoctor = new StringBuilder(), consultationDepart = new StringBuilder(), consultationHospital = new StringBuilder();
+        if (list != null && list.size() > 0) {
+            for (int i = 0; i < list.size(); i++) {
+                RemoteAdviceBean bean = list.get(i);
+                consultationDoctor.append(bean.getDoctorName());
+                consultationDepart.append(bean.getHospitalDepartmentName());
+                consultationHospital.append(bean.getHospitalName());
+                if (list.size() - 1 > i) {
+                    consultationDoctor.append(",");
+                    consultationDepart.append(",");
+                    consultationHospital.append(",");
+                }
+            }
+        }
+        helper.setText(R.id.tv_consultation_doctor, consultationDoctor.toString())
+              .setText(R.id.tv_consultation_depart, consultationDepart.toString())
+              .setText(R.id.tv_consultation_hospital, consultationHospital.toString());
+        //订单状态
+        int status = item.getStatus();
+        switch (status) {
+            case PATIENT_ORDER_INCOMPLETE:
+                helper.setImageResource(R.id.iv_status_in, R.mipmap.ic_tag_status_check_incomplete);
+                break;
+            case PATIENT_ORDER_COMPLETE:
+                helper.setImageResource(R.id.iv_status_in, R.mipmap.ic_tag_status_complete);
+                break;
+            case PATIENT_ORDER_CANCEL:
+                helper.setImageResource(R.id.iv_status_in, R.mipmap.ic_tag_status_cancel);
+                break;
+            default:
+                break;
+        }
     }
 
     /**
@@ -170,9 +207,6 @@ public class PatientOrderAdapter extends BaseMultiItemQuickAdapter<PatientOrderB
                 layout.addView(view);
             }
             if (reportList.size() > 0) {
-                //                helper.setText(R.id.tv_check_report,
-                //                               String.format(mContext.getString(R.string.txt_report_num), reportList.size(),
-                //                                             list.size()));
                 helper.setGone(R.id.layout_check_report_root, true);
                 addReportView(helper, reportList);
             }

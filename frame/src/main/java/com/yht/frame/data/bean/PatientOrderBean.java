@@ -27,6 +27,7 @@ public class PatientOrderBean implements MultiItemEntity {
      */
     private int type;
     private int status;
+    private long endAt;
     private String createAt;
     private String time;
     private String orderNo;
@@ -36,7 +37,18 @@ public class PatientOrderBean implements MultiItemEntity {
     private String targetHospitalName;
     private String targetHospitalDepartmentName;
     private String targetDoctorName;
+    /**
+     * 病情描述
+     */
+    private String descIll;
+    /**
+     * 预约服务检查项
+     */
     private ArrayList<CheckTypeBean> trans;
+    /**
+     * 会诊参加者
+     */
+    private ArrayList<RemoteAdviceBean> invitationList;
 
     public String getTime() {
         return time;
@@ -132,6 +144,30 @@ public class PatientOrderBean implements MultiItemEntity {
 
     public void setTrans(ArrayList<CheckTypeBean> trans) {
         this.trans = trans;
+    }
+
+    public long getEndAt() {
+        return endAt;
+    }
+
+    public void setEndAt(long endAt) {
+        this.endAt = endAt;
+    }
+
+    public String getDescIll() {
+        return descIll;
+    }
+
+    public void setDescIll(String descIll) {
+        this.descIll = descIll;
+    }
+
+    public ArrayList<RemoteAdviceBean> getInvitationList() {
+        return invitationList;
+    }
+
+    public void setInvitationList(ArrayList<RemoteAdviceBean> invitationList) {
+        this.invitationList = invitationList;
     }
 
     @Override

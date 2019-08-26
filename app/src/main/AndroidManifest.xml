@@ -178,7 +178,8 @@
             android:name=".ui.login.AccountDisableActivity"
             android:screenOrientation="portrait"
             android:label=""
-            android:windowSoftInputMode="adjustPan|stateHidden" />
+            android:windowSoftInputMode="adjustPan|stateHidden"
+            android:launchMode="singleTask" />
         <activity
             android:name=".ui.check.ServiceHistoryActivity"
             android:screenOrientation="portrait"

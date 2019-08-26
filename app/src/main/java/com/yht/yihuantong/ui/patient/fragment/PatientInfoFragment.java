@@ -221,7 +221,7 @@ public class PatientInfoFragment extends BaseFragment
             TagAdapter<String> tagAdapter = new TagAdapter<String>(patientBean.getTagList()) {
                 @Override
                 public View getView(FlowLayout parent, int position, String s) {
-                    return createNewLabel(s, flowLayout, false);
+                    return createNewLabel(s, flowLayout);
                 }
             };
             flowLayout.setAdapter(tagAdapter);
@@ -237,11 +237,10 @@ public class PatientInfoFragment extends BaseFragment
     /**
      * 创建一个正常状态的标签
      */
-    private TextView createNewLabel(String label, ViewGroup parent, boolean selected) {
+    private TextView createNewLabel(String label, ViewGroup parent) {
         TextView textView = (TextView)getLayoutInflater().inflate(R.layout.item_text_label, parent, false);
         textView.setBackgroundResource(R.drawable.corner28_stroke1_c5c8cc);
         textView.setTextColor(ContextCompat.getColor(getContext(), R.color.color_6a6f80));
-        textView.setSelected(selected);
         //设置边界
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                                                                          ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -272,23 +271,23 @@ public class PatientInfoFragment extends BaseFragment
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        Intent intent = null;
+        Intent intent;
         PatientOrderBean bean = patientOrderBeans.get(position);
         switch (bean.getItemType()) {
             case PatientOrderBean.CHECK:
                 intent = new Intent(getContext(), ServiceDetailActivity.class);
-                intent.putExtra(CommonData.KEY_ORDER_ID, bean.getOrderNo());
+                break;
+            case PatientOrderBean.TRANSFER:
+                intent = new Intent(getContext(), TransferDetailActivity.class);
                 break;
             case PatientOrderBean.REMOTE:
                 intent = new Intent(getContext(), RemoteDetailActivity.class);
                 break;
-            case PatientOrderBean.TRANSFER:
-                intent = new Intent(getContext(), TransferDetailActivity.class);
-                intent.putExtra(CommonData.KEY_ORDER_ID, bean.getOrderNo());
-                break;
             default:
+                intent = new Intent(getContext(), ServiceDetailActivity.class);
                 break;
         }
+        intent.putExtra(CommonData.KEY_ORDER_ID, bean.getOrderNo());
         startActivity(intent);
     }
 

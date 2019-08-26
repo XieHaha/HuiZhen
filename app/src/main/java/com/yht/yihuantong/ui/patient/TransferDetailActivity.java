@@ -10,7 +10,7 @@ import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
-import com.yht.frame.data.bean.TransferBean;
+import com.yht.frame.data.bean.TransferDetailBean;
 import com.yht.frame.data.type.TransferOrderStatus;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
@@ -67,7 +67,7 @@ public class TransferDetailActivity extends BaseActivity implements TransferOrde
     /**
      * 订单
      */
-    private TransferBean transferBean;
+    private TransferDetailBean transferBean;
     /**
      * 订单编号
      */
@@ -159,7 +159,7 @@ public class TransferDetailActivity extends BaseActivity implements TransferOrde
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
         if (task == Tasks.GET_TRANSFER_ORDER_DETAIL) {
-            transferBean = (TransferBean)response.getData();
+            transferBean = (TransferDetailBean)response.getData();
             initDetailData();
         }
     }

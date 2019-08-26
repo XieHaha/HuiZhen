@@ -6,7 +6,7 @@ import java.util.ArrayList;
 /**
  * @author 顿顿
  * @date 19/7/11 15:26
- * @des
+ * @des 预约服务详情
  */
 public class CheckDetailBean implements Serializable {
     private static final long serialVersionUID = 3945624210973553821L;

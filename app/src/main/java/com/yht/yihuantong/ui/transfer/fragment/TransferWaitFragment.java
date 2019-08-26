@@ -15,7 +15,7 @@ import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
-import com.yht.frame.data.bean.TransferBean;
+import com.yht.frame.data.bean.TransferDetailBean;
 import com.yht.frame.data.type.TransferOrderStatus;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseFragment;
@@ -51,7 +51,7 @@ public class TransferWaitFragment extends BaseFragment
     /**
      * 待处理转诊患者订单
      */
-    private List<TransferBean> transferBeans = new ArrayList<>();
+    private List<TransferDetailBean> transferBeans = new ArrayList<>();
     /**
      * 页码
      */
@@ -128,7 +128,7 @@ public class TransferWaitFragment extends BaseFragment
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
         if (task == Tasks.GET_TRANSFER_STATUS_ORDER_LIST) {
-            List<TransferBean> list = (List<TransferBean>)response.getData();
+            List<TransferDetailBean> list = (List<TransferDetailBean>)response.getData();
             if (page == BaseData.BASE_ONE) {
                 transferBeans.clear();
             }

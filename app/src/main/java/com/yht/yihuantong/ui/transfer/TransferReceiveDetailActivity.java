@@ -19,7 +19,7 @@ import com.yht.frame.data.BaseNetConfig;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
-import com.yht.frame.data.bean.TransferBean;
+import com.yht.frame.data.bean.TransferDetailBean;
 import com.yht.frame.data.type.TransferOrderStatus;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
@@ -122,7 +122,7 @@ public class TransferReceiveDetailActivity extends BaseActivity
     TextView tvTransferDescription;
     @BindView(R.id.layout_transfer_description)
     RelativeLayout layoutTransferDescription;
-    private TransferBean transferBean;
+    private TransferDetailBean transferBean;
     private String orderNo;
     /**
      * 拒绝转诊原因
@@ -371,7 +371,7 @@ public class TransferReceiveDetailActivity extends BaseActivity
         switch (task) {
             case GET_TRANSFER_ORDER_DETAIL:
                 layoutHint.setVisibility(View.GONE);
-                transferBean = (TransferBean)response.getData();
+                transferBean = (TransferDetailBean)response.getData();
                 initPage();
                 initDetailData();
                 break;

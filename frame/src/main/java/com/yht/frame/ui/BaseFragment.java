@@ -276,6 +276,15 @@ public abstract class BaseFragment extends Fragment
         getActivity().sendBroadcast(intent);
     }
 
+    /**
+     * 账号禁用
+     */
+    private void accountError() {
+        Intent intent = new Intent(BaseData.BASE_ACCOUNT_ERROR_ACTION);
+        intent.setPackage(getActivity().getPackageName());
+        getActivity().sendBroadcast(intent);
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -338,8 +347,8 @@ public abstract class BaseFragment extends Fragment
                  response.getCode() == BaseNetConfig.REQUEST_SERVER_ERROR) {
             ToastUtil.toast(getContext(), response.getMsg());
         }
-        else {
-            //不提示
+        else if (response.getCode() == BaseNetConfig.REQUEST_ACCOUNT_ERROR) {
+            accountError();
         }
     }
 

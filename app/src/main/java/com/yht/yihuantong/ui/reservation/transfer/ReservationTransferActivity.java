@@ -18,7 +18,7 @@ import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.bean.PatientBean;
 import com.yht.frame.data.bean.ReserveTransferBean;
-import com.yht.frame.data.bean.TransferBean;
+import com.yht.frame.data.bean.TransferDetailBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.widgets.dialog.HintDialog;
@@ -88,7 +88,7 @@ public class ReservationTransferActivity extends BaseActivity implements OnTrans
     /**
      * 重新转诊 数据回填
      */
-    private TransferBean transferBean;
+    private TransferDetailBean transferBean;
     /**
      * 当前预约转诊数据
      */
@@ -116,7 +116,7 @@ public class ReservationTransferActivity extends BaseActivity implements OnTrans
             //患者详情页面回传数据
             patientBean = (PatientBean)getIntent().getSerializableExtra(CommonData.KEY_PATIENT_BEAN);
             //转诊详情页面回传数据(重新转诊)
-            transferBean = (TransferBean)getIntent().getSerializableExtra(CommonData.KEY_TRANSFER_ORDER_BEAN);
+            transferBean = (TransferDetailBean)getIntent().getSerializableExtra(CommonData.KEY_TRANSFER_ORDER_BEAN);
         }
         initTitlePage();
     }

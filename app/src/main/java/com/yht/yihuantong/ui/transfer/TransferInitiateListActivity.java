@@ -17,7 +17,7 @@ import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.bean.ReservationValidateBean;
-import com.yht.frame.data.bean.TransferBean;
+import com.yht.frame.data.bean.TransferDetailBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
@@ -63,7 +63,7 @@ public class TransferInitiateListActivity extends BaseActivity
     /**
      * 我发起的转诊列表
      */
-    private List<TransferBean> transferList = new ArrayList<>();
+    private List<TransferDetailBean> transferList = new ArrayList<>();
     /**
      * 时间title
      */
@@ -167,7 +167,7 @@ public class TransferInitiateListActivity extends BaseActivity
      */
     private void sortTransferData() {
         titleBars.clear();
-        for (TransferBean bean : transferList) {
+        for (TransferDetailBean bean : transferList) {
             long time = BaseUtils.date2TimeStamp(bean.getTransferDate(), BaseUtils.YYYY_MM_DD_HH_MM);
             titleBars.add(BaseUtils.formatDate(time, BaseUtils.YYYY_MM_DD));
         }
@@ -220,7 +220,7 @@ public class TransferInitiateListActivity extends BaseActivity
             case GET_INITIATE_TRANSFER_ORDER_LIST:
                 layoutReserveTransfer.setVisibility(View.VISIBLE);
                 layoutNone.setVisibility(View.GONE);
-                List<TransferBean> list = (List<TransferBean>)response.getData();
+                List<TransferDetailBean> list = (List<TransferDetailBean>)response.getData();
                 if (page == BaseData.BASE_ONE) {
                     transferList.clear();
                 }

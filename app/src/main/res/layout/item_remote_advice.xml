@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="12dp"
+    android:paddingBottom="12dp">
+
+    <ImageView
+        android:id="@+id/iv_head_img"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:src="@mipmap/ic_default_header_r" />
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="@dimen/text_16"
+        android:textColor="@color/color_373d4d"
+        android:layout_marginStart="12dp"
+        android:layout_toEndOf="@id/iv_head_img"
+        tools:text="姓名" />
+
+    <TextView
+        android:id="@+id/tv_hospital_and_depart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_13"
+        android:textColor="@color/color_373d4d"
+        android:layout_marginStart="12dp"
+        android:layout_below="@id/tv_name"
+        android:layout_marginTop="6dp"
+        android:layout_toEndOf="@id/iv_head_img"
+        tools:text="医院科室" />
+
+    <com.yht.frame.widgets.textview.JustifiedTextView
+        android:id="@+id/tv_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:lineSpacingMultiplier="1.3"
+        android:textSize="@dimen/text_16"
+        android:textColor="@color/color_373d4d"
+        android:layout_below="@id/iv_head_img"
+        android:layout_marginTop="10dp"
+        tools:text="会诊意见" />
+
+
+</RelativeLayout>
