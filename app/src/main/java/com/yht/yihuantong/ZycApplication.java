@@ -151,7 +151,9 @@ public class ZycApplication extends LitePalApplication {
      * 参数3:Push推送业务的secret
      */
     private void initUMeng() {
-        UMConfigure.init(this, UMConfigure.DEVICE_TYPE_PHONE, null);
+        if (!debugMode) {
+            UMConfigure.init(this, UMConfigure.DEVICE_TYPE_PHONE, null);
+        }
     }
 
     public LoginBean getLoginBean() {
