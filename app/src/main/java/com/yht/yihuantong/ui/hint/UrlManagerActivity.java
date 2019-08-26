@@ -11,7 +11,9 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.yht.frame.data.CommonData;
 import com.yht.frame.ui.BaseActivity;
+import com.yht.frame.utils.SharePreferenceUtil;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ZycApplication;
 
@@ -47,6 +49,7 @@ public class UrlManagerActivity extends BaseActivity implements AdapterView.OnIt
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
         urls.add("https://doctor-pre.med-value.com/");
+        urls.add("http://doctor-t.med-value.com/api/");
         urls.add("http://patient-t.med-value.com/api/");
         urls.add("http://192.168.0.126:7071/");
         adapter = new MyAdapter();
@@ -68,7 +71,8 @@ public class UrlManagerActivity extends BaseActivity implements AdapterView.OnIt
     }
 
     private void update(String baseUrl) {
-        ZycApplication.getInstance().setBaseUrl(baseUrl);
+        new SharePreferenceUtil(this).putAlwaysString(CommonData.KEY_BASE_URL, baseUrl);
+        ZycApplication.getInstance().updateBaseUrl(baseUrl);
         finish();
     }
 

@@ -38,6 +38,7 @@ import com.yht.yihuantong.ZycApplication;
 import com.yht.yihuantong.ui.WebViewActivity;
 import com.yht.yihuantong.ui.auth.AuthDoctorActivity;
 import com.yht.yihuantong.ui.dialog.UpdateDialog;
+import com.yht.yihuantong.ui.hint.UrlManagerActivity;
 import com.yht.yihuantong.ui.main.MainActivity;
 import com.yht.yihuantong.version.presenter.VersionPresenter;
 
@@ -243,11 +244,13 @@ public class LoginOptionsActivity extends BaseActivity
                 startActivityForResult(intent, REQUEST_CODE_LOGIN_STATUS);
                 break;
             case R.id.url:
-                //                num++;
-                //                if (num == 5) {
-                //                    startActivity(new Intent(this, UrlManagerActivity.class));
-                //                    num = 0;
-                //                }
+                if (ZycApplication.getInstance().debugMode) {
+                    num++;
+                    if (num == 5) {
+                        startActivity(new Intent(this, UrlManagerActivity.class));
+                        num = 0;
+                    }
+                }
                 break;
             default:
                 break;

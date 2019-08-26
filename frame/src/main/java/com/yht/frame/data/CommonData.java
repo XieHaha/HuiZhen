@@ -21,6 +21,10 @@ public interface CommonData {
      */
     String KEY_INTENT_BOOLEAN = "key_intent_boolean";
     /**
+     * 自定义url
+     */
+    String KEY_BASE_URL = "key_base_url";
+    /**
      * 环信登录状态
      */
     String KEY_EASE_LOGIN_STATUS = "key_ease_login_status";

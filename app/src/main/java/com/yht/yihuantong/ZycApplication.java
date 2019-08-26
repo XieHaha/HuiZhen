@@ -54,7 +54,10 @@ public class ZycApplication extends LitePalApplication {
     /**
      * 调试模式
      */
-    private final boolean debugMode = true;
+    public final boolean debugMode = true;
+    /**
+     * baseUrl
+     */
     private String baseUrl;
 
     @Override
@@ -209,7 +212,14 @@ public class ZycApplication extends LitePalApplication {
 
     public void setBaseUrl(String baseUrl) {
         this.baseUrl = baseUrl;
-        //        RetrofitManager.getInstance().updateBaseUrl(baseUrl);
+    }
+
+    /**
+     * 动态更新url
+     */
+    public void updateBaseUrl(String baseUrl) {
+        this.baseUrl = baseUrl;
+        RetrofitManager.getInstance().updateBaseUrl(baseUrl);
     }
 
     /**

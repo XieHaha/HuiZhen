@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.view.WindowManager;
 
 import com.hyphenate.chat.EMClient;
@@ -11,7 +12,9 @@ import com.yht.frame.data.CommonData;
 import com.yht.frame.data.type.DocAuthStatus;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.HuiZhenLog;
+import com.yht.yihuantong.BuildConfig;
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.ZycApplication;
 import com.yht.yihuantong.ui.auth.AuthDoctorActivity;
 import com.yht.yihuantong.ui.login.LoginOptionsActivity;
 import com.yht.yihuantong.ui.main.MainActivity;
@@ -62,7 +65,7 @@ public class SplashActivity extends BaseActivity implements DocAuthStatus {
                 HuiZhenLog.e(TAG, getString(R.string.txt_update_ease_nick_fail));
             }
         }
-//        hideBottomUIMenu();
+        //        hideBottomUIMenu();
         try {
             GifDrawable gifDrawable = new GifDrawable(getResources(), R.mipmap.pic_splash_gif);
             initScheduledThread(gifDrawable.getDuration());
@@ -70,6 +73,17 @@ public class SplashActivity extends BaseActivity implements DocAuthStatus {
         }
         catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void initData(@NonNull Bundle savedInstanceState) {
+        super.initData(savedInstanceState);
+        if (ZycApplication.getInstance().debugMode) {
+            String url = sharePreferenceUtil.getAlwaysString(CommonData.KEY_BASE_URL);
+            if (!TextUtils.isEmpty(url) && !TextUtils.equals(url, BuildConfig.BASE_BASIC_URL)) {
+                ZycApplication.getInstance().updateBaseUrl(url);
+            }
         }
     }
 

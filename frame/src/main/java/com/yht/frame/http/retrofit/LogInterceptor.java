@@ -50,7 +50,7 @@ public class LogInterceptor implements Interceptor {
         boolean hasRequestBody = requestBody != null;
         Connection connection = chain.connection();
         Protocol protocol = connection != null ? connection.protocol() : Protocol.HTTP_1_1;
-        //        request = initNewRequest(request);
+        request = initNewRequest(request);
         HuiZhenLog.i(TAG, "请求开始-->" + request.method() + ' ' + request.url() + ' ' + protocol);
         if (!hasRequestBody) {
             HuiZhenLog.i(TAG, "--> END " + request.method());
@@ -155,10 +155,10 @@ public class LogInterceptor implements Interceptor {
     }
 
     /**
-     * @return
+     * 拦截请求URL
      */
     private Request initNewRequest(Request request) {
-        if (TextUtils.isEmpty(baseUrl) || TextUtils.isEmpty(newBaseUrl) || TextUtils.equals(baseUrl, newBaseUrl)) {
+        if (TextUtils.isEmpty(newBaseUrl) || TextUtils.equals(baseUrl, newBaseUrl)) {
             return request;
         }
         String nowRequestUrl = request.url().toString();
