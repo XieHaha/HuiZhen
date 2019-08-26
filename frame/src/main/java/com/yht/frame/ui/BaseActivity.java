@@ -312,6 +312,15 @@ public abstract class BaseActivity extends RxAppCompatActivity
         sendBroadcast(intent);
     }
 
+    /**
+     * 账号禁用
+     */
+    private void accountError() {
+        Intent intent = new Intent(BaseData.BASE_ACCOUNT_ERROR_ACTION);
+        intent.setPackage(getPackageName());
+        sendBroadcast(intent);
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -379,6 +388,9 @@ public abstract class BaseActivity extends RxAppCompatActivity
         else if (response.getCode() == BaseNetConfig.REQUEST_OTHER_ERROR ||
                  response.getCode() == BaseNetConfig.REQUEST_SERVER_ERROR) {
             ToastUtil.toast(this, response.getMsg());
+        }
+        else if (response.getCode() == BaseNetConfig.REQUEST_ACCOUNT_ERROR) {
+            accountError();
         }
     }
 

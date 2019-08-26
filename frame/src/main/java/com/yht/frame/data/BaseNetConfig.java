@@ -18,6 +18,10 @@ public interface BaseNetConfig {
      */
     int REQUEST_TOKEN_ERROR = 4001;
     /**
+     * 账号禁用
+     */
+    int REQUEST_ACCOUNT_ERROR = 4005;
+    /**
      * 服务器
      */
     int REQUEST_SERVER_ERROR = 4010;

@@ -10,7 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.yht.yihuantong.BuildConfig;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ZycApplication;
-import com.yht.yihuantong.scheme.JumpUtils;
+import com.yht.yihuantong.scheme.SmsJumpUtils;
 import com.yht.yihuantong.scheme.ViewUtils;
 import com.yht.yihuantong.ui.login.LoginOptionsActivity;
 import com.yht.yihuantong.ui.main.MainActivity;
@@ -32,8 +32,8 @@ public class IntentParseActivity extends AppCompatActivity {
         Uri uri = intent.getData();
         try {
             if (Intent.ACTION_VIEW.equals(action) && uri != null) {
-                Intent resultIntent = JumpUtils.parseIntent(this, uri.toString(), null,
-                                                            ZycApplication.getInstance().getLoginBean());
+                Intent resultIntent = SmsJumpUtils.parseIntent(this, uri.toString(), null,
+                                                               ZycApplication.getInstance().getLoginBean());
                 if (resultIntent == null) {
                     finish();
                     return;

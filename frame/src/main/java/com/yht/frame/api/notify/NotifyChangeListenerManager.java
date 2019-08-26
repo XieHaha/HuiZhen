@@ -49,6 +49,10 @@ public class NotifyChangeListenerManager {
         /**
          * 消息
          */
+        private List<IChange<String>> mRegisterSystemMessageChangeListener = new CopyOnWriteArrayList<>();
+        /**
+         * 单条消息消息
+         */
         private List<IChange<String>> mRegisterSingleMessageChangeListener = new CopyOnWriteArrayList<>();
         /**
          * 服务包订单
@@ -136,6 +140,20 @@ public class NotifyChangeListenerManager {
             }
             else {
                 mRegisterMessageChangeListener.remove(listener);
+            }
+        }
+
+        @Override
+        public void registerSystemMessageStatusChangeListener(@NonNull IChange<String> listener,
+                @NonNull RegisterType registerType) {
+            if (listener == null) {
+                return;
+            }
+            if (RegisterType.REGISTER == registerType) {
+                mRegisterSystemMessageChangeListener.add(listener);
+            }
+            else {
+                mRegisterSystemMessageChangeListener.remove(listener);
             }
         }
 
@@ -294,7 +312,28 @@ public class NotifyChangeListenerManager {
         }
 
         /**
-         * 消息
+         * 系统消息
+         *
+         * @param data
+         */
+        public void notifySystemMessageStatusChange(final String data) {
+            synchronized (mRegisterSystemMessageChangeListener) {
+                for (int i = 0, size = mRegisterSystemMessageChangeListener.size(); i < size; i++) {
+                    try {
+                        final IChange<String> change = mRegisterSystemMessageChangeListener.get(i);
+                        if (null != change) {
+                            change.onChange(data);
+                        }
+                    }
+                    catch (Exception e) {
+                        HuiZhenLog.w(TAG, "notifyMessageChange error", e);
+                    }
+                }
+            }
+        }
+
+        /**
+         * 单条消息
          *
          * @param data
          */

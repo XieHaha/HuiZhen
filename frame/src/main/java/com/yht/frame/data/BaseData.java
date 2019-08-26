@@ -85,11 +85,11 @@ public interface BaseData {
     /**
      * 医生 标志位
      */
-    String BASE_DOCTOR_TAG = "1";
+    String BASE_STRING_ONE_TAG = "1";
     /**
      * 患者 标志位
      */
-    String BASE_PATIENT_TAG = "2";
+    String BASE_STRING_TWO_TAG = "2";
     /**
      * 医生code 第一个字母
      */
@@ -122,6 +122,10 @@ public interface BaseData {
      * token失效
      */
     String BASE_TOKEN_ERROR_ACTION = "zyc.doctor.token.action";
+    /**
+     * 账号禁用
+     */
+    String BASE_ACCOUNT_ERROR_ACTION = "zyc.doctor.account.action";
     /**
      * 环信消息通知点击action
      */

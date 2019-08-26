@@ -201,8 +201,6 @@ public class ReservationTransferActivity extends BaseActivity implements OnTrans
 
     /**
      * 订单数据回填
-     *
-     * @param bean
      */
     private void initTransferOrderData(PatientBean bean) {
         //数据回填 患者信息
@@ -373,7 +371,7 @@ public class ReservationTransferActivity extends BaseActivity implements OnTrans
                 break;
             case R.id.public_title_bar_more:
                 new HintDialog(this).setPhone(getString(R.string.txt_contact_service),
-                                              getString(R.string.txt_contact_service_phone),false)
+                                              getString(R.string.txt_contact_service_phone), false)
                                     .setOnEnterClickListener(
                                             () -> callPhone(getString(R.string.txt_contact_service_phone)))
                                     .show();
@@ -425,6 +423,7 @@ public class ReservationTransferActivity extends BaseActivity implements OnTrans
             case VERIFY_PATIENT:
                 PatientBean bean = (PatientBean)response.getData();
                 initTransferOrderData(bean);
+                tabReservationLicenseView();
                 break;
             default:
                 break;

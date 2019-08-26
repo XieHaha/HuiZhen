@@ -200,7 +200,7 @@ public class TransferMaterialFragment extends BaseFragment implements View.OnFoc
      */
     private void editStatus(boolean mode) {
         //老用户未绑定手机号可以修改
-        if (!mode && reverseTransferBean.getIsBind() == BaseData.BASE_ZERO) {
+        if (!mode && !BaseData.BASE_STRING_ONE_TAG.equals(reverseTransferBean.getIsBind())) {
             etPhone.setFocusable(true);
             etPhone.setFocusableInTouchMode(true);
         }

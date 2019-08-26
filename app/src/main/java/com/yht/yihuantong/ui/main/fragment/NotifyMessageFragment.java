@@ -71,13 +71,11 @@ public class NotifyMessageFragment extends BaseFragment
         //获取所有消息
         getAppMessageList();
     };
+    //点击通知栏  单条消息已读
     /**
      * 单条消息  通知栏点击
      */
-    private IChange<String> singleMessage = data -> {
-        //点击通知栏  单条消息已读
-        updateAppUnReadMessageByNotify(data);
-    };
+    private IChange<String> singleMessage = this::updateAppUnReadMessageByNotify;
 
     @Override
     public int getLayoutID() {
@@ -105,7 +103,7 @@ public class NotifyMessageFragment extends BaseFragment
     public void initListener() {
         super.initListener();
         //注册消息状态监听
-        iNotifyChangeListenerServer.registerMessageStatusChangeListener(messageUpdate, RegisterType.REGISTER);
+        iNotifyChangeListenerServer.registerSystemMessageStatusChangeListener(messageUpdate, RegisterType.REGISTER);
         iNotifyChangeListenerServer.registerSingleMessageStatusChangeListener(singleMessage, RegisterType.REGISTER);
     }
 
@@ -282,7 +280,7 @@ public class NotifyMessageFragment extends BaseFragment
     @Override
     public void onDestroy() {
         super.onDestroy();
-        iNotifyChangeListenerServer.registerMessageStatusChangeListener(messageUpdate, RegisterType.UNREGISTER);
+        iNotifyChangeListenerServer.registerSystemMessageStatusChangeListener(messageUpdate, RegisterType.UNREGISTER);
         iNotifyChangeListenerServer.registerSingleMessageStatusChangeListener(singleMessage, RegisterType.UNREGISTER);
     }
 

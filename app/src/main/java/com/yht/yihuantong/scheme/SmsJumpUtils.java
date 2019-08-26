@@ -21,7 +21,7 @@ import com.yht.yihuantong.ui.transfer.TransferReceiveDetailActivity;
  * Email: lovejjfg@gmail.com
  */
 @SuppressWarnings({ "WeakerAccess", "unused" })
-public class JumpUtils implements MessageType {
+public class SmsJumpUtils implements MessageType {
     private static final String TAG = "ZYC->OUTER";
 
     public static boolean isKnownSchemes(String url) {

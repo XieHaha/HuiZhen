@@ -94,4 +94,32 @@ public interface MessageType {
      * 中台创建医生，推送给医生
      */
     String MESSAGE_ACCOUNT_CREATE = "G003";
+    /**
+     * 医院控制后台管理员拒绝添加医生为直属医生
+     */
+    String MESSAGE_DIRECTLY_ACCOUNT_REJECT = "G004";
+    /**
+     * 医院控制后台管理员添加医生为直属医生
+     */
+    String MESSAGE_DIRECTLY_ACCOUNT_CREATE = "G005";
+    /**
+     * 医院控制后台管理员添加医生为合作医生
+     */
+    String MESSAGE_COOPERATE_ACCOUNT_CREATE = "G006";
+    /**
+     * 医院控制后台管理员拒绝添加医生为合作医生
+     */
+    String MESSAGE_COOPERATE_ACCOUNT_REJECT = "G007";
+    /**
+     * 医生A扫描医生B二维码，点击【确认添加】按钮成功，好友关系创建成功后，给医生B推送App通知
+     */
+    String MESSAGE_DOCTOR_ADD_SUCCESS = "G008";
+    /**
+     * XXX通过扫码成为您的患者
+     */
+    String MESSAGE_PATIENT_ADD_SUCCESS = "G009";
+    /**
+     * 账号禁用
+     */
+    String MESSAGE_ACCOUNT_DISABLE = "Z003";
 }

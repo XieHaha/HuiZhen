@@ -200,7 +200,7 @@ public class ServiceMaterialFragment extends BaseFragment implements View.OnFocu
      */
     private void editStatus(boolean mode) {
         //老用户未绑定手机号可以修改
-        if (!mode && reserveCheckBean.getIsBind() == BaseData.BASE_ZERO) {
+        if (!mode && !BaseData.BASE_STRING_ONE_TAG.equals(reserveCheckBean.getIsBind())) {
             etPhone.setFocusable(true);
             etPhone.setFocusableInTouchMode(true);
         }

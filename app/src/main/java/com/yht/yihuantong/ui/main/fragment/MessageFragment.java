@@ -26,7 +26,6 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.yht.frame.api.ApiManager;
 import com.yht.frame.api.notify.IChange;
-import com.yht.frame.api.notify.NotifyChangeListenerManager;
 import com.yht.frame.api.notify.RegisterType;
 import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
@@ -225,7 +224,7 @@ public class MessageFragment extends BaseFragment
     }
 
     /**
-     * 未读消息
+     * IM  未读消息
      */
     public void updateUnReadCount() {
         int msgUnReadCount = EMClient.getInstance().chatManager().getUnreadMessageCount();
@@ -236,7 +235,6 @@ public class MessageFragment extends BaseFragment
             ivMessageDot.setVisibility(View.INVISIBLE);
         }
         sharePreferenceUtil.putInt(CommonData.KEY_EASE_MESSAGE_UNREAD_STATUS, msgUnReadCount);
-        NotifyChangeListenerManager.getInstance().notifyMessageStatusChange("");
     }
 
     /**

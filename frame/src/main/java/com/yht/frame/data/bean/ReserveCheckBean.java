@@ -14,7 +14,7 @@ public class ReserveCheckBean implements Serializable {
     private int age;
     private int isPregnancy;
     private int sex;
-    private int isBind;
+    private String isBind;
     private String allergyHistory;
     private String confirmPhoto;
     private String familyHistory;
@@ -51,11 +51,11 @@ public class ReserveCheckBean implements Serializable {
         this.isPregnancy = isPregnancy;
     }
 
-    public int getIsBind() {
+    public String getIsBind() {
         return isBind;
     }
 
-    public void setIsBind(int isBind) {
+    public void setIsBind(String isBind) {
         this.isBind = isBind;
     }
 

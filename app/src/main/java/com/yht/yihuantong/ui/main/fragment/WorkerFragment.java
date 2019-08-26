@@ -472,7 +472,7 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
                         String value = uri.getQueryParameter("p");
                         if (!TextUtils.isEmpty(value) && !TextUtils.isEmpty(mode)) {
                             //1为医生  2为患者
-                            if (BASE_DOCTOR_TAG.equals(mode)) {
+                            if (BASE_STRING_ONE_TAG.equals(mode)) {
                                 getDoctorByQrId(value);
                             }
                             else {

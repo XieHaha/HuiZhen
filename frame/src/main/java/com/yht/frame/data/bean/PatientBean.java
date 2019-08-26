@@ -16,7 +16,7 @@ public class PatientBean extends DataSupport implements Serializable, MultiItemE
     private static final long serialVersionUID = -8620697034094662215L;
     private int age;
     private int sex;
-    private int isBind;
+    private String isBind;
     private String code;
     private String name;
     private String mobile;
@@ -95,11 +95,11 @@ public class PatientBean extends DataSupport implements Serializable, MultiItemE
         this.sex = sex;
     }
 
-    public int getIsBind() {
+    public String getIsBind() {
         return isBind;
     }
 
-    public void setIsBind(int isBind) {
+    public void setIsBind(String isBind) {
         this.isBind = isBind;
     }
 

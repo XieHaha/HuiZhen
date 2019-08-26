@@ -338,7 +338,7 @@ public class ServiceIdentifyFragment extends BaseFragment
                 if (uri != null && !uri.isOpaque()) {
                     String mode = uri.getQueryParameter("t");
                     String value = uri.getQueryParameter("p");
-                    if (!TextUtils.isEmpty(value) && BASE_PATIENT_TAG.equals(mode)) {
+                    if (!TextUtils.isEmpty(value) && BASE_STRING_TWO_TAG.equals(mode)) {
                         getPatientByQrId(value);
                     }
                     else {

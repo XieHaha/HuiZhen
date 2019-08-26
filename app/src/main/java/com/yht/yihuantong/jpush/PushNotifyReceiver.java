@@ -17,6 +17,7 @@ import com.yht.yihuantong.ui.auth.AuthDoctorActivity;
 import com.yht.yihuantong.ui.check.ServiceDetailActivity;
 import com.yht.yihuantong.ui.login.LoginOptionsActivity;
 import com.yht.yihuantong.ui.main.MainActivity;
+import com.yht.yihuantong.ui.patient.ChatContainerActivity;
 import com.yht.yihuantong.ui.transfer.TransferInitiateDetailActivity;
 import com.yht.yihuantong.ui.transfer.TransferReceiveDetailActivity;
 
@@ -49,8 +50,6 @@ public class PushNotifyReceiver extends JPushMessageReceiver implements MessageT
 
     /**
      * 状态通知
-     *
-     * @param type
      */
     private void notifyStatusChange(String type) {
         switch (type) {
@@ -63,21 +62,26 @@ public class PushNotifyReceiver extends JPushMessageReceiver implements MessageT
             case MESSAGE_TRANSFER_APPLY:
             case MESSAGE_TRANSFER_CANCEL:
             case MESSAGE_TRANSFER_SYSTEM_CANCEL_R:
+            case MESSAGE_TRANSFER_SYSTEM_CANCEL_T:
                 NotifyChangeListenerManager.getInstance().notifyDoctorTransferPatient("");
                 //系统消息列表
-                NotifyChangeListenerManager.getInstance().notifyMessageStatusChange("");
+                NotifyChangeListenerManager.getInstance().notifySystemMessageStatusChange("");
+                break;
+            case MESSAGE_DOCTOR_ADD_SUCCESS:
+                NotifyChangeListenerManager.getInstance().notifyDoctorStatusChange("");
+                break;
+            case MESSAGE_PATIENT_ADD_SUCCESS:
+                NotifyChangeListenerManager.getInstance().notifyPatientListChanged("");
                 break;
             default:
                 //系统消息列表
-                NotifyChangeListenerManager.getInstance().notifyMessageStatusChange("");
+                NotifyChangeListenerManager.getInstance().notifySystemMessageStatusChange("");
                 break;
         }
     }
 
     /**
      * 通知栏业务处理
-     *
-     * @param type
      */
     private void jumpPageByType(Context context, String type, String msgId) {
         Intent mainIntent, baseIntent;
@@ -133,6 +137,33 @@ public class PushNotifyReceiver extends JPushMessageReceiver implements MessageT
                 mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 baseIntent = new Intent(context, TransferReceiveDetailActivity.class);
                 baseIntent.putExtra(CommonData.KEY_ORDER_ID, msgId);
+                if (!LifecycleHandler.isApplicationInForeground()) {
+                    intents = new Intent[] { mainIntent, baseIntent };
+                    context.startActivities(intents);
+                }
+                else {
+                    context.startActivity(baseIntent);
+                }
+                break;
+            case MESSAGE_DOCTOR_ADD_SUCCESS:
+                mainIntent = new Intent(context, MainActivity.class);
+                mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                baseIntent = new Intent(context, ChatContainerActivity.class);
+                baseIntent.putExtra(CommonData.KEY_CHAT_ID, msgId);
+                baseIntent.putExtra(CommonData.KEY_DOCTOR_CHAT, true);
+                if (!LifecycleHandler.isApplicationInForeground()) {
+                    intents = new Intent[] { mainIntent, baseIntent };
+                    context.startActivities(intents);
+                }
+                else {
+                    context.startActivity(baseIntent);
+                }
+                break;
+            case MESSAGE_PATIENT_ADD_SUCCESS:
+                mainIntent = new Intent(context, MainActivity.class);
+                mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                baseIntent = new Intent(context, ChatContainerActivity.class);
+                baseIntent.putExtra(CommonData.KEY_CHAT_ID, msgId);
                 if (!LifecycleHandler.isApplicationInForeground()) {
                     intents = new Intent[] { mainIntent, baseIntent };
                     context.startActivities(intents);

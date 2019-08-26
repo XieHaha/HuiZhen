@@ -11,6 +11,7 @@ import com.yht.frame.data.bean.PatientBean;
 import com.yht.frame.ui.AppManager;
 import com.yht.frame.utils.SharePreferenceUtil;
 import com.yht.yihuantong.ui.hint.HintLoginActivity;
+import com.yht.yihuantong.ui.login.AccountDisableActivity;
 import com.yht.yihuantong.ui.login.LoginOptionsActivity;
 
 import org.litepal.crud.DataSupport;
@@ -19,24 +20,31 @@ import java.util.Map;
 
 import cn.jpush.android.api.JPushInterface;
 
+import static com.yht.frame.data.BaseData.BASE_ACCOUNT_ERROR_ACTION;
 import static com.yht.frame.data.BaseData.BASE_ONE;
 import static com.yht.frame.data.BaseData.BASE_TOKEN_ERROR_ACTION;
 
 /**
  * @author 顿顿
  * @date 19/4/28 11:41
- * @des
+ * @des 自定义广播
  */
 public class LoginOutBroadcastReceiver extends BroadcastReceiver {
     @Override
-    public void onReceive(Context context, Intent intent) {
-        String action = intent.getAction();
-        String errorHint = intent.getStringExtra(CommonData.KEY_PUBLIC_STRING);
+    public void onReceive(Context context, Intent data) {
+        String action = data.getAction();
+        String errorHint = data.getStringExtra(CommonData.KEY_PUBLIC_STRING);
+        Intent intent;
         if (BASE_TOKEN_ERROR_ACTION.equals(action)) {
-            Intent intent1 = new Intent(context, HintLoginActivity.class);
-            intent1.putExtra(CommonData.KEY_PUBLIC_STRING, errorHint);
-            intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(intent1);
+            intent = new Intent(context, HintLoginActivity.class);
+            intent.putExtra(CommonData.KEY_PUBLIC_STRING, errorHint);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+        }
+        else if (BASE_ACCOUNT_ERROR_ACTION.equals(action)) {
+            intent = new Intent(context, AccountDisableActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
         }
         else {
             //清除本地数据
@@ -54,9 +62,9 @@ public class LoginOutBroadcastReceiver extends BroadcastReceiver {
             //退出环信
             EMClient.getInstance().logout(true);
             AppManager.getInstance().finishAllActivity();
-            Intent intent1 = new Intent(context, LoginOptionsActivity.class);
-            intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(intent1);
+            intent = new Intent(context, LoginOptionsActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
         }
     }
 }
