@@ -141,7 +141,10 @@ public class SettingActivity extends BaseActivity
         }
         updateDialog = new UpdateDialog(this);
         updateDialog.setCancelable(false);
-        updateDialog.setUpdateMode(mode).setIsDownNewAPK(isDownNewApk).setData(versionBean.getNotes());
+        updateDialog.setUpdateMode(mode)
+                    .setIsDownNewAPK(isDownNewApk)
+                    .setTitle(versionBean.getTitle())
+                    .setData(versionBean.getNotes());
         updateDialog.setOnEnterClickListener(this);
         updateDialog.show();
     }

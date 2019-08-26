@@ -311,7 +311,10 @@ public class LoginOptionsActivity extends BaseActivity
         }
         updateDialog = new UpdateDialog(this);
         updateDialog.setCancelable(false);
-        updateDialog.setUpdateMode(mode).setIsDownNewAPK(isDownNewApk).setData(version.getNotes());
+        updateDialog.setUpdateMode(mode)
+                    .setIsDownNewAPK(isDownNewApk)
+                    .setTitle(version.getTitle())
+                    .setData(version.getNotes());
         updateDialog.setOnEnterClickListener(this);
         updateDialog.show();
     }

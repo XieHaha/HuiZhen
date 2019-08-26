@@ -14,6 +14,7 @@ public class VersionBean implements Serializable {
     private String downloadUrl;
     private String notes;
     private String publishAt;
+    private String title;
 
     public String getMinVersion() {
         return minVersion;
@@ -53,5 +54,13 @@ public class VersionBean implements Serializable {
 
     public void setPublishAt(String publishAt) {
         this.publishAt = publishAt;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

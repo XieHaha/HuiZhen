@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.FileProvider;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -30,13 +31,13 @@ import static com.yht.yihuantong.version.ConstantsVersionMode.UPDATE_MUST;
 public class UpdateDialog extends Dialog implements View.OnClickListener {
     private Context context;
     private ImageView ivCancel;
-    private TextView tvContent, tvUpdate, tvProgress, tvExitApp;
+    private TextView tvTitle, tvContent, tvUpdate, tvProgress, tvExitApp;
     private RelativeLayout layoutProgress;
     private ProgressBar progressBar;
     /**
      * 版本更新说明
      */
-    private String data;
+    private String data, title;
     /**
      * 更新模式   （强制更新还是选择更新）
      */
@@ -67,6 +68,7 @@ public class UpdateDialog extends Dialog implements View.OnClickListener {
         ivCancel = findViewById(R.id.iv_cancel);
         tvExitApp = findViewById(R.id.tv_exit_app);
         tvProgress = findViewById(R.id.tv_progress);
+        tvTitle = findViewById(R.id.title);
         tvContent = findViewById(R.id.tv_content);
         tvUpdate = findViewById(R.id.tv_update);
         ivCancel.setOnClickListener(this);
@@ -75,6 +77,9 @@ public class UpdateDialog extends Dialog implements View.OnClickListener {
     }
 
     private void initUpdateData() {
+        if (!TextUtils.isEmpty(title)) {
+            tvTitle.setText(title);
+        }
         tvContent.setText(data);
         if (upDateMode == UPDATE_MUST) {
             ivCancel.setVisibility(View.INVISIBLE);
@@ -105,6 +110,14 @@ public class UpdateDialog extends Dialog implements View.OnClickListener {
      */
     public UpdateDialog setUpdateMode(int upDateMode) {
         this.upDateMode = upDateMode;
+        return this;
+    }
+
+    /**
+     * 标题
+     */
+    public UpdateDialog setTitle(String title) {
+        this.title = title;
         return this;
     }
 
