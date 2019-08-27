@@ -60,7 +60,7 @@ public class PatientInfoFragment extends BaseFragment
                    BaseQuickAdapter.OnItemChildClickListener {
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
-    private TextView tvName, tvAge, tvSex, tvNoLabel, tvNoneRecord;
+    private TextView tvName, tvAge, tvSex, tvNoLabel, tvAddTime;
     private JustifiedTextView tvPastMedical, familyMedical, tvAllergies;
     private LinearLayout layoutEditLabel;
     private TagFlowLayout flowLayout;
@@ -80,11 +80,6 @@ public class PatientInfoFragment extends BaseFragment
      * 诊疗记录（检查、转诊、远程）
      */
     private List<PatientOrderBean> patientOrderBeans = new ArrayList<>();
-    private List<String> titleBars;
-    /**
-     * 预约转诊前判断是否已有转诊未处理
-     */
-    private boolean exist;
     /**
      * 是否能发起转诊
      */
@@ -176,7 +171,7 @@ public class PatientInfoFragment extends BaseFragment
         familyMedical = headerView.findViewById(R.id.tv_family_medical);
         tvAllergies = headerView.findViewById(R.id.tv_allergies);
         tvNoLabel = headerView.findViewById(R.id.tv_no_label);
-        tvNoneRecord = headerView.findViewById(R.id.tv_none_medical_recording);
+        tvAddTime = headerView.findViewById(R.id.tv_add_time);
         layoutEditLabel.setOnClickListener(this);
     }
 
@@ -209,6 +204,7 @@ public class PatientInfoFragment extends BaseFragment
         tvSex.setText(patientBean.getSex() == BaseData.BASE_MALE
                       ? getString(R.string.txt_sex_male)
                       : getString(R.string.txt_sex_female));
+        tvAddTime.setText(patientBean.getAddTime());
         tvPastMedical.setText(patientBean.getPast());
         familyMedical.setText(patientBean.getFamily());
         tvAllergies.setText(patientBean.getAllergy());
@@ -258,7 +254,7 @@ public class PatientInfoFragment extends BaseFragment
      * 订单分组排序
      */
     private void sortOrderList() {
-        titleBars = new ArrayList<>();
+        List<String> titleBars = new ArrayList<>();
         for (PatientOrderBean bean : patientOrderBeans) {
             String time = BaseUtils.formatDate(
                     BaseUtils.date2TimeStamp(bean.getCreateAt(), BaseUtils.YYYY_MM_DD_HH_MM_SS), BaseUtils.YYYY_MM_DD);
@@ -367,7 +363,8 @@ public class PatientInfoFragment extends BaseFragment
                 }
                 break;
             case GET_PATIENT_EXIST_TRANSFER:
-                exist = (boolean)response.getData();
+                //预约转诊前判断是否已有转诊未处理
+                boolean exist = (boolean)response.getData();
                 if (exist) {
                     ToastUtil.toast(getContext(), R.string.txt_patient_exist_transfer);
                 }

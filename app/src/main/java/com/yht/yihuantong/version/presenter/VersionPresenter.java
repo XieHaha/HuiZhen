@@ -1,8 +1,5 @@
 package com.yht.yihuantong.version.presenter;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -11,10 +8,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Build;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.FileProvider;
-import android.view.View;
-import android.widget.RemoteViews;
 
 import com.yanzhenjie.nohttp.Headers;
 import com.yanzhenjie.nohttp.download.DownloadListener;
@@ -23,7 +17,6 @@ import com.yht.frame.data.bean.VersionBean;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.HuiZhenLog;
 import com.yht.frame.utils.ToastUtil;
-import com.yht.yihuantong.R;
 import com.yht.yihuantong.ZycApplication;
 import com.yht.yihuantong.version.ConstantsVersionMode;
 import com.yht.yihuantong.version.model.VersionModel;
@@ -35,13 +28,10 @@ import java.io.File;
  * @author dundun
  */
 public class VersionPresenter implements ConstantsVersionMode {
-    private static final String TAG = "VersionPresenter";
+    private static final String TAG = "ZYC";
     private Context context;
     private VersionModel versionModel;
     private VersionBean nowVersion;
-    private NotificationCompat.Builder builder;
-    private NotificationManager manager;
-    private PendingIntent pendingIntent;
     private String url = null;
     private String token;
     /**
@@ -55,14 +45,6 @@ public class VersionPresenter implements ConstantsVersionMode {
     }
 
     public void init() {
-        manager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
-        builder = new NotificationCompat.Builder(context);
-        builder.setWhen(System.currentTimeMillis())
-               .setPriority(Notification.PRIORITY_DEFAULT)
-               .setOngoing(false)
-               .setSmallIcon(R.mipmap.logo_icon);
-        pendingIntent = PendingIntent.getActivity(context, UPDATE_VERSION_RESULT, new Intent(),
-                                                  PendingIntent.FLAG_UPDATE_CURRENT);
         versionModel = new VersionModel(context, token);
         updateVersionByNetwork();
     }
@@ -71,7 +53,7 @@ public class VersionPresenter implements ConstantsVersionMode {
      * 根据网络情况判断是否检查更新
      * 断网时不检查更新，启动网络监听广播
      */
-    public void updateVersionByNetwork() {
+    private void updateVersionByNetwork() {
         if (BaseUtils.isNetworkAvailable(context)) {
             versionModel.getNewestVersion(new VersionModelListener.NewestVersionCallBack() {
                 @Override
@@ -119,16 +101,13 @@ public class VersionPresenter implements ConstantsVersionMode {
                     if (isMustUpdate && versionViewListener != null) {
                         versionViewListener.updateLoading(fileSize, fileCount);
                     }
-                    else {
-                        //                        showCustomProgressNotify((int)fileSize, (int)fileCount);
-                    }
                 }
 
                 @Override
                 public void onFinish(int what, String filePath) {
                     File file = new File(filePath);
                     Intent intent = new Intent(Intent.ACTION_VIEW);
-                    Uri uri = null;
+                    Uri uri;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                         uri = FileProvider.getUriForFile(context, ZycApplication.getInstance().getPackageName() +
@@ -146,24 +125,6 @@ public class VersionPresenter implements ConstantsVersionMode {
                 }
             });
         }
-    }
-
-    /**
-     * 显示自定义带进度条通知栏
-     */
-    private void showCustomProgressNotify(int total, int currentData) {
-        RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.view_notifycation_content);
-        if (currentData == total) {
-            remoteViews.setTextViewText(R.id.tv_progress, "已完成");
-            manager.cancel(UPDATE_VERSION_RESULT);
-        }
-        else {
-            remoteViews.setViewVisibility(R.id.custom_progressbar, View.VISIBLE);
-            remoteViews.setTextViewText(R.id.tv_progress, (int)(currentData / (float)total * 100) + "%");
-            remoteViews.setProgressBar(R.id.custom_progressbar, total, currentData, false);
-        }
-        builder.setContent(remoteViews).setContentIntent(pendingIntent).setWhen(System.currentTimeMillis());
-        manager.notify(100, builder.build());
     }
 
     /**
@@ -201,10 +162,26 @@ public class VersionPresenter implements ConstantsVersionMode {
     private VersionViewListener versionViewListener;
 
     public interface VersionViewListener {
+        /**
+         * 版本是否更新回调
+         *
+         * @param version       新版本数据
+         * @param mode          更新模式
+         * @param isDownLoading 是否显示下载
+         */
         void updateVersion(VersionBean version, int mode, boolean isDownLoading);
 
+        /**
+         * 更新进度
+         *
+         * @param total   总大小
+         * @param current 当前
+         */
         void updateLoading(long total, long current);
 
+        /**
+         * 网络错误
+         */
         void updateNetWorkError();
     }
 
@@ -215,7 +192,7 @@ public class VersionPresenter implements ConstantsVersionMode {
     /**
      * 获取当前应用的版本号
      */
-    public String getVersionName() {
+    private String getVersionName() {
         try {
             return context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName + "";
         }
@@ -230,7 +207,7 @@ public class VersionPresenter implements ConstantsVersionMode {
      *
      * @param absPath apk包的绝对路径
      */
-    public String getApkVersion(String absPath) {
+    private String getApkVersion(String absPath) {
         if (new File(absPath).exists()) {
             PackageManager pm = context.getPackageManager();
             PackageInfo pkgInfo = pm.getPackageArchiveInfo(absPath, PackageManager.GET_ACTIVITIES);
@@ -240,8 +217,7 @@ public class VersionPresenter implements ConstantsVersionMode {
                 appInfo.sourceDir = absPath;
                 appInfo.publicSourceDir = absPath;
                 // 得到版本信息
-                String version = pkgInfo.versionName;
-                return version;
+                return pkgInfo.versionName;
             }
         }
         return null;
@@ -250,9 +226,6 @@ public class VersionPresenter implements ConstantsVersionMode {
     /**
      * 版本号对比工具
      * 将s1 对比 s2 如果s1大则大于0
-     *
-     * @param s1
-     * @param s2
      */
     private int compareVersion(String s1, String s2) {
         if (s1 == null && s2 == null) { return 0; }

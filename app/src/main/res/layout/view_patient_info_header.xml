@@ -33,35 +33,68 @@
             android:id="@+id/tv_patient_sex"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/color_373d4d"
-            android:textSize="@dimen/text_14"
+            android:textColor="@color/color_6a6f80"
+            android:textSize="@dimen/text_13"
             tools:text="性别"
             android:layout_toEndOf="@id/iv_patient_img"
             android:layout_below="@id/tv_patient_name"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="11dp" />
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="12dp" />
 
         <View
             android:id="@+id/line"
             android:layout_width="@dimen/app_hei_line"
             android:layout_height="12dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="13dp"
             android:layout_toEndOf="@id/tv_patient_sex"
             android:layout_below="@id/tv_patient_name"
             android:background="#c5c8cc"
-            android:layout_marginStart="8dp" />
+            android:layout_marginStart="6dp" />
 
         <TextView
             android:id="@+id/tv_patient_age"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/color_373d4d"
-            android:textSize="@dimen/text_14"
+            android:textColor="@color/color_6a6f80"
+            android:textSize="@dimen/text_13"
             tools:text="0岁"
             android:layout_toEndOf="@id/line"
             android:layout_below="@id/tv_patient_name"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="12dp" />
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="6dp" />
+
+        <View
+            android:id="@+id/line1"
+            android:layout_width="@dimen/app_hei_line"
+            android:layout_height="12dp"
+            android:layout_marginTop="13dp"
+            android:layout_toEndOf="@id/tv_patient_age"
+            android:layout_below="@id/tv_patient_name"
+            android:background="#c5c8cc"
+            android:layout_marginStart="6dp" />
+
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_6a6f80"
+            android:textSize="@dimen/text_13"
+            android:text="@string/txt_recently_add_time"
+            android:layout_toEndOf="@id/line1"
+            android:layout_below="@id/tv_patient_name"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="6dp" />
+
+        <TextView
+            android:id="@+id/tv_add_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_6a6f80"
+            android:textSize="@dimen/text_13"
+            tools:text="2019年8月27日"
+            android:layout_toEndOf="@id/text"
+            android:layout_below="@id/tv_patient_name"
+            android:layout_marginTop="10dp" />
 
     </RelativeLayout>
 
