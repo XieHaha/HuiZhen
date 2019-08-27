@@ -69,7 +69,7 @@ public class PatientFragment extends BaseFragment
     ImageView ivSearch;
     private View spaceView;
     private TextView searchText;
-    private LinearLayout layoutHeader, layoutRecently, layoutPatientLabel;
+    private LinearLayout layoutHeader;
     /**
      * 适配器
      */
@@ -162,14 +162,12 @@ public class PatientFragment extends BaseFragment
         patientAdapter.setOnItemChildClickListener(this);
         View headerView = LayoutInflater.from(getContext()).inflate(R.layout.view_patient_header, null);
         layoutHeader = headerView.findViewById(R.id.layout_header);
-        layoutRecently = headerView.findViewById(R.id.layout_recently);
-        layoutPatientLabel = headerView.findViewById(R.id.layout_patient_tag);
         spaceView = headerView.findViewById(R.id.view_space);
         //头部搜索按钮
         searchText = headerView.findViewById(R.id.tv_search_patient);
         searchText.setOnClickListener(this);
-        layoutRecently.setOnClickListener(this);
-        layoutPatientLabel.setOnClickListener(this);
+        headerView.findViewById(R.id.layout_recently).setOnClickListener(this);
+        headerView.findViewById(R.id.layout_patient_tag).setOnClickListener(this);
         patientAdapter.addHeaderView(headerView);
         patientAdapter.setLoadMoreView(new CustomLoadMoreView());
         patientAdapter.setOnLoadMoreListener(this, recyclerview);

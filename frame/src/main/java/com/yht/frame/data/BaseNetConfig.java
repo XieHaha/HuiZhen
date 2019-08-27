@@ -49,6 +49,10 @@ public interface BaseNetConfig {
      */
     String BASE_BASIC_PRIVATE_PROTOCOL_URL = "client/sys/protocol_by_privacy";
     /**
+     * 关于远程会诊
+     */
+    String BASE_BASIC_REMOTE_URL = "http://hsp-t.med-value.com/remoteintroduce/";
+    /**
      * banner详情
      */
     String BASE_BASIC_BANNER_URL = "client/banner/banner_desc?bannerId=";

@@ -325,7 +325,9 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
                 }
                 break;
             case R.id.layout_remote:
-                // TODO 远程会诊
+                intent = new Intent(getContext(), WebViewActivity.class);
+                intent.putExtra(CommonData.KEY_PUBLIC, BaseNetConfig.BASE_BASIC_REMOTE_URL);
+                startActivity(intent);
                 break;
             case R.id.layout_transfer_apply:
                 intent = new Intent(getContext(), TransferReceiveListActivity.class);

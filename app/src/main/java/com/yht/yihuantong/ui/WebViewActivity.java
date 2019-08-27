@@ -160,12 +160,6 @@ public class WebViewActivity extends BaseActivity implements LoadViewHelper.OnNe
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             settings.setMixedContentMode(0);
         }
-        //设定支持viewport
-        //        settings.setUseWideViewPort(true);
-        //        settings.setLoadWithOverviewMode(true);
-        //        settings.setBuiltInZoomControls(true);
-        //设定支持缩放
-        //        settings.setSupportZoom(true);
     }
 
     @Override
