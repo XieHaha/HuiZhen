@@ -64,6 +64,7 @@ import com.yht.yihuantong.ui.main.fragment.FriendsFragment;
 import com.yht.yihuantong.ui.main.fragment.MessageFragment;
 import com.yht.yihuantong.ui.main.fragment.WorkerFragment;
 import com.yht.yihuantong.ui.main.listener.OnMessageUpdateListener;
+import com.yht.yihuantong.version.ConstantsVersionMode;
 import com.yht.yihuantong.version.presenter.VersionPresenter;
 
 import org.litepal.crud.DataSupport;
@@ -551,7 +552,7 @@ public class MainActivity extends BaseActivity
     /*********************版本更新回调*************************/
     @Override
     public void updateVersion(VersionBean version, int mode, boolean isDownNewApk) {
-        if (mode == -1) {
+        if (mode <= ConstantsVersionMode.UPDATE_OTHER) {
             return;
         }
         updateDialog = new UpdateDialog(this);

@@ -17,6 +17,7 @@ import com.tencent.smtt.sdk.WebViewClient;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
+import com.yht.frame.utils.HuiZhenLog;
 import com.yht.frame.widgets.LoadViewHelper;
 import com.yht.yihuantong.R;
 
@@ -93,6 +94,7 @@ public class WebViewActivity extends BaseActivity implements LoadViewHelper.OnNe
         }
         if (BaseUtils.isNetworkAvailable(this)) {
             showLoadingView();
+            HuiZhenLog.i(TAG, "url:" + url);
             webView.loadUrl(url);
         }
         else {

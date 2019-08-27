@@ -105,8 +105,6 @@ public class UpdateDialog extends Dialog implements View.OnClickListener {
     /**
      * 更新模式    强制更新  选择更新
      *
-     * @param upDateMode
-     * @return
      */
     public UpdateDialog setUpdateMode(int upDateMode) {
         this.upDateMode = upDateMode;

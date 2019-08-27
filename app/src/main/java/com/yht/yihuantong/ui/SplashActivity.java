@@ -79,6 +79,7 @@ public class SplashActivity extends BaseActivity implements DocAuthStatus {
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
+        //自定义url 只在调试模式下
         if (ZycApplication.getInstance().debugMode) {
             String url = sharePreferenceUtil.getAlwaysString(CommonData.KEY_BASE_URL);
             if (!TextUtils.isEmpty(url) && !TextUtils.equals(url, BuildConfig.BASE_BASIC_URL)) {

@@ -56,4 +56,8 @@ public interface BaseNetConfig {
      * 图片基础链接
      */
     String BASE_URL_FILE = "client/file/download_file?filePath=";
+    /**
+     * 灰度环境
+     */
+    String BASE_URL_PRE = "https://doctor-pre.med-value.com/";
 }

@@ -40,6 +40,7 @@ import com.yht.yihuantong.ui.auth.AuthDoctorActivity;
 import com.yht.yihuantong.ui.dialog.UpdateDialog;
 import com.yht.yihuantong.ui.hint.UrlManagerActivity;
 import com.yht.yihuantong.ui.main.MainActivity;
+import com.yht.yihuantong.version.ConstantsVersionMode;
 import com.yht.yihuantong.version.presenter.VersionPresenter;
 
 import butterknife.BindView;
@@ -309,7 +310,14 @@ public class LoginOptionsActivity extends BaseActivity
     /*********************版本更新回调*************************/
     @Override
     public void updateVersion(VersionBean version, int mode, boolean isDownNewApk) {
-        if (mode == -1) {
+        if (mode == ConstantsVersionMode.UPDATE_OTHER) {
+            if (!ZycApplication.getInstance().debugMode) {
+                //如果线上版本比当前版本更低，就切换到灰度环境
+                ZycApplication.getInstance().updateBaseUrl(BaseNetConfig.BASE_URL_PRE);
+            }
+            return;
+        }
+        else if (mode == ConstantsVersionMode.UPDATE_NONE) {
             return;
         }
         updateDialog = new UpdateDialog(this);

@@ -9,6 +9,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v4.content.FileProvider;
+import android.text.TextUtils;
 
 import com.yanzhenjie.nohttp.Headers;
 import com.yanzhenjie.nohttp.download.DownloadListener;
@@ -140,7 +141,8 @@ public class VersionPresenter implements ConstantsVersionMode {
         int mode = UPDATE_NONE;
         boolean isDownAPK = true;
         //小于0  表示获取的新版本号大于当前使用的版本,需要更新
-        if (compareVersion(currentVersionName, newestVersionName) < 0) {
+        int updateTag = compareVersion(currentVersionName, newestVersionName);
+        if (updateTag < 0) {
             //小于0 表示强制更新
             if (compareVersion(currentVersionName, lowestVersionName) < 0) {
                 mode = UPDATE_MUST;
@@ -153,6 +155,9 @@ public class VersionPresenter implements ConstantsVersionMode {
             if (apkVersionName != null && compareVersion(newestVersionName, apkVersionName) == 0) {
                 isDownAPK = false;
             }
+        }
+        else {
+            mode = updateTag;
         }
         if (versionViewListener != null) {
             versionViewListener.updateVersion(nowVersion, mode, isDownAPK);
@@ -224,38 +229,45 @@ public class VersionPresenter implements ConstantsVersionMode {
     }
 
     /**
-     * 版本号对比工具
-     * 将s1 对比 s2 如果s1大则大于0
+     * 版本号比较
+     *
+     * @return 0代表相等，1代表version1大于version2，-1代表version1小于version2
      */
-    private int compareVersion(String s1, String s2) {
-        if (s1 == null && s2 == null) { return 0; }
-        else if (s1 == null) { return -1; }
-        else if (s2 == null) { return 1; }
-        String[] arr1 = s1.split("[^a-zA-Z0-9]+"), arr2 = s2.split("[^a-zA-Z0-9]+");
-        int i1, i2, i3;
-        for (int ii = 0, max = Math.min(arr1.length, arr2.length); ii <= max; ii++) {
-            if (ii == arr1.length) { return ii == arr2.length ? 0 : -1; }
-            else if (ii == arr2.length) { return 1; }
-            try {
-                i1 = Integer.parseInt(arr1[ii]);
-            }
-            catch (Exception x) {
-                i1 = Integer.MAX_VALUE;
-                HuiZhenLog.w(TAG, "Exception error!", x);
-            }
-            try {
-                i2 = Integer.parseInt(arr2[ii]);
-            }
-            catch (Exception x) {
-                i2 = Integer.MAX_VALUE;
-                HuiZhenLog.w(TAG, "Exception error!", x);
-            }
-            if (i1 != i2) {
-                return i1 - i2;
-            }
-            i3 = arr1[ii].compareTo(arr2[ii]);
-            if (i3 != 0) { return i3; }
+    private int compareVersion(String version1, String version2) {
+        //当前版本为空，直接提示更新
+        if (TextUtils.isEmpty(version1)) {
+            return -1;
         }
-        return 0;
+        if (TextUtils.isEmpty(version2) || version1.equals(version2)) {
+            return 0;
+        }
+        String[] version1Array = version1.split("\\.");
+        String[] version2Array = version2.split("\\.");
+        int index = 0;
+        // 获取最小长度值
+        int minLen = Math.min(version1Array.length, version2Array.length);
+        int diff = 0;
+        // 循环判断每位的大小
+        while (index < minLen &&
+               (diff = Integer.parseInt(version1Array[index]) - Integer.parseInt(version2Array[index])) == 0) {
+            index++;
+        }
+        if (diff == 0) {
+            // 如果位数不一致，比较多余位数
+            for (int i = index; i < version1Array.length; i++) {
+                if (Integer.parseInt(version1Array[i]) > 0) {
+                    return 1;
+                }
+            }
+            for (int i = index; i < version2Array.length; i++) {
+                if (Integer.parseInt(version2Array[i]) > 0) {
+                    return -1;
+                }
+            }
+            return 0;
+        }
+        else {
+            return diff > 0 ? 1 : -1;
+        }
     }
 }

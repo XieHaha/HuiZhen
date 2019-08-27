@@ -135,7 +135,7 @@ public class SettingActivity extends BaseActivity
     private boolean isDownNewApk;
 
     private void update() {
-        if (mode == -1 || versionBean == null) {
+        if (mode <= ConstantsVersionMode.UPDATE_OTHER || versionBean == null) {
             ToastUtil.toast(this, R.string.toast_version_update_hint);
             return;
         }
