@@ -17,7 +17,7 @@ import java.io.IOException;
 /**
  * @author 顿顿
  * @date 19/7/25 14:57
- * @des
+ * @description
  */
 public class EaseVoiceAudioRecorder {
     static final String EXTENSION = ".wav";

@@ -13,7 +13,7 @@ import com.yht.frame.R;
 /**
  * @author 顿顿
  * @date 19/8/23 18:40
- * @des 自定义高度
+ * @description 自定义高度
  */
 public class CustomHeightScrollView extends ScrollView {
     private Context context;

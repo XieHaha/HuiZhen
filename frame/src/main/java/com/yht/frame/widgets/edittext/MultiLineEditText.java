@@ -9,7 +9,7 @@ import android.widget.EditText;
 /**
  * @author 顿顿
  * @date 19/7/9 12:14
- * @des
+ * @description
  */
 public class MultiLineEditText extends EditText {
     public MultiLineEditText(Context context) {

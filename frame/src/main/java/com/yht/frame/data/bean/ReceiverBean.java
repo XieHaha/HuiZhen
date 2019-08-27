@@ -6,7 +6,7 @@ import java.util.ArrayList;
 /**
  * @author 顿顿
  * @date 19/7/4 21:11
- * @des 医生列表父bean
+ * @description 医生列表父bean
  */
 public class ReceiverBean implements Serializable {
     private static final long serialVersionUID = -4283326755396204951L;

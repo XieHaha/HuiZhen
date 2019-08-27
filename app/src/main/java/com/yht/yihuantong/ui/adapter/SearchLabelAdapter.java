@@ -21,7 +21,7 @@ import java.util.regex.Pattern;
 /**
  * @author 顿顿
  * @date 19/8/12 17:56
- * @des 标签  搜索候选
+ * @description 标签  搜索候选
  */
 public class SearchLabelAdapter extends BaseAdapter {
     private Context context;

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 /**
  * @author 顿顿
  * @date 19/8/20 14:46
- * @des 最近添加的患者
+ * @description 最近添加的患者
  */
 public class RecentPatientBean implements Serializable {
     private static final long serialVersionUID = 9111708711871278260L;

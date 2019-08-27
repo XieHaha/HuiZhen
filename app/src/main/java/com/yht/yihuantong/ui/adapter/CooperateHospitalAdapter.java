@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * @author 顿顿
  * @date 19/6/10 12:18
- * @des 合作医院列表
+ * @description 合作医院列表
  */
 public class CooperateHospitalAdapter extends BaseQuickAdapter<CooperateHospitalBean, BaseViewHolder> {
     public CooperateHospitalAdapter(int layoutResId, @Nullable List<CooperateHospitalBean> data) {

@@ -27,7 +27,7 @@ import static com.yht.frame.data.BaseData.BASE_TOKEN_ERROR_ACTION;
 /**
  * @author 顿顿
  * @date 19/4/28 11:41
- * @des 自定义广播
+ * @description 自定义广播
  */
 public class LoginOutBroadcastReceiver extends BroadcastReceiver {
     @Override

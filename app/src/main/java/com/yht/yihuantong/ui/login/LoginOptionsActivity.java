@@ -48,7 +48,7 @@ import butterknife.OnClick;
 /**
  * @author 顿顿
  * @date 19/5/24 14:02
- * @des
+ * @description
  */
 public class LoginOptionsActivity extends BaseActivity
         implements VersionPresenter.VersionViewListener, UpdateDialog.OnEnterClickListener {

@@ -18,7 +18,7 @@ import butterknife.OnClick;
 /**
  * @author 顿顿
  * @date 19/8/21 17:50
- * @des 错误提示页面
+ * @description 错误提示页面
  */
 public class ErrorActivity extends BaseActivity {
     @BindView(R.id.public_title_bar_back)

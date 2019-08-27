@@ -13,7 +13,7 @@ import butterknife.OnClick;
 /**
  * @author 顿顿
  * @date 19/6/11 14:19
- * @des 账号禁用
+ * @description 账号禁用
  */
 public class AccountDisableActivity extends BaseActivity {
     @BindView(R.id.public_title_bar_back)

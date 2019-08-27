@@ -7,7 +7,7 @@ import java.io.Serializable;
 /**
  * @author 顿顿
  * @date 19/7/10 20:56
- * @des
+ * @description
  */
 public class SelectCheckTypeBean extends DataSupport implements Serializable {
     private static final long serialVersionUID = 2307028291664717958L;

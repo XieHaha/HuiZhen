@@ -7,7 +7,7 @@ import java.io.Serializable;
 /**
  * @author 顿顿
  * @date 19/8/15 18:49
- * @des 医生好友
+ * @description 医生好友
  */
 public class DoctorBean extends DataSupport implements Serializable {
     private static final long serialVersionUID = 3455599584716949569L;

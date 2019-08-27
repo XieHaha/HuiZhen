@@ -3,7 +3,7 @@ package com.yht.frame.data.type;
 /**
  * @author 顿顿
  * @date 19/8/26 15:12
- * @des 会诊状态
+ * @description 会诊状态
  * 会诊状态:0:未开始;1:会诊中;2:中断;3:全员拒绝;4:已完成;5:已关闭;6:超时关闭;7:中断关闭;8:全员拒绝关闭
  */
 public interface ConsultationStatus {

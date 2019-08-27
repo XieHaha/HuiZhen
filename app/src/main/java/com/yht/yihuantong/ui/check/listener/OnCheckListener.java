@@ -5,7 +5,7 @@ import com.yht.frame.data.bean.ReserveCheckBean;
 /**
  * @author 顿顿
  * @date 19/6/4 10:22
- * @des 步骤回调
+ * @description 步骤回调
  */
 public interface OnCheckListener {
     /**

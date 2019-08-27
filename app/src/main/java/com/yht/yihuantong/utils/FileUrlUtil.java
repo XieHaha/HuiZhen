@@ -3,7 +3,7 @@ package com.yht.yihuantong.utils;
 /**
  * @author 顿顿
  * @date 19/7/5 16:52
- * @des 文件下载链接拼接
+ * @description 文件下载链接拼接
  */
 public class FileUrlUtil {
     /**

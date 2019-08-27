@@ -15,7 +15,7 @@ import butterknife.OnClick;
 /**
  * @author 顿顿
  * @date 19/6/10 14:10
- * @des
+ * @description
  */
 public class AboutActivity extends BaseActivity {
     @Override

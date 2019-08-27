@@ -48,7 +48,7 @@ import butterknife.OnClick;
 /**
  * @author 顿顿
  * @date 19/6/26 15:41
- * @des 选择接诊医生
+ * @description 选择接诊医生
  */
 public class SelectReceivingDoctorActivity extends BaseActivity
         implements BaseQuickAdapter.OnItemClickListener, BaseQuickAdapter.OnItemChildClickListener {

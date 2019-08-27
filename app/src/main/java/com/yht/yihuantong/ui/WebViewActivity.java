@@ -26,7 +26,7 @@ import butterknife.OnClick;
 /**
  * @author 顿顿
  * @date 19/6/29 14:57
- * @des web
+ * @description web
  */
 public class WebViewActivity extends BaseActivity implements LoadViewHelper.OnNextClickListener {
     @BindView(R.id.layout_title_root)

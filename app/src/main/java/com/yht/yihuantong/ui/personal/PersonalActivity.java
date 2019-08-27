@@ -41,7 +41,7 @@ import butterknife.OnClick;
 /**
  * @author 顿顿
  * @date 19/6/10 11:01
- * @des 个人中心
+ * @description 个人中心
  */
 public class PersonalActivity extends BaseActivity
         implements BaseQuickAdapter.RequestLoadMoreListener, BaseQuickAdapter.OnItemClickListener, CurrencyDetailType {

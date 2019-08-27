@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * @author 顿顿
  * @date 19/7/24 14:06
- * @des
+ * @description
  */
 public class NotifyKeyBean implements Serializable {
     private static final long serialVersionUID = 6822439434282194327L;

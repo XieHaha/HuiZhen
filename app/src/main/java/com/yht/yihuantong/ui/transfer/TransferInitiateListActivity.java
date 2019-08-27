@@ -39,7 +39,7 @@ import butterknife.OnClick;
 /**
  * @author 顿顿
  * @date 19/6/13 15:26
- * @des 我发起的转诊
+ * @description 我发起的转诊
  */
 public class TransferInitiateListActivity extends BaseActivity
         implements BaseQuickAdapter.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener,

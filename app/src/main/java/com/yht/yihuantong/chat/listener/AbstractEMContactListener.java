@@ -6,7 +6,7 @@ import com.hyphenate.EMContactListener;
 /**
  * @author 顿顿
  * @date ${DATA} 14:55
- * @des
+ * @description
  */
 public abstract class AbstractEMContactListener implements EMContactListener {
 

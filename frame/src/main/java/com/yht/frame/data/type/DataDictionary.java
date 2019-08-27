@@ -3,7 +3,7 @@ package com.yht.frame.data.type;
 /**
  * @author 顿顿
  * @date 19/7/5 18:29
- * @des 数据字典
+ * @description 数据字典
  */
 public interface DataDictionary {
     /**

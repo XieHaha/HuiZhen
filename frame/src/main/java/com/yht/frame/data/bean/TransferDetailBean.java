@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * @author 顿顿
  * @date 19/7/10 13:44
- * @des 转诊数据
+ * @description 转诊数据
  */
 public class TransferDetailBean implements Serializable {
     private static final long serialVersionUID = -4842399083649318736L;

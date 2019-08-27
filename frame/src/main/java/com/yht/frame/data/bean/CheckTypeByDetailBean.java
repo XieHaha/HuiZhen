@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * @author 顿顿
  * @date 19/7/11 15:30
- * @des 检查详情中的检查项
+ * @description 检查详情中的检查项
  */
 public class CheckTypeByDetailBean implements Serializable {
     private static final long serialVersionUID = 900363421370287560L;

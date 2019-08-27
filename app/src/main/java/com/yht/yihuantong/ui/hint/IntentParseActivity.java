@@ -18,7 +18,7 @@ import com.yht.yihuantong.ui.main.MainActivity;
 /**
  * @author 顿顿
  * @date 19/7/17 19:40
- * @des
+ * @description
  */
 public class IntentParseActivity extends AppCompatActivity {
     public static final String PACKAGE_NAME = BuildConfig.APPLICATION_ID;

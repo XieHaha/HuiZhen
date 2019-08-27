@@ -26,7 +26,7 @@ import butterknife.OnClick;
 /**
  * @author 顿顿
  * @date 19/8/14 15:52
- * @des
+ * @description
  */
 public class DoctorInfoActivity extends BaseActivity {
     @BindView(R.id.public_title_bar_title)

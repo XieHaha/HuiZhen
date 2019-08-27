@@ -24,7 +24,7 @@ import butterknife.OnClick;
 /**
  * @author 顿顿
  * @date 19/6/14 14:23
- * @des 完善资料
+ * @description 完善资料
  */
 public class TransferMaterialFragment extends BaseFragment implements View.OnFocusChangeListener {
     @BindView(R.id.tv_name)

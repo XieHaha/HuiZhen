@@ -13,7 +13,7 @@ import butterknife.OnClick;
 /**
  * @author 顿顿
  * @date 19/7/25 16:50
- * @des
+ * @description
  */
 public class NotifyHintActivity extends BaseActivity {
     @Override

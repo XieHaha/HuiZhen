@@ -45,7 +45,7 @@ import butterknife.BindView;
 /**
  * @author 顿顿
  * @date 19/5/17 14:55
- * @des 医生列表
+ * @description 医生列表
  */
 public class DoctorFragment extends BaseFragment
         implements BaseQuickAdapter.OnItemClickListener, BaseQuickAdapter.RequestLoadMoreListener,

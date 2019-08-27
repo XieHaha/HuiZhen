@@ -29,7 +29,7 @@ import butterknife.OnClick;
 /**
  * @author 顿顿
  * @date 19/6/27 14:17
- * @des 我收到的转诊
+ * @description 我收到的转诊
  */
 public class TransferReceiveListActivity extends BaseActivity
         implements TransferWaitFragment.OnPendingTransferOrderListener {

@@ -7,7 +7,7 @@ import java.io.Serializable;
 /**
  * @author 顿顿
  * @date 19/8/15 18:49
- * @des 医生扫码后信息
+ * @description 医生扫码后信息
  */
 public class DoctorQrCodeBean extends DataSupport implements Serializable {
     private static final long serialVersionUID = -3592347450050434576L;

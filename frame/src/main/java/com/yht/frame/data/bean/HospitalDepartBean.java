@@ -6,7 +6,7 @@ import java.util.ArrayList;
 /**
  * @author 顿顿
  * @date 19/7/5 11:02
- * @des
+ * @description
  */
 public class HospitalDepartBean implements Serializable {
     private static final long serialVersionUID = -3908180941956371366L;

@@ -26,7 +26,7 @@ import butterknife.BindView;
 /**
  * @author 顿顿
  * @date 19/6/5 17:38
- * @des
+ * @description
  */
 public class SelectDepartActivity extends BaseActivity implements BaseQuickAdapter.OnItemClickListener {
     @BindView(R.id.rv_depart_one)

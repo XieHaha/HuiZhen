@@ -3,7 +3,7 @@ package com.yht.frame.data.type;
 /**
  * @author 顿顿
  * @date 19/7/8 18:38
- * @des 资金明细type
+ * @description 资金明细type
  */
 public interface CurrencyDetailType {
     /**

@@ -49,7 +49,7 @@ import butterknife.OnClick;
 /**
  * @author 顿顿
  * @date 19/5/17 14:55
- * @des 认证执照信息
+ * @description 认证执照信息
  */
 public class AuthLicenseFragment extends BaseFragment
         implements OnMediaItemClickListener, BaseQuickAdapter.OnItemClickListener,

@@ -42,7 +42,7 @@ import butterknife.OnClick;
 /**
  * @author 顿顿
  * @date 19/6/14 10:56
- * @des 预约转诊详情  我转诊给其他医生 (有两种状态  待接诊、已接诊)
+ * @description 预约转诊详情  我转诊给其他医生 (有两种状态  待接诊、已接诊)
  */
 public class TransferInitiateDetailActivity extends BaseActivity
         implements TransferOrderStatus, LoadViewHelper.OnNextClickListener {

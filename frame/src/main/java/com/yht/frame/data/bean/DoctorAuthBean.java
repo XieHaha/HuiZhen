@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * @author 顿顿
  * @date 19/7/4 21:11
- * @des 医生认证信息
+ * @description 医生认证信息
  */
 public class DoctorAuthBean implements Serializable {
     private static final long serialVersionUID = 5575806448053952083L;

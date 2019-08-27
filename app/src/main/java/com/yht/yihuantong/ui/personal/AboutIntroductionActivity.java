@@ -6,7 +6,7 @@ import com.yht.yihuantong.R;
 /**
  * @author 顿顿
  * @date 19/6/10 14:10
- * @des 会珍简介
+ * @description 会珍简介
  */
 public class AboutIntroductionActivity extends BaseActivity {
     @Override

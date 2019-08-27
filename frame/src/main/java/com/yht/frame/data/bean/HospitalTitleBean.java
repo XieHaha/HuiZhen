@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * @author 顿顿
  * @date 19/7/5 18:34
- * @des
+ * @description
  */
 public class HospitalTitleBean implements Serializable {
     private static final long serialVersionUID = -6845383400878605388L;

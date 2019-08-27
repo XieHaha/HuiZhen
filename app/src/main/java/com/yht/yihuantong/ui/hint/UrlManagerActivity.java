@@ -25,7 +25,7 @@ import butterknife.OnClick;
 /**
  * @author 顿顿
  * @date 19/8/1 20:21
- * @des
+ * @description
  */
 public class UrlManagerActivity extends BaseActivity implements AdapterView.OnItemClickListener {
     @BindView(R.id.list_view)

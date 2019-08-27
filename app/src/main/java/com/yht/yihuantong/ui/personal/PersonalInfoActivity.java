@@ -24,7 +24,7 @@ import butterknife.OnClick;
 /**
  * @author 顿顿
  * @date 19/6/10 16:15
- * @des
+ * @description
  */
 public class PersonalInfoActivity extends BaseActivity {
     @BindView(R.id.iv_info_img)

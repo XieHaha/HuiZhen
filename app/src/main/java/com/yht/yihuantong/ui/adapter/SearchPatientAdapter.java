@@ -24,7 +24,7 @@ import java.util.regex.Pattern;
 /**
  * @author 顿顿
  * @date 19/8/12 17:56
- * @des 预约  搜索候选
+ * @description 预约  搜索候选
  */
 public class SearchPatientAdapter extends BaseAdapter {
     private Context context;

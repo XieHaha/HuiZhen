@@ -13,7 +13,7 @@ import static android.provider.Settings.EXTRA_APP_PACKAGE;
 /**
  * @author 顿顿
  * @date 19/7/25 17:07
- * @des 跳转设置界面
+ * @description 跳转设置界面
  */
 public class NotifySettingUtils {
     /**

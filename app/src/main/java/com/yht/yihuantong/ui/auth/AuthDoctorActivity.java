@@ -41,7 +41,7 @@ import static com.yht.yihuantong.jpush.TagAliasOperatorHelper.ACTION_SET;
 /**
  * @author 顿顿
  * @date 19/6/3 16:24
- * @des 医生认证
+ * @description 医生认证
  */
 public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListener {
     @BindView(R.id.iv_base)

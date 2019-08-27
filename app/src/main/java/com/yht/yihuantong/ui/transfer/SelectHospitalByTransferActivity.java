@@ -27,7 +27,7 @@ import butterknife.BindView;
 /**
  * @author 顿顿
  * @date 19/6/4 17:53
- * @des 医院选择 接诊
+ * @description 医院选择 接诊
  */
 public class SelectHospitalByTransferActivity extends BaseActivity
         implements BaseQuickAdapter.OnItemClickListener, BaseQuickAdapter.RequestLoadMoreListener {

@@ -34,7 +34,7 @@ import butterknife.BindView;
 /**
  * @author 顿顿
  * @date 19/5/17 14:55
- * @des 标签分组下的患者
+ * @description 标签分组下的患者
  */
 public class LabelPatientActivity extends BaseActivity
         implements BaseQuickAdapter.OnItemClickListener, BaseQuickAdapter.OnItemChildClickListener {

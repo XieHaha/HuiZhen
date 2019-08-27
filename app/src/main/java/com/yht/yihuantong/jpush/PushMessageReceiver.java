@@ -32,7 +32,18 @@ public class PushMessageReceiver extends BroadcastReceiver {
             Bundle bundle = intent.getExtras();
             HuiZhenLog.i(TAG, "onReceive - " + intent.getAction() + ", extras: " + printBundle(bundle));
             if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(intent.getAction())) {
-//                JSONObject json = new JSONObject(bundle.getString(JPushInterface.EXTRA_MESSAGE));
+
+                try {
+                    JSONObject json = new JSONObject(bundle.getString(JPushInterface.EXTRA_EXTRA));
+                    Iterator<String> it = json.keys();
+                    while (it.hasNext()) {
+                        String myKey = it.next();
+                    }
+                }
+                catch (JSONException e) {
+                    HuiZhenLog.e(TAG, "Get message extra JSON error!");
+                }
+
                 //通知协议更新
                 NotifyChangeListenerManager.getInstance().notifyProtocolChange("");
                 new SharePreferenceUtil(context).putBoolean(CommonData.KEY_IS_PROTOCOL_UPDATE_DATE, true);

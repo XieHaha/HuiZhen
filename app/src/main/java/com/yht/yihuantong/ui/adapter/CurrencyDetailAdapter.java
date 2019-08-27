@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * @author 顿顿
  * @date 19/6/10 12:18
- * @des 收入记录
+ * @description 收入记录
  */
 public class CurrencyDetailAdapter extends BaseQuickAdapter<DoctorCurrencyDetailBean, BaseViewHolder>
         implements CurrencyDetailType {

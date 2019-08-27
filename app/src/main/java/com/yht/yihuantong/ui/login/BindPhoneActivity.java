@@ -37,7 +37,7 @@ import butterknife.OnClick;
 /**
  * @author 顿顿
  * @date 19/5/24 15:20
- * @des
+ * @description
  */
 public class BindPhoneActivity extends BaseActivity {
     @BindView(R.id.et_login_account)

@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * @author 顿顿
  * @date 19/7/11 14:13
- * @des
+ * @description
  */
 public class OrderNumStatisticsBean implements Serializable {
     private static final long serialVersionUID = -9097089869382102602L;

@@ -19,7 +19,7 @@ import com.yht.frame.widgets.dialog.listener.OnEnterClickListener;
 /**
  * @author 顿顿
  * @date 19/6/24 18:13
- * @des
+ * @description
  */
 public class InputDialog implements View.OnClickListener {
     private Context context;

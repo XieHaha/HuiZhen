@@ -3,7 +3,7 @@ package com.yht.frame.data.type;
 /**
  * @author 顿顿
  * @date 19/7/10 14:01
- * @des 转诊状态
+ * @description 转诊状态
  */
 public interface TransferOrderStatus {
     /**

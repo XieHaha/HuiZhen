@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * @author 顿顿
  * @date 19/7/17 17:47
- * @des
+ * @description
  */
 public class ChatTimeBean implements Serializable {
     private static final long serialVersionUID = -5461042377552012982L;

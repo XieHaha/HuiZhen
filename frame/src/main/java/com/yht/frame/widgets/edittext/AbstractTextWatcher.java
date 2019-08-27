@@ -6,7 +6,7 @@ import android.text.TextWatcher;
 /**
  * @author 顿顿
  * @date 19/6/10 10:41
- * @des edit text
+ * @description edit text
  */
 public abstract class AbstractTextWatcher implements TextWatcher {
     @Override

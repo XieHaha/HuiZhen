@@ -3,7 +3,7 @@ package com.yht.frame.data.type;
 /**
  * @author 顿顿
  * @date 19/7/13 13:50
- * @des 患者订单状态（检查、转诊、远程）
+ * @description 患者订单状态（检查、转诊、远程）
  */
 public interface PatientOrderStatus {
     /**

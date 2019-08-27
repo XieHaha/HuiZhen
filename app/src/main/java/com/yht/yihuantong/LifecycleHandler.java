@@ -7,7 +7,7 @@ import android.os.Bundle;
 /**
  * @author 顿顿
  * @date 19/7/24 14:35
- * @des
+ * @description
  */
 public class LifecycleHandler implements Application.ActivityLifecycleCallbacks {
     private static int resumed;

@@ -35,7 +35,7 @@ import butterknife.BindView;
 /**
  * @author 顿顿
  * @date 19/6/13 15:26
- * @des 患者标签
+ * @description 患者标签
  */
 public class LabelGroupActivity extends BaseActivity
         implements BaseQuickAdapter.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener,

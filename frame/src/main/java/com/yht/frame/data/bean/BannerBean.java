@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * @author 顿顿
  * @date 19/7/11 18:12
- * @des 工作室banner
+ * @description 工作室banner
  */
 public class BannerBean implements Serializable {
     private static final long serialVersionUID = -6912693721076342355L;

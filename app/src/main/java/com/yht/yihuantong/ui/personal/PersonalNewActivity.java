@@ -22,7 +22,7 @@ import butterknife.OnClick;
 /**
  * @author 顿顿
  * @date 19/7/15 16:33
- * @des
+ * @description
  */
 public class PersonalNewActivity extends BaseActivity {
     @BindView(R.id.iv_head_img)

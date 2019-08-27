@@ -65,7 +65,7 @@ import butterknife.OnClick;
 /**
  * @author 顿顿
  * @date 19/5/17 14:55
- * @des 认证基础信息
+ * @description 认证基础信息
  */
 public class AuthBaseFragment extends BaseFragment
         implements OnMediaItemClickListener, OnTitleItemClickListener, RadioGroup.OnCheckedChangeListener {

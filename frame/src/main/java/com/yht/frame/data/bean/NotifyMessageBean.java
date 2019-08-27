@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * @author 顿顿
  * @date 19/6/29 10:57
- * @des 通知消息
+ * @description 通知消息
  */
 public class NotifyMessageBean implements Serializable {
     private static final long serialVersionUID = -478493117520659186L;

@@ -12,7 +12,7 @@ import android.support.v4.app.NotificationCompat;
 /**
  * @author 顿顿
  * @date 19/8/3 18:06
- * @des
+ * @description
  */
 public class NotificationUtils extends ContextWrapper {
     private NotificationManager manager;

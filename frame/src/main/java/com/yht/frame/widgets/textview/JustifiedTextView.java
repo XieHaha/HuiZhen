@@ -13,7 +13,7 @@ import java.util.Random;
 /**
  * @author 顿顿
  * @date 19/7/23 19:55
- * @des
+ * @description
  */
 public class JustifiedTextView extends TextView {
     /**

@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * @author 顿顿
  * @date 19/8/14 10:21
- * @des 二维码
+ * @description 二维码
  */
 public class QrCodePageAdapter extends PagerAdapter {
     private Context context;

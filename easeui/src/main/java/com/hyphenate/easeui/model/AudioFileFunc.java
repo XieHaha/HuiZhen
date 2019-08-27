@@ -8,7 +8,7 @@ import java.io.File;
 /**
  * @author 顿顿
  * @date 19/7/25 15:00
- * @des
+ * @description
  */
 public class AudioFileFunc {
     //音频输入-麦克风

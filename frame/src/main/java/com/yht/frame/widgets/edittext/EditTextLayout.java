@@ -17,7 +17,7 @@ import com.yht.frame.R;
 /**
  * @author 顿顿
  * @date 19/6/25 11:17
- * @des
+ * @description
  */
 public class EditTextLayout extends LinearLayout {
     private EditText mEdittext;

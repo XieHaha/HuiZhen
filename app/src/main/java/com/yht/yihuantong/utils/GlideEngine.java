@@ -13,7 +13,7 @@ import com.zhihu.matisse.engine.ImageEngine;
 /**
  * @author 顿顿
  * @date 19/4/3 14:45
- * @des
+ * @description
  */
 public class GlideEngine implements ImageEngine {
     public static RequestOptions options, options2;

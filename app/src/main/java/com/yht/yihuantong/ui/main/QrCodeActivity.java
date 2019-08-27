@@ -24,7 +24,7 @@ import butterknife.OnClick;
 /**
  * @author 顿顿
  * @date 19/8/13 17:17
- * @des 我的二维码
+ * @description 我的二维码
  */
 public class QrCodeActivity extends BaseActivity {
     @BindView(R.id.view_pager)

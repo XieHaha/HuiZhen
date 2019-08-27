@@ -8,7 +8,7 @@ import com.hyphenate.easeui.R;
 /**
  * @author 顿顿
  * @date 19/7/25 15:01
- * @des
+ * @description
  */
 public class ErrorCode {
     public final static int SUCCESS = 1000;

@@ -8,7 +8,7 @@ import android.view.View;
 /**
  * @author 顿顿
  * @date 19/8/14 11:05
- * @des
+ * @description
  */
 public class QrCodeTransformer implements ViewPager.PageTransformer {
     private Context context;

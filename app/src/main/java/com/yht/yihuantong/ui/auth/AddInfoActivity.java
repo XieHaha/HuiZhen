@@ -28,7 +28,7 @@ import butterknife.OnClick;
 /**
  * @author 顿顿
  * @date 19/6/5 17:19
- * @des 添加医院 or 添加个人简介
+ * @description 添加医院 or 添加个人简介
  */
 public class AddInfoActivity extends BaseActivity {
     @BindView(R.id.edit_layout)

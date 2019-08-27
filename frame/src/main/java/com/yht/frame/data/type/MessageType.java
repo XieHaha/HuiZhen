@@ -3,7 +3,7 @@ package com.yht.frame.data.type;
 /**
  * @author 顿顿
  * @date 19/7/15 13:39
- * @des 推送消息、系统消息管理
+ * @description 推送消息、系统消息管理
  */
 public interface MessageType {
     /**

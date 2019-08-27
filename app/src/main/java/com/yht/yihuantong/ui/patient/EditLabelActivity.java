@@ -47,7 +47,7 @@ import butterknife.OnClick;
 /**
  * @author 顿顿
  * @date 19/8/16 16:48
- * @des 标签编辑
+ * @description 标签编辑
  */
 public class EditLabelActivity extends BaseActivity
         implements TextView.OnEditorActionListener, View.OnKeyListener, TagFlowLayout.OnTagClickListener,

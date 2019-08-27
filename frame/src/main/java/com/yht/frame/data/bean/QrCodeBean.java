@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * @author 顿顿
  * @date 19/8/14 10:22
- * @des
+ * @description
  */
 public class QrCodeBean implements Serializable {
     private static final long serialVersionUID = 5071743849994487696L;

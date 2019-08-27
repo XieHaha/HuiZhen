@@ -46,7 +46,7 @@ import butterknife.OnClick;
 /**
  * @author 顿顿
  * @date 19/5/17 14:55
- * @des 好友
+ * @description 好友
  */
 public class FriendsFragment extends BaseFragment implements OnSearchListener, TagFlowLayout.OnTagClickListener {
     @BindView(R.id.status_bar_fix)

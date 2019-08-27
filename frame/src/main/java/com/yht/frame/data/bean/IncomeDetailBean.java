@@ -6,7 +6,7 @@ import java.util.ArrayList;
 /**
  * @author 顿顿
  * @date 19/7/8 20:27
- * @des 收入详情
+ * @description 收入详情
  */
 public class IncomeDetailBean implements Serializable {
     private static final long serialVersionUID = -762440704114133758L;

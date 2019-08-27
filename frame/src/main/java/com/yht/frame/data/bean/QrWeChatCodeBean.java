@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * @author 顿顿
  * @date 19/8/14 10:22
- * @des
+ * @description
  */
 public class QrWeChatCodeBean implements Serializable {
     private static final long serialVersionUID = -5991451326090655840L;

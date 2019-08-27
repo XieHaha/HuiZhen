@@ -32,7 +32,7 @@ import butterknife.OnClick;
 /**
  * @author 顿顿
  * @date 19/6/27 19:41
- * @des 再次转诊
+ * @description 再次转诊
  */
 public class TransferAgainActivity extends BaseActivity {
     @BindView(R.id.tv_select)
