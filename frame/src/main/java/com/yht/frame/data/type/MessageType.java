@@ -119,6 +119,10 @@ public interface MessageType {
      */
     String MESSAGE_PATIENT_ADD_SUCCESS = "G009";
     /**
+     * 用户协议更新
+     */
+    String MESSAGE_PROTOCOL_UPDATE = "Z001";
+    /**
      * 账号禁用
      */
     String MESSAGE_ACCOUNT_DISABLE = "Z003";

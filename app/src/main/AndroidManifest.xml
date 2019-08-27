@@ -646,6 +646,8 @@
                 <action android:name="zyc.doctor.logout.action" />
                 <!--token失效-->
                 <action android:name="zyc.doctor.token.action" />
+                <!--账号禁用-->
+                <action android:name="zyc.doctor.account.action" />
             </intent-filter>
         </receiver>
 
@@ -656,7 +658,7 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths_public"></meta-data>
+                android:resource="@xml/file_paths_public" />
         </provider>
     </application>
 
