@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.bumptech.glide.Glide;
+import com.umeng.analytics.AnalyticsConfig;
 import com.yht.frame.api.ApiManager;
 import com.yht.frame.api.notify.IChange;
 import com.yht.frame.api.notify.NotifyChangeListenerManager;
@@ -326,7 +327,7 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
                 break;
             case R.id.layout_remote:
                 intent = new Intent(getContext(), WebViewActivity.class);
-                intent.putExtra(CommonData.KEY_PUBLIC, BaseNetConfig.BASE_BASIC_REMOTE_URL);
+                intent.putExtra(CommonData.KEY_PUBLIC, initRemoteUrl());
                 startActivity(intent);
                 break;
             case R.id.layout_transfer_apply:
@@ -440,6 +441,27 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
                 break;
             default:
                 break;
+        }
+    }
+
+    /**
+     * 关于远程会诊url处理
+     */
+    private String initRemoteUrl() {
+        String baseBasicRemoteUrl = BaseNetConfig.BASE_BASIC_REMOTE_URL;
+        String channel = AnalyticsConfig.getChannel(getContext());
+        if (!TextUtils.isEmpty(channel)) {
+            switch (channel) {
+                case "develop":
+                    return baseBasicRemoteUrl.replace("hsp", "hsp-pre");
+                case "beta":
+                    return baseBasicRemoteUrl.replace("hsp", "hsp-t").replace("https", "http");
+                default:
+                    return baseBasicRemoteUrl;
+            }
+        }
+        else {
+            return baseBasicRemoteUrl;
         }
     }
 

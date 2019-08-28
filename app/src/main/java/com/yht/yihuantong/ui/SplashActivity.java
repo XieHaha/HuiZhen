@@ -129,7 +129,6 @@ public class SplashActivity extends BaseActivity implements DocAuthStatus {
 
     private void initScheduledThread(int duration) {
         time = Math.round(duration / 1000f) + 2;
-        HuiZhenLog.i(TAG, "time:" + time);
         executorService = new ScheduledThreadPoolExecutor(1, new BasicThreadFactory.Builder().namingPattern(
                 "yht-thread-pool-%d").daemon(true).build());
         executorService.scheduleAtFixedRate(() -> {

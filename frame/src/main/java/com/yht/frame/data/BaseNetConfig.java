@@ -51,7 +51,7 @@ public interface BaseNetConfig {
     /**
      * 关于远程会诊
      */
-    String BASE_BASIC_REMOTE_URL = "http://hsp-t.med-value.com/remoteintroduce/";
+    String BASE_BASIC_REMOTE_URL = "https://hsp.med-value.com/remoteintroduce/";
     /**
      * banner详情
      */
