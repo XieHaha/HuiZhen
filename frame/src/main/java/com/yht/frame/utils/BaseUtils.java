@@ -262,8 +262,8 @@ public class BaseUtils {
         for (int i = 0; i < list.size(); i++) {
             PatientBean bean = list.get(i);
             String tag = Pinyin.toPinyin(bean.getName().substring(0, 1).charAt(0)).substring(0, 1);
-            if (tag.matches("[A-Z]")) {
-                bean.setIndexTag(tag);
+            if (tag.matches("[A-Za-z]")) {
+                bean.setIndexTag(tag.toUpperCase());
             }
             else {
                 bean.setIndexTag("#");
@@ -292,8 +292,8 @@ public class BaseUtils {
         for (int i = 0; i < list.size(); i++) {
             DoctorBean bean = list.get(i);
             String tag = Pinyin.toPinyin(bean.getDoctorName().substring(0, 1).charAt(0)).substring(0, 1);
-            if (tag.matches("[A-Z]")) {
-                bean.setIndexTag(tag);
+            if (tag.matches("[A-Za-z]")) {
+                bean.setIndexTag(tag.toUpperCase());
             }
             else {
                 bean.setIndexTag("#");
@@ -322,8 +322,8 @@ public class BaseUtils {
         for (int i = 0; i < list.size(); i++) {
             ReceiverDoctorBean bean = list.get(i);
             String tag = Pinyin.toPinyin(bean.getDoctorName().substring(0, 1).charAt(0)).substring(0, 1);
-            if (tag.matches("[A-Z]")) {
-                bean.setIndexTag(tag);
+            if (tag.matches("[A-Za-z]")) {
+                bean.setIndexTag(tag.toUpperCase());
             }
             else {
                 bean.setIndexTag("#");

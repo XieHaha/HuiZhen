@@ -81,6 +81,7 @@ public class AddInfoActivity extends BaseActivity {
         }
         else {
             publicTitleBarMore.setText(R.string.txt_add);
+            publicTitleBarMore.setSelected(true);
             publicTitleBarTitle.setText(R.string.title_add_hospital);
             etHospital.getEditText().setHint(R.string.txt_search_hospital);
             //最大输入长度
@@ -89,7 +90,7 @@ public class AddInfoActivity extends BaseActivity {
         }
         if (!TextUtils.isEmpty(inputValue)) {
             etHospital.getEditText().setText(inputValue);
-            etHospital.getEditText().setSelection(inputValue.length());
+            etHospital.getEditText().setSelection(etHospital.getEditText().getText().toString().length());
             if (mode) {
                 tvCalcNum.setText(String.format(getString(R.string.txt_calc_num), inputValue.length()));
             }

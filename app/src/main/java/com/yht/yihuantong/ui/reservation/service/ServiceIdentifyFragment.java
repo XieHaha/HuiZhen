@@ -10,7 +10,9 @@ import android.text.InputFilter;
 import android.text.Selection;
 import android.text.Spanned;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -52,7 +54,7 @@ import butterknife.OnClick;
  * @des 身份确认
  */
 public class ServiceIdentifyFragment extends BaseFragment
-        implements View.OnFocusChangeListener, AdapterView.OnItemClickListener {
+        implements View.OnFocusChangeListener, AdapterView.OnItemClickListener, TextView.OnEditorActionListener {
     @BindView(R.id.et_patient_name)
     SuperEditText etPatientName;
     @BindView(R.id.et_patient_id_card)
@@ -106,6 +108,7 @@ public class ServiceIdentifyFragment extends BaseFragment
         super.initListener();
         etPatientIdCard.setOnFocusChangeListener(this);
         etPatientName.setFilters(new InputFilter[] { emojiFilter });
+        etPatientName.setOnEditorActionListener(this);
         etPatientName.addTextChangedListener(new AbstractTextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -209,7 +212,8 @@ public class ServiceIdentifyFragment extends BaseFragment
             case R.id.tv_identify_next:
                 if (tvIdentifyNext.isSelected()) {
                     //已经校验过  不在校验
-                    if (reserveCheckBean != null && idCard.equals(reserveCheckBean.getIdCardNo())) {
+                    if (reserveCheckBean != null && idCard.equals(reserveCheckBean.getIdCardNo()) &&
+                        name.equals(reserveCheckBean.getPatientName())) {
                         if (checkListener != null) {
                             checkListener.onCheckStepOne(reserveCheckBean);
                         }
@@ -236,6 +240,14 @@ public class ServiceIdentifyFragment extends BaseFragment
             }
             initNextButton();
         }
+    }
+
+    @Override
+    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+        if (actionId == EditorInfo.IME_ACTION_NEXT) {
+            listView.setVisibility(View.GONE);
+        }
+        return false;
     }
 
     /**
