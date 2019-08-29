@@ -8,6 +8,16 @@
         layout="@layout/public_title"
         android:id="@+id/title_bar" />
 
+    <LinearLayout
+        android:id="@+id/layout_hint"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:layout_below="@id/title_bar">
+
+        <include layout="@layout/public_hint" />
+    </LinearLayout>
+
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/layout_refresh"
         android:layout_width="match_parent"
@@ -20,11 +30,5 @@
             android:layout_height="match_parent"
             android:background="@color/color_ffffff" />
     </android.support.v4.widget.SwipeRefreshLayout>
-
-
-    <include
-        layout="@layout/public_hint"
-        android:visibility="gone" />
-
 
 </RelativeLayout>

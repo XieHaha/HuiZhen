@@ -95,7 +95,10 @@ public class LabelPatientActivity extends BaseActivity
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 //第一个可见的位置
-                sideBar.setCurPosition(patientBeans.get(layoutManager.findFirstVisibleItemPosition()).getIndexTag());
+                if (patientBeans != null && patientBeans.size() > 0) {
+                    sideBar.setCurPosition(
+                            patientBeans.get(layoutManager.findFirstVisibleItemPosition()).getIndexTag());
+                }
             }
         });
         initEvents();
@@ -158,7 +161,7 @@ public class LabelPatientActivity extends BaseActivity
         BaseUtils.sortPatientData(patientBeans);
         //返回一个包含所有Tag字母在内的字符串并赋值给tagsStr
         String tagsStr = BaseUtils.getTags(patientBeans);
-        sideBar.setIndexStr(tagsStr,0);
+        sideBar.setIndexStr(tagsStr, 0);
         decoration.setDatas(patientBeans, tagsStr);
         //更新数据源
         patientAdapter.setNewData(patientBeans);

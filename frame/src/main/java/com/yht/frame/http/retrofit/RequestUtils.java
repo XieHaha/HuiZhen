@@ -815,7 +815,7 @@ public class RequestUtils {
             final ResponseListener<BaseResponse> listener) {
         Map<String, Object> params = new HashMap<>(16);
         params.put("patientId", patientId);
-        // 是否创建医患关系 0:不需要 开单第一步 1：需要 扫码添加医生
+        // 是否创建医患关系 0:不需要 开单第一步 1：需要 扫码添加
         params.put("createRelation", createRelation);
         RetrofitManager.getApiUrlManager()
                        .getPatientByQrId(token, params)

@@ -30,6 +30,7 @@
     <string name="title_transfer_again">再次转诊</string>
     <string name="title_remote_detail">远程会诊详情</string>
     <string name="title_cooperate_hospital">合作医院</string>
+    <string name="title_hospital_product">服务项目(%s)</string>
     <string name="title_doctor_info">医生详情</string>
     <string name="title_my_qr_code">我的二维码</string>
     <string name="title_edit_patient_label">编辑患者标签</string>

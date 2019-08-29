@@ -27,8 +27,9 @@
 
             <ImageView
                 android:id="@+id/iv_head_img"
-                android:layout_width="58dp"
-                android:layout_height="58dp"
+                android:layout_width="92dp"
+                android:layout_height="92dp"
+                android:contentDescription="@string/txt_hint"
                 android:src="@mipmap/ic_default_header_r" />
 
             <TextView

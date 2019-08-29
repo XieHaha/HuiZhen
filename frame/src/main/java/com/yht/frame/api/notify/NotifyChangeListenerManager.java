@@ -25,46 +25,43 @@ public class NotifyChangeListenerManager {
         /**
          * 患者列表添加状态
          */
-        private List<IChange<String>> mPatientListChangeListeners = new CopyOnWriteArrayList<>();
+        private final List<IChange<String>> mPatientListChangeListeners = new CopyOnWriteArrayList<>();
         /**
          * 医生列表添加状态
          */
-        private List<IChange<String>> mDoctorListChangeListeners = new CopyOnWriteArrayList<>();
+        private final List<IChange<String>> mDoctorListChangeListeners = new CopyOnWriteArrayList<>();
         /**
          * 服务协议更新
          */
-        private List<IChange<String>> mProtocolChangeListeners = new CopyOnWriteArrayList<>();
+        private final List<IChange<String>> mProtocolChangeListeners = new CopyOnWriteArrayList<>();
         /**
          * 医生认证
          */
-        private List<IChange<Integer>> mDoctorAuthStatusChangeListeners = new CopyOnWriteArrayList<>();
+        private final List<IChange<Integer>> mDoctorAuthStatusChangeListeners = new CopyOnWriteArrayList<>();
         /**
          * 转诊申请
          */
-        private List<IChange<String>> mDoctorTransferPatientListeners = new CopyOnWriteArrayList<>();
+        private final List<IChange<String>> mDoctorTransferPatientListeners = new CopyOnWriteArrayList<>();
         /**
          * 消息
          */
-        private List<IChange<String>> mRegisterMessageChangeListener = new CopyOnWriteArrayList<>();
+        private final List<IChange<String>> mRegisterMessageChangeListener = new CopyOnWriteArrayList<>();
         /**
          * 消息
          */
-        private List<IChange<String>> mRegisterSystemMessageChangeListener = new CopyOnWriteArrayList<>();
+        private final List<IChange<String>> mRegisterSystemMessageChangeListener = new CopyOnWriteArrayList<>();
         /**
          * 单条消息消息
          */
-        private List<IChange<String>> mRegisterSingleMessageChangeListener = new CopyOnWriteArrayList<>();
+        private final List<IChange<String>> mRegisterSingleMessageChangeListener = new CopyOnWriteArrayList<>();
         /**
          * 服务包订单
          */
-        private List<IChange<String>> mOrderStatusChangeListener = new CopyOnWriteArrayList<>();
+        private final List<IChange<String>> mOrderStatusChangeListener = new CopyOnWriteArrayList<>();
 
         @Override
         public void registerPatientListChangeListener(@NonNull IChange<String> listener,
                 @NonNull RegisterType registerType) {
-            if (listener == null) {
-                return;
-            }
             if (RegisterType.REGISTER == registerType) {
                 mPatientListChangeListeners.add(listener);
             }
@@ -76,9 +73,6 @@ public class NotifyChangeListenerManager {
         @Override
         public void registerDoctorListChangeListener(@NonNull IChange<String> listener,
                 @NonNull RegisterType registerType) {
-            if (listener == null) {
-                return;
-            }
             if (RegisterType.REGISTER == registerType) {
                 mDoctorListChangeListeners.add(listener);
             }
@@ -90,9 +84,6 @@ public class NotifyChangeListenerManager {
         @Override
         public void registerProtocolChangeListener(@NonNull IChange<String> listener,
                 @NonNull RegisterType registerType) {
-            if (listener == null) {
-                return;
-            }
             if (RegisterType.REGISTER == registerType) {
                 mProtocolChangeListeners.add(listener);
             }
@@ -104,9 +95,6 @@ public class NotifyChangeListenerManager {
         @Override
         public void registerDoctorTransferPatientListener(@NonNull IChange<String> listener,
                 @NonNull RegisterType registerType) {
-            if (listener == null) {
-                return;
-            }
             if (RegisterType.REGISTER == registerType) {
                 mDoctorTransferPatientListeners.add(listener);
             }
@@ -118,9 +106,6 @@ public class NotifyChangeListenerManager {
         @Override
         public void registerDoctorAuthStatusChangeListener(@NonNull IChange<Integer> listener,
                 @NonNull RegisterType registerType) {
-            if (listener == null) {
-                return;
-            }
             if (RegisterType.REGISTER == registerType) {
                 mDoctorAuthStatusChangeListeners.add(listener);
             }
@@ -132,9 +117,6 @@ public class NotifyChangeListenerManager {
         @Override
         public void registerMessageStatusChangeListener(@NonNull IChange<String> listener,
                 @NonNull RegisterType registerType) {
-            if (listener == null) {
-                return;
-            }
             if (RegisterType.REGISTER == registerType) {
                 mRegisterMessageChangeListener.add(listener);
             }
@@ -146,9 +128,6 @@ public class NotifyChangeListenerManager {
         @Override
         public void registerSystemMessageStatusChangeListener(@NonNull IChange<String> listener,
                 @NonNull RegisterType registerType) {
-            if (listener == null) {
-                return;
-            }
             if (RegisterType.REGISTER == registerType) {
                 mRegisterSystemMessageChangeListener.add(listener);
             }
@@ -160,9 +139,6 @@ public class NotifyChangeListenerManager {
         @Override
         public void registerSingleMessageStatusChangeListener(@NonNull IChange<String> listener,
                 @NonNull RegisterType registerType) {
-            if (listener == null) {
-                return;
-            }
             if (RegisterType.REGISTER == registerType) {
                 mRegisterSingleMessageChangeListener.add(listener);
             }
@@ -174,9 +150,6 @@ public class NotifyChangeListenerManager {
         @Override
         public void registerOrderStatusChangeListener(@NonNull IChange<String> listener,
                 @NonNull RegisterType registerType) {
-            if (listener == null) {
-                return;
-            }
             if (RegisterType.REGISTER == registerType) {
                 mOrderStatusChangeListener.add(listener);
             }
@@ -187,8 +160,6 @@ public class NotifyChangeListenerManager {
 
         /**
          * 患者添加
-         *
-         * @param data
          */
         public void notifyPatientListChanged(final String data) {
             synchronized (mPatientListChangeListeners) {
@@ -208,8 +179,6 @@ public class NotifyChangeListenerManager {
 
         /**
          * 医生添加
-         *
-         * @param data
          */
         public void notifyDoctorStatusChange(final String data) {
             synchronized (mDoctorListChangeListeners) {
@@ -229,8 +198,6 @@ public class NotifyChangeListenerManager {
 
         /**
          * 医生添加
-         *
-         * @param data
          */
         public void notifyProtocolChange(final String data) {
             synchronized (mProtocolChangeListeners) {
@@ -250,8 +217,6 @@ public class NotifyChangeListenerManager {
 
         /**
          * 转诊申请
-         *
-         * @param data
          */
         public void notifyDoctorTransferPatient(final String data) {
             synchronized (mDoctorTransferPatientListeners) {
@@ -271,8 +236,6 @@ public class NotifyChangeListenerManager {
 
         /**
          * 医生认证状态
-         *
-         * @param data
          */
         public void notifyDoctorAuthStatus(final Integer data) {
             synchronized (mDoctorAuthStatusChangeListeners) {
@@ -292,8 +255,6 @@ public class NotifyChangeListenerManager {
 
         /**
          * 消息
-         *
-         * @param data
          */
         public void notifyMessageStatusChange(final String data) {
             synchronized (mRegisterMessageChangeListener) {
@@ -313,8 +274,6 @@ public class NotifyChangeListenerManager {
 
         /**
          * 系统消息
-         *
-         * @param data
          */
         public void notifySystemMessageStatusChange(final String data) {
             synchronized (mRegisterSystemMessageChangeListener) {
@@ -334,8 +293,6 @@ public class NotifyChangeListenerManager {
 
         /**
          * 单条消息
-         *
-         * @param data
          */
         public void notifySingleMessageStatusChange(final String data) {
             synchronized (mRegisterSingleMessageChangeListener) {
@@ -355,8 +312,6 @@ public class NotifyChangeListenerManager {
 
         /**
          * 服务包订单
-         *
-         * @param data
          */
         public void notifyOrderStatusChange(final String data) {
             synchronized (mOrderStatusChangeListener) {

@@ -8,6 +8,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.yht.frame.api.notify.NotifyChangeListenerManager;
@@ -45,6 +46,8 @@ public class LabelGroupActivity extends BaseActivity
     RecyclerView recyclerView;
     @BindView(R.id.layout_refresh)
     SwipeRefreshLayout layoutRefresh;
+    @BindView(R.id.layout_hint)
+    LinearLayout layoutHint;
     private PatientLabelAdapter patientLabelAdapter;
     /**
      * 标签
@@ -174,10 +177,12 @@ public class LabelGroupActivity extends BaseActivity
                 }
                 if (labelBeans != null && labelBeans.size() > 0) {
                     recyclerView.setVisibility(View.VISIBLE);
+                    layoutHint.setVisibility(View.GONE);
                 }
                 else {
                     recyclerView.setVisibility(View.GONE);
-                    loadViewHelper.load(LoadViewHelper.NONE_RECORDING);
+                    layoutHint.setVisibility(View.VISIBLE);
+                    loadViewHelper.load(LoadViewHelper.NONE_LABEL);
                 }
                 break;
             case DELETE_PATIENT_LABEL:

@@ -83,7 +83,10 @@ public class HospitalProductListActivity extends BaseActivity
         super.initData(savedInstanceState);
         if (getIntent() != null) {
             curHospital = (CooperateHospitalBean)getIntent().getSerializableExtra(CommonData.KEY_HOSPITAL_BEAN);
-            publicTitleBarTitle.setText(curHospital.getHospitalName());
+            int num = getIntent().getIntExtra(CommonData.KEY_PUBLIC, 0);
+            publicTitleBarTitle.setText(String.format(getString(R.string.title_hospital_product),
+                                                      num > BaseData.BASE_MEAASGE_DISPLAY_NUM ? getString(
+                                                              R.string.txt_max_num) : String.valueOf(num)));
             getHospitalProduct(true);
         }
     }
@@ -99,7 +102,7 @@ public class HospitalProductListActivity extends BaseActivity
      */
     private void getHospitalProduct(boolean show) {
         RequestUtils.getCooperateHospitalProjectList(this, loginBean.getToken(), curHospital.getHospitalCode(),
-                                                     BaseData.BASE_PAGE_DATA_NUM, 1, show, this);
+                                                     BaseData.BASE_PAGE_DATA_NUM, page, show, this);
     }
 
     @Override

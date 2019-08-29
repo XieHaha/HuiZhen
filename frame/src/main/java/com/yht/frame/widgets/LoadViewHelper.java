@@ -33,9 +33,13 @@ public class LoadViewHelper implements View.OnClickListener {
      */
     public static final int NONE_RECORDING = NONE_UPGRADE + 1;
     /**
+     * 暂无标签
+     */
+    public static final int NONE_LABEL = NONE_RECORDING + 1;
+    /**
      * 网络错误
      */
-    public static final int NONE_NETWORK = NONE_RECORDING + 1;
+    public static final int NONE_NETWORK = NONE_LABEL + 1;
     private Context context;
     private ImageView hintImg;
     private TextView hintText, hintNext;
@@ -93,6 +97,12 @@ public class LoadViewHelper implements View.OnClickListener {
             case NONE_RECORDING:
                 hintImg.setImageResource(R.mipmap.pic_none_record);
                 hintText.setText(R.string.txt_none_recording);
+                hintNext.setVisibility(View.GONE);
+                rootLayout.setBackgroundColor(Color.WHITE);
+                break;
+            case NONE_LABEL:
+                hintImg.setImageResource(R.mipmap.pic_none_label);
+                hintText.setText(R.string.txt_no_label);
                 hintNext.setVisibility(View.GONE);
                 rootLayout.setBackgroundColor(Color.WHITE);
                 break;

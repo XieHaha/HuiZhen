@@ -67,6 +67,10 @@ public class HospitalDetailActivity extends BaseActivity implements AdapterView.
      * 当前医院
      */
     private CooperateHospitalBean curHospital;
+    /**
+     * 服务项数据
+     */
+    private BaseListBean<HospitalProductBean> baseListBean;
     private List<HospitalProductBean> hospitalProductBeans = new ArrayList<>();
     /**
      * 最多显示服务线数量
@@ -169,6 +173,7 @@ public class HospitalDetailActivity extends BaseActivity implements AdapterView.
             case R.id.layout_more_project:
                 Intent intent = new Intent(this, HospitalProductListActivity.class);
                 intent.putExtra(CommonData.KEY_HOSPITAL_BEAN, curHospital);
+                intent.putExtra(CommonData.KEY_PUBLIC, baseListBean.getRecordTotal());
                 startActivity(intent);
                 break;
             case R.id.tv_more:
@@ -191,7 +196,7 @@ public class HospitalDetailActivity extends BaseActivity implements AdapterView.
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
         if (task == Tasks.GET_COOPERATE_HOSPITAL_PROJECT_LIST) {
-            BaseListBean<HospitalProductBean> baseListBean = (BaseListBean<HospitalProductBean>)response.getData();
+            baseListBean = (BaseListBean<HospitalProductBean>)response.getData();
             if (baseListBean.getRecords() != null && baseListBean.getRecords().size() > 0) {
                 layoutProduct.setVisibility(View.VISIBLE);
                 hospitalProductBeans.addAll(baseListBean.getRecords());
@@ -208,7 +213,7 @@ public class HospitalDetailActivity extends BaseActivity implements AdapterView.
             else {
                 layoutProduct.setVisibility(View.GONE);
             }
-            tvHospitalProject.setText(String.format(getString(R.string.txt_item), hospitalProductBeans.size()));
+            tvHospitalProject.setText(String.format(getString(R.string.txt_item), baseListBean.getRecordTotal()));
             productAdapter.notifyDataSetChanged();
         }
     }
