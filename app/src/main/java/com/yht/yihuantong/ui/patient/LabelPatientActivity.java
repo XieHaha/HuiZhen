@@ -95,8 +95,7 @@ public class LabelPatientActivity extends BaseActivity
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 //第一个可见的位置
-                int findFirstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
-                sideBar.setCurPosition(findFirstVisibleItemPosition);
+                sideBar.setCurPosition(patientBeans.get(layoutManager.findFirstVisibleItemPosition()).getIndexTag());
             }
         });
         initEvents();

@@ -116,8 +116,14 @@ public class PatientFragment extends BaseFragment
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 //第一个可见的位置
-                int findFirstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
-                sideBar.setCurPosition(findFirstVisibleItemPosition);
+                //第一个可见的位置
+                int position = layoutManager.findFirstVisibleItemPosition();
+                if (position == 0) {
+                    sideBar.setCurPosition(BASE_SEARCH_TAG);
+                }
+                else {
+                    sideBar.setCurPosition(patientBeans.get(position - 1).getIndexTag());
+                }
             }
         });
     }

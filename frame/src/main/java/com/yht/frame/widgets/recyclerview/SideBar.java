@@ -126,8 +126,8 @@ public class SideBar extends View {
         invalidate();
     }
 
-    public void setCurPosition(int curPosition) {
-        this.curPosition = curPosition;
+    public void setCurPosition(String tag) {
+        this.curPosition = indexStr.indexOf(tag);
         invalidate();
     }
 
