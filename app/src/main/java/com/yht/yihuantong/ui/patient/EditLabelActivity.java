@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -26,7 +27,6 @@ import com.yht.frame.data.bean.LabelSetBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
-import com.yht.frame.utils.HuiZhenLog;
 import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.frame.widgets.edittext.AbstractTextWatcher;
@@ -51,7 +51,7 @@ import butterknife.OnClick;
  */
 public class EditLabelActivity extends BaseActivity
         implements TextView.OnEditorActionListener, View.OnKeyListener, TagFlowLayout.OnTagClickListener,
-                   AdapterView.OnItemClickListener {
+                   AdapterView.OnItemClickListener, View.OnTouchListener {
     @BindView(R.id.selected_flow)
     FlowLayout selectedFlow;
     @BindView(R.id.all_flow)
@@ -175,7 +175,6 @@ public class EditLabelActivity extends BaseActivity
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 super.onTextChanged(s, start, before, count);
-                HuiZhenLog.i(TAG, "value:" + s.toString());
                 searchLabel(s.toString());
             }
         });
@@ -306,6 +305,23 @@ public class EditLabelActivity extends BaseActivity
         }
     }
 
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        TextView textView = (TextView)v;
+        //左上右下分别对应 0  1  2  3
+        if (textView.getCompoundDrawables()[2] == null) {
+            return false;
+        }
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            if (event.getX() > textView.getWidth() - textView.getCompoundDrawablePadding() -
+                               textView.getCompoundDrawables()[2].getBounds().width()) {
+                removeSelectedLabel(textViewLabels.indexOf(textView), textView);
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * 搜索候选列表
      */
@@ -408,7 +424,7 @@ public class EditLabelActivity extends BaseActivity
             textViewLabels.add(textLabel);
             selectedFlow.addView(textLabel);
             //添加点击事件，点击变成选中状态，选中状态下被点击则删除
-            textLabel.setOnClickListener(this);
+            textLabel.setOnTouchListener(this);
             //让输入框在最后一个位置上
             inputEditText.bringToFront();
             //清空编辑框

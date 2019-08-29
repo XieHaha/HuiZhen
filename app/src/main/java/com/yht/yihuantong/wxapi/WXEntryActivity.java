@@ -28,8 +28,14 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
         super.onCreate(savedInstanceState);
         iwxapi = ZycApplication.iwxapi;
         if (iwxapi == null) {
-            iwxapi = WXAPIFactory.createWXAPI(this, BaseData.WE_CHAT_ID, false);
-            iwxapi.registerApp(BaseData.WE_CHAT_ID);
+            if (ZycApplication.getInstance().debugMode) {
+                iwxapi = WXAPIFactory.createWXAPI(this, BaseData.WE_CHAT_ID_TEST, false);
+                iwxapi.registerApp(BaseData.WE_CHAT_ID_TEST);
+            }
+            else {
+                iwxapi = WXAPIFactory.createWXAPI(this, BaseData.WE_CHAT_ID, false);
+                iwxapi.registerApp(BaseData.WE_CHAT_ID);
+            }
             ZycApplication.iwxapi = iwxapi;
         }
         boolean handleIntent = iwxapi.handleIntent(getIntent(), this);

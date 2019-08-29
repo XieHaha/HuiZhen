@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.yht.frame.data.BaseData;
 import com.yht.frame.data.bean.CooperateHospitalBean;
 import com.yht.yihuantong.R;
 
@@ -26,7 +27,7 @@ public class CooperateHospitalAdapter extends BaseQuickAdapter<CooperateHospital
     @Override
     protected void convert(BaseViewHolder helper, CooperateHospitalBean item) {
         helper.setText(R.id.tv_hospital, item.getHospitalName());
-        if (TextUtils.equals(item.getCooperateStatus(), "1")) {
+        if (TextUtils.equals(item.getCooperateStatus(), BaseData.BASE_STRING_ONE_TAG)) {
             helper.setImageResource(R.id.iv_status, R.mipmap.ic_cooperation);
             helper.setText(R.id.tv_reserve, R.string.txt_business_support);
             ArrayList<String> values = new ArrayList<>();

@@ -20,6 +20,7 @@
         android:text="@string/txt_none_patient"
         android:drawableTop="@mipmap/pic_none_paient"
         android:gravity="center"
+        android:visibility="gone"
         android:layout_below="@id/title_bar"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="66dp"

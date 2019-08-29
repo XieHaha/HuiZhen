@@ -104,23 +104,6 @@ public class HospitalDetailActivity extends BaseActivity implements AdapterView.
         if (curHospital != null) {
             publicTitleBarTitle.setText(curHospital.getHospitalName());
             tvHospitalAddress.setText(curHospital.getAddress());
-            ArrayList<String> values = new ArrayList<>();
-            for (String string : curHospital.getServiceList()) {
-                switch (string) {
-                    case "1":
-                        values.add(getString(R.string.txt_reserve_check));
-                        break;
-                    case "2":
-                        values.add(getString(R.string.txt_reserve_transfer));
-                        break;
-                    case "3":
-                        values.add(getString(R.string.txt_remote_consultation));
-                        break;
-                    default:
-                        break;
-                }
-            }
-            tvHospitalBusiness.setText(StringUtils.join(values, ","));
             tvHospitalProject.setText(String.format(getString(R.string.txt_item), hospitalProductBeans.size()));
             tvHospitalIntroduction.setText(curHospital.getIntroduce());
             tvHospitalIntroduction.post(() -> {
@@ -132,6 +115,30 @@ public class HospitalDetailActivity extends BaseActivity implements AdapterView.
                     tvMore.setVisibility(View.GONE);
                 }
             });
+            if (BASE_STRING_ONE_TAG.equals(curHospital.getCooperateStatus())) {
+                ivStatus.setImageResource(R.mipmap.ic_cooperation);
+                ArrayList<String> values = new ArrayList<>();
+                for (String string : curHospital.getServiceList()) {
+                    switch (string) {
+                        case "1":
+                            values.add(getString(R.string.txt_reserve_check));
+                            break;
+                        case "2":
+                            values.add(getString(R.string.txt_reserve_transfer));
+                            break;
+                        case "3":
+                            values.add(getString(R.string.txt_remote_consultation));
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                tvHospitalBusiness.setText(StringUtils.join(values, ","));
+            }
+            else {
+                ivStatus.setImageResource(R.mipmap.ic_no_cooperation);
+                tvHospitalBusiness.setText(R.string.txt_business_support_not);
+            }
         }
     }
 
@@ -171,10 +178,12 @@ public class HospitalDetailActivity extends BaseActivity implements AdapterView.
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.layout_more_project:
-                Intent intent = new Intent(this, HospitalProductListActivity.class);
-                intent.putExtra(CommonData.KEY_HOSPITAL_BEAN, curHospital);
-                intent.putExtra(CommonData.KEY_PUBLIC, baseListBean.getRecordTotal());
-                startActivity(intent);
+                if (tvProductMore.getVisibility() == View.VISIBLE) {
+                    Intent intent = new Intent(this, HospitalProductListActivity.class);
+                    intent.putExtra(CommonData.KEY_HOSPITAL_BEAN, curHospital);
+                    intent.putExtra(CommonData.KEY_PUBLIC, baseListBean.getRecordTotal());
+                    startActivity(intent);
+                }
                 break;
             case R.id.tv_more:
                 initIntroduction(tvMore.isSelected());

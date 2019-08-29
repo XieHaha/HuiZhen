@@ -34,7 +34,7 @@ android {
     productFlavors.all { flavor ->
         dimension "zyc"
         if ("beta" == name) {
-            applicationId "com.yht.yihuantong_test"
+            applicationId "com.yht.yihuantong"
             buildConfigField "String", "BASE_BASIC_URL", "\"http://192.168.0.100:7071/\""
             resValue "string", "APP_NAME", "\"会珍医生测试版\""
             manifestPlaceholders = [ease_appkey        : "1105190122042534#dp-test-app",

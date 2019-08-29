@@ -135,9 +135,17 @@ public interface BaseData {
      */
     String WE_CHAT_ID = "wx06ffa935bd113f48";
     /**
+     * 微信登录APP_ID 测试
+     */
+    String WE_CHAT_ID_TEST = "wxca028a083bf360d4";
+    /**
      * 微信登录APP_SECRET
      */
     String WE_CHAT_SECRET = "c7299dcce25a5ff0487289370ba65dc0";
+    /**
+     * 微信登录APP_SECRET 测试
+     */
+    String WE_CHAT_SECRET_TEST = "5afaf0d16308b1d3faa3790cff7283a7";
     /**
      * SCOPE
      */

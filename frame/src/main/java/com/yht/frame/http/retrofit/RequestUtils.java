@@ -725,7 +725,7 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .getLabel(token, patientCode)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_LABEL, listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_LABEL, listener));
     }
 
     public static void savePatientLabel(Context context, String token, String patientCode, List<String> tagList,
@@ -736,7 +736,8 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .savePatientLabel(token, params)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.SAVE_PATIENT_LABEL, listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, false, Tasks.SAVE_PATIENT_LABEL,
+                                                                 listener));
     }
 
     public static void getPatientLabel(Context context, String token, int pageSize, int startPage, boolean showLoading,
@@ -771,7 +772,7 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .getPatientByLabel(token, tagId)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_PATIENT_BY_LABEL, listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_PATIENT_BY_LABEL, listener));
     }
 
     public static void getRecentAddPatient(Context context, String token,
