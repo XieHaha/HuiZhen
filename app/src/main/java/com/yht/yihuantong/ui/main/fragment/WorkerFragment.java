@@ -429,7 +429,7 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
                 if (doctorBean.isFriend()) {
                     intent = new Intent(getContext(), ChatContainerActivity.class);
                     intent.putExtra(CommonData.KEY_CHAT_ID, doctorBean.getCode());
-                    intent.putExtra(CommonData.KEY_CHAT_NAME, doctorBean.getDoctorName());
+                    intent.putExtra(CommonData.KEY_CHAT_NAME, doctorBean.getName());
                     intent.putExtra(CommonData.KEY_DOCTOR_CHAT, true);
                     startActivity(intent);
                 }
@@ -452,7 +452,7 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
         String channel = AnalyticsConfig.getChannel(getContext());
         if (!TextUtils.isEmpty(channel)) {
             switch (channel) {
-                case "develop":
+                case "zyc":
                     return baseBasicRemoteUrl.replace("hsp", "hsp-pre");
                 case "beta":
                     return baseBasicRemoteUrl.replace("hsp", "hsp-t").replace("https", "http");

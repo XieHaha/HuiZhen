@@ -81,7 +81,7 @@ public interface BaseData {
     /**
      * 搜索图标 标志位
      */
-    String BASE_SEARCH_TAG = "#";
+    String BASE_SEARCH_TAG = "&";
     /**
      * 医生 标志位
      */

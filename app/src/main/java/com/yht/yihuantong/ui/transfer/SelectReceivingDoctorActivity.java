@@ -492,7 +492,7 @@ public class SelectReceivingDoctorActivity extends BaseActivity
         }
         String tagsStr = BASE_SEARCH_TAG + BaseUtils.getReceiveDoctorTags(doctors);
         //返回一个包含所有Tag字母在内的字符串并赋值给tagsStr
-        sideBar.setIndexStr(tagsStr);
+        sideBar.setIndexStr(tagsStr, 0);
         decoration.setHasHeader(false);
         decoration.setDatas(doctors, tagsStr);
     }

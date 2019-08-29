@@ -834,10 +834,10 @@ public class RequestUtils {
                        .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_DOCTOR_BY_QR_ID, listener));
     }
 
-    public static void addDoctorFriend(Context context, String token, String doctorId,
+    public static void addDoctorFriend(Context context, String token, String doctorCode,
             final ResponseListener<BaseResponse> listener) {
         Map<String, Object> params = new HashMap<>(16);
-        params.put("doctorId", doctorId);
+        params.put("doctorCode", doctorCode);
         RetrofitManager.getApiUrlManager()
                        .addDoctorFriend(token, params)
                        .compose(RxJavaHelper.observableIO2Main(context))

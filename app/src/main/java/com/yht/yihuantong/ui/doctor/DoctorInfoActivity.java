@@ -82,7 +82,7 @@ public class DoctorInfoActivity extends BaseActivity {
              .load(doctorBean.getPhoto())
              .apply(GlideHelper.getOptions(BaseUtils.dp2px(this, 4)))
              .into(ivHeadImg);
-        tvName.setText(doctorBean.getDoctorName());
+        tvName.setText(doctorBean.getName());
         tvTitle.setText(doctorBean.getJobTitle());
         tvDepart.setText(doctorBean.getDepartmentName());
         tvHospital.setText(doctorBean.getHospitalName());

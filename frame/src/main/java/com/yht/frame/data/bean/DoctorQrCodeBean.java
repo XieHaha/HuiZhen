@@ -17,7 +17,7 @@ public class DoctorQrCodeBean extends DataSupport implements Serializable {
     private String departmentName;
     private String hospitalName;
     private String introduce;
-    private String doctorName;
+    private String name;
     private boolean isFriend;
 
     public String getCode() {
@@ -68,12 +68,12 @@ public class DoctorQrCodeBean extends DataSupport implements Serializable {
         this.introduce = introduce;
     }
 
-    public String getDoctorName() {
-        return doctorName;
+    public String getName() {
+        return name;
     }
 
-    public void setDoctorName(String doctorName) {
-        this.doctorName = doctorName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public boolean isFriend() {

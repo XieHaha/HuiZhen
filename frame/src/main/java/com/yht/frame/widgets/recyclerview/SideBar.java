@@ -16,6 +16,7 @@ import android.view.View;
 import com.yht.frame.R;
 import com.yht.frame.data.BaseData;
 import com.yht.frame.utils.BaseUtils;
+import com.yht.frame.utils.HuiZhenLog;
 import com.yht.frame.utils.ScreenUtils;
 
 /**
@@ -40,13 +41,9 @@ public class SideBar extends View {
      */
     private int singleHeight;
     /**
-     * dp值
+     * 标题栏高度
      */
-    private final int TOTAL_MARGIN = 80, TOP_MARGIN = 20;
-    /**
-     * px值
-     */
-    private int marginTop, marginTotal;
+    private int titleBarHeight;
     /**
      * value
      */
@@ -68,8 +65,6 @@ public class SideBar extends View {
     }
 
     private void init() {
-        marginTop = BaseUtils.dp2px(mContext, TOP_MARGIN);
-        marginTotal = BaseUtils.dp2px(mContext, TOTAL_MARGIN);
         height = ScreenUtils.getScreenHeight(mContext);
         mPaint = new Paint();
         mPaint.setDither(true);
@@ -87,10 +82,11 @@ public class SideBar extends View {
         //导航栏居中显示，上下各有80dp的边距
         //        mHeight = (h - marginTotal);
         mWidth = w;
-        singleHeight = marginTop;
+        singleHeight = BaseUtils.dp2px(mContext, 20);
         mHeight = singleHeight * indexStr.length();
-        //屏幕高度/2 - sidebar高度/2 + margintop的高度 - 标题栏高度
-        startHeight = height / 2 - mHeight / 2 + marginTop - (marginTotal - marginTop);
+        //屏幕高度/2 - sidebar高度/2 + margintop的高度
+        startHeight = height / 2 - mHeight / 2 - titleBarHeight;
+        HuiZhenLog.i("ZYC", " height:" + height + "  mHeight:" + mHeight + " startHeight:" + startHeight);
     }
 
     @Override
@@ -119,10 +115,13 @@ public class SideBar extends View {
         }
     }
 
-    public void setIndexStr(String indexStr) {
+    public void setIndexStr(String indexStr, int titleBarHeight) {
+        this.titleBarHeight = titleBarHeight;
         this.indexStr = indexStr;
         if (mHeight == 0) {
             mHeight = singleHeight * indexStr.length();
+            startHeight = height / 2 - mHeight / 2 - titleBarHeight;
+            HuiZhenLog.i("ZYC-1", " height:" + height + "  mHeight:" + mHeight + " startHeight:" + startHeight);
         }
         invalidate();
     }
@@ -159,9 +158,6 @@ public class SideBar extends View {
                 if (listener != null) {
                     listener.indexHide();
                 }
-                //                mPaint.setColor(ContextCompat.getColor(getContext(), R.color.color_373d4d));
-                //                curPosition = -1;
-                //                invalidate();
                 break;
             default:
                 break;
@@ -170,10 +166,25 @@ public class SideBar extends View {
     }
 
     public interface IndexChangeListener {
+        /**
+         * 改变
+         *
+         * @param tag tag
+         */
         void indexChanged(String tag);
 
+        /**
+         * 显示
+         *
+         * @param y        显示位置
+         * @param tag      tag
+         * @param position p
+         */
         void indexShow(float y, String tag, int position);
 
+        /**
+         * 隐藏
+         */
         void indexHide();
     }
 

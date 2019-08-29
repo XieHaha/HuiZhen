@@ -159,7 +159,7 @@ public class LabelPatientActivity extends BaseActivity
         BaseUtils.sortPatientData(patientBeans);
         //返回一个包含所有Tag字母在内的字符串并赋值给tagsStr
         String tagsStr = BaseUtils.getTags(patientBeans);
-        sideBar.setIndexStr(tagsStr);
+        sideBar.setIndexStr(tagsStr,0);
         decoration.setDatas(patientBeans, tagsStr);
         //更新数据源
         patientAdapter.setNewData(patientBeans);

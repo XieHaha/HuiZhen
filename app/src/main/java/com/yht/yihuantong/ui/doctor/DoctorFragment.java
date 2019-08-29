@@ -211,7 +211,7 @@ public class DoctorFragment extends BaseFragment
         BaseUtils.sortDoctorData(doctorBeans);
         //返回一个包含所有Tag字母在内的字符串并赋值给tagsStr
         String tagsStr = BASE_SEARCH_TAG + BaseUtils.getDoctorTags(doctorBeans);
-        sideBar.setIndexStr(tagsStr);
+        sideBar.setIndexStr(tagsStr, BaseUtils.dp2px(getContext(), 72));
         decoration.setDatas(doctorBeans, tagsStr);
     }
 
@@ -230,7 +230,7 @@ public class DoctorFragment extends BaseFragment
         BaseUtils.sortDoctorData(doctorBeans);
         //返回一个包含所有Tag字母在内的字符串并赋值给tagsStr
         String tagsStr = BaseUtils.getDoctorTags(doctorBeans);
-        sideBar.setIndexStr(tagsStr);
+        sideBar.setIndexStr(tagsStr, BaseUtils.dp2px(getContext(), 72));
         decoration.setDatas(doctorBeans, tagsStr);
         doctorAdapter.setNewData(doctorBeans);
         if (doctorBeans.size() > BaseData.BASE_PAGE_DATA_NUM) {
