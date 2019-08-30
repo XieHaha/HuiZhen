@@ -96,7 +96,6 @@ public class HxHelper {
                                                                        user.setNickname(patientBean.getName());
                                                                        user.setAvatar(patientBean.getPhoto());
                                                                    }
-                                                                   patientBean.save();
                                                                    callback.onSuccess(user);
                                                                }
                                                            });

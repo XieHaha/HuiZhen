@@ -27,6 +27,7 @@ import com.yht.frame.data.bean.PatientBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
+import com.yht.frame.utils.HuiZhenLog;
 import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.frame.widgets.recyclerview.SideBar;
 import com.yht.frame.widgets.recyclerview.decoration.SideBarItemDecoration;
@@ -230,6 +231,9 @@ public class PatientFragment extends BaseFragment
         decoration.setDatas(patientBeans, tagsStr);
     }
 
+    /**
+     * 搜索数据排序
+     */
     public void sortSearchData(String tag) {
         patientBeans = LitePalHelper.findPatients(tag);
         if (patientBeans != null && patientBeans.size() > 0) {

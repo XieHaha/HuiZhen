@@ -16,7 +16,7 @@ import io.reactivex.disposables.Disposable;
  * @author dundun
  */
 public abstract class AbstractDataObserver<T> implements Observer<BaseResponse<T>> {
-    private static final String TAG = "ZYC-HTTP";
+    private static final String TAG = "HTTP";
     private ResponseListener listener;
     private Tasks task;
 

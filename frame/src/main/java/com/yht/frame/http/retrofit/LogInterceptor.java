@@ -27,7 +27,7 @@ import okio.BufferedSource;
  * @author dundun
  */
 public class LogInterceptor implements Interceptor {
-    private static final String TAG = "ZYC->HTTP";
+    private static final String TAG = "HTTP";
     private static final Charset UTF8 = Charset.forName("UTF-8");
     private String fileType = "multipart";
     /**

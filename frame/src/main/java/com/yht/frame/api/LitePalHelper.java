@@ -16,8 +16,6 @@ import java.util.List;
 public class LitePalHelper<T extends DataSupport> {
     /**
      * 存储医院
-     *
-     * @param list
      */
     public void updateAll(List<T> list, final Class<T> classOfT) {
         DataSupport.deleteAll(classOfT);
@@ -26,9 +24,6 @@ public class LitePalHelper<T extends DataSupport> {
 
     /**
      * 模糊查询 医院
-     *
-     * @param key
-     * @return
      */
     public static List<HospitalBean> findHospitals(String key) {
         return DataSupport.where("hospitalName like ?", "%" + key + "%").find(HospitalBean.class);
@@ -36,9 +31,6 @@ public class LitePalHelper<T extends DataSupport> {
 
     /**
      * 模糊查询 患者
-     *
-     * @param key
-     * @return
      */
     public static List<PatientBean> findPatients(String key) {
         return DataSupport.where("name like ?", "%" + key + "%").find(PatientBean.class);
@@ -46,9 +38,6 @@ public class LitePalHelper<T extends DataSupport> {
 
     /**
      * 模糊查询 医生
-     *
-     * @param key
-     * @return
      */
     public static List<DoctorBean> findDoctors(String key) {
         return DataSupport.where("doctorName like ?", "%" + key + "%").find(DoctorBean.class);
