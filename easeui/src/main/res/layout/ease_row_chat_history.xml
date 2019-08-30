@@ -49,27 +49,20 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_toRightOf="@id/avatar_container"
-        android:layout_toLeftOf="@id/time"
         android:layout_marginTop="9dp"
         android:layout_marginLeft="7dp"
-        android:layout_marginRight="7dp"
+        android:layout_marginRight="80dp"
         android:gravity="center_vertical"
         android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_height="wrap_content">
-
             <TextView
                 android:id="@+id/name"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:ellipsize="end"
-                tools:text="姓名"
+                tools:text="姓名姓名姓名姓名姓名姓名姓名姓名姓名"
                 android:textColor="@color/color_373d4d"
                 android:textSize="16sp" />
 
@@ -81,17 +74,13 @@
                 android:textSize="10sp"
                 android:layout_marginLeft="7dp"
                 android:paddingTop="2dp"
-                android:singleLine="true"
-                android:ellipsize="none"
                 android:paddingBottom="2dp"
                 android:paddingLeft="6dp"
                 android:paddingRight="6dp"
                 android:text="@string/txt_doctor"
                 android:background="@drawable/corner4_1491fc_bg" />
 
-        </LinearLayout>
     </LinearLayout>
-
 
     <ImageView
         android:id="@+id/msg_state"

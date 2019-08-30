@@ -26,8 +26,9 @@
         android:textSize="@dimen/text_18"
         android:singleLine="true"
         android:ellipsize="marquee"
+        android:layout_marginStart="55dp"
+        android:layout_marginEnd="55dp"
         android:marqueeRepeatLimit="marquee_forever"
-        android:maxWidth="200dp"
         android:textColor="@color/color_373d4d"
         tools:text="标题"
         android:textStyle="bold" />
