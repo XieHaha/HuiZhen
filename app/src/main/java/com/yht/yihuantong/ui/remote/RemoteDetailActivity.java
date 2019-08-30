@@ -138,29 +138,24 @@ public class RemoteDetailActivity extends BaseActivity implements ConsultationSt
         int status = remoteDetailBean.getStatus();
         switch (status) {
             case CONSULTATION_NONE:
-                tvConsultationStatus.setText("未开始");
-                ivCheckStatus.setImageResource(R.mipmap.ic_status_rejected);
-                break;
             case CONSULTATION_ING:
                 tvConsultationStatus.setText(R.string.txt_status_incomplete);
                 ivCheckStatus.setImageResource(R.mipmap.ic_status_incomplete);
                 break;
-            case CONSULTATION_INTERRUPT:
-                tvConsultationStatus.setText("中断");
-                break;
             case CONSULTATION_ALL_REJECT:
-                tvConsultationStatus.setText("已拒绝");
+                tvConsultationStatus.setText(R.string.txt_status_reject);
                 ivCheckStatus.setImageResource(R.mipmap.ic_status_rejected);
                 break;
             case CONSULTATION_COMPLETE:
                 tvConsultationStatus.setText(R.string.txt_status_complete);
                 ivCheckStatus.setImageResource(R.mipmap.ic_status_complete);
                 break;
+            case CONSULTATION_INTERRUPT:
             case CONSULTATION_CLOSE:
             case CONSULTATION_CLOSE_BY_TIMEOUT:
             case CONSULTATION_CLOSE_BY_INTERRUPT:
             case CONSULTATION_CLOSE_ALL_REJECT:
-                tvConsultationStatus.setText("已关闭");
+                tvConsultationStatus.setText(R.string.txt_status_cancel);
                 ivCheckStatus.setImageResource(R.mipmap.ic_status_cancel);
                 break;
             default:

@@ -155,12 +155,7 @@ public class PatientOrderAdapter extends BaseMultiItemQuickAdapter<PatientOrderB
         int status = item.getStatus();
         switch (status) {
             case CONSULTATION_NONE:
-                helper.setImageResource(R.id.iv_status_in, R.mipmap.ic_tag_status_check_incomplete);
-                break;
             case CONSULTATION_ING:
-                helper.setImageResource(R.id.iv_status_in, R.mipmap.ic_tag_status_check_incomplete);
-                break;
-            case CONSULTATION_INTERRUPT:
                 helper.setImageResource(R.id.iv_status_in, R.mipmap.ic_tag_status_check_incomplete);
                 break;
             case CONSULTATION_ALL_REJECT:
@@ -169,17 +164,12 @@ public class PatientOrderAdapter extends BaseMultiItemQuickAdapter<PatientOrderB
             case CONSULTATION_COMPLETE:
                 helper.setImageResource(R.id.iv_status_in, R.mipmap.ic_tag_status_complete);
                 break;
+            case CONSULTATION_INTERRUPT:
             case CONSULTATION_CLOSE:
-                helper.setImageResource(R.id.iv_status_in, R.mipmap.ic_tag_status_cancel);
-                break;
             case CONSULTATION_CLOSE_BY_TIMEOUT:
-                helper.setImageResource(R.id.iv_status_in, R.mipmap.ic_tag_status_cancel);
-                break;
             case CONSULTATION_CLOSE_BY_INTERRUPT:
-                helper.setImageResource(R.id.iv_status_in, R.mipmap.ic_tag_status_cancel);
-                break;
             case CONSULTATION_CLOSE_ALL_REJECT:
-                helper.setImageResource(R.id.iv_status_in, R.mipmap.ic_tag_status_rejected);
+                helper.setImageResource(R.id.iv_status_in, R.mipmap.ic_tag_status_cancel);
                 break;
             default:
                 break;
