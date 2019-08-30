@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -270,11 +271,14 @@ public class NotifyMessageFragment extends BaseFragment
 
     /**
      * 获取id
-     *
-     * @param data
      */
     private String getMessageTypeId(String data) {
-        return new Gson().fromJson(data, MessageIdBean.class).getOrderNo();
+        if (!TextUtils.isEmpty(data)) {
+            return new Gson().fromJson(data, MessageIdBean.class).getOrderNo();
+        }
+        else {
+            return "";
+        }
     }
 
     @Override

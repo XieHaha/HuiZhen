@@ -495,8 +495,14 @@ public class SelectReceivingDoctorActivity extends BaseActivity
         if (tempList.size() > 0) {
             doctors.addAll(0, tempList);
         }
-        String tagsStr = BASE_SEARCH_TAG + BaseUtils.getReceiveDoctorTags(doctors);
         //返回一个包含所有Tag字母在内的字符串并赋值给tagsStr
+        String tagsStr;
+        if (doctors != null && doctors.size() > 0) {
+            tagsStr = BASE_SEARCH_TAG + BaseUtils.getReceiveDoctorTags(doctors);
+        }
+        else {
+            tagsStr = "";
+        }
         sideBar.setIndexStr(tagsStr, 0);
         decoration.setHasHeader(false);
         decoration.setDatas(doctors, tagsStr);

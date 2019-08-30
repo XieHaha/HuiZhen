@@ -215,7 +215,13 @@ public class DoctorFragment extends BaseFragment
         //对数据源进行排序
         BaseUtils.sortDoctorData(doctorBeans);
         //返回一个包含所有Tag字母在内的字符串并赋值给tagsStr
-        String tagsStr = BASE_SEARCH_TAG + BaseUtils.getDoctorTags(doctorBeans);
+        String tagsStr;
+        if (doctorBeans != null && doctorBeans.size() > 0) {
+            tagsStr = BASE_SEARCH_TAG + BaseUtils.getDoctorTags(doctorBeans);
+        }
+        else {
+            tagsStr = "";
+        }
         sideBar.setIndexStr(tagsStr, BaseUtils.dp2px(getContext(), 72));
         decoration.setDatas(doctorBeans, tagsStr);
     }

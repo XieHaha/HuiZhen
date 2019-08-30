@@ -12,6 +12,7 @@ import com.yht.frame.data.bean.CheckTypeBean;
 import com.yht.frame.data.bean.PatientOrderBean;
 import com.yht.frame.data.bean.RemoteAdviceBean;
 import com.yht.frame.data.type.CheckTypeStatus;
+import com.yht.frame.data.type.ConsultationStatus;
 import com.yht.frame.data.type.PatientOrderStatus;
 import com.yht.yihuantong.R;
 
@@ -26,7 +27,7 @@ import static com.yht.frame.data.type.CheckOrderStatus.CHECK_ORDER_STATUS_CANCEL
  * @des 患者订单记录
  */
 public class PatientOrderAdapter extends BaseMultiItemQuickAdapter<PatientOrderBean, BaseViewHolder>
-        implements CheckTypeStatus, PatientOrderStatus {
+        implements CheckTypeStatus, PatientOrderStatus, ConsultationStatus {
     /**
      * @param data A new list is created out of this one to avoid mutable list
      */
@@ -153,14 +154,32 @@ public class PatientOrderAdapter extends BaseMultiItemQuickAdapter<PatientOrderB
         //订单状态
         int status = item.getStatus();
         switch (status) {
-            case PATIENT_ORDER_INCOMPLETE:
+            case CONSULTATION_NONE:
                 helper.setImageResource(R.id.iv_status_in, R.mipmap.ic_tag_status_check_incomplete);
                 break;
-            case PATIENT_ORDER_COMPLETE:
+            case CONSULTATION_ING:
+                helper.setImageResource(R.id.iv_status_in, R.mipmap.ic_tag_status_check_incomplete);
+                break;
+            case CONSULTATION_INTERRUPT:
+                helper.setImageResource(R.id.iv_status_in, R.mipmap.ic_tag_status_check_incomplete);
+                break;
+            case CONSULTATION_ALL_REJECT:
+                helper.setImageResource(R.id.iv_status_in, R.mipmap.ic_tag_status_rejected);
+                break;
+            case CONSULTATION_COMPLETE:
                 helper.setImageResource(R.id.iv_status_in, R.mipmap.ic_tag_status_complete);
                 break;
-            case PATIENT_ORDER_CANCEL:
+            case CONSULTATION_CLOSE:
                 helper.setImageResource(R.id.iv_status_in, R.mipmap.ic_tag_status_cancel);
+                break;
+            case CONSULTATION_CLOSE_BY_TIMEOUT:
+                helper.setImageResource(R.id.iv_status_in, R.mipmap.ic_tag_status_cancel);
+                break;
+            case CONSULTATION_CLOSE_BY_INTERRUPT:
+                helper.setImageResource(R.id.iv_status_in, R.mipmap.ic_tag_status_cancel);
+                break;
+            case CONSULTATION_CLOSE_ALL_REJECT:
+                helper.setImageResource(R.id.iv_status_in, R.mipmap.ic_tag_status_rejected);
                 break;
             default:
                 break;

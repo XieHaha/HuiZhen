@@ -274,7 +274,12 @@ public class EditLabelActivity extends BaseActivity
             searchLabelAdapter.setList(list);
         }
         else {
-            layoutAll.setVisibility(View.VISIBLE);
+            if (allLabelList != null && allLabelList.size() > 0) {
+                layoutAll.setVisibility(View.VISIBLE);
+            }
+            else {
+                layoutAll.setVisibility(View.GONE);
+            }
             listView.setVisibility(View.GONE);
         }
     }

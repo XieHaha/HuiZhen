@@ -27,7 +27,6 @@ import com.yht.frame.data.bean.PatientBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
-import com.yht.frame.utils.HuiZhenLog;
 import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.frame.widgets.recyclerview.SideBar;
 import com.yht.frame.widgets.recyclerview.decoration.SideBarItemDecoration;
@@ -226,7 +225,13 @@ public class PatientFragment extends BaseFragment
         //对数据源进行排序
         BaseUtils.sortPatientData(patientBeans);
         //返回一个包含所有Tag字母在内的字符串并赋值给tagsStr
-        String tagsStr = BASE_SEARCH_TAG + BaseUtils.getTags(patientBeans);
+        String tagsStr;
+        if (patientBeans != null && patientBeans.size() > 0) {
+            tagsStr = BASE_SEARCH_TAG + BaseUtils.getTags(patientBeans);
+        }
+        else {
+            tagsStr = "";
+        }
         sideBar.setIndexStr(tagsStr, BaseUtils.dp2px(getContext(), 72));
         decoration.setDatas(patientBeans, tagsStr);
     }
