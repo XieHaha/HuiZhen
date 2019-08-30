@@ -69,4 +69,8 @@
     <declare-styleable name="CustomHeightScrollView">
         <attr name="customHeight" format="dimension" />
     </declare-styleable>
+
+    <declare-styleable name="MultiLineEditText">
+        <attr name="maxLength" format="integer"/>
+    </declare-styleable>
 </resources>

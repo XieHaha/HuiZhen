@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -15,12 +16,16 @@ import com.yht.frame.data.Tasks;
 import com.yht.frame.data.bean.HospitalBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
+import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.frame.widgets.edittext.AbstractTextWatcher;
 import com.yht.frame.widgets.edittext.EditTextLayout;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ZycApplication;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -76,7 +81,7 @@ public class AddInfoActivity extends BaseActivity {
             publicTitleBarMore.setText(R.string.txt_save);
             etHospital.getEditText().setHint(R.string.txt_introduction_hint);
             //最大输入长度
-            etHospital.getEditText().setFilters(new InputFilter[] { new InputFilter.LengthFilter(500) });
+            etHospital.getEditText().setFilters(new InputFilter[] { emojiFilter, new InputFilter.LengthFilter(500) });
             tvCalcNum.setVisibility(View.VISIBLE);
         }
         else {
@@ -85,7 +90,7 @@ public class AddInfoActivity extends BaseActivity {
             publicTitleBarTitle.setText(R.string.title_add_hospital);
             etHospital.getEditText().setHint(R.string.txt_search_hospital);
             //最大输入长度
-            etHospital.getEditText().setFilters(new InputFilter[] { new InputFilter.LengthFilter(20) });
+            etHospital.getEditText().setFilters(new InputFilter[] { emojiFilter, new InputFilter.LengthFilter(20) });
             tvCalcNum.setVisibility(View.GONE);
         }
         if (!TextUtils.isEmpty(inputValue)) {
@@ -199,4 +204,18 @@ public class AddInfoActivity extends BaseActivity {
     public void onBackPressed() {
         onFinish();
     }
+
+    InputFilter emojiFilter = new InputFilter() {
+        @Override
+        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+            Matcher emojiMatcher = emoji.matcher(source);
+            if (emojiMatcher.find()) {
+                ToastUtil.toast(AddInfoActivity.this, com.yht.frame.R.string.txt_not_support_input);
+                return "";
+            }
+            return null;
+        }
+
+        Pattern emoji = Pattern.compile(BaseUtils.filterImoji, Pattern.UNICODE_CASE | Pattern.CASE_INSENSITIVE);
+    };
 }

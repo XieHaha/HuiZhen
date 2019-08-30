@@ -500,7 +500,7 @@ public class AuthBaseFragment extends BaseFragment
         public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
             Matcher emojiMatcher = emoji.matcher(source);
             if (emojiMatcher.find()) {
-                ToastUtil.toast(getContext(), "不支持输入");
+                ToastUtil.toast(getContext(), R.string.txt_not_support_input);
                 return "";
             }
             return null;

@@ -111,6 +111,7 @@
     <string name="txt_open_notify_next">好的，打开通知</string>
     <string name="txt_open_notify_hint">我们可以在有人向您发起转诊，或者有其他重要活动时通知您。</string>
     <string name="txt_view_flipper_hint">感谢使用会珍，我们将竭诚为您服务~</string>
+    <string name="txt_not_support_input">不支持输入</string>
 
 
     <!--主页-->

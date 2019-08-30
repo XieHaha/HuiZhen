@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -20,6 +22,8 @@ import com.yht.frame.data.Tasks;
 import com.yht.frame.data.bean.HospitalBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
+import com.yht.frame.utils.BaseUtils;
+import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.widgets.edittext.AbstractTextWatcher;
 import com.yht.frame.widgets.edittext.SuperEditText;
 import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
@@ -28,6 +32,8 @@ import com.yht.yihuantong.ui.adapter.HospitalSelectAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -81,6 +87,8 @@ public class SelectHospitalByAuthActivity extends BaseActivity
     @Override
     public void initListener() {
         super.initListener();
+        //最大输入长度
+        etSearchHospital.setFilters(new InputFilter[] { emojiFilter, new InputFilter.LengthFilter(20) });
         etSearchHospital.addTextChangedListener(new AbstractTextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -183,4 +191,17 @@ public class SelectHospitalByAuthActivity extends BaseActivity
             finish();
         }
     }
+
+    InputFilter emojiFilter = new InputFilter() {
+        @Override
+        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+            Matcher emojiMatcher = emoji.matcher(source);
+            if (emojiMatcher.find()) {
+                ToastUtil.toast(SelectHospitalByAuthActivity.this, com.yht.frame.R.string.txt_not_support_input);
+                return "";
+            }
+            return null;
+        }
+        Pattern emoji = Pattern.compile(BaseUtils.filterImoji, Pattern.UNICODE_CASE | Pattern.CASE_INSENSITIVE);
+    };
 }
