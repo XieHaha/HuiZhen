@@ -53,5 +53,6 @@ public class AccountDisableActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
+        exit();
     }
 }
