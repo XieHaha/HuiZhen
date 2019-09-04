@@ -398,6 +398,7 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
     @Override
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
+        Intent intent;
         switch (task) {
             case GET_STUDIO_ORDER_STATISTICS:
                 orderNumStatisticsBean = (OrderNumStatisticsBean)response.getData();
@@ -419,7 +420,7 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
                 //添加成功  刷新患者列表
                 NotifyChangeListenerManager.getInstance().notifyPatientListChanged("");
                 //跳转到患者信息界面
-                Intent intent = new Intent(getContext(), ChatContainerActivity.class);
+                intent = new Intent(getContext(), ChatContainerActivity.class);
                 intent.putExtra(CommonData.KEY_CHAT_ID, patientBean.getCode());
                 intent.putExtra(CommonData.KEY_CHAT_NAME, patientBean.getName());
                 startActivity(intent);

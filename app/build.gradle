@@ -1,4 +1,7 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+//是用来替代findViewById的插件
+apply plugin: 'kotlin-android-extensions'
 
 def releaseTime() {
     return new Date().format("MM月dd日", TimeZone.getTimeZone("UTC"))
