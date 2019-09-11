@@ -253,6 +253,7 @@ public class CaptureActivity extends AppCompatActivity implements SurfaceHolder.
             cameraManager.switchFlashLight(handler);
         }
         else if (id == R.id.tv_close) {
+            setResult(RESULT_OK);
             finish();
         }
     }

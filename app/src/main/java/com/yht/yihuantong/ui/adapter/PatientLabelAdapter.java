@@ -38,5 +38,8 @@ public class PatientLabelAdapter extends BaseQuickAdapter<LabelBean, BaseViewHol
             }
             helper.setText(R.id.tv_patient_name, builder.toString());
         }
+        else {
+            helper.setText(R.id.tv_patient_name, "");
+        }
     }
 }

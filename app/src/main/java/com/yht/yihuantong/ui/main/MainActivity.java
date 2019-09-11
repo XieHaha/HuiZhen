@@ -132,6 +132,10 @@ public class MainActivity extends BaseActivity
     private UpdateDialog updateDialog;
     private NotificationManager mNotificationManager;
     private Bitmap largeIcon = null;
+    /**
+     * 是否检查版本更新
+     */
+    private boolean hideVersionUpdate;
     private int pendingCount = 1;
     /**
      * 用户协议
@@ -162,6 +166,9 @@ public class MainActivity extends BaseActivity
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
+        if (getIntent() != null) {
+            hideVersionUpdate = getIntent().getBooleanExtra(CommonData.KEY_HIDE_VERSION_UPDATE, false);
+        }
         largeIcon = ((BitmapDrawable)ContextCompat.getDrawable(this, R.mipmap.logo_icon)).getBitmap();
         ZycApplication.getInstance().setLoginStatus(true);
         boolean protocol = sharePreferenceUtil.getBoolean(CommonData.KEY_IS_PROTOCOL_UPDATE_DATE);
@@ -194,9 +201,11 @@ public class MainActivity extends BaseActivity
         loginEaseChat();
         setJPushAlias(loginBean.getDoctorCode());
         //检查更新
-        mVersionPresenter = new VersionPresenter(this, loginBean.getToken());
-        mVersionPresenter.setVersionViewListener(this);
-        mVersionPresenter.init();
+        if (!hideVersionUpdate) {
+            mVersionPresenter = new VersionPresenter(this, loginBean.getToken());
+            mVersionPresenter.setVersionViewListener(this);
+            mVersionPresenter.init();
+        }
     }
 
     @Override

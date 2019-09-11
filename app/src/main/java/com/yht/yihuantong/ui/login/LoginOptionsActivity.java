@@ -185,7 +185,9 @@ public class LoginOptionsActivity extends BaseActivity
      * 主页
      */
     private void jumpMain() {
-        startActivity(new Intent(this, MainActivity.class));
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra(CommonData.KEY_HIDE_VERSION_UPDATE, true);
+        startActivity(intent);
         finish();
     }
 

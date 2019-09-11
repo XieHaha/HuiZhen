@@ -21,6 +21,10 @@ public interface CommonData {
      */
     String KEY_INTENT_BOOLEAN = "key_intent_boolean";
     /**
+     * 是否取消检查更新
+     */
+    String KEY_HIDE_VERSION_UPDATE = "key_hide_version_update";
+    /**
      * 自定义url
      */
     String KEY_BASE_URL = "key_base_url";

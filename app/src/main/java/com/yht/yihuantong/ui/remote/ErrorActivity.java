@@ -85,6 +85,7 @@ public class ErrorActivity extends BaseActivity {
         if (resultCode != RESULT_OK) {
             return;
         }
+        if (data == null) { finish(); }
         if (requestCode == REQUEST_CODE_SCAN && data != null) {
             setResult(RESULT_OK, data);
             finish();

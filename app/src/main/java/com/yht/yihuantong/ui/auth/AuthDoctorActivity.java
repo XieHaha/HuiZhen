@@ -17,6 +17,7 @@ import com.yht.frame.api.notify.IChange;
 import com.yht.frame.api.notify.RegisterType;
 import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
+import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.bean.DoctorAuthBean;
 import com.yht.frame.data.bean.LoginBean;
@@ -348,6 +349,7 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
                     ZycApplication.getInstance().setLoginBean(loginBean);
                     AppManager.getInstance().finishAllActivity();
                     Intent intent = new Intent(this, MainActivity.class);
+                    intent.putExtra(CommonData.KEY_HIDE_VERSION_UPDATE, true);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                     return;
