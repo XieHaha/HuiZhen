@@ -169,7 +169,7 @@ public class SelectReceivingDoctorActivity extends BaseActivity
         searchRecyclerView.setAdapter(doctorAdapter);
         initEvents();
         getHospitalListByReverse();
-        getDoctorListByReverse(new HashMap<>(16));
+        getDoctorListByReverse(params);
     }
 
     @Override
@@ -198,7 +198,8 @@ public class SelectReceivingDoctorActivity extends BaseActivity
                     selectEnd();
                 }
                 else {
-                    getDoctorListByReverse(new HashMap<>(16));
+                    params.remove("doctorName");
+                    getDoctorListByReverse(params);
                     tvSelect.setVisibility(View.VISIBLE);
                 }
             }
@@ -250,8 +251,6 @@ public class SelectReceivingDoctorActivity extends BaseActivity
 
     /**
      * 获取医生列表
-     *
-     * @param params
      */
     private void getDoctorListByReverse(Map<String, Object> params) {
         if (isTransferOther) {
@@ -319,7 +318,6 @@ public class SelectReceivingDoctorActivity extends BaseActivity
      * 医生搜索
      */
     private void searchDoctor(String key) {
-        params = new HashMap<>(16);
         params.put("doctorName", key);
         getDoctorListByReverse(params);
     }
@@ -352,7 +350,12 @@ public class SelectReceivingDoctorActivity extends BaseActivity
                     }
                 }
                 adapter.setNewData(data);
-                getDoctorListByReverse(new HashMap<>(16));
+                params = new HashMap<>(16);
+                String key = etSearchCheckType.getText().toString().trim();
+                if (!TextUtils.isEmpty(key)) {
+                    params.put("doctorName", key);
+                }
+                getDoctorListByReverse(params);
                 initHospital();
                 break;
             default:
@@ -390,6 +393,10 @@ public class SelectReceivingDoctorActivity extends BaseActivity
                         tvSelect.setText(curHospital.getHospitalName() + "-全部科室");
                         params = new HashMap<>(16);
                         params.put("hospitalCode", curHospital.getHospitalCode());
+                        String key = etSearchCheckType.getText().toString().trim();
+                        if (!TextUtils.isEmpty(key)) {
+                            params.put("doctorName", key);
+                        }
                         doctors.clear();
                         getDoctorListByReverse(params);
                     }
@@ -412,6 +419,10 @@ public class SelectReceivingDoctorActivity extends BaseActivity
                         tvSelect.setText(
                                 curHospital.getHospitalName() + "-" + curHospitalDepartBean.getDepartmentName() +
                                 "-全部子科室");
+                    }
+                    String key = etSearchCheckType.getText().toString().trim();
+                    if (!TextUtils.isEmpty(key)) {
+                        params.put("doctorName", key);
                     }
                     doctors.clear();
                     getDoctorListByReverse(params);

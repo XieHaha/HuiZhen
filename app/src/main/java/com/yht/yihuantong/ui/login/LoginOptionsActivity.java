@@ -195,16 +195,17 @@ public class LoginOptionsActivity extends BaseActivity
      * 微信登录 注册
      */
     private void registerToWeChat() {
+        String weChatId;
         if (ZycApplication.getInstance().debugMode) {
-            api = WXAPIFactory.createWXAPI(this, BaseData.WE_CHAT_ID_TEST, true);
-            api.registerApp(BaseData.WE_CHAT_ID_TEST);
+            weChatId = BaseData.WE_CHAT_ID_TEST;
         }
         else {
-            // 通过WXAPIFactory工厂，获取IWXAPI的实例
-            api = WXAPIFactory.createWXAPI(this, BaseData.WE_CHAT_ID, true);
-            // 将应用的appId注册到微信
-            api.registerApp(BaseData.WE_CHAT_ID);
+            weChatId = BaseData.WE_CHAT_ID;
         }
+        // 通过WXAPIFactory工厂，获取IWXAPI的实例
+        api = WXAPIFactory.createWXAPI(this, weChatId, true);
+        // 将应用的appId注册到微信
+        api.registerApp(weChatId);
         ZycApplication.iwxapi = api;
     }
 

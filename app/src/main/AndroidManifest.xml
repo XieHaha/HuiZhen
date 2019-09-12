@@ -79,6 +79,10 @@
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:exported="true" />
+        <!--微信登录 测试-->
+        <activity
+            android:name="com.yht.yihuantong_test.wxapi.WXEntryActivity"
+            android:exported="true" />
 
         <activity
             android:name=".ui.hint.IntentParseActivity"

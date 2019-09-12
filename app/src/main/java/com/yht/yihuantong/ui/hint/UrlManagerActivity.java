@@ -52,6 +52,8 @@ public class UrlManagerActivity extends BaseActivity implements AdapterView.OnIt
         urls.add("http://doctor-t.med-value.com/api/");
         urls.add("http://patient-t.med-value.com/api/");
         urls.add("http://192.168.0.126:7071/");
+        urls.add("http://192.168.0.100:7071/");
+        urls.add("http://192.168.0.111:7071/");
         adapter = new MyAdapter();
         listView.setOnItemClickListener(this);
         listView.setAdapter(adapter);
