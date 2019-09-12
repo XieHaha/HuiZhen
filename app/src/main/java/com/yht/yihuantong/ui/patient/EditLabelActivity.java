@@ -91,7 +91,7 @@ public class EditLabelActivity extends BaseActivity
     /**
      * 已有标签初始值（判断本次编辑是否修改）
      */
-    private String initString;
+    private String initString = "";
     /**
      * 上面的标签列表
      */
