@@ -47,7 +47,7 @@ public class ErrorActivity extends BaseActivity {
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        publicTitleBarBack.setImageResource(R.mipmap.ic_error_delete);
+        publicTitleBarBack.setImageResource(R.mipmap.ic_delete_black);
         if (getIntent() != null) {
             isReverse = getIntent().getBooleanExtra(CommonData.KEY_INTENT_BOOLEAN, false);
         }

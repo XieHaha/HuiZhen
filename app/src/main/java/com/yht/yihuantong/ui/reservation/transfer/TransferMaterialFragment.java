@@ -302,6 +302,7 @@ public class TransferMaterialFragment extends BaseFragment implements View.OnFoc
             reverseTransferBean.setPastHistory(pastMedicalHis);
         }
         else {
+            etPastMedicalHis.setText("");
             etPastMedicalHis.setVisibility(View.INVISIBLE);
             layoutPastMedicalHis.setVisibility(View.VISIBLE);
             tvPastMedicalHisNum.setText(
@@ -327,6 +328,7 @@ public class TransferMaterialFragment extends BaseFragment implements View.OnFoc
             reverseTransferBean.setFamilyHistory(familyMedicalHis);
         }
         else {
+            etFamilyMedicalHis.setText("");
             etFamilyMedicalHis.setVisibility(View.INVISIBLE);
             layoutFamilyMedicalHis.setVisibility(View.VISIBLE);
             tvFamilyMedicalHisNum.setText(String.format(getString(R.string.txt_calc_num),
@@ -352,6 +354,7 @@ public class TransferMaterialFragment extends BaseFragment implements View.OnFoc
             reverseTransferBean.setAllergyHistory(allergiesHis);
         }
         else {
+            etAllergies.setText("");
             etAllergies.setVisibility(View.INVISIBLE);
             layoutAllergies.setVisibility(View.VISIBLE);
             tvAllergiesNum.setText(

@@ -19,7 +19,7 @@
         android:id="@+id/iv_cancel"
         android:layout_width="34dp"
         android:layout_height="34dp"
-        android:src="@mipmap/ic_cancel"
+        android:src="@mipmap/ic_delete_gray"
         android:layout_alignParentEnd="true"
         android:padding="10dp"
         android:layout_marginEnd="10dp" />
