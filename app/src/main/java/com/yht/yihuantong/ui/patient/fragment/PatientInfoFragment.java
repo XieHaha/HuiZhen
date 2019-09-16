@@ -46,6 +46,7 @@ import com.zhy.view.flowlayout.TagFlowLayout;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -401,7 +402,7 @@ public class PatientInfoFragment extends BaseFragment
             return;
         }
         if (requestCode == REQUEST_CODE_EDIT_LABEL) {
-            getPatientDetail();
+            Objects.requireNonNull(getActivity()).setResult(Activity.RESULT_OK);
         }
     }
 

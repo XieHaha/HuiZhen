@@ -1,5 +1,6 @@
 package com.yht.yihuantong.ui.patient;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -75,6 +76,10 @@ public class LabelPatientActivity extends BaseActivity
      * 是否需要重新获取
      */
     private boolean isUpdate;
+    /**
+     * 标签刷新
+     */
+    public static final int REQUEST_CODE_UPDATE_LABEL = 100;
 
     @Override
     protected boolean isInitBackBtn() {
@@ -213,7 +218,7 @@ public class LabelPatientActivity extends BaseActivity
         Intent intent = new Intent(this, ChatContainerActivity.class);
         intent.putExtra(CommonData.KEY_CHAT_ID, patientBeans.get(position).getCode());
         intent.putExtra(CommonData.KEY_CHAT_NAME, patientBeans.get(position).getName());
-        startActivity(intent);
+        startActivityForResult(intent, REQUEST_CODE_UPDATE_LABEL);
     }
 
     @Override
@@ -229,10 +234,28 @@ public class LabelPatientActivity extends BaseActivity
         super.onResponseSuccess(task, response);
         if (task == Tasks.GET_PATIENT_BY_LABEL) {
             List<LabelBean> list = (List<LabelBean>)response.getData();
-            if (list != null && list.size() > 0) {
-                patientBeans = list.get(0).getPatientList();
-                recyclerview.post(this::sortData);
+            if (list == null) {
+                list = new ArrayList<>();
             }
+            if (list.size() > 0) {
+                patientBeans = list.get(0).getPatientList();
+            }
+            else {
+                patientBeans = new ArrayList<>();
+            }
+            recyclerview.post(this::sortData);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+        if (requestCode == REQUEST_CODE_UPDATE_LABEL) {
+            getPatientByLabel(labelBean.getId());
+            setResult(RESULT_OK);
         }
     }
 }
