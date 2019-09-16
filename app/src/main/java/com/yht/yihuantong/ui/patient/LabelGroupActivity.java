@@ -54,6 +54,10 @@ public class LabelGroupActivity extends BaseActivity
      */
     private List<LabelBean> labelBeans = new ArrayList<>();
     /**
+     * 临时
+     */
+    private LabelBean labelBean;
+    /**
      * 页码
      */
     private int page = 1;
@@ -136,10 +140,11 @@ public class LabelGroupActivity extends BaseActivity
 
     @Override
     public boolean onItemLongClick(BaseQuickAdapter adapter, View view, int position) {
+        labelBean = labelBeans.get(position);
         new HintDialog(this).setTitleString(getString(R.string.txt_hint))
                             .setContentString(getString(R.string.txt_label_delete_hint))
                             .setEnterBtnTxt(getString(R.string.txt_sure_delete))
-                            .setOnEnterClickListener(() -> deletePatientLabel(labelBeans.get(position).getTagId()))
+                            .setOnEnterClickListener(() -> deletePatientLabel(labelBean.getTagId()))
                             .show();
         return true;
     }
@@ -187,7 +192,8 @@ public class LabelGroupActivity extends BaseActivity
                 break;
             case DELETE_PATIENT_LABEL:
                 ToastUtil.toast(this, response.getMsg());
-                getPatientLabel(false);
+                labelBeans.remove(labelBean);
+                patientLabelAdapter.notifyDataSetChanged();
                 //标签删除成功后 刷新患者列表
                 NotifyChangeListenerManager.getInstance().notifyPatientListChanged("");
                 break;

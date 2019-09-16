@@ -53,8 +53,11 @@ public class ZycApplication extends LitePalApplication {
     private boolean transferAble, serviceAble;
     /**
      * 调试模式
+     * 1、微信登录
+     * 2、自定义URL
+     * 3、自动切换环境（如果线上版本比当前版本更低，就切换到灰度环境）
      */
-    public final boolean debugMode = true;
+    public final boolean debugMode = false;
     /**
      * baseUrl
      */

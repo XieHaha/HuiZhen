@@ -2,7 +2,6 @@ package com.yht.yihuantong.ui.adapter;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.support.annotation.Nullable;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -29,7 +28,7 @@ import java.util.List;
  */
 public class RecentPatientGroupAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity, BaseViewHolder>
         implements BaseData {
-    public RecentPatientGroupAdapter(@Nullable List<MultiItemEntity> data) {
+    public RecentPatientGroupAdapter(List<MultiItemEntity> data) {
         super(data);
         addItemType(BASE_ZERO, R.layout.item_recent_patient_group);
         addItemType(BASE_ONE, R.layout.item_recent_patient);
