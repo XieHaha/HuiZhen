@@ -336,14 +336,16 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
                 startActivity(intent);
                 break;
             case R.id.view_flipper:
-                BannerBean bean = bannerBeans.get(viewFlipper.getDisplayedChild());
-                if (bean.getBannerId() != -1) {
-                    intent = new Intent(getContext(), WebViewActivity.class);
-                    intent.putExtra(CommonData.KEY_PUBLIC,
-                                    ZycApplication.getInstance().getBaseUrl() + BaseNetConfig.BASE_BASIC_BANNER_URL +
-                                    bean.getBannerId());
-                    intent.putExtra(CommonData.KEY_TITLE, bean.getBannerRemark());
-                    startActivity(intent);
+                if (bannerBeans != null && bannerBeans.size() > 0) {
+                    BannerBean bean = bannerBeans.get(viewFlipper.getDisplayedChild());
+                    if (bean.getBannerId() != -1) {
+                        intent = new Intent(getContext(), WebViewActivity.class);
+                        intent.putExtra(CommonData.KEY_PUBLIC, ZycApplication.getInstance().getBaseUrl() +
+                                                               BaseNetConfig.BASE_BASIC_BANNER_URL +
+                                                               bean.getBannerId());
+                        intent.putExtra(CommonData.KEY_TITLE, bean.getBannerRemark());
+                        startActivity(intent);
+                    }
                 }
                 break;
             case R.id.layout_initiate_check:
@@ -442,6 +444,14 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
                 break;
             default:
                 break;
+        }
+    }
+
+    @Override
+    public void onResponseError(Tasks task, Exception e) {
+        super.onResponseError(task, e);
+        if (task == Tasks.GET_BANNER) {
+            initFlipper();
         }
     }
 
