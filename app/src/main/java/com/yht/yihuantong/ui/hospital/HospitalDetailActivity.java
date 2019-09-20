@@ -3,6 +3,7 @@ package com.yht.yihuantong.ui.hospital;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -105,7 +106,12 @@ public class HospitalDetailActivity extends BaseActivity implements AdapterView.
             publicTitleBarTitle.setText(curHospital.getHospitalName());
             tvHospitalAddress.setText(curHospital.getAddress());
             tvHospitalProject.setText(String.format(getString(R.string.txt_item), hospitalProductBeans.size()));
-            tvHospitalIntroduction.setText(curHospital.getIntroduce());
+            if (TextUtils.isEmpty(curHospital.getIntroduce())) {
+                tvHospitalIntroduction.setText(R.string.txt_none);
+            }
+            else {
+                tvHospitalIntroduction.setText(curHospital.getIntroduce());
+            }
             tvHospitalIntroduction.post(() -> {
                 if (tvHospitalIntroduction.getLineCount() > MAX_NUM) {
                     tvMore.setVisibility(View.VISIBLE);

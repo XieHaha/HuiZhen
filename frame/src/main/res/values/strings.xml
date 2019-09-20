@@ -264,6 +264,7 @@
     <string name="txt_business_support">业务支持：</string>
     <string name="txt_business_support_not">不可预约该医院服务</string>
     <string name="txt_item">%d项</string>
+    <string name="txt_none">暂无</string>
 
     <!--会珍币管理-->
     <string name="txt_currency_arrival">已到账</string>
