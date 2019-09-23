@@ -221,6 +221,11 @@
             android:label="@string/txt_reserve_transfer"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
+            android:name=".ui.reservation.remote.ReservationRemoteActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/txt_remote_consultation"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
             android:name=".ui.reservation.ReservationSuccessActivity"
             android:screenOrientation="portrait"
             android:label="@string/txt_reserve_check"

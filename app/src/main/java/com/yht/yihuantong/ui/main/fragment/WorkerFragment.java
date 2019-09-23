@@ -35,6 +35,7 @@ import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.permission.Permission;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
+import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.frame.widgets.menu.MenuItem;
 import com.yht.frame.widgets.menu.TopRightMenu;
@@ -50,6 +51,7 @@ import com.yht.yihuantong.ui.personal.PersonalNewActivity;
 import com.yht.yihuantong.ui.remote.ErrorActivity;
 import com.yht.yihuantong.ui.remote.RemoteLoginActivity;
 import com.yht.yihuantong.ui.reservation.ReservationDisableActivity;
+import com.yht.yihuantong.ui.reservation.remote.ReservationRemoteActivity;
 import com.yht.yihuantong.ui.reservation.service.ReservationServiceActivity;
 import com.yht.yihuantong.ui.reservation.transfer.ReservationTransferActivity;
 import com.yht.yihuantong.ui.transfer.TransferInitiateListActivity;
@@ -88,8 +90,8 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
     TextView tvInitiateCheckNum;
     @BindView(R.id.tv_initiate_transfer_num)
     TextView tvInitiateTransferNum;
-    @BindView(R.id.tv_accepted_transfer_num)
-    TextView tvAcceptedTransferNum;
+    @BindView(R.id.tv_initiate_remote_num)
+    TextView tvInitiateRemoteNum;
     @BindView(R.id.view_flipper)
     ViewFlipper viewFlipper;
     @BindView(R.id.tv_receiving_transfer_num)
@@ -264,7 +266,7 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
         tvInitiateTransferNum.setText(
                 orderNumStatisticsBean.getInitiateOrderTransfer() <= BaseData.BASE_MEAASGE_DISPLAY_NUM ? String.valueOf(
                         orderNumStatisticsBean.getInitiateOrderTransfer()) : getString(R.string.txt_max_num));
-        tvAcceptedTransferNum.setText(
+        tvInitiateRemoteNum.setText(
                 orderNumStatisticsBean.getReceiveOrderTransfer() <= BaseData.BASE_MEAASGE_DISPLAY_NUM ? String.valueOf(
                         orderNumStatisticsBean.getReceiveOrderTransfer()) : getString(R.string.txt_max_num));
         if (orderNumStatisticsBean.getPendingOrderTransfer() != BaseData.BASE_ZERO) {
@@ -294,7 +296,7 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
     @OnClick({
             R.id.public_main_title_scan, R.id.layout_personal_base, R.id.layout_check, R.id.layout_transfer,
             R.id.layout_remote, R.id.view_flipper, R.id.layout_initiate_check, R.id.layout_initiate_transfer,
-            R.id.layout_accepted_transfer, R.id.layout_transfer_apply })
+            R.id.layout_initiate_remote, R.id.layout_transfer_apply, R.id.layout_health_manager })
     public void onViewClicked(View view) {
         Intent intent;
         switch (view.getId()) {
@@ -326,9 +328,15 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
                 }
                 break;
             case R.id.layout_remote:
-                intent = new Intent(getContext(), WebViewActivity.class);
-                intent.putExtra(CommonData.KEY_PUBLIC, initRemoteUrl());
-                startActivity(intent);
+                if (ZycApplication.getInstance().isTransferAble()) {
+                    intent = new Intent(getContext(), ReservationRemoteActivity.class);
+                    startActivity(intent);
+                }
+                else {
+                    intent = new Intent(getContext(), ReservationDisableActivity.class);
+                    intent.putExtra(CommonData.KEY_CHECK_OR_TRANSFER, true);
+                    startActivity(intent);
+                }
                 break;
             case R.id.layout_transfer_apply:
                 intent = new Intent(getContext(), TransferReceiveListActivity.class);
@@ -362,9 +370,12 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
                 }
                 startActivity(intent);
                 break;
-            case R.id.layout_accepted_transfer:
-                intent = new Intent(getContext(), TransferReceiveListActivity.class);
+            case R.id.layout_initiate_remote:
+                intent = new Intent(getContext(), ReservationRemoteActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.layout_health_manager:
+                ToastUtil.toast(getContext(), "健康管理");
                 break;
             default:
                 break;

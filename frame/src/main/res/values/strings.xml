@@ -127,6 +127,7 @@
     <string name="txt_my_consulting_room">我的诊疗室</string>
     <string name="txt_initiate_check">发起服务</string>
     <string name="txt_initiate_transfer">发起转诊</string>
+    <string name="txt_initiate_remote">发起远程</string>
     <string name="txt_my_accepted_transfer">已接收转诊</string>
     <string name="txt_menu_patient">居民添加我</string>
     <string name="txt_menu_doctor">医生添加我</string>
