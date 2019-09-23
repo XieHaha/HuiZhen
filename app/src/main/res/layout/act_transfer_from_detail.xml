@@ -381,8 +381,9 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:gravity="center"
+                    android:layout_below="@id/text6"
                     android:paddingBottom="18dp"
-                    android:paddingTop="18dp">
+                    android:paddingTop="12dp">
 
                     <View
                         android:layout_width="@dimen/app_hei_line"
