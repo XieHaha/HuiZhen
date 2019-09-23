@@ -226,9 +226,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_16"
-                    android:layout_toEndOf="@id/text1"
+                    android:layout_below="@id/text1"
+                    android:layout_marginTop="12dp"
                     android:textColor="@color/color_373d4d"
-                    tools:text="医生">
+                    tools:text="">
 
                 </TextView>
 
@@ -255,13 +256,14 @@
                     android:textSize="@dimen/text_16"
                     android:textColor="@color/color_373d4d"
                     android:textStyle="bold"
-                    android:text="@string/txt_first_diagnosis"
+                    android:text="@string/txt_first_diagnosis_introduce"
                     android:paddingEnd="16dp" />
 
                 <ScrollView
                     android:id="@+id/scroll_view"
                     android:layout_width="match_parent"
-                    android:layout_toEndOf="@id/text2"
+                    android:layout_below="@id/text2"
+                    android:layout_marginTop="12dp"
                     android:layout_height="wrap_content">
 
                     <com.yht.frame.widgets.textview.JustifiedTextView
@@ -271,7 +273,7 @@
                         android:textSize="@dimen/text_16"
                         android:lineSpacingMultiplier="1.1"
                         android:textColor="@color/color_373d4d"
-                        tools:text="医生" />
+                        tools:text="" />
                 </ScrollView>
 
                 <View
@@ -305,7 +307,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_16"
-                    android:layout_toEndOf="@id/text3"
+                    android:layout_below="@id/text3"
+                    android:layout_marginTop="12dp"
                     android:textColor="@color/color_373d4d"
                     tools:text="医生">
 
@@ -342,7 +345,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_16"
-                    android:layout_toEndOf="@id/text4"
+                    android:layout_below="@id/text4"
+                    android:layout_marginTop="12dp"
                     android:textColor="@color/color_373d4d"
                     tools:text="医生">
 
@@ -379,7 +383,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_16"
-                    android:layout_toEndOf="@id/text5"
+                    android:layout_below="@id/text5"
+                    android:layout_marginTop="12dp"
                     android:textColor="@color/color_373d4d"
                     tools:text="医生">
 
@@ -388,7 +393,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/app_hei_line"
-                    android:background="@color/color_ebedf0"
+                    android:background="@color/color_ffffff"
                     android:layout_below="@id/tv_payment"
                     android:layout_marginTop="18dp" />
 
@@ -421,7 +426,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_16"
-                    android:layout_toEndOf="@id/text6"
+                    android:layout_below="@id/text6"
+                    android:layout_marginTop="12dp"
                     android:textColor="@color/color_373d4d"
                     tools:text="医生">
 
@@ -460,7 +466,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_16"
-                    android:layout_toEndOf="@id/text7"
+                    android:layout_below="@id/text7"
+                    android:layout_marginTop="12dp"
                     android:textColor="@color/color_373d4d"
                     tools:text="医生">
 
@@ -499,7 +506,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_16"
-                    android:layout_toEndOf="@id/text8"
+                    android:layout_below="@id/text8"
+                    android:layout_marginTop="12dp"
                     android:textColor="@color/color_373d4d"
                     tools:text="医生">
 
@@ -536,7 +544,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_16"
-                    android:layout_toEndOf="@id/text9"
+                    android:layout_below="@id/text9"
+                    android:layout_marginTop="12dp"
                     android:textColor="@color/color_373d4d"
                     tools:text="医生">
 
@@ -575,7 +584,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_16"
-                    android:layout_toEndOf="@id/text13"
+                    android:layout_below="@id/text13"
+                    android:layout_marginTop="12dp"
                     android:textColor="@color/color_373d4d"
                     tools:text="医生">
 
@@ -614,7 +624,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_16"
-                    android:layout_toEndOf="@id/text10"
+                    android:layout_below="@id/text10"
+                    android:layout_marginTop="12dp"
                     android:textColor="@color/color_373d4d"
                     tools:text="医生">
 
@@ -624,7 +635,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/app_hei_line"
                     android:background="@color/color_ebedf0"
-                    android:layout_below="@id/text10"
+                    android:layout_below="@id/tv_reserve_time"
                     android:layout_marginTop="18dp" />
 
             </RelativeLayout>
@@ -653,7 +664,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_16"
-                    android:layout_toEndOf="@id/text11"
+                    android:layout_below="@id/text11"
+                    android:layout_marginTop="12dp"
                     android:textColor="@color/color_373d4d"
                     tools:text="医生">
 
@@ -692,7 +704,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_16"
-                    android:layout_toEndOf="@id/text12"
+                    android:layout_below="@id/text12"
+                    android:layout_marginTop="12dp"
                     android:textColor="@color/color_373d4d"
                     tools:text="医生">
 

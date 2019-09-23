@@ -115,7 +115,7 @@ public interface MessageType {
      */
     String MESSAGE_DOCTOR_ADD_SUCCESS = "G008";
     /**
-     * XXX通过扫码成为您的患者
+     * XXX通过扫码成为您的居民
      */
     String MESSAGE_PATIENT_ADD_SUCCESS = "G009";
     /**

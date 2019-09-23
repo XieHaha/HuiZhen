@@ -290,7 +290,7 @@
                         android:textSize="@dimen/text_16"
                         android:textColor="@color/color_373d4d"
                         android:textStyle="bold"
-                        android:text="@string/txt_first_diagnosis" />
+                        android:text="@string/txt_first_diagnosis_introduce" />
 
                     <TextView
                         android:id="@+id/tv_check_diagnosis_top"
@@ -656,7 +656,7 @@
                         android:textSize="@dimen/text_16"
                         android:textColor="@color/color_373d4d"
                         android:textStyle="bold"
-                        android:text="@string/txt_first_diagnosis" />
+                        android:text="@string/txt_first_diagnosis_introduce" />
 
                     <TextView
                         android:id="@+id/tv_check_diagnosis_bottom"

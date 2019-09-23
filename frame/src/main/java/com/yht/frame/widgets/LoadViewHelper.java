@@ -21,7 +21,7 @@ public class LoadViewHelper implements View.OnClickListener {
      */
     public static final int NONE_MESSAGE = 1;
     /**
-     * 暂无患者
+     * 暂无居民
      */
     public static final int NONE_PATIENT = NONE_MESSAGE + 1;
     /**

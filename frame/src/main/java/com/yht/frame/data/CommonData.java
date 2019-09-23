@@ -169,7 +169,7 @@ public interface CommonData {
      */
     String KEY_SPLASH_IMG_URL = "key_splash_img_url";
     /**
-     * 患者列表数据更新
+     * 居民列表数据更新
      */
     String KEY_UPDATE_PATIENT_DATA = "key_update_patient_data";
     /**

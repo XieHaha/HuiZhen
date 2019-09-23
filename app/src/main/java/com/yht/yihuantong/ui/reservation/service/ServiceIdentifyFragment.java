@@ -69,7 +69,7 @@ public class ServiceIdentifyFragment extends BaseFragment
      */
     private SearchPatientAdapter searchPatientAdapter;
     /**
-     * 当前患者
+     * 当前居民
      */
     private PatientBean patientBean;
     /**
@@ -168,21 +168,21 @@ public class ServiceIdentifyFragment extends BaseFragment
     }
 
     /**
-     * 扫码后获取患者信息
+     * 扫码后获取居民信息
      */
     private void getPatientByQrId(String qrId) {
         RequestUtils.getPatientByQrId(getContext(), loginBean.getToken(), qrId, BaseData.BASE_ZERO, this);
     }
 
     /**
-     * 患者验证
+     * 居民验证
      */
     private void verifyPatient() {
         RequestUtils.verifyPatient(getContext(), loginBean.getToken(), idCard, this);
     }
 
     /**
-     * 患者搜索
+     * 居民搜索
      */
     private void searchPatient(String tag) {
         if (!TextUtils.isEmpty(tag)) {
@@ -345,7 +345,7 @@ public class ServiceIdentifyFragment extends BaseFragment
         if (requestCode == REQUEST_CODE_SCAN && data != null) {
             String content = data.getStringExtra(Constant.CODED_CONTENT);
             if (!TextUtils.isEmpty(content)) {
-                //患者、医生二维码
+                //居民、医生二维码
                 Uri uri = Uri.parse(content);
                 if (uri != null && !uri.isOpaque()) {
                     String mode = uri.getQueryParameter("t");

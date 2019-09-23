@@ -23,7 +23,7 @@ public class NotifyChangeListenerManager {
     public static class NotifyChangeListenerServer implements INotifyChangeListenerServer {
         private final String TAG = "ZYC->notify";
         /**
-         * 患者列表添加状态
+         * 居民列表添加状态
          */
         private final List<IChange<String>> mPatientListChangeListeners = new CopyOnWriteArrayList<>();
         /**
@@ -159,7 +159,7 @@ public class NotifyChangeListenerManager {
         }
 
         /**
-         * 患者添加
+         * 居民添加
          */
         public void notifyPatientListChanged(final String data) {
             synchronized (mPatientListChangeListeners) {

@@ -49,7 +49,7 @@ public class TransferReceivedFragment extends BaseFragment
     RelativeLayout layoutNoneRecord;
     private TransferReceivedAdapter transferReceivedAdapter;
     /**
-     * 已接收转诊患者
+     * 已接收转诊居民
      */
     private List<TransferDetailBean> transferBeans = new ArrayList<>();
     /**

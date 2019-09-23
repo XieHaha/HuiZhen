@@ -24,7 +24,7 @@ import static com.yht.frame.data.type.CheckOrderStatus.CHECK_ORDER_STATUS_CANCEL
 /**
  * @author 顿顿
  * @date 19/6/5 14:25
- * @des 患者订单记录
+ * @des 居民订单记录
  */
 public class PatientOrderAdapter extends BaseMultiItemQuickAdapter<PatientOrderBean, BaseViewHolder>
         implements CheckTypeStatus, PatientOrderStatus, ConsultationStatus {

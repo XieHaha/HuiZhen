@@ -8,7 +8,7 @@ import java.io.Serializable;
 /**
  * @author 顿顿
  * @date 19/8/20 14:46
- * @description 最近添加的患者
+ * @description 最近添加的居民
  */
 public class RecentPatientTitleBean extends AbstractExpandableItem<PatientBean>
         implements Serializable, MultiItemEntity {

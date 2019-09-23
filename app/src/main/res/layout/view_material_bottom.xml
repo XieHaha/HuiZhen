@@ -283,7 +283,7 @@
             android:textColor="@color/color_373d4d"
             android:textSize="@dimen/text_16"
             android:textStyle="bold"
-            android:text="@string/txt_first_diagnosis" />
+            android:text="@string/txt_first_diagnosis_introduce" />
 
         <TextView
             android:id="@+id/tv_diagnosis_clear"

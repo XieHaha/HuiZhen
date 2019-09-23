@@ -182,7 +182,7 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
     }
 
     /**
-     * 扫码后获取患者信息
+     * 扫码后获取居民信息
      */
     private void getPatientByQrId(String qrId) {
         RequestUtils.getPatientByQrId(getContext(), loginBean.getToken(), qrId, BaseData.BASE_ONE, this);
@@ -419,9 +419,9 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
                 break;
             case GET_PATIENT_BY_QR_ID:
                 PatientBean patientBean = (PatientBean)response.getData();
-                //添加成功  刷新患者列表
+                //添加成功  刷新居民列表
                 NotifyChangeListenerManager.getInstance().notifyPatientListChanged("");
-                //跳转到患者信息界面
+                //跳转到居民信息界面
                 intent = new Intent(getContext(), ChatContainerActivity.class);
                 intent.putExtra(CommonData.KEY_CHAT_ID, patientBean.getCode());
                 intent.putExtra(CommonData.KEY_CHAT_NAME, patientBean.getName());
@@ -500,13 +500,13 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
                     startActivity(intent);
                 }
                 else {
-                    //患者、医生二维码
+                    //居民、医生二维码
                     Uri uri = Uri.parse(content);
                     if (uri != null && !uri.isOpaque()) {
                         String mode = uri.getQueryParameter("t");
                         String value = uri.getQueryParameter("p");
                         if (!TextUtils.isEmpty(value) && !TextUtils.isEmpty(mode)) {
-                            //1为医生  2为患者
+                            //1为医生  2为居民
                             if (BASE_STRING_ONE_TAG.equals(mode)) {
                                 getDoctorByQrId(value);
                             }

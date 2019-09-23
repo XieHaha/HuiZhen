@@ -35,7 +35,7 @@ import butterknife.BindView;
 /**
  * @author 顿顿
  * @date 19/5/17 14:55
- * @description 标签分组下的患者
+ * @description 标签分组下的居民
  */
 public class LabelPatientActivity extends BaseActivity
         implements BaseQuickAdapter.OnItemClickListener, BaseQuickAdapter.OnItemChildClickListener {
@@ -69,7 +69,7 @@ public class LabelPatientActivity extends BaseActivity
     private Runnable mDelay;
     private LabelBean labelBean;
     /**
-     * 所有患者数据
+     * 所有居民数据
      */
     private List<PatientBean> patientBeans = new ArrayList<>();
     /**
@@ -130,7 +130,7 @@ public class LabelPatientActivity extends BaseActivity
     }
 
     /**
-     * 根据标签获取患者
+     * 根据标签获取居民
      */
     private void getPatientByLabel(long tagId) {
         RequestUtils.getPatientByLabel(this, loginBean.getToken(), tagId, this);

@@ -71,7 +71,7 @@ public interface BaseData {
      */
     int BASE_DEVICE_DEFAULT_WIDTH = 667;
     /**
-     * 单个患者拥有的最大标签数
+     * 单个居民拥有的最大标签数
      */
     int BASE_PATIENT_LABEL_NUM = 10;
     /**
@@ -87,7 +87,7 @@ public interface BaseData {
      */
     String BASE_STRING_ONE_TAG = "1";
     /**
-     * 患者 标志位
+     * 居民 标志位
      */
     String BASE_STRING_TWO_TAG = "2";
     /**

@@ -52,7 +52,7 @@ import butterknife.OnClick;
 /**
  * @author 顿顿
  * @date 19/6/27 14:17
- * @des 聊天容器界面（包含患者页面（基础信息、聊天）、医生聊天）
+ * @des 聊天容器界面（包含居民页面（基础信息、聊天）、医生聊天）
  */
 public class ChatContainerActivity extends BaseActivity implements EaseChatFragment.OnTimeLayoutClickListener {
     @BindView(R.id.tv_left)
@@ -76,7 +76,7 @@ public class ChatContainerActivity extends BaseActivity implements EaseChatFragm
      */
     private EaseChatFragment easeChatFragment;
     /**
-     * 患者信息
+     * 居民信息
      */
     private PatientInfoFragment patientInfoFragment;
     /**
@@ -273,7 +273,7 @@ public class ChatContainerActivity extends BaseActivity implements EaseChatFragm
      * 碎片初始化
      */
     private void initFragment() {
-        //患者信息
+        //居民信息
         patientInfoFragment = new PatientInfoFragment();
         patientInfoFragment.setPatientCode(chatCode);
         //在线聊天

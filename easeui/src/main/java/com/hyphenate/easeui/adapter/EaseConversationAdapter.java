@@ -176,7 +176,7 @@ public class EaseConversationAdapter extends ArrayAdapter<EMConversation> {
         if (secondarySize != 0) { holder.message.setTextSize(TypedValue.COMPLEX_UNIT_PX, secondarySize); }
         if (timeSize != 0) { holder.time.setTextSize(TypedValue.COMPLEX_UNIT_PX, timeSize); }
         String chatId = conversation.conversationId().toUpperCase();
-        //患者以H开头  医生以D开头
+        //居民以H开头  医生以D开头
         if (!TextUtils.isEmpty(chatId) && chatId.startsWith(BaseData.BASE_DOCTOR_CODE)) {
             holder.tvRole.setText(R.string.txt_doctor);
             holder.tvRole.setBackgroundResource(R.drawable.corner4_1491fc_bg);

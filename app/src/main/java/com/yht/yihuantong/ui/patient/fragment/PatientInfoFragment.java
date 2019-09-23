@@ -54,7 +54,7 @@ import butterknife.OnClick;
 /**
  * @author 顿顿
  * @date 19/5/17 14:55
- * @des 患者资料
+ * @des 居民资料
  */
 public class PatientInfoFragment extends BaseFragment
         implements BaseQuickAdapter.RequestLoadMoreListener, BaseQuickAdapter.OnItemClickListener,
@@ -74,7 +74,7 @@ public class PatientInfoFragment extends BaseFragment
     private TimeItemDecoration timeItemDecoration;
     private PatientBean patientBean;
     /**
-     * 当前患者code
+     * 当前居民code
      */
     private String patientCode;
     /**
@@ -129,14 +129,14 @@ public class PatientInfoFragment extends BaseFragment
     }
 
     /**
-     * 获取患者详情
+     * 获取居民详情
      */
     private void getPatientDetail() {
         RequestUtils.getPatientDetailByPatientCode(getContext(), patientCode, loginBean.getToken(), this);
     }
 
     /**
-     * 获取患者订单记录
+     * 获取居民订单记录
      */
     private void getPatientOrderList(boolean showLoadView) {
         RequestUtils.getPatientOrderListByPatientCode(getContext(), patientCode, loginBean.getToken(),
@@ -151,7 +151,7 @@ public class PatientInfoFragment extends BaseFragment
     }
 
     /**
-     * 查询患者是否存在未完成的转诊单
+     * 查询居民是否存在未完成的转诊单
      */
     private void getPatientExistTransfer() {
         RequestUtils.getPatientExistTransfer(getContext(), loginBean.getToken(), patientCode, this);
@@ -197,7 +197,7 @@ public class PatientInfoFragment extends BaseFragment
     }
 
     /**
-     * 患者基础数据
+     * 居民基础数据
      */
     private void initPatientBaseInfo() {
         tvName.setText(patientBean.getName());

@@ -33,7 +33,7 @@
     <string name="title_hospital_product">服务项目(%s)</string>
     <string name="title_doctor_info">医生详情</string>
     <string name="title_my_qr_code">我的二维码</string>
-    <string name="title_edit_patient_label">编辑患者标签</string>
+    <string name="title_edit_patient_label">编辑居民标签</string>
     <string name="title_recent_patient">最近添加</string>
 
     <!--公用-->
@@ -67,23 +67,23 @@
     <string name="txt_loading_again">重新加载</string>
     <string name="txt_none_network">抱歉，好像网络出问题了</string>
     <string name="txt_none_message">暂无消息</string>
-    <string name="txt_none_patient">暂无患者</string>
+    <string name="txt_none_patient">暂无居民</string>
     <string name="txt_none_doctor_friend">暂无医生好友</string>
-    <string name="txt_search_none_patient">没找到该患者</string>
+    <string name="txt_search_none_patient">没找到该居民</string>
     <string name="txt_search_none_doctor">没找到该医生好友</string>
     <string name="txt_none_recording">暂无记录</string>
     <string name="txt_none_medical_recording">暂无诊疗记录</string>
     <string name="txt_none_upgrade">功能升级</string>
     <string name="txt_none_doctor">无合作医生</string>
-    <string name="txt_none_hospital_by_reserve">暂无合作医院\n无法为患者预约服务</string>
-    <string name="txt_none_hospital_by_reserve_transfer">暂无可接诊的合作医生\n无法为患者预约转诊</string>
+    <string name="txt_none_hospital_by_reserve">暂无合作医院\n无法为居民预约服务</string>
+    <string name="txt_none_hospital_by_reserve_transfer">暂无可接诊的合作医生\n无法为居民预约转诊</string>
     <string name="txt_camera">拍照</string>
     <string name="txt_photo">从手机相册选择</string>
     <string name="txt_contact">联系我们</string>
     <string name="txt_contact_hotline">您将要拨打%s：\n%s</string>
     <string name="txt_contact_service">医助热线</string>
     <string name="txt_contact_service_phone">4000280024</string>
-    <string name="txt_contact_patient_phone">患者电话</string>
+    <string name="txt_contact_patient_phone">居民电话</string>
     <string name="txt_contact_doctor_phone">医生电话</string>
     <string name="txt_calc_num">%d/500</string>
     <string name="txt_calc_num_five">0/500</string>
@@ -93,7 +93,7 @@
     <string name="txt_no">否</string>
     <string name="txt_notice">注意事项</string>
     <string name="txt_not_required">(非必填)</string>
-    <string name="txt_doctor_phone">医生手机\n号</string>
+    <string name="txt_doctor_phone">医生手机号</string>
     <string name="txt_detail">查看详情</string>
     <string name="txt_max_num">9999+</string>
     <string name="txt_middle_num">99+</string>
@@ -118,17 +118,17 @@
     <string name="txt_message">消息</string>
     <string name="txt_worker">工作室</string>
     <string name="txt_contacts">通讯录</string>
-    <string name="txt_patient">患者</string>
+    <string name="txt_patient">居民</string>
     <string name="txt_doctor">医生</string>
-    <string name="txt_patient_hint">请输入患者姓名</string>
+    <string name="txt_patient_hint">请输入居民姓名</string>
     <string name="txt_doctor_hint">请输入医生好友姓名</string>
     <string name="txt_message_status">全部已读</string>
-    <string name="txt_my_patient">我的患者</string>
+    <string name="txt_my_patient">我的居民</string>
     <string name="txt_my_consulting_room">我的诊疗室</string>
     <string name="txt_initiate_check">发起服务</string>
     <string name="txt_initiate_transfer">发起转诊</string>
     <string name="txt_my_accepted_transfer">已接收转诊</string>
-    <string name="txt_menu_patient">患者添加我</string>
+    <string name="txt_menu_patient">居民添加我</string>
     <string name="txt_menu_doctor">医生添加我</string>
     <string name="txt_scan_hint">会珍医生版扫一扫，添加我</string>
     <string name="txt_wechat_scan_hint">微信扫一扫，添加我</string>
@@ -136,7 +136,7 @@
     <!--相机-->
     <string name="txt_camera_hint">将二维码放入框中，即可自动扫描</string>
     <string name="txt_camera_error">无法识别此二维码</string>
-    <string name="txt_camera_patient_error">请扫描【会珍】公众号中的患者二维码</string>
+    <string name="txt_camera_patient_error">请扫描【会珍】公众号中的居民二维码</string>
     <string name="txt_camera_qr">二维码</string>
     <string name="txt_camera_qr_again">重新扫描</string>
 
@@ -159,7 +159,7 @@
     <string name="txt_login_bind_phone">绑定手机号</string>
     <string name="txt_login_bind_phone_hint">根据国家法规对账号实名制的要求，进行下一步操作前，请绑定您的手机号。</string>
     <string name="txt_account_disable">账号禁用</string>
-    <string name="txt_account_disable_hint">由于多名患者举报，您的账号被禁用</string>
+    <string name="txt_account_disable_hint">由于多名居民举报，您的账号被禁用</string>
     <string name="txt_wechat_install_error">您还未安装微信，请使用手机号登录/注册</string>
 
     <!--认证-->
@@ -169,7 +169,7 @@
     <string name="txt_upload_img">上传照片</string>
     <string name="txt_upload_img_hint">请上传你的真实头像</string>
     <string name="txt_name">姓名</string>
-    <string name="txt_patient_name">患者姓名</string>
+    <string name="txt_patient_name">居民姓名</string>
     <string name="txt_name_hint">请填写本人真实姓名</string>
     <string name="txt_age">年龄</string>
     <string name="txt_age_hint">请输入真实年龄</string>
@@ -225,24 +225,24 @@
     <string name="txt_info_phone">手机号</string>
     <string name="txt_save_edit">保存本次编辑？</string>
 
-    <!--患者/医生相关-->
-    <string name="txt_patient_info">患者资料</string>
+    <!--居民/医生相关-->
+    <string name="txt_patient_info">居民资料</string>
     <string name="txt_chat_online">在线聊天</string>
     <string name="txt_chat_start">开始对话</string>
     <string name="txt_chat_time">点击结束本次对话%s</string>
     <string name="txt_recently_add">最近添加</string>
     <string name="txt_recently_add_time">添加时间：</string>
-    <string name="txt_patient_label">患者标签</string>
+    <string name="txt_patient_label">居民标签</string>
     <string name="txt_input_label_hint">请输入标签</string>
     <string name="txt_label_selected">已选标签</string>
     <string name="txt_label_all">全部标签</string>
-    <string name="txt_label_filter">通过患者标签筛选</string>
+    <string name="txt_label_filter">通过居民标签筛选</string>
     <string name="txt_no_label">暂无标签</string>
-    <string name="txt_patient_label_over">最多为患者添加10个标签</string>
+    <string name="txt_patient_label_over">最多为居民添加10个标签</string>
     <string name="txt_doctor_label_over">您的标签数已达到上限，无法再添加新标签</string>
     <string name="txt_label_title">%s&#160;(%d)</string>
     <string name="txt_label_delete_hint">删除后该标签不能恢复</string>
-    <string name="txt_patient_search_hint">请在%d名患者中搜索</string>
+    <string name="txt_patient_search_hint">请在%d名居民中搜索</string>
     <string name="txt_doctor_search_hint">请在%d名医生好友中搜索</string>
     <string name="txt_recent_today">今天&#160;(%d)</string>
     <string name="txt_recent_yesterday">昨天&#160;(%d)</string>
@@ -274,7 +274,7 @@
     <string name="txt_currency_withdraw_status">提现状态</string>
     <string name="txt_currency_withdraw_remark">备注</string>
     <string name="txt_currency_income_service_type">服务类型</string>
-    <string name="txt_currency_income_patient_name">患者姓名</string>
+    <string name="txt_currency_income_patient_name">居民姓名</string>
     <string name="txt_initiate_time">发起时间</string>
     <string name="txt_initiate_doctor">发起医生</string>
     <string name="txt_initiate_depart">发起科室</string>
@@ -316,32 +316,33 @@
     <string name="txt_report_num">(已上传%d/%d)</string>
     <string name="txt_first_doctor">初诊医生</string>
     <string name="txt_first_time">初诊时间</string>
+    <string name="txt_first_diagnosis_introduce">初步诊断及病情简介</string>
     <string name="txt_first_diagnosis">初步诊断</string>
     <string name="txt_remote_billing">远程开单</string>
     <string name="txt_remote_consultation">远程会诊</string>
     <string name="txt_remote_multi">多方会诊</string>
-    <string name="txt_contact_patient">联系患者</string>
+    <string name="txt_contact_patient">联系居民</string>
     <string name="txt_patient_name_hint">姓名必须和身份证一致</string>
-    <string name="txt_patient_id_card_hint">请填写患者身份证号码</string>
+    <string name="txt_patient_id_card_hint">请填写居民身份证号码</string>
     <string name="txt_id_card_hint">身份证号</string>
     <string name="txt_identify">确认身份</string>
     <string name="txt_material">完善资料</string>
     <string name="txt_sure_submit">确认提交</string>
     <string name="txt_past_medical_his">既往病史</string>
-    <string name="txt_past_medical_his_not">该患者否认有既往病史</string>
+    <string name="txt_past_medical_his_not">该居民否认有既往病史</string>
     <string name="txt_family_medical_his">家族病史</string>
-    <string name="txt_family_medical_his_not">该患者否认有家族病史</string>
-    <string name="txt_allergies_not">该患者否认有过敏史</string>
+    <string name="txt_family_medical_his_not">该居民否认有家族病史</string>
+    <string name="txt_allergies_not">该居民否认有过敏史</string>
     <string name="txt_allergies">过敏史</string>
-    <string name="txt_diagnosis_hint">请针对患者病情填写初步诊断结果</string>
+    <string name="txt_diagnosis_hint">请针对居民病情填写初步诊断结果</string>
     <string name="txt_camera_people">拍照确认</string>
-    <string name="txt_camera_people_hint">请按照图示，拍摄患者头像确认。</string>
-    <string name="txt_camera_people_transfer_hint">请按照图示，拍摄患者或家属头像。</string>
+    <string name="txt_camera_people_hint">请按照图示，拍摄居民头像确认。</string>
+    <string name="txt_camera_people_transfer_hint">请按照图示，拍摄居民或家属头像。</string>
     <string name="txt_self_pay">自费</string>
     <string name="txt_medicare">医保</string>
     <string name="txt_self_medicare">新农合</string>
-    <string name="txt_check_success_hint">恭喜你，提交成功。\n医院将尽快确认预约，与患者联系。</string>
-    <string name="txt_transfer_success_hint">恭喜你，提交成功。\n医院将尽快与患者联系确认预约。</string>
+    <string name="txt_check_success_hint">恭喜你，提交成功。\n医院将尽快确认预约，与居民联系。</string>
+    <string name="txt_transfer_success_hint">恭喜你，提交成功。\n医院将尽快与居民联系确认预约。</string>
     <string name="txt_look_check_detail">查看服务详情</string>
     <string name="txt_look_transfer_detail">查看转诊详情</string>
     <string name="txt_check_again">继续预约服务</string>
@@ -350,7 +351,7 @@
     <string name="txt_add_hospital_check">添加同院服务项目</string>
     <string name="txt_reserve_transfer">预约转诊</string>
     <string name="txt_bilateral_transfer">双向转诊</string>
-    <string name="txt_transfer_receiver">接收患者</string>
+    <string name="txt_transfer_receiver">接收居民</string>
     <string name="txt_transfer_purpose">转诊目的</string>
     <string name="txt_transfer_purpose_hint">请输入转诊目的</string>
     <string name="txt_transfer_again">重新转诊</string>
@@ -361,7 +362,7 @@
     <string name="txt_contact_transfer_doctor">联系转诊医生</string>
     <string name="txt_transfer_time">转诊时间</string>
     <string name="txt_transfer_type">转诊类型</string>
-    <string name="txt_reserve_time">预约就诊\n时间</string>
+    <string name="txt_reserve_time">预约就诊时间</string>
     <string name="txt_transfer_up">上转</string>
     <string name="txt_transfer_down">下转</string>
     <string name="txt_family_require">家属要求</string>
@@ -372,13 +373,13 @@
     <string name="txt_select_hospital_depart">请选择医院科室</string>
     <string name="txt_reset_hospital_depart">重置医院科室</string>
     <string name="txt_identity_information_error">姓名和身份证号码不符，如有疑问请点击右上角"联系我们"</string>
-    <string name="txt_patient_exist_transfer">该患者还有未完成的转诊单，不能发起转诊。</string>
+    <string name="txt_patient_exist_transfer">该居民还有未完成的转诊单，不能发起转诊。</string>
     <string name="txt_reject_transfer_reason_hint">请输入拒绝接诊理由</string>
     <string name="txt_cancel_transfer_reason_hint">请输入取消转诊理由</string>
     <string name="txt_sure_cancel">确认取消</string>
     <string name="txt_think_again">再想想</string>
     <string name="txt_open_other_report">查看相关报告</string>
-    <string name="txt_scan_patient_hint">扫描患者二维码，快速录入患者信息</string>
+    <string name="txt_scan_patient_hint">扫描居民二维码，快速录入居民信息</string>
 
     <!--远程相关-->
     <string name="txt_condition_description">病情描述</string>
@@ -392,12 +393,12 @@
     <string name="txt_wait">待处理</string>
     <string name="txt_reserve_visit_time">预约就诊时间</string>
     <string name="txt_edit_transfer">变更接诊信息</string>
-    <string name="txt_edit_transfer_hint">请输入患者就诊的注意事项</string>
+    <string name="txt_edit_transfer_hint">请输入居民就诊的注意事项</string>
     <string name="txt_season">转诊说明</string>
     <string name="txt_season_hint">请输入转诊说明</string>
 
     <!--消息-->
-    <string name="txt_colon_patient">患者：</string>
+    <string name="txt_colon_patient">居民：</string>
     <string name="txt_colon_check_hospital">服务医院：</string>
     <string name="txt_colon_check_project">服务项目：</string>
     <string name="txt_report_num_hint">你有%d个检查报告可查看</string>

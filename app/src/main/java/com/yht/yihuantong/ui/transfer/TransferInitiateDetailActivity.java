@@ -278,7 +278,7 @@ public class TransferInitiateDetailActivity extends BaseActivity
     }
 
     /**
-     * 查询患者是否存在未完成的转诊单
+     * 查询居民是否存在未完成的转诊单
      */
     private void getPatientExistTransfer() {
         if (transferBean != null) {

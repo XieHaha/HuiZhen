@@ -176,7 +176,7 @@ public class ServiceMaterialFragment extends BaseFragment implements View.OnFocu
     }
 
     /**
-     * 涉及到数据回填逻辑，如果更改了患者，需要清空原有已填写数据
+     * 涉及到数据回填逻辑，如果更改了居民，需要清空原有已填写数据
      */
     private void clearAllCheckData(ReserveCheckBean bean) {
         if (reserveCheckBean == null || bean == null) {
@@ -189,7 +189,7 @@ public class ServiceMaterialFragment extends BaseFragment implements View.OnFocu
                 clearAll = false;
             }
             else {
-                //有不相等的 说明患者已经更改，需要清除原有已填写数据
+                //有不相等的 说明居民已经更改，需要清除原有已填写数据
                 clearAll = true;
             }
         }

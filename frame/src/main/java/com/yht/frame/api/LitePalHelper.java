@@ -30,7 +30,7 @@ public class LitePalHelper<T extends DataSupport> {
     }
 
     /**
-     * 模糊查询 患者
+     * 模糊查询 居民
      */
     public static List<PatientBean> findPatients(String key) {
         return DataSupport.where("name like ?", "%" + key + "%").find(PatientBean.class);

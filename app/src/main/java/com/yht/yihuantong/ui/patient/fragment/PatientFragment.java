@@ -48,7 +48,7 @@ import butterknife.BindView;
 /**
  * @author 顿顿
  * @date 19/5/17 14:55
- * @des 患者列表
+ * @des 居民列表
  */
 public class PatientFragment extends BaseFragment
         implements BaseQuickAdapter.OnItemClickListener, BaseQuickAdapter.OnItemChildClickListener,
@@ -91,11 +91,11 @@ public class PatientFragment extends BaseFragment
      */
     private Runnable mDelay;
     /**
-     * 所有患者数据
+     * 所有居民数据
      */
     private List<PatientBean> patientBeans = new ArrayList<>();
     /**
-     * 患者数据主动更新
+     * 居民数据主动更新
      */
     private IChange<String> patientDataUpdate = data -> getPatients();
 
@@ -138,7 +138,7 @@ public class PatientFragment extends BaseFragment
     }
 
     /**
-     * 患者数据处理
+     * 居民数据处理
      */
     private void initPatientData() {
         //是否有缓存
@@ -154,7 +154,7 @@ public class PatientFragment extends BaseFragment
     @Override
     public void initListener() {
         super.initListener();
-        //注册患者状态监听
+        //注册居民状态监听
         iNotifyChangeListenerServer.registerPatientListChangeListener(patientDataUpdate, RegisterType.REGISTER);
     }
 
@@ -162,7 +162,7 @@ public class PatientFragment extends BaseFragment
      * 适配器
      */
     private void initAdapter() {
-        //患者列表
+        //居民列表
         patientAdapter = new PatientAdapter(R.layout.item_patient, patientBeans);
         patientAdapter.setOnItemClickListener(this);
         patientAdapter.setOnItemChildClickListener(this);
@@ -420,7 +420,7 @@ public class PatientFragment extends BaseFragment
     @Override
     public void onDestroy() {
         super.onDestroy();
-        //注销患者状态监听
+        //注销居民状态监听
         iNotifyChangeListenerServer.registerPatientListChangeListener(patientDataUpdate, RegisterType.UNREGISTER);
     }
 }

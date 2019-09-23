@@ -107,7 +107,7 @@ public class MainActivity extends BaseActivity
      */
     private WorkerFragment workerFragment;
     /**
-     * 患者碎片
+     * 居民碎片
      */
     private FriendsFragment friendsFragment;
     /**
@@ -489,7 +489,7 @@ public class MainActivity extends BaseActivity
         messageFragment.setOnMessageUpdateListener(this);
         //工作室
         workerFragment = new WorkerFragment();
-        //患者列表
+        //居民列表
         friendsFragment = new FriendsFragment();
         List<Fragment> fragmentList = new ArrayList<>();
         fragmentList.add(messageFragment);

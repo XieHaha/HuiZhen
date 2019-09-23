@@ -49,7 +49,7 @@ public class TransferWaitFragment extends BaseFragment
     RelativeLayout layoutNoneRecord;
     private TransferWaitAdapter transferWaitAdapter;
     /**
-     * 待处理转诊患者订单
+     * 待处理转诊居民订单
      */
     private List<TransferDetailBean> transferBeans = new ArrayList<>();
     /**

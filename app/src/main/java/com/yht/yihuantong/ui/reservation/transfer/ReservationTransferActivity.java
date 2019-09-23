@@ -82,7 +82,7 @@ public class ReservationTransferActivity extends BaseActivity implements OnTrans
      */
     private TransferSubmitFragment submitTransferFragment;
     /**
-     * 患者回填数据
+     * 居民回填数据
      */
     private PatientBean patientBean;
     /**
@@ -113,7 +113,7 @@ public class ReservationTransferActivity extends BaseActivity implements OnTrans
         super.initView(savedInstanceState);
         fragmentManager = getSupportFragmentManager();
         if (getIntent() != null) {
-            //患者详情页面回传数据
+            //居民详情页面回传数据
             patientBean = (PatientBean)getIntent().getSerializableExtra(CommonData.KEY_PATIENT_BEAN);
             //转诊详情页面回传数据(重新转诊)
             transferBean = (TransferDetailBean)getIntent().getSerializableExtra(CommonData.KEY_TRANSFER_ORDER_BEAN);
@@ -137,7 +137,7 @@ public class ReservationTransferActivity extends BaseActivity implements OnTrans
     }
 
     /**
-     * 患者验证
+     * 居民验证
      * (重新转诊，需要校验用户)
      */
     private void verifyPatient() {
@@ -159,13 +159,13 @@ public class ReservationTransferActivity extends BaseActivity implements OnTrans
     }
 
     /**
-     * 已有数据回填（包括患者基本数据或者订单数据）
+     * 已有数据回填（包括居民基本数据或者订单数据）
      * 返回true  表示有数据需要回填
      */
     private boolean hasHistoryData() {
         if (patientBean != null) {
             initPatientBaseData();
-            //直接进入到第二步 或者在患者页面预约转诊
+            //直接进入到第二步 或者在居民页面预约转诊
             tabReservationLicenseView();
             return true;
         }
@@ -179,7 +179,7 @@ public class ReservationTransferActivity extends BaseActivity implements OnTrans
     }
 
     /**
-     * 患者基本数据回填
+     * 居民基本数据回填
      */
     private void initPatientBaseData() {
         //转诊 数据回填
@@ -194,7 +194,7 @@ public class ReservationTransferActivity extends BaseActivity implements OnTrans
         reverseTransferBean.setFamilyHistory(patientBean.getFamily());
         reverseTransferBean.setAllergyHistory(patientBean.getAllergy());
         reverseTransferBean.setIsBind(patientBean.getIsBind());
-        //给个默认值 防止回填数据冲突（区分转诊订单详情、患者的个人页面）
+        //给个默认值 防止回填数据冲突（区分转诊订单详情、居民的个人页面）
         reverseTransferBean.setTransferType(-1);
         reverseTransferBean.setPayType(-1);
     }
@@ -203,7 +203,7 @@ public class ReservationTransferActivity extends BaseActivity implements OnTrans
      * 订单数据回填
      */
     private void initTransferOrderData(PatientBean bean) {
-        //数据回填 患者信息
+        //数据回填 居民信息
         reverseTransferBean = new ReserveTransferBean();
         reverseTransferBean.setPatientName(transferBean.getPatientName());
         reverseTransferBean.setPatientIdCardNo(transferBean.getPatientIdCardNo());

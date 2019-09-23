@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * 患者
+ * 居民
  *
  * @author dundun
  */
@@ -35,7 +35,7 @@ public class PatientBean extends DataSupport implements Serializable, MultiItemE
      */
     private String addTime;
     /**
-     * 患者标签
+     * 居民标签
      */
     private ArrayList<String> tagList;
 

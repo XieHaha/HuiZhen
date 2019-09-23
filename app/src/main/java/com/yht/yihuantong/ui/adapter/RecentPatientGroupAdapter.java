@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * @author 顿顿
  * @date 19/6/5 14:25
- * @description 最近添加的患者
+ * @description 最近添加的居民
  */
 public class RecentPatientGroupAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity, BaseViewHolder>
         implements BaseData {

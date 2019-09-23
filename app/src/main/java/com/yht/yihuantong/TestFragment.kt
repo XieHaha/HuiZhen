@@ -135,7 +135,7 @@
 //    }
 //
 //    /**
-//     * 扫码后获取患者信息
+//     * 扫码后获取居民信息
 //     */
 //    private fun getPatientByQrId(qrId: String) {
 //        RequestUtils.getPatientByQrId(context, loginBean.token, qrId, BaseData.BASE_ONE, this)
@@ -351,9 +351,9 @@
 //            }
 //            Tasks.GET_PATIENT_BY_QR_ID -> {
 //                val patientBean = response.getData() as PatientBean
-//                //添加成功  刷新患者列表
+//                //添加成功  刷新居民列表
 //                NotifyChangeListenerManager.getInstance().notifyPatientListChanged("")
-//                //跳转到患者信息界面
+//                //跳转到居民信息界面
 //                intent = Intent(context, ChatContainerActivity::class.java)
 //                intent.putExtra(CommonData.KEY_CHAT_ID, patientBean.code)
 //                intent.putExtra(CommonData.KEY_CHAT_NAME, patientBean.name)
@@ -417,13 +417,13 @@
 //                    intent.putExtra(CommonData.KEY_PUBLIC_STRING, content)
 //                    startActivity(intent)
 //                } else {
-//                    //患者、医生二维码
+//                    //居民、医生二维码
 //                    val uri = Uri.parse(content)
 //                    if (uri != null && !uri.isOpaque) {
 //                        val mode = uri.getQueryParameter("t")
 //                        val value = uri.getQueryParameter("p")
 //                        if (!TextUtils.isEmpty(value) && !TextUtils.isEmpty(mode)) {
-//                            //1为医生  2为患者
+//                            //1为医生  2为居民
 //                            if (BaseData.BASE_STRING_ONE_TAG == mode) {
 //                                getDoctorByQrId(value)
 //                            } else {

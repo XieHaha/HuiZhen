@@ -24,7 +24,7 @@
             android:id="@+id/tv_patient_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="患者姓名"
+            tools:text="居民姓名"
             android:textColor="@color/color_a1a8b3"
             android:singleLine="true"
             android:ellipsize="end"

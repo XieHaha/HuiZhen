@@ -414,7 +414,7 @@ public interface ApiUrlManager {
             @QueryMap Map<String, Integer> info);
 
     /**
-     * 根据医生编码获取患者列表信息
+     * 根据医生编码获取居民列表信息
      *
      * @param info  map参数
      * @param token token
@@ -434,7 +434,7 @@ public interface ApiUrlManager {
     Observable<BaseResponse<List<DoctorBean>>> getDoctorListByDoctorCode(@Header("token") String token);
 
     /**
-     * 根据患者编码获取患者信息
+     * 根据居民编码获取居民信息
      *
      * @param info  map参数
      * @param token token
@@ -445,7 +445,7 @@ public interface ApiUrlManager {
             @Query("code") String info);
 
     /**
-     * 根据患者编码获取患者订单记录
+     * 根据居民编码获取居民订单记录
      *
      * @param info  map参数
      * @param token token
@@ -456,7 +456,7 @@ public interface ApiUrlManager {
             @QueryMap Map<String, Object> info);
 
     /**
-     * 患者验证（根据身份证号、姓名验证是否匹配）
+     * 居民验证（根据身份证号、姓名验证是否匹配）
      *
      * @param info  map参数
      * @param token token
@@ -467,7 +467,7 @@ public interface ApiUrlManager {
             @QueryMap Map<String, String> info);
 
     /**
-     * 查询患者是否存在未完成的转诊单
+     * 查询居民是否存在未完成的转诊单
      *
      * @param info  map参数
      * @param token token
@@ -734,7 +734,7 @@ public interface ApiUrlManager {
             @Path("patientCode") String patientCode);
 
     /**
-     * 保存患者标签
+     * 保存居民标签
      *
      * @param info  map参数
      * @param token token
@@ -744,7 +744,7 @@ public interface ApiUrlManager {
     Observable<BaseResponse<String>> savePatientLabel(@Header("token") String token, @Body Map<String, Object> info);
 
     /**
-     * 获取患者标签
+     * 获取居民标签
      *
      * @param info  map参数
      * @param token token
@@ -774,7 +774,7 @@ public interface ApiUrlManager {
     Observable<BaseResponse<List<LabelBean>>> getExistLabel(@Header("token") String token);
 
     /**
-     * 根据标签获取患者
+     * 根据标签获取居民
      *
      * @param tagId tagId
      * @param token token
@@ -785,7 +785,7 @@ public interface ApiUrlManager {
             @Path("tagId") long tagId);
 
     /**
-     * 获取最近添加的患者
+     * 获取最近添加的居民
      *
      * @param token token
      * @return 返回值
@@ -827,7 +827,7 @@ public interface ApiUrlManager {
             @Query("orderNo") String orderNo);
 
     /**
-     * 通过扫码添加患者 查询患者信息
+     * 通过扫码添加居民 查询居民信息
      *
      * @param info  map参数
      * @param token token

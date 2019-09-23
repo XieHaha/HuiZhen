@@ -76,7 +76,7 @@ public class FriendsFragment extends BaseFragment implements OnSearchListener, T
     @BindView(R.id.layout_all)
     LinearLayout layoutAll;
     /**
-     * 患者列表
+     * 居民列表
      */
     private PatientFragment patientFragment;
     /**
@@ -88,7 +88,7 @@ public class FriendsFragment extends BaseFragment implements OnSearchListener, T
      */
     private List<LabelBean> labelBeans = new ArrayList<>();
     /**
-     * 搜索源  1为患者  2为医生
+     * 搜索源  1为居民  2为医生
      */
     private int searchSource = -1;
 
@@ -224,7 +224,7 @@ public class FriendsFragment extends BaseFragment implements OnSearchListener, T
      * 碎片初始化
      */
     private void initFragment() {
-        //患者列表
+        //居民列表
         patientFragment = new PatientFragment();
         patientFragment.setOnSearchListener(this);
         //医生列表

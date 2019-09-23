@@ -69,7 +69,7 @@ public class EditLabelActivity extends BaseActivity
      */
     private SearchLabelAdapter searchLabelAdapter;
     /**
-     * 当前患者
+     * 当前居民
      */
     private String patientCode;
     /**
@@ -246,7 +246,7 @@ public class EditLabelActivity extends BaseActivity
     }
 
     /**
-     * 患者搜索
+     * 居民搜索
      */
     private void searchLabel(String tag) {
         if (!TextUtils.isEmpty(tag)) {
@@ -357,7 +357,7 @@ public class EditLabelActivity extends BaseActivity
             }
         }
         else {
-            //判断患者标签是否达到上限  患者最多拥有10个标签
+            //判断居民标签是否达到上限  居民最多拥有10个标签
             if (selectedLabelList.size() >= BaseData.BASE_PATIENT_LABEL_NUM) {
                 ToastUtil.toast(this, R.string.txt_patient_label_over);
                 updateAllLabelSelectStatus();
@@ -419,7 +419,7 @@ public class EditLabelActivity extends BaseActivity
                     return;
                 }
             }
-            //患者最多拥有10个标签
+            //居民最多拥有10个标签
             if (selectedLabelList.size() >= BaseData.BASE_PATIENT_LABEL_NUM) {
                 ToastUtil.toast(this, R.string.txt_patient_label_over);
                 return;
@@ -571,7 +571,7 @@ public class EditLabelActivity extends BaseActivity
                 initLabelData();
                 break;
             case SAVE_PATIENT_LABEL:
-                //标签保存成功后 刷新患者列表
+                //标签保存成功后 刷新居民列表
                 NotifyChangeListenerManager.getInstance().notifyPatientListChanged("");
                 ToastUtil.toast(this, response.getMsg());
                 setResult(RESULT_OK);

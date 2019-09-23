@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * @author 顿顿
  * @date 19/6/5 14:25
- * @des 患者适配器
+ * @des 居民适配器
  */
 public class PatientAdapter extends BaseQuickAdapter<PatientBean, BaseViewHolder> {
     public PatientAdapter(int layoutResId, @Nullable List<PatientBean> data) {

@@ -190,7 +190,7 @@ public class TransferEditActivity extends BaseActivity {
         super.onResponseSuccess(task, response);
         switch (task) {
             case RECEIVE_RESERVE_TRANSFER_ORDER:
-                //接诊成功  刷新患者列表数据
+                //接诊成功  刷新居民列表数据
                 NotifyChangeListenerManager.getInstance().notifyPatientListChanged("");
                 //通知刷新
                 setResult(RESULT_OK);

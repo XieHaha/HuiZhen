@@ -7,7 +7,7 @@ import java.util.ArrayList;
 /**
  * @author 顿顿
  * @date 19/6/29 10:57
- * @des 患者订单 检查 转诊 远程
+ * @des 居民订单 检查 转诊 远程
  */
 public class PatientOrderBean implements MultiItemEntity {
     /**

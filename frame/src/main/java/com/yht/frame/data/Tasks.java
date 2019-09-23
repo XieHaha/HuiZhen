@@ -138,7 +138,7 @@ WE_CHAT_LOGIN,
      */
     GET_DOCTOR_INCOME_BY_MONTH_LIST,
     /**
-     * 根据医生编码获取患者列表信息
+     * 根据医生编码获取居民列表信息
      */
     GET_PATIENT_LIST_BY_DOCTOR_CODE,
     /**
@@ -146,19 +146,19 @@ WE_CHAT_LOGIN,
      */
     GET_DOCTOR_LIST,
     /**
-     * 根据患者编码获取患者信息
+     * 根据居民编码获取居民信息
      */
     GET_PATIENT_DETAIL_BY_PATIENT_CODE,
     /**
-     * 根据患者编码获取患者订单列表（远程、检查、转诊）
+     * 根据居民编码获取居民订单列表（远程、检查、转诊）
      */
     GET_PATIENT_ORDER_LIST_BY_PATIENT_CODE,
     /**
-     * 患者身份校验
+     * 居民身份校验
      */
     VERIFY_PATIENT,
     /**
-     * 查询患者是否存在未完成的转诊单
+     * 查询居民是否存在未完成的转诊单
      */
     GET_PATIENT_EXIST_TRANSFER,
     /**
@@ -258,27 +258,27 @@ WE_CHAT_LOGIN,
      */
     GET_LABEL,
     /**
-     * 保存患者标签
+     * 保存居民标签
      */
     SAVE_PATIENT_LABEL,
     /**
-     * 获取患者标签
+     * 获取居民标签
      */
     GET_PATIENT_LABEL,
     /**
-     * 删除患者标签
+     * 删除居民标签
      */
     DELETE_PATIENT_LABEL,
     /**
-     * 获取已存在患者标签
+     * 获取已存在居民标签
      */
     GET_EXIST_LABEL,
     /**
-     * 根据标签获取患者
+     * 根据标签获取居民
      */
     GET_PATIENT_BY_LABEL,
     /**
-     * 获取最近添加的患者
+     * 获取最近添加的居民
      */
     GET_RECENT_ADD_PATIENT,
     /**
@@ -294,7 +294,7 @@ WE_CHAT_LOGIN,
      */
     GET_REMOTE_DETAIL,
     /**
-     * 扫码获取患者信息
+     * 扫码获取居民信息
      */
     GET_PATIENT_BY_QR_ID,
     /**

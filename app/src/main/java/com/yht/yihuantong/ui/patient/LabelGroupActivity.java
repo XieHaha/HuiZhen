@@ -36,7 +36,7 @@ import butterknife.BindView;
 /**
  * @author 顿顿
  * @date 19/6/13 15:26
- * @description 患者标签
+ * @description 居民标签
  */
 public class LabelGroupActivity extends BaseActivity
         implements BaseQuickAdapter.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener,
@@ -194,7 +194,7 @@ public class LabelGroupActivity extends BaseActivity
                 ToastUtil.toast(this, response.getMsg());
                 labelBeans.remove(labelBean);
                 patientLabelAdapter.notifyDataSetChanged();
-                //标签删除成功后 刷新患者列表
+                //标签删除成功后 刷新居民列表
                 NotifyChangeListenerManager.getInstance().notifyPatientListChanged("");
                 break;
             default:

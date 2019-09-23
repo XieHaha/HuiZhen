@@ -81,7 +81,7 @@ public class ReservationServiceActivity extends BaseActivity implements OnCheckL
      */
     private ServiceSubmitFragment submitCheckFragment;
     /**
-     * 患者回填数据
+     * 居民回填数据
      */
     private PatientBean patientBean;
     /**
@@ -108,7 +108,7 @@ public class ReservationServiceActivity extends BaseActivity implements OnCheckL
         super.initView(savedInstanceState);
         fragmentManager = getSupportFragmentManager();
         if (getIntent() != null) {
-            //患者详情页面回传数据
+            //居民详情页面回传数据
             patientBean = (PatientBean)getIntent().getSerializableExtra(CommonData.KEY_PATIENT_BEAN);
         }
         initTitlePage();
@@ -148,7 +148,7 @@ public class ReservationServiceActivity extends BaseActivity implements OnCheckL
     }
 
     /**
-     * 已有数据回填（包括患者基本数据或者订单数据）
+     * 已有数据回填（包括居民基本数据或者订单数据）
      * 返回true  表示有数据需要回填
      */
     private boolean hasHistoryData() {
@@ -162,7 +162,7 @@ public class ReservationServiceActivity extends BaseActivity implements OnCheckL
     }
 
     /**
-     * 患者基本数据回填
+     * 居民基本数据回填
      */
     private void initPatientBaseData() {
         //预约检查

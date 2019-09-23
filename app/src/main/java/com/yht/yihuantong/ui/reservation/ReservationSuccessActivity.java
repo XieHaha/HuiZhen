@@ -58,7 +58,7 @@ public class ReservationSuccessActivity extends BaseActivity {
             isTransfer = getIntent().getBooleanExtra(CommonData.KEY_CHECK_OR_TRANSFER, false);
             orderNo = getIntent().getStringExtra(CommonData.KEY_ORDER_ID);
         }
-        //预约订单成功  刷新患者列表数据
+        //预约订单成功  刷新居民列表数据
         NotifyChangeListenerManager.getInstance().notifyPatientListChanged("");
         initPage();
     }

@@ -122,7 +122,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_16"
-                    android:layout_toEndOf="@id/text"
+                    android:layout_below="@id/text"
+                    android:layout_marginTop="12dp"
                     android:textColor="@color/color_373d4d"
                     tools:text="">
 
@@ -159,7 +160,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_16"
-                    android:layout_toEndOf="@id/text_phone"
+                    android:layout_below="@id/text_phone"
+                    android:layout_marginTop="12dp"
                     android:textColor="@color/color_373d4d"
                     tools:text="" />
 
@@ -193,7 +195,8 @@
                 <ScrollView
                     android:id="@+id/scroll_view"
                     android:layout_width="match_parent"
-                    android:layout_toEndOf="@id/text_past"
+                    android:layout_below="@id/text_past"
+                    android:layout_marginTop="12dp"
                     android:layout_height="wrap_content">
 
                     <com.yht.frame.widgets.textview.JustifiedTextView
@@ -236,7 +239,8 @@
                 <ScrollView
                     android:id="@+id/scroll_view1"
                     android:layout_width="match_parent"
-                    android:layout_toEndOf="@id/text_family"
+                    android:layout_below="@id/text_family"
+                    android:layout_marginTop="12dp"
                     android:layout_height="wrap_content">
 
                     <com.yht.frame.widgets.textview.JustifiedTextView
@@ -279,7 +283,8 @@
                 <ScrollView
                     android:id="@+id/scroll_view2"
                     android:layout_width="match_parent"
-                    android:layout_toEndOf="@id/text_allergies"
+                    android:layout_below="@id/text_allergies"
+                    android:layout_marginTop="12dp"
                     android:layout_height="wrap_content">
 
                     <com.yht.frame.widgets.textview.JustifiedTextView
@@ -329,7 +334,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_16"
-                    android:layout_toEndOf="@id/text1"
+                    android:layout_below="@id/text1"
+                    android:layout_marginTop="12dp"
                     android:textColor="@color/color_373d4d"
                     tools:text="" />
 
@@ -364,10 +370,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_16"
-                    android:layout_toEndOf="@id/text6"
-                    android:layout_marginTop="18dp"
+                    android:layout_below="@id/text6"
+                    android:layout_marginTop="12dp"
                     android:textColor="@color/color_373d4d"
-                    tools:text="" />
+                    tools:text="医生姓名" />
 
                 <LinearLayout
                     android:id="@+id/layout_call"
@@ -395,7 +401,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/app_hei_line"
                     android:background="@color/color_ebedf0"
-                    android:layout_below="@id/layout_call" />
+                    android:layout_marginTop="18dp"
+                    android:layout_below="@id/tv_receiving_doctor" />
 
             </RelativeLayout>
 
@@ -421,10 +428,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_16"
-                    android:layout_toEndOf="@id/text_7"
+                    android:layout_below="@id/text_7"
+                    android:layout_marginTop="12dp"
                     android:textColor="@color/color_373d4d"
                     tools:text="" />
-
 
                 <View
                     android:layout_width="match_parent"
@@ -457,7 +464,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_16"
-                    android:layout_toEndOf="@id/text_8"
+                    android:layout_below="@id/text_8"
+                    android:layout_marginTop="12dp"
                     android:textColor="@color/color_373d4d"
                     tools:text="" />
 
@@ -495,7 +503,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_16"
-                    android:layout_toEndOf="@id/text_81"
+                    android:layout_below="@id/text_81"
+                    android:layout_marginTop="12dp"
                     android:textColor="@color/color_373d4d"
                     tools:text="" />
 
@@ -504,7 +513,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/app_hei_line"
                     android:background="@color/color_ebedf0"
-                    android:layout_below="@id/text_81"
+                    android:layout_below="@id/tv_doctor_phone"
                     android:layout_marginTop="18dp" />
 
             </RelativeLayout>
@@ -531,7 +540,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_16"
-                    android:layout_toEndOf="@id/text3"
+                    android:layout_below="@id/text3"
+                    android:layout_marginTop="12dp"
                     android:textColor="@color/color_373d4d"
                     tools:text="" />
 
@@ -567,7 +577,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_16"
-                    android:layout_toEndOf="@id/text4"
+                    android:layout_below="@id/text4"
+                    android:layout_marginTop="12dp"
                     android:textColor="@color/color_373d4d"
                     tools:text="" />
 
@@ -603,7 +614,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_16"
-                    android:layout_toEndOf="@id/text5"
+                    android:layout_below="@id/text5"
+                    android:layout_marginTop="12dp"
                     android:textColor="@color/color_373d4d"
                     tools:text="" />
 
@@ -631,14 +643,15 @@
                     android:textSize="@dimen/text_16"
                     android:textColor="@color/color_373d4d"
                     android:textStyle="bold"
-                    android:text="@string/txt_first_diagnosis"
+                    android:text="@string/txt_first_diagnosis_introduce"
                     android:paddingEnd="16dp" />
 
 
                 <ScrollView
                     android:id="@+id/scroll_view3"
                     android:layout_width="match_parent"
-                    android:layout_toEndOf="@id/text2"
+                    android:layout_below="@id/text2"
+                    android:layout_marginTop="12dp"
                     android:layout_height="wrap_content">
 
                     <com.yht.frame.widgets.textview.JustifiedTextView
@@ -688,7 +701,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_16"
-                    android:layout_toEndOf="@id/text9"
+                    android:layout_below="@id/text9"
+                    android:layout_marginTop="12dp"
                     android:textColor="@color/color_373d4d"
                     tools:text="" />
 
@@ -726,7 +740,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_16"
-                    android:layout_toEndOf="@id/text19"
+                    android:layout_below="@id/text19"
+                    android:layout_marginTop="12dp"
                     android:textColor="@color/color_373d4d"
                     tools:text="" />
 
@@ -763,7 +778,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_16"
-                    android:layout_toEndOf="@id/text15"
+                    android:layout_below="@id/text15"
+                    android:layout_marginTop="12dp"
                     android:textColor="@color/color_373d4d"
                     tools:text="" />
 
@@ -800,7 +816,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_16"
-                    android:layout_toEndOf="@id/text7"
+                    android:layout_below="@id/text7"
+                    android:layout_marginTop="12dp"
                     android:textColor="@color/color_373d4d"
                     tools:text="" />
 
@@ -838,7 +855,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_16"
-                    android:layout_toEndOf="@id/text8"
+                    android:layout_below="@id/text8"
+                    android:layout_marginTop="12dp"
                     android:textColor="@color/color_373d4d"
                     tools:text="" />
 
@@ -876,7 +894,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_16"
-                    android:layout_toEndOf="@id/text10"
+                    android:layout_below="@id/text10"
+                    android:layout_marginTop="12dp"
                     android:textColor="@color/color_373d4d"
                     tools:text="" />
 
@@ -885,7 +904,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/app_hei_line"
                     android:background="@color/color_ebedf0"
-                    android:layout_below="@id/text10"
+                    android:layout_below="@id/tv_reserve_time"
                     android:layout_marginTop="18dp" />
 
             </RelativeLayout>
@@ -914,7 +933,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_16"
-                    android:layout_toEndOf="@id/text12"
+                    android:layout_below="@id/text12"
+                    android:layout_marginTop="12dp"
                     android:textColor="@color/color_373d4d"
                     tools:text="" />
 

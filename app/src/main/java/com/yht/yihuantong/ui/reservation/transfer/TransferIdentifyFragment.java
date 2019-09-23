@@ -69,7 +69,7 @@ public class TransferIdentifyFragment extends BaseFragment
      */
     private SearchPatientAdapter searchPatientAdapter;
     /**
-     * 当前患者
+     * 当前居民
      */
     private PatientBean patientBean;
     /**
@@ -168,28 +168,28 @@ public class TransferIdentifyFragment extends BaseFragment
     }
 
     /**
-     * 扫码后获取患者信息
+     * 扫码后获取居民信息
      */
     private void getPatientByQrId(String qrId) {
         RequestUtils.getPatientByQrId(getContext(), loginBean.getToken(), qrId, BaseData.BASE_ZERO, this);
     }
 
     /**
-     * 患者验证
+     * 居民验证
      */
     private void verifyPatient() {
         RequestUtils.verifyPatient(getContext(), loginBean.getToken(), idCard, this);
     }
 
     /**
-     * 查询患者是否存在未完成的转诊单
+     * 查询居民是否存在未完成的转诊单
      */
     private void getPatientExistTransfer() {
         RequestUtils.getPatientExistTransfer(getContext(), loginBean.getToken(), patientBean.getCode(), this);
     }
 
     /**
-     * 患者搜索
+     * 居民搜索
      */
     private void searchPatient(String tag) {
         if (!TextUtils.isEmpty(tag)) {
@@ -320,7 +320,7 @@ public class TransferIdentifyFragment extends BaseFragment
                         ToastUtil.toast(getContext(), R.string.txt_identity_information_error);
                     }
                     else {
-                        //校验患者是否有存在的待处理转诊单
+                        //校验居民是否有存在的待处理转诊单
                         getPatientExistTransfer();
                     }
                 }
@@ -362,7 +362,7 @@ public class TransferIdentifyFragment extends BaseFragment
         if (requestCode == REQUEST_CODE_SCAN && data != null) {
             String content = data.getStringExtra(Constant.CODED_CONTENT);
             if (!TextUtils.isEmpty(content)) {
-                //患者、医生二维码
+                //居民、医生二维码
                 Uri uri = Uri.parse(content);
                 if (uri != null && !uri.isOpaque()) {
                     String mode = uri.getQueryParameter("t");

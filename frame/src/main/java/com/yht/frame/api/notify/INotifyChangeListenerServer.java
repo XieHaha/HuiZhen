@@ -8,7 +8,7 @@ import android.support.annotation.NonNull;
  */
 public interface INotifyChangeListenerServer {
     /**
-     * 患者状态监听
+     * 居民状态监听
      *
      * @param listener     消息状态监听器
      * @param registerType 注册类型

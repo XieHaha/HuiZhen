@@ -27,14 +27,14 @@ import butterknife.BindView;
 /**
  * @author 顿顿
  * @date 19/6/13 15:26
- * @description 最近添加的患者
+ * @description 最近添加的居民
  */
 public class RecentPatientGroupActivity extends BaseActivity implements LoadViewHelper.OnNextClickListener {
     @BindView(R.id.recyclerview)
     RecyclerView recyclerView;
     private RecentPatientGroupAdapter recentPatientGroupAdapter;
     /**
-     * 患者
+     * 居民
      */
     private RecentPatientBean recentPatientBean;
     /**

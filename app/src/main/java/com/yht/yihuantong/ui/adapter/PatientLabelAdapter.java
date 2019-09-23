@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * @author 顿顿
  * @date 19/6/5 14:25
- * @description 患者标签
+ * @description 居民标签
  */
 public class PatientLabelAdapter extends BaseQuickAdapter<LabelBean, BaseViewHolder> {
     public PatientLabelAdapter(int layoutResId, @Nullable List<LabelBean> data) {
