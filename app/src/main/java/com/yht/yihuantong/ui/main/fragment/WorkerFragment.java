@@ -44,11 +44,12 @@ import com.yht.yihuantong.ui.WebViewActivity;
 import com.yht.yihuantong.ui.check.ServiceHistoryActivity;
 import com.yht.yihuantong.ui.doctor.DoctorInfoActivity;
 import com.yht.yihuantong.ui.hint.NotifyHintActivity;
-import com.yht.yihuantong.ui.product.HealthManageActivity;
 import com.yht.yihuantong.ui.main.QrCodeActivity;
 import com.yht.yihuantong.ui.patient.ChatContainerActivity;
 import com.yht.yihuantong.ui.personal.PersonalNewActivity;
+import com.yht.yihuantong.ui.product.HealthManageActivity;
 import com.yht.yihuantong.ui.remote.ErrorActivity;
+import com.yht.yihuantong.ui.remote.RemoteHistoryActivity;
 import com.yht.yihuantong.ui.remote.RemoteLoginActivity;
 import com.yht.yihuantong.ui.reservation.ReservationDisableActivity;
 import com.yht.yihuantong.ui.reservation.remote.ReservationRemoteActivity;
@@ -371,7 +372,7 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
                 startActivity(intent);
                 break;
             case R.id.layout_initiate_remote:
-                intent = new Intent(getContext(), ReservationRemoteActivity.class);
+                intent = new Intent(getContext(), RemoteHistoryActivity.class);
                 startActivity(intent);
                 break;
             case R.id.layout_health_manager:

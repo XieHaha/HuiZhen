@@ -392,6 +392,7 @@
     <string name="txt_remote_login_hint">远程会诊医生身份确认</string>
     <string name="txt_remote_login_error_hint">这里是%s%s远程会诊系统，您无使用权限。</string>
     <string name="txt_remote_duration">%s分钟</string>
+    <string name="txt_initiate_remote_consultation">发起远程会诊</string>
 
     <!--转诊申请-->
     <string name="txt_visiting">接诊</string>

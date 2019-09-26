@@ -426,6 +426,11 @@
             android:label=""
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
+            android:name=".ui.remote.RemoteHistoryActivity"
+            android:screenOrientation="portrait"
+            android:label=""
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
             android:name=".ui.remote.ErrorActivity"
             android:screenOrientation="portrait"
             android:label=""
