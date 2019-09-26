@@ -416,6 +416,16 @@
             android:label="@string/title_recent_patient"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
+            android:name=".ui.product.HealthManageActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/title_health_manage"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".ui.product.ServicePackageActivity"
+            android:screenOrientation="portrait"
+            android:label=""
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
             android:name=".ui.remote.ErrorActivity"
             android:screenOrientation="portrait"
             android:label=""

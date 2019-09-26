@@ -35,7 +35,6 @@ import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.permission.Permission;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
-import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.frame.widgets.menu.MenuItem;
 import com.yht.frame.widgets.menu.TopRightMenu;
@@ -45,6 +44,7 @@ import com.yht.yihuantong.ui.WebViewActivity;
 import com.yht.yihuantong.ui.check.ServiceHistoryActivity;
 import com.yht.yihuantong.ui.doctor.DoctorInfoActivity;
 import com.yht.yihuantong.ui.hint.NotifyHintActivity;
+import com.yht.yihuantong.ui.product.HealthManageActivity;
 import com.yht.yihuantong.ui.main.QrCodeActivity;
 import com.yht.yihuantong.ui.patient.ChatContainerActivity;
 import com.yht.yihuantong.ui.personal.PersonalNewActivity;
@@ -375,7 +375,8 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
                 startActivity(intent);
                 break;
             case R.id.layout_health_manager:
-                ToastUtil.toast(getContext(), "健康管理");
+                intent = new Intent(getContext(), HealthManageActivity.class);
+                startActivity(intent);
                 break;
             default:
                 break;

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:fitsSystemWindows="true"
+    android:layout_height="match_parent">
+
+    <include
+        layout="@layout/public_title"
+        android:id="@+id/title_bar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:scrollbars="none"
+        android:layout_below="@id/title_bar"
+        android:layout_height="match_parent"
+        android:background="@color/color_f8f9fa"
+        android:layout_marginBottom="68dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/color_ffffff">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="@color/color_f8f9fa" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:textSize="@dimen/text_16"
+                android:textColor="@color/color_373d4d"
+                android:textStyle="bold"
+                android:layout_marginStart="20dp"
+                android:layout_height="60dp"
+                android:gravity="center_vertical"
+                android:text="@string/txt_project_introduction" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/app_hei_line"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="@color/color_ebedf0" />
+
+            <com.yht.frame.widgets.textview.ExpandTextView
+                android:id="@+id/tv_introduction"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_373d4d"
+                android:textSize="@dimen/text_16"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="20dp"
+                android:paddingTop="12dp"
+                android:text="最多展示三行最多展示三行最多展示三行最多展示三行最多展示三行最多展示三行最多展示三行最多展示三行最多展示三行最多展示三行最多展示三行最多展示三行最多展示三行最多展示三行最多展示三行最多展示三行最多展示三行" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="@color/color_f8f9fa" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:textSize="@dimen/text_16"
+                android:textColor="@color/color_373d4d"
+                android:textStyle="bold"
+                android:layout_marginStart="20dp"
+                android:layout_height="60dp"
+                android:gravity="center_vertical"
+                android:text="@string/txt_service_package" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/app_hei_line"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="@color/color_ebedf0" />
+
+            <com.yht.frame.widgets.recyclerview.FullListView
+                android:id="@+id/list_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="@null" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="@color/color_f8f9fa" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:textSize="@dimen/text_16"
+                android:textColor="@color/color_373d4d"
+                android:textStyle="bold"
+                android:layout_marginStart="20dp"
+                android:layout_height="60dp"
+                android:gravity="center_vertical"
+                android:text="@string/txt_notice" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/app_hei_line"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="@color/color_ebedf0" />
+
+            <TextView
+                android:id="@+id/tv_notice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_373d4d"
+                android:textSize="@dimen/text_16"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="20dp"
+                android:paddingTop="12dp"
+                tools:text="注意事项" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:background="@color/color_f8f9fa" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/layout_reserve_service"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_height="68dp"
+        android:background="@color/color_ffffff"
+        android:gravity="center"
+        android:paddingStart="35dp"
+        android:paddingEnd="35dp"
+        android:paddingTop="13dp"
+        android:paddingBottom="13dp">
+
+        <TextView
+            android:id="@+id/tv_check_next"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/corner28_1491fc_bg"
+            android:text="@string/txt_reserve_current_check"
+            android:textColor="@color/color_ffffff"
+            android:textSize="@dimen/text_16"
+            android:gravity="center" />
+
+    </LinearLayout>
+
+</RelativeLayout>

@@ -35,6 +35,7 @@
     <string name="title_my_qr_code">我的二维码</string>
     <string name="title_edit_patient_label">编辑居民标签</string>
     <string name="title_recent_patient">最近添加</string>
+    <string name="title_health_manage">健康管理</string>
 
     <!--公用-->
     <string name="txt_app_name">会珍</string>
@@ -101,6 +102,8 @@
     <string name="txt_plus">+%s</string>
     <string name="txt_space">%s&#160;&#160;</string>
     <string name="txt_space_two">%s&#160;&#160;%s</string>
+    <string name="to_expand_hint">展开&#62;&#62;</string>
+    <string name="to_shrink_hint">&#60;&#60;收起</string>
     <string name="txt_price">￥%s</string>
     <string name="txt_report_name_by_num">%s报告%d</string>
     <string name="txt_report_name">%s报告</string>
@@ -307,6 +310,8 @@
 
     <!--检查相关  转诊相关-->
     <string name="txt_reserve_check">预约服务</string>
+    <string name="txt_reserve_current_check">预约当前服务</string>
+    <string name="txt_service_package">服务包内容</string>
     <string name="txt_reserve_check_detail">预约服务详情</string>
     <string name="txt_pregnancy">是否备孕</string>
     <string name="txt_payment">缴费类型</string>

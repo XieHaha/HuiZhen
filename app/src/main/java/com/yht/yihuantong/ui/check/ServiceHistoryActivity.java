@@ -38,7 +38,7 @@ import butterknife.OnClick;
 /**
  * @author 顿顿
  * @date 19/6/13 15:26
- * @des
+ * @des 发起服务历史
  */
 public class ServiceHistoryActivity extends BaseActivity
         implements BaseQuickAdapter.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener,
