@@ -164,7 +164,6 @@
                 android:layout_height="44dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginTop="8dp"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
                 android:paddingStart="14dp"
@@ -192,17 +191,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textSize="@dimen/text_18"
+                android:textSize="@dimen/text_16"
                 android:textColor="@color/color_373d4d"
                 android:text="@string/txt_my_consulting_room"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginStart="16dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
+                android:layout_marginTop="7dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp">
 
@@ -227,10 +226,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/color_373d4d"
-                        android:textSize="@dimen/text_16"
+                        android:textSize="@dimen/text_18"
                         android:text="@string/txt_reserve_check"
                         android:textStyle="bold"
-                        android:layout_marginTop="23dp" />
+                        android:layout_marginTop="10dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -263,10 +262,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/color_373d4d"
-                        android:textSize="@dimen/text_16"
+                        android:textSize="@dimen/text_18"
                         android:text="@string/txt_reserve_transfer"
                         android:textStyle="bold"
-                        android:layout_marginTop="23dp" />
+                        android:layout_marginTop="10dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -334,10 +333,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/color_373d4d"
-                        android:textSize="@dimen/text_16"
+                        android:textSize="@dimen/text_18"
                         android:text="@string/title_transfer_apply"
                         android:textStyle="bold"
-                        android:layout_marginTop="23dp"
+                        android:layout_marginTop="10dp"
                         android:layout_below="@id/image" />
 
                     <TextView
@@ -370,10 +369,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/color_373d4d"
-                        android:textSize="@dimen/text_16"
+                        android:textSize="@dimen/text_18"
                         android:text="@string/txt_remote_consultation"
                         android:textStyle="bold"
-                        android:layout_marginTop="23dp" />
+                        android:layout_marginTop="10dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -387,20 +386,62 @@
 
             </LinearLayout>
 
-            <LinearLayout
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="@dimen/text_16"
+                android:textColor="@color/color_373d4d"
+                android:text="@string/txt_health_manager"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="16dp" />
+
+            <RelativeLayout
                 android:id="@+id/layout_health_manager"
                 android:layout_width="match_parent"
-                android:layout_height="154dp"
+                android:orientation="vertical"
+                android:layout_height="80dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginTop="24dp">
+                android:paddingStart="15dp"
+                android:paddingEnd="1dp"
+                android:layout_marginTop="7dp"
+                android:background="@drawable/corner4_ffffff_bg">
 
                 <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@mipmap/pic_dialog_update"/>
+                    android:id="@+id/image1"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_centerVertical="true"
+                    android:src="@mipmap/ic_health_manager" />
 
-            </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@id/image1"
+                    android:layout_marginStart="25dp"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/color_373d4d"
+                        android:textSize="@dimen/text_18"
+                        android:text="@string/txt_made_service"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/color_a1a8b3"
+                        android:textSize="@dimen/text_13"
+                        android:text="@string/txt_health_service"
+                        android:layout_marginTop="3dp" />
+                </LinearLayout>
+
+            </RelativeLayout>
 
             <View
                 android:layout_width="match_parent"

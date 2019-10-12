@@ -36,6 +36,7 @@
     <string name="title_edit_patient_label">编辑居民标签</string>
     <string name="title_recent_patient">最近添加</string>
     <string name="title_health_manage">健康管理</string>
+    <string name="title_past_history">既往史</string>
 
     <!--公用-->
     <string name="txt_app_name">会珍</string>
@@ -134,6 +135,9 @@
     <string name="txt_my_accepted_transfer">已接收转诊</string>
     <string name="txt_menu_patient">居民添加我</string>
     <string name="txt_menu_doctor">医生添加我</string>
+    <string name="txt_health_manager">居民健康管理</string>
+    <string name="txt_made_service">定制服务包</string>
+    <string name="txt_health_service">居民健康服务</string>
     <string name="txt_scan_hint">会珍医生版扫一扫，添加我</string>
     <string name="txt_wechat_scan_hint">微信扫一扫，添加我</string>
 

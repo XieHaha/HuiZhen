@@ -431,6 +431,12 @@
             android:label=""
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
+            android:name=".ui.reservation.PastHistoryActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/title_past_history"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+
+        <activity
             android:name=".ui.remote.ErrorActivity"
             android:screenOrientation="portrait"
             android:label=""

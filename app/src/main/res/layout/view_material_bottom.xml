@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <RelativeLayout
+        android:id="@+id/layout_past"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="19dp"
@@ -18,7 +20,14 @@
             android:textColor="@color/color_373d4d"
             android:textSize="@dimen/text_16"
             android:textStyle="bold"
-            android:text="@string/txt_past_medical_his" />
+            android:text="@string/title_past_history" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_right"
+            android:layout_marginEnd="20dp"
+            android:layout_alignParentEnd="true" />
 
         <View
             android:id="@+id/line"
@@ -35,83 +44,34 @@
             android:gravity="center"
             android:orientation="horizontal"
             android:layout_height="wrap_content"
-            android:layout_below="@id/line"
-            android:visibility="visible">
+            android:layout_below="@id/line">
 
             <TextView
-                android:id="@+id/tv_past_medical_his_not"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_16"
-                android:textColor="@color/color_1491fc"
-                android:text="@string/txt_past_medical_his_not" />
+                android:textColor="@color/color_373d4d"
+                android:text="@string/txt_past_medical_his" />
 
-            <ImageView
-                android:id="@+id/iv_past_medical_his"
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/ic_delete"
-                android:paddingStart="8dp" />
+                android:textSize="@dimen/text_16"
+                android:textColor="@color/color_373d4d"
+                android:text="：" />
+
+            <TextView
+                android:id="@+id/tv_past_medical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_16"
+                android:singleLine="true"
+                android:layout_marginEnd="20dp"
+                android:ellipsize="end"
+                tools:text="病史病史病史病史病史病史病史病史病史病史病史"
+                android:textColor="@color/color_373d4d" />
+
         </LinearLayout>
-
-        <com.yht.frame.widgets.edittext.MultiLineEditText
-            android:id="@+id/et_past_medical_his"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/line"
-            android:background="@null"
-            android:textSize="@dimen/text_16"
-            android:gravity="top"
-            android:maxLength="500"
-            android:imeOptions="actionNext"
-            android:textColor="@color/color_373d4d"
-            android:layout_marginEnd="20dp"
-            android:visibility="invisible" />
-
-        <TextView
-            android:id="@+id/tv_past_medical_his_num"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/text_16"
-            android:textColor="#c5c8cc"
-            android:layout_below="@id/et_past_medical_his"
-            android:text="@string/txt_calc_num_five"
-            android:gravity="center_vertical"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="20dp" />
-
-    </RelativeLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:background="@color/color_f8f9fa" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="19dp"
-        android:paddingStart="20dp"
-        android:paddingTop="19dp">
-
-        <TextView
-            android:id="@+id/title1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/color_373d4d"
-            android:textSize="@dimen/text_16"
-            android:textStyle="bold"
-            android:text="@string/txt_family_medical_his" />
-
-        <View
-            android:id="@+id/line1"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/app_hei_line"
-            android:background="@color/color_ebedf0"
-            android:layout_below="@id/title1"
-            android:layout_marginTop="19dp"
-            android:layout_marginBottom="12dp" />
 
         <LinearLayout
             android:id="@+id/layout_family_medical_his"
@@ -119,96 +79,35 @@
             android:gravity="center"
             android:orientation="horizontal"
             android:layout_height="wrap_content"
-            android:layout_below="@id/line1"
-            android:visibility="visible">
+            android:layout_marginTop="6dp"
+            android:layout_below="@id/layout_past_medical_his">
 
             <TextView
-                android:id="@+id/tv_family_medical_his_not"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_16"
-                android:textColor="@color/color_1491fc"
-                android:text="@string/txt_family_medical_his_not" />
+                android:textColor="@color/color_373d4d"
+                android:text="@string/txt_family_medical_his" />
 
-            <ImageView
-                android:id="@+id/iv_family_medical_his"
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/ic_delete"
-                android:paddingStart="8dp" />
+                android:textSize="@dimen/text_16"
+                android:textColor="@color/color_373d4d"
+                android:text="：" />
+
+            <TextView
+                android:id="@+id/tv_family_medical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_16"
+                android:singleLine="true"
+                android:layout_marginEnd="20dp"
+                android:ellipsize="end"
+                tools:text="病史病史病史病史病史病史病史病史病史病史病史"
+                android:textColor="@color/color_373d4d" />
+
         </LinearLayout>
-
-        <com.yht.frame.widgets.edittext.MultiLineEditText
-            android:id="@+id/et_family_medical_his"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/line1"
-            android:background="@null"
-            android:textSize="@dimen/text_16"
-            android:gravity="top"
-            android:maxLength="500"
-            android:imeOptions="actionNext"
-            android:textColor="@color/color_373d4d"
-            android:layout_marginEnd="20dp"
-            android:visibility="invisible" />
-
-        <TextView
-            android:id="@+id/tv_family_medical_his_num"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/text_16"
-            android:textColor="#c5c8cc"
-            android:layout_below="@id/et_family_medical_his"
-            android:text="@string/txt_calc_num_five"
-            android:gravity="center_vertical"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="20dp" />
-
-    </RelativeLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:background="@color/color_f8f9fa" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="19dp"
-        android:paddingStart="20dp"
-        android:paddingTop="19dp">
-
-        <TextView
-            android:id="@+id/title2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/color_373d4d"
-            android:textSize="@dimen/text_16"
-            android:textStyle="bold"
-            android:text="@string/txt_allergies" />
-
-        <TextView
-            android:id="@+id/tv_allergies_clear"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/color_1491fc"
-            android:textSize="@dimen/text_15"
-            android:text="@string/txt_clear"
-            android:layout_alignParentEnd="true"
-            android:paddingEnd="20dp"
-            android:paddingBottom="19dp"
-            android:visibility="gone" />
-
-        <View
-            android:id="@+id/line2"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/app_hei_line"
-            android:background="@color/color_ebedf0"
-            android:layout_below="@id/title2"
-            android:layout_marginTop="19dp"
-            android:layout_marginBottom="12dp" />
-
 
         <LinearLayout
             android:id="@+id/layout_allergies"
@@ -216,51 +115,35 @@
             android:gravity="center"
             android:orientation="horizontal"
             android:layout_height="wrap_content"
-            android:layout_below="@id/line2"
-            android:visibility="visible">
+            android:layout_marginTop="6dp"
+            android:layout_below="@id/layout_family_medical_his">
 
             <TextView
-                android:id="@+id/tv_allergies_not"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_16"
-                android:textColor="@color/color_1491fc"
-                android:text="@string/txt_allergies_not" />
+                android:textColor="@color/color_373d4d"
+                android:text="@string/txt_allergies" />
 
-            <ImageView
-                android:id="@+id/iv_allergies"
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/ic_delete"
-                android:paddingStart="8dp" />
+                android:textSize="@dimen/text_16"
+                android:textColor="@color/color_373d4d"
+                android:text="：" />
+
+            <TextView
+                android:id="@+id/tv_allergies"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_16"
+                android:singleLine="true"
+                android:layout_marginEnd="20dp"
+                android:ellipsize="end"
+                tools:text="病史病史病史病史病史病史病史病史病史病史病史"
+                android:textColor="@color/color_373d4d" />
+
         </LinearLayout>
-
-        <com.yht.frame.widgets.edittext.MultiLineEditText
-            android:id="@+id/et_allergies"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/line2"
-            android:background="@null"
-            android:textSize="@dimen/text_16"
-            android:gravity="top"
-            android:maxLength="500"
-            android:imeOptions="actionNext"
-            android:textColor="@color/color_373d4d"
-            android:layout_marginEnd="20dp"
-            android:visibility="invisible" />
-
-        <TextView
-            android:id="@+id/tv_allergies_num"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/text_16"
-            android:textColor="#c5c8cc"
-            android:layout_below="@id/et_allergies"
-            android:text="@string/txt_calc_num_five"
-            android:gravity="center_vertical"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="20dp" />
 
     </RelativeLayout>
 
