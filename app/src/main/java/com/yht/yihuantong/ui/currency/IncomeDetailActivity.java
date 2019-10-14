@@ -138,7 +138,7 @@ public class IncomeDetailActivity extends BaseActivity implements CurrencyDetail
             layoutProjectChecked.setVisibility(View.VISIBLE);
             for (int i = 0; i < list.size(); i++) {
                 CheckTypeBean bean = list.get(i);
-                View view = getLayoutInflater().inflate(R.layout.item_check_by_detail, null);
+                View view = getLayoutInflater().inflate(R.layout.item_check_by_income, null);
                 TextView tvType = view.findViewById(R.id.tv_check_type);
                 tvType.setText(String.format(getString(R.string.txt_space), bean.getExamName()));
                 //空格占位

@@ -205,7 +205,6 @@ public class AuthLicenseFragment extends BaseFragment
             getActivity().overridePendingTransition(R.anim.anim_fade_in, R.anim.keep);
         }
         else {
-            //            new DownDialog(getContext()).setData(data).setOnMediaItemClickListener(this).show();
             permissionHelper.request(new String[] { Permission.CAMERA, Permission.STORAGE_WRITE });
         }
     }

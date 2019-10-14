@@ -67,7 +67,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="@string/txt_reserve_visit_time"
+            android:text="@string/txt_reserve_time"
             android:textColor="@color/color_373d4d"
             android:textSize="@dimen/text_16"
             android:textStyle="bold" />

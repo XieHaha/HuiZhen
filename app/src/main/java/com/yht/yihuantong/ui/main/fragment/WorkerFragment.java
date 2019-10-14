@@ -258,6 +258,23 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
     }
 
     /**
+     * 广告条详情
+     */
+    private void flipperDetail() {
+        if (bannerBeans != null && bannerBeans.size() > 0) {
+            BannerBean bean = bannerBeans.get(viewFlipper.getDisplayedChild());
+            if (bean.getBannerId() != -1) {
+                Intent intent = new Intent(getContext(), WebViewActivity.class);
+                intent.putExtra(CommonData.KEY_PUBLIC,
+                                ZycApplication.getInstance().getBaseUrl() + BaseNetConfig.BASE_BASIC_BANNER_URL +
+                                bean.getBannerId());
+                intent.putExtra(CommonData.KEY_TITLE, bean.getBannerRemark());
+                startActivity(intent);
+            }
+        }
+    }
+
+    /**
      * 订单数量
      */
     private void initStatistics() {
@@ -345,17 +362,7 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
                 startActivity(intent);
                 break;
             case R.id.view_flipper:
-                if (bannerBeans != null && bannerBeans.size() > 0) {
-                    BannerBean bean = bannerBeans.get(viewFlipper.getDisplayedChild());
-                    if (bean.getBannerId() != -1) {
-                        intent = new Intent(getContext(), WebViewActivity.class);
-                        intent.putExtra(CommonData.KEY_PUBLIC, ZycApplication.getInstance().getBaseUrl() +
-                                                               BaseNetConfig.BASE_BASIC_BANNER_URL +
-                                                               bean.getBannerId());
-                        intent.putExtra(CommonData.KEY_TITLE, bean.getBannerRemark());
-                        startActivity(intent);
-                    }
-                }
+                flipperDetail();
                 break;
             case R.id.layout_initiate_check:
                 intent = new Intent(getContext(), ServiceHistoryActivity.class);

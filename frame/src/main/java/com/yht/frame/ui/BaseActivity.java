@@ -518,4 +518,14 @@ public abstract class BaseActivity extends RxAppCompatActivity
         isRequestCamera = true;
         isRequestRecord = true;
     }
+
+    public boolean isSamePermission(String o, String n) {
+        if (TextUtils.isEmpty(o) || TextUtils.isEmpty(n)) {
+            return false;
+        }
+        if (o.equals(n)) {
+            return true;
+        }
+        return false;
+    }
 }

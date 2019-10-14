@@ -435,6 +435,11 @@
             android:screenOrientation="portrait"
             android:label="@string/title_past_history"
             android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".ui.check.AddDiagnosisActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/title_add_diagnosis"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
 
         <activity
             android:name=".ui.remote.ErrorActivity"

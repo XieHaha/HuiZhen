@@ -23,20 +23,20 @@ public class MatisseUtils {
      */
     private static final int RC_PICK_IMG = 0x0001;
 
-    public static void open(Activity activity) {
+    public static void open(Activity activity, boolean isCapture, int maxNum) {
         Matisse.from(activity)
                // 选择 mime 的类型
                .choose(EnumSet.of(MimeType.JPEG, MimeType.PNG))
                // 显示选择的数量
                .countable(true)
                //相机
-               .capture(true)
+               .capture(isCapture)
                .captureStrategy(
                        new CaptureStrategy(true, ZycApplication.getInstance().getPackageName() + ".fileprovider"))
                // light
                .theme(R.style.Matisse_Zhihu)
                // 图片选择的最多数量
-               .maxSelectable(1)
+               .maxSelectable(maxNum)
                // 列表中显示的图片大小
                .gridExpectedSize(activity.getResources().getDimensionPixelSize(R.dimen.app_picture_size))
                .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)

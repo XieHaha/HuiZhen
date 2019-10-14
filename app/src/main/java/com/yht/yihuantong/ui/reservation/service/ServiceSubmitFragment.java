@@ -184,7 +184,6 @@ public class ServiceSubmitFragment extends BaseFragment
     /**
      * 图片处理
      *
-     * @param status
      */
     private void initImage(boolean status) {
         if (status) {

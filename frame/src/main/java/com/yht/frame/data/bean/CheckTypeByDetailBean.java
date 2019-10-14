@@ -12,17 +12,30 @@ public class CheckTypeByDetailBean implements Serializable {
     private int id;
     private int status;
     private int hospitalDepartmentId;
+    private int payType;
+    private int grantEntityType;
+    private int suggestionType;
     private long shouldPay;
     private String name;
     private String orderAt;
     private String payAt;
     private String finishAt;
     private String createAt;
+    private String updateAt;
     private String operatorName;
     private String departmentName;
     private String type;
     private String cancelReason;
     private String report;
+    private String notice;
+    private String productCode;
+    private String suggestionText;
+    private String grantorName;
+    private String packCode;
+    private String hospitalCode;
+    private String hospitalName;
+    private String packName;
+    private String mergeName;
 
     public int getId() {
         return id;
@@ -134,5 +147,109 @@ public class CheckTypeByDetailBean implements Serializable {
 
     public void setOperatorName(String operatorName) {
         this.operatorName = operatorName;
+    }
+
+    public int getPayType() {
+        return payType;
+    }
+
+    public void setPayType(int payType) {
+        this.payType = payType;
+    }
+
+    public int getGrantEntityType() {
+        return grantEntityType;
+    }
+
+    public void setGrantEntityType(int grantEntityType) {
+        this.grantEntityType = grantEntityType;
+    }
+
+    public int getSuggestionType() {
+        return suggestionType;
+    }
+
+    public void setSuggestionType(int suggestionType) {
+        this.suggestionType = suggestionType;
+    }
+
+    public String getUpdateAt() {
+        return updateAt;
+    }
+
+    public void setUpdateAt(String updateAt) {
+        this.updateAt = updateAt;
+    }
+
+    public String getNotice() {
+        return notice;
+    }
+
+    public void setNotice(String notice) {
+        this.notice = notice;
+    }
+
+    public String getProductCode() {
+        return productCode;
+    }
+
+    public void setProductCode(String productCode) {
+        this.productCode = productCode;
+    }
+
+    public String getSuggestionText() {
+        return suggestionText;
+    }
+
+    public void setSuggestionText(String suggestionText) {
+        this.suggestionText = suggestionText;
+    }
+
+    public String getGrantorName() {
+        return grantorName;
+    }
+
+    public void setGrantorName(String grantorName) {
+        this.grantorName = grantorName;
+    }
+
+    public String getPackCode() {
+        return packCode;
+    }
+
+    public void setPackCode(String packCode) {
+        this.packCode = packCode;
+    }
+
+    public String getHospitalCode() {
+        return hospitalCode;
+    }
+
+    public void setHospitalCode(String hospitalCode) {
+        this.hospitalCode = hospitalCode;
+    }
+
+    public String getHospitalName() {
+        return hospitalName;
+    }
+
+    public void setHospitalName(String hospitalName) {
+        this.hospitalName = hospitalName;
+    }
+
+    public String getPackName() {
+        return packName;
+    }
+
+    public void setPackName(String packName) {
+        this.packName = packName;
+    }
+
+    public String getMergeName() {
+        return mergeName;
+    }
+
+    public void setMergeName(String mergeName) {
+        this.mergeName = mergeName;
     }
 }

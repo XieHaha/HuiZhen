@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/color_6a6f80"
             android:textSize="@dimen/text_13"
-            android:text="@string/txt_reserve_visit_time" />
+            android:text="@string/txt_reserve_time" />
 
         <TextView
             android:layout_width="wrap_content"

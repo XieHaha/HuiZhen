@@ -16,6 +16,7 @@ public class CheckDetailBean implements Serializable {
     private int payType;
     private int status;
     private int actualPay;
+    private int shouldPay;
     private String patientCode;
     private String patientPhoto;
     private String patientWxPhoto;
@@ -24,6 +25,7 @@ public class CheckDetailBean implements Serializable {
     private String sourceDoctorMobile;
     private String initResult;
     private String targetHospitalName;
+    private String targetHospitalAddress;
     private String sourceDoctorJobTitle;
     private String sourceHospitalName;
     private String sourceHospitalDepartmentName;
@@ -32,10 +34,13 @@ public class CheckDetailBean implements Serializable {
     private String finishAt;
     private String notes;
     private String doctorName;
+    private String doctorCode;
+    private String doctorAvatar;
     private String pastHistory;
     private String familyHistory;
     private String allergyHistory;
-    private ArrayList<CheckTypeByDetailBean> tranList;
+    private ArrayList<CheckTypeByDetailBean> trans;
+    private ArrayList<CheckTypeByDetailBean> noticeList;
 
     public String getPastHistory() {
         return pastHistory;
@@ -237,11 +242,51 @@ public class CheckDetailBean implements Serializable {
         this.doctorName = doctorName;
     }
 
-    public ArrayList<CheckTypeByDetailBean> getTranList() {
-        return tranList;
+    public int getShouldPay() {
+        return shouldPay;
     }
 
-    public void setTranList(ArrayList<CheckTypeByDetailBean> tranList) {
-        this.tranList = tranList;
+    public void setShouldPay(int shouldPay) {
+        this.shouldPay = shouldPay;
+    }
+
+    public String getTargetHospitalAddress() {
+        return targetHospitalAddress;
+    }
+
+    public void setTargetHospitalAddress(String targetHospitalAddress) {
+        this.targetHospitalAddress = targetHospitalAddress;
+    }
+
+    public String getDoctorCode() {
+        return doctorCode;
+    }
+
+    public void setDoctorCode(String doctorCode) {
+        this.doctorCode = doctorCode;
+    }
+
+    public String getDoctorAvatar() {
+        return doctorAvatar;
+    }
+
+    public void setDoctorAvatar(String doctorAvatar) {
+        this.doctorAvatar = doctorAvatar;
+    }
+
+    public ArrayList<CheckTypeByDetailBean> getTrans() {
+        return trans;
+    }
+
+    public void setTrans(ArrayList<CheckTypeByDetailBean> trans) {
+        this.trans = trans;
+    }
+
+    public ArrayList<CheckTypeByDetailBean> getNoticeList() {
+        return noticeList;
+    }
+
+    public void setNoticeList(ArrayList<CheckTypeByDetailBean> noticeList) {
+        this.noticeList = noticeList;
     }
 }

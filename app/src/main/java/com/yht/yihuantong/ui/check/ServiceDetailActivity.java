@@ -1,5 +1,6 @@
 package com.yht.yihuantong.ui.check;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -303,7 +304,7 @@ public class ServiceDetailActivity extends BaseActivity
      */
     private void initCheckType() {
         layoutCheckType.removeAllViews();
-        checkTypeList = checkDetailBean.getTranList();
+        checkTypeList = checkDetailBean.getTrans();
         reportList = new ArrayList<>();
         if (checkTypeList != null && checkTypeList.size() > 0) {
             for (int i = 0; i < checkTypeList.size(); i++) {
@@ -331,9 +332,6 @@ public class ServiceDetailActivity extends BaseActivity
 
     /**
      * 添加检查项
-     *
-     * @param bean
-     * @return
      */
     private View addCheckType(CheckTypeByDetailBean bean) {
         View view = getLayoutInflater().inflate(R.layout.item_check_by_detail, null);
@@ -355,7 +353,10 @@ public class ServiceDetailActivity extends BaseActivity
             imageView.setSelected(false);
         }
         //隐藏价格
-        view.findViewById(R.id.tv_check_price).setVisibility(View.GONE);
+        view.findViewById(R.id.tv_check_edit).setOnClickListener(v -> {
+            startActivity(new Intent(ServiceDetailActivity.this, AddDiagnosisActivity.class));
+        });
+        view.findViewById(R.id.layout_reserve_time).setVisibility(View.GONE);
         return view;
     }
 
