@@ -38,6 +38,7 @@
     <string name="title_health_manage">健康管理</string>
     <string name="title_past_history">既往史</string>
     <string name="title_add_diagnosis">填写诊断意见</string>
+    <string name="title_service_detail">服务详情</string>
 
     <!--公用-->
     <string name="txt_app_name">会珍</string>
@@ -104,8 +105,8 @@
     <string name="txt_plus">+%s</string>
     <string name="txt_space">%s&#160;&#160;</string>
     <string name="txt_space_two">%s&#160;&#160;%s</string>
-    <string name="to_expand_hint">展开&#62;&#62;</string>
-    <string name="to_shrink_hint">&#60;&#60;收起</string>
+    <string name="to_expand_hint">展开</string>
+    <string name="to_shrink_hint">收起</string>
     <string name="txt_price">￥%s</string>
     <string name="txt_report_name_by_num">%s报告%d</string>
     <string name="txt_report_name">%s报告</string>
@@ -274,6 +275,9 @@
     <string name="txt_business_support_not">不可预约该医院服务</string>
     <string name="txt_item">%d项</string>
     <string name="txt_none">暂无</string>
+    <string name="txt_service_package">服务包</string>
+    <string name="txt_service">服务项</string>
+    <string name="txt_service_name">服务名称</string>
 
     <!--会珍币管理-->
     <string name="txt_currency_arrival">已到账</string>
@@ -316,7 +320,7 @@
     <!--检查相关  转诊相关-->
     <string name="txt_reserve_check">预约服务</string>
     <string name="txt_reserve_current_check">预约当前服务</string>
-    <string name="txt_service_package">服务包内容</string>
+    <string name="txt_service_package_content">服务包内容</string>
     <string name="txt_reserve_check_detail">预约服务详情</string>
     <string name="txt_pregnancy">是否备孕</string>
     <string name="txt_payment">缴费类型</string>

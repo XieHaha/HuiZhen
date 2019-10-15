@@ -23,6 +23,28 @@
             android:orientation="vertical"
             android:background="@color/color_ffffff">
 
+            <TextView
+                android:layout_width="match_parent"
+                android:textSize="@dimen/text_16"
+                android:textColor="@color/color_373d4d"
+                android:textStyle="bold"
+                android:layout_marginStart="20dp"
+                android:layout_height="60dp"
+                android:gravity="center_vertical"
+                android:text="@string/txt_service_name" />
+
+            <TextView
+                android:id="@+id/tv_notice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_373d4d"
+                android:textSize="@dimen/text_16"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="20dp"
+                android:paddingTop="12dp"
+                tools:text="注意事项" />
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="10dp"
@@ -37,13 +59,6 @@
                 android:layout_height="60dp"
                 android:gravity="center_vertical"
                 android:text="@string/txt_project_introduction" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/app_hei_line"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:background="@color/color_ebedf0" />
 
             <com.yht.frame.widgets.textview.ExpandTextView
                 android:id="@+id/tv_introduction"
@@ -70,54 +85,13 @@
                 android:layout_marginStart="20dp"
                 android:layout_height="60dp"
                 android:gravity="center_vertical"
-                android:text="@string/txt_service_package" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/app_hei_line"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:background="@color/color_ebedf0" />
+                android:text="@string/txt_service_package_content" />
 
             <com.yht.frame.widgets.recyclerview.FullListView
                 android:id="@+id/list_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:divider="@null" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="10dp"
-                android:background="@color/color_f8f9fa" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:textSize="@dimen/text_16"
-                android:textColor="@color/color_373d4d"
-                android:textStyle="bold"
-                android:layout_marginStart="20dp"
-                android:layout_height="60dp"
-                android:gravity="center_vertical"
-                android:text="@string/txt_notice" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/app_hei_line"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:background="@color/color_ebedf0" />
-
-            <TextView
-                android:id="@+id/tv_notice"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/color_373d4d"
-                android:textSize="@dimen/text_16"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:paddingBottom="20dp"
-                android:paddingTop="12dp"
-                tools:text="注意事项" />
 
             <View
                 android:layout_width="match_parent"

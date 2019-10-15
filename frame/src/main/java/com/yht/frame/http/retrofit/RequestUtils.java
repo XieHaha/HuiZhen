@@ -105,7 +105,7 @@ public class RequestUtils {
                        .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.UPLOAD_FILE, listener));
     }
 
-    public static void uploadImgWaterMark(Context context, String token, File file,boolean showDialog,
+    public static void uploadImgWaterMark(Context context, String token, File file, boolean showDialog,
             final ResponseListener<BaseResponse> listener) {
         RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
         MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), reqFile);
@@ -700,7 +700,7 @@ public class RequestUtils {
     }
 
     public static void getCooperateHospitalProjectList(Context context, String token, String hospitalCode, int pageSize,
-            int startPage, boolean show, final ResponseListener<BaseResponse> listener) {
+            int startPage, final ResponseListener<BaseResponse> listener) {
         Map<String, Object> params = new HashMap<>(16);
         params.put("hospitalCode", hospitalCode);
         params.put("pageSize", pageSize);
@@ -708,9 +708,8 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .getCooperateHospitalProjectList(token, params)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(
-                               new AbstractLoadViewObserver<>(context, show, Tasks.GET_COOPERATE_HOSPITAL_PROJECT_LIST,
-                                                              listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_COOPERATE_HOSPITAL_PROJECT_LIST,
+                                                                 listener));
     }
 
     public static void getDoctorQrCode(Context context, String token, final ResponseListener<BaseResponse> listener) {

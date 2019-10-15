@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_ffffff"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <include
+        layout="@layout/public_title"
+        android:id="@+id/top_bar" />
+
+    <LinearLayout
+        android:id="@+id/layout_button"
+        android:layout_width="match_parent"
+        android:layout_height="41dp">
+
+        <RelativeLayout
+            android:id="@+id/layout_left"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/txt_service_package"
+                android:textColor="@color/txt_color_6a6f80_1491fc_selector"
+                android:textSize="@dimen/text_15"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:layout_width="6dp"
+                android:layout_height="6dp"
+                android:background="@drawable/circular_red_point_bg"
+                android:layout_toEndOf="@id/tv_left"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="3dp"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout_right"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/txt_service"
+                android:textColor="@color/txt_color_6a6f80_1491fc_selector"
+                android:textSize="@dimen/text_15" />
+
+            <RelativeLayout
+                android:id="@+id/layout_receiving_transfer_num"
+                android:layout_width="wrap_content"
+                android:minWidth="18dp"
+                android:layout_height="18dp"
+                android:layout_toEndOf="@id/tv_right"
+                android:paddingStart="3dp"
+                android:paddingEnd="3dp"
+                android:layout_marginTop="5dp"
+                android:visibility="gone"
+                android:background="@drawable/circular_ff5452_point_bg">
+
+                <TextView
+                    android:id="@+id/tv_receiving_transfer_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:layout_centerInParent="true"
+                    tools:text="10"
+                    android:textColor="@color/color_ffffff"
+                    android:textSize="@dimen/text_12" />
+            </RelativeLayout>
+        </RelativeLayout>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/view_bar"
+        android:layout_width="60dp"
+        android:layout_height="2dp"
+        android:background="@color/color_1491fc" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/app_hei_line"
+        android:background="@color/color_ebedf0" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+</LinearLayout>

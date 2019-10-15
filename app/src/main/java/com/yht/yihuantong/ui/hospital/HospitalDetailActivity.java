@@ -159,7 +159,7 @@ public class HospitalDetailActivity extends BaseActivity implements AdapterView.
      */
     private void getCooperateHospitalProjectList() {
         RequestUtils.getCooperateHospitalProjectList(this, loginBean.getToken(), curHospital.getHospitalCode(),
-                                                     BaseData.BASE_PAGE_DATA_NUM, 1, false, this);
+                                                     BaseData.BASE_PAGE_DATA_NUM, 1, this);
     }
 
     /**
@@ -185,7 +185,7 @@ public class HospitalDetailActivity extends BaseActivity implements AdapterView.
         switch (view.getId()) {
             case R.id.layout_more_project:
                 if (tvProductMore.getVisibility() == View.VISIBLE) {
-                    Intent intent = new Intent(this, HospitalProductListActivity.class);
+                    Intent intent = new Intent(this, HospitalServiceListActivity.class);
                     intent.putExtra(CommonData.KEY_HOSPITAL_BEAN, curHospital);
                     intent.putExtra(CommonData.KEY_PUBLIC, baseListBean.getRecordTotal());
                     startActivity(intent);
@@ -201,8 +201,7 @@ public class HospitalDetailActivity extends BaseActivity implements AdapterView.
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Intent intent = new Intent(this, ProductDetailActivity.class);
-        intent.putExtra(CommonData.KEY_PUBLIC_STRING, curHospital.getHospitalName());
+        Intent intent = new Intent(this, ServiceDetailActivity.class);
         intent.putExtra(CommonData.KEY_HOSPITAL_PRODUCT_BEAN, hospitalProductBeans.get(position));
         startActivity(intent);
     }

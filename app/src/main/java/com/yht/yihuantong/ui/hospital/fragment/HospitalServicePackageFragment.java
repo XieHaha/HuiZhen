@@ -1,4 +1,4 @@
-package com.yht.yihuantong.ui.hospital;
+package com.yht.yihuantong.ui.hospital.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,7 +7,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.yht.frame.data.BaseData;
@@ -18,11 +17,12 @@ import com.yht.frame.data.bean.BaseListBean;
 import com.yht.frame.data.bean.CooperateHospitalBean;
 import com.yht.frame.data.bean.HospitalProductBean;
 import com.yht.frame.http.retrofit.RequestUtils;
-import com.yht.frame.ui.BaseActivity;
+import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.widgets.LoadViewHelper;
 import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.adapter.HospitalProductAdapter;
+import com.yht.yihuantong.ui.hospital.ServicePackageDetailActivity;
 
 import java.util.ArrayList;
 
@@ -31,17 +31,15 @@ import butterknife.BindView;
 /**
  * @author 顿顿
  * @date 19/8/12 15:34
- * @des 医院服务项
+ * @des 医院服务包
  */
-public class HospitalProductListActivity extends BaseActivity
+public class HospitalServicePackageFragment extends BaseFragment
         implements BaseQuickAdapter.RequestLoadMoreListener, BaseQuickAdapter.OnItemClickListener,
                    SwipeRefreshLayout.OnRefreshListener, LoadViewHelper.OnNextClickListener {
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.refresh_layout)
     SwipeRefreshLayout refreshLayout;
-    @BindView(R.id.public_title_bar_title)
-    TextView publicTitleBarTitle;
     private HospitalProductAdapter hospitalProjectAdapter;
     private ArrayList<HospitalProductBean> hospitalProductBeans = new ArrayList<>();
     /**
@@ -54,19 +52,14 @@ public class HospitalProductListActivity extends BaseActivity
     private int page = 1;
 
     @Override
-    protected boolean isInitBackBtn() {
-        return true;
-    }
-
-    @Override
     public int getLayoutID() {
-        return R.layout.act_hospital_product;
+        return R.layout.fragment_hospital_service;
     }
 
     @Override
-    public void initView(@NonNull Bundle savedInstanceState) {
-        super.initView(savedInstanceState);
-        loadViewHelper = new LoadViewHelper(this);
+    public void initView(View view, @NonNull Bundle savedInstanceState) {
+        super.initView(view, savedInstanceState);
+        loadViewHelper = new LoadViewHelper(view);
         loadViewHelper.setOnNextClickListener(this);
         refreshLayout.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light,
                                               android.R.color.holo_orange_light, android.R.color.holo_green_light);
@@ -74,21 +67,14 @@ public class HospitalProductListActivity extends BaseActivity
         hospitalProjectAdapter.setLoadMoreView(new CustomLoadMoreView());
         hospitalProjectAdapter.setOnLoadMoreListener(this, recyclerView);
         hospitalProjectAdapter.setOnItemClickListener(this);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(hospitalProjectAdapter);
     }
 
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-        if (getIntent() != null) {
-            curHospital = (CooperateHospitalBean)getIntent().getSerializableExtra(CommonData.KEY_HOSPITAL_BEAN);
-            int num = getIntent().getIntExtra(CommonData.KEY_PUBLIC, 0);
-            publicTitleBarTitle.setText(String.format(getString(R.string.title_hospital_product),
-                                                      num > BaseData.BASE_MEAASGE_DISPLAY_NUM ? getString(
-                                                              R.string.txt_max_num) : String.valueOf(num)));
-            getHospitalProduct(true);
-        }
+        getHospitalProduct();
     }
 
     @Override
@@ -97,18 +83,21 @@ public class HospitalProductListActivity extends BaseActivity
         refreshLayout.setOnRefreshListener(this);
     }
 
+    public void setCurHospital(CooperateHospitalBean curHospital) {
+        this.curHospital = curHospital;
+    }
+
     /**
      * 获取合作医院下服务项
      */
-    private void getHospitalProduct(boolean show) {
-        RequestUtils.getCooperateHospitalProjectList(this, loginBean.getToken(), curHospital.getHospitalCode(),
-                                                     BaseData.BASE_PAGE_DATA_NUM, page, show, this);
+    private void getHospitalProduct() {
+        RequestUtils.getCooperateHospitalProjectList(getContext(), loginBean.getToken(), curHospital.getHospitalCode(),
+                                                     BaseData.BASE_PAGE_DATA_NUM, page, this);
     }
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        Intent intent = new Intent(this, ProductDetailActivity.class);
-        intent.putExtra(CommonData.KEY_PUBLIC_STRING, curHospital.getHospitalName());
+        Intent intent = new Intent(getContext(), ServicePackageDetailActivity.class);
         intent.putExtra(CommonData.KEY_HOSPITAL_PRODUCT_BEAN, hospitalProductBeans.get(position));
         startActivity(intent);
     }
@@ -148,18 +137,18 @@ public class HospitalProductListActivity extends BaseActivity
     @Override
     public void onRefresh() {
         page = 1;
-        getHospitalProduct(false);
+        getHospitalProduct();
     }
 
     @Override
     public void onLoadMoreRequested() {
         page++;
-        getHospitalProduct(false);
+        getHospitalProduct();
     }
 
     @Override
     public void onNextClick() {
         page = 1;
-        getHospitalProduct(true);
+        getHospitalProduct();
     }
 }

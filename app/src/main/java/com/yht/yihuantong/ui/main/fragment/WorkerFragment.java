@@ -47,7 +47,7 @@ import com.yht.yihuantong.ui.hint.NotifyHintActivity;
 import com.yht.yihuantong.ui.main.QrCodeActivity;
 import com.yht.yihuantong.ui.patient.ChatContainerActivity;
 import com.yht.yihuantong.ui.personal.PersonalNewActivity;
-import com.yht.yihuantong.ui.product.HealthManageActivity;
+import com.yht.yihuantong.ui.hospital.HealthManageActivity;
 import com.yht.yihuantong.ui.remote.ErrorActivity;
 import com.yht.yihuantong.ui.remote.RemoteHistoryActivity;
 import com.yht.yihuantong.ui.remote.RemoteLoginActivity;

@@ -370,7 +370,7 @@
             android:label="@string/title_cooperate_hospital"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
-            android:name=".ui.hospital.HospitalProductListActivity"
+            android:name=".ui.hospital.HospitalServiceListActivity"
             android:screenOrientation="portrait"
             android:label=""
             android:windowSoftInputMode="adjustResize|stateHidden" />
@@ -391,9 +391,9 @@
             android:label=""
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
-            android:name=".ui.hospital.ProductDetailActivity"
+            android:name=".ui.hospital.ServiceDetailActivity"
             android:screenOrientation="portrait"
-            android:label=""
+            android:label="@string/title_service_detail"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.patient.EditLabelActivity"
@@ -416,12 +416,12 @@
             android:label="@string/title_recent_patient"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
-            android:name=".ui.product.HealthManageActivity"
+            android:name=".ui.hospital.HealthManageActivity"
             android:screenOrientation="portrait"
             android:label="@string/title_health_manage"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
-            android:name=".ui.product.ServicePackageActivity"
+            android:name=".ui.hospital.ServicePackageDetailActivity"
             android:screenOrientation="portrait"
             android:label=""
             android:windowSoftInputMode="adjustResize|stateHidden" />

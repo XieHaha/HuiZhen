@@ -1,4 +1,4 @@
-package com.yht.yihuantong.ui.product;
+package com.yht.yihuantong.ui.hospital;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -104,7 +104,7 @@ public class HealthManageActivity extends BaseActivity
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        Intent intent = new Intent(this, ServicePackageActivity.class);
+        Intent intent = new Intent(this, ServicePackageDetailActivity.class);
         intent.putExtra(CommonData.KEY_ORDER_ID, checkedList.get(position).getOrderNo());
         startActivity(intent);
     }

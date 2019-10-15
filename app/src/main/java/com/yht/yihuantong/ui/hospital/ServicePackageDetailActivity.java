@@ -1,4 +1,4 @@
-package com.yht.yihuantong.ui.product;
+package com.yht.yihuantong.ui.hospital;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,7 +27,7 @@ import butterknife.OnClick;
  * @date 19/9/26 11:09
  * @description
  */
-public class ServicePackageActivity extends BaseActivity {
+public class ServicePackageDetailActivity extends BaseActivity {
     @BindView(R.id.public_title_bar_title)
     TextView publicTitleBarTitle;
     @BindView(R.id.tv_introduction)
