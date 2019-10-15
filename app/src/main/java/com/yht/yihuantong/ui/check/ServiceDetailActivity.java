@@ -354,7 +354,9 @@ public class ServiceDetailActivity extends BaseActivity
         }
         //隐藏价格
         view.findViewById(R.id.tv_check_edit).setOnClickListener(v -> {
-            startActivity(new Intent(ServiceDetailActivity.this, AddDiagnosisActivity.class));
+            Intent intent = new Intent(ServiceDetailActivity.this, AddDiagnosisActivity.class);
+            intent.putExtra(CommonData.KEY_PUBLIC_STRING, bean.getName());
+            startActivity(intent);
         });
         view.findViewById(R.id.layout_reserve_time).setVisibility(View.GONE);
         return view;

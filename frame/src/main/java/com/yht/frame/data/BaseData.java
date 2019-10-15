@@ -47,6 +47,10 @@ public interface BaseData {
      */
     int BASE_VERIFY_CODE_DEFAULT_LENGTH = 6;
     /**
+     * 多选图片最大数量
+     */
+    int BASE_IMAGE_SIZE_MAX = 9;
+    /**
      * 广告页最长等待时间
      */
     int MAX_WAIT_TIME = 5;

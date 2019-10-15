@@ -105,14 +105,14 @@ public class RequestUtils {
                        .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.UPLOAD_FILE, listener));
     }
 
-    public static void uploadImgWaterMark(Context context, String token, File file,
+    public static void uploadImgWaterMark(Context context, String token, File file,boolean showDialog,
             final ResponseListener<BaseResponse> listener) {
         RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
         MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), reqFile);
         RetrofitManager.getApiUrlManager()
                        .uploadImgWaterMark(token, body)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.UPLOAD_FILE, listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, showDialog, Tasks.UPLOAD_FILE, listener));
     }
 
     public static void getAppMessageList(Context context, String token, int pageSize, int startPage,

@@ -138,7 +138,7 @@ public class AuthLicenseFragment extends BaseFragment
      */
     private void uploadImage(File file) {
         ScalingUtils.resizePic(getContext(), file.getAbsolutePath());
-        RequestUtils.uploadImgWaterMark(getContext(), loginBean.getToken(), file, this);
+        RequestUtils.uploadImgWaterMark(getContext(), loginBean.getToken(), file, true, this);
     }
 
     /**

@@ -25,6 +25,10 @@
     <dimen name="text_17">17sp</dimen>
     <dimen name="text_11">11sp</dimen>
 
+    <dimen name="image_width">86dp</dimen>
+    <dimen name="image_padding">20dp</dimen>
+    <dimen name="image_space">15dp</dimen>
+
     <!-- 顶部按钮栏高度 -->
     <dimen name="pickerview_topbar_height">44dp</dimen>
 
