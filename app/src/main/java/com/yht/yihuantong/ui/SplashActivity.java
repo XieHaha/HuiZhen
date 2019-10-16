@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
-import android.view.WindowManager;
 
 import com.hyphenate.chat.EMClient;
 import com.yht.frame.data.CommonData;
@@ -141,13 +140,5 @@ public class SplashActivity extends BaseActivity implements DocAuthStatus {
                 handler.sendEmptyMessage(0);
             }
         }, 0, 1, TimeUnit.SECONDS);
-    }
-
-    /**
-     * 隐藏虚拟按键，并且全屏
-     */
-    protected void hideBottomUIMenu() {
-        //状态栏透明
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
     }
 }

@@ -98,7 +98,7 @@ public class WebViewActivity extends BaseActivity implements LoadViewHelper.OnNe
             webView.loadUrl(url);
         }
         else {
-            loadStatus(true, LoadViewHelper.NONE_NETWORK);
+            loadStatus();
         }
     }
 
@@ -132,19 +132,18 @@ public class WebViewActivity extends BaseActivity implements LoadViewHelper.OnNe
             @Override
             public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
                 isError = true;
-                loadStatus(true, LoadViewHelper.NONE_NETWORK);
+                loadStatus();
             }
 
             /**
              * 这里进行无网络或错误处理，具体可以根据errorCode的值进行判断，做跟详细的处理。
              *
-             * @param view
              */
             // 旧版本，会在新版本中也可能被调用，所以加上一个判断，防止重复显示
             @Override
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
                 isError = true;
-                loadStatus(true, LoadViewHelper.NONE_NETWORK);
+                loadStatus();
             }
         };
         webView.setWebViewClient(webViewClient);
@@ -172,15 +171,9 @@ public class WebViewActivity extends BaseActivity implements LoadViewHelper.OnNe
     /**
      * 加载状态
      */
-    private void loadStatus(boolean isError, int type) {
-        if (isError) {
-            webView.setVisibility(View.GONE);
-            layoutPublicHint.setVisibility(View.VISIBLE);
-            loadViewHelper.load(type);
-        }
-        else {
-            webView.setVisibility(View.VISIBLE);
-            layoutPublicHint.setVisibility(View.GONE);
-        }
+    private void loadStatus() {
+        webView.setVisibility(View.GONE);
+        layoutPublicHint.setVisibility(View.VISIBLE);
+        loadViewHelper.load(LoadViewHelper.NONE_NETWORK);
     }
 }

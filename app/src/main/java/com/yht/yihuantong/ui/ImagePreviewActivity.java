@@ -10,7 +10,6 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.yht.frame.data.bean.NormImage;
@@ -21,6 +20,8 @@ import com.yht.frame.widgets.imagepreview.view.ImageLoadingView;
 import com.yht.frame.widgets.imagepreview.view.ImagePreviewView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.utils.FileUrlUtil;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -35,8 +36,6 @@ public class ImagePreviewActivity extends Activity implements ViewPager.OnPageCh
      */
     private ArrayList<NormImage> urls;
     private ArrayList<ImagePreviewView> imgPreViews = new ArrayList<>();
-    private ViewPager imgViewPager;
-    private ImageView btnSaveImage;
     /**
      * 图片加载动画view
      */
@@ -46,29 +45,25 @@ public class ImagePreviewActivity extends Activity implements ViewPager.OnPageCh
      */
     private NavigatorPageIndex indicator;
     /**
-     * 当前显示的view
-     */
-    private ImagePreviewView currentPreviceView;
-    /**
      * 当前page 游标
      */
     private int currentIndex;
     /**
      * 图片加载  开始
      */
-    private final int LOAD_START = 0;
+    private static final int LOAD_START = 0;
     /**
      * 图片加载  失败
      */
-    private final int LOAD_ERROR = 100;
+    private static final int LOAD_ERROR = 100;
     /**
      * 图片加载  成功
      */
-    private final int LOAD_SUCCESS = 200;
+    private static final int LOAD_SUCCESS = 200;
     /**
      * 图片加载  取消
      */
-    private final int LOAD_CANCEL = 300;
+    private static final int LOAD_CANCEL = 300;
     private Handler mHandler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
@@ -105,7 +100,6 @@ public class ImagePreviewActivity extends Activity implements ViewPager.OnPageCh
             currentIndex = intent.getIntExtra(INTENT_POSITION, 0);
         }
         mLoadingView = findViewById(R.id.act_image_view_loading);
-        btnSaveImage = findViewById(R.id.act_image_view_save_image);
         //图片游标
         indicator = findViewById(R.id.act_image_view_page_indicator);
         indicator.initPageIndex(urls.size());
@@ -113,7 +107,7 @@ public class ImagePreviewActivity extends Activity implements ViewPager.OnPageCh
         if (urls.size() == 1) {
             indicator.setVisibility(View.GONE);
         }
-        imgViewPager = findViewById(R.id.act_image_view_viewpager);
+        ViewPager imgViewPager = findViewById(R.id.act_image_view_viewpager);
         //滑动效果
         imgViewPager.setPageTransformer(true, new ImageTransformer());
         imgViewPager.addOnPageChangeListener(this);
@@ -157,25 +151,26 @@ public class ImagePreviewActivity extends Activity implements ViewPager.OnPageCh
             return urls.size();
         }
 
+        @NotNull
         @Override
-        public View instantiateItem(final ViewGroup container, final int position) {
-            currentPreviceView = imgPreViews.get(position);
-            //                        currentPreviceView.loadingImageAsync(urls.get(position).getImagePath(), urls.get(position).getImageUrl(),
+        public View instantiateItem(@NotNull final ViewGroup container, final int position) {
+            ImagePreviewView currentPreviewView = imgPreViews.get(position);
+            //                        currentPreviewView.loadingImageAsync(urls.get(position).getImagePath(), urls.get(position).getImageUrl(),
             //                                                             position);
-            currentPreviceView.loadingImageAsync(urls.get(position).getImagePath(),
+            currentPreviewView.loadingImageAsync(urls.get(position).getImagePath(),
                                                  FileUrlUtil.addTokenToUrl(urls.get(position).getImageUrl()));
-            container.addView(currentPreviceView, LinearLayout.LayoutParams.MATCH_PARENT,
+            container.addView(currentPreviewView, LinearLayout.LayoutParams.MATCH_PARENT,
                               LinearLayout.LayoutParams.MATCH_PARENT);
-            return currentPreviceView;
+            return currentPreviewView;
         }
 
         @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
+        public void destroyItem(@NotNull ViewGroup container, int position, @NotNull Object object) {
             container.removeView((View)object);
         }
 
         @Override
-        public boolean isViewFromObject(View view, Object object) {
+        public boolean isViewFromObject(@NotNull View view, @NotNull Object object) {
             return view == object;
         }
     }
