@@ -2,21 +2,21 @@ package com.yht.frame.utils;
 
 import android.content.Context;
 import android.view.Gravity;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.yht.frame.widgets.textview.VerticalTextView;
 
 /**
  * @author dundun
  */
 public class ToastUtil {
     private static Toast toast = null;
+    private static Toast verticalToast = null;
 
     private ToastUtil() {
     }
 
-    /**
-     * @param context
-     * @param msg
-     */
     public static void toast(Context context, String msg) {
         if (msg == null || msg.isEmpty()) {
             return;
@@ -31,10 +31,6 @@ public class ToastUtil {
         toast.show();
     }
 
-    /**
-     * @param context
-     * @param resId
-     */
     public static void toast(Context context, int resId) {
         if (toast == null) {
             toast = Toast.makeText(context, resId, Toast.LENGTH_SHORT);
@@ -44,5 +40,16 @@ public class ToastUtil {
             toast.setText(resId);
         }
         toast.show();
+    }
+
+    public static void toast(Context context, int resId, int type) {
+        if (verticalToast == null) {
+            verticalToast = new Toast(context);
+        }
+        TextView textView = new VerticalTextView(context);
+        textView.setText(resId);
+        verticalToast.setView(textView);
+        verticalToast.setGravity(Gravity.CENTER, 0, 0);
+        verticalToast.show();
     }
 }

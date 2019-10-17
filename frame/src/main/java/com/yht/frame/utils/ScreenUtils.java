@@ -37,9 +37,6 @@ public class ScreenUtils {
 
     /**
      * 获得屏幕高度
-     *
-     * @param context
-     * @return
      */
     public static int getScreenHeight(Context context) {
         if (context == null) { return 0; }

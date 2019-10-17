@@ -351,8 +351,15 @@
     <string name="txt_allergies">过敏史</string>
     <string name="txt_diagnosis_hint">请针对居民病情填写初步诊断及病情简介</string>
     <string name="txt_camera_people">拍照确认</string>
+    <string name="txt_signature_people">签名确认</string>
+    <string name="txt_signature_reset">重新签名</string>
+    <string name="txt_signature_sure">确认签名</string>
+    <string name="txt_signature_hint">请患者或家属签名，</string>
+    <string name="txt_signature_hint1">字迹需清晰可读</string>
     <string name="txt_camera_people_hint">请按照图示，拍摄居民头像确认。</string>
     <string name="txt_camera_people_transfer_hint">请按照图示，拍摄居民或家属头像。</string>
+    <string name="txt_signature_people_transfer_hint">请点击上方空白处，进行签名确认</string>
+    <string name="txt_signature_none_hint">请居民或家属签名</string>
     <string name="txt_self_pay">自费</string>
     <string name="txt_medicare">医保</string>
     <string name="txt_self_medicare">新农合</string>

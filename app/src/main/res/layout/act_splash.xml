@@ -3,14 +3,14 @@
     android:id="@+id/rl_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_ffffff">
+    android:background="@color/color_ffffff"
+    android:paddingTop="70dp">
 
     <pl.droidsonroids.gif.GifImageView
         android:id="@+id/gif_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="78dp" />
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:id="@+id/act_splash_time_hint"

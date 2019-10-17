@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -26,16 +27,17 @@ import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
+import com.yht.frame.data.bean.NormImage;
 import com.yht.frame.data.bean.ReserveCheckBean;
 import com.yht.frame.data.bean.ReserveCheckTypeBean;
 import com.yht.frame.data.bean.SelectCheckTypeBean;
-import com.yht.frame.data.bean.NormImage;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.permission.Permission;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.ScalingUtils;
 import com.yht.frame.utils.glide.GlideHelper;
+import com.yht.frame.widgets.dialog.SignatureDialog;
 import com.yht.frame.widgets.recyclerview.FullListView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ZycApplication;
@@ -89,6 +91,24 @@ public class ServiceSubmitFragment extends BaseFragment
     RadioGroup layoutPregnancy;
     @BindView(R.id.layout_payment)
     RadioGroup layoutPayment;
+    @BindView(R.id.tv_signature)
+    TextView tvSignature;
+    @BindView(R.id.tv_camera)
+    TextView tvCamera;
+    @BindView(R.id.iv_signature)
+    ImageView ivSignature;
+    @BindView(R.id.layout_upload_two)
+    RelativeLayout layoutUploadTwo;
+    @BindView(R.id.tv_type_hint)
+    TextView tvTypeHint;
+    @BindView(R.id.view_signature)
+    View viewSignature;
+    @BindView(R.id.layout_signature)
+    LinearLayout layoutSignature;
+    @BindView(R.id.view_camera)
+    View viewCamera;
+    @BindView(R.id.layout_camera)
+    LinearLayout layoutCamera;
     private File cameraTempFile;
     private Uri mCurrentPhotoUri;
     private String mCurrentPhotoPath;
@@ -144,16 +164,14 @@ public class ServiceSubmitFragment extends BaseFragment
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
+        sureType(true);
         //默认自费
         payTypeId = rbSelf.getId();
-        //默认备孕
-        //        pregnancyId = rbYes.getId();
     }
 
     @Override
     public void initListener() {
         super.initListener();
-        //        layoutPregnancy.setOnCheckedChangeListener(this);
         layoutPayment.setOnCheckedChangeListener(this);
     }
 
@@ -183,7 +201,6 @@ public class ServiceSubmitFragment extends BaseFragment
 
     /**
      * 图片处理
-     *
      */
     private void initImage(boolean status) {
         if (status) {
@@ -273,7 +290,8 @@ public class ServiceSubmitFragment extends BaseFragment
 
     @OnClick({
             R.id.layout_select_check_type, R.id.tv_delete_all, R.id.layout_upload_one, R.id.iv_delete_one,
-            R.id.tv_submit_next, R.id.layout_add_hospital_check })
+            R.id.tv_submit_next, R.id.layout_add_hospital_check, R.id.layout_upload_two, R.id.layout_signature,
+            R.id.layout_camera })
     public void onViewClicked(View view) {
         Intent intent;
         switch (view.getId()) {
@@ -317,40 +335,50 @@ public class ServiceSubmitFragment extends BaseFragment
                 initImage(false);
                 break;
             case R.id.tv_submit_next:
-                if (tvSubmitNext.isSelected() && checkListener != null) {
-                    reserveCheckBean.setConfirmPhoto(confirmImageUrl);
-                    ArrayList<ReserveCheckTypeBean> list = new ArrayList<>();
-                    for (SelectCheckTypeBean bean : checkTypeData) {
-                        ReserveCheckTypeBean checkBean = new ReserveCheckTypeBean();
-                        checkBean.setHospitalCode(bean.getHospitalCode());
-                        checkBean.setProductCode(bean.getProjectCode());
-                        checkBean.setPrice(bean.getPrice());
-                        list.add(checkBean);
-                    }
-                    //检查项列表
-                    reserveCheckBean.setCheckTrans(list);
-                    //                    //是否备孕
-                    //                    if (pregnancyId == rbYes.getId()) {
-                    //                        reserveCheckBean.setIsPregnancy(BaseData.BASE_ONE);
-                    //                    }
-                    //                    else {
-                    //                        reserveCheckBean.setIsPregnancy(BaseData.BASE_ZERO);
-                    //                    }
-                    //缴费类型
-                    if (payTypeId == rbSelf.getId()) {
-                        reserveCheckBean.setPayType(String.valueOf(BaseData.BASE_ZERO));
-                    }
-                    else if (payTypeId == rbMedicare.getId()) {
-                        reserveCheckBean.setPayType(String.valueOf(BaseData.BASE_ONE));
-                    }
-                    else {
-                        reserveCheckBean.setPayType(String.valueOf(BaseData.BASE_TWO));
-                    }
-                    checkListener.onCheckStepThree(reserveCheckBean);
-                }
+                submit();
+                break;
+            case R.id.layout_signature:
+                sureType(true);
+                break;
+            case R.id.layout_camera:
+                sureType(false);
+                break;
+            case R.id.layout_upload_two:
+                new SignatureDialog(getContext()).setOnEnterClickListener(bitmap -> ivSignature.setImageBitmap(bitmap))
+                                                 .show();
                 break;
             default:
                 break;
+        }
+    }
+
+    /**
+     * 提交方式  （签名 or 拍照）
+     *
+     * @param type true 为签名
+     */
+    private void sureType(boolean type) {
+        if (type) {
+            tvSignature.setSelected(true);
+            tvSignature.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+            viewSignature.setVisibility(View.VISIBLE);
+            tvCamera.setSelected(false);
+            tvCamera.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+            viewCamera.setVisibility(View.INVISIBLE);
+            tvTypeHint.setText(R.string.txt_signature_people_transfer_hint);
+            layoutUploadOne.setVisibility(View.GONE);
+            layoutUploadTwo.setVisibility(View.VISIBLE);
+        }
+        else {
+            tvSignature.setSelected(false);
+            tvSignature.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+            viewSignature.setVisibility(View.INVISIBLE);
+            tvCamera.setSelected(true);
+            tvCamera.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+            viewCamera.setVisibility(View.VISIBLE);
+            tvTypeHint.setText(R.string.txt_camera_people_transfer_hint);
+            layoutUploadOne.setVisibility(View.VISIBLE);
+            layoutUploadTwo.setVisibility(View.GONE);
         }
     }
 
@@ -367,6 +395,36 @@ public class ServiceSubmitFragment extends BaseFragment
         //不存在检查项 删除已选医院
         if (checkTypeData.size() == 0) {
             deleteAllSelectCheckType();
+        }
+    }
+
+    /**
+     * 提交数据
+     */
+    private void submit() {
+        if (tvSubmitNext.isSelected() && checkListener != null) {
+            reserveCheckBean.setConfirmPhoto(confirmImageUrl);
+            ArrayList<ReserveCheckTypeBean> list = new ArrayList<>();
+            for (SelectCheckTypeBean bean : checkTypeData) {
+                ReserveCheckTypeBean checkBean = new ReserveCheckTypeBean();
+                checkBean.setHospitalCode(bean.getHospitalCode());
+                checkBean.setProductCode(bean.getProjectCode());
+                checkBean.setPrice(bean.getPrice());
+                list.add(checkBean);
+            }
+            //检查项列表
+            reserveCheckBean.setCheckTrans(list);
+            //缴费类型
+            if (payTypeId == rbSelf.getId()) {
+                reserveCheckBean.setPayType(String.valueOf(BaseData.BASE_ZERO));
+            }
+            else if (payTypeId == rbMedicare.getId()) {
+                reserveCheckBean.setPayType(String.valueOf(BaseData.BASE_ONE));
+            }
+            else {
+                reserveCheckBean.setPayType(String.valueOf(BaseData.BASE_TWO));
+            }
+            checkListener.onCheckStepThree(reserveCheckBean);
         }
     }
 

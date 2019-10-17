@@ -44,10 +44,10 @@ import com.yht.yihuantong.ui.WebViewActivity;
 import com.yht.yihuantong.ui.check.ServiceHistoryActivity;
 import com.yht.yihuantong.ui.doctor.DoctorInfoActivity;
 import com.yht.yihuantong.ui.hint.NotifyHintActivity;
+import com.yht.yihuantong.ui.hospital.HealthManageActivity;
 import com.yht.yihuantong.ui.main.QrCodeActivity;
 import com.yht.yihuantong.ui.patient.ChatContainerActivity;
 import com.yht.yihuantong.ui.personal.PersonalNewActivity;
-import com.yht.yihuantong.ui.hospital.HealthManageActivity;
 import com.yht.yihuantong.ui.remote.ErrorActivity;
 import com.yht.yihuantong.ui.remote.RemoteHistoryActivity;
 import com.yht.yihuantong.ui.remote.RemoteLoginActivity;
@@ -121,7 +121,7 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
         super.setUserVisibleHint(isVisibleToUser);
         if (isPrepared) {
             if (getUserVisibleHint()) {
-                fillNetWorkData();
+                fillData();
             }
             else if (viewFlipper.isFlipping()) {
                 viewFlipper.stopFlipping();
@@ -134,7 +134,7 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
         super.onResume();
         //当前用户可见才刷新列表
         if (getUserVisibleHint()) {
-            fillNetWorkData();
+            fillData();
         }
     }
 
@@ -171,9 +171,7 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
         iNotifyChangeListenerServer.registerDoctorTransferPatientListener(transferApply, RegisterType.REGISTER);
     }
 
-    @Override
-    public void fillNetWorkData() {
-        super.fillNetWorkData();
+    public void fillData() {
         if (BaseUtils.isNetworkAvailable(Objects.requireNonNull(getContext()))) {
             getBanner();
         }
