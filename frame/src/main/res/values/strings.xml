@@ -297,7 +297,7 @@
     <string name="txt_consultation_hospital">会诊医院</string>
     <string name="txt_consultation_purpose">会诊目的</string>
     <string name="txt_consultation_status">会诊状态</string>
-    <string name="txt_consultation_time">会诊时长</string>
+    <string name="txt_consultation_times">会诊时长</string>
     <string name="txt_consultation_advice">会诊意见</string>
     <string name="txt_receiving_doctor">接诊医生</string>
     <string name="txt_receiving_hospital">接诊医院</string>
@@ -406,11 +406,20 @@
     <string name="txt_add_diagnosis_hint">请输入诊断意见，最多输入500字</string>
 
     <!--远程相关-->
+    <string name="txt_reserve_remote">预约远程会诊</string>
     <string name="txt_condition_description">病情描述</string>
+    <string name="txt_condition_description_hint">请对居民的病情进行描述</string>
+    <string name="txt_first_diagnosis_hint">请针对居民病情填写初步诊断结果</string>
+    <string name="txt_consultation_purpose_hint">请填写此次会诊的主要目的</string>
     <string name="txt_remote_login_hint">远程会诊医生身份确认</string>
     <string name="txt_remote_login_error_hint">这里是%s%s远程会诊系统，您无使用权限。</string>
     <string name="txt_remote_duration">%s分钟</string>
     <string name="txt_initiate_remote_consultation">发起远程会诊</string>
+    <string name="txt_upload_data">上传资料</string>
+    <string name="txt_consultation_time">会诊时间</string>
+    <string name="txt_select_depart">会诊医院-科室</string>
+    <string name="txt_select_depart_hint">最多5间科室</string>
+    <string name="txt_select_depart_hint1">添加\n最多5间科室</string>
 
     <!--转诊申请-->
     <string name="txt_visiting">接诊</string>

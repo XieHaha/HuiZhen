@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,8 +26,8 @@ import com.yht.frame.api.DirHelper;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
-import com.yht.frame.data.bean.ReceiverDoctorBean;
 import com.yht.frame.data.bean.NormImage;
+import com.yht.frame.data.bean.ReceiverDoctorBean;
 import com.yht.frame.data.bean.ReserveTransferBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.permission.Permission;
@@ -34,6 +35,7 @@ import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.ScalingUtils;
 import com.yht.frame.utils.glide.GlideHelper;
+import com.yht.frame.widgets.dialog.SignatureDialog;
 import com.yht.frame.widgets.edittext.AbstractTextWatcher;
 import com.yht.frame.widgets.view.ExpandableLayout;
 import com.yht.yihuantong.R;
@@ -106,6 +108,24 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
     RadioGroup groupTransferPurpose;
     @BindView(R.id.group_payment)
     RadioGroup groupPayment;
+    @BindView(R.id.tv_signature)
+    TextView tvSignature;
+    @BindView(R.id.tv_camera)
+    TextView tvCamera;
+    @BindView(R.id.iv_signature)
+    ImageView ivSignature;
+    @BindView(R.id.layout_upload_two)
+    RelativeLayout layoutUploadTwo;
+    @BindView(R.id.tv_type_hint)
+    TextView tvTypeHint;
+    @BindView(R.id.view_signature)
+    View viewSignature;
+    @BindView(R.id.layout_signature)
+    LinearLayout layoutSignature;
+    @BindView(R.id.view_camera)
+    View viewCamera;
+    @BindView(R.id.layout_camera)
+    LinearLayout layoutCamera;
     private File cameraTempFile;
     private Uri mCurrentPhotoUri;
     private String mCurrentPhotoPath;
@@ -153,6 +173,7 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
+        sureType(true);
         //默认自费
         payTypeId = rbSelf.getId();
         //默认家属要求
@@ -386,7 +407,8 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
 
     @OnClick({
             R.id.layout_select_receiving_doctor, R.id.iv_receiving_doctor_call, R.id.iv_delete_one,
-            R.id.layout_upload_one, R.id.tv_submit_next })
+            R.id.layout_upload_one, R.id.layout_upload_two, R.id.layout_signature,
+            R.id.layout_camera,R.id.tv_submit_next })
     public void onViewClicked(View view) {
         Intent intent;
         switch (view.getId()) {
@@ -421,8 +443,48 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
                 reverseTransferBean.setReceiveDoctorCode("");
                 deleteAllSelectCheckType();
                 break;
+            case R.id.layout_signature:
+                sureType(true);
+                break;
+            case R.id.layout_camera:
+                sureType(false);
+                break;
+            case R.id.layout_upload_two:
+                new SignatureDialog(getContext()).setOnEnterClickListener(bitmap -> ivSignature.setImageBitmap(bitmap))
+                                                 .show();
+                break;
             default:
                 break;
+        }
+    }
+
+    /**
+     * 提交方式  （签名 or 拍照）
+     *
+     * @param type true 为签名
+     */
+    private void sureType(boolean type) {
+        if (type) {
+            tvSignature.setSelected(true);
+            tvSignature.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+            viewSignature.setVisibility(View.VISIBLE);
+            tvCamera.setSelected(false);
+            tvCamera.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+            viewCamera.setVisibility(View.INVISIBLE);
+            tvTypeHint.setText(R.string.txt_signature_people_transfer_hint);
+            layoutUploadOne.setVisibility(View.GONE);
+            layoutUploadTwo.setVisibility(View.VISIBLE);
+        }
+        else {
+            tvSignature.setSelected(false);
+            tvSignature.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+            viewSignature.setVisibility(View.INVISIBLE);
+            tvCamera.setSelected(true);
+            tvCamera.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+            viewCamera.setVisibility(View.VISIBLE);
+            tvTypeHint.setText(R.string.txt_camera_people_transfer_hint);
+            layoutUploadOne.setVisibility(View.VISIBLE);
+            layoutUploadTwo.setVisibility(View.GONE);
         }
     }
 

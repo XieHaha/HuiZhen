@@ -374,7 +374,7 @@
                     android:textSize="@dimen/text_16"
                     android:textColor="@color/color_373d4d"
                     android:textStyle="bold"
-                    android:text="@string/txt_consultation_time" />
+                    android:text="@string/txt_consultation_times" />
 
                 <TextView
                     android:id="@+id/tv_consultation_time"

@@ -1,22 +1,44 @@
 package com.yht.yihuantong.ui.reservation.remote;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yht.frame.data.BaseData;
+import com.yht.frame.data.BaseResponse;
+import com.yht.frame.data.CommonData;
+import com.yht.frame.data.Tasks;
+import com.yht.frame.data.bean.NormImage;
 import com.yht.frame.data.bean.ReserveCheckBean;
+import com.yht.frame.http.retrofit.RequestUtils;
+import com.yht.frame.permission.Permission;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
+import com.yht.frame.utils.ScalingUtils;
 import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.widgets.edittext.AbstractTextWatcher;
 import com.yht.frame.widgets.edittext.MultiLineEditText;
 import com.yht.frame.widgets.edittext.SuperEditText;
+import com.yht.frame.widgets.gridview.AutoGridView;
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.ui.ImagePreviewActivity;
 import com.yht.yihuantong.ui.check.listener.OnCheckListener;
+import com.yht.yihuantong.ui.reservation.PastHistoryActivity;
+import com.yht.yihuantong.utils.MatisseUtils;
 import com.yht.yihuantong.utils.text.BankCardTextWatcher;
+import com.zhihu.matisse.Matisse;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -26,7 +48,8 @@ import butterknife.OnClick;
  * @date 19/6/14 14:23
  * @description 完善资料
  */
-public class RemoteMaterialFragment extends BaseFragment implements View.OnFocusChangeListener {
+public class RemoteMaterialFragment extends BaseFragment
+        implements View.OnFocusChangeListener, AdapterView.OnItemClickListener, AutoGridView.OnDeleteClickListener {
     @BindView(R.id.tv_name)
     TextView tvName;
     @BindView(R.id.rb_male)
@@ -39,24 +62,6 @@ public class RemoteMaterialFragment extends BaseFragment implements View.OnFocus
     SuperEditText tvIdCard;
     @BindView(R.id.et_phone)
     SuperEditText etPhone;
-    @BindView(R.id.tv_past_medical_his_not)
-    TextView tvPastMedicalHisNot;
-    @BindView(R.id.et_past_medical_his)
-    MultiLineEditText etPastMedicalHis;
-    @BindView(R.id.tv_past_medical_his_num)
-    TextView tvPastMedicalHisNum;
-    @BindView(R.id.tv_family_medical_his_not)
-    TextView tvFamilyMedicalHisNot;
-    @BindView(R.id.et_family_medical_his)
-    MultiLineEditText etFamilyMedicalHis;
-    @BindView(R.id.tv_family_medical_his_num)
-    TextView tvFamilyMedicalHisNum;
-    @BindView(R.id.tv_allergies_not)
-    TextView tvAllergiesNot;
-    @BindView(R.id.et_allergies)
-    MultiLineEditText etAllergies;
-    @BindView(R.id.tv_allergies_num)
-    TextView tvAllergiesNum;
     @BindView(R.id.et_diagnosis)
     MultiLineEditText etDiagnosis;
     @BindView(R.id.tv_diagnosis_num)
@@ -69,23 +74,65 @@ public class RemoteMaterialFragment extends BaseFragment implements View.OnFocus
     LinearLayout layoutFamilyMedicalHis;
     @BindView(R.id.layout_allergies)
     LinearLayout layoutAllergies;
+    @BindView(R.id.tv_past_medical)
+    TextView tvPastMedical;
+    @BindView(R.id.tv_family_medical)
+    TextView tvFamilyMedical;
+    @BindView(R.id.tv_allergies)
+    TextView tvAllergies;
+    @BindView(R.id.layout_past)
+    RelativeLayout layoutPast;
+    @BindView(R.id.et_description)
+    MultiLineEditText etDescription;
+    @BindView(R.id.tv_description_num)
+    TextView tvDescriptionNum;
+    @BindView(R.id.et_purpose)
+    MultiLineEditText etPurpose;
+    @BindView(R.id.tv_purpose_num)
+    TextView tvPurposeNum;
+    @BindView(R.id.auto_grid_view)
+    AutoGridView autoGridView;
+    /**
+     * 既往史数据
+     */
+    private ArrayList<String> pastHistoryData;
     /**
      * 当前预约检查数据
      */
     private ReserveCheckBean reserveCheckBean;
     /**
+     * 编辑既往史
+     */
+    public static final int REQUEST_CODE_PAST_HISTORY = 100;
+    /**
      * 基础信息
      */
     private int sex;
-    private String age, phone, pastMedicalHis = "", familyMedicalHis = "", allergiesHis = "", diagnosisHis = "";
+    private String age, phone, pastMedicalHis = "", familyMedicalHis = "", allergiesHis = "", diagnosisHis = "", description = "", purpose = "";
     /**
      * 二次编辑 是否清空所有已填数据
      */
     private boolean clearAll;
+    /**
+     * 已上传图片
+     */
+    private ArrayList<NormImage> imagePaths = new ArrayList<>();
+    /**
+     * 图片临时数据
+     */
+    private List<String> paths;
+    private int currentUploadImgIndex = -1;
+    private Handler dealImgHandler = new Handler(msg -> {
+        //图片显示完开始上传图片
+        showLoadingView();
+        currentUploadImgIndex = 0;
+        uploadImage(new File(paths.get(currentUploadImgIndex)));
+        return true;
+    });
 
     @Override
     public int getLayoutID() {
-        return R.layout.fragment_material;
+        return R.layout.fragment_remote_material;
     }
 
     @Override
@@ -106,7 +153,17 @@ public class RemoteMaterialFragment extends BaseFragment implements View.OnFocus
     @Override
     public void initListener() {
         super.initListener();
+        autoGridView.setOnItemClickListener(this);
+        autoGridView.setOnDeleteClickListener(this);
         initEditListener();
+    }
+
+    /**
+     * 上传图片
+     */
+    private void uploadImage(File file) {
+        ScalingUtils.resizePic(getContext(), file.getAbsolutePath());
+        RequestUtils.uploadImgWaterMark(getContext(), loginBean.getToken(), file, false, this);
     }
 
     /**
@@ -116,6 +173,8 @@ public class RemoteMaterialFragment extends BaseFragment implements View.OnFocus
         if (clearAll) {
             etPhone.setText("");
             etDiagnosis.setText("");
+            etDescription.setText("");
+            etPurpose.setText("");
             pastMedicalHis = "";
             familyMedicalHis = "";
             allergiesHis = "";
@@ -159,18 +218,24 @@ public class RemoteMaterialFragment extends BaseFragment implements View.OnFocus
             else {
                 rbFemale.setChecked(true);
             }
+            //病情描述
+            etDescription.setText(description = reserveCheckBean.getInitResult());
             //初步诊断
             etDiagnosis.setText(diagnosisHis = reserveCheckBean.getInitResult());
-            //既往病史
-            initPastMedicalHis(!TextUtils.isEmpty(pastMedicalHis) &&
-                               (!getString(R.string.txt_past_medical_his_not).equals(pastMedicalHis)));
-            //家族病史
-            initFamilyMedicalHis(!TextUtils.isEmpty(familyMedicalHis) &&
-                                 (!getString(R.string.txt_family_medical_his_not).equals(familyMedicalHis)));
-            //过敏史
-            initAllergies(
-                    !TextUtils.isEmpty(allergiesHis) && (!getString(R.string.txt_allergies_not).equals(allergiesHis)));
+            //会珍目的
+            etPurpose.setText(purpose = reserveCheckBean.getInitResult());
+            //既往史
+            pastHistoryData = new ArrayList<>();
+            pastHistoryData.add(pastMedicalHis);
+            pastHistoryData.add(familyMedicalHis);
+            pastHistoryData.add(allergiesHis);
+            initPastHistory();
+            //病情描述
+            initDescription();
+            //诊断史
             initDiagnosis();
+            //会珍目的
+            initPurpose();
             initNextButton();
         }
     }
@@ -183,15 +248,8 @@ public class RemoteMaterialFragment extends BaseFragment implements View.OnFocus
             clearAll = false;
         }
         else {
-            if (reserveCheckBean.getPatientName().equals(bean.getPatientName()) &&
-                reserveCheckBean.getIdCardNo().equals(bean.getIdCardNo())) {
-                //都相等 说明未改变用户
-                clearAll = false;
-            }
-            else {
-                //有不相等的 说明居民已经更改，需要清除原有已填写数据
-                clearAll = true;
-            }
+            clearAll = !reserveCheckBean.getPatientName().equals(bean.getPatientName()) ||
+                       !reserveCheckBean.getIdCardNo().equals(bean.getIdCardNo());
         }
     }
 
@@ -242,35 +300,14 @@ public class RemoteMaterialFragment extends BaseFragment implements View.OnFocus
                 initNextButton();
             }
         });
-        etPastMedicalHis.addTextChangedListener(new AbstractTextWatcher() {
+        etDescription.addTextChangedListener(new AbstractTextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 super.onTextChanged(s, start, before, count);
-                pastMedicalHis = s.toString().trim();
-                tvPastMedicalHisNum.setText(String.format(getString(R.string.txt_calc_num), pastMedicalHis.length()));
+                description = s.toString().trim();
                 initNextButton();
-                reserveCheckBean.setPastHistory(pastMedicalHis);
-            }
-        });
-        etFamilyMedicalHis.addTextChangedListener(new AbstractTextWatcher() {
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                super.onTextChanged(s, start, before, count);
-                familyMedicalHis = s.toString().trim();
-                tvFamilyMedicalHisNum.setText(
-                        String.format(getString(R.string.txt_calc_num), familyMedicalHis.length()));
-                initNextButton();
-                reserveCheckBean.setFamilyHistory(familyMedicalHis);
-            }
-        });
-        etAllergies.addTextChangedListener(new AbstractTextWatcher() {
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                super.onTextChanged(s, start, before, count);
-                allergiesHis = s.toString().trim();
-                tvAllergiesNum.setText(String.format(getString(R.string.txt_calc_num), allergiesHis.length()));
-                initNextButton();
-                reserveCheckBean.setAllergyHistory(allergiesHis);
+                initDescription();
+                reserveCheckBean.setInitResult(description);
             }
         });
         etDiagnosis.addTextChangedListener(new AbstractTextWatcher() {
@@ -283,84 +320,51 @@ public class RemoteMaterialFragment extends BaseFragment implements View.OnFocus
                 reserveCheckBean.setInitResult(diagnosisHis);
             }
         });
+        etPurpose.addTextChangedListener(new AbstractTextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                super.onTextChanged(s, start, before, count);
+                purpose = s.toString().trim();
+                initNextButton();
+                initPurpose();
+                reserveCheckBean.setInitResult(purpose);
+            }
+        });
     }
 
     /**
-     * 既往病史
+     * 既往史
      */
-    private void initPastMedicalHis(boolean status) {
-        if (status) {
-            etPastMedicalHis.setVisibility(View.VISIBLE);
-            layoutPastMedicalHis.setVisibility(View.GONE);
-            if (!getString(R.string.txt_past_medical_his_not).equals(pastMedicalHis)) {
-                etPastMedicalHis.setText(pastMedicalHis);
-                etPastMedicalHis.setSelection(pastMedicalHis.length());
-            }
-            tvPastMedicalHisNum.setText(String.format(getString(R.string.txt_calc_num), pastMedicalHis.length()));
-            reserveCheckBean.setPastHistory(pastMedicalHis);
+    private void initPastHistory() {
+        if (!TextUtils.isEmpty(pastHistoryData.get(0)) &&
+            (!getString(R.string.txt_past_medical_his_not).equals(pastHistoryData.get(0)))) {
+            tvPastMedical.setText(pastHistoryData.get(0));
         }
         else {
-            etPastMedicalHis.setText("");
-            etPastMedicalHis.setVisibility(View.INVISIBLE);
-            layoutPastMedicalHis.setVisibility(View.VISIBLE);
-            tvPastMedicalHisNum.setText(
-                    String.format(getString(R.string.txt_calc_num), tvPastMedicalHisNot.getText().toString().length()));
-            if (TextUtils.isEmpty(pastMedicalHis)) {
-                reserveCheckBean.setPastHistory(getString(R.string.txt_past_medical_his_not));
-            }
+            tvPastMedical.setText(R.string.txt_past_medical_his_not);
         }
-    }
-
-    /**
-     * 家族病史
-     */
-    private void initFamilyMedicalHis(boolean status) {
-        if (status) {
-            etFamilyMedicalHis.setVisibility(View.VISIBLE);
-            layoutFamilyMedicalHis.setVisibility(View.GONE);
-            if (!getString(R.string.txt_family_medical_his_not).equals(familyMedicalHis)) {
-                etFamilyMedicalHis.setText(familyMedicalHis);
-                etFamilyMedicalHis.setSelection(familyMedicalHis.length());
-            }
-            tvFamilyMedicalHisNum.setText(String.format(getString(R.string.txt_calc_num), familyMedicalHis.length()));
-            reserveCheckBean.setFamilyHistory(familyMedicalHis);
+        if (!TextUtils.isEmpty(pastHistoryData.get(1)) &&
+            (!getString(R.string.txt_past_medical_his_not).equals(pastHistoryData.get(1)))) {
+            tvFamilyMedical.setText(pastHistoryData.get(1));
         }
         else {
-            etFamilyMedicalHis.setText("");
-            etFamilyMedicalHis.setVisibility(View.INVISIBLE);
-            layoutFamilyMedicalHis.setVisibility(View.VISIBLE);
-            tvFamilyMedicalHisNum.setText(String.format(getString(R.string.txt_calc_num),
-                                                        tvFamilyMedicalHisNot.getText().toString().length()));
-            if (TextUtils.isEmpty(familyMedicalHis)) {
-                reserveCheckBean.setFamilyHistory(getString(R.string.txt_family_medical_his_not));
-            }
+            tvFamilyMedical.setText(R.string.txt_family_medical_his_not);
+        }
+        if (!TextUtils.isEmpty(pastHistoryData.get(2)) &&
+            (!getString(R.string.txt_past_medical_his_not).equals(pastHistoryData.get(2)))) {
+            tvAllergies.setText(pastHistoryData.get(2));
+        }
+        else {
+            tvAllergies.setText(R.string.txt_allergies_not);
         }
     }
 
     /**
-     * 过敏史
+     * 诊断内容
      */
-    private void initAllergies(boolean status) {
-        if (status) {
-            etAllergies.setVisibility(View.VISIBLE);
-            layoutAllergies.setVisibility(View.GONE);
-            if (!getString(R.string.txt_allergies_not).equals(allergiesHis)) {
-                etAllergies.setText(allergiesHis);
-                etAllergies.setSelection(allergiesHis.length());
-            }
-            tvAllergiesNum.setText(String.format(getString(R.string.txt_calc_num), allergiesHis.length()));
-            reserveCheckBean.setAllergyHistory(allergiesHis);
-        }
-        else {
-            etAllergies.setText("");
-            etAllergies.setVisibility(View.INVISIBLE);
-            layoutAllergies.setVisibility(View.VISIBLE);
-            tvAllergiesNum.setText(
-                    String.format(getString(R.string.txt_calc_num), tvAllergiesNot.getText().toString().length()));
-            if (TextUtils.isEmpty(allergiesHis)) {
-                reserveCheckBean.setAllergyHistory(getString(R.string.txt_allergies_not));
-            }
-        }
+    private void initDescription() {
+        tvDescriptionNum.setText(String.format(getString(R.string.txt_calc_num), description.length()));
+        etDescription.setSelection(description.length());
     }
 
     /**
@@ -372,15 +376,49 @@ public class RemoteMaterialFragment extends BaseFragment implements View.OnFocus
     }
 
     /**
+     * 诊断内容
+     */
+    private void initPurpose() {
+        tvPurposeNum.setText(String.format(getString(R.string.txt_calc_num), purpose.length()));
+        etPurpose.setSelection(purpose.length());
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        if (imagePaths.size() > position) {
+            //查看大图
+            Intent intent = new Intent(getContext(), ImagePreviewActivity.class);
+            intent.putExtra(ImagePreviewActivity.INTENT_URLS, imagePaths);
+            intent.putExtra(ImagePreviewActivity.INTENT_POSITION, position);
+            startActivity(intent);
+            getActivity().overridePendingTransition(R.anim.anim_fade_in, R.anim.keep);
+        }
+        else {
+            permissionHelper.request(new String[] { Permission.CAMERA, Permission.STORAGE_WRITE });
+        }
+    }
+
+    @Override
+    public void onDeleteClick(int position) {
+        imagePaths.remove(position);
+        autoGridView.updateImg(imagePaths, true);
+        initNextButton();
+    }
+
+    /**
+     * 打开图片库
+     */
+    private void openPhoto() {
+        MatisseUtils.open(this, true, BaseData.BASE_IMAGE_SIZE_MAX - imagePaths.size());
+    }
+
+    /**
      * next
      */
     private void initNextButton() {
-        boolean past = etPastMedicalHis.getVisibility() != View.VISIBLE || !TextUtils.isEmpty(pastMedicalHis);
-        boolean family = etFamilyMedicalHis.getVisibility() != View.VISIBLE || !TextUtils.isEmpty(familyMedicalHis);
-        boolean allergies = etAllergies.getVisibility() != View.VISIBLE || !TextUtils.isEmpty(allergiesHis);
         //判断手机号和诊断史
-        if (BaseUtils.isMobileNumber(phone) && !TextUtils.isEmpty(diagnosisHis) && !TextUtils.isEmpty(age) && past &&
-            family && allergies) {
+        if (BaseUtils.isMobileNumber(phone) && !TextUtils.isEmpty(description) && !TextUtils.isEmpty(diagnosisHis) &&
+            !TextUtils.isEmpty(purpose) && !TextUtils.isEmpty(age)) {
             tvMaterialNext.setSelected(true);
         }
         else {
@@ -398,17 +436,13 @@ public class RemoteMaterialFragment extends BaseFragment implements View.OnFocus
     }
 
     @OnClick({
-            R.id.tv_material_next, R.id.iv_past_medical_his, R.id.iv_family_medical_his, R.id.iv_allergies })
+            R.id.tv_material_next, R.id.layout_past })
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.iv_past_medical_his:
-                initPastMedicalHis(true);
-                break;
-            case R.id.iv_family_medical_his:
-                initFamilyMedicalHis(true);
-                break;
-            case R.id.iv_allergies:
-                initAllergies(true);
+            case R.id.layout_past:
+                Intent intent = new Intent(getContext(), PastHistoryActivity.class);
+                intent.putExtra(CommonData.KEY_PUBLIC, pastHistoryData);
+                startActivityForResult(intent, REQUEST_CODE_PAST_HISTORY);
                 break;
             case R.id.tv_material_next:
                 if (tvMaterialNext.isSelected() && checkListener != null) {
@@ -417,6 +451,60 @@ public class RemoteMaterialFragment extends BaseFragment implements View.OnFocus
                 break;
             default:
                 break;
+        }
+    }
+
+    @Override
+    public void onResponseSuccess(Tasks task, BaseResponse response) {
+        super.onResponseSuccess(task, response);
+        switch (task) {
+            case UPLOAD_FILE:
+                String url = (String)response.getData();
+                NormImage normImage = new NormImage();
+                normImage.setImageUrl(url);
+                imagePaths.add(normImage);
+                autoGridView.updateImg(imagePaths, true);
+                if (paths.size() - 1 > currentUploadImgIndex) {
+                    currentUploadImgIndex++;
+                    uploadImage(new File(paths.get(currentUploadImgIndex)));
+                }
+                else {
+                    closeLoadingView();
+                }
+                initNextButton();
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+        if (requestCode == REQUEST_CODE_PAST_HISTORY) {
+            pastHistoryData = data.getStringArrayListExtra(CommonData.KEY_PUBLIC);
+            reserveCheckBean.setPastHistory(pastHistoryData.get(0));
+            reserveCheckBean.setFamilyHistory(pastHistoryData.get(1));
+            reserveCheckBean.setAllergyHistory(pastHistoryData.get(2));
+            initNextButton();
+        }
+        else if (requestCode == RC_PICK_IMG) {
+            paths = Matisse.obtainPathResult(data);
+            if (paths != null && paths.size() > 0) {
+                dealImgHandler.sendEmptyMessage(0);
+            }
+        }
+    }
+
+    @Override
+    public void onNoPermissionNeeded(@NonNull Object permissionName) {
+        if (permissionName instanceof String[]) {
+            if (isSamePermission(Permission.CAMERA, ((String[])permissionName)[0])) {
+                openPhoto();
+            }
         }
     }
 

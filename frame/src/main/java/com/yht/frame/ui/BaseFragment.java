@@ -34,9 +34,11 @@ import com.yht.frame.permission.PermissionHelper;
 import com.yht.frame.utils.SharePreferenceUtil;
 import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.widgets.LoadViewHelper;
+import com.yht.frame.widgets.dialog.LoadingDialog;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -47,6 +49,10 @@ import butterknife.Unbinder;
 public abstract class BaseFragment extends Fragment
         implements UiInterface, BaseData, OnPermissionCallback, ResponseListener<BaseResponse>, View.OnClickListener {
     public static final String TAG = "ZYC";
+    /**
+     * load view
+     */
+    private LoadingDialog loadingView;
     /**
      * 注解
      */
@@ -126,10 +132,53 @@ public abstract class BaseFragment extends Fragment
         super.onActivityCreated(savedInstanceState);
     }
 
+    private void initLoadingView() {
+        loadingView = new LoadingDialog(getContext());
+    }
+
+    /**
+     * 显示进度条
+     */
+    public void showLoadingView() {
+        showLoadingView(true);
+    }
+
+    /**
+     * 显示进度条
+     */
+    public void showLoadingView(final boolean cancel) {
+        Objects.requireNonNull(getActivity()).runOnUiThread(() -> {
+            if (loadingView == null) {
+                initLoadingView();
+            }
+            loadingView.setCancelable(cancel);
+            loadingView.setCanceledOnTouchOutside(cancel);
+            if (!loadingView.isShowing()) {
+                loadingView.show();
+            }
+        });
+    }
+
+    /**
+     * 关闭进度条
+     */
+    public void closeLoadingView() {
+        Objects.requireNonNull(getActivity()).runOnUiThread(() -> {
+            if (loadingView == null) {
+                return;
+            }
+            if (!loadingView.isShowing()) {
+                return;
+            }
+            loadingView.setCancelable(true);
+            loadingView.setCanceledOnTouchOutside(true);
+            loadingView.dismiss();
+        });
+    }
+
     /**
      * 初始化login数据
      *
-     * @return
      */
     public LoginBean getLoginBean() {
         String userStr = (String)SharePreferenceUtil.getObject(getActivity(), CommonData.KEY_LOGIN_BEAN, "");
@@ -142,8 +191,6 @@ public abstract class BaseFragment extends Fragment
     /**
      * 获取状态栏高度,在页面还没有显示出来之前
      *
-     * @param a
-     * @return
      */
     public static int getStateBarHeight(Activity a) {
         if (a == null) {
@@ -163,14 +210,13 @@ public abstract class BaseFragment extends Fragment
      * 3.initData
      * 4.initListener
      *
-     * @param savedInstanceState
      */
     private void init(@NonNull View view, @NonNull Bundle savedInstanceState) {
         initView(view, savedInstanceState);
         initView(savedInstanceState);
         initData(savedInstanceState);
         initListener();
-        view.post(() -> fillNetWorkData());
+        view.post(this::fillNetWorkData);
     }
 
     @Override
@@ -224,7 +270,6 @@ public abstract class BaseFragment extends Fragment
      *
      * @param originUri  裁剪前
      * @param cutFileUri 裁剪后
-     * @return
      */
     public Intent getCutImageIntent(Uri originUri, Uri cutFileUri) {
         //系统裁剪
@@ -399,9 +444,6 @@ public abstract class BaseFragment extends Fragment
         if (TextUtils.isEmpty(o) || TextUtils.isEmpty(n)) {
             return false;
         }
-        if (o.equals(n)) {
-            return true;
-        }
-        return false;
+        return o.equals(n);
     }
 }

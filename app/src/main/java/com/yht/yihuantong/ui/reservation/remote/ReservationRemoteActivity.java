@@ -413,6 +413,11 @@ public class ReservationRemoteActivity extends BaseActivity implements OnCheckLi
                     identifyFragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
                 }
                 break;
+            case BASE_ONE:
+                if (materialFragment != null) {
+                    materialFragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
+                }
+                break;
             case BASE_TWO:
                 if (submitCheckFragment != null) {
                     submitCheckFragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -429,6 +434,11 @@ public class ReservationRemoteActivity extends BaseActivity implements OnCheckLi
             case BASE_ZERO:
                 if (identifyFragment != null) {
                     identifyFragment.onPermissionNeedExplanation(permissionName);
+                }
+                break;
+            case BASE_ONE:
+                if (materialFragment != null) {
+                    materialFragment.onPermissionNeedExplanation(permissionName);
                 }
                 break;
             case BASE_TWO:
@@ -448,6 +458,11 @@ public class ReservationRemoteActivity extends BaseActivity implements OnCheckLi
             case BASE_ZERO:
                 if (identifyFragment != null) {
                     identifyFragment.onNoPermissionNeeded(permissionName);
+                }
+                break;
+            case BASE_ONE:
+                if (materialFragment != null) {
+                    materialFragment.onNoPermissionNeeded(permissionName);
                 }
                 break;
             case BASE_TWO:

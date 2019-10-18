@@ -38,6 +38,7 @@ import com.yht.yihuantong.ui.patient.EditLabelActivity;
 import com.yht.yihuantong.ui.patient.TransferDetailActivity;
 import com.yht.yihuantong.ui.remote.RemoteDetailActivity;
 import com.yht.yihuantong.ui.reservation.ReservationDisableActivity;
+import com.yht.yihuantong.ui.reservation.remote.ReservationRemoteActivity;
 import com.yht.yihuantong.ui.reservation.service.ReservationServiceActivity;
 import com.yht.yihuantong.ui.reservation.transfer.ReservationTransferActivity;
 import com.zhy.view.flowlayout.FlowLayout;
@@ -296,7 +297,7 @@ public class PatientInfoFragment extends BaseFragment
         startActivity(intent);
     }
 
-    @OnClick({ R.id.tv_reserve_check, R.id.tv_reserve_transfer })
+    @OnClick({ R.id.tv_reserve_check, R.id.tv_reserve_transfer, R.id.tv_reserve_remote })
     public void onViewClicked(View view) {
         Intent intent;
         switch (view.getId()) {
@@ -313,6 +314,17 @@ public class PatientInfoFragment extends BaseFragment
                 break;
             case R.id.tv_reserve_transfer:
                 getPatientExistTransfer();
+                break;
+            case R.id.tv_reserve_remote:
+                if (applyServiceAble) {
+                    intent = new Intent(getContext(), ReservationRemoteActivity.class);
+                    intent.putExtra(CommonData.KEY_PATIENT_BEAN, patientBean);
+                    startActivity(intent);
+                }
+                else {
+                    intent = new Intent(getContext(), ReservationDisableActivity.class);
+                    startActivity(intent);
+                }
                 break;
             default:
                 break;

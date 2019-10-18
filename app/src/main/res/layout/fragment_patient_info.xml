@@ -17,28 +17,40 @@
         android:layout_height="68dp"
         android:background="@color/color_ffffff"
         android:gravity="center_vertical"
-        android:paddingStart="35dp"
-        android:paddingEnd="35dp">
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp">
 
         <TextView
             android:id="@+id/tv_reserve_check"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="42dp"
-            android:background="@drawable/corner28_1491fc_bg"
+            android:background="@drawable/corner28_7eb6e5_bg"
             android:text="@string/txt_reserve_check"
             android:gravity="center"
             android:textSize="@dimen/text_16"
             android:textColor="@color/color_ffffff"
-            android:layout_marginEnd="14dp" />
+            android:layout_marginEnd="10dp" />
 
         <TextView
             android:id="@+id/tv_reserve_transfer"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="42dp"
-            android:background="@drawable/corner28_fd8134_bg"
+            android:background="@drawable/corner28_5aacf3_bg"
             android:text="@string/txt_reserve_transfer"
+            android:textColor="@color/color_ffffff"
+            android:textSize="@dimen/text_16"
+            android:gravity="center"
+            android:layout_marginEnd="10dp" />
+
+        <TextView
+            android:id="@+id/tv_reserve_remote"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="42dp"
+            android:background="@drawable/corner28_1491fc_bg"
+            android:text="@string/txt_reserve_remote"
             android:textColor="@color/color_ffffff"
             android:textSize="@dimen/text_16"
             android:gravity="center" />

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,14 +16,11 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.yht.frame.api.DirHelper;
-import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
@@ -36,13 +34,11 @@ import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.ScalingUtils;
 import com.yht.frame.utils.glide.GlideHelper;
-import com.yht.frame.widgets.recyclerview.FullListView;
+import com.yht.frame.widgets.dialog.SignatureDialog;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ZycApplication;
 import com.yht.yihuantong.ui.ImagePreviewActivity;
-import com.yht.yihuantong.ui.adapter.CheckTypeListViewAdapter;
 import com.yht.yihuantong.ui.check.SelectCheckTypeActivity;
-import com.yht.yihuantong.ui.check.SelectCheckTypeByHospitalActivity;
 import com.yht.yihuantong.ui.check.listener.OnCheckListener;
 
 import java.io.File;
@@ -55,26 +51,11 @@ import butterknife.OnClick;
 /**
  * @author 顿顿
  * @date 19/6/14 14:23
- * @des  确认提交
+ * @des 确认提交
  */
-public class RemoteSubmitFragment extends BaseFragment
-        implements CheckTypeListViewAdapter.OnDeleteClickListener, RadioGroup.OnCheckedChangeListener {
+public class RemoteSubmitFragment extends BaseFragment {
     @BindView(R.id.tv_select)
     TextView tvSelect;
-    @BindView(R.id.full_listview)
-    FullListView fullListView;
-    @BindView(R.id.layout_check_root)
-    LinearLayout layoutCheckRoot;
-    @BindView(R.id.rb_yes)
-    RadioButton rbYes;
-    @BindView(R.id.rb_no)
-    RadioButton rbNo;
-    @BindView(R.id.rb_self)
-    RadioButton rbSelf;
-    @BindView(R.id.rb_medicare)
-    RadioButton rbMedicare;
-    @BindView(R.id.rb_ncms)
-    RadioButton rbNcms;
     @BindView(R.id.iv_upload_one)
     ImageView ivUploadOne;
     @BindView(R.id.iv_delete_one)
@@ -83,32 +64,32 @@ public class RemoteSubmitFragment extends BaseFragment
     RelativeLayout layoutUploadOne;
     @BindView(R.id.tv_submit_next)
     TextView tvSubmitNext;
-    @BindView(R.id.tv_hospital_name)
-    TextView tvHospitalName;
-    @BindView(R.id.layout_pregnancy)
-    RadioGroup layoutPregnancy;
-    @BindView(R.id.layout_payment)
-    RadioGroup layoutPayment;
+    @BindView(R.id.tv_signature)
+    TextView tvSignature;
+    @BindView(R.id.tv_camera)
+    TextView tvCamera;
+    @BindView(R.id.iv_signature)
+    ImageView ivSignature;
+    @BindView(R.id.layout_upload_two)
+    RelativeLayout layoutUploadTwo;
+    @BindView(R.id.tv_type_hint)
+    TextView tvTypeHint;
+    @BindView(R.id.view_signature)
+    View viewSignature;
+    @BindView(R.id.layout_signature)
+    LinearLayout layoutSignature;
+    @BindView(R.id.view_camera)
+    View viewCamera;
+    @BindView(R.id.layout_camera)
+    LinearLayout layoutCamera;
     private File cameraTempFile;
     private Uri mCurrentPhotoUri;
     private String mCurrentPhotoPath;
     private ReserveCheckBean reserveCheckBean;
     /**
-     * 已选择检查项目适配器
-     */
-    private CheckTypeListViewAdapter checkTypeListviewAdapter;
-    /**
-     * 检查项目数据
-     */
-    private List<SelectCheckTypeBean> checkTypeData = new ArrayList<>();
-    /**
      * 拍照确认图片url
      */
     private String confirmImageUrl;
-    /**
-     * 缴费类型、转诊目的、转诊类型
-     */
-    private int payTypeId, pregnancyId;
     /**
      * 图片
      */
@@ -124,7 +105,7 @@ public class RemoteSubmitFragment extends BaseFragment
 
     @Override
     public int getLayoutID() {
-        return R.layout.fragment_submit_check;
+        return R.layout.fragment_submit_remote;
     }
 
     @Override
@@ -144,17 +125,7 @@ public class RemoteSubmitFragment extends BaseFragment
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-        //默认自费
-        payTypeId = rbSelf.getId();
-        //默认备孕
-        //        pregnancyId = rbYes.getId();
-    }
-
-    @Override
-    public void initListener() {
-        super.initListener();
-        //        layoutPregnancy.setOnCheckedChangeListener(this);
-        layoutPayment.setOnCheckedChangeListener(this);
+        sureType(true);
     }
 
     public void setReserveCheckBean(ReserveCheckBean reserveCheckBean) {
@@ -163,8 +134,6 @@ public class RemoteSubmitFragment extends BaseFragment
 
     /**
      * 上传图片
-     *
-     * @param file
      */
     private void uploadImage(File file) {
         ScalingUtils.resizePic(getContext(), file.getAbsolutePath());
@@ -172,19 +141,7 @@ public class RemoteSubmitFragment extends BaseFragment
     }
 
     /**
-     * 检查项目列表
-     */
-    private void initFullListView() {
-        checkTypeListviewAdapter = new CheckTypeListViewAdapter(getContext());
-        checkTypeListviewAdapter.setData(checkTypeData);
-        checkTypeListviewAdapter.setOnDeleteClickListener(this);
-        fullListView.setAdapter(checkTypeListviewAdapter);
-    }
-
-    /**
      * 图片处理
-     *
-     * @param status
      */
     private void initImage(boolean status) {
         if (status) {
@@ -211,14 +168,7 @@ public class RemoteSubmitFragment extends BaseFragment
      * 根据检查项目匹配医院回调
      */
     private void selectHospitalByCheckItem(Intent data) {
-        SelectCheckTypeBean bean = (SelectCheckTypeBean)data.getSerializableExtra(
-                CommonData.KEY_RESERVE_CHECK_TYPE_BEAN);
-        checkTypeData.clear();
-        checkTypeData.add(bean);
         tvSelect.setVisibility(View.GONE);
-        layoutCheckRoot.setVisibility(View.VISIBLE);
-        tvHospitalName.setText(bean.getHospitalName());
-        initFullListView();
         initNextButton();
     }
 
@@ -230,18 +180,13 @@ public class RemoteSubmitFragment extends BaseFragment
     private void selectCheckItemByHospital(Intent data) {
         ArrayList<SelectCheckTypeBean> list = (ArrayList<SelectCheckTypeBean>)data.getSerializableExtra(
                 CommonData.KEY_RESERVE_CHECK_TYPE_LIST);
-        checkTypeData.addAll(list);
-        checkTypeListviewAdapter.setData(checkTypeData);
-        checkTypeListviewAdapter.notifyDataSetChanged();
     }
 
     /**
      * 全部删除已经选择的检查项目和医院
      */
     private void deleteAllSelectCheckType() {
-        checkTypeData.clear();
         tvSelect.setVisibility(View.VISIBLE);
-        layoutCheckRoot.setVisibility(View.GONE);
         initNextButton();
     }
 
@@ -250,7 +195,7 @@ public class RemoteSubmitFragment extends BaseFragment
      */
     private void initNextButton() {
         //需要添加判断检查项目是否为空
-        if (checkTypeData.size() > 0 && !TextUtils.isEmpty(confirmImageUrl)) {
+        if (!TextUtils.isEmpty(confirmImageUrl)) {
             tvSubmitNext.setSelected(true);
         }
         else {
@@ -258,23 +203,9 @@ public class RemoteSubmitFragment extends BaseFragment
         }
     }
 
-    @Override
-    public void onCheckedChanged(RadioGroup group, int checkedId) {
-        switch (group.getId()) {
-            case R.id.layout_pregnancy:
-                pregnancyId = checkedId;
-                break;
-            case R.id.layout_payment:
-                payTypeId = checkedId;
-                break;
-            default:
-                break;
-        }
-    }
-
     @OnClick({
-            R.id.layout_select_check_type, R.id.tv_delete_all, R.id.layout_upload_one, R.id.iv_delete_one,
-            R.id.tv_submit_next, R.id.layout_add_hospital_check })
+            R.id.layout_select_check_type, R.id.layout_upload_one, R.id.iv_delete_one, R.id.tv_submit_next,
+            R.id.layout_upload_two, R.id.layout_signature, R.id.layout_camera })
     public void onViewClicked(View view) {
         Intent intent;
         switch (view.getId()) {
@@ -283,24 +214,6 @@ public class RemoteSubmitFragment extends BaseFragment
                     intent = new Intent(getContext(), SelectCheckTypeActivity.class);
                     startActivityForResult(intent, REQUEST_CODE_SELECT_HOSPITAL);
                 }
-                break;
-            case R.id.tv_delete_all:
-                deleteAllSelectCheckType();
-                break;
-            case R.id.layout_add_hospital_check:
-                intent = new Intent(getContext(), SelectCheckTypeByHospitalActivity.class);
-                intent.putExtra(CommonData.KEY_TITLE, checkTypeData.get(0).getHospitalName());
-                intent.putExtra(CommonData.KEY_HOSPITAL_CODE, checkTypeData.get(0).getHospitalCode());
-                StringBuilder builder = new StringBuilder();
-                for (int i = 0; i < checkTypeData.size(); i++) {
-                    SelectCheckTypeBean bean = checkTypeData.get(i);
-                    builder.append(bean.getProjectCode());
-                    if (checkTypeData.size() - 1 != i) {
-                        builder.append(",");
-                    }
-                }
-                intent.putExtra(CommonData.KEY_PUBLIC, builder.toString());
-                startActivityForResult(intent, REQUEST_CODE_SELECT_CHECK);
                 break;
             case R.id.layout_upload_one:
                 if (TextUtils.isEmpty(confirmImageUrl)) {
@@ -318,37 +231,17 @@ public class RemoteSubmitFragment extends BaseFragment
                 initImage(false);
                 break;
             case R.id.tv_submit_next:
-                if (tvSubmitNext.isSelected() && checkListener != null) {
-                    reserveCheckBean.setConfirmPhoto(confirmImageUrl);
-                    ArrayList<ReserveCheckTypeBean> list = new ArrayList<>();
-                    for (SelectCheckTypeBean bean : checkTypeData) {
-                        ReserveCheckTypeBean checkBean = new ReserveCheckTypeBean();
-                        checkBean.setHospitalCode(bean.getHospitalCode());
-                        checkBean.setProductCode(bean.getProjectCode());
-                        checkBean.setPrice(bean.getPrice());
-                        list.add(checkBean);
-                    }
-                    //检查项列表
-                    reserveCheckBean.setCheckTrans(list);
-                    //                    //是否备孕
-                    //                    if (pregnancyId == rbYes.getId()) {
-                    //                        reserveCheckBean.setIsPregnancy(BaseData.BASE_ONE);
-                    //                    }
-                    //                    else {
-                    //                        reserveCheckBean.setIsPregnancy(BaseData.BASE_ZERO);
-                    //                    }
-                    //缴费类型
-                    if (payTypeId == rbSelf.getId()) {
-                        reserveCheckBean.setPayType(String.valueOf(BaseData.BASE_ZERO));
-                    }
-                    else if (payTypeId == rbMedicare.getId()) {
-                        reserveCheckBean.setPayType(String.valueOf(BaseData.BASE_ONE));
-                    }
-                    else {
-                        reserveCheckBean.setPayType(String.valueOf(BaseData.BASE_TWO));
-                    }
-                    checkListener.onCheckStepThree(reserveCheckBean);
-                }
+                submit();
+                break;
+            case R.id.layout_signature:
+                sureType(true);
+                break;
+            case R.id.layout_camera:
+                sureType(false);
+                break;
+            case R.id.layout_upload_two:
+                new SignatureDialog(getContext()).setOnEnterClickListener(bitmap -> ivSignature.setImageBitmap(bitmap))
+                                                 .show();
                 break;
             default:
                 break;
@@ -356,18 +249,45 @@ public class RemoteSubmitFragment extends BaseFragment
     }
 
     /**
-     * 删除已选择检查项目
+     * 提交方式  （签名 or 拍照）
      *
-     * @param position
+     * @param type true 为签名
      */
-    @Override
-    public void onDelete(int position) {
-        checkTypeData.remove(position);
-        checkTypeListviewAdapter.setData(checkTypeData);
-        checkTypeListviewAdapter.notifyDataSetChanged();
-        //不存在检查项 删除已选医院
-        if (checkTypeData.size() == 0) {
-            deleteAllSelectCheckType();
+    private void sureType(boolean type) {
+        if (type) {
+            tvSignature.setSelected(true);
+            tvSignature.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+            viewSignature.setVisibility(View.VISIBLE);
+            tvCamera.setSelected(false);
+            tvCamera.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+            viewCamera.setVisibility(View.INVISIBLE);
+            tvTypeHint.setText(R.string.txt_signature_people_transfer_hint);
+            layoutUploadOne.setVisibility(View.GONE);
+            layoutUploadTwo.setVisibility(View.VISIBLE);
+        }
+        else {
+            tvSignature.setSelected(false);
+            tvSignature.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+            viewSignature.setVisibility(View.INVISIBLE);
+            tvCamera.setSelected(true);
+            tvCamera.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+            viewCamera.setVisibility(View.VISIBLE);
+            tvTypeHint.setText(R.string.txt_camera_people_transfer_hint);
+            layoutUploadOne.setVisibility(View.VISIBLE);
+            layoutUploadTwo.setVisibility(View.GONE);
+        }
+    }
+
+    /**
+     * 提交数据
+     */
+    private void submit() {
+        if (tvSubmitNext.isSelected() && checkListener != null) {
+            reserveCheckBean.setConfirmPhoto(confirmImageUrl);
+            ArrayList<ReserveCheckTypeBean> list = new ArrayList<>();
+            //检查项列表
+            reserveCheckBean.setCheckTrans(list);
+            checkListener.onCheckStepThree(reserveCheckBean);
         }
     }
 

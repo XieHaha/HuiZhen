@@ -18,6 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingStart="20dp"
+            android:paddingEnd="0dp"
             android:layout_marginTop="10dp"
             android:background="@color/color_ffffff">
 
@@ -294,20 +295,69 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="20dp"
             android:paddingBottom="20dp"
             android:layout_marginTop="10dp"
             android:background="@color/color_ffffff"
             android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="60dp"
-                android:gravity="center_vertical"
-                android:textSize="@dimen/text_16"
-                android:textColor="@color/color_373d4d"
-                android:text="@string/txt_camera_people"
-                android:textStyle="bold" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="41dp">
+
+                <LinearLayout
+                    android:id="@+id/layout_signature"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/tv_signature"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:textSize="@dimen/text_16"
+                        android:textColor="@color/txt_color_6a6f80_1491fc_selector"
+                        android:text="@string/txt_signature_people" />
+
+                    <View
+                        android:id="@+id/view_signature"
+                        android:layout_width="60dp"
+                        android:layout_height="2dp"
+                        android:background="@color/color_1491fc" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_camera"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/tv_camera"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:textSize="@dimen/text_16"
+                        android:textColor="@color/txt_color_6a6f80_1491fc_selector"
+                        android:text="@string/txt_camera_people" />
+
+                    <View
+                        android:id="@+id/view_camera"
+                        android:layout_width="60dp"
+                        android:layout_height="2dp"
+                        android:background="@color/color_1491fc" />
+
+                </LinearLayout>
+
+            </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
@@ -315,10 +365,30 @@
                 android:background="@color/color_ebedf0" />
 
             <RelativeLayout
+                android:id="@+id/layout_upload_two"
+                android:layout_width="match_parent"
+                android:layout_height="114dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="20dp"
+                android:visibility="visible"
+                android:background="@drawable/corner2_stroke1_d9d9d9">
+
+                <ImageView
+                    android:id="@+id/iv_signature"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop" />
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:id="@+id/layout_upload_one"
                 android:layout_width="173dp"
                 android:layout_height="107dp"
-                android:layout_marginTop="6dp">
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="0dp"
+                android:layout_marginTop="27dp"
+                android:visibility="gone">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -331,12 +401,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@mipmap/ic_people"
-                        android:layout_centerInParent="true" />
+                        android:layout_centerInParent="true"
+                        tools:ignore="ContentDescription" />
 
                     <ImageView
                         android:id="@+id/iv_upload_one"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        tools:ignore="ContentDescription" />
 
                 </RelativeLayout>
 
@@ -347,16 +419,20 @@
                     android:src="@mipmap/ic_delete_red"
                     android:layout_alignParentEnd="true"
                     android:padding="4dp"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    tools:ignore="ContentDescription" />
             </RelativeLayout>
 
             <TextView
+                android:id="@+id/tv_type_hint"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/color_a1a8b3"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="0dp"
                 android:textSize="@dimen/text_13"
                 android:layout_marginTop="12dp"
-                android:text="@string/txt_camera_people_transfer_hint" />
+                android:text="@string/txt_signature_people_transfer_hint" />
         </LinearLayout>
 
         <TextView
