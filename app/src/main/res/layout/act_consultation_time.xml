@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#ffffff"
+    android:fitsSystemWindows="true"
+    tools:ignore="RtlHardcoded,HardcodedText,RtlSymmetry,SmallSp">
+
+    <include layout="@layout/public_title" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/color_f8f9fa" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:orientation="horizontal"
+        android:layout_height="34dp"
+        android:layout_gravity="center_horizontal">
+
+        <ImageView
+            android:id="@+id/iv_left"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:src="@drawable/selector_left_arrow" />
+
+        <TextView
+            android:id="@+id/tv_year"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textColor="@color/color_373d4d"
+            android:textSize="@dimen/text_16" />
+
+        <ImageView
+            android:id="@+id/iv_right"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:src="@drawable/selector_right_arrow" />
+
+    </LinearLayout>
+
+    <com.haibin.calendarview.CalendarLayout
+        android:id="@+id/calendarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="280dp"
+        android:orientation="vertical"
+        android:background="#fff">
+
+        <com.haibin.calendarview.CalendarView
+            android:id="@+id/calendarView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:month_view="com.yht.yihuantong.ui.reservation.time.SimpleMonthView"
+            app:week_view="com.yht.yihuantong.ui.reservation.time.SimpleWeekView"
+            app:calendar_padding="10dp"
+            app:calendar_height="46dp"
+            app:current_month_text_color="@color/color_373d4d"
+            app:other_month_text_color="@color/color_a1a8b3"
+            app:selected_text_color="@color/color_ffffff"
+            app:selected_theme_color="@color/color_fd8134"
+            app:week_text_color="@color/color_a1a8b3"
+            app:week_text_size="@dimen/text_14"/>
+
+    </com.haibin.calendarview.CalendarLayout>
+
+
+</LinearLayout>

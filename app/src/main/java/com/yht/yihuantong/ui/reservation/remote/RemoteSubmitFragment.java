@@ -38,8 +38,8 @@ import com.yht.frame.widgets.dialog.SignatureDialog;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ZycApplication;
 import com.yht.yihuantong.ui.ImagePreviewActivity;
-import com.yht.yihuantong.ui.check.SelectCheckTypeActivity;
 import com.yht.yihuantong.ui.check.listener.OnCheckListener;
+import com.yht.yihuantong.ui.reservation.time.ConsultationTimeActivity;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -210,10 +210,8 @@ public class RemoteSubmitFragment extends BaseFragment {
         Intent intent;
         switch (view.getId()) {
             case R.id.layout_select_check_type:
-                if (tvSelect.getVisibility() == View.VISIBLE) {
-                    intent = new Intent(getContext(), SelectCheckTypeActivity.class);
-                    startActivityForResult(intent, REQUEST_CODE_SELECT_HOSPITAL);
-                }
+                intent = new Intent(getContext(), ConsultationTimeActivity.class);
+                startActivityForResult(intent, REQUEST_CODE_SELECT_HOSPITAL);
                 break;
             case R.id.layout_upload_one:
                 if (TextUtils.isEmpty(confirmImageUrl)) {

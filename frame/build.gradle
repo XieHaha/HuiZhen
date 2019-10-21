@@ -67,6 +67,8 @@ dependencies {
     api 'com.umeng.umsdk:common:2.0.0'
     //标签
     api 'com.hyman:flowlayout-lib:1.1.2'
+    //日历
+    api 'com.haibin:calendarview:3.6.6'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 repositories {

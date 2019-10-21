@@ -440,6 +440,11 @@
             android:screenOrientation="portrait"
             android:label="@string/title_add_diagnosis"
             android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".ui.reservation.time.ConsultationTimeActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/title_consultation_time"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
 
         <activity
             android:name=".ui.remote.ErrorActivity"
