@@ -70,22 +70,16 @@ public class ConsultationTimeActivity extends BaseActivity
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_left:
-                //                if (ivLeft.isSelected()) {
-                calendarView.scrollToPre();
-                //                }
+                if (ivLeft.isSelected()) {
+                    calendarView.scrollToPre(true);
+                }
                 break;
             case R.id.iv_right:
-                calendarView.scrollToNext();
+                if (ivRight.isSelected()) { calendarView.scrollToNext(true); }
                 break;
             default:
                 break;
         }
-    }
-
-    /**
-     * 修改月份后回调
-     */
-    private void onMonthModify() {
     }
 
     @Override
@@ -100,11 +94,11 @@ public class ConsultationTimeActivity extends BaseActivity
 
     @Override
     public void onMonthChange(int year, int month) {
-        if (tempYear > calendarView.getCurYear()) {
+        if (tempYear < year) {
             ivLeft.setSelected(true);
         }
-        else if (tempYear == calendarView.getCurYear()) {
-            if (tempMonth > calendarView.getCurMonth()) {
+        else if (tempYear == year) {
+            if (tempMonth < month) {
                 ivLeft.setSelected(true);
             }
             else {
@@ -113,6 +107,7 @@ public class ConsultationTimeActivity extends BaseActivity
         }
         else {
             ivLeft.setSelected(false);
+            ivRight.setSelected(false);
         }
     }
 }

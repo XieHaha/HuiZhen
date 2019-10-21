@@ -32,9 +32,9 @@
 
         <TextView
             android:id="@+id/tv_year"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            android:layout_width="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_width="100dp"
             android:layout_height="match_parent"
             android:gravity="center"
             android:textColor="@color/color_373d4d"
@@ -65,12 +65,13 @@
             app:week_view="com.yht.yihuantong.ui.reservation.time.SimpleWeekView"
             app:calendar_padding="10dp"
             app:calendar_height="46dp"
+            app:current_day_text_color="@color/color_373d4d"
             app:current_month_text_color="@color/color_373d4d"
             app:other_month_text_color="@color/color_a1a8b3"
             app:selected_text_color="@color/color_ffffff"
             app:selected_theme_color="@color/color_fd8134"
             app:week_text_color="@color/color_a1a8b3"
-            app:week_text_size="@dimen/text_14"/>
+            app:week_text_size="@dimen/text_14" />
 
     </com.haibin.calendarview.CalendarLayout>
 
