@@ -2,5 +2,5 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="@drawable/rect_fd8134_bg" android:state_checked="true" />
     <item android:drawable="@drawable/rect_fd8134_bg" android:state_selected="true" />
-    <item android:drawable="@drawable/rect_stroke_c5c8cc" />
+    <item android:drawable="@drawable/rect_c5c8cc_bg" />
 </selector>

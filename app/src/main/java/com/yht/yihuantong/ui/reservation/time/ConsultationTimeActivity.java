@@ -9,11 +9,14 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.CalendarLayout;
 import com.haibin.calendarview.CalendarView;
+import com.yht.frame.data.bean.TimeBarBean;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
+import com.yht.frame.utils.HuiZhenLog;
 import com.yht.frame.utils.ToastUtil;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.adapter.TimeSelectionAdapter;
@@ -31,7 +34,8 @@ import butterknife.OnClick;
  * @description 远程会诊  时间选择
  */
 public class ConsultationTimeActivity extends BaseActivity
-        implements CalendarView.OnCalendarSelectListener, CalendarView.OnMonthChangeListener {
+        implements CalendarView.OnCalendarSelectListener, CalendarView.OnMonthChangeListener,
+                   BaseQuickAdapter.OnItemChildClickListener {
     @BindView(R.id.iv_left)
     ImageView ivLeft;
     @BindView(R.id.tv_year)
@@ -57,7 +61,11 @@ public class ConsultationTimeActivity extends BaseActivity
      * 时间条
      */
     private TimeSelectionAdapter timeSelectionAdapter;
-    private ArrayList<String> times = new ArrayList<>();
+    private ArrayList<TimeBarBean> timeBarBeans = new ArrayList<>();
+    /**
+     * 当前选中时间起点
+     */
+    private int curSelectPosition = -1;
 
     @Override
     protected boolean isInitBackBtn() {
@@ -73,14 +81,19 @@ public class ConsultationTimeActivity extends BaseActivity
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
         for (int i = 0; i < 38; i++) {
+            TimeBarBean bean = new TimeBarBean();
+            bean.setHour(i / 2 + 6);
+            bean.setPosition(i);
             if (i % 2 == 0) {
-                times.add(i / 2 + 6 + "时");
+                bean.setHourString(i / 2 + 6 + "时");
             }
             else {
-                times.add("");
+                bean.setHourString("");
             }
+            timeBarBeans.add(bean);
         }
-        timeSelectionAdapter = new TimeSelectionAdapter(R.layout.item_time_selection, times);
+        timeSelectionAdapter = new TimeSelectionAdapter(R.layout.item_time_selection, timeBarBeans);
+        timeSelectionAdapter.setOnItemChildClickListener(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         recyclerView.setAdapter(timeSelectionAdapter);
     }
@@ -88,6 +101,21 @@ public class ConsultationTimeActivity extends BaseActivity
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
+        initCalendarView();
+        initScheme();
+    }
+
+    @Override
+    public void initListener() {
+        super.initListener();
+        calendarView.setOnMonthChangeListener(this);
+        calendarView.setOnCalendarSelectListener(this);
+    }
+
+    /**
+     * 日历初始化
+     */
+    private void initCalendarView() {
         tempYear = calendarView.getCurYear();
         tempMonth = calendarView.getCurMonth();
         //设置范围 当前时间往后50年
@@ -100,14 +128,21 @@ public class ConsultationTimeActivity extends BaseActivity
         tvYear.setText(String.format(getString(R.string.txt_year_and_month), tempYear, tempMonth));
         ivLeft.setSelected(false);
         ivRight.setSelected(true);
-        initScheme();
-    }
-
-    @Override
-    public void initListener() {
-        super.initListener();
-        calendarView.setOnMonthChangeListener(this);
-        calendarView.setOnCalendarSelectListener(this);
+        //获取当前时间
+        java.util.Calendar todayCalendar = java.util.Calendar.getInstance();
+        int hour = todayCalendar.get(java.util.Calendar.HOUR_OF_DAY);
+        int minute = todayCalendar.get(java.util.Calendar.MINUTE);
+        int position;
+        if (hour >= 6) {
+            position = (hour - 6) * 2 + (minute >= 30 ? 2 : 1);
+            timeSelectionAdapter.setRange(position);
+        }
+        else {
+            position = 0;
+            timeSelectionAdapter.setRange(position);
+        }
+        HuiZhenLog.i(TAG, "hour:" + hour + "  minute:" + minute + "  position:" + position);
+        recyclerView.smoothScrollToPosition(position);
     }
 
     /**
@@ -128,6 +163,13 @@ public class ConsultationTimeActivity extends BaseActivity
         calendar.setMonth(tempMonth);
         calendar.setDay(day);
         return calendar;
+    }
+
+    @Override
+    public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+        curSelectPosition = position;
+        timeSelectionAdapter.setCurSelectPosition(curSelectPosition);
+        timeSelectionAdapter.notifyDataSetChanged();
     }
 
     @OnClick({
