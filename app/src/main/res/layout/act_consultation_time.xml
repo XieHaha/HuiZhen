@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#ffffff"
+    android:background="@color/color_ffffff"
     android:fitsSystemWindows="true"
     tools:ignore="RtlHardcoded,HardcodedText,RtlSymmetry,SmallSp">
 
@@ -75,5 +75,165 @@
 
     </com.haibin.calendarview.CalendarLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/color_f8f9fa" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </android.support.v7.widget.RecyclerView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:paddingStart="33dp"
+        android:paddingEnd="33dp"
+        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1.5"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:background="@drawable/corner2_c5c8cc_bg" />
+
+            <TextView
+                android:id="@+id/tv_appointed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_a1a8b3"
+                android:textSize="@dimen/text_13"
+                android:layout_marginStart="5dp"
+                android:text="@string/txt_appointed" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1.2"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:background="@drawable/corner2_stroke1_c5c8cc" />
+
+            <TextView
+                android:id="@+id/tv_optional"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_a1a8b3"
+                android:textSize="@dimen/text_13"
+                android:layout_marginStart="5dp"
+                android:text="@string/txt_optional" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|right"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:background="@drawable/corner2_fd8134_bg" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_a1a8b3"
+                android:textSize="@dimen/text_13"
+                android:layout_marginStart="5dp"
+                android:text="@string/txt_selected" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_gravity="center_horizontal">
+
+        <ImageView
+            android:id="@+id/iv_subtract"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:src="@drawable/selector_subtract_hour"
+            android:padding="5dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:text="@string/txt_selected_hours"
+            android:textSize="@dimen/text_16"
+            android:textColor="@color/color_373d4d"
+            android:gravity="center"
+            android:paddingStart="25dp"
+            android:paddingEnd="25dp"
+            android:background="@drawable/corner28_f8f9fa_bg" />
+
+        <ImageView
+            android:id="@+id/iv_add"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:src="@drawable/selector_add_hour"
+            android:padding="5dp" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="39dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="35dp"
+        android:paddingEnd="35dp"
+        android:layout_gravity="center_horizontal">
+
+        <TextView
+            android:id="@+id/tv_clear_optional"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="42dp"
+            android:text="@string/txt_clear_selected"
+            android:textSize="@dimen/text_16"
+            android:textColor="@color/color_1491fc"
+            android:gravity="center"
+            android:background="@drawable/corner28_stroke1_1491fc" />
+
+        <TextView
+            android:id="@+id/tv_verify_time"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="42dp"
+            android:layout_marginStart="14dp"
+            android:text="@string/txt_verify_time"
+            android:textSize="@dimen/text_16"
+            android:textColor="@color/color_ffffff"
+            android:gravity="center"
+            android:background="@drawable/corner28_1491fc_bg" />
+    </LinearLayout>
 
 </LinearLayout>
