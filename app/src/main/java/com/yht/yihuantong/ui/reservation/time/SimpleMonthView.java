@@ -41,7 +41,7 @@ public class SimpleMonthView extends MonthView {
 
     @Override
     protected void onPreviewHook() {
-        mRadius = Math.min(mItemWidth, mItemHeight) / 5 * 2 - 2;
+        mRadius = Math.min(mItemWidth, mItemHeight) / 2;
         //标记当天的小红点
         pointPadding = BaseUtils.dp2px(getContext(), 6);
         pointRadius = BaseUtils.dp2px(getContext(), 2);
@@ -73,7 +73,7 @@ public class SimpleMonthView extends MonthView {
         float baselineY = mTextBaseLine + y;
         int cx = x + mItemWidth / 2;
         if (calendar.isCurrentDay()) {
-            canvas.drawCircle(x + mItemWidth - pointPadding, y + pointPadding, pointRadius, mPointPaint);
+            canvas.drawCircle(x + mItemWidth - pointPadding, y + pointRadius / 2f, pointRadius, mPointPaint);
         }
         if (isSelected) {
             canvas.drawText(String.valueOf(calendar.getDay()), cx, baselineY, mSelectTextPaint);

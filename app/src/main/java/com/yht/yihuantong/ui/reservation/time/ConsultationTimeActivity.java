@@ -13,6 +13,7 @@ import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.CalendarLayout;
 import com.haibin.calendarview.CalendarView;
 import com.yht.frame.ui.BaseActivity;
+import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.ToastUtil;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.adapter.TimeSelectionAdapter;
@@ -93,6 +94,8 @@ public class ConsultationTimeActivity extends BaseActivity
         calendarView.setRange(tempYear, tempMonth, calendarView.getCurDay(), tempYear + 50, 12, 31);
         //设置显示起始星期
         calendarView.setWeekStarWithMon();
+        //设置高
+        calendarView.setCalendarItemHeight(BaseUtils.dp2px(this, 32));
         //初始化
         tvYear.setText(String.format(getString(R.string.txt_year_and_month), tempYear, tempMonth));
         ivLeft.setSelected(false);
