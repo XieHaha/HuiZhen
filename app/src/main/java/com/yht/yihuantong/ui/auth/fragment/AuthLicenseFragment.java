@@ -11,10 +11,17 @@ import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.AbsoluteSizeSpan;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.view.View;
 import android.widget.TextView;
 
@@ -29,6 +36,7 @@ import com.yht.frame.data.bean.NormImage;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.permission.Permission;
 import com.yht.frame.ui.BaseFragment;
+import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.ScalingUtils;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ZycApplication;
@@ -60,6 +68,8 @@ public class AuthLicenseFragment extends BaseFragment
     TextView tvAuthLicenseSubmit;
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
+    @BindView(R.id.text1)
+    TextView textView;
     /**
      * 照片adapter
      */
@@ -110,6 +120,7 @@ public class AuthLicenseFragment extends BaseFragment
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
+        spannableString(getString(R.string.txt_upload_card_hint));
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         addImageAdapter = new AddImageAdapter(R.layout.item_add_image, imagePaths);
         addImageAdapter.setOnItemClickListener(this);
@@ -133,8 +144,6 @@ public class AuthLicenseFragment extends BaseFragment
 
     /**
      * 上传图片
-     *
-     * @param file
      */
     private void uploadImage(File file) {
         ScalingUtils.resizePic(getContext(), file.getAbsolutePath());
@@ -143,8 +152,6 @@ public class AuthLicenseFragment extends BaseFragment
 
     /**
      * 回填数据
-     *
-     * @param doctorInfoBean
      */
     public void setDoctorAuthBean(DoctorAuthBean doctorInfoBean) {
         this.doctorAuthBean = doctorInfoBean;
@@ -170,6 +177,21 @@ public class AuthLicenseFragment extends BaseFragment
         }
         addImageAdapter.setNewData(imagePaths);
         initNextButton();
+    }
+
+    /**
+     * 字符串处理
+     */
+    private void spannableString(String s) {
+        SpannableString style = new SpannableString(s);
+        //大小
+        style.setSpan(new AbsoluteSizeSpan(BaseUtils.sp2px(getContext(), 16)), 4, 10, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        //颜色
+        style.setSpan(new ForegroundColorSpan(ContextCompat.getColor(getContext(), R.color.color_373d4d)), 4, 10,
+                      Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        //粗体
+        style.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), 4, 10, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        textView.setText(style);
     }
 
     /**
