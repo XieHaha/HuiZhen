@@ -52,6 +52,8 @@ public class ConsultationTimeActivity extends BaseActivity
     TextView tvAppointed;
     @BindView(R.id.tv_optional)
     TextView tvOptional;
+    @BindView(R.id.tv_selected_hours)
+    TextView tvSelectedHours;
     @BindView(R.id.iv_subtract)
     ImageView ivSubtract;
     @BindView(R.id.iv_add)
@@ -63,9 +65,17 @@ public class ConsultationTimeActivity extends BaseActivity
     private TimeSelectionAdapter timeSelectionAdapter;
     private ArrayList<TimeBarBean> timeBarBeans = new ArrayList<>();
     /**
-     * 当前选中时间起点
+     * 当前选中时间点position
      */
-    private int curSelectPosition = -1;
+    private ArrayList<Integer> selectPositions = new ArrayList<>();
+    /**
+     * 开始选中时间点
+     */
+    private int startSelectedPosition = -1;
+    /**
+     * 时间可选起点
+     */
+    private int startPosition = -1;
 
     @Override
     protected boolean isInitBackBtn() {
@@ -80,7 +90,7 @@ public class ConsultationTimeActivity extends BaseActivity
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        for (int i = 0; i < 38; i++) {
+        for (int i = 0; i < 36; i++) {
             TimeBarBean bean = new TimeBarBean();
             bean.setHour(i / 2 + 6);
             bean.setPosition(i);
@@ -132,17 +142,16 @@ public class ConsultationTimeActivity extends BaseActivity
         java.util.Calendar todayCalendar = java.util.Calendar.getInstance();
         int hour = todayCalendar.get(java.util.Calendar.HOUR_OF_DAY);
         int minute = todayCalendar.get(java.util.Calendar.MINUTE);
-        int position;
         if (hour >= 6) {
-            position = (hour - 6) * 2 + (minute >= 30 ? 2 : 1);
-            timeSelectionAdapter.setRange(position);
+            startPosition = (hour - 6) * 2 + (minute >= 30 ? 1 : 0);
+            timeSelectionAdapter.setRange(startPosition);
         }
         else {
-            position = 0;
-            timeSelectionAdapter.setRange(position);
+            startPosition = 0;
+            timeSelectionAdapter.setRange(startPosition);
         }
-        HuiZhenLog.i(TAG, "hour:" + hour + "  minute:" + minute + "  position:" + position);
-        recyclerView.smoothScrollToPosition(position);
+        HuiZhenLog.i(TAG, "hour:" + hour + "  minute:" + minute + "  position:" + startPosition);
+        recyclerView.scrollToPosition(startPosition);
     }
 
     /**
@@ -165,11 +174,50 @@ public class ConsultationTimeActivity extends BaseActivity
         return calendar;
     }
 
+    /**
+     * 加时间
+     */
+    private void add() {
+        ivAdd.setSelected(true);
+        ivSubtract.setSelected(true);
+        //把已选时间点添加到列表中
+        selectPositions.add(startSelectedPosition + selectPositions.size());
+        updateSelectedHours();
+    }
+
+    /**
+     * 减时间
+     */
+    private void subtract() {
+        //移除最后一位
+        selectPositions.remove(selectPositions.size() - 1);
+        if (selectPositions.size() <= 0) {
+            ivAdd.setSelected(false);
+            ivSubtract.setSelected(false);
+        }
+        updateSelectedHours();
+    }
+
+    /**
+     * 更新已选小时
+     */
+    private void updateSelectedHours() {
+        //计算已选时间
+        String selectedHours = String.valueOf(0.5 * selectPositions.size());
+        tvSelectedHours.setText(String.format(getString(R.string.txt_selected_hours), selectedHours));
+        timeSelectionAdapter.setSelectPositions(selectPositions);
+        timeSelectionAdapter.notifyDataSetChanged();
+        //多次添加后加个滚动
+        recyclerView.scrollToPosition(startSelectedPosition + selectPositions.size());
+    }
+
     @Override
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-        curSelectPosition = position;
-        timeSelectionAdapter.setCurSelectPosition(curSelectPosition);
-        timeSelectionAdapter.notifyDataSetChanged();
+        if (position <= startPosition) { return; }
+        //清除已选时间
+        selectPositions.clear();
+        startSelectedPosition = position;
+        add();
     }
 
     @OnClick({
@@ -185,8 +233,14 @@ public class ConsultationTimeActivity extends BaseActivity
                 if (ivRight.isSelected()) { calendarView.scrollToNext(true); }
                 break;
             case R.id.iv_subtract:
+                if (ivSubtract.isSelected()) {
+                    subtract();
+                }
                 break;
             case R.id.iv_add:
+                if (ivAdd.isSelected()) {
+                    add();
+                }
                 break;
             case R.id.tv_clear_optional:
                 break;

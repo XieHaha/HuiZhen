@@ -179,6 +179,7 @@
             android:padding="5dp" />
 
         <TextView
+            android:id="@+id/tv_selected_hours"
             android:layout_width="wrap_content"
             android:layout_height="32dp"
             android:layout_marginStart="15dp"

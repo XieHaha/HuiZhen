@@ -121,11 +121,11 @@
     <string name="txt_not_support_input">不支持输入</string>
     <string name="txt_year_and_month">%d年%d月</string>
     <string name="txt_appointed">已被预约</string>
-    <string name="txt_optional">可选&#160;s%小时</string>
+    <string name="txt_optional">可选&#160;%s小时</string>
     <string name="txt_selected">已选</string>
     <string name="txt_clear_selected">清除已选</string>
     <string name="txt_verify_time">确认时间</string>
-    <string name="txt_selected_hours">已选&#160;s%&#160;小时</string>
+    <string name="txt_selected_hours">已选&#160;%s&#160;小时</string>
 
     <!--主页-->
     <string name="txt_message">消息</string>

@@ -9,6 +9,7 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.yht.frame.data.bean.TimeBarBean;
 import com.yht.yihuantong.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,7 +19,7 @@ import java.util.List;
  */
 public class TimeSelectionAdapter extends BaseQuickAdapter<TimeBarBean, BaseViewHolder> {
     private int startPosition;
-    private int curSelectPosition;
+    private ArrayList<Integer> selectPositions = new ArrayList<>();
 
     public TimeSelectionAdapter(int layoutResId, @Nullable List<TimeBarBean> data) {
         super(layoutResId, data);
@@ -35,7 +36,8 @@ public class TimeSelectionAdapter extends BaseQuickAdapter<TimeBarBean, BaseView
         else {
             textView.setVisibility(View.INVISIBLE);
         }
-        if (curSelectPosition == helper.getAdapterPosition()) {
+        int position = helper.getAdapterPosition();
+        if (selectPositions.contains(position) && position > startPosition) {
             textView.setVisibility(View.VISIBLE);
             textView.setSelected(true);
         }
@@ -48,7 +50,7 @@ public class TimeSelectionAdapter extends BaseQuickAdapter<TimeBarBean, BaseView
         this.startPosition = startHour;
     }
 
-    public void setCurSelectPosition(int curSelectPosition) {
-        this.curSelectPosition = curSelectPosition;
+    public void setSelectPositions(ArrayList<Integer> selectPositions) {
+        this.selectPositions = selectPositions;
     }
 }
