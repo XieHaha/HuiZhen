@@ -305,5 +305,13 @@ WE_CHAT_LOGIN,
      * 添加好友
      */
     ADD_DOCTOR_FRIEND,
+    /**
+     * 在当天日期查询已经有的预约时间信息
+     */
+    GET_REMOTE_TIME,
+    /**
+     * 获取远程科室列表
+     */
+    GET_REMOTE_DEPARTMENT_INFO,
 }
 

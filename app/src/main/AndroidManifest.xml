@@ -445,6 +445,11 @@
             android:screenOrientation="portrait"
             android:label="@string/title_consultation_time"
             android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".ui.reservation.remote.SelectRemoteDepartActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/title_add_depart"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
 
         <activity
             android:name=".ui.remote.ErrorActivity"

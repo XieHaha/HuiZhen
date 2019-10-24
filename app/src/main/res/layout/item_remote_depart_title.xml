@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="62dp"
+    android:paddingStart="15dp"
+    android:paddingEnd="10dp"
+    android:paddingTop="20dp"
+    android:layout_marginTop="10dp"
+    android:paddingBottom="20dp"
+    android:background="@color/color_ffffff">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="50dp"
+        android:textColor="@color/color_373d4d"
+        android:textSize="@dimen/text_16"
+        android:textStyle="bold"
+        tools:text="医院" />
+
+    <ImageView
+        android:id="@+id/iv_tab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/selector_arrow_tab" />
+</RelativeLayout>

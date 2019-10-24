@@ -14,6 +14,7 @@ import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.CalendarLayout;
 import com.haibin.calendarview.CalendarView;
 import com.yht.frame.data.bean.TimeBarBean;
+import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.HuiZhenLog;
@@ -76,6 +77,10 @@ public class ConsultationTimeActivity extends BaseActivity
      * 时间可选起点
      */
     private int startPosition = -1;
+    /**
+     * 显示的起始时间
+     */
+    private final int START_HOUR = 6;
 
     @Override
     protected boolean isInitBackBtn() {
@@ -90,22 +95,13 @@ public class ConsultationTimeActivity extends BaseActivity
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        for (int i = 0; i < 36; i++) {
-            TimeBarBean bean = new TimeBarBean();
-            bean.setHour(i / 2 + 6);
-            bean.setPosition(i);
-            if (i % 2 == 0) {
-                bean.setHourString(i / 2 + 6 + "时");
-            }
-            else {
-                bean.setHourString("");
-            }
-            timeBarBeans.add(bean);
-        }
+        initHourData();
         timeSelectionAdapter = new TimeSelectionAdapter(R.layout.item_time_selection, timeBarBeans);
         timeSelectionAdapter.setOnItemChildClickListener(this);
+        //水平显示
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         recyclerView.setAdapter(timeSelectionAdapter);
+        tvSelectedHours.setText(String.format(getString(R.string.txt_selected_hours), "0.0"));
     }
 
     @Override
@@ -120,6 +116,38 @@ public class ConsultationTimeActivity extends BaseActivity
         super.initListener();
         calendarView.setOnMonthChangeListener(this);
         calendarView.setOnCalendarSelectListener(this);
+    }
+
+    @Override
+    public void fillNetWorkData() {
+        getRemoteTime();
+    }
+
+    /**
+     * 在当天日期查询已经有的预约时间信息
+     */
+    private void getRemoteTime() {
+        RequestUtils.getRemoteTime(this, loginBean.getToken(), "", this);
+    }
+
+    /**
+     * 初始化需要显示的小时数据
+     */
+    private void initHourData() {
+        //总共需要显示的时间bar数量
+        int allTimeBar = 36;
+        for (int i = 0; i < allTimeBar; i++) {
+            TimeBarBean bean = new TimeBarBean();
+            bean.setHour(i / 2 + START_HOUR);
+            bean.setPosition(i);
+            if (i % 2 == 0) {
+                bean.setHourString(i / 2 + START_HOUR + "时");
+            }
+            else {
+                bean.setHourString("");
+            }
+            timeBarBeans.add(bean);
+        }
     }
 
     /**
@@ -142,20 +170,19 @@ public class ConsultationTimeActivity extends BaseActivity
         java.util.Calendar todayCalendar = java.util.Calendar.getInstance();
         int hour = todayCalendar.get(java.util.Calendar.HOUR_OF_DAY);
         int minute = todayCalendar.get(java.util.Calendar.MINUTE);
-        if (hour >= 6) {
-            startPosition = (hour - 6) * 2 + (minute >= 30 ? 1 : 0);
+        if (hour >= START_HOUR) {
+            startPosition = (hour - START_HOUR) * 2 + (minute >= 30 ? 1 : 0);
             timeSelectionAdapter.setRange(startPosition);
         }
         else {
             startPosition = 0;
             timeSelectionAdapter.setRange(startPosition);
         }
-        HuiZhenLog.i(TAG, "hour:" + hour + "  minute:" + minute + "  position:" + startPosition);
         recyclerView.scrollToPosition(startPosition);
     }
 
     /**
-     * 主要处理当天以前的置灰
+     * 处理当天以前的置灰
      */
     private void initScheme() {
         Map<String, Calendar> map = new HashMap<>();
@@ -189,8 +216,6 @@ public class ConsultationTimeActivity extends BaseActivity
      * 减时间
      */
     private void subtract() {
-        //移除最后一位
-        selectPositions.remove(selectPositions.size() - 1);
         if (selectPositions.size() <= 0) {
             ivAdd.setSelected(false);
             ivSubtract.setSelected(false);
@@ -234,6 +259,8 @@ public class ConsultationTimeActivity extends BaseActivity
                 break;
             case R.id.iv_subtract:
                 if (ivSubtract.isSelected()) {
+                    //移除最后一位
+                    selectPositions.remove(selectPositions.size() - 1);
                     subtract();
                 }
                 break;
@@ -243,8 +270,12 @@ public class ConsultationTimeActivity extends BaseActivity
                 }
                 break;
             case R.id.tv_clear_optional:
+                selectPositions.clear();
+                subtract();
                 break;
             case R.id.tv_verify_time:
+                HuiZhenLog.i(TAG, "startHour:" + timeBarBeans.get(selectPositions.get(0)).getHour() + "endHour:" +
+                                  timeBarBeans.get(timeBarBeans.size() - 1).getHour());
                 break;
             default:
                 break;
@@ -260,6 +291,9 @@ public class ConsultationTimeActivity extends BaseActivity
     @Override
     public void onCalendarSelect(Calendar calendar, boolean isClick) {
         tvYear.setText(String.format(getString(R.string.txt_year_and_month), calendar.getYear(), calendar.getMonth()));
+        //改变日期后 清除已选的
+        selectPositions.clear();
+        subtract();
     }
 
     @Override

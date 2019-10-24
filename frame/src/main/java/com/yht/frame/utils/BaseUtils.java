@@ -71,9 +71,6 @@ public class BaseUtils {
 
     /**
      * 网络是否可用
-     *
-     * @param context
-     * @return
      */
     public static boolean isNetworkAvailable(Context context) {
         ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -95,9 +92,6 @@ public class BaseUtils {
 
     /**
      * 将px值转换为sp值，保证文字大小不变
-     *
-     * @param pxValue （DisplayMetrics类中属性scaledDensity）
-     * @return
      */
     public static int px2sp(Context context, float pxValue) {
         final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
@@ -106,9 +100,6 @@ public class BaseUtils {
 
     /**
      * 将sp值转换为px值，保证文字大小不变
-     *
-     * @param spValue （DisplayMetrics类中属性scaledDensity）
-     * @return
      */
     public static int sp2px(Context context, float spValue) {
         final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
@@ -117,10 +108,6 @@ public class BaseUtils {
 
     /**
      * 字符串转换为java.util.Date<br>
-     *
-     * @param time   String 字符串<br>
-     * @param format String 字符串<br>
-     * @return Date 日期<br>
      */
     public static Date formatDate(String time, String format) {
         SimpleDateFormat formatter;
@@ -132,10 +119,6 @@ public class BaseUtils {
 
     /**
      * 时间戳转为北京时间
-     *
-     * @param time
-     * @param format
-     * @return
      */
     public static String formatDate(long time, String format) {
         if (format != null) {
@@ -146,10 +129,6 @@ public class BaseUtils {
 
     /**
      * 时间戳转为北京时间
-     *
-     * @param time
-     * @param format
-     * @return
      */
     public static String formatDate(Date time, String format) {
         if (format != null) {
@@ -160,10 +139,6 @@ public class BaseUtils {
 
     /**
      * 日期格式转为时间戳
-     *
-     * @param date
-     * @param format
-     * @return
      */
     public static long date2TimeStamp(String date, String format) {
         if (TextUtils.isEmpty(date)) {
@@ -181,45 +156,29 @@ public class BaseUtils {
 
     /**
      * 判断是否是手机号码
-     *
-     * @param str
-     * @return
      */
     public static boolean isMobileNumber(String str) {
         if (!TextUtils.isEmpty(str)) {
             Matcher phoneMatcher = Pattern.compile(REGEX_PHONE).matcher(str);
-            if (phoneMatcher.matches()) {
-                return true;
-            }
+            return phoneMatcher.matches();
         }
         return false;
     }
 
     /**
      * 判断验证码是否合规
-     *
-     * @param str
-     * @return
      */
     public static boolean isCorrectVerifyCode(String str) {
-        if (!TextUtils.isEmpty(str) && str.length() == BaseData.BASE_VERIFY_CODE_DEFAULT_LENGTH) {
-            return true;
-        }
-        return false;
+        return !TextUtils.isEmpty(str) && str.length() == BaseData.BASE_VERIFY_CODE_DEFAULT_LENGTH;
     }
 
     /**
      * 判断是否身份证号
-     *
-     * @param str
-     * @return
      */
     public static boolean isCardNum(String str) {
         if (!TextUtils.isEmpty(str)) {
             Matcher phoneMatcher = Pattern.compile(REGEX_CARD_NUM).matcher(str);
-            if (phoneMatcher.matches()) {
-                return true;
-            }
+            return phoneMatcher.matches();
         }
         return false;
     }
@@ -405,8 +364,6 @@ public class BaseUtils {
 
     /**
      * 根据身份证的号码算出当前身份证持有者的年龄 18位身份证
-     *
-     * @return
      */
     public static String getAgeByCard(String idCard) {
         if (TextUtils.isEmpty(idCard) || idCard.length() != BaseData.BASE_ID_CARD_LENGTH) {
@@ -428,9 +385,6 @@ public class BaseUtils {
 
     /**
      * 根据身份证号判断性别
-     *
-     * @param idCard 男1  女2
-     * @return
      */
     public static int getSexByCard(String idCard) {
         if (TextUtils.isEmpty(idCard) || idCard.length() != BaseData.BASE_ID_CARD_LENGTH) {
@@ -448,9 +402,6 @@ public class BaseUtils {
 
     /**
      * 将秒数转为   字符串时间模式   "hh:mm:ss"
-     *
-     * @param time
-     * @return
      */
     public static String getTimeMode(long time) {
         if (time <= 0) { return INIT_TIME; }
@@ -482,9 +433,6 @@ public class BaseUtils {
 
     /**
      * 保留两位小数
-     *
-     * @param price
-     * @return
      */
     public static String getPrice(long price) {
         try {

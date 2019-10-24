@@ -31,6 +31,7 @@ import com.yht.frame.data.bean.QrCodeBean;
 import com.yht.frame.data.bean.ReceiverBean;
 import com.yht.frame.data.bean.ReceiverDoctorBean;
 import com.yht.frame.data.bean.RecentPatientBean;
+import com.yht.frame.data.bean.RemoteDepartBean;
 import com.yht.frame.data.bean.RemoteDetailBean;
 import com.yht.frame.data.bean.ReservationValidateBean;
 import com.yht.frame.data.bean.SelectCheckTypeBean;
@@ -857,4 +858,26 @@ public interface ApiUrlManager {
      */
     @POST("client/doctor/friend/add/doctor")
     Observable<BaseResponse<String>> addDoctorFriend(@Header("token") String token, @Body Map<String, Object> info);
+
+    /**
+     * 在当天日期查询已经有的预约时间信息
+     *
+     * @param info  参数
+     * @param token token
+     * @return 返回值
+     */
+    @GET("remote/check-have-remote")
+    Observable<BaseResponse<RecentPatientBean>> getRemoteTime(@Header("token") String token,
+            @Query("date") String info);
+
+    /**
+     * 获取远程科室列表
+     *
+     * @param info  map参数
+     * @param token token
+     * @return 返回值
+     */
+    @GET("remote/getRemoteDepartmentInfo")
+    Observable<BaseResponse<List<RemoteDepartBean>>> getRemoteDepartmentInfo(@Header("token") String token,
+            @QueryMap Map<String, String> info);
 }

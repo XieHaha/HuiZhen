@@ -40,7 +40,7 @@ public class RecentPatientGroupAdapter extends BaseMultiItemQuickAdapter<MultiIt
             case BASE_ZERO:
                 RecentPatientTitleBean bean = (RecentPatientTitleBean)item;
                 helper.setText(R.id.tv_title, bean.getTitle())
-                      .setImageResource(R.id.iv_tab, bean.isExpanded() ? R.mipmap.ic_up : R.mipmap.ic_down);
+                      .setImageResource(R.id.iv_tab, bean.isExpanded() ? R.mipmap.ic_solid_up : R.mipmap.ic_solid_down);
                 helper.itemView.setOnClickListener(v -> {
                     int pos = helper.getAdapterPosition();
                     if (bean.isExpanded()) {

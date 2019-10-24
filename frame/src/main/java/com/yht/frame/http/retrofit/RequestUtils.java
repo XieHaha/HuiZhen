@@ -844,5 +844,25 @@ public class RequestUtils {
                        .subscribe(
                                new AbstractLoadViewObserver<>(context, true, false, Tasks.ADD_DOCTOR_FRIEND, listener));
     }
+
+    public static void getRemoteTime(Context context, String token, String date,
+            final ResponseListener<BaseResponse> listener) {
+        RetrofitManager.getApiUrlManager()
+                       .getRemoteTime(token, date)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_REMOTE_TIME, listener));
+    }
+
+    public static void getRemoteDepartmentInfo(Context context, String token, String startAt, String endAt,
+            final ResponseListener<BaseResponse> listener) {
+        Map<String, String> params = new HashMap<>(16);
+        params.put("endAt", endAt);
+        params.put("startAt", startAt);
+        RetrofitManager.getApiUrlManager()
+                       .getRemoteDepartmentInfo(token, params)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_REMOTE_DEPARTMENT_INFO,
+                                                                 listener));
+    }
 }
 

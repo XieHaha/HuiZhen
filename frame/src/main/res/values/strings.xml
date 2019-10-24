@@ -40,6 +40,7 @@
     <string name="title_add_diagnosis">填写诊断意见</string>
     <string name="title_service_detail">服务详情</string>
     <string name="title_consultation_time">选择会诊时间</string>
+    <string name="title_add_depart">添加医院-科室</string>
 
     <!--公用-->
     <string name="txt_app_name">会珍</string>
@@ -98,6 +99,7 @@
     <string name="txt_no">否</string>
     <string name="txt_notice">注意事项</string>
     <string name="txt_not_required">(非必填)</string>
+    <string name="txt_num">&#160;&#160;(%d)</string>
     <string name="txt_doctor_phone">医生手机号</string>
     <string name="txt_detail">查看详情</string>
     <string name="txt_max_num">9999+</string>
