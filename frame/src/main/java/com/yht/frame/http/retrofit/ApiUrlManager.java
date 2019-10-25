@@ -867,8 +867,7 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @GET("remote/check-have-remote")
-    Observable<BaseResponse<RecentPatientBean>> getRemoteTime(@Header("token") String token,
-            @Query("date") String info);
+    Observable<BaseResponse<List<String>>> getRemoteTime(@Header("token") String token, @Query("date") String info);
 
     /**
      * 获取远程科室列表

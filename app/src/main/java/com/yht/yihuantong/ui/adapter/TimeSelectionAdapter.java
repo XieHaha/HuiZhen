@@ -27,7 +27,7 @@ public class TimeSelectionAdapter extends BaseQuickAdapter<TimeBarBean, BaseView
 
     @Override
     protected void convert(BaseViewHolder helper, TimeBarBean item) {
-        helper.setText(R.id.tv_hour, item.getHourString());
+        helper.setText(R.id.tv_hour, item.getHourTxt());
         helper.addOnClickListener(R.id.layout_hour);
         TextView textView = helper.getView(R.id.tv_hour_status);
         if (startPosition >= helper.getAdapterPosition()) {

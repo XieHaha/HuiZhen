@@ -64,7 +64,7 @@
             app:month_view="com.yht.yihuantong.ui.reservation.time.SimpleMonthView"
             app:week_view="com.yht.yihuantong.ui.reservation.time.SimpleWeekView"
             app:calendar_padding="10dp"
-            app:calendar_height="46dp"
+            app:calendar_height="52dp"
             app:current_day_text_color="@color/color_373d4d"
             app:current_month_text_color="@color/color_373d4d"
             app:other_month_text_color="@color/color_a1a8b3"
@@ -88,14 +88,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="horizontal"
-        android:paddingStart="33dp"
-        android:paddingEnd="33dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
         android:layout_marginTop="10dp"
         android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="1.5"
+            android:layout_weight="1.3"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal">
@@ -232,7 +232,7 @@
             android:textSize="@dimen/text_16"
             android:textColor="@color/color_ffffff"
             android:gravity="center"
-            android:background="@drawable/corner28_1491fc_bg" />
+            android:background="@drawable/selector_public_next" />
     </LinearLayout>
 
 </LinearLayout>

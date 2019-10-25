@@ -9,20 +9,9 @@ import java.io.Serializable;
  */
 public class TimeBarBean implements Serializable {
     private static final long serialVersionUID = 4343140642098734701L;
-    /**
-     * 小时点 （以半个小时计算）
-     */
-    private int hour;
     private int position;
     private String hourString;
-
-    public int getHour() {
-        return hour;
-    }
-
-    public void setHour(int hour) {
-        this.hour = hour;
-    }
+    private String hourTxt;
 
     public String getHourString() {
         return hourString;
@@ -30,6 +19,14 @@ public class TimeBarBean implements Serializable {
 
     public void setHourString(String hourString) {
         this.hourString = hourString;
+    }
+
+    public String getHourTxt() {
+        return hourTxt;
+    }
+
+    public void setHourTxt(String hourTxt) {
+        this.hourTxt = hourTxt;
     }
 
     public int getPosition() {
