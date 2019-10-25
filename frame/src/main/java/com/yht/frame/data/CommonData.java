@@ -197,6 +197,14 @@ public interface CommonData {
      */
     String KEY_LABEL_BEAN = "key_label_bean";
     /**
+     * 选择的远程科室列表
+     */
+    String KEY_REMOTE_DEPART_LIST = "key_remote_depart_list";
+    /**
+     * 选择的远程科室列表 下标
+     */
+    String KEY_REMOTE_DEPART_LIST_POSITION = "key_remote_depart_list_position";
+    /**
      * 远程会诊 日期
      */
     String KEY_REMOTE_DATE = "key_remote_date";

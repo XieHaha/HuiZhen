@@ -13,6 +13,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -25,6 +26,7 @@ import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.bean.NormImage;
+import com.yht.frame.data.bean.RemoteDepartBean;
 import com.yht.frame.data.bean.ReserveRemoteBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.permission.Permission;
@@ -75,12 +77,18 @@ public class RemoteSubmitFragment extends BaseFragment {
     TextView tvTypeHint;
     @BindView(R.id.view_signature)
     View viewSignature;
+    @BindView(R.id.layout_depart)
+    LinearLayout layoutDepart;
     @BindView(R.id.layout_signature)
     LinearLayout layoutSignature;
     @BindView(R.id.view_camera)
     View viewCamera;
     @BindView(R.id.layout_camera)
     LinearLayout layoutCamera;
+    @BindView(R.id.tv_select_hint)
+    TextView tvSelectHint;
+    @BindView(R.id.tv_depart_select)
+    TextView tvDepartSelect;
     private File cameraTempFile;
     private Uri mCurrentPhotoUri;
     private String mCurrentPhotoPath;
@@ -97,6 +105,14 @@ public class RemoteSubmitFragment extends BaseFragment {
      * 图片
      */
     private ArrayList<NormImage> imagePaths = new ArrayList<>();
+    /**
+     * 已选科室
+     */
+    private ArrayList<RemoteDepartBean> remoteDepartBeans = new ArrayList<>();
+    /**
+     * 已选科室
+     */
+    private ArrayList<Integer> remoteDepartPositions = new ArrayList<>();
     /**
      * 选择远程会诊时间
      */
@@ -171,7 +187,12 @@ public class RemoteSubmitFragment extends BaseFragment {
      * 选择时间回调
      */
     private void selectHospitalByCheckItem(Intent data) {
-        tvSelect.setVisibility(View.GONE);
+        //如果重新选择时间  需要清除已选科室
+        if (TextUtils.isEmpty(date)) {
+            remoteDepartBeans.clear();
+            remoteDepartPositions.clear();
+            layoutDepart.removeAllViews();
+        }
         date = data.getStringExtra(CommonData.KEY_REMOTE_DATE);
         startHour = data.getStringExtra(CommonData.KEY_REMOTE_START_HOUR);
         endHour = data.getStringExtra(CommonData.KEY_REMOTE_END_HOUR);
@@ -182,14 +203,28 @@ public class RemoteSubmitFragment extends BaseFragment {
     /**
      * 选择科室回调
      */
-    private void selectCheckItemByHospital(Intent data) {
-    }
-
-    /**
-     * 全部删除已经选择的检查项目和医院
-     */
-    private void deleteAllSelectCheckType() {
-        tvSelect.setVisibility(View.VISIBLE);
+    private void selectDepartItemByHospital(Intent data) {
+        //移除所有已添加子VIEW
+        layoutDepart.removeAllViews();
+        remoteDepartBeans = (ArrayList<RemoteDepartBean>)data.getSerializableExtra(CommonData.KEY_REMOTE_DEPART_LIST);
+        remoteDepartPositions = data.getIntegerArrayListExtra(CommonData.KEY_REMOTE_DEPART_LIST_POSITION);
+        if (remoteDepartBeans != null && remoteDepartBeans.size() > 0) {
+            for (int i = 0; i < remoteDepartBeans.size(); i++) {
+                RemoteDepartBean bean = remoteDepartBeans.get(i);
+                TextView textView = (TextView)LayoutInflater.from(getContext())
+                                                            .inflate(R.layout.item_remote_depart_simple, null);
+                textView.setText(bean.getDepartmentName() + " - " + bean.getHospitalName());
+                layoutDepart.addView(textView);
+            }
+            tvSelectHint.setVisibility(View.VISIBLE);
+            tvDepartSelect.setText(R.string.txt_add);
+            tvDepartSelect.setSelected(true);
+        }
+        else {
+            tvSelectHint.setVisibility(View.INVISIBLE);
+            tvDepartSelect.setText(R.string.txt_select_depart_hint1);
+            tvDepartSelect.setSelected(false);
+        }
         initNextButton();
     }
 
@@ -219,6 +254,10 @@ public class RemoteSubmitFragment extends BaseFragment {
             case R.id.layout_hospital_depart:
                 if (!TextUtils.isEmpty(date)) {
                     intent = new Intent(getContext(), SelectRemoteDepartActivity.class);
+                    intent.putExtra(CommonData.KEY_REMOTE_DATE, date);
+                    intent.putExtra(CommonData.KEY_REMOTE_START_HOUR, startHour);
+                    intent.putExtra(CommonData.KEY_REMOTE_END_HOUR, endHour);
+                    intent.putExtra(CommonData.KEY_REMOTE_DEPART_LIST_POSITION, remoteDepartPositions);
                     startActivityForResult(intent, REQUEST_CODE_SELECT_DEPART);
                 }
                 else {
@@ -330,7 +369,7 @@ public class RemoteSubmitFragment extends BaseFragment {
                 }
                 break;
             case REQUEST_CODE_SELECT_DEPART:
-                if (data != null) { selectCheckItemByHospital(data); }
+                if (data != null) { selectDepartItemByHospital(data); }
                 break;
             default:
                 break;

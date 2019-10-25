@@ -94,6 +94,14 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/layout_depart"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"

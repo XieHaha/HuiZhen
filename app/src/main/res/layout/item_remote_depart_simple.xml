@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="3dp"
+    android:paddingBottom="3dp"
+    android:paddingStart="20dp"
+    android:paddingEnd="20dp"
+    android:gravity="center_vertical"
+    android:textColor="@color/color_373d4d"
+    android:singleLine="true"
+    android:ellipsize="end"
+    android:textSize="@dimen/text_16"
+    android:id="@+id/tv_depart_hospital"
+    android:background="@color/color_ffffff" />

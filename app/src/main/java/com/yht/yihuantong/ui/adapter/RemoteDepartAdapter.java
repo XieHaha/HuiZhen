@@ -10,6 +10,7 @@ import com.yht.frame.data.bean.RemoteDepartBean;
 import com.yht.frame.data.bean.RemoteDepartTitleBean;
 import com.yht.yihuantong.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,6 +20,11 @@ import java.util.List;
  */
 public class RemoteDepartAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity, BaseViewHolder>
         implements BaseData {
+    /**
+     * 已选择的科室
+     */
+    private ArrayList<Integer> selectedRemoteDepartPositions = new ArrayList<>();
+
     public RemoteDepartAdapter(List<MultiItemEntity> data) {
         super(data);
         addItemType(BASE_ZERO, R.layout.item_remote_depart_title);
@@ -52,12 +58,22 @@ public class RemoteDepartAdapter extends BaseMultiItemQuickAdapter<MultiItemEnti
             case BASE_ONE:
                 RemoteDepartBean remoteDepartBean = (RemoteDepartBean)item;
                 helper.setText(R.id.tv_depart, remoteDepartBean.getDepartmentName());
-                helper.itemView.setOnClickListener(v -> {
-                    ImageView imageView = helper.getView(R.id.iv_select);
-                    imageView.setSelected(!imageView.isSelected());
-                    calcSelectNum(getParentPosition(remoteDepartBean), imageView.isSelected());
+                ImageView image = helper.getView(R.id.iv_select);
+                if (selectedRemoteDepartPositions.contains(helper.getAdapterPosition())) {
+                    image.setSelected(true);
                     if (onRemoteDepartSelectListener != null) {
-                        onRemoteDepartSelectListener.onRemoteDepartSelect(remoteDepartBean);
+                        //二次选择时，历史数据回填
+                        onRemoteDepartSelectListener.addRemoteDepartHistory(remoteDepartBean);
+                    }
+                }
+                else {
+                    image.setSelected(false);
+                }
+                //点击事件处理
+                helper.itemView.setOnClickListener(v -> {
+                    if (onRemoteDepartSelectListener != null) {
+                        onRemoteDepartSelectListener.onRemoteDepartSelect(remoteDepartBean,
+                                                                          helper.getAdapterPosition());
                     }
                 });
                 break;
@@ -82,6 +98,10 @@ public class RemoteDepartAdapter extends BaseMultiItemQuickAdapter<MultiItemEnti
         notifyDataSetChanged();
     }
 
+    public void setSelectedRemoteDepartPositions(ArrayList<Integer> selectedRemoteDepartPositions) {
+        this.selectedRemoteDepartPositions = selectedRemoteDepartPositions;
+    }
+
     private OnRemoteDepartSelectListener onRemoteDepartSelectListener;
 
     public void setOnRemoteDepartSelectListener(OnRemoteDepartSelectListener onRemoteDepartSelectListener) {
@@ -89,6 +109,19 @@ public class RemoteDepartAdapter extends BaseMultiItemQuickAdapter<MultiItemEnti
     }
 
     public interface OnRemoteDepartSelectListener {
-        void onRemoteDepartSelect(RemoteDepartBean remoteDepartBean);
+        /**
+         * 已选科室
+         *
+         * @param remoteDepartBean 数据
+         * @param position         index
+         */
+        void onRemoteDepartSelect(RemoteDepartBean remoteDepartBean, int position);
+
+        /**
+         * 历史数据回填
+         *
+         * @param remoteDepartBean 科室
+         */
+        void addRemoteDepartHistory(RemoteDepartBean remoteDepartBean);
     }
 }

@@ -20,6 +20,7 @@ import com.yht.frame.data.bean.RemoteDepartTitleBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
+import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.widgets.LoadViewHelper;
 import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.yht.yihuantong.R;
@@ -65,11 +66,19 @@ public class SelectRemoteDepartActivity extends BaseActivity
     /**
      * 选择的科室
      */
-    private ArrayList<RemoteDepartBean> selectedRemoteDepartBeans;
+    private ArrayList<RemoteDepartBean> selectedRemoteDepartBeans = new ArrayList<>();
+    /**
+     * 选择的科室 position
+     */
+    private ArrayList<Integer> selectedRemoteDepartPosition = new ArrayList<>();
+    /**
+     * 最多可选的科室
+     */
+    private final int MAX_DEPART = 5;
     /**
      * 选择时间
      */
-    public static final int REQUEST_CODE_REMOTE_TIME = 100;
+    private static final int REQUEST_CODE_REMOTE_TIME = 100;
 
     @Override
     protected boolean isInitBackBtn() {
@@ -84,8 +93,16 @@ public class SelectRemoteDepartActivity extends BaseActivity
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
+        if (getIntent() != null) {
+            initRemoteHour(getIntent());
+            selectedRemoteDepartPosition = getIntent().getIntegerArrayListExtra(
+                    CommonData.KEY_REMOTE_DEPART_LIST_POSITION);
+        }
         publicTitleBarMore.setVisibility(View.VISIBLE);
         publicTitleBarMore.setText(R.string.txt_sure);
+        if (selectedRemoteDepartPosition != null && selectedRemoteDepartPosition.size() > 0) {
+            publicTitleBarMore.setSelected(true);
+        }
         loadViewHelper = new LoadViewHelper(this);
         loadViewHelper.setOnNextClickListener(this);
         initAdapter();
@@ -118,6 +135,8 @@ public class SelectRemoteDepartActivity extends BaseActivity
     private void initAdapter() {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         remoteDepartAdapter = new RemoteDepartAdapter(remoteDepartGroup);
+        //赋值已选择的科室
+        remoteDepartAdapter.setSelectedRemoteDepartPositions(selectedRemoteDepartPosition);
         remoteDepartAdapter.setLoadMoreView(new CustomLoadMoreView());
         remoteDepartAdapter.setOnRemoteDepartSelectListener(this);
         remoteDepartAdapter.loadMoreEnd();
@@ -165,6 +184,11 @@ public class SelectRemoteDepartActivity extends BaseActivity
         switch (view.getId()) {
             case R.id.public_title_bar_more:
                 if (publicTitleBarMore.isSelected()) {
+                    Intent intent = new Intent();
+                    intent.putExtra(CommonData.KEY_REMOTE_DEPART_LIST, selectedRemoteDepartBeans);
+                    intent.putExtra(CommonData.KEY_REMOTE_DEPART_LIST_POSITION, selectedRemoteDepartPosition);
+                    setResult(RESULT_OK, intent);
+                    finish();
                 }
                 break;
             case R.id.layout_time:
@@ -177,21 +201,34 @@ public class SelectRemoteDepartActivity extends BaseActivity
     }
 
     @Override
-    public void onRemoteDepartSelect(RemoteDepartBean remoteDepartBean) {
-        if (selectedRemoteDepartBeans == null) {
-            selectedRemoteDepartBeans = new ArrayList<>();
+    public void onRemoteDepartSelect(RemoteDepartBean remoteDepartBean, int position) {
+        if (selectedRemoteDepartBeans.size() >= MAX_DEPART) {
+            ToastUtil.toast(this, R.string.txt_add_depart_max);
+            return;
         }
         if (selectedRemoteDepartBeans.contains(remoteDepartBean)) {
             selectedRemoteDepartBeans.remove(remoteDepartBean);
+            selectedRemoteDepartPosition.remove(Integer.valueOf(position));
         }
         else {
             selectedRemoteDepartBeans.add(remoteDepartBean);
+            selectedRemoteDepartPosition.add(position);
         }
         if (selectedRemoteDepartBeans.size() > 0) {
             publicTitleBarMore.setSelected(true);
         }
         else {
             publicTitleBarMore.setSelected(false);
+        }
+        //刷新数据
+        remoteDepartAdapter.setSelectedRemoteDepartPositions(selectedRemoteDepartPosition);
+        remoteDepartAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void addRemoteDepartHistory(RemoteDepartBean remoteDepartBean) {
+        if (!selectedRemoteDepartBeans.contains(remoteDepartBean)) {
+            selectedRemoteDepartBeans.add(remoteDepartBean);
         }
     }
 
@@ -219,14 +256,22 @@ public class SelectRemoteDepartActivity extends BaseActivity
             return;
         }
         if (requestCode == REQUEST_CODE_REMOTE_TIME) {
-            date = data.getStringExtra(CommonData.KEY_REMOTE_DATE);
-            startHour = data.getStringExtra(CommonData.KEY_REMOTE_START_HOUR);
-            endHour = data.getStringExtra(CommonData.KEY_REMOTE_END_HOUR);
-            //时间
-            tvTime.setText(date + " " + startHour + "-" + endHour);
+            initRemoteHour(data);
             //初始化数据
             if (selectedRemoteDepartBeans != null) { selectedRemoteDepartBeans.clear(); }
             getRemoteDepartmentInfo();
         }
+    }
+
+    /**
+     * 时间
+     */
+    @SuppressLint("SetTextI18n")
+    private void initRemoteHour(Intent data) {
+        date = data.getStringExtra(CommonData.KEY_REMOTE_DATE);
+        startHour = data.getStringExtra(CommonData.KEY_REMOTE_START_HOUR);
+        endHour = data.getStringExtra(CommonData.KEY_REMOTE_END_HOUR);
+        //时间
+        tvTime.setText(date + " " + startHour + "-" + endHour);
     }
 }
