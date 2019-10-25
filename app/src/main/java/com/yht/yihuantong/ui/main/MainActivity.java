@@ -297,12 +297,7 @@ public class MainActivity extends BaseActivity
                         EMClient.getInstance().chatManager().loadAllConversations();
                         if (loginBean != null) {
                             // update current user's display name for APNs
-                            boolean updatenick = EMClient.getInstance()
-                                                         .pushManager()
-                                                         .updatePushNickname(loginBean.getDoctorName());
-                            if (!updatenick) {
-                                HuiZhenLog.e(TAG, getString(R.string.txt_update_ease_nick_fail));
-                            }
+                            EMClient.getInstance().pushManager().updatePushNickname(loginBean.getDoctorName());
                         }
                         runOnUiThread(() -> HuiZhenLog.i(TAG, getString(R.string.txt_login_ease_success)));
                     }

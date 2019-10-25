@@ -17,7 +17,7 @@ import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.bean.NormImage;
-import com.yht.frame.data.bean.ReserveCheckBean;
+import com.yht.frame.data.bean.ReserveRemoteBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.permission.Permission;
 import com.yht.frame.ui.BaseFragment;
@@ -30,7 +30,7 @@ import com.yht.frame.widgets.edittext.SuperEditText;
 import com.yht.frame.widgets.gridview.AutoGridView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.ImagePreviewActivity;
-import com.yht.yihuantong.ui.check.listener.OnCheckListener;
+import com.yht.yihuantong.ui.remote.listener.OnRemoteListener;
 import com.yht.yihuantong.ui.reservation.PastHistoryActivity;
 import com.yht.yihuantong.utils.MatisseUtils;
 import com.yht.yihuantong.utils.text.BankCardTextWatcher;
@@ -97,9 +97,9 @@ public class RemoteMaterialFragment extends BaseFragment
      */
     private ArrayList<String> pastHistoryData;
     /**
-     * 当前预约检查数据
+     * 当前远程会诊数据
      */
-    private ReserveCheckBean reserveCheckBean;
+    private ReserveRemoteBean reserveRemoteBean;
     /**
      * 编辑既往史
      */
@@ -141,13 +141,13 @@ public class RemoteMaterialFragment extends BaseFragment
         initPatientBaseData();
     }
 
-    public ReserveCheckBean getReserveCheckBean() {
-        return reserveCheckBean;
+    public ReserveRemoteBean getReserveRemoteBean() {
+        return reserveRemoteBean;
     }
 
-    public void setReserveCheckBean(ReserveCheckBean bean) {
+    public void setReserveRemoteBean(ReserveRemoteBean bean) {
         clearAllCheckData(bean);
-        this.reserveCheckBean = bean;
+        this.reserveRemoteBean = bean;
     }
 
     @Override
@@ -183,34 +183,34 @@ public class RemoteMaterialFragment extends BaseFragment
     }
 
     private void initCheckData() {
-        if (reserveCheckBean != null) {
+        if (reserveRemoteBean != null) {
             BankCardTextWatcher.bind(tvIdCard, this);
-            if (!TextUtils.isEmpty(reserveCheckBean.getPatientCode())) {
+            if (!TextUtils.isEmpty(reserveRemoteBean.getPatientCode())) {
                 //老用户
                 editStatus(false);
-                age = String.valueOf(reserveCheckBean.getAge());
-                sex = reserveCheckBean.getSex();
-                phone = reserveCheckBean.getPhone();
+                age = String.valueOf(reserveRemoteBean.getPatientAge());
+                sex = reserveRemoteBean.getPatientSex();
+                phone = reserveRemoteBean.getPatientMobile();
                 etPhone.setText(phone);
-                pastMedicalHis = reserveCheckBean.getPastHistory();
-                familyMedicalHis = reserveCheckBean.getFamilyHistory();
-                allergiesHis = reserveCheckBean.getAllergyHistory();
+                pastMedicalHis = reserveRemoteBean.getPast();
+                familyMedicalHis = reserveRemoteBean.getFamily();
+                allergiesHis = reserveRemoteBean.getAllergy();
             }
             else {
                 //新用户
                 editStatus(true);
-                age = BaseUtils.getAgeByCard(reserveCheckBean.getIdCardNo());
-                sex = BaseUtils.getSexByCard(reserveCheckBean.getIdCardNo());
-                reserveCheckBean.setSex(sex);
+                age = BaseUtils.getAgeByCard(reserveRemoteBean.getPatientIdCard());
+                sex = BaseUtils.getSexByCard(reserveRemoteBean.getPatientIdCard());
+                reserveRemoteBean.setPatientSex(sex);
                 if (!TextUtils.isEmpty(age)) {
-                    reserveCheckBean.setAge(Integer.valueOf(age));
+                    reserveRemoteBean.setPatientAge(Integer.valueOf(age));
                 }
                 else {
-                    reserveCheckBean.setAge(0);
+                    reserveRemoteBean.setPatientAge(0);
                 }
             }
-            tvName.setText(reserveCheckBean.getPatientName());
-            tvIdCard.setText(reserveCheckBean.getIdCardNo());
+            tvName.setText(reserveRemoteBean.getPatientName());
+            tvIdCard.setText(reserveRemoteBean.getPatientIdCard());
             etAge.setText(age);
             if (sex == BaseData.BASE_ONE) {
                 rbMale.setChecked(true);
@@ -219,11 +219,11 @@ public class RemoteMaterialFragment extends BaseFragment
                 rbFemale.setChecked(true);
             }
             //病情描述
-            etDescription.setText(description = reserveCheckBean.getInitResult());
+            etDescription.setText(description = reserveRemoteBean.getInitResult());
             //初步诊断
-            etDiagnosis.setText(diagnosisHis = reserveCheckBean.getInitResult());
+            etDiagnosis.setText(diagnosisHis = reserveRemoteBean.getInitResult());
             //会珍目的
-            etPurpose.setText(purpose = reserveCheckBean.getInitResult());
+            etPurpose.setText(purpose = reserveRemoteBean.getInitResult());
             //既往史
             pastHistoryData = new ArrayList<>();
             pastHistoryData.add(pastMedicalHis);
@@ -243,13 +243,13 @@ public class RemoteMaterialFragment extends BaseFragment
     /**
      * 涉及到数据回填逻辑，如果更改了居民，需要清空原有已填写数据
      */
-    private void clearAllCheckData(ReserveCheckBean bean) {
-        if (reserveCheckBean == null || bean == null) {
+    private void clearAllCheckData(ReserveRemoteBean bean) {
+        if (reserveRemoteBean == null || bean == null) {
             clearAll = false;
         }
         else {
-            clearAll = !reserveCheckBean.getPatientName().equals(bean.getPatientName()) ||
-                       !reserveCheckBean.getIdCardNo().equals(bean.getIdCardNo());
+            clearAll = !reserveRemoteBean.getPatientName().equals(bean.getPatientName()) ||
+                       !reserveRemoteBean.getPatientIdCard().equals(bean.getPatientIdCard());
         }
     }
 
@@ -258,7 +258,7 @@ public class RemoteMaterialFragment extends BaseFragment
      */
     private void editStatus(boolean mode) {
         //老用户未绑定手机号可以修改
-        if (!mode && !BaseData.BASE_STRING_ONE_TAG.equals(reserveCheckBean.getIsBind())) {
+        if (!mode && !BaseData.BASE_STRING_ONE_TAG.equals(reserveRemoteBean.getIsBind())) {
             etPhone.setFocusable(true);
             etPhone.setFocusableInTouchMode(true);
         }
@@ -280,10 +280,10 @@ public class RemoteMaterialFragment extends BaseFragment
                 age = s.toString().trim();
                 initNextButton();
                 if (!TextUtils.isEmpty(age)) {
-                    reserveCheckBean.setAge(Integer.valueOf(age));
+                    reserveRemoteBean.setPatientAge(Integer.valueOf(age));
                 }
                 else {
-                    reserveCheckBean.setAge(0);
+                    reserveRemoteBean.setPatientAge(0);
                 }
             }
         });
@@ -294,7 +294,7 @@ public class RemoteMaterialFragment extends BaseFragment
                 super.onTextChanged(s, start, before, count);
                 phone = s.toString().trim();
                 if (BaseUtils.isMobileNumber(phone)) {
-                    reserveCheckBean.setPhone(phone);
+                    reserveRemoteBean.setPatientMobile(phone);
                 }
                 //判断手机号和诊断史
                 initNextButton();
@@ -307,7 +307,7 @@ public class RemoteMaterialFragment extends BaseFragment
                 description = s.toString().trim();
                 initNextButton();
                 initDescription();
-                reserveCheckBean.setInitResult(description);
+                reserveRemoteBean.setInitResult(description);
             }
         });
         etDiagnosis.addTextChangedListener(new AbstractTextWatcher() {
@@ -317,7 +317,7 @@ public class RemoteMaterialFragment extends BaseFragment
                 diagnosisHis = s.toString().trim();
                 initNextButton();
                 initDiagnosis();
-                reserveCheckBean.setInitResult(diagnosisHis);
+                reserveRemoteBean.setInitResult(diagnosisHis);
             }
         });
         etPurpose.addTextChangedListener(new AbstractTextWatcher() {
@@ -327,7 +327,7 @@ public class RemoteMaterialFragment extends BaseFragment
                 purpose = s.toString().trim();
                 initNextButton();
                 initPurpose();
-                reserveCheckBean.setInitResult(purpose);
+                reserveRemoteBean.setInitResult(purpose);
             }
         });
     }
@@ -445,8 +445,8 @@ public class RemoteMaterialFragment extends BaseFragment
                 startActivityForResult(intent, REQUEST_CODE_PAST_HISTORY);
                 break;
             case R.id.tv_material_next:
-                if (tvMaterialNext.isSelected() && checkListener != null) {
-                    checkListener.onCheckStepTwo(reserveCheckBean);
+                if (tvMaterialNext.isSelected() && onRemoteListener != null) {
+                    onRemoteListener.onRemoteStepTwo(reserveRemoteBean);
                 }
                 break;
             default:
@@ -486,9 +486,9 @@ public class RemoteMaterialFragment extends BaseFragment
         }
         if (requestCode == REQUEST_CODE_PAST_HISTORY) {
             pastHistoryData = data.getStringArrayListExtra(CommonData.KEY_PUBLIC);
-            reserveCheckBean.setPastHistory(pastHistoryData.get(0));
-            reserveCheckBean.setFamilyHistory(pastHistoryData.get(1));
-            reserveCheckBean.setAllergyHistory(pastHistoryData.get(2));
+            reserveRemoteBean.setPast(pastHistoryData.get(0));
+            reserveRemoteBean.setFamily(pastHistoryData.get(1));
+            reserveRemoteBean.setAllergy(pastHistoryData.get(2));
             initNextButton();
         }
         else if (requestCode == RC_PICK_IMG) {
@@ -508,9 +508,9 @@ public class RemoteMaterialFragment extends BaseFragment
         }
     }
 
-    private OnCheckListener checkListener;
+    private OnRemoteListener onRemoteListener;
 
-    public void setOnCheckListener(OnCheckListener onCheckListener) {
-        this.checkListener = onCheckListener;
+    public void setOnRemoteListener(OnRemoteListener onRemoteListener) {
+        this.onRemoteListener = onRemoteListener;
     }
 }

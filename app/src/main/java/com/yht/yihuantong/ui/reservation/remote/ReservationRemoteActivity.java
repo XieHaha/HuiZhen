@@ -17,12 +17,12 @@ import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.bean.PatientBean;
-import com.yht.frame.data.bean.ReserveCheckBean;
+import com.yht.frame.data.bean.ReserveRemoteBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.yihuantong.R;
-import com.yht.yihuantong.ui.check.listener.OnCheckListener;
+import com.yht.yihuantong.ui.remote.listener.OnRemoteListener;
 import com.yht.yihuantong.ui.reservation.ReservationSuccessActivity;
 
 import butterknife.BindView;
@@ -32,7 +32,7 @@ import butterknife.BindView;
  * @date 19/6/14 14:05
  * @des 新增 远程会诊
  */
-public class ReservationRemoteActivity extends BaseActivity implements OnCheckListener {
+public class ReservationRemoteActivity extends BaseActivity implements OnRemoteListener {
     @BindView(R.id.iv_base)
     ImageView ivReservationBase;
     @BindView(R.id.tv_base)
@@ -77,7 +77,7 @@ public class ReservationRemoteActivity extends BaseActivity implements OnCheckLi
      */
     private RemoteMaterialFragment materialFragment;
     /**
-     * 确认提交(预约检查)
+     * 确认提交(远程会诊)
      */
     private RemoteSubmitFragment submitCheckFragment;
     /**
@@ -85,9 +85,9 @@ public class ReservationRemoteActivity extends BaseActivity implements OnCheckLi
      */
     private PatientBean patientBean;
     /**
-     * 当前预约检查数据
+     * 当前远程会诊数据
      */
-    private ReserveCheckBean reserveCheckBean;
+    private ReserveRemoteBean reserveRemoteBean;
     /**
      * 当前碎片
      */
@@ -127,10 +127,10 @@ public class ReservationRemoteActivity extends BaseActivity implements OnCheckLi
     }
 
     /**
-     * 新增预约检查订单
+     * 新增远程会诊订单
      */
-    private void addReserveCheckOrder() {
-        RequestUtils.addReserveCheckOrder(this, loginBean.getToken(), reserveCheckBean, this);
+    private void addReserveRemoteOrder() {
+        RequestUtils.addReserveRemoteOrder(this, loginBean.getToken(), reserveRemoteBean, this);
     }
 
     /**
@@ -165,18 +165,17 @@ public class ReservationRemoteActivity extends BaseActivity implements OnCheckLi
      * 居民基本数据回填
      */
     private void initPatientBaseData() {
-        //预约检查
-        reserveCheckBean = new ReserveCheckBean();
-        reserveCheckBean.setPatientName(patientBean.getName());
-        reserveCheckBean.setIdCardNo(patientBean.getIdCard());
-        reserveCheckBean.setPatientCode(patientBean.getCode());
-        reserveCheckBean.setSex(patientBean.getSex());
-        reserveCheckBean.setAge(patientBean.getAge());
-        reserveCheckBean.setPhone(patientBean.getMobile());
-        reserveCheckBean.setPastHistory(patientBean.getPast());
-        reserveCheckBean.setFamilyHistory(patientBean.getFamily());
-        reserveCheckBean.setAllergyHistory(patientBean.getAllergy());
-        reserveCheckBean.setIsBind(patientBean.getIsBind());
+        //远程会诊
+        reserveRemoteBean = new ReserveRemoteBean();
+        reserveRemoteBean.setPatientName(patientBean.getName());
+        reserveRemoteBean.setPatientIdCard(patientBean.getIdCard());
+        reserveRemoteBean.setPatientCode(patientBean.getCode());
+        reserveRemoteBean.setPatientSex(patientBean.getSex());
+        reserveRemoteBean.setPatientAge(patientBean.getAge());
+        reserveRemoteBean.setPatientMobile(patientBean.getMobile());
+        reserveRemoteBean.setPast(patientBean.getPast());
+        reserveRemoteBean.setFamily(patientBean.getFamily());
+        reserveRemoteBean.setAllergy(patientBean.getAllergy());
     }
 
     private void tabReservationBaseView() {
@@ -184,13 +183,13 @@ public class ReservationRemoteActivity extends BaseActivity implements OnCheckLi
         hideAll(fragmentTransaction);
         if (identifyFragment == null) {
             identifyFragment = new RemoteIdentifyFragment();
-            identifyFragment.setOnCheckListener(this);
-            identifyFragment.setReserveCheckBean(reserveCheckBean);
+            identifyFragment.setOnRemoteListener(this);
+            identifyFragment.setReserveRemoteBean(reserveRemoteBean);
             fragmentTransaction.add(R.id.layout_frame_root, identifyFragment);
         }
         else {
             fragmentTransaction.show(identifyFragment);
-            identifyFragment.setReserveCheckBean(reserveCheckBean);
+            identifyFragment.setReserveRemoteBean(reserveRemoteBean);
             identifyFragment.onResume();
         }
         fragmentTransaction.commitAllowingStateLoss();
@@ -202,13 +201,13 @@ public class ReservationRemoteActivity extends BaseActivity implements OnCheckLi
         hideAll(fragmentTransaction);
         if (materialFragment == null) {
             materialFragment = new RemoteMaterialFragment();
-            materialFragment.setOnCheckListener(this);
-            materialFragment.setReserveCheckBean(reserveCheckBean);
+            materialFragment.setOnRemoteListener(this);
+            materialFragment.setReserveRemoteBean(reserveRemoteBean);
             fragmentTransaction.add(R.id.layout_frame_root, materialFragment);
         }
         else {
             fragmentTransaction.show(materialFragment);
-            materialFragment.setReserveCheckBean(reserveCheckBean);
+            materialFragment.setReserveRemoteBean(reserveRemoteBean);
             materialFragment.onResume();
         }
         fragmentTransaction.commitAllowingStateLoss();
@@ -216,20 +215,20 @@ public class ReservationRemoteActivity extends BaseActivity implements OnCheckLi
     }
 
     /**
-     * 预约检查提交碎片
+     * 远程会诊提交碎片
      */
     private void tabCheckResultView() {
         fragmentTransaction = fragmentManager.beginTransaction();
         hideAll(fragmentTransaction);
         if (submitCheckFragment == null) {
             submitCheckFragment = new RemoteSubmitFragment();
-            submitCheckFragment.setOnCheckListener(this);
-            submitCheckFragment.setReserveCheckBean(reserveCheckBean);
+            submitCheckFragment.setOnRemoteListener(this);
+            submitCheckFragment.setReserveRemoteBean(reserveRemoteBean);
             fragmentTransaction.add(R.id.layout_frame_root, submitCheckFragment);
         }
         else {
             fragmentTransaction.show(submitCheckFragment);
-            submitCheckFragment.setReserveCheckBean(reserveCheckBean);
+            submitCheckFragment.setReserveRemoteBean(reserveRemoteBean);
             submitCheckFragment.onResume();
         }
         fragmentTransaction.commitAllowingStateLoss();
@@ -326,21 +325,21 @@ public class ReservationRemoteActivity extends BaseActivity implements OnCheckLi
     }
 
     @Override
-    public void onCheckStepOne(ReserveCheckBean bean) {
-        reserveCheckBean = bean;
+    public void onRemoteStepOne(ReserveRemoteBean bean) {
+        reserveRemoteBean = bean;
         tabReservationLicenseView();
     }
 
     @Override
-    public void onCheckStepTwo(ReserveCheckBean bean) {
-        reserveCheckBean = bean;
+    public void onRemoteStepTwo(ReserveRemoteBean bean) {
+        reserveRemoteBean = bean;
         tabCheckResultView();
     }
 
     @Override
-    public void onCheckStepThree(ReserveCheckBean bean) {
-        reserveCheckBean = bean;
-        addReserveCheckOrder();
+    public void onRemoteStepThree(ReserveRemoteBean bean) {
+        reserveRemoteBean = bean;
+        addReserveRemoteOrder();
     }
 
     @Override
@@ -385,7 +384,7 @@ public class ReservationRemoteActivity extends BaseActivity implements OnCheckLi
                 return true;
             }
             if (materialFragment != null) {
-                reserveCheckBean = materialFragment.getReserveCheckBean();
+                reserveRemoteBean = materialFragment.getReserveRemoteBean();
             }
             curPage = 0;
             tabReservationBaseView();

@@ -36,7 +36,7 @@
                 android:id="@+id/tv_select"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/color_a1a8b3"
+                android:textColor="@color/color_373d4d"
                 android:textSize="@dimen/text_16"
                 android:drawableEnd="@mipmap/ic_right"
                 android:drawablePadding="11dp"

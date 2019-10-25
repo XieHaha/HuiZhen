@@ -1,5 +1,6 @@
 package com.yht.yihuantong.ui.reservation.remote;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -52,7 +53,7 @@ public class SelectRemoteDepartActivity extends BaseActivity
     /**
      * 远程会诊时间范围
      */
-    private String startTime, endTime;
+    private String date, startHour, endHour;
     /**
      * 分组title
      */
@@ -107,7 +108,8 @@ public class SelectRemoteDepartActivity extends BaseActivity
      * 获取远程  科室列表
      */
     private void getRemoteDepartmentInfo() {
-        RequestUtils.getRemoteDepartmentInfo(this, loginBean.getToken(), startTime, endTime, this);
+        RequestUtils.getRemoteDepartmentInfo(this, loginBean.getToken(), date + " " + startHour, date + " " + endHour,
+                                             this);
     }
 
     /**
@@ -209,6 +211,7 @@ public class SelectRemoteDepartActivity extends BaseActivity
         }
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -216,10 +219,13 @@ public class SelectRemoteDepartActivity extends BaseActivity
             return;
         }
         if (requestCode == REQUEST_CODE_REMOTE_TIME) {
-            startTime = data.getStringExtra(CommonData.KEY_PUBLIC_STRING);
-            endTime = data.getStringExtra(CommonData.KEY_PUBLIC_STRING);
+            date = data.getStringExtra(CommonData.KEY_REMOTE_DATE);
+            startHour = data.getStringExtra(CommonData.KEY_REMOTE_START_HOUR);
+            endHour = data.getStringExtra(CommonData.KEY_REMOTE_END_HOUR);
+            //时间
+            tvTime.setText(date + " " + startHour + "-" + endHour);
             //初始化数据
-            selectedRemoteDepartBeans.clear();
+            if (selectedRemoteDepartBeans != null) { selectedRemoteDepartBeans.clear(); }
             getRemoteDepartmentInfo();
         }
     }

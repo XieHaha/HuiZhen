@@ -53,7 +53,6 @@ import com.yht.yihuantong.ui.remote.RemoteHistoryActivity;
 import com.yht.yihuantong.ui.remote.RemoteLoginActivity;
 import com.yht.yihuantong.ui.reservation.ReservationDisableActivity;
 import com.yht.yihuantong.ui.reservation.remote.ReservationRemoteActivity;
-import com.yht.yihuantong.ui.reservation.remote.SelectRemoteDepartActivity;
 import com.yht.yihuantong.ui.reservation.service.ReservationServiceActivity;
 import com.yht.yihuantong.ui.reservation.transfer.ReservationTransferActivity;
 import com.yht.yihuantong.ui.transfer.TransferInitiateListActivity;
@@ -361,9 +360,7 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
                 startActivity(intent);
                 break;
             case R.id.view_flipper:
-                //                flipperDetail();
-                intent = new Intent(getContext(), SelectRemoteDepartActivity.class);
-                startActivity(intent);
+                flipperDetail();
                 break;
             case R.id.layout_initiate_check:
                 intent = new Intent(getContext(), ServiceHistoryActivity.class);

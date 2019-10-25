@@ -879,4 +879,15 @@ public interface ApiUrlManager {
     @GET("remote/getRemoteDepartmentInfo")
     Observable<BaseResponse<List<RemoteDepartBean>>> getRemoteDepartmentInfo(@Header("token") String token,
             @QueryMap Map<String, String> info);
+
+    /**
+     * 新增远程会诊订单
+     *
+     * @param info  map参数
+     * @param token token
+     * @return 返回值
+     */
+    @POST("remote/create")
+    Observable<BaseResponse<String>> addReserveRemoteOrder(@Header("token") String token,
+            @Body Map<String, Object> info);
 }

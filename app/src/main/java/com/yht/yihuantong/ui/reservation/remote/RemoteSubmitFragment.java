@@ -25,20 +25,19 @@ import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.bean.NormImage;
-import com.yht.frame.data.bean.ReserveCheckBean;
-import com.yht.frame.data.bean.ReserveCheckTypeBean;
-import com.yht.frame.data.bean.SelectCheckTypeBean;
+import com.yht.frame.data.bean.ReserveRemoteBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.permission.Permission;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.ScalingUtils;
+import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.frame.widgets.dialog.SignatureDialog;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ZycApplication;
 import com.yht.yihuantong.ui.ImagePreviewActivity;
-import com.yht.yihuantong.ui.check.listener.OnCheckListener;
+import com.yht.yihuantong.ui.remote.listener.OnRemoteListener;
 import com.yht.yihuantong.ui.reservation.time.ConsultationTimeActivity;
 
 import java.io.File;
@@ -85,7 +84,11 @@ public class RemoteSubmitFragment extends BaseFragment {
     private File cameraTempFile;
     private Uri mCurrentPhotoUri;
     private String mCurrentPhotoPath;
-    private ReserveCheckBean reserveCheckBean;
+    private ReserveRemoteBean reserveRemoteBean;
+    /**
+     * 预约时间
+     */
+    private String date, startHour, endHour;
     /**
      * 拍照确认图片url
      */
@@ -95,13 +98,13 @@ public class RemoteSubmitFragment extends BaseFragment {
      */
     private ArrayList<NormImage> imagePaths = new ArrayList<>();
     /**
-     * 根据检查项目选择医院
+     * 选择远程会诊时间
      */
-    public static final int REQUEST_CODE_SELECT_HOSPITAL = 100;
+    public static final int REQUEST_CODE_SELECT_REMOTE_HOUR = 100;
     /**
-     * 根据医院选择检查项目
+     * 选择远程科室
      */
-    public static final int REQUEST_CODE_SELECT_CHECK = 101;
+    public static final int REQUEST_CODE_SELECT_DEPART = 101;
 
     @Override
     public int getLayoutID() {
@@ -128,8 +131,8 @@ public class RemoteSubmitFragment extends BaseFragment {
         sureType(true);
     }
 
-    public void setReserveCheckBean(ReserveCheckBean reserveCheckBean) {
-        this.reserveCheckBean = reserveCheckBean;
+    public void setReserveRemoteBean(ReserveRemoteBean reserveRemoteBean) {
+        this.reserveRemoteBean = reserveRemoteBean;
     }
 
     /**
@@ -165,21 +168,21 @@ public class RemoteSubmitFragment extends BaseFragment {
     }
 
     /**
-     * 根据检查项目匹配医院回调
+     * 选择时间回调
      */
     private void selectHospitalByCheckItem(Intent data) {
         tvSelect.setVisibility(View.GONE);
+        date = data.getStringExtra(CommonData.KEY_REMOTE_DATE);
+        startHour = data.getStringExtra(CommonData.KEY_REMOTE_START_HOUR);
+        endHour = data.getStringExtra(CommonData.KEY_REMOTE_END_HOUR);
+        tvSelect.setText(date + " " + startHour + "-" + endHour);
         initNextButton();
     }
 
     /**
-     * 根据选择当前医院下的检查项目
-     *
-     * @param data
+     * 选择科室回调
      */
     private void selectCheckItemByHospital(Intent data) {
-        ArrayList<SelectCheckTypeBean> list = (ArrayList<SelectCheckTypeBean>)data.getSerializableExtra(
-                CommonData.KEY_RESERVE_CHECK_TYPE_LIST);
     }
 
     /**
@@ -204,14 +207,23 @@ public class RemoteSubmitFragment extends BaseFragment {
     }
 
     @OnClick({
-            R.id.layout_select_check_type, R.id.layout_upload_one, R.id.iv_delete_one, R.id.tv_submit_next,
-            R.id.layout_upload_two, R.id.layout_signature, R.id.layout_camera })
+            R.id.layout_select_check_type, R.id.layout_hospital_depart, R.id.layout_upload_one, R.id.iv_delete_one,
+            R.id.tv_submit_next, R.id.layout_upload_two, R.id.layout_signature, R.id.layout_camera })
     public void onViewClicked(View view) {
         Intent intent;
         switch (view.getId()) {
             case R.id.layout_select_check_type:
                 intent = new Intent(getContext(), ConsultationTimeActivity.class);
-                startActivityForResult(intent, REQUEST_CODE_SELECT_HOSPITAL);
+                startActivityForResult(intent, REQUEST_CODE_SELECT_REMOTE_HOUR);
+                break;
+            case R.id.layout_hospital_depart:
+                if (!TextUtils.isEmpty(date)) {
+                    intent = new Intent(getContext(), SelectRemoteDepartActivity.class);
+                    startActivityForResult(intent, REQUEST_CODE_SELECT_DEPART);
+                }
+                else {
+                    ToastUtil.toast(getContext(), "请选择会诊时间");
+                }
                 break;
             case R.id.layout_upload_one:
                 if (TextUtils.isEmpty(confirmImageUrl)) {
@@ -280,12 +292,9 @@ public class RemoteSubmitFragment extends BaseFragment {
      * 提交数据
      */
     private void submit() {
-        if (tvSubmitNext.isSelected() && checkListener != null) {
-            reserveCheckBean.setConfirmPhoto(confirmImageUrl);
-            ArrayList<ReserveCheckTypeBean> list = new ArrayList<>();
-            //检查项列表
-            reserveCheckBean.setCheckTrans(list);
-            checkListener.onCheckStepThree(reserveCheckBean);
+        if (tvSubmitNext.isSelected() && onRemoteListener != null) {
+            reserveRemoteBean.setConfirmFile(confirmImageUrl);
+            onRemoteListener.onRemoteStepThree(reserveRemoteBean);
         }
     }
 
@@ -315,12 +324,12 @@ public class RemoteSubmitFragment extends BaseFragment {
                 cameraTempFile = new File(mCurrentPhotoPath);
                 uploadImage(cameraTempFile);
                 break;
-            case REQUEST_CODE_SELECT_HOSPITAL:
+            case REQUEST_CODE_SELECT_REMOTE_HOUR:
                 if (data != null) {
                     selectHospitalByCheckItem(data);
                 }
                 break;
-            case REQUEST_CODE_SELECT_CHECK:
+            case REQUEST_CODE_SELECT_DEPART:
                 if (data != null) { selectCheckItemByHospital(data); }
                 break;
             default:
@@ -372,9 +381,9 @@ public class RemoteSubmitFragment extends BaseFragment {
         }
     }
 
-    private OnCheckListener checkListener;
+    private OnRemoteListener onRemoteListener;
 
-    public void setOnCheckListener(OnCheckListener onCheckListener) {
-        this.checkListener = onCheckListener;
+    public void setOnRemoteListener(OnRemoteListener onRemoteListener) {
+        this.onRemoteListener = onRemoteListener;
     }
 }

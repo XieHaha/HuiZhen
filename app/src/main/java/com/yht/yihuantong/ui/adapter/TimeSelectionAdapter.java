@@ -18,7 +18,17 @@ import java.util.List;
  * @des 时间选择
  */
 public class TimeSelectionAdapter extends BaseQuickAdapter<TimeBarBean, BaseViewHolder> {
+    /**
+     * 开始时段
+     */
     private int startPosition;
+    /**
+     * 不可点时段
+     */
+    private ArrayList<Integer> rangePosition = new ArrayList<>();
+    /**
+     * 已选时段
+     */
     private ArrayList<Integer> selectPositions = new ArrayList<>();
 
     public TimeSelectionAdapter(int layoutResId, @Nullable List<TimeBarBean> data) {
@@ -29,25 +39,37 @@ public class TimeSelectionAdapter extends BaseQuickAdapter<TimeBarBean, BaseView
     protected void convert(BaseViewHolder helper, TimeBarBean item) {
         helper.setText(R.id.tv_hour, item.getHourTxt());
         helper.addOnClickListener(R.id.layout_hour);
-        TextView textView = helper.getView(R.id.tv_hour_status);
-        if (startPosition >= helper.getAdapterPosition()) {
-            textView.setVisibility(View.VISIBLE);
-        }
-        else {
-            textView.setVisibility(View.INVISIBLE);
-        }
+        initRange(helper);
+    }
+
+    /**
+     * 初始化可选时段范围
+     */
+    private void initRange(BaseViewHolder helper) {
         int position = helper.getAdapterPosition();
-        if (selectPositions.contains(position) && position > startPosition) {
+        TextView textView = helper.getView(R.id.tv_hour_status);
+        //当前坐标小于开始坐标  或者  当前坐标已限制选择
+        if (position <= startPosition || rangePosition.contains(position)) {
             textView.setVisibility(View.VISIBLE);
-            textView.setSelected(true);
+            textView.setSelected(false);
         }
         else {
-            textView.setSelected(false);
+            if (selectPositions.contains(position)) {
+                textView.setVisibility(View.VISIBLE);
+                textView.setSelected(true);
+            }
+            else {
+                textView.setVisibility(View.INVISIBLE);
+            }
         }
     }
 
-    public void setRange(int startHour) {
-        this.startPosition = startHour;
+    public void setRange(int startPosition) {
+        this.startPosition = startPosition;
+    }
+
+    public void setRangePosition(ArrayList<Integer> rangePosition) {
+        this.rangePosition = rangePosition;
     }
 
     public void setSelectPositions(ArrayList<Integer> selectPositions) {

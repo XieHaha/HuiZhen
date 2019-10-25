@@ -1,6 +1,7 @@
 package com.yht.yihuantong.ui.reservation.time;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +15,7 @@ import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.CalendarLayout;
 import com.haibin.calendarview.CalendarView;
 import com.yht.frame.data.BaseResponse;
+import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.bean.TimeBarBean;
 import com.yht.frame.http.retrofit.RequestUtils;
@@ -64,6 +66,7 @@ public class ConsultationTimeActivity extends BaseActivity
     @BindView(R.id.tv_verify_time)
     TextView tvVerifyTime;
     private int tempYear, tempMonth;
+    private LinearLayoutManager layoutManager;
     /**
      * 时间条
      */
@@ -111,7 +114,8 @@ public class ConsultationTimeActivity extends BaseActivity
         timeSelectionAdapter = new TimeSelectionAdapter(R.layout.item_time_selection, timeBarBeans);
         timeSelectionAdapter.setOnItemChildClickListener(this);
         //水平显示
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        recyclerView.setLayoutManager(
+                layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         recyclerView.setAdapter(timeSelectionAdapter);
         //已选
         tvSelectedHours.setText(String.format(getString(R.string.txt_selected_hours), "0.0"));
@@ -186,21 +190,24 @@ public class ConsultationTimeActivity extends BaseActivity
      * 计算可选时间范围 （已过期时间及已预约时间 ）
      */
     private void calcHourRange() {
-
-
         //获取当前时间
         java.util.Calendar todayCalendar = java.util.Calendar.getInstance();
         int hour = todayCalendar.get(java.util.Calendar.HOUR_OF_DAY);
         int minute = todayCalendar.get(java.util.Calendar.MINUTE);
+        //计算可选时段的开始时间
         if (hour >= START_HOUR) {
+            //当前时间大于6点
             startPosition = (hour - START_HOUR) * 2 + (minute >= 30 ? 1 : 0);
-            timeSelectionAdapter.setRange(startPosition);
         }
         else {
+            //当前时间在6点之前
             startPosition = 0;
-            timeSelectionAdapter.setRange(startPosition);
         }
-        recyclerView.scrollToPosition(startPosition);
+        //设置时段范围
+        timeSelectionAdapter.setRange(startPosition);
+        timeSelectionAdapter.notifyDataSetChanged();
+        //滚动至可选时段
+        layoutManager.scrollToPositionWithOffset(startPosition > 1 ? startPosition - 1 : startPosition, 0);
         //可选
         tvOptional.setText(String.format(getString(R.string.txt_optional),
                                          String.valueOf((24 - hour - 1) + (minute >= 30 ? 0 : 0.5))));
@@ -270,7 +277,11 @@ public class ConsultationTimeActivity extends BaseActivity
         timeSelectionAdapter.setSelectPositions(selectPositions);
         timeSelectionAdapter.notifyDataSetChanged();
         //多次添加后加个滚动
-        recyclerView.scrollToPosition(startSelectedPosition + selectPositions.size());
+        int scrollPosition =
+                (startSelectedPosition + selectPositions.size()) > 2
+                ? startSelectedPosition + selectPositions.size() - 2
+                : startSelectedPosition + selectPositions.size();
+        layoutManager.scrollToPositionWithOffset(scrollPosition, 0);
     }
 
     @Override
@@ -308,7 +319,14 @@ public class ConsultationTimeActivity extends BaseActivity
                 if (ivAdd.isSelected()) {
                     add();
                 }
-                else { ToastUtil.toast(this, R.string.txt_add_hour_hint); }
+                else {
+                    if (selectPositions != null && selectPositions.size() > 0) {
+                        ToastUtil.toast(this, "超过限制");
+                    }
+                    else {
+                        ToastUtil.toast(this, R.string.txt_add_hour_hint);
+                    }
+                }
                 break;
             case R.id.tv_clear_optional:
                 selectPositions.clear();
@@ -316,10 +334,7 @@ public class ConsultationTimeActivity extends BaseActivity
                 break;
             case R.id.tv_verify_time:
                 if (tvVerifyTime.isSelected()) {
-                    HuiZhenLog.i(TAG, "startHour:" + timeBarBeans.get(selectPositions.get(0)).getHourString() +
-                                      "  endHour:" +
-                                      timeBarBeans.get(selectPositions.get(selectPositions.size() - 1) + 1)
-                                                  .getHourString());
+                    selectHourFinish();
                 }
                 else {
                     ToastUtil.toast(this, R.string.txt_add_hour_empty_hint);
@@ -328,6 +343,25 @@ public class ConsultationTimeActivity extends BaseActivity
             default:
                 break;
         }
+    }
+
+    /**
+     * 确认时间
+     */
+    private void selectHourFinish() {
+        //获取当前选择的日期
+        Calendar calendar = calendarView.getSelectedCalendar();
+        String date = calendar.getYear() + "-" + calendar.getMonth() + "-" + calendar.getDay();
+        String startHour = timeBarBeans.get(selectPositions.get(0)).getHourString();
+        String endHour = timeBarBeans.get(selectPositions.get(selectPositions.size() - 1) + 1).getHourString();
+        HuiZhenLog.i(TAG, "date:" + date + "  startHour:" + startHour + "  endHour:" + endHour);
+        //回调到科室列表
+        Intent intent = new Intent();
+        intent.putExtra(CommonData.KEY_REMOTE_DATE, date);
+        intent.putExtra(CommonData.KEY_REMOTE_START_HOUR, startHour);
+        intent.putExtra(CommonData.KEY_REMOTE_END_HOUR, endHour);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
     @Override

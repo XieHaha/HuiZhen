@@ -196,4 +196,16 @@ public interface CommonData {
      * 标签分组
      */
     String KEY_LABEL_BEAN = "key_label_bean";
+    /**
+     * 远程会诊 日期
+     */
+    String KEY_REMOTE_DATE = "key_remote_date";
+    /**
+     * 远程会诊 开始时间
+     */
+    String KEY_REMOTE_START_HOUR = "key_remote_start_hour";
+    /**
+     * 远程会诊 结束时间
+     */
+    String KEY_REMOTE_END_HOUR = "key_remote_end_hour";
 }

@@ -23,7 +23,7 @@ import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.bean.PatientBean;
-import com.yht.frame.data.bean.ReserveCheckBean;
+import com.yht.frame.data.bean.ReserveRemoteBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.permission.Permission;
 import com.yht.frame.ui.BaseFragment;
@@ -33,8 +33,8 @@ import com.yht.frame.widgets.edittext.AbstractTextWatcher;
 import com.yht.frame.widgets.edittext.SuperEditText;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.adapter.SearchPatientAdapter;
-import com.yht.yihuantong.ui.check.listener.OnCheckListener;
 import com.yht.yihuantong.ui.remote.ErrorActivity;
+import com.yht.yihuantong.ui.remote.listener.OnRemoteListener;
 import com.yht.yihuantong.utils.text.BankCardTextWatcher;
 import com.yzq.zxinglibrary.android.CaptureActivity;
 import com.yzq.zxinglibrary.common.Constant;
@@ -77,9 +77,9 @@ public class RemoteIdentifyFragment extends BaseFragment
      */
     private List<PatientBean> searchPatients = new ArrayList<>();
     /**
-     * 当前预约检查信息
+     * 当前预约远程会诊
      */
-    private ReserveCheckBean reserveCheckBean;
+    private ReserveRemoteBean reserveRemoteBean;
     /**
      * 是否为扫码结果
      */
@@ -163,8 +163,8 @@ public class RemoteIdentifyFragment extends BaseFragment
         });
     }
 
-    public void setReserveCheckBean(ReserveCheckBean reserveCheckBean) {
-        this.reserveCheckBean = reserveCheckBean;
+    public void setReserveRemoteBean(ReserveRemoteBean reserveRemoteBean) {
+        this.reserveRemoteBean = reserveRemoteBean;
     }
 
     /**
@@ -212,10 +212,10 @@ public class RemoteIdentifyFragment extends BaseFragment
             case R.id.tv_identify_next:
                 if (tvIdentifyNext.isSelected()) {
                     //已经校验过  不在校验
-                    if (reserveCheckBean != null && idCard.equals(reserveCheckBean.getIdCardNo()) &&
-                        name.equals(reserveCheckBean.getPatientName())) {
-                        if (checkListener != null) {
-                            checkListener.onCheckStepOne(reserveCheckBean);
+                    if (reserveRemoteBean != null && idCard.equals(reserveRemoteBean.getPatientIdCard()) &&
+                        name.equals(reserveRemoteBean.getPatientName())) {
+                        if (onRemoteListener != null) {
+                            onRemoteListener.onRemoteStepOne(reserveRemoteBean);
                         }
                     }
                     else {
@@ -301,11 +301,11 @@ public class RemoteIdentifyFragment extends BaseFragment
                 patientBean = (PatientBean)response.getData();
                 //新用户
                 if (patientBean == null) {
-                    if (checkListener != null) {
-                        reserveCheckBean = new ReserveCheckBean();
-                        reserveCheckBean.setPatientName(name);
-                        reserveCheckBean.setIdCardNo(idCard);
-                        checkListener.onCheckStepOne(reserveCheckBean);
+                    if (onRemoteListener != null) {
+                        reserveRemoteBean = new ReserveRemoteBean();
+                        reserveRemoteBean.setPatientName(name);
+                        reserveRemoteBean.setPatientIdCard(idCard);
+                        onRemoteListener.onRemoteStepOne(reserveRemoteBean);
                     }
                 }
                 else {
@@ -313,7 +313,7 @@ public class RemoteIdentifyFragment extends BaseFragment
                         ToastUtil.toast(getContext(), R.string.txt_identity_information_error);
                     }
                     else {
-                        if (checkListener != null) {
+                        if (onRemoteListener != null) {
                             checkData();
                         }
                     }
@@ -388,19 +388,18 @@ public class RemoteIdentifyFragment extends BaseFragment
      * 检查数据
      */
     private void checkData() {
-        reserveCheckBean = new ReserveCheckBean();
-        reserveCheckBean.setPatientName(name);
-        reserveCheckBean.setIdCardNo(idCard);
-        reserveCheckBean.setIsBind(patientBean.getIsBind());
-        reserveCheckBean.setPatientCode(patientBean.getCode());
-        reserveCheckBean.setPhone(patientBean.getMobile());
-        reserveCheckBean.setAge(patientBean.getAge());
-        reserveCheckBean.setSex(patientBean.getSex());
-        reserveCheckBean.setConfirmPhoto(patientBean.getPhoto());
-        reserveCheckBean.setPastHistory(patientBean.getPast());
-        reserveCheckBean.setFamilyHistory(patientBean.getFamily());
-        reserveCheckBean.setAllergyHistory(patientBean.getAllergy());
-        checkListener.onCheckStepOne(reserveCheckBean);
+        reserveRemoteBean = new ReserveRemoteBean();
+        reserveRemoteBean.setPatientName(name);
+        reserveRemoteBean.setPatientIdCard(idCard);
+        reserveRemoteBean.setPatientCode(patientBean.getCode());
+        reserveRemoteBean.setPatientMobile(patientBean.getMobile());
+        reserveRemoteBean.setPatientAge(patientBean.getAge());
+        reserveRemoteBean.setPatientSex(patientBean.getSex());
+        reserveRemoteBean.setConfirmFile(patientBean.getPhoto());
+        reserveRemoteBean.setPast(patientBean.getPast());
+        reserveRemoteBean.setFamily(patientBean.getFamily());
+        reserveRemoteBean.setAllergy(patientBean.getAllergy());
+        onRemoteListener.onRemoteStepOne(reserveRemoteBean);
     }
 
     InputFilter emojiFilter = new InputFilter() {
@@ -417,9 +416,9 @@ public class RemoteIdentifyFragment extends BaseFragment
             return null;
         }
     };
-    private OnCheckListener checkListener;
+    private OnRemoteListener onRemoteListener;
 
-    public void setOnCheckListener(OnCheckListener onCheckListener) {
-        this.checkListener = onCheckListener;
+    public void setOnRemoteListener(OnRemoteListener onRemoteListener) {
+        this.onRemoteListener = onRemoteListener;
     }
 }

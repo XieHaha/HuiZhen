@@ -8,6 +8,7 @@ import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.bean.DoctorAuthBean;
 import com.yht.frame.data.bean.ReserveCheckBean;
+import com.yht.frame.data.bean.ReserveRemoteBean;
 import com.yht.frame.data.bean.ReserveTransferBean;
 import com.yht.frame.http.listener.ResponseListener;
 
@@ -862,6 +863,16 @@ public class RequestUtils {
                        .getRemoteDepartmentInfo(token, params)
                        .compose(RxJavaHelper.observableIO2Main(context))
                        .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_REMOTE_DEPARTMENT_INFO,
+                                                                 listener));
+    }
+
+    public static void addReserveRemoteOrder(Context context, String token, ReserveRemoteBean bean,
+            final ResponseListener<BaseResponse> listener) {
+        Map<String, Object> params = new HashMap<>(16);
+        RetrofitManager.getApiUrlManager()
+                       .addReserveRemoteOrder(token, params)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, false, Tasks.ADD_RESERVE_TRANSFER_ORDER,
                                                                  listener));
     }
 }
