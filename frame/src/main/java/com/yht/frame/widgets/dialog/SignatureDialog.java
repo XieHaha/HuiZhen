@@ -18,8 +18,6 @@ import com.yht.frame.utils.ScreenUtils;
 import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.widgets.view.SignatureView;
 
-import java.io.IOException;
-
 /**
  * @author dundun
  * 签名
@@ -29,6 +27,7 @@ public class SignatureDialog extends Dialog implements OnClickListener {
     private TextView tvEnter, tvReset;
     private ImageView ivDelete;
     private SignatureView signatureView;
+    public static final String SIGNATURE_FILE_NAME = "/signature.jpg";
     private boolean cancelAble = true;
 
     public SignatureDialog(Context context) {
@@ -68,12 +67,8 @@ public class SignatureDialog extends Dialog implements OnClickListener {
         if (v == tvEnter) {
             if (signatureView.hasDraw() && onEnterClickListener != null) {
                 onEnterClickListener.onEnter(signatureView.getBitMap());
-                try {
-                    signatureView.save(DirHelper.getPathImage() + "/test.jpg");
-                }
-                catch (IOException e) {
-                    e.printStackTrace();
-                }
+                //保存到本地
+                signatureView.saveBitmap(DirHelper.getPathImage() + SIGNATURE_FILE_NAME);
                 dismiss();
             }
             else {

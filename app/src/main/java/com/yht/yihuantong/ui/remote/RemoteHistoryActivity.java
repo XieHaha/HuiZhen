@@ -15,7 +15,7 @@ import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
-import com.yht.frame.data.bean.CheckBean;
+import com.yht.frame.data.bean.RemoteBean;
 import com.yht.frame.data.bean.ReservationValidateBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
@@ -52,7 +52,7 @@ public class RemoteHistoryActivity extends BaseActivity
     @BindView(R.id.layout_reserve_service)
     LinearLayout layoutReserveService;
     private RemoteHistoryAdapter remoteHistoryAdapter;
-    private List<CheckBean> checkedList = new ArrayList<>();
+    private List<RemoteBean> checkedList = new ArrayList<>();
     /**
      * 是否能发起服务
      */
@@ -98,7 +98,7 @@ public class RemoteHistoryActivity extends BaseActivity
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         initAdapter();
         if (BaseUtils.isNetworkAvailable(this)) {
-            getReserveCheckOrderList(true);
+            getReserveRemoteOrderList(true);
             getValidateHospitalList();
         }
         else {
@@ -111,9 +111,9 @@ public class RemoteHistoryActivity extends BaseActivity
     /**
      * 获取订单列表
      */
-    private void getReserveCheckOrderList(boolean showLoading) {
-        RequestUtils.getReserveCheckOrderList(this, loginBean.getToken(), BaseData.BASE_PAGE_DATA_NUM, page,
-                                              showLoading, this);
+    private void getReserveRemoteOrderList(boolean showLoading) {
+        RequestUtils.getReserveRemoteOrderList(this, loginBean.getToken(), BaseData.BASE_PAGE_DATA_NUM, page,
+                                               showLoading, this);
     }
 
     /**
@@ -153,17 +153,17 @@ public class RemoteHistoryActivity extends BaseActivity
 
     @Override
     public void onNextClick() {
-        getReserveCheckOrderList(true);
+        getReserveRemoteOrderList(true);
     }
 
     @Override
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
         switch (task) {
-            case GET_RESERVE_CHECK_ORDER_LIST:
+            case GET_RESERVE_REMOTE_ORDER_LIST:
                 layoutReserveService.setVisibility(View.VISIBLE);
                 layoutNone.setVisibility(View.GONE);
-                List<CheckBean> list = (List<CheckBean>)response.getData();
+                List<RemoteBean> list = (List<RemoteBean>)response.getData();
                 if (page == BaseData.BASE_ONE) {
                     checkedList.clear();
                 }
@@ -213,7 +213,7 @@ public class RemoteHistoryActivity extends BaseActivity
     @Override
     public void onRefresh() {
         page = 1;
-        getReserveCheckOrderList(false);
+        getReserveRemoteOrderList(false);
     }
 
     /**
@@ -222,6 +222,6 @@ public class RemoteHistoryActivity extends BaseActivity
     @Override
     public void onLoadMoreRequested() {
         page++;
-        getReserveCheckOrderList(false);
+        getReserveRemoteOrderList(false);
     }
 }

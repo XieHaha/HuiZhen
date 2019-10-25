@@ -869,11 +869,42 @@ public class RequestUtils {
     public static void addReserveRemoteOrder(Context context, String token, ReserveRemoteBean bean,
             final ResponseListener<BaseResponse> listener) {
         Map<String, Object> params = new HashMap<>(16);
+        params.put("hosDeptInfo", bean.getHosDeptInfo());
+        params.put("allergy", bean.getAllergy());
+        params.put("confirmFile", bean.getConfirmFile());
+        params.put("confirmType", bean.getConfirmType());
+        params.put("descIll", bean.getDescIll());
+        params.put("destination", bean.getDestination());
+        params.put("family", bean.getFamily());
+        params.put("initResult", bean.getInitResult());
+        params.put("patientAge", bean.getPatientAge());
+        params.put("past", bean.getPast());
+        params.put("patientCode", bean.getPatientCode());
+        params.put("patientIdCard", bean.getPatientIdCard());
+        params.put("patientMobile", bean.getPatientMobile());
+        params.put("patientName", bean.getPatientName());
+        params.put("patientResource", bean.getPatientResource());
+        params.put("patientSex", bean.getPatientSex());
+        params.put("endAt", bean.getEndAt());
+        params.put("startAt", bean.getStartAt());
         RetrofitManager.getApiUrlManager()
                        .addReserveRemoteOrder(token, params)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractLoadViewObserver<>(context, true, false, Tasks.ADD_RESERVE_TRANSFER_ORDER,
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, false, Tasks.ADD_RESERVE_REMOTE_ORDER,
                                                                  listener));
+    }
+
+    public static void getReserveRemoteOrderList(Context context, String token, int pageSize, int startPage,
+            boolean showLoading, final ResponseListener<BaseResponse> listener) {
+        Map<String, Integer> params = new HashMap<>(16);
+        params.put("pageSize", pageSize);
+        params.put("startPage", startPage);
+        RetrofitManager.getApiUrlManager()
+                       .getReserveRemoteOrderList(token, params)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(
+                               new AbstractLoadViewObserver<>(context, showLoading, Tasks.GET_RESERVE_REMOTE_ORDER_LIST,
+                                                              listener));
     }
 }
 

@@ -307,7 +307,8 @@ public class RemoteMaterialFragment extends BaseFragment
                 description = s.toString().trim();
                 initNextButton();
                 initDescription();
-                reserveRemoteBean.setInitResult(description);
+                //病情描述
+                reserveRemoteBean.setDescIll(description);
             }
         });
         etDiagnosis.addTextChangedListener(new AbstractTextWatcher() {
@@ -317,6 +318,7 @@ public class RemoteMaterialFragment extends BaseFragment
                 diagnosisHis = s.toString().trim();
                 initNextButton();
                 initDiagnosis();
+                //初步诊断
                 reserveRemoteBean.setInitResult(diagnosisHis);
             }
         });
@@ -327,7 +329,8 @@ public class RemoteMaterialFragment extends BaseFragment
                 purpose = s.toString().trim();
                 initNextButton();
                 initPurpose();
-                reserveRemoteBean.setInitResult(purpose);
+                //会诊目的
+                reserveRemoteBean.setDestination(purpose);
             }
         });
     }
@@ -383,6 +386,21 @@ public class RemoteMaterialFragment extends BaseFragment
         etPurpose.setSelection(purpose.length());
     }
 
+    /**
+     * 上传的资料
+     */
+    private void initPatientResource() {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < imagePaths.size(); i++) {
+            NormImage image = imagePaths.get(i);
+            builder.append(image.getImageUrl());
+            if (imagePaths.size() - 1 > i) {
+                builder.append(",");
+            }
+        }
+        reserveRemoteBean.setPatientResource(builder.toString());
+    }
+
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (imagePaths.size() > position) {
@@ -402,6 +420,7 @@ public class RemoteMaterialFragment extends BaseFragment
     public void onDeleteClick(int position) {
         imagePaths.remove(position);
         autoGridView.updateImg(imagePaths, true);
+        initPatientResource();
         initNextButton();
     }
 
@@ -469,6 +488,8 @@ public class RemoteMaterialFragment extends BaseFragment
                     uploadImage(new File(paths.get(currentUploadImgIndex)));
                 }
                 else {
+                    //上传完后赋值
+                    initPatientResource();
                     closeLoadingView();
                 }
                 initNextButton();

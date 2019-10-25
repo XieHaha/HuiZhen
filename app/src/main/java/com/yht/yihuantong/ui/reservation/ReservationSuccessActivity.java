@@ -11,6 +11,7 @@ import com.yht.frame.data.CommonData;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.check.ServiceDetailActivity;
+import com.yht.yihuantong.ui.remote.RemoteDetailActivity;
 import com.yht.yihuantong.ui.reservation.service.ReservationServiceActivity;
 import com.yht.yihuantong.ui.reservation.transfer.ReservationTransferActivity;
 import com.yht.yihuantong.ui.transfer.TransferInitiateDetailActivity;
@@ -33,9 +34,9 @@ public class ReservationSuccessActivity extends BaseActivity {
     @BindView(R.id.tv_again)
     TextView tvAgain;
     /**
-     * 是否为预约转诊
+     * 预约类型  0 服务，1 转诊，2 会诊
      */
-    private boolean isTransfer;
+    private int reservationType;
     /**
      * 订单编号
      */
@@ -55,7 +56,7 @@ public class ReservationSuccessActivity extends BaseActivity {
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         if (getIntent() != null) {
-            isTransfer = getIntent().getBooleanExtra(CommonData.KEY_CHECK_OR_TRANSFER, false);
+            reservationType = getIntent().getIntExtra(CommonData.KEY_RESERVATION_TYPE, 0);
             orderNo = getIntent().getStringExtra(CommonData.KEY_ORDER_ID);
         }
         //预约订单成功  刷新居民列表数据
@@ -67,11 +68,23 @@ public class ReservationSuccessActivity extends BaseActivity {
      * 页面展示处理
      */
     private void initPage() {
-        if (isTransfer) {
-            publicTitleBarTitle.setText(R.string.txt_reserve_transfer);
-            tvSuccessHint.setText(R.string.txt_transfer_success_hint);
-            tvDetail.setText(R.string.txt_look_transfer_detail);
-            tvAgain.setText(R.string.txt_transfer_again_add);
+        switch (reservationType) {
+            case BASE_ZERO:
+                break;
+            case BASE_ONE:
+                publicTitleBarTitle.setText(R.string.txt_reserve_transfer);
+                tvSuccessHint.setText(R.string.txt_transfer_success_hint);
+                tvDetail.setText(R.string.txt_look_transfer_detail);
+                tvAgain.setText(R.string.txt_transfer_again_add);
+                break;
+            case BASE_TWO:
+                publicTitleBarTitle.setText(R.string.txt_remote_consultation);
+                tvSuccessHint.setText(R.string.txt_remote_success_hint);
+                tvDetail.setText(R.string.txt_look_remote_detail);
+                tvAgain.setVisibility(View.GONE);
+                break;
+            default:
+                break;
         }
     }
 
@@ -79,26 +92,42 @@ public class ReservationSuccessActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_detail:
-                if (isTransfer) {
-                    Intent intent = new Intent(this, TransferInitiateDetailActivity.class);
-                    intent.putExtra(CommonData.KEY_ORDER_ID, orderNo);
-                    startActivity(intent);
-                }
-                else {
-                    Intent intent = new Intent(this, ServiceDetailActivity.class);
-                    intent.putExtra(CommonData.KEY_PUBLIC, true);
-                    intent.putExtra(CommonData.KEY_ORDER_ID, orderNo);
-                    startActivity(intent);
+                Intent intent;
+                switch (reservationType) {
+                    case BASE_ZERO:
+                        intent = new Intent(this, ServiceDetailActivity.class);
+                        intent.putExtra(CommonData.KEY_PUBLIC, true);
+                        intent.putExtra(CommonData.KEY_ORDER_ID, orderNo);
+                        startActivity(intent);
+                        break;
+                    case BASE_ONE:
+                        intent = new Intent(this, TransferInitiateDetailActivity.class);
+                        intent.putExtra(CommonData.KEY_ORDER_ID, orderNo);
+                        startActivity(intent);
+                        break;
+                    case BASE_TWO:
+                        intent = new Intent(this, RemoteDetailActivity.class);
+                        intent.putExtra(CommonData.KEY_ORDER_ID, orderNo);
+                        startActivity(intent);
+                        break;
+                    default:
+                        break;
                 }
                 finish();
                 break;
             case R.id.tv_again:
-                if (!isTransfer) {
-                    startActivity(new Intent(this, ReservationServiceActivity.class));
-                }
-                else {
-                    Intent intent = new Intent(this, ReservationTransferActivity.class);
-                    startActivity(intent);
+                switch (reservationType) {
+                    case BASE_ZERO:
+                        startActivity(new Intent(this, ReservationServiceActivity.class));
+                        break;
+                    case BASE_ONE:
+                        intent = new Intent(this, ReservationTransferActivity.class);
+                        startActivity(intent);
+                        break;
+                    case BASE_TWO:
+                        break;
+                    default:
+                        break;
                 }
                 finish();
                 break;

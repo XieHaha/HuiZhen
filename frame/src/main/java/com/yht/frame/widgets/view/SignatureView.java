@@ -1,5 +1,6 @@
 package com.yht.frame.widgets.view;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -12,11 +13,9 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,7 +64,7 @@ public class SignatureView extends View {
     /**
      * 背景色
      */
-    private int mBgColor = Color.TRANSPARENT;
+    private int mBgColor = Color.WHITE;
     /**
      * 点位计算   须大于30个点才保存
      */
@@ -236,7 +235,7 @@ public class SignatureView extends View {
      * 是否有签名,根据是否有笔画来判断
      */
     public boolean hasDraw() {
-        return mSavePath != null && mSavePath.size() > 3 && num > 30;
+        return mSavePath != null && num > 30;
     }
 
     /**
@@ -263,38 +262,25 @@ public class SignatureView extends View {
     }
 
     /**
-     * 保存画板
-     *
-     * @param path 保存到路径
+     * 保存bitmap到本地
      */
-    public void save(String path) throws IOException {
-        save(path, false, 0);
-    }
-
-    /**
-     * 保存画板
-     *
-     * @param path       保存到路径
-     * @param clearBlank 是否清除边缘空白区域
-     * @param blank      要保留的边缘空白距离
-     */
-    public void save(String path, boolean clearBlank, int blank) throws IOException {
+    @SuppressLint("WrongThread")
+    public void saveBitmap(String path) {
         Bitmap bitmap = mBitmap;
-        //BitmapUtil.createScaledBitmapByHeight(srcBitmap, 300);//  压缩图片
-        if (clearBlank) {
-            bitmap = clearBlank(bitmap, blank);
-        }
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos);
-        byte[] buffer = bos.toByteArray();
-        if (buffer != null) {
-            File file = new File(path);
-            if (file.exists()) {
-                file.delete();
+        File filePic;
+        try {
+            filePic = new File(path);
+            if (!filePic.exists()) {
+                filePic.getParentFile().mkdirs();
+                filePic.createNewFile();
             }
-            OutputStream outputStream = new FileOutputStream(file);
-            outputStream.write(buffer);
-            outputStream.close();
+            FileOutputStream fos = new FileOutputStream(filePic);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            fos.flush();
+            fos.close();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

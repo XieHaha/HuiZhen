@@ -94,13 +94,17 @@ public class RemoteSubmitFragment extends BaseFragment {
     private String mCurrentPhotoPath;
     private ReserveRemoteBean reserveRemoteBean;
     /**
+     * 患者确认方式
+     */
+    private int sureType;
+    /**
      * 预约时间
      */
     private String date, startHour, endHour;
     /**
      * 拍照确认图片url
      */
-    private String confirmImageUrl;
+    private String confirmImageUrl, signatureImageUrl;
     /**
      * 图片
      */
@@ -144,7 +148,9 @@ public class RemoteSubmitFragment extends BaseFragment {
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-        sureType(true);
+        //默认签名确认
+        sureType = BASE_TWO;
+        sureType();
     }
 
     public void setReserveRemoteBean(ReserveRemoteBean reserveRemoteBean) {
@@ -232,8 +238,9 @@ public class RemoteSubmitFragment extends BaseFragment {
      * next按钮可点击状态
      */
     private void initNextButton() {
-        //需要添加判断检查项目是否为空
-        if (!TextUtils.isEmpty(confirmImageUrl)) {
+        boolean next = (!TextUtils.isEmpty(confirmImageUrl) && sureType == BASE_ONE) ||
+                       (sureType == BASE_TWO && !TextUtils.isEmpty(signatureImageUrl));
+        if (next && !TextUtils.isEmpty(date) && remoteDepartBeans.size() > 0) {
             tvSubmitNext.setSelected(true);
         }
         else {
@@ -283,14 +290,18 @@ public class RemoteSubmitFragment extends BaseFragment {
                 submit();
                 break;
             case R.id.layout_signature:
-                sureType(true);
+                sureType = BASE_TWO;
+                sureType();
                 break;
             case R.id.layout_camera:
-                sureType(false);
+                sureType = BASE_ONE;
+                sureType();
                 break;
             case R.id.layout_upload_two:
-                new SignatureDialog(getContext()).setOnEnterClickListener(bitmap -> ivSignature.setImageBitmap(bitmap))
-                                                 .show();
+                new SignatureDialog(getContext()).setOnEnterClickListener(bitmap -> {
+                    sureType = BASE_TWO;
+                    uploadImage(new File(DirHelper.getPathImage() + SignatureDialog.SIGNATURE_FILE_NAME));
+                }).show();
                 break;
             default:
                 break;
@@ -299,32 +310,35 @@ public class RemoteSubmitFragment extends BaseFragment {
 
     /**
      * 提交方式  （签名 or 拍照）
-     *
-     * @param type true 为签名
      */
-    private void sureType(boolean type) {
-        if (type) {
-            tvSignature.setSelected(true);
-            tvSignature.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-            viewSignature.setVisibility(View.VISIBLE);
-            tvCamera.setSelected(false);
-            tvCamera.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
-            viewCamera.setVisibility(View.INVISIBLE);
-            tvTypeHint.setText(R.string.txt_signature_people_transfer_hint);
-            layoutUploadOne.setVisibility(View.GONE);
-            layoutUploadTwo.setVisibility(View.VISIBLE);
+    private void sureType() {
+        switch (sureType) {
+            case BASE_ONE:
+                tvSignature.setSelected(false);
+                tvSignature.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+                viewSignature.setVisibility(View.INVISIBLE);
+                tvCamera.setSelected(true);
+                tvCamera.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+                viewCamera.setVisibility(View.VISIBLE);
+                tvTypeHint.setText(R.string.txt_camera_people_transfer_hint);
+                layoutUploadOne.setVisibility(View.VISIBLE);
+                layoutUploadTwo.setVisibility(View.GONE);
+                break;
+            case BASE_TWO:
+                tvSignature.setSelected(true);
+                tvSignature.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+                viewSignature.setVisibility(View.VISIBLE);
+                tvCamera.setSelected(false);
+                tvCamera.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+                viewCamera.setVisibility(View.INVISIBLE);
+                tvTypeHint.setText(R.string.txt_signature_people_transfer_hint);
+                layoutUploadOne.setVisibility(View.GONE);
+                layoutUploadTwo.setVisibility(View.VISIBLE);
+                break;
+            default:
+                break;
         }
-        else {
-            tvSignature.setSelected(false);
-            tvSignature.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
-            viewSignature.setVisibility(View.INVISIBLE);
-            tvCamera.setSelected(true);
-            tvCamera.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-            viewCamera.setVisibility(View.VISIBLE);
-            tvTypeHint.setText(R.string.txt_camera_people_transfer_hint);
-            layoutUploadOne.setVisibility(View.VISIBLE);
-            layoutUploadTwo.setVisibility(View.GONE);
-        }
+        initNextButton();
     }
 
     /**
@@ -332,7 +346,17 @@ public class RemoteSubmitFragment extends BaseFragment {
      */
     private void submit() {
         if (tvSubmitNext.isSelected() && onRemoteListener != null) {
-            reserveRemoteBean.setConfirmFile(confirmImageUrl);
+            if (sureType == BASE_ONE) {
+                reserveRemoteBean.setConfirmFile(confirmImageUrl);
+                reserveRemoteBean.setConfirmType(String.valueOf(BASE_ONE));
+            }
+            else {
+                reserveRemoteBean.setConfirmFile(signatureImageUrl);
+                reserveRemoteBean.setConfirmType(String.valueOf(BASE_TWO));
+            }
+            reserveRemoteBean.setStartAt(date + " " + startHour);
+            reserveRemoteBean.setEndAt(date + " " + endHour);
+            reserveRemoteBean.setHosDeptInfo(remoteDepartBeans);
             onRemoteListener.onRemoteStepThree(reserveRemoteBean);
         }
     }
@@ -341,11 +365,17 @@ public class RemoteSubmitFragment extends BaseFragment {
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
         if (task == Tasks.UPLOAD_FILE) {
-            confirmImageUrl = (String)response.getData();
-            if (imagePaths.size() > 0) {
-                imagePaths.get(0).setImageUrl(confirmImageUrl);
+            if (sureType == BASE_ONE) {
+                confirmImageUrl = (String)response.getData();
+                if (imagePaths.size() > 0) {
+                    imagePaths.get(0).setImageUrl(confirmImageUrl);
+                }
+                initImage(true);
             }
-            initImage(true);
+            else {
+                signatureImageUrl = (String)response.getData();
+                Glide.with(this).load(signatureImageUrl).apply(GlideHelper.getOptionsPic(0)).into(ivSignature);
+            }
         }
     }
 

@@ -408,14 +408,7 @@ public class ReservationTransferActivity extends BaseActivity implements OnTrans
             case ADD_RESERVE_TRANSFER_ORDER:
                 orderNo = (String)response.getData();
                 intent = new Intent(this, ReservationSuccessActivity.class);
-                intent.putExtra(CommonData.KEY_CHECK_OR_TRANSFER, true);
-                intent.putExtra(CommonData.KEY_ORDER_ID, orderNo);
-                startActivity(intent);
-                finish();
-                break;
-            case ADD_RESERVE_CHECK_ORDER:
-                orderNo = (String)response.getData();
-                intent = new Intent(this, ReservationSuccessActivity.class);
+                intent.putExtra(CommonData.KEY_RESERVATION_TYPE, BASE_ONE);
                 intent.putExtra(CommonData.KEY_ORDER_ID, orderNo);
                 startActivity(intent);
                 finish();
@@ -432,8 +425,6 @@ public class ReservationTransferActivity extends BaseActivity implements OnTrans
 
     /**
      * 页面逻辑处理
-     *
-     * @return bool
      */
     private boolean finishPage() {
         if (curPage == BASE_TWO) {

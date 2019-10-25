@@ -193,6 +193,9 @@ public class SelectRemoteDepartActivity extends BaseActivity
                 break;
             case R.id.layout_time:
                 Intent intent = new Intent(this, ConsultationTimeActivity.class);
+                intent.putExtra(CommonData.KEY_REMOTE_DATE, date);
+                intent.putExtra(CommonData.KEY_REMOTE_START_HOUR, startHour);
+                intent.putExtra(CommonData.KEY_REMOTE_END_HOUR, endHour);
                 startActivityForResult(intent, REQUEST_CODE_REMOTE_TIME);
                 break;
             default:

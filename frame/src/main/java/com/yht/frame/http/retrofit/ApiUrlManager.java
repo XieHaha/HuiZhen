@@ -31,6 +31,7 @@ import com.yht.frame.data.bean.QrCodeBean;
 import com.yht.frame.data.bean.ReceiverBean;
 import com.yht.frame.data.bean.ReceiverDoctorBean;
 import com.yht.frame.data.bean.RecentPatientBean;
+import com.yht.frame.data.bean.RemoteBean;
 import com.yht.frame.data.bean.RemoteDepartBean;
 import com.yht.frame.data.bean.RemoteDetailBean;
 import com.yht.frame.data.bean.ReservationValidateBean;
@@ -890,4 +891,15 @@ public interface ApiUrlManager {
     @POST("remote/create")
     Observable<BaseResponse<String>> addReserveRemoteOrder(@Header("token") String token,
             @Body Map<String, Object> info);
+
+    /**
+     * 查询检查订单列表
+     *
+     * @param info  参数
+     * @param token token
+     * @return 返回值
+     */
+    @GET("remote/query")
+    Observable<BaseResponse<List<RemoteBean>>> getReserveRemoteOrderList(@Header("token") String token,
+            @QueryMap Map<String, Integer> info);
 }

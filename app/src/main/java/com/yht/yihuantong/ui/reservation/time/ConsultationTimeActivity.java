@@ -110,6 +110,11 @@ public class ConsultationTimeActivity extends BaseActivity
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
+        if (getIntent() != null) {
+//            date = getIntent().getStringExtra(CommonData.KEY_REMOTE_DATE);
+//            startHour = getIntent().getStringExtra(CommonData.KEY_REMOTE_START_HOUR);
+//            endHour = getIntent().getStringExtra(CommonData.KEY_REMOTE_END_HOUR);
+        }
         initHourData();
         timeSelectionAdapter = new TimeSelectionAdapter(R.layout.item_time_selection, timeBarBeans);
         timeSelectionAdapter.setOnItemChildClickListener(this);
@@ -179,7 +184,7 @@ public class ConsultationTimeActivity extends BaseActivity
         //设置显示起始星期
         calendarView.setWeekStarWithMon();
         //设置高
-        calendarView.setCalendarItemHeight(BaseUtils.dp2px(this, 32));
+        calendarView.setCalendarItemHeight(BaseUtils.dp2px(this, 40));
         //初始化
         tvYear.setText(String.format(getString(R.string.txt_year_and_month), tempYear, tempMonth));
         ivLeft.setSelected(false);

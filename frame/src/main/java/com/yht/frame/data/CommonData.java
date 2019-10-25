@@ -41,6 +41,10 @@ public interface CommonData {
      */
     String KEY_CHECK_OR_TRANSFER = "key_check_or_transfer";
     /**
+     * 预约类型
+     */
+    String KEY_RESERVATION_TYPE = "key_reservation_type";
+    /**
      * 是否为转给他人
      */
     String KEY_IS_TRANSFER_OTHER = "key_is_transfer_other";

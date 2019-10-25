@@ -313,5 +313,13 @@ WE_CHAT_LOGIN,
      * 获取远程科室列表
      */
     GET_REMOTE_DEPARTMENT_INFO,
+    /**
+     * 新增远程会诊
+     */
+    ADD_RESERVE_REMOTE_ORDER,
+    /**
+     * 获取会诊订单列表
+     */
+    GET_RESERVE_REMOTE_ORDER_LIST,
 }
 

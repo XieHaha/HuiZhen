@@ -347,24 +347,13 @@ public class ReservationRemoteActivity extends BaseActivity implements OnRemoteL
         super.onResponseSuccess(task, response);
         Intent intent;
         String orderNo;
-        switch (task) {
-            case ADD_RESERVE_TRANSFER_ORDER:
-                orderNo = (String)response.getData();
-                intent = new Intent(this, ReservationSuccessActivity.class);
-                intent.putExtra(CommonData.KEY_CHECK_OR_TRANSFER, true);
-                intent.putExtra(CommonData.KEY_ORDER_ID, orderNo);
-                startActivity(intent);
-                finish();
-                break;
-            case ADD_RESERVE_CHECK_ORDER:
-                orderNo = (String)response.getData();
-                intent = new Intent(this, ReservationSuccessActivity.class);
-                intent.putExtra(CommonData.KEY_ORDER_ID, orderNo);
-                startActivity(intent);
-                finish();
-                break;
-            default:
-                break;
+        if (task == Tasks.ADD_RESERVE_REMOTE_ORDER) {
+            orderNo = (String)response.getData();
+            intent = new Intent(this, ReservationSuccessActivity.class);
+            intent.putExtra(CommonData.KEY_RESERVATION_TYPE, BASE_TWO);
+            intent.putExtra(CommonData.KEY_ORDER_ID, orderNo);
+            startActivity(intent);
+            finish();
         }
     }
 
