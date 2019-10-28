@@ -428,7 +428,7 @@
         <activity
             android:name=".ui.remote.RemoteHistoryActivity"
             android:screenOrientation="portrait"
-            android:label=""
+            android:label="@string/title_add_remote"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.reservation.PastHistoryActivity"

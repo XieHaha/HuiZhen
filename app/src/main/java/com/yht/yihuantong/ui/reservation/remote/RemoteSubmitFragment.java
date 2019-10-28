@@ -25,6 +25,7 @@ import com.yht.frame.api.DirHelper;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
+import com.yht.frame.data.bean.DepartInfoBean;
 import com.yht.frame.data.bean.NormImage;
 import com.yht.frame.data.bean.RemoteDepartBean;
 import com.yht.frame.data.bean.ReserveRemoteBean;
@@ -356,7 +357,14 @@ public class RemoteSubmitFragment extends BaseFragment {
             }
             reserveRemoteBean.setStartAt(date + " " + startHour);
             reserveRemoteBean.setEndAt(date + " " + endHour);
-            reserveRemoteBean.setHosDeptInfo(remoteDepartBeans);
+            ArrayList<DepartInfoBean> list = new ArrayList<>();
+            for (RemoteDepartBean bean : remoteDepartBeans) {
+                DepartInfoBean departInfoBean = new DepartInfoBean();
+                departInfoBean.setHospitalDepartmentId(bean.getDepartmentId());
+                departInfoBean.setHospitalDepartmentName(bean.getDepartmentName());
+                list.add(departInfoBean);
+            }
+            reserveRemoteBean.setHosDeptInfo(list);
             onRemoteListener.onRemoteStepThree(reserveRemoteBean);
         }
     }

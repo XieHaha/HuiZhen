@@ -13,6 +13,7 @@ public class RemoteDetailBean implements Serializable {
     private int status;
     private int sex;
     private int patientAge;
+    private int approveStatus;
     private long beginAt;
     private long startAt;
     private long endAt;
@@ -20,13 +21,15 @@ public class RemoteDetailBean implements Serializable {
     private String patientName;
     private String patientPhoto;
     private String sourceDoctorName;
+    private String sourceDoctorPhoto;
     private String sourceHospitalName;
     private String sourceHospitalDepartmentName;
     private String descIll;
     private String initResult;
     private String destination;
     private String timeLength;
-    private ArrayList<RemoteAdviceBean> invitationList;
+    private String rejectReason;
+    private ArrayList<RemoteInvitedBean> invitationList;
 
     public int getSex() {
         return sex;
@@ -156,11 +159,35 @@ public class RemoteDetailBean implements Serializable {
         this.timeLength = timeLength;
     }
 
-    public ArrayList<RemoteAdviceBean> getInvitationList() {
+    public ArrayList<RemoteInvitedBean> getInvitationList() {
         return invitationList;
     }
 
-    public void setInvitationList(ArrayList<RemoteAdviceBean> invitationList) {
+    public void setInvitationList(ArrayList<RemoteInvitedBean> invitationList) {
         this.invitationList = invitationList;
+    }
+
+    public int getApproveStatus() {
+        return approveStatus;
+    }
+
+    public void setApproveStatus(int approveStatus) {
+        this.approveStatus = approveStatus;
+    }
+
+    public String getSourceDoctorPhoto() {
+        return sourceDoctorPhoto;
+    }
+
+    public void setSourceDoctorPhoto(String sourceDoctorPhoto) {
+        this.sourceDoctorPhoto = sourceDoctorPhoto;
+    }
+
+    public String getRejectReason() {
+        return rejectReason;
+    }
+
+    public void setRejectReason(String rejectReason) {
+        this.rejectReason = rejectReason;
     }
 }

@@ -11,14 +11,35 @@
         layout="@layout/public_title"
         android:id="@+id/title_bar" />
 
+    <LinearLayout
+        android:id="@+id/layout_again_apply"
+        android:layout_width="match_parent"
+        android:layout_height="68dp"
+        android:background="@color/color_ffffff"
+        android:paddingStart="35dp"
+        android:paddingEnd="35dp"
+        android:visibility="gone"
+        android:gravity="center"
+        android:layout_alignParentBottom="true">
+
+        <TextView
+            android:id="@+id/tv_again_apply"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:gravity="center"
+            android:background="@drawable/corner28_1491fc_bg"
+            android:textSize="@dimen/text_16"
+            android:textColor="@color/color_ffffff"
+            android:text="@string/txt_apply_again" />
+    </LinearLayout>
+
     <ScrollView
         android:layout_width="match_parent"
         android:scrollbars="none"
         android:layout_height="match_parent"
         android:layout_below="@id/title_bar"
         android:background="@color/color_ffffff"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp">
+        android:layout_above="@id/layout_again_apply">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -28,7 +49,9 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="56dp">
+                android:layout_height="56dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp">
 
                 <ImageView
                     android:id="@+id/iv_patient_img"
@@ -98,27 +121,30 @@
                 android:background="@color/color_ebedf0"
                 android:layout_marginTop="20dp" />
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:orientation="vertical"
                 android:paddingTop="20dp"
-                android:layout_height="wrap_content">
+                android:layout_height="60dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp">
 
                 <TextView
+                    android:id="@+id/time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_16"
                     android:textColor="@color/color_373d4d"
                     android:textStyle="bold"
-                    android:text="@string/txt_initiate_time" />
+                    android:text="@string/txt_consultation_time" />
 
                 <TextView
                     android:id="@+id/tv_initiate_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_16"
+                    android:layout_marginStart="16dp"
                     android:textColor="@color/color_373d4d"
-                    android:layout_marginTop="12dp"
+                    android:layout_toEndOf="@id/time"
                     tools:text="时间">
 
                 </TextView>
@@ -127,50 +153,19 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/app_hei_line"
                     android:background="@color/color_ebedf0"
-                    android:layout_marginTop="20dp" />
+                    android:layout_alignParentBottom="true" />
 
-            </LinearLayout>
+            </RelativeLayout>
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:orientation="vertical"
                 android:paddingTop="20dp"
-                android:layout_height="wrap_content">
+                android:layout_height="60dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_16"
-                    android:textColor="@color/color_373d4d"
-                    android:textStyle="bold"
-                    android:text="@string/txt_initiate_doctor" />
-
-                <TextView
-                    android:id="@+id/tv_initiate_doctor"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_16"
-                    android:textColor="@color/color_373d4d"
-                    android:layout_marginTop="12dp"
-                    tools:text="医生">
-
-                </TextView>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/app_hei_line"
-                    android:background="@color/color_ebedf0"
-                    android:layout_marginTop="20dp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:orientation="vertical"
-                android:paddingTop="20dp"
-                android:layout_height="wrap_content">
-
-                <TextView
+                    android:id="@+id/depart"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_16"
@@ -183,9 +178,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_16"
+                    android:layout_marginStart="16dp"
                     android:textColor="@color/color_373d4d"
-                    android:layout_marginTop="12dp"
-                    tools:text="医生">
+                    android:layout_toEndOf="@id/depart"
+                    tools:text="科室">
 
                 </TextView>
 
@@ -193,17 +189,19 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/app_hei_line"
                     android:background="@color/color_ebedf0"
-                    android:layout_marginTop="20dp" />
+                    android:layout_alignParentBottom="true" />
 
-            </LinearLayout>
+            </RelativeLayout>
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:orientation="vertical"
                 android:paddingTop="20dp"
-                android:layout_height="wrap_content">
+                android:layout_height="60dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp">
 
                 <TextView
+                    android:id="@+id/hospital"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_16"
@@ -216,11 +214,82 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_16"
+                    android:layout_marginStart="16dp"
                     android:textColor="@color/color_373d4d"
-                    android:layout_marginTop="12dp"
-                    tools:text="医生">
+                    android:layout_toEndOf="@id/hospital"
+                    tools:text="医院">
 
                 </TextView>
+
+            </RelativeLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="@color/color_f8f9fa" />
+
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="18dp"
+                android:paddingTop="18dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:textStyle="bold"
+                    android:text="@string/txt_invited_party" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/app_hei_line"
+                    android:background="@color/color_ebedf0"
+                    android:layout_marginTop="18dp" />
+
+                <com.yht.frame.widgets.recyclerview.FullListView
+                    android:id="@+id/full_list_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="@color/color_f8f9fa" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:paddingTop="20dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:textStyle="bold"
+                    android:text="@string/txt_past_medical_his" />
+
+                <com.yht.frame.widgets.textview.JustifiedTextView
+                    android:id="@+id/tv_past_medical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:lineSpacingMultiplier="1.1"
+                    android:layout_marginTop="12dp"
+                    tools:text="医生" />
 
                 <View
                     android:layout_width="match_parent"
@@ -234,7 +303,75 @@
                 android:layout_width="match_parent"
                 android:orientation="vertical"
                 android:paddingTop="20dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
                 android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:textStyle="bold"
+                    android:text="@string/txt_family_medical_his" />
+
+                <com.yht.frame.widgets.textview.JustifiedTextView
+                    android:id="@+id/tv_family_medical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:lineSpacingMultiplier="1.1"
+                    android:textColor="@color/color_373d4d"
+                    android:layout_marginTop="12dp"
+                    tools:text="医生" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/app_hei_line"
+                    android:background="@color/color_ebedf0"
+                    android:layout_marginTop="20dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:textStyle="bold"
+                    android:text="@string/txt_allergies" />
+
+                <com.yht.frame.widgets.textview.JustifiedTextView
+                    android:id="@+id/tv_allergies"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:lineSpacingMultiplier="1.1"
+                    android:layout_marginTop="12dp"
+                    tools:text="医生" />
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:paddingTop="20dp"
+                android:layout_height="wrap_content"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -267,6 +404,8 @@
                 android:layout_width="match_parent"
                 android:orientation="vertical"
                 android:paddingTop="20dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
                 android:layout_height="wrap_content">
 
                 <TextView
@@ -300,6 +439,8 @@
                 android:layout_width="match_parent"
                 android:orientation="vertical"
                 android:paddingTop="20dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
                 android:layout_height="wrap_content">
 
                 <TextView
@@ -331,9 +472,14 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingTop="20dp"
-                android:layout_height="wrap_content">
+                android:visibility="visible">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    android:background="@color/color_f8f9fa" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -341,10 +487,50 @@
                     android:textSize="@dimen/text_16"
                     android:textColor="@color/color_373d4d"
                     android:textStyle="bold"
-                    android:text="@string/txt_consultation_status" />
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:paddingBottom="18dp"
+                    android:paddingTop="18dp"
+                    android:text="@string/txt_annex_data" />
+
+                <LinearLayout
+                    android:id="@+id/layout_annex"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="18dp">
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="@color/color_f8f9fa" />
+
+            <LinearLayout
+                android:id="@+id/layout_close_reason"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:paddingEnd="20dp"
+                android:paddingStart="20dp"
+                android:paddingBottom="18dp"
+                android:paddingTop="18dp"
+                android:layout_height="wrap_content"
+                android:visibility="visible">
 
                 <TextView
-                    android:id="@+id/tv_consultation_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/color_373d4d"
+                    android:textStyle="bold"
+                    android:text="@string/txt_close_reason" />
+
+                <TextView
+                    android:id="@+id/tv_close_reason"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_16"
@@ -354,70 +540,15 @@
 
                 </TextView>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/app_hei_line"
-                    android:background="@color/color_ebedf0"
-                    android:layout_marginTop="20dp" />
-
             </LinearLayout>
 
-            <LinearLayout
+            <View
                 android:layout_width="match_parent"
-                android:orientation="vertical"
-                android:paddingTop="20dp"
-                android:layout_height="wrap_content">
+                android:layout_height="30dp"
+                android:background="@color/color_f8f9fa" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_16"
-                    android:textColor="@color/color_373d4d"
-                    android:textStyle="bold"
-                    android:text="@string/txt_consultation_times" />
-
-                <TextView
-                    android:id="@+id/tv_consultation_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_16"
-                    android:textColor="@color/color_373d4d"
-                    android:layout_marginTop="12dp"
-                    tools:text="没钱">
-
-                </TextView>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/app_hei_line"
-                    android:background="@color/color_ebedf0"
-                    android:layout_marginTop="20dp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/layout_advice"
-                android:layout_width="match_parent"
-                android:orientation="vertical"
-                android:paddingTop="20dp"
-                android:paddingBottom="20dp"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_16"
-                    android:textColor="@color/color_373d4d"
-                    android:textStyle="bold"
-                    android:text="@string/txt_consultation_advice" />
-
-                <com.yht.frame.widgets.recyclerview.FullListView
-                    android:id="@+id/list_view"
-                    android:layout_width="match_parent"
-                    android:divider="@null"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
         </LinearLayout>
     </ScrollView>
+
+
 </RelativeLayout>

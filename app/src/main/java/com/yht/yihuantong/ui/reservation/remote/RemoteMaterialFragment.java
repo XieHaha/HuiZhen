@@ -219,11 +219,11 @@ public class RemoteMaterialFragment extends BaseFragment
                 rbFemale.setChecked(true);
             }
             //病情描述
-            etDescription.setText(description = reserveRemoteBean.getInitResult());
+            etDescription.setText(description = reserveRemoteBean.getDescIll());
             //初步诊断
             etDiagnosis.setText(diagnosisHis = reserveRemoteBean.getInitResult());
             //会珍目的
-            etPurpose.setText(purpose = reserveRemoteBean.getInitResult());
+            etPurpose.setText(purpose = reserveRemoteBean.getDestination());
             //既往史
             pastHistoryData = new ArrayList<>();
             pastHistoryData.add(pastMedicalHis);

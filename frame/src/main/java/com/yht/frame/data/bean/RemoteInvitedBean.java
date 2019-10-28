@@ -5,9 +5,9 @@ import java.io.Serializable;
 /**
  * @author 顿顿
  * @date 19/8/26 14:18
- * @des 远程会诊意见
+ * @des 远程会诊受邀
  */
-public class RemoteAdviceBean implements Serializable {
+public class RemoteInvitedBean implements Serializable {
     private static final long serialVersionUID = 5775065159299464466L;
     private int hospitalDepartmentId;
     private int status;
@@ -18,6 +18,7 @@ public class RemoteAdviceBean implements Serializable {
     private String doctorCode;
     private String doctorName;
     private String doctorPhoto;
+    private String doctorJobTitle;
     private String result;
     private String rejectReason;
     private String updateAt;
@@ -92,6 +93,14 @@ public class RemoteAdviceBean implements Serializable {
 
     public void setDoctorPhoto(String doctorPhoto) {
         this.doctorPhoto = doctorPhoto;
+    }
+
+    public String getDoctorJobTitle() {
+        return doctorJobTitle;
+    }
+
+    public void setDoctorJobTitle(String doctorJobTitle) {
+        this.doctorJobTitle = doctorJobTitle;
     }
 
     public String getResult() {

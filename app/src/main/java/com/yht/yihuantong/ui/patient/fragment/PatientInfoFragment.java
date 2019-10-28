@@ -91,6 +91,10 @@ public class PatientInfoFragment extends BaseFragment
      */
     private boolean applyServiceAble = false;
     /**
+     * 是否能发起服务
+     */
+    private boolean applyRemoteAble = false;
+    /**
      * 页码
      */
     private int page = 1;
@@ -316,7 +320,7 @@ public class PatientInfoFragment extends BaseFragment
                 getPatientExistTransfer();
                 break;
             case R.id.tv_reserve_remote:
-                if (applyServiceAble) {
+                if (applyRemoteAble) {
                     intent = new Intent(getContext(), ReservationRemoteActivity.class);
                     intent.putExtra(CommonData.KEY_PATIENT_BEAN, patientBean);
                     startActivity(intent);
@@ -400,6 +404,7 @@ public class PatientInfoFragment extends BaseFragment
                 if (bean != null) {
                     applyTransferAble = bean.isZz();
                     applyServiceAble = bean.isJc();
+                    applyRemoteAble = bean.isRemote();
                 }
                 break;
             default:

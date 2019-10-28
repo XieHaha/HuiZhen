@@ -48,7 +48,7 @@ public class PatientOrderBean implements MultiItemEntity {
     /**
      * 会诊参加者
      */
-    private ArrayList<RemoteAdviceBean> invitationList;
+    private ArrayList<RemoteInvitedBean> invitationList;
 
     public String getTime() {
         return time;
@@ -162,11 +162,11 @@ public class PatientOrderBean implements MultiItemEntity {
         this.descIll = descIll;
     }
 
-    public ArrayList<RemoteAdviceBean> getInvitationList() {
+    public ArrayList<RemoteInvitedBean> getInvitationList() {
         return invitationList;
     }
 
-    public void setInvitationList(ArrayList<RemoteAdviceBean> invitationList) {
+    public void setInvitationList(ArrayList<RemoteInvitedBean> invitationList) {
         this.invitationList = invitationList;
     }
 

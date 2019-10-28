@@ -39,6 +39,8 @@
     <string name="title_past_history">既往史</string>
     <string name="title_add_diagnosis">填写诊断意见</string>
     <string name="title_service_detail">服务详情</string>
+    <string name="title_add_remote_num">已发起会诊(%d)</string>
+    <string name="title_add_remote">已发起会诊</string>
     <string name="title_consultation_time">选择会诊时间</string>
     <string name="title_add_depart">添加医院-科室</string>
 
@@ -428,6 +430,7 @@
     <string name="txt_initiate_remote_consultation">发起远程会诊</string>
     <string name="txt_upload_data">上传资料</string>
     <string name="txt_consultation_time">会诊时间</string>
+    <string name="txt_consultation_time_colon">会诊时间：</string>
     <string name="txt_select_depart">会诊医院-科室</string>
     <string name="txt_select_depart_hint">最多5间科室</string>
     <string name="txt_select_depart_hint1">添加\n最多5间科室</string>
@@ -435,6 +438,10 @@
     <string name="txt_add_hour_error_hint">该时间段已被预约，不可选</string>
     <string name="txt_add_hour_hint">请先点击时段，选中开始时间</string>
     <string name="txt_add_depart_max">最多添加5间科室</string>
+    <string name="txt_close_reason">关闭原因</string>
+    <string name="txt_invited_party">受邀方</string>
+    <string name="txt_annex_data">附件资料</string>
+    <string name="txt_apply_again">重新发起</string>
 
     <!--转诊申请-->
     <string name="txt_visiting">接诊</string>

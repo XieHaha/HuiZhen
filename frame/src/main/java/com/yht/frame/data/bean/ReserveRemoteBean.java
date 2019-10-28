@@ -28,7 +28,7 @@ public class ReserveRemoteBean implements Serializable {
     private String patientMobile;
     private String patientName;
     private String patientResource;
-    private ArrayList<RemoteDepartBean> hosDeptInfo;
+    private ArrayList<DepartInfoBean> hosDeptInfo;
 
     public int getPatientAge() {
         return patientAge;
@@ -174,11 +174,11 @@ public class ReserveRemoteBean implements Serializable {
         this.patientResource = patientResource;
     }
 
-    public ArrayList<RemoteDepartBean> getHosDeptInfo() {
+    public ArrayList<DepartInfoBean> getHosDeptInfo() {
         return hosDeptInfo;
     }
 
-    public void setHosDeptInfo(ArrayList<RemoteDepartBean> hosDeptInfo) {
+    public void setHosDeptInfo(ArrayList<DepartInfoBean> hosDeptInfo) {
         this.hosDeptInfo = hosDeptInfo;
     }
 }

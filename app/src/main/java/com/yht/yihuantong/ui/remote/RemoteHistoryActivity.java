@@ -25,7 +25,7 @@ import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.adapter.RemoteHistoryAdapter;
 import com.yht.yihuantong.ui.reservation.ReservationDisableActivity;
-import com.yht.yihuantong.ui.reservation.service.ReservationServiceActivity;
+import com.yht.yihuantong.ui.reservation.remote.ReservationRemoteActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,11 +52,14 @@ public class RemoteHistoryActivity extends BaseActivity
     @BindView(R.id.layout_reserve_service)
     LinearLayout layoutReserveService;
     private RemoteHistoryAdapter remoteHistoryAdapter;
-    private List<RemoteBean> checkedList = new ArrayList<>();
     /**
-     * 是否能发起服务
+     * 远程
      */
-    private boolean applyServiceAble = false;
+    private List<RemoteBean> remoteBeans = new ArrayList<>();
+    /**
+     * 是否能发起远程会诊
+     */
+    private boolean applyRemoteAble = false;
     /**
      * 页码
      */
@@ -82,10 +85,10 @@ public class RemoteHistoryActivity extends BaseActivity
             num = getIntent().getIntExtra(CommonData.KEY_PUBLIC, 0);
         }
         if (num > 0) {
-            publicTitleBarTitle.setText(String.format(getString(R.string.title_add_service), num));
+            publicTitleBarTitle.setText(String.format(getString(R.string.title_add_remote_num), num));
         }
         else {
-            publicTitleBarTitle.setText(R.string.txt_initiate_check);
+            publicTitleBarTitle.setText(R.string.title_add_remote);
         }
     }
 
@@ -127,7 +130,7 @@ public class RemoteHistoryActivity extends BaseActivity
      * 适配器处理
      */
     private void initAdapter() {
-        remoteHistoryAdapter = new RemoteHistoryAdapter(R.layout.item_check_history, checkedList);
+        remoteHistoryAdapter = new RemoteHistoryAdapter(R.layout.item_remote_history, remoteBeans);
         remoteHistoryAdapter.setLoadMoreView(new CustomLoadMoreView());
         remoteHistoryAdapter.setOnLoadMoreListener(this, recyclerView);
         remoteHistoryAdapter.setOnItemClickListener(this);
@@ -136,8 +139,8 @@ public class RemoteHistoryActivity extends BaseActivity
 
     @OnClick(R.id.tv_remote_next)
     public void onViewClicked() {
-        if (applyServiceAble) {
-            startActivity(new Intent(this, ReservationServiceActivity.class));
+        if (applyRemoteAble) {
+            startActivity(new Intent(this, ReservationRemoteActivity.class));
         }
         else {
             startActivity(new Intent(this, ReservationDisableActivity.class));
@@ -147,7 +150,7 @@ public class RemoteHistoryActivity extends BaseActivity
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         Intent intent = new Intent(this, RemoteDetailActivity.class);
-        intent.putExtra(CommonData.KEY_ORDER_ID, checkedList.get(position).getOrderNo());
+        intent.putExtra(CommonData.KEY_ORDER_ID, remoteBeans.get(position).getOrderNo());
         startActivity(intent);
     }
 
@@ -165,22 +168,22 @@ public class RemoteHistoryActivity extends BaseActivity
                 layoutNone.setVisibility(View.GONE);
                 List<RemoteBean> list = (List<RemoteBean>)response.getData();
                 if (page == BaseData.BASE_ONE) {
-                    checkedList.clear();
+                    remoteBeans.clear();
                 }
-                checkedList.addAll(list);
-                remoteHistoryAdapter.setNewData(checkedList);
+                remoteBeans.addAll(list);
+                remoteHistoryAdapter.setNewData(remoteBeans);
                 if (list != null && list.size() >= BaseData.BASE_PAGE_DATA_NUM) {
                     remoteHistoryAdapter.loadMoreComplete();
                 }
                 else {
-                    if (checkedList.size() > BaseData.BASE_PAGE_DATA_NUM) {
+                    if (remoteBeans.size() > BaseData.BASE_PAGE_DATA_NUM) {
                         remoteHistoryAdapter.loadMoreEnd();
                     }
                     else {
                         remoteHistoryAdapter.setEnableLoadMore(false);
                     }
                 }
-                if (checkedList != null && checkedList.size() > 0) {
+                if (remoteBeans != null && remoteBeans.size() > 0) {
                     recyclerView.setVisibility(View.VISIBLE);
                     layoutNone.setVisibility(View.GONE);
                 }
@@ -193,7 +196,7 @@ public class RemoteHistoryActivity extends BaseActivity
             case GET_VALIDATE_HOSPITAL_LIST:
                 ReservationValidateBean bean = (ReservationValidateBean)response.getData();
                 if (bean != null) {
-                    applyServiceAble = bean.isJc();
+                    applyRemoteAble = bean.isRemote();
                 }
                 break;
             default:

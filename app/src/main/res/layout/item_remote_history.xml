@@ -20,22 +20,49 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:id="@+id/iv_remote_img"
+                android:id="@+id/iv_head_img"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:src="@mipmap/ic_default_header_r" />
 
             <TextView
-                android:id="@+id/tv_remote_name"
+                android:id="@+id/tv_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/iv_remote_img"
+                android:layout_toEndOf="@id/iv_head_img"
                 android:layout_marginStart="12dp"
                 tools:text="姓名"
                 android:textSize="@dimen/text_18"
-                android:layout_centerVertical="true"
+                android:layout_marginTop="1dp"
                 android:textColor="@color/color_373d4d"
                 android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/iv_head_img"
+                android:layout_below="@id/tv_name"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="1dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/txt_consultation_time_colon"
+                    android:textSize="@dimen/text_13"
+                    android:textColor="@color/color_a1a8b3" />
+
+                <TextView
+                    android:id="@+id/tv_remote_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="2019年10月28日13:51:47"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:textSize="@dimen/text_13"
+                    android:textColor="@color/color_a1a8b3" />
+            </LinearLayout>
         </RelativeLayout>
 
         <View
@@ -45,170 +72,23 @@
             android:background="@color/color_ebedf0" />
 
         <LinearLayout
-            android:id="@+id/layout_transfer_root"
+            android:id="@+id/layout_remote_depart"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingBottom="10dp">
+            android:paddingTop="4dp"
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:orientation="horizontal"
-                android:layout_height="wrap_content"
-                android:paddingTop="13dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/color_373d4d"
-                    android:textSize="@dimen/text_16"
-                    android:textStyle="bold"
-                    android:text="@string/txt_initiate_doctor" />
-
-                <TextView
-                    android:id="@+id/tv_initiate_doctor"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/color_373d4d"
-                    android:textSize="@dimen/text_16"
-                    android:layout_marginStart="16dp"
-                    tools:text="测试测试" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:orientation="horizontal"
-                android:layout_height="wrap_content"
-                android:paddingTop="10dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/color_373d4d"
-                    android:textSize="@dimen/text_16"
-                    android:textStyle="bold"
-                    android:text="@string/txt_initiate_depart" />
-
-                <TextView
-                    android:id="@+id/tv_initiate_depart"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/color_373d4d"
-                    android:textSize="@dimen/text_16"
-                    android:layout_marginStart="16dp"
-                    tools:text="测试测试" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:orientation="horizontal"
-                android:layout_height="wrap_content"
-                android:paddingTop="10dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/color_373d4d"
-                    android:textSize="@dimen/text_16"
-                    android:textStyle="bold"
-                    android:text="@string/txt_initiate_hospital" />
-
-                <TextView
-                    android:id="@+id/tv_initiate_hospital"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/color_373d4d"
-                    android:textSize="@dimen/text_16"
-                    android:layout_marginStart="16dp"
-                    tools:text="测试测试" />
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/layout_receiving_doctor"
-            android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:layout_height="wrap_content"
-            android:paddingTop="10dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/color_373d4d"
-                android:textSize="@dimen/text_16"
-                android:textStyle="bold"
-                android:text="@string/txt_consultation_doctor" />
-
-            <TextView
-                android:id="@+id/tv_consultation_doctor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/color_373d4d"
-                android:textSize="@dimen/text_16"
-                android:layout_marginStart="16dp"
-                tools:text="测试测试" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/layout_receiving_depart"
-            android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:layout_height="wrap_content"
-            android:paddingTop="10dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/color_373d4d"
-                android:textSize="@dimen/text_16"
-                android:textStyle="bold"
-                android:text="@string/txt_consultation_depart" />
-
-            <TextView
-                android:id="@+id/tv_consultation_depart"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/color_373d4d"
-                android:textSize="@dimen/text_16"
-                android:layout_marginStart="16dp"
-                tools:text="测试测试" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/layout_receiving_hospital"
-            android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:layout_height="wrap_content"
-            android:paddingTop="10dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/color_373d4d"
-                android:textSize="@dimen/text_16"
-                android:textStyle="bold"
-                android:text="@string/txt_consultation_hospital" />
-
-            <TextView
-                android:id="@+id/tv_consultation_hospital"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/color_373d4d"
-                android:textSize="@dimen/text_16"
-                android:layout_marginStart="16dp"
-                tools:text="测试测试" />
         </LinearLayout>
 
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/iv_status_in"
+        android:id="@+id/iv_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:src="@mipmap/ic_tag_status_check_incomplete"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="12dp"
         android:visibility="visible" />
 
 </RelativeLayout>

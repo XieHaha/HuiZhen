@@ -11,6 +11,7 @@ public class ReservationValidateBean implements Serializable {
     private static final long serialVersionUID = -1872270555227088687L;
     private boolean jc;
     private boolean zz;
+    private boolean remote;
 
     public boolean isJc() {
         return jc;
@@ -26,5 +27,13 @@ public class ReservationValidateBean implements Serializable {
 
     public void setZz(boolean zz) {
         this.zz = zz;
+    }
+
+    public boolean isRemote() {
+        return remote;
+    }
+
+    public void setRemote(boolean remote) {
+        this.remote = remote;
     }
 }

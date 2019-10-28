@@ -25,6 +25,10 @@ public class OrderNumStatisticsBean implements Serializable {
      * 已接收转诊
      */
     private int receiveOrderTransfer;
+    /**
+     * 远程会诊
+     */
+    private int initiateRemoteCheck;
 
     public int getInitiateOrderCheck() {
         return initiateOrderCheck;
@@ -56,5 +60,13 @@ public class OrderNumStatisticsBean implements Serializable {
 
     public void setReceiveOrderTransfer(int receiveOrderTransfer) {
         this.receiveOrderTransfer = receiveOrderTransfer;
+    }
+
+    public int getInitiateRemoteCheck() {
+        return initiateRemoteCheck;
+    }
+
+    public void setInitiateRemoteCheck(int initiateRemoteCheck) {
+        this.initiateRemoteCheck = initiateRemoteCheck;
     }
 }

@@ -10,7 +10,7 @@ import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.yht.frame.data.bean.CheckTypeBean;
 import com.yht.frame.data.bean.PatientOrderBean;
-import com.yht.frame.data.bean.RemoteAdviceBean;
+import com.yht.frame.data.bean.RemoteInvitedBean;
 import com.yht.frame.data.type.CheckTypeStatus;
 import com.yht.frame.data.type.ConsultationStatus;
 import com.yht.frame.data.type.PatientOrderStatus;
@@ -35,7 +35,7 @@ public class PatientOrderAdapter extends BaseMultiItemQuickAdapter<PatientOrderB
         super(data);
         addItemType(PatientOrderBean.CHECK, R.layout.item_check_history);
         addItemType(PatientOrderBean.TRANSFER, R.layout.item_transfer_history);
-        addItemType(PatientOrderBean.REMOTE, R.layout.item_remote_history);
+        addItemType(PatientOrderBean.REMOTE, R.layout.item_remote_patient);
     }
 
     @Override
@@ -123,9 +123,6 @@ public class PatientOrderAdapter extends BaseMultiItemQuickAdapter<PatientOrderB
 
     /**
      * 远程数据
-     *
-     * @param helper
-     * @param item
      */
     private void initRemoteData(BaseViewHolder helper, PatientOrderBean item) {
         helper.setImageResource(R.id.iv_remote_img, R.mipmap.ic_remote)
@@ -133,11 +130,11 @@ public class PatientOrderAdapter extends BaseMultiItemQuickAdapter<PatientOrderB
               .setText(R.id.tv_initiate_doctor, item.getSourceDoctorName())
               .setText(R.id.tv_initiate_depart, item.getSourceHospitalDepartmentName())
               .setText(R.id.tv_initiate_hospital, item.getSourceHospitalName());
-        ArrayList<RemoteAdviceBean> list = item.getInvitationList();
+        ArrayList<RemoteInvitedBean> list = item.getInvitationList();
         StringBuilder consultationDoctor = new StringBuilder(), consultationDepart = new StringBuilder(), consultationHospital = new StringBuilder();
         if (list != null && list.size() > 0) {
             for (int i = 0; i < list.size(); i++) {
-                RemoteAdviceBean bean = list.get(i);
+                RemoteInvitedBean bean = list.get(i);
                 consultationDoctor.append(bean.getDoctorName());
                 consultationDepart.append(bean.getHospitalDepartmentName());
                 consultationHospital.append(bean.getHospitalName());

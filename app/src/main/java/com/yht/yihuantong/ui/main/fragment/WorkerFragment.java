@@ -283,8 +283,8 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
                 orderNumStatisticsBean.getInitiateOrderTransfer() <= BaseData.BASE_MEAASGE_DISPLAY_NUM ? String.valueOf(
                         orderNumStatisticsBean.getInitiateOrderTransfer()) : getString(R.string.txt_max_num));
         tvInitiateRemoteNum.setText(
-                orderNumStatisticsBean.getReceiveOrderTransfer() <= BaseData.BASE_MEAASGE_DISPLAY_NUM ? String.valueOf(
-                        orderNumStatisticsBean.getReceiveOrderTransfer()) : getString(R.string.txt_max_num));
+                orderNumStatisticsBean.getInitiateRemoteCheck() <= BaseData.BASE_MEAASGE_DISPLAY_NUM ? String.valueOf(
+                        orderNumStatisticsBean.getInitiateRemoteCheck()) : getString(R.string.txt_max_num));
         if (orderNumStatisticsBean.getPendingOrderTransfer() != BaseData.BASE_ZERO) {
             tvReceivingTransferNum.setText(
                     orderNumStatisticsBean.getPendingOrderTransfer() <= BaseData.BASE_MEAASGE_DISPLAY_NUM
@@ -344,7 +344,7 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
                 }
                 break;
             case R.id.layout_remote:
-                if (ZycApplication.getInstance().isTransferAble()) {
+                if (!ZycApplication.getInstance().isRemoteAble()) {
                     intent = new Intent(getContext(), ReservationRemoteActivity.class);
                     startActivity(intent);
                 }
@@ -378,6 +378,9 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
                 break;
             case R.id.layout_initiate_remote:
                 intent = new Intent(getContext(), RemoteHistoryActivity.class);
+                if (orderNumStatisticsBean != null) {
+                    intent.putExtra(CommonData.KEY_PUBLIC, orderNumStatisticsBean.getInitiateRemoteCheck());
+                }
                 startActivity(intent);
                 break;
             case R.id.layout_health_manager:
@@ -433,6 +436,7 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
                 if (bean != null) {
                     ZycApplication.getInstance().setServiceAble(bean.isJc());
                     ZycApplication.getInstance().setTransferAble(bean.isZz());
+                    ZycApplication.getInstance().setRemoteAble(bean.isRemote());
                 }
                 break;
             case GET_PATIENT_BY_QR_ID:

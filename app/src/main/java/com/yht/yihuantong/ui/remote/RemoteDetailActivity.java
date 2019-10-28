@@ -2,7 +2,6 @@ package com.yht.yihuantong.ui.remote;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -15,9 +14,9 @@ import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
-import com.yht.frame.data.bean.RemoteAdviceBean;
+import com.yht.frame.data.bean.RemoteInvitedBean;
 import com.yht.frame.data.bean.RemoteDetailBean;
-import com.yht.frame.data.type.ConsultationStatus;
+import com.yht.frame.data.type.RemoteOrderStatus;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
@@ -30,13 +29,14 @@ import com.yht.yihuantong.utils.FileUrlUtil;
 import java.util.ArrayList;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * @author 顿顿
  * @date 19/6/14 10:56
  * @des 远程会诊详情
  */
-public class RemoteDetailActivity extends BaseActivity implements ConsultationStatus {
+public class RemoteDetailActivity extends BaseActivity implements RemoteOrderStatus {
     @BindView(R.id.iv_patient_img)
     ImageView ivPatientImg;
     @BindView(R.id.tv_patient_name)
@@ -46,29 +46,35 @@ public class RemoteDetailActivity extends BaseActivity implements ConsultationSt
     @BindView(R.id.tv_patient_sex)
     TextView tvPatientSex;
     @BindView(R.id.iv_check_status)
-    ImageView ivCheckStatus;
+    ImageView ivStatus;
     @BindView(R.id.tv_initiate_time)
     TextView tvInitiateTime;
-    @BindView(R.id.tv_initiate_doctor)
-    TextView tvInitiateDoctor;
     @BindView(R.id.tv_initiate_depart)
     TextView tvInitiateDepart;
     @BindView(R.id.tv_initiate_hospital)
     TextView tvInitiateHospital;
+    @BindView(R.id.full_list_view)
+    FullListView fullListView;
+    @BindView(R.id.tv_past_medical)
+    JustifiedTextView tvPastMedical;
+    @BindView(R.id.tv_family_medical)
+    JustifiedTextView tvFamilyMedical;
+    @BindView(R.id.tv_allergies)
+    JustifiedTextView tvAllergies;
     @BindView(R.id.tv_condition_description)
     TextView tvConditionDescription;
     @BindView(R.id.tv_check_diagnosis_top)
     TextView tvCheckDiagnosisTop;
     @BindView(R.id.tv_consultation_purpose)
     TextView tvConsultationPurpose;
-    @BindView(R.id.tv_consultation_status)
-    TextView tvConsultationStatus;
-    @BindView(R.id.tv_consultation_time)
-    TextView tvConsultationTime;
-    @BindView(R.id.list_view)
-    FullListView listView;
-    @BindView(R.id.layout_advice)
-    LinearLayout layoutAdvice;
+    @BindView(R.id.layout_annex)
+    LinearLayout layoutAnnex;
+    @BindView(R.id.tv_close_reason)
+    TextView tvCloseReason;
+    @BindView(R.id.layout_close_reason)
+    LinearLayout layoutCloseReason;
+    @BindView(R.id.layout_again_apply)
+    LinearLayout layoutAgainApply;
     /**
      * id
      */
@@ -77,11 +83,14 @@ public class RemoteDetailActivity extends BaseActivity implements ConsultationSt
      * 详情数据
      */
     private RemoteDetailBean remoteDetailBean;
-    private AdviceAdapter adviceAdapter;
     /**
-     * 会诊意见
+     * 受邀方
      */
-    private ArrayList<RemoteAdviceBean> adviceList = new ArrayList<>();
+    private InvitedAdapter invitedAdapter;
+    /**
+     * 会诊受邀方
+     */
+    private ArrayList<RemoteInvitedBean> remoteInvitedBeans = new ArrayList<>();
 
     @Override
     protected boolean isInitBackBtn() {
@@ -99,8 +108,8 @@ public class RemoteDetailActivity extends BaseActivity implements ConsultationSt
         if (getIntent() != null) {
             orderNo = getIntent().getStringExtra(CommonData.KEY_ORDER_ID);
         }
-        adviceAdapter = new AdviceAdapter();
-        listView.setAdapter(adviceAdapter);
+        invitedAdapter = new InvitedAdapter();
+        fullListView.setAdapter(invitedAdapter);
     }
 
     @Override
@@ -114,7 +123,7 @@ public class RemoteDetailActivity extends BaseActivity implements ConsultationSt
 
     private void bindData() {
         if (remoteDetailBean == null) { return; }
-        bindAdviceData();
+        bindInvitedData();
         Glide.with(this)
              .load(FileUrlUtil.addTokenToUrl(remoteDetailBean.getPatientPhoto()))
              .apply(GlideHelper.getOptions(BaseUtils.dp2px(this, 4)))
@@ -125,38 +134,56 @@ public class RemoteDetailActivity extends BaseActivity implements ConsultationSt
                              : getString(R.string.txt_sex_female));
         tvPatientAge.setText(String.valueOf(remoteDetailBean.getPatientAge()));
         tvInitiateTime.setText(BaseUtils.formatDate(remoteDetailBean.getStartAt(), BaseUtils.YYYY_MM_DD_HH_MM_SS));
-        tvInitiateDoctor.setText(remoteDetailBean.getSourceDoctorName());
         tvInitiateDepart.setText(remoteDetailBean.getSourceHospitalDepartmentName());
         tvInitiateHospital.setText(remoteDetailBean.getSourceHospitalName());
+        //        tvPastMedical.setText(remoteDetailBean.getPa());
+        //        tvFamilyMedical.setText(remoteDetailBean.getFamilyHistory());
+        //        tvAllergies.setText(remoteDetailBean.getAllergyHistory());
         tvConditionDescription.setText(remoteDetailBean.getDescIll());
         tvCheckDiagnosisTop.setText(remoteDetailBean.getInitResult());
         tvConsultationPurpose.setText(remoteDetailBean.getDestination());
-        if (!TextUtils.isEmpty(remoteDetailBean.getTimeLength())) {
-            tvConsultationTime.setText(
-                    String.format(getString(R.string.txt_remote_duration), remoteDetailBean.getTimeLength()));
-        }
         int status = remoteDetailBean.getStatus();
         switch (status) {
-            case CONSULTATION_NONE:
-            case CONSULTATION_ING:
-                tvConsultationStatus.setText(R.string.txt_status_incomplete);
-                ivCheckStatus.setImageResource(R.mipmap.ic_status_incomplete);
+            case REMOTE_ORDER_STATUS_NONE:
+                layoutCloseReason.setVisibility(View.GONE);
+                layoutAgainApply.setVisibility(View.GONE);
+                ivStatus.setImageResource(R.mipmap.ic_status_not_start);
                 break;
-            case CONSULTATION_ALL_REJECT:
-                tvConsultationStatus.setText(R.string.txt_status_reject);
-                ivCheckStatus.setImageResource(R.mipmap.ic_status_rejected);
+            case REMOTE_ORDER_STATUS_IN_CONSULTATION:
+            case REMOTE_ORDER_STATUS_INTERRUPT:
+                layoutCloseReason.setVisibility(View.GONE);
+                layoutAgainApply.setVisibility(View.GONE);
+                ivStatus.setImageResource(R.mipmap.ic_status_in_consultation);
                 break;
-            case CONSULTATION_COMPLETE:
-                tvConsultationStatus.setText(R.string.txt_status_complete);
-                ivCheckStatus.setImageResource(R.mipmap.ic_status_complete);
+            case REMOTE_ORDER_STATUS_ALL_REFUSE:
+                layoutCloseReason.setVisibility(View.GONE);
+                layoutAgainApply.setVisibility(View.GONE);
+                ivStatus.setImageResource(R.mipmap.ic_status_all_refuse);
                 break;
-            case CONSULTATION_INTERRUPT:
-            case CONSULTATION_CLOSE:
-            case CONSULTATION_CLOSE_BY_TIMEOUT:
-            case CONSULTATION_CLOSE_BY_INTERRUPT:
-            case CONSULTATION_CLOSE_ALL_REJECT:
-                tvConsultationStatus.setText(R.string.txt_status_cancel);
-                ivCheckStatus.setImageResource(R.mipmap.ic_status_cancel);
+            case REMOTE_ORDER_STATUS_COMPLETE:
+                layoutCloseReason.setVisibility(View.GONE);
+                layoutAgainApply.setVisibility(View.GONE);
+                ivStatus.setImageResource(R.mipmap.ic_status_complete);
+                break;
+            case REMOTE_ORDER_STATUS_CLOSED:
+            case REMOTE_ORDER_STATUS_TIMEOUT_CLOSE:
+            case REMOTE_ORDER_STATUS_INTERRRUPT_CLOSE:
+            case REMOTE_ORDER_STATUS_ALL_REFUSE_CLOSE:
+                layoutCloseReason.setVisibility(View.VISIBLE);
+                tvCloseReason.setText(remoteDetailBean.getRejectReason());
+                layoutAgainApply.setVisibility(View.GONE);
+                ivStatus.setImageResource(R.mipmap.ic_status_closed);
+                break;
+            case REMOTE_ORDER_STATUS_UNDER_REVIEW:
+                layoutCloseReason.setVisibility(View.GONE);
+                layoutAgainApply.setVisibility(View.GONE);
+                ivStatus.setImageResource(R.mipmap.ic_status_wait_review);
+                break;
+            case REMOTE_ORDER_STATUS_REVIEW_REFUSE:
+                layoutAgainApply.setVisibility(View.VISIBLE);
+                layoutCloseReason.setVisibility(View.VISIBLE);
+                tvCloseReason.setText(remoteDetailBean.getRejectReason());
+                ivStatus.setImageResource(R.mipmap.ic_status_pass_not);
                 break;
             default:
                 break;
@@ -164,27 +191,22 @@ public class RemoteDetailActivity extends BaseActivity implements ConsultationSt
     }
 
     /**
-     * 会诊意见数据处理
+     * 绑定受邀方数据
      */
-    private void bindAdviceData() {
-        ArrayList<RemoteAdviceBean> list = remoteDetailBean.getInvitationList();
+    private void bindInvitedData() {
+        ArrayList<RemoteInvitedBean> list = remoteDetailBean.getInvitationList();
         if (list != null && list.size() > 0) {
-            for (RemoteAdviceBean bean : list) {
+            for (RemoteInvitedBean bean : list) {
                 if (bean.isResultStatus()) {
-                    adviceList.add(bean);
+                    remoteInvitedBeans.add(bean);
                 }
             }
-            if (adviceList.size() > 0) {
-                layoutAdvice.setVisibility(View.VISIBLE);
-                adviceAdapter.notifyDataSetChanged();
-            }
-            else {
-                layoutAdvice.setVisibility(View.GONE);
-            }
         }
-        else {
-            layoutAdvice.setVisibility(View.GONE);
-        }
+    }
+
+    @OnClick(R.id.tv_again_apply)
+    public void onViewClicked() {
+
     }
 
     @Override
@@ -196,17 +218,17 @@ public class RemoteDetailActivity extends BaseActivity implements ConsultationSt
         }
     }
 
-    private class AdviceAdapter extends BaseAdapter {
+    private class InvitedAdapter extends BaseAdapter {
         private ViewHolder holder;
 
         @Override
         public int getCount() {
-            return adviceList.size();
+            return remoteInvitedBeans.size();
         }
 
         @Override
         public Object getItem(int position) {
-            return adviceList.get(position);
+            return remoteInvitedBeans.get(position);
         }
 
         @Override
@@ -228,7 +250,7 @@ public class RemoteDetailActivity extends BaseActivity implements ConsultationSt
             else {
                 holder = (ViewHolder)convertView.getTag();
             }
-            RemoteAdviceBean remoteBean = adviceList.get(position);
+            RemoteInvitedBean remoteBean = remoteInvitedBeans.get(position);
             Glide.with(RemoteDetailActivity.this)
                  .load(FileUrlUtil.addTokenToUrl(remoteBean.getDoctorPhoto()))
                  .apply(GlideHelper.getOptions(BaseUtils.dp2px(RemoteDetailActivity.this, 4)))

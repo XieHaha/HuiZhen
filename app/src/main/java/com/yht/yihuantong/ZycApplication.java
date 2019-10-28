@@ -47,9 +47,9 @@ public class ZycApplication extends LitePalApplication {
      */
     private String chatId;
     /**
-     * 服务、转诊权限
+     * 服务、转诊、远程权限
      */
-    private boolean transferAble, serviceAble;
+    private boolean transferAble, serviceAble, remoteAble;
     /**
      * 调试模式
      * 1、微信登录
@@ -190,6 +190,14 @@ public class ZycApplication extends LitePalApplication {
 
     public void setServiceAble(boolean serviceAble) {
         this.serviceAble = serviceAble;
+    }
+
+    public boolean isRemoteAble() {
+        return remoteAble;
+    }
+
+    public void setRemoteAble(boolean remoteAble) {
+        this.remoteAble = remoteAble;
     }
 
     public boolean isLoginStatus() {
