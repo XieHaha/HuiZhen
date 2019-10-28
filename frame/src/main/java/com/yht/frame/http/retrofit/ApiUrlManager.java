@@ -12,6 +12,8 @@ import com.yht.frame.data.bean.DoctorBean;
 import com.yht.frame.data.bean.DoctorCurrencyBean;
 import com.yht.frame.data.bean.DoctorCurrencyDetailBean;
 import com.yht.frame.data.bean.DoctorQrCodeBean;
+import com.yht.frame.data.bean.HealthPackageBean;
+import com.yht.frame.data.bean.HealthPackageDetailBean;
 import com.yht.frame.data.bean.HospitalBean;
 import com.yht.frame.data.bean.HospitalDepartBean;
 import com.yht.frame.data.bean.HospitalDepartChildBean;
@@ -902,4 +904,26 @@ public interface ApiUrlManager {
     @GET("remote/query")
     Observable<BaseResponse<List<RemoteBean>>> getReserveRemoteOrderList(@Header("token") String token,
             @QueryMap Map<String, Integer> info);
+
+    /**
+     * 健康管理列表
+     *
+     * @param info  map参数
+     * @param token token
+     * @return 返回值
+     */
+    @POST("client/product/queryPackageList")
+    Observable<BaseResponse<BaseListBean<HealthPackageBean>>> queryPackageList(@Header("token") String token,
+            @Body Map<String, Integer> info);
+
+    /**
+     * 健康管理详情
+     *
+     * @param info  map参数
+     * @param token token
+     * @return 返回值
+     */
+    @GET("client/product/queryPackageDetail")
+    Observable<BaseResponse<HealthPackageDetailBean>> queryPackageDetail(@Header("token") String token,
+            @Query("packageCode") String info);
 }

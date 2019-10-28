@@ -906,5 +906,25 @@ public class RequestUtils {
                                new AbstractLoadViewObserver<>(context, showLoading, Tasks.GET_RESERVE_REMOTE_ORDER_LIST,
                                                               listener));
     }
+
+    public static void queryPackageList(Context context, String token, int pageSize, int startPage, boolean showLoading,
+            final ResponseListener<BaseResponse> listener) {
+        Map<String, Integer> params = new HashMap<>(16);
+        params.put("pageSize", pageSize);
+        params.put("startPage", startPage);
+        RetrofitManager.getApiUrlManager()
+                       .queryPackageList(token, params)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, showLoading, Tasks.QUERY_PACKAGE_LIST,
+                                                                 listener));
+    }
+
+    public static void queryPackageDetail(Context context, String token, String packageCode,
+            final ResponseListener<BaseResponse> listener) {
+        RetrofitManager.getApiUrlManager()
+                       .queryPackageDetail(token, packageCode)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.QUERY_PACKAGE_DETAIL, listener));
+    }
 }
 

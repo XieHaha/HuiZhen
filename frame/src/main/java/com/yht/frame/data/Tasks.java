@@ -321,5 +321,13 @@ WE_CHAT_LOGIN,
      * 获取会诊订单列表
      */
     GET_RESERVE_REMOTE_ORDER_LIST,
+    /**
+     * 健康管理列表
+     */
+    QUERY_PACKAGE_LIST,
+    /**
+     * 健康管理详情
+     */
+    QUERY_PACKAGE_DETAIL,
 }
 

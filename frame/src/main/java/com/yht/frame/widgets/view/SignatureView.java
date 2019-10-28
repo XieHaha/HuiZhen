@@ -266,7 +266,9 @@ public class SignatureView extends View {
      */
     @SuppressLint("WrongThread")
     public void saveBitmap(String path) {
-        Bitmap bitmap = mBitmap;
+        Matrix matrix = new Matrix();
+        matrix.postRotate(-90);
+        Bitmap bitmap = Bitmap.createBitmap(mBitmap, 0, 0, mBitmap.getWidth(), mBitmap.getHeight(), matrix, false);
         File filePic;
         try {
             filePic = new File(path);

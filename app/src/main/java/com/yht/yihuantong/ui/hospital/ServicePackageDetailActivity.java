@@ -9,7 +9,12 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.yht.frame.data.bean.HospitalProductBean;
+import com.yht.frame.data.BaseResponse;
+import com.yht.frame.data.CommonData;
+import com.yht.frame.data.Tasks;
+import com.yht.frame.data.bean.HealthPackageDetailBean;
+import com.yht.frame.data.bean.ProductBean;
+import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.widgets.recyclerview.FullListView;
 import com.yht.frame.widgets.textview.ExpandTextView;
@@ -36,11 +41,19 @@ public class ServicePackageDetailActivity extends BaseActivity {
     FullListView listView;
     @BindView(R.id.tv_notice)
     TextView tvNotice;
+    /**
+     * 服务包编号
+     */
+    private String packageCode;
+    /**
+     * 详情
+     */
+    private HealthPackageDetailBean healthPackageDetailBean;
     private ProductAdapter productAdapter;
     /**
      * 服务包内容
      */
-    private List<HospitalProductBean> hospitalProductBeans = new ArrayList<>();
+    private List<ProductBean> hospitalProductBeans = new ArrayList<>();
 
     @Override
     protected boolean isInitBackBtn() {
@@ -55,17 +68,44 @@ public class ServicePackageDetailActivity extends BaseActivity {
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
+        if (getIntent() != null) {
+            packageCode = getIntent().getStringExtra(CommonData.KEY_ORDER_ID);
+        }
         productAdapter = new ProductAdapter();
         listView.setAdapter(productAdapter);
-        for (int i = 0; i < 5; i++) {
-            hospitalProductBeans.add(new HospitalProductBean());
-        }
+        queryPackageDetail();
+    }
+
+    /**
+     * 获取健康管理详情
+     */
+    private void queryPackageDetail() {
+        RequestUtils.queryPackageDetail(this, loginBean.getToken(), packageCode, this);
+    }
+
+    /**
+     * 数据
+     */
+    private void bindData() {
+        hospitalProductBeans = healthPackageDetailBean.getProductInfoList();
+        productAdapter.notifyDataSetChanged();
+        tvIntroduction.setText(healthPackageDetailBean.getDescription());
+        tvNotice.setText(healthPackageDetailBean.getPackageName());
     }
 
     @OnClick(R.id.tv_check_next)
     public void onViewClicked() {
         Intent intent = new Intent(this, ReservationRemoteActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void onResponseSuccess(Tasks task, BaseResponse response) {
+        super.onResponseSuccess(task, response);
+        if (task == Tasks.QUERY_PACKAGE_DETAIL) {
+            healthPackageDetailBean = (HealthPackageDetailBean)response.getData();
+            bindData();
+        }
     }
 
     private class ProductAdapter extends BaseAdapter {
@@ -100,13 +140,21 @@ public class ServicePackageDetailActivity extends BaseActivity {
             else {
                 holder = (ViewHolder)convertView.getTag();
             }
-            holder.tvContent.setText("服务项");
-            holder.tvNum.setVisibility(View.VISIBLE);
-            holder.tvNum.setText("x2");
-            holder.ivRight.setVisibility(View.GONE);
-            holder.line.setVisibility(View.GONE);
+            ProductBean bean = hospitalProductBeans.get(position);
+            initProductDetail(holder, bean);
             return convertView;
         }
+    }
+
+    /**
+     * 服务项内容
+     */
+    private void initProductDetail(ViewHolder holder, ProductBean bean) {
+        holder.tvContent.setText(bean.getProductName());
+        holder.tvNum.setVisibility(View.VISIBLE);
+        holder.tvNum.setText("x" + bean.getCount());
+        holder.ivRight.setVisibility(View.GONE);
+        holder.line.setVisibility(View.GONE);
     }
 
     private class ViewHolder {

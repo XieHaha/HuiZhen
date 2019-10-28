@@ -66,9 +66,9 @@ public class SignatureDialog extends Dialog implements OnClickListener {
     public void onClick(View v) {
         if (v == tvEnter) {
             if (signatureView.hasDraw() && onEnterClickListener != null) {
-                onEnterClickListener.onEnter(signatureView.getBitMap());
                 //保存到本地
                 signatureView.saveBitmap(DirHelper.getPathImage() + SIGNATURE_FILE_NAME);
+                onEnterClickListener.onEnter(signatureView.getBitMap());
                 dismiss();
             }
             else {

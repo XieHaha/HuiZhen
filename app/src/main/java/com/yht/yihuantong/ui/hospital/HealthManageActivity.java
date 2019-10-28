@@ -14,7 +14,8 @@ import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
-import com.yht.frame.data.bean.CheckBean;
+import com.yht.frame.data.bean.BaseListBean;
+import com.yht.frame.data.bean.HealthPackageBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
@@ -43,7 +44,7 @@ public class HealthManageActivity extends BaseActivity
     @BindView(R.id.layout_none)
     LinearLayout layoutNone;
     private HealthManageAdapter healthManageAdapter;
-    private List<CheckBean> checkedList = new ArrayList<>();
+    private List<HealthPackageBean> healthPackageBeans = new ArrayList<>();
     /**
      * 页码
      */
@@ -75,7 +76,7 @@ public class HealthManageActivity extends BaseActivity
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         initAdapter();
         if (BaseUtils.isNetworkAvailable(this)) {
-            getReserveCheckOrderList(true);
+            queryPackageList(true);
         }
         else {
             layoutNone.setVisibility(View.VISIBLE);
@@ -84,18 +85,17 @@ public class HealthManageActivity extends BaseActivity
     }
 
     /**
-     * 获取订单列表
+     * 获取健康管理列表
      */
-    private void getReserveCheckOrderList(boolean showLoading) {
-        RequestUtils.getReserveCheckOrderList(this, loginBean.getToken(), BaseData.BASE_PAGE_DATA_NUM, page,
-                                              showLoading, this);
+    private void queryPackageList(boolean showLoading) {
+        RequestUtils.queryPackageList(this, loginBean.getToken(), BaseData.BASE_PAGE_DATA_NUM, page, showLoading, this);
     }
 
     /**
      * 适配器处理
      */
     private void initAdapter() {
-        healthManageAdapter = new HealthManageAdapter(R.layout.item_health_manage, checkedList);
+        healthManageAdapter = new HealthManageAdapter(R.layout.item_health_manage, healthPackageBeans);
         healthManageAdapter.setLoadMoreView(new CustomLoadMoreView());
         healthManageAdapter.setOnLoadMoreListener(this, recyclerView);
         healthManageAdapter.setOnItemClickListener(this);
@@ -105,38 +105,39 @@ public class HealthManageActivity extends BaseActivity
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         Intent intent = new Intent(this, ServicePackageDetailActivity.class);
-        intent.putExtra(CommonData.KEY_ORDER_ID, checkedList.get(position).getOrderNo());
+        intent.putExtra(CommonData.KEY_ORDER_ID, healthPackageBeans.get(position).getPackageCode());
         startActivity(intent);
     }
 
     @Override
     public void onNextClick() {
-        getReserveCheckOrderList(true);
+        queryPackageList(true);
     }
 
     @Override
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
-        if (task == Tasks.GET_RESERVE_CHECK_ORDER_LIST) {
+        if (task == Tasks.QUERY_PACKAGE_LIST) {
             layoutNone.setVisibility(View.GONE);
-            List<CheckBean> list = (List<CheckBean>)response.getData();
+            BaseListBean<HealthPackageBean> baseListBean = (BaseListBean<HealthPackageBean>)response.getData();
+            List<HealthPackageBean> list = baseListBean.getRecords();
             if (page == BaseData.BASE_ONE) {
-                checkedList.clear();
+                healthPackageBeans.clear();
             }
-            checkedList.addAll(list);
-            healthManageAdapter.setNewData(checkedList);
+            healthPackageBeans.addAll(list);
+            healthManageAdapter.setNewData(healthPackageBeans);
             if (list != null && list.size() >= BaseData.BASE_PAGE_DATA_NUM) {
                 healthManageAdapter.loadMoreComplete();
             }
             else {
-                if (checkedList.size() > BaseData.BASE_PAGE_DATA_NUM) {
+                if (healthPackageBeans.size() > BaseData.BASE_PAGE_DATA_NUM) {
                     healthManageAdapter.loadMoreEnd();
                 }
                 else {
                     healthManageAdapter.setEnableLoadMore(false);
                 }
             }
-            if (checkedList != null && checkedList.size() > 0) {
+            if (healthPackageBeans != null && healthPackageBeans.size() > 0) {
                 recyclerView.setVisibility(View.VISIBLE);
                 layoutNone.setVisibility(View.GONE);
             }
@@ -160,7 +161,7 @@ public class HealthManageActivity extends BaseActivity
     @Override
     public void onRefresh() {
         page = 1;
-        getReserveCheckOrderList(false);
+        queryPackageList(false);
     }
 
     /**
@@ -169,6 +170,6 @@ public class HealthManageActivity extends BaseActivity
     @Override
     public void onLoadMoreRequested() {
         page++;
-        getReserveCheckOrderList(false);
+        queryPackageList(false);
     }
 }

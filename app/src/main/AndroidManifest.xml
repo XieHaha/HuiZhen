@@ -418,12 +418,12 @@
         <activity
             android:name=".ui.hospital.HealthManageActivity"
             android:screenOrientation="portrait"
-            android:label="@string/title_health_manage"
+            android:label="@string/txt_service_package"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.hospital.ServicePackageDetailActivity"
             android:screenOrientation="portrait"
-            android:label=""
+            android:label="@string/title_service_detail"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.remote.RemoteHistoryActivity"
