@@ -29,6 +29,9 @@ public class RemoteDetailBean implements Serializable {
     private String destination;
     private String timeLength;
     private String rejectReason;
+    private String pastHistory;
+    private String familyHistory;
+    private String allergyHistory;
     private ArrayList<RemoteInvitedBean> invitationList;
 
     public int getSex() {
@@ -181,6 +184,30 @@ public class RemoteDetailBean implements Serializable {
 
     public void setSourceDoctorPhoto(String sourceDoctorPhoto) {
         this.sourceDoctorPhoto = sourceDoctorPhoto;
+    }
+
+    public String getPastHistory() {
+        return pastHistory;
+    }
+
+    public void setPastHistory(String pastHistory) {
+        this.pastHistory = pastHistory;
+    }
+
+    public String getFamilyHistory() {
+        return familyHistory;
+    }
+
+    public void setFamilyHistory(String familyHistory) {
+        this.familyHistory = familyHistory;
+    }
+
+    public String getAllergyHistory() {
+        return allergyHistory;
+    }
+
+    public void setAllergyHistory(String allergyHistory) {
+        this.allergyHistory = allergyHistory;
     }
 
     public String getRejectReason() {

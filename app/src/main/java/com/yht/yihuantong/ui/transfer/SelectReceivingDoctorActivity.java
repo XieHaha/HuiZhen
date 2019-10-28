@@ -383,8 +383,8 @@ public class SelectReceivingDoctorActivity extends BaseActivity
                     this.adapter.setCurPosition(position);
                     if (position != 0) {
                         curHospitalDepartBean = departOne.get(position - 1);
-                        tvSelect.setText(
-                                curHospital.getHospitalName() + "-" + curHospitalDepartBean.getDepartmentName());
+                        tvSelect.setText(String.format(getString(R.string.txt_joiner), curHospital.getHospitalName(),
+                                                       curHospitalDepartBean.getDepartmentName()));
                         getDepartTwoListByReverse();
                     }
                     else {

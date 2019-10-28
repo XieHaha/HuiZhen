@@ -93,7 +93,8 @@ public class RemoteHistoryAdapter extends BaseQuickAdapter<RemoteBean, BaseViewH
             InvitDepartBean bean = invitationList.get(i);
             TextView textView = (TextView)LayoutInflater.from(mContext)
                                                         .inflate(R.layout.item_remote_depart_simple, null);
-            textView.setText(bean.getHospitalDepartmentName() + " - " + bean.getHospitalName());
+            textView.setText(String.format(mContext.getString(R.string.txt_joiner), bean.getHospitalDepartmentName(),
+                                           bean.getHospitalName()));
             layout.addView(textView);
         }
     }

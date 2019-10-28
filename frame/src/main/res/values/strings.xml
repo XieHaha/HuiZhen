@@ -110,6 +110,7 @@
     <string name="txt_plus">+%s</string>
     <string name="txt_space">%s&#160;&#160;</string>
     <string name="txt_space_two">%s&#160;&#160;%s</string>
+    <string name="txt_joiner">%s&#160;-&#160;%s</string>
     <string name="to_expand_hint">展开</string>
     <string name="to_shrink_hint">收起</string>
     <string name="txt_price">￥%s</string>
@@ -442,6 +443,7 @@
     <string name="txt_invited_party">受邀方</string>
     <string name="txt_annex_data">附件资料</string>
     <string name="txt_apply_again">重新发起</string>
+    <string name="txt_refuse_reason">拒绝原因：</string>
 
     <!--转诊申请-->
     <string name="txt_visiting">接诊</string>
