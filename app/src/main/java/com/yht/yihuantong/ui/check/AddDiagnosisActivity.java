@@ -20,6 +20,7 @@ import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.permission.Permission;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.ScalingUtils;
+import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.frame.widgets.edittext.AbstractTextWatcher;
 import com.yht.frame.widgets.edittext.EditTextLayout;
@@ -62,6 +63,14 @@ public class AddDiagnosisActivity extends BaseActivity
      */
     private String diagnosisAdvice;
     /**
+     * 订单号
+     */
+    private String orderNo;
+    /**
+     * 检查项id
+     */
+    private int checkTranId;
+    /**
      * 已上传图片
      */
     private ArrayList<NormImage> imagePaths = new ArrayList<>();
@@ -69,6 +78,7 @@ public class AddDiagnosisActivity extends BaseActivity
      * 图片临时数据
      */
     private List<String> paths;
+    private ArrayList<File> files = new ArrayList<>();
     private int currentUploadImgIndex = -1;
     private Handler dealImgHandler = new Handler(msg -> {
         //图片显示完开始上传图片
@@ -93,6 +103,8 @@ public class AddDiagnosisActivity extends BaseActivity
         super.initView(savedInstanceState);
         if (getIntent() != null) {
             String name = getIntent().getStringExtra(CommonData.KEY_PUBLIC_STRING);
+            orderNo = getIntent().getStringExtra(CommonData.KEY_ORDER_ID);
+            checkTranId = getIntent().getIntExtra(CommonData.KEY_CHECK_TYPE_ID, 0);
             tvName.setText(name);
         }
         publicTitleBarMore.setVisibility(View.VISIBLE);
@@ -121,6 +133,13 @@ public class AddDiagnosisActivity extends BaseActivity
                 initNextButton();
             }
         });
+    }
+
+    /**
+     * 保存回执报告
+     */
+    private void doctorReport() {
+        RequestUtils.doctorReport(this, loginBean.getToken(), checkTranId, orderNo, diagnosisAdvice, files, this);
     }
 
     /**
@@ -161,6 +180,7 @@ public class AddDiagnosisActivity extends BaseActivity
 
     @Override
     public void onDeleteClick(int position) {
+        files.remove(position);
         imagePaths.remove(position);
         autoGridView.updateImg(imagePaths, true);
         initNextButton();
@@ -174,7 +194,7 @@ public class AddDiagnosisActivity extends BaseActivity
     }
 
     private void initNextButton() {
-        if (!TextUtils.isEmpty(diagnosisAdvice) || imagePaths.size() > 0) {
+        if (!TextUtils.isEmpty(diagnosisAdvice) || files.size() > 0) {
             publicTitleBarMore.setSelected(true);
         }
         else {
@@ -187,7 +207,7 @@ public class AddDiagnosisActivity extends BaseActivity
      */
     private void save() {
         hideSoftInputFromWindow();
-        String inputValue = editLayout.getEditText().getText().toString().trim();
+        doctorReport();
     }
 
     @Override
@@ -209,6 +229,11 @@ public class AddDiagnosisActivity extends BaseActivity
                 }
                 initNextButton();
                 break;
+            case DOCTOR_REPORT:
+                ToastUtil.toast(this, response.getMsg());
+                setResult(RESULT_OK);
+                finish();
+                break;
             default:
                 break;
         }
@@ -222,7 +247,14 @@ public class AddDiagnosisActivity extends BaseActivity
         if (requestCode == RC_PICK_IMG) {
             paths = Matisse.obtainPathResult(data);
             if (paths != null && paths.size() > 0) {
-                dealImgHandler.sendEmptyMessage(0);
+                for (String path : paths) {
+                    files.add(new File(path));
+                    NormImage normImage = new NormImage();
+                    normImage.setImageUrl(path);
+                    imagePaths.add(normImage);
+                }
+                autoGridView.updateImg(imagePaths, true);
+                initNextButton();
             }
         }
         super.onActivityResult(requestCode, resultCode, data);

@@ -169,6 +169,10 @@ public interface CommonData {
      */
     String KEY_CHECK_REPORT_LIST = "key_check_report_list";
     /**
+     * 检查项id
+     */
+    String KEY_CHECK_TYPE_ID = "key_check_type_id";
+    /**
      * 广告页下载链接
      */
     String KEY_SPLASH_IMG_URL = "key_splash_img_url";

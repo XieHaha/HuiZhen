@@ -337,5 +337,9 @@ WE_CHAT_LOGIN,
      * 健康管理详情
      */
     QUERY_PACKAGE_DETAIL,
+    /**
+     * 医生回执报告
+     */
+    DOCTOR_REPORT,
 }
 

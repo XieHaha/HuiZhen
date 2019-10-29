@@ -13,6 +13,7 @@ import com.yht.frame.data.bean.ReserveTransferBean;
 import com.yht.frame.http.listener.ResponseListener;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -943,6 +944,24 @@ public class RequestUtils {
                        .queryPackageDetail(token, packageCode)
                        .compose(RxJavaHelper.observableIO2Main(context))
                        .subscribe(new AbstractLoadViewObserver<>(context, Tasks.QUERY_PACKAGE_DETAIL, listener));
+    }
+
+    public static void doctorReport(Context context, String token, int checkTranId, String orderNo,
+            String suggestionText, ArrayList<File> files, final ResponseListener<BaseResponse> listener) {
+        Map<String, Object> params = new HashMap<>(16);
+        params.put("checkTranId", checkTranId);
+        params.put("orderNo", orderNo);
+        params.put("suggestionText", suggestionText);
+        ArrayList<MultipartBody.Part> imageData = new ArrayList<>();
+        for (File file : files) {
+            RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
+            MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), reqFile);
+            imageData.add(body);
+        }
+        RetrofitManager.getApiUrlManager()
+                       .doctorReport(token, params,imageData)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, false, Tasks.DOCTOR_REPORT, listener));
     }
 }
 

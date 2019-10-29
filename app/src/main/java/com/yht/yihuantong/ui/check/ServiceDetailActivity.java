@@ -1,5 +1,6 @@
 package com.yht.yihuantong.ui.check;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -23,6 +25,7 @@ import com.yht.frame.data.bean.CheckDetailBean;
 import com.yht.frame.data.bean.CheckTypeByDetailBean;
 import com.yht.frame.data.type.CheckOrderStatus;
 import com.yht.frame.data.type.CheckTypeStatus;
+import com.yht.frame.data.type.SuggestionTypeStatus;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
@@ -47,7 +50,7 @@ import butterknife.OnClick;
  * @des 预约服务详情
  */
 public class ServiceDetailActivity extends BaseActivity
-        implements CheckOrderStatus, CheckTypeStatus, LoadViewHelper.OnNextClickListener {
+        implements CheckOrderStatus, CheckTypeStatus, SuggestionTypeStatus, LoadViewHelper.OnNextClickListener {
     @BindView(R.id.iv_patient_img)
     ImageView ivPatientImg;
     @BindView(R.id.tv_patient_name)
@@ -70,8 +73,6 @@ public class ServiceDetailActivity extends BaseActivity
     LinearLayout layoutCheckType;
     @BindView(R.id.tv_check_hospital)
     TextView tvCheckHospital;
-    //    @BindView(R.id.tv_check_pregnancy)
-    //    TextView tvCheckPregnancy;
     @BindView(R.id.tv_check_payment)
     TextView tvCheckPayment;
     @BindView(R.id.tv_check_status)
@@ -137,6 +138,10 @@ public class ServiceDetailActivity extends BaseActivity
      * 是否滚动到底部
      */
     private boolean isScrollBottom;
+    /**
+     * 填写诊断意见
+     */
+    public static final int REQUEST_CODE_EDIT_ADVICE = 100;
 
     @Override
     protected boolean isInitBackBtn() {
@@ -254,10 +259,6 @@ public class ServiceDetailActivity extends BaseActivity
                 break;
         }
         tvCheckHospital.setText(checkDetailBean.getTargetHospitalName());
-        //是否备孕
-        //        tvCheckPregnancy.setText(checkDetailBean.getIsPregnancy() == BaseData.BASE_ZERO
-        //                                 ? getString(R.string.txt_yes)
-        //                                 : getString(R.string.txt_no));
         //缴费类型
         int payType = checkDetailBean.getPayType();
         if (payType == BaseData.BASE_ZERO) {
@@ -271,8 +272,6 @@ public class ServiceDetailActivity extends BaseActivity
         }
         if (isScrollBottom) {
             scrollView.post(() -> scrollView.fullScroll(ScrollView.FOCUS_DOWN));
-            //            滚动到顶部
-            //            scrollView.fullScroll(ScrollView.FOCUS_UP);
         }
     }
 
@@ -314,8 +313,6 @@ public class ServiceDetailActivity extends BaseActivity
             //判断是否有已上传报告
             if (reportList.size() > 0) {
                 layoutCheckReportRoot.setVisibility(View.VISIBLE);
-                //                tvCheckReport.setText(
-                //                        String.format(getString(R.string.txt_report_num), reportList.size(), checkTypeList.size()));
                 //拆分报告
                 splitReportUrl();
                 //添加报告
@@ -337,12 +334,43 @@ public class ServiceDetailActivity extends BaseActivity
         View view = getLayoutInflater().inflate(R.layout.item_check_by_detail, null);
         ImageView imageView = view.findViewById(R.id.iv_check_type_dot);
         imageView.setVisibility(View.VISIBLE);
+        //服务名称
         TextView tvType = view.findViewById(R.id.tv_check_type);
+        if (bean.getItemType() == BASE_ONE) {
+            serviceType(bean, view, tvType, imageView);
+        }
+        else {
+            //服务包
+            tvType.setText(String.format(getString(R.string.txt_space), bean.getPackName()));
+            //服务包下的服务项父布局
+            LinearLayout layoutChildCheck = view.findViewById(R.id.layout_two_check_type);
+            ArrayList<CheckTypeByDetailBean> childCheck = bean.getItemList();
+            if (childCheck != null && childCheck.size() > 0) {
+                for (int i = 0; i < childCheck.size(); i++) {
+                    CheckTypeByDetailBean childBean = childCheck.get(i);
+                    View childView = getLayoutInflater().inflate(R.layout.item_child_check_by_detail, null);
+                    layoutChildCheck.addView(servicePackage(childBean, childView));
+                }
+            }
+        }
+        return view;
+    }
+
+    /**
+     * 服务项
+     */
+    private void serviceType(CheckTypeByDetailBean bean, View view, TextView tvType, ImageView imageView) {
+        //填写诊断意见
+        TextView editAdvice = view.findViewById(R.id.tv_check_edit);
+        //预约就诊时间
+        TextView reserveTime = view.findViewById(R.id.tv_reserve_visit_time);
+        LinearLayout layoutReserveTime = view.findViewById(R.id.layout_reserve_time);
         tvType.setText(String.format(getString(R.string.txt_space), bean.getName()));
         //已完成（已上传报告）
         if (bean.getStatus() == CHECK_TYPE_STATUS_COMPLETE) {
             reportList.add(bean);
         }
+        //订单和服务项均为已取消状态
         if (checkDetailBean.getStatus() != CHECK_ORDER_STATUS_CANCEL && bean.getStatus() == CHECK_TYPE_STATUS_CANCEL) {
             tvType.append(appendImage(bean.getStatus(), bean.getName()));
             tvType.setSelected(true);
@@ -352,14 +380,75 @@ public class ServiceDetailActivity extends BaseActivity
             tvType.setSelected(false);
             imageView.setSelected(false);
         }
-        //隐藏价格
-        view.findViewById(R.id.tv_check_edit).setOnClickListener(v -> {
-            Intent intent = new Intent(ServiceDetailActivity.this, AddDiagnosisActivity.class);
-            intent.putExtra(CommonData.KEY_PUBLIC_STRING, bean.getName());
-            startActivity(intent);
-        });
-        view.findViewById(R.id.layout_reserve_time).setVisibility(View.GONE);
-        return view;
+        if (showAdvice(bean)) {
+            layoutReserveTime.setVisibility(View.VISIBLE);
+            reserveTime.setText(bean.getOrderAt());
+            editAdvice.setVisibility(View.VISIBLE);
+            editAdvice.setOnClickListener(v -> {
+                Intent intent = new Intent(ServiceDetailActivity.this, AddDiagnosisActivity.class);
+                intent.putExtra(CommonData.KEY_PUBLIC_STRING, bean.getName());
+                intent.putExtra(CommonData.KEY_ORDER_ID, orderNo);
+                intent.putExtra(CommonData.KEY_CHECK_TYPE_ID, bean.getId());
+                startActivityForResult(intent, REQUEST_CODE_EDIT_ADVICE);
+            });
+        }
+        else {
+            editAdvice.setVisibility(View.GONE);
+            layoutReserveTime.setVisibility(View.GONE);
+        }
+    }
+
+    /**
+     * 服务包下的服务项
+     */
+    private View servicePackage(CheckTypeByDetailBean childBean, View childView) {
+        //服务名称
+        TextView tvType = childView.findViewById(R.id.tv_check_type);
+        //填写诊断意见
+        TextView editAdvice = childView.findViewById(R.id.tv_check_edit);
+        //预约就诊时间
+        TextView reserveTime = childView.findViewById(R.id.tv_reserve_visit_time);
+        LinearLayout layoutReserveTime = childView.findViewById(R.id.layout_reserve_time);
+        tvType.setText(String.format(getString(R.string.txt_space), childBean.getName()));
+        //已完成（已上传报告）
+        if (childBean.getStatus() == CHECK_TYPE_STATUS_COMPLETE) {
+            reportList.add(childBean);
+        }
+        //订单和服务项均为已取消状态
+        if (checkDetailBean.getStatus() != CHECK_ORDER_STATUS_CANCEL &&
+            childBean.getStatus() == CHECK_TYPE_STATUS_CANCEL) {
+            tvType.append(appendImage(childBean.getStatus(), childBean.getName()));
+            tvType.setSelected(true);
+        }
+        else {
+            tvType.setSelected(false);
+        }
+        if (showAdvice(childBean)) {
+            layoutReserveTime.setVisibility(View.VISIBLE);
+            reserveTime.setText(childBean.getOrderAt());
+            editAdvice.setVisibility(View.VISIBLE);
+            editAdvice.setOnClickListener(v -> {
+                Intent intent = new Intent(ServiceDetailActivity.this, AddDiagnosisActivity.class);
+                intent.putExtra(CommonData.KEY_PUBLIC_STRING, childBean.getName());
+                intent.putExtra(CommonData.KEY_ORDER_ID, orderNo);
+                intent.putExtra(CommonData.KEY_CHECK_TYPE_ID, childBean.getId());
+                startActivityForResult(intent, REQUEST_CODE_EDIT_ADVICE);
+            });
+        }
+        else {
+            editAdvice.setVisibility(View.GONE);
+            layoutReserveTime.setVisibility(View.GONE);
+        }
+        return childView;
+    }
+
+    /**
+     * 判断是否显示 填写诊断意见及预约就诊时间
+     * 该服务回执方为医生&& 该服务的开单医生是当前账号医生 && 服务项状态为【待上传报告】
+     */
+    private boolean showAdvice(CheckTypeByDetailBean bean) {
+        return TextUtils.equals(checkDetailBean.getDoctorCode(), loginBean.getDoctorCode()) &&
+               bean.getStatus() == CHECK_TYPE_STATUS_PAID && bean.getSuggestionType() == SUGGESTION_TYPE_DOCTOR;
     }
 
     /**
@@ -425,6 +514,17 @@ public class ServiceDetailActivity extends BaseActivity
         SpannableString spanString = new SpannableString(showText);
         spanString.setSpan(imgSpan, 0, showText.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         return spanString;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+        if (requestCode == REQUEST_CODE_EDIT_ADVICE) {
+            getReserveCheckOrderDetail();
+        }
     }
 
     @Override

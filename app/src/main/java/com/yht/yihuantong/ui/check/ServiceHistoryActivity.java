@@ -24,7 +24,7 @@ import com.yht.frame.widgets.LoadViewHelper;
 import com.yht.frame.widgets.recyclerview.decoration.TimeItemDecoration;
 import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.yht.yihuantong.R;
-import com.yht.yihuantong.ui.adapter.CheckHistoryAdapter;
+import com.yht.yihuantong.ui.adapter.ServiceHistoryAdapter;
 import com.yht.yihuantong.ui.patient.ChatContainerActivity;
 import com.yht.yihuantong.ui.reservation.ReservationDisableActivity;
 import com.yht.yihuantong.ui.reservation.service.ReservationServiceActivity;
@@ -54,7 +54,7 @@ public class ServiceHistoryActivity extends BaseActivity
     TextView publicTitleBarTitle;
     @BindView(R.id.layout_reserve_service)
     LinearLayout layoutReserveService;
-    private CheckHistoryAdapter checkHistoryAdapter;
+    private ServiceHistoryAdapter checkHistoryAdapter;
     /**
      * 时间分隔
      */
@@ -137,7 +137,7 @@ public class ServiceHistoryActivity extends BaseActivity
      * 适配器处理
      */
     private void initAdapter() {
-        checkHistoryAdapter = new CheckHistoryAdapter(R.layout.item_check_history, checkedList);
+        checkHistoryAdapter = new ServiceHistoryAdapter(R.layout.item_check_history, checkedList);
         checkHistoryAdapter.setLoadMoreView(new CustomLoadMoreView());
         checkHistoryAdapter.setOnLoadMoreListener(this, recyclerView);
         checkHistoryAdapter.setOnItemClickListener(this);

@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.yht.frame.data.BaseData;
 import com.yht.frame.data.type.CheckOrderStatus;
 import com.yht.frame.data.type.CheckTypeStatus;
 import com.yht.frame.data.bean.CheckBean;
@@ -27,8 +28,8 @@ import java.util.List;
  * @date 19/6/5 14:25
  * @des 预约检查记录
  */
-public class CheckHistoryAdapter extends BaseQuickAdapter<CheckBean, BaseViewHolder> implements CheckOrderStatus {
-    public CheckHistoryAdapter(int layoutResId, @Nullable List<CheckBean> data) {
+public class ServiceHistoryAdapter extends BaseQuickAdapter<CheckBean, BaseViewHolder> implements CheckOrderStatus {
+    public ServiceHistoryAdapter(int layoutResId, @Nullable List<CheckBean> data) {
         super(layoutResId, data);
     }
 
@@ -71,7 +72,12 @@ public class CheckHistoryAdapter extends BaseQuickAdapter<CheckBean, BaseViewHol
             TextView textView = view.findViewById(R.id.tv_check_type_name);
             ImageView imageDot = view.findViewById(R.id.iv_check_type_dot);
             ImageView imageView = view.findViewById(R.id.iv_check_type_status);
-            textView.setText(bean.getName());
+            if (bean.getItemType() == BaseData.BASE_ONE) {
+                textView.setText(bean.getName());
+            }
+            else {
+                textView.setText(bean.getPackName());
+            }
             //如果订单为已取消，检查项不做处理
             if (item.getStatus() != CHECK_ORDER_STATUS_CANCEL &&
                 bean.getStatus() == CheckTypeStatus.CHECK_TYPE_STATUS_CANCEL) {

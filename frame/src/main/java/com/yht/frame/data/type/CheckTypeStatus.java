@@ -15,7 +15,7 @@ public interface CheckTypeStatus {
      */
     int CHECK_TYPE_STATUS_WAIT_PAY = 1;
     /**
-     * 2-已付款
+     * 2-待上传报告
      */
     int CHECK_TYPE_STATUS_PAID = 2;
     /**
@@ -26,4 +26,8 @@ public interface CheckTypeStatus {
      * 4-已取消
      */
     int CHECK_TYPE_STATUS_CANCEL = 4;
+    /**
+     * 5-待发放
+     */
+    int CHECK_TYPE_STATUS_PENDING = 5;
 }

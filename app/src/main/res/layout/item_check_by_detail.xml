@@ -19,21 +19,30 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:orientation="vertical"
-        android:layout_marginEnd="12dp">
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/tv_check_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_16"
+            android:textStyle="bold"
             android:textColor="@color/txt_color_373d4d_c5c8cc_selector"
             tools:text="检查" />
+
+        <LinearLayout
+            android:id="@+id/layout_two_check_type"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/layout_reserve_time"
             android:layout_width="wrap_content"
             android:layout_marginTop="1dp"
+            android:visibility="gone"
             android:layout_height="wrap_content">
 
             <TextView
@@ -60,7 +69,6 @@
         </LinearLayout>
     </LinearLayout>
 
-
     <TextView
         android:id="@+id/tv_check_edit"
         android:layout_width="wrap_content"
@@ -69,6 +77,8 @@
         android:textSize="@dimen/text_13"
         android:layout_marginTop="3dp"
         android:gravity="center"
+        android:visibility="gone"
+        android:layout_marginStart="12dp"
         android:drawablePadding="1dp"
         android:drawableStart="@mipmap/ic_edit"
         android:text="@string/txt_edit_advice" />

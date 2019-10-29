@@ -1,6 +1,7 @@
 package com.yht.frame.data.bean;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * @author 顿顿
@@ -15,6 +16,7 @@ public class CheckTypeByDetailBean implements Serializable {
     private int payType;
     private int grantEntityType;
     private int suggestionType;
+    private int itemType;
     private long shouldPay;
     private String name;
     private String orderAt;
@@ -36,6 +38,7 @@ public class CheckTypeByDetailBean implements Serializable {
     private String hospitalName;
     private String packName;
     private String mergeName;
+    private ArrayList<CheckTypeByDetailBean> itemList;
 
     public int getId() {
         return id;
@@ -251,5 +254,21 @@ public class CheckTypeByDetailBean implements Serializable {
 
     public void setMergeName(String mergeName) {
         this.mergeName = mergeName;
+    }
+
+    public int getItemType() {
+        return itemType;
+    }
+
+    public void setItemType(int itemType) {
+        this.itemType = itemType;
+    }
+
+    public ArrayList<CheckTypeByDetailBean> getItemList() {
+        return itemList;
+    }
+
+    public void setItemList(ArrayList<CheckTypeByDetailBean> itemList) {
+        this.itemList = itemList;
     }
 }

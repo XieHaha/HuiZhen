@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingTop="5dp">
+
+    <LinearLayout
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginEnd="86dp">
+
+        <TextView
+            android:id="@+id/tv_check_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_16"
+            android:textColor="@color/txt_color_373d4d_c5c8cc_selector"
+            tools:text="检查" />
+
+        <LinearLayout
+            android:id="@+id/layout_two_check_type"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_reserve_time"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="1dp"
+        android:visibility="visible"
+        android:layout_below="@id/layout"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_a1a8b3"
+            android:textSize="@dimen/text_14"
+            android:text="@string/txt_reserve_time" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_a1a8b3"
+            android:textSize="@dimen/text_14"
+            android:text="：" />
+
+        <TextView
+            android:id="@+id/tv_reserve_visit_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_a1a8b3"
+            android:textSize="@dimen/text_14"
+            tools:text="2019年6月27日16:12:34" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_check_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/color_1491fc"
+        android:textSize="@dimen/text_13"
+        android:layout_marginTop="3dp"
+        android:layout_alignParentEnd="true"
+        android:gravity="center"
+        android:drawablePadding="1dp"
+        android:drawableStart="@mipmap/ic_edit"
+        android:text="@string/txt_edit_advice" />
+</RelativeLayout>

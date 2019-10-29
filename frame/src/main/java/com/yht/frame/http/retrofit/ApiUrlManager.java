@@ -45,6 +45,7 @@ import com.yht.frame.data.bean.VerifyCodeBean;
 import com.yht.frame.data.bean.VersionBean;
 import com.yht.frame.data.bean.WithDrawDetailBean;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -951,4 +952,17 @@ public interface ApiUrlManager {
     @GET("client/product/queryPackageDetail")
     Observable<BaseResponse<HealthPackageDetailBean>> queryPackageDetail(@Header("token") String token,
             @Query("packageCode") String info);
+
+    /**
+     * 医生回执报告
+     *
+     * @param token     token
+     * @param info      map参数
+     * @param imageData 图片
+     * @return 返回值
+     */
+    @Multipart
+    @POST("order-check/report")
+    Observable<BaseResponse<String>> doctorReport(@Header("token") String token, @QueryMap Map<String, Object> info,
+            @Part ArrayList<MultipartBody.Part> imageData);
 }

@@ -42,6 +42,7 @@ public class CheckDetailBean implements Serializable {
     private ArrayList<CheckTypeByDetailBean> trans;
     private ArrayList<CheckTypeByDetailBean> noticeList;
 
+
     public String getPastHistory() {
         return pastHistory;
     }
