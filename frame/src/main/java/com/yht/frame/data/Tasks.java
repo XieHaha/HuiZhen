@@ -250,6 +250,14 @@ WE_CHAT_LOGIN,
      */
     GET_COOPERATE_HOSPITAL_PROJECT_LIST,
     /**
+     * 获取当前医生的合作医院下服务包
+     */
+    GET_COOPERATE_HOSPITAL_PACKAGE_LIST,
+    /**
+     * 获取当前医生的合作医院下服务项详情
+     */
+    GET_COOPERATE_HOSPITAL_PROJECT_DETAIL,
+    /**
      * 获取医生二维码（医生端扫描）
      */
     GET_DOCTOR_QR_CODE,

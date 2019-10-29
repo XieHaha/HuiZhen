@@ -16,7 +16,6 @@ import com.yht.frame.data.Tasks;
 import com.yht.frame.data.bean.BaseListBean;
 import com.yht.frame.data.bean.CooperateHospitalBean;
 import com.yht.frame.data.bean.HospitalProductBean;
-import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.widgets.LoadViewHelper;
 import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
@@ -91,8 +90,8 @@ public class HospitalServiceFragment extends BaseFragment
      * 获取合作医院下服务项
      */
     private void getHospitalProduct() {
-        RequestUtils.getCooperateHospitalProjectList(getContext(), loginBean.getToken(), curHospital.getHospitalCode(),
-                                                     BaseData.BASE_PAGE_DATA_NUM, page, this);
+        //        RequestUtils.getCooperateHospitalProjectList(getContext(), loginBean.getToken(), curHospital.getHospitalCode(),
+        //                                                     BaseData.BASE_PAGE_DATA_NUM, page, this);
     }
 
     @Override
@@ -132,6 +131,12 @@ public class HospitalServiceFragment extends BaseFragment
                 loadViewHelper.load(LoadViewHelper.NONE_RECORDING);
             }
         }
+    }
+
+    @Override
+    public void onResponseEnd(Tasks task) {
+        super.onResponseEnd(task);
+        refreshLayout.setRefreshing(false);
     }
 
     @Override

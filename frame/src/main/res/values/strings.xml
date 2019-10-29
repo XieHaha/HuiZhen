@@ -438,6 +438,7 @@
     <string name="txt_select_depart">会诊医院-科室</string>
     <string name="txt_select_depart_hint">最多5间科室</string>
     <string name="txt_select_depart_hint1">添加\n最多5间科室</string>
+    <string name="txt_hour_empty_hint">请选择会诊时间</string>
     <string name="txt_add_hour_empty_hint">请选择您要预约会诊的时间</string>
     <string name="txt_add_hour_error_hint">该时间段已被预约，不可选</string>
     <string name="txt_add_hour_hint">请先点击时段，选中开始时间</string>

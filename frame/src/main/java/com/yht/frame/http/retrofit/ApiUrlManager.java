@@ -17,7 +17,8 @@ import com.yht.frame.data.bean.HealthPackageDetailBean;
 import com.yht.frame.data.bean.HospitalBean;
 import com.yht.frame.data.bean.HospitalDepartBean;
 import com.yht.frame.data.bean.HospitalDepartChildBean;
-import com.yht.frame.data.bean.HospitalProductBean;
+import com.yht.frame.data.bean.HospitalPackageBean;
+import com.yht.frame.data.bean.HospitalProjectParentBean;
 import com.yht.frame.data.bean.HospitalTitleBean;
 import com.yht.frame.data.bean.IncomeDetailBean;
 import com.yht.frame.data.bean.LabelBean;
@@ -710,13 +711,35 @@ public interface ApiUrlManager {
     /**
      * 获取当前医生的合作医院下服务项目列表
      *
-     * @param info  map参数
+     * @param hospitalCode 参数
+     * @param token        token
+     * @return 返回值
+     */
+    @GET("client/product/queryHospitalPackageProduct")
+    Observable<BaseResponse<HospitalProjectParentBean>> getCooperateHospitalProjectList(@Header("token") String token,
+            @Query("hospitalCode") String hospitalCode);
+
+    /**
+     * 获取当前医生的合作医院下服务包列表
+     *
+     * @param info  参数
      * @param token token
      * @return 返回值
      */
-    @POST("client/product/list")
-    Observable<BaseResponse<BaseListBean<HospitalProductBean>>> getCooperateHospitalProjectList(
+    @POST("client/product/listPackage")
+    Observable<BaseResponse<BaseListBean<HospitalPackageBean>>> getCooperateHospitalPackageList(
             @Header("token") String token, @Body Map<String, Object> info);
+
+    /**
+     * 获取当前医生的合作医院下服务项详情
+     *
+     * @param productCode 参数
+     * @param token       token
+     * @return 返回值
+     */
+    @GET("client/product/queryProductDetail")
+    Observable<BaseResponse<HospitalProjectParentBean>> queryProductDetail(@Header("token") String token,
+            @Query("productCode") String productCode);
 
     /**
      * 获取医生二维码（医生端扫描）

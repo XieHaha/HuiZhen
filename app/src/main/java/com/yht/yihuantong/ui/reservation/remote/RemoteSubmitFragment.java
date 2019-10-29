@@ -269,7 +269,7 @@ public class RemoteSubmitFragment extends BaseFragment {
                     startActivityForResult(intent, REQUEST_CODE_SELECT_DEPART);
                 }
                 else {
-                    ToastUtil.toast(getContext(), "请选择会诊时间");
+                    ToastUtil.toast(getContext(), R.string.txt_hour_empty_hint);
                 }
                 break;
             case R.id.layout_upload_one:

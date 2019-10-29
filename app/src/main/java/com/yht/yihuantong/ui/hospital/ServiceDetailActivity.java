@@ -2,10 +2,12 @@ package com.yht.yihuantong.ui.hospital;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
+import android.widget.TextView;
 
+import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
-import com.yht.frame.data.bean.HospitalProductBean;
+import com.yht.frame.data.Tasks;
+import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.widgets.textview.JustifiedTextView;
 import com.yht.yihuantong.R;
@@ -22,6 +24,9 @@ public class ServiceDetailActivity extends BaseActivity {
     JustifiedTextView tvProjectIntroduction;
     @BindView(R.id.tv_project_notice)
     JustifiedTextView tvProjectNotice;
+    @BindView(R.id.tv_project_name)
+    TextView tvProjectName;
+    private String projectCode;
 
     @Override
     protected boolean isInitBackBtn() {
@@ -37,16 +42,22 @@ public class ServiceDetailActivity extends BaseActivity {
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
         if (getIntent() != null) {
-            HospitalProductBean bean = (HospitalProductBean)getIntent().getSerializableExtra(
-                    CommonData.KEY_HOSPITAL_PRODUCT_BEAN);
-            if (bean != null) {
-                if (!TextUtils.isEmpty(bean.getDescription())) {
-                    tvProjectIntroduction.setText(bean.getDescription());
-                }
-                if (!TextUtils.isEmpty(bean.getNotice())) {
-                    tvProjectNotice.setText(bean.getNotice());
-                }
-            }
+            projectCode = getIntent().getStringExtra(CommonData.KEY_PUBLIC_STRING);
+        }
+        getProjectDetail();
+    }
+
+    /**
+     * 详情
+     */
+    private void getProjectDetail() {
+        RequestUtils.queryProductDetail(this, loginBean.getToken(), projectCode, this);
+    }
+
+    @Override
+    public void onResponseSuccess(Tasks task, BaseResponse response) {
+        super.onResponseSuccess(task, response);
+        if (task == Tasks.GET_COOPERATE_HOSPITAL_PROJECT_DETAIL) {
         }
     }
 }

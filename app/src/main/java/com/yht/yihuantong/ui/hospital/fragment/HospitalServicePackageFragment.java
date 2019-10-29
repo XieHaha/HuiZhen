@@ -15,13 +15,13 @@ import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.bean.BaseListBean;
 import com.yht.frame.data.bean.CooperateHospitalBean;
-import com.yht.frame.data.bean.HospitalProductBean;
+import com.yht.frame.data.bean.HospitalPackageBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.widgets.LoadViewHelper;
 import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.yht.yihuantong.R;
-import com.yht.yihuantong.ui.adapter.HospitalProductAdapter;
+import com.yht.yihuantong.ui.adapter.HospitalPackageAdapter;
 import com.yht.yihuantong.ui.hospital.ServicePackageDetailActivity;
 
 import java.util.ArrayList;
@@ -40,8 +40,8 @@ public class HospitalServicePackageFragment extends BaseFragment
     RecyclerView recyclerView;
     @BindView(R.id.refresh_layout)
     SwipeRefreshLayout refreshLayout;
-    private HospitalProductAdapter hospitalProjectAdapter;
-    private ArrayList<HospitalProductBean> hospitalProductBeans = new ArrayList<>();
+    private HospitalPackageAdapter hospitalPackageAdapter;
+    private ArrayList<HospitalPackageBean> hospitalProductBeans = new ArrayList<>();
     /**
      * 当前医院
      */
@@ -63,12 +63,12 @@ public class HospitalServicePackageFragment extends BaseFragment
         loadViewHelper.setOnNextClickListener(this);
         refreshLayout.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light,
                                               android.R.color.holo_orange_light, android.R.color.holo_green_light);
-        hospitalProjectAdapter = new HospitalProductAdapter(R.layout.item_hospital_project, hospitalProductBeans);
-        hospitalProjectAdapter.setLoadMoreView(new CustomLoadMoreView());
-        hospitalProjectAdapter.setOnLoadMoreListener(this, recyclerView);
-        hospitalProjectAdapter.setOnItemClickListener(this);
+        hospitalPackageAdapter = new HospitalPackageAdapter(R.layout.item_hospital_project, hospitalProductBeans);
+        hospitalPackageAdapter.setLoadMoreView(new CustomLoadMoreView());
+        hospitalPackageAdapter.setOnLoadMoreListener(this, recyclerView);
+        hospitalPackageAdapter.setOnItemClickListener(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(hospitalProjectAdapter);
+        recyclerView.setAdapter(hospitalPackageAdapter);
     }
 
     @Override
@@ -88,10 +88,10 @@ public class HospitalServicePackageFragment extends BaseFragment
     }
 
     /**
-     * 获取合作医院下服务项
+     * 获取合作医院下服务包
      */
     private void getHospitalProduct() {
-        RequestUtils.getCooperateHospitalProjectList(getContext(), loginBean.getToken(), curHospital.getHospitalCode(),
+        RequestUtils.getCooperateHospitalPackageList(getContext(), loginBean.getToken(), curHospital.getHospitalCode(),
                                                      BaseData.BASE_PAGE_DATA_NUM, page, this);
     }
 
@@ -105,25 +105,25 @@ public class HospitalServicePackageFragment extends BaseFragment
     @Override
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
-        if (task == Tasks.GET_COOPERATE_HOSPITAL_PROJECT_LIST) {
-            BaseListBean<HospitalProductBean> baseListBean = (BaseListBean<HospitalProductBean>)response.getData();
+        if (task == Tasks.GET_COOPERATE_HOSPITAL_PACKAGE_LIST) {
+            BaseListBean<HospitalPackageBean> baseListBean = (BaseListBean<HospitalPackageBean>)response.getData();
             if (page == BaseData.BASE_ONE) {
                 hospitalProductBeans.clear();
             }
             hospitalProductBeans.addAll(baseListBean.getRecords());
-            hospitalProjectAdapter.setNewData(hospitalProductBeans);
+            hospitalPackageAdapter.setNewData(hospitalProductBeans);
             if (hospitalProductBeans.size() > 0) {
                 refreshLayout.setVisibility(View.VISIBLE);
                 if (baseListBean.getRecords() != null &&
                     baseListBean.getRecords().size() >= BaseData.BASE_PAGE_DATA_NUM) {
-                    hospitalProjectAdapter.loadMoreComplete();
+                    hospitalPackageAdapter.loadMoreComplete();
                 }
                 else {
                     if (hospitalProductBeans.size() > BaseData.BASE_PAGE_DATA_NUM) {
-                        hospitalProjectAdapter.loadMoreEnd();
+                        hospitalPackageAdapter.loadMoreEnd();
                     }
                     else {
-                        hospitalProjectAdapter.setEnableLoadMore(false);
+                        hospitalPackageAdapter.setEnableLoadMore(false);
                     }
                 }
             }
@@ -132,6 +132,12 @@ public class HospitalServicePackageFragment extends BaseFragment
                 loadViewHelper.load(LoadViewHelper.NONE_RECORDING);
             }
         }
+    }
+
+    @Override
+    public void onResponseEnd(Tasks task) {
+        super.onResponseEnd(task);
+        refreshLayout.setRefreshing(false);
     }
 
     @Override

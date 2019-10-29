@@ -700,16 +700,34 @@ public class RequestUtils {
                                                                  listener));
     }
 
-    public static void getCooperateHospitalProjectList(Context context, String token, String hospitalCode, int pageSize,
+    public static void getCooperateHospitalProjectList(Context context, String token, String hospitalCode,
+            final ResponseListener<BaseResponse> listener) {
+        RetrofitManager.getApiUrlManager()
+                       .getCooperateHospitalProjectList(token, hospitalCode)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_COOPERATE_HOSPITAL_PROJECT_LIST,
+                                                                 listener));
+    }
+
+    public static void getCooperateHospitalPackageList(Context context, String token, String hospitalCode, int pageSize,
             int startPage, final ResponseListener<BaseResponse> listener) {
         Map<String, Object> params = new HashMap<>(16);
         params.put("hospitalCode", hospitalCode);
         params.put("pageSize", pageSize);
         params.put("startPage", startPage);
         RetrofitManager.getApiUrlManager()
-                       .getCooperateHospitalProjectList(token, params)
+                       .getCooperateHospitalPackageList(token, params)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_COOPERATE_HOSPITAL_PROJECT_LIST,
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_COOPERATE_HOSPITAL_PACKAGE_LIST,
+                                                                 listener));
+    }
+
+    public static void queryProductDetail(Context context, String token, String productCode,
+            final ResponseListener<BaseResponse> listener) {
+        RetrofitManager.getApiUrlManager()
+                       .queryProductDetail(token, productCode)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_COOPERATE_HOSPITAL_PROJECT_DETAIL,
                                                                  listener));
     }
 
@@ -851,7 +869,7 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .getRemoteTime(token, date)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.GET_REMOTE_TIME, listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, false, Tasks.GET_REMOTE_TIME, listener));
     }
 
     public static void getRemoteDepartmentInfo(Context context, String token, String startAt, String endAt,
