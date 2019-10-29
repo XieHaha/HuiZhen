@@ -80,14 +80,11 @@ public class PastHistoryActivity extends BaseActivity {
         familyMedicalHis = pastHistoryData.get(1);
         allergiesHis = pastHistoryData.get(2);
         //既往病史
-        initPastMedicalHis(!TextUtils.isEmpty(pastMedicalHis) &&
-                           (!getString(R.string.txt_past_medical_his_not).equals(pastMedicalHis)));
+        initPastMedicalHis(PastHistoryUtil.verifyPastMedical(this, pastMedicalHis));
         //家族病史
-        initFamilyMedicalHis(!TextUtils.isEmpty(familyMedicalHis) &&
-                             (!getString(R.string.txt_family_medical_his_not).equals(familyMedicalHis)));
+        initFamilyMedicalHis(PastHistoryUtil.verifyFamilyMedical(this, familyMedicalHis));
         //过敏史
-        initAllergies(
-                !TextUtils.isEmpty(allergiesHis) && (!getString(R.string.txt_allergies_not).equals(allergiesHis)));
+        initAllergies(PastHistoryUtil.verifyAllergies(this, allergiesHis));
     }
 
     @Override
@@ -131,10 +128,8 @@ public class PastHistoryActivity extends BaseActivity {
         if (status) {
             etPastMedicalHis.setVisibility(View.VISIBLE);
             layoutPastMedicalHis.setVisibility(View.GONE);
-            if (!getString(R.string.txt_past_medical_his_not).equals(pastMedicalHis)) {
-                etPastMedicalHis.setText(pastMedicalHis);
-                etPastMedicalHis.setSelection(pastMedicalHis.length());
-            }
+            etPastMedicalHis.setText(pastMedicalHis);
+            etPastMedicalHis.setSelection(pastMedicalHis.length());
             tvPastMedicalHisNum.setText(String.format(getString(R.string.txt_calc_num), pastMedicalHis.length()));
         }
         else {
@@ -153,10 +148,8 @@ public class PastHistoryActivity extends BaseActivity {
         if (status) {
             etFamilyMedicalHis.setVisibility(View.VISIBLE);
             layoutFamilyMedicalHis.setVisibility(View.GONE);
-            if (!getString(R.string.txt_family_medical_his_not).equals(familyMedicalHis)) {
-                etFamilyMedicalHis.setText(familyMedicalHis);
-                etFamilyMedicalHis.setSelection(familyMedicalHis.length());
-            }
+            etFamilyMedicalHis.setText(familyMedicalHis);
+            etFamilyMedicalHis.setSelection(familyMedicalHis.length());
             tvFamilyMedicalHisNum.setText(String.format(getString(R.string.txt_calc_num), familyMedicalHis.length()));
         }
         else {
@@ -175,10 +168,8 @@ public class PastHistoryActivity extends BaseActivity {
         if (status) {
             etAllergies.setVisibility(View.VISIBLE);
             layoutAllergies.setVisibility(View.GONE);
-            if (!getString(R.string.txt_allergies_not).equals(allergiesHis)) {
-                etAllergies.setText(allergiesHis);
-                etAllergies.setSelection(allergiesHis.length());
-            }
+            etAllergies.setText(allergiesHis);
+            etAllergies.setSelection(allergiesHis.length());
             tvAllergiesNum.setText(String.format(getString(R.string.txt_calc_num), allergiesHis.length()));
         }
         else {

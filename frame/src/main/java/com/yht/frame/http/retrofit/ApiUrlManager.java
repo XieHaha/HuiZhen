@@ -36,6 +36,7 @@ import com.yht.frame.data.bean.RecentPatientBean;
 import com.yht.frame.data.bean.RemoteBean;
 import com.yht.frame.data.bean.RemoteDepartBean;
 import com.yht.frame.data.bean.RemoteDetailBean;
+import com.yht.frame.data.bean.RemoteHourBean;
 import com.yht.frame.data.bean.ReservationValidateBean;
 import com.yht.frame.data.bean.SelectCheckTypeBean;
 import com.yht.frame.data.bean.TransferDetailBean;
@@ -870,7 +871,8 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @GET("remote/check-have-remote")
-    Observable<BaseResponse<List<String>>> getRemoteTime(@Header("token") String token, @Query("date") String info);
+    Observable<BaseResponse<List<RemoteHourBean>>> getRemoteTime(@Header("token") String token,
+            @Query("date") String info);
 
     /**
      * 获取远程科室列表

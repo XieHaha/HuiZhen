@@ -362,6 +362,8 @@ public class RemoteSubmitFragment extends BaseFragment {
                 DepartInfoBean departInfoBean = new DepartInfoBean();
                 departInfoBean.setHospitalDepartmentId(bean.getDepartmentId());
                 departInfoBean.setHospitalDepartmentName(bean.getDepartmentName());
+                departInfoBean.setHospitalCode(bean.getHospitalCode());
+                departInfoBean.setHospitalName(bean.getHospitalName());
                 list.add(departInfoBean);
             }
             reserveRemoteBean.setHosDeptInfo(list);
@@ -383,6 +385,7 @@ public class RemoteSubmitFragment extends BaseFragment {
             else {
                 signatureImageUrl = (String)response.getData();
                 Glide.with(this).load(signatureImageUrl).apply(GlideHelper.getOptionsPic(0)).into(ivSignature);
+                initNextButton();
             }
         }
     }

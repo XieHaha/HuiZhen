@@ -344,7 +344,7 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
                 }
                 break;
             case R.id.layout_remote:
-                if (!ZycApplication.getInstance().isRemoteAble()) {
+                if (ZycApplication.getInstance().isRemoteAble()) {
                     intent = new Intent(getContext(), ReservationRemoteActivity.class);
                     startActivity(intent);
                 }

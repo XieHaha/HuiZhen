@@ -33,6 +33,7 @@ public class RemoteDetailBean implements Serializable {
     private String familyHistory;
     private String allergyHistory;
     private ArrayList<RemoteInvitedBean> invitationList;
+    private ArrayList<FileBean> patientResourceList;
 
     public int getSex() {
         return sex;
@@ -216,5 +217,13 @@ public class RemoteDetailBean implements Serializable {
 
     public void setRejectReason(String rejectReason) {
         this.rejectReason = rejectReason;
+    }
+
+    public ArrayList<FileBean> getPatientResourceList() {
+        return patientResourceList;
+    }
+
+    public void setPatientResourceList(ArrayList<FileBean> patientResourceList) {
+        this.patientResourceList = patientResourceList;
     }
 }

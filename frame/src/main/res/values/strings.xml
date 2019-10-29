@@ -357,9 +357,12 @@
     <string name="txt_sure_submit">确认提交</string>
     <string name="txt_past_medical_his">既往病史</string>
     <string name="txt_past_medical_his_not">该居民否认有既往病史</string>
+    <string name="txt_past_medical_his_not_p">该患者否认有既往病史</string>
     <string name="txt_family_medical_his">家族病史</string>
     <string name="txt_family_medical_his_not">该居民否认有家族病史</string>
+    <string name="txt_family_medical_his_not_p">该患者否认有家族病史</string>
     <string name="txt_allergies_not">该居民否认有过敏史</string>
+    <string name="txt_allergies_not_p">该患者否认有过敏史</string>
     <string name="txt_allergies">过敏史</string>
     <string name="txt_diagnosis_hint">请针对居民病情填写初步诊断及病情简介</string>
     <string name="txt_camera_people">拍照确认</string>

@@ -17,6 +17,7 @@ import com.haibin.calendarview.CalendarView;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
+import com.yht.frame.data.bean.RemoteHourBean;
 import com.yht.frame.data.bean.TimeBarBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
@@ -27,7 +28,9 @@ import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.adapter.TimeSelectionAdapter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -75,7 +78,11 @@ public class ConsultationTimeActivity extends BaseActivity
     /**
      * 已被预约的时间
      */
-    private ArrayList<String> appointedHours;
+    private ArrayList<RemoteHourBean> appointedHours;
+    /**
+     * 已被预约时间点position
+     */
+    private ArrayList<Integer> appointedPositions = new ArrayList<>();
     /**
      * 当前选中时间点position
      */
@@ -111,9 +118,9 @@ public class ConsultationTimeActivity extends BaseActivity
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
         if (getIntent() != null) {
-//            date = getIntent().getStringExtra(CommonData.KEY_REMOTE_DATE);
-//            startHour = getIntent().getStringExtra(CommonData.KEY_REMOTE_START_HOUR);
-//            endHour = getIntent().getStringExtra(CommonData.KEY_REMOTE_END_HOUR);
+            //            date = getIntent().getStringExtra(CommonData.KEY_REMOTE_DATE);
+            //            startHour = getIntent().getStringExtra(CommonData.KEY_REMOTE_START_HOUR);
+            //            endHour = getIntent().getStringExtra(CommonData.KEY_REMOTE_END_HOUR);
         }
         initHourData();
         timeSelectionAdapter = new TimeSelectionAdapter(R.layout.item_time_selection, timeBarBeans);
@@ -157,18 +164,13 @@ public class ConsultationTimeActivity extends BaseActivity
      * 初始化需要显示的小时数据
      */
     private void initHourData() {
+        String[] hour = getResources().getStringArray(R.array.hour);
+        String[] hourText = getResources().getStringArray(R.array.hourText);
         for (int i = 0; i < ALL_TIME_BAR; i++) {
             TimeBarBean bean = new TimeBarBean();
             bean.setPosition(i);
-            int hour = i / 2 + START_HOUR;
-            if (i % 2 == 0) {
-                bean.setHourString(hour + ":00");
-                bean.setHourTxt(hour + "时");
-            }
-            else {
-                bean.setHourString(hour + ":30");
-                bean.setHourTxt("");
-            }
+            bean.setHourString(hour[i]);
+            if (i % 2 == 0) { bean.setHourTxt(hourText[i / 2]); }
             timeBarBeans.add(bean);
         }
     }
@@ -195,6 +197,7 @@ public class ConsultationTimeActivity extends BaseActivity
      * 计算可选时间范围 （已过期时间及已预约时间 ）
      */
     private void calcHourRange() {
+        calcAppointed();
         //获取当前时间
         java.util.Calendar todayCalendar = java.util.Calendar.getInstance();
         int hour = todayCalendar.get(java.util.Calendar.HOUR_OF_DAY);
@@ -210,6 +213,7 @@ public class ConsultationTimeActivity extends BaseActivity
         }
         //设置时段范围
         timeSelectionAdapter.setRange(startPosition);
+        timeSelectionAdapter.setRangePosition(appointedPositions);
         timeSelectionAdapter.notifyDataSetChanged();
         //滚动至可选时段
         layoutManager.scrollToPositionWithOffset(startPosition > 1 ? startPosition - 1 : startPosition, 0);
@@ -219,10 +223,34 @@ public class ConsultationTimeActivity extends BaseActivity
     }
 
     /**
+     * 统计已被预约的时间段
+     */
+    private void calcAppointed() {
+        appointedPositions.clear();
+        if (appointedHours == null) {
+            appointedHours = new ArrayList<>();
+            return;
+        }
+        String[] hour = getResources().getStringArray(R.array.hour);
+        List<String> hourStrings = Arrays.asList(hour);
+        for (int i = 0; i < appointedHours.size(); i++) {
+            RemoteHourBean bean = appointedHours.get(i);
+            String startHour = BaseUtils.formatDate(bean.getStartAt(), BaseUtils.HH_MM);
+            String endHour = BaseUtils.formatDate(bean.getEndAt(), BaseUtils.HH_MM);
+            int startPosition = hourStrings.indexOf(startHour);
+            int size = hourStrings.indexOf(endHour) - startPosition;
+            for (int j = 0; j < size; j++) {
+                appointedPositions.add(startPosition);
+                startPosition++;
+            }
+        }
+    }
+
+    /**
      * 处理当天以前的置灰
      */
     private void initScheme() {
-        Map<String, Calendar> map = new HashMap<>();
+        Map<String, Calendar> map = new HashMap<>(16);
         int curDay = calendarView.getCurDay();
         for (int i = 1; i < curDay; i++) {
             map.put(getSchemeCalendar(i).toString(), getSchemeCalendar(i));
@@ -245,6 +273,11 @@ public class ConsultationTimeActivity extends BaseActivity
         ivSubtract.setSelected(true);
         tvVerifyTime.setSelected(true);
         int total = startSelectedPosition + selectPositions.size();
+        //添加时间 （不可再添加已预约时间段）
+        if (appointedPositions.contains(total)) {
+            ToastUtil.toast(this, R.string.txt_add_hour_error_hint);
+            return;
+        }
         //把已选时间点添加到列表中
         selectPositions.add(total);
         //可预约时间已经超过24点  不可再加.
@@ -291,7 +324,7 @@ public class ConsultationTimeActivity extends BaseActivity
 
     @Override
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-        if (position <= startPosition) { return; }
+        if (position <= startPosition || appointedPositions.contains(position)) { return; }
         //清除已选时间
         selectPositions.clear();
         startSelectedPosition = position;
@@ -409,7 +442,7 @@ public class ConsultationTimeActivity extends BaseActivity
         super.onResponseSuccess(task, response);
         switch (task) {
             case GET_REMOTE_TIME:
-                appointedHours = (ArrayList<String>)response.getData();
+                appointedHours = (ArrayList<RemoteHourBean>)response.getData();
                 calcHourRange();
                 break;
             default:

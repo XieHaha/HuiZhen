@@ -20,6 +20,7 @@ import com.yht.frame.widgets.edittext.MultiLineEditText;
 import com.yht.frame.widgets.edittext.SuperEditText;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.reservation.PastHistoryActivity;
+import com.yht.yihuantong.ui.reservation.PastHistoryUtil;
 import com.yht.yihuantong.ui.transfer.listener.OnTransferListener;
 import com.yht.yihuantong.utils.text.BankCardTextWatcher;
 
@@ -257,27 +258,9 @@ public class TransferMaterialFragment extends BaseFragment implements View.OnFoc
      * 既往史
      */
     private void initPastHistory() {
-        if (!TextUtils.isEmpty(pastHistoryData.get(0)) &&
-            (!getString(R.string.txt_past_medical_his_not).equals(pastHistoryData.get(0)))) {
-            tvPastMedical.setText(pastHistoryData.get(0));
-        }
-        else {
-            tvPastMedical.setText(R.string.txt_past_medical_his_not);
-        }
-        if (!TextUtils.isEmpty(pastHistoryData.get(1)) &&
-            (!getString(R.string.txt_past_medical_his_not).equals(pastHistoryData.get(1)))) {
-            tvFamilyMedical.setText(pastHistoryData.get(1));
-        }
-        else {
-            tvFamilyMedical.setText(R.string.txt_family_medical_his_not);
-        }
-        if (!TextUtils.isEmpty(pastHistoryData.get(2)) &&
-            (!getString(R.string.txt_past_medical_his_not).equals(pastHistoryData.get(2)))) {
-            tvAllergies.setText(pastHistoryData.get(2));
-        }
-        else {
-            tvAllergies.setText(R.string.txt_allergies_not);
-        }
+        tvPastMedical.setText(PastHistoryUtil.getPastMedical(getContext(), pastHistoryData.get(0)));
+        tvFamilyMedical.setText(PastHistoryUtil.getFamilyMedical(getContext(), pastHistoryData.get(1)));
+        tvAllergies.setText(PastHistoryUtil.getAllergies(getContext(), pastHistoryData.get(2)));
     }
 
     /**

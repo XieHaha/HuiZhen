@@ -19,6 +19,7 @@ import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
+import com.yht.frame.data.bean.FileBean;
 import com.yht.frame.data.bean.RemoteDetailBean;
 import com.yht.frame.data.bean.RemoteInvitedBean;
 import com.yht.frame.data.type.InvitedPartyStatus;
@@ -75,6 +76,8 @@ public class RemoteDetailActivity extends BaseActivity implements RemoteOrderSta
     TextView tvCheckDiagnosisTop;
     @BindView(R.id.tv_consultation_purpose)
     TextView tvConsultationPurpose;
+    @BindView(R.id.layout_annex_root)
+    LinearLayout layoutAnnexRoot;
     @BindView(R.id.layout_annex)
     LinearLayout layoutAnnex;
     @BindView(R.id.tv_close_reason)
@@ -102,6 +105,10 @@ public class RemoteDetailActivity extends BaseActivity implements RemoteOrderSta
     /**
      * 会诊受邀方
      */
+    private ArrayList<FileBean> fileBeans = new ArrayList<>();
+    /**
+     * 会诊受邀方
+     */
     private ArrayList<RemoteInvitedBean> remoteInvitedBeans = new ArrayList<>();
     /**
      * 受邀方状态
@@ -124,6 +131,7 @@ public class RemoteDetailActivity extends BaseActivity implements RemoteOrderSta
         if (getIntent() != null) {
             orderNo = getIntent().getStringExtra(CommonData.KEY_ORDER_ID);
         }
+        initBitmap();
         invitedAdapter = new InvitedAdapter();
         fullListView.setAdapter(invitedAdapter);
     }
@@ -149,8 +157,13 @@ public class RemoteDetailActivity extends BaseActivity implements RemoteOrderSta
         bitmapRefused = BitmapFactory.decodeResource(getApplication().getResources(), R.mipmap.ic_tag_reach);
     }
 
+    /**
+     * 基础数据
+     */
     private void bindData() {
         if (remoteDetailBean == null) { return; }
+        fileBeans = remoteDetailBean.getPatientResourceList();
+        bindAnnexData();
         //受邀方数据
         remoteInvitedBeans = remoteDetailBean.getInvitationList();
         invitedAdapter.notifyDataSetChanged();
@@ -218,6 +231,28 @@ public class RemoteDetailActivity extends BaseActivity implements RemoteOrderSta
                 break;
             default:
                 break;
+        }
+    }
+
+    /**
+     * 附件资料
+     */
+    private void bindAnnexData() {
+        if (fileBeans != null && fileBeans.size() > 0) {
+            layoutAnnexRoot.setVisibility(View.VISIBLE);
+            addView();
+        }
+        else {
+            layoutAnnexRoot.setVisibility(View.GONE);
+        }
+    }
+
+    private void addView() {
+        for (int i = 0; i < fileBeans.size(); i++) {
+            FileBean bean = fileBeans.get(i);
+            TextView textView = (TextView)getLayoutInflater().inflate(R.layout.item_remote_depart_simple, null);
+            textView.setText(bean.getName());
+            layoutAnnex.addView(textView);
         }
     }
 

@@ -4,8 +4,6 @@
     android:layout_height="wrap_content"
     android:paddingTop="3dp"
     android:paddingBottom="3dp"
-    android:paddingStart="20dp"
-    android:paddingEnd="20dp"
     android:gravity="center_vertical"
     android:textColor="@color/color_373d4d"
     android:singleLine="true"
