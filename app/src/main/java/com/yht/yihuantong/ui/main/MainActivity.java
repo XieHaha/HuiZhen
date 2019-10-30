@@ -67,7 +67,7 @@ import com.yht.yihuantong.ui.main.listener.OnMessageUpdateListener;
 import com.yht.yihuantong.version.ConstantsVersionMode;
 import com.yht.yihuantong.version.presenter.VersionPresenter;
 
-import org.litepal.crud.DataSupport;
+import org.litepal.LitePal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -345,7 +345,7 @@ public class MainActivity extends BaseActivity
             return;
         }
         String nickName = "";
-        List<PatientBean> list = DataSupport.where("code = ?", message.getFrom().toUpperCase()).find(PatientBean.class);
+        List<PatientBean> list = LitePal.where("code = ?", message.getFrom().toUpperCase()).find(PatientBean.class);
         if (list != null && list.size() > 0) {
             PatientBean bean = list.get(0);
             nickName = bean.getName();

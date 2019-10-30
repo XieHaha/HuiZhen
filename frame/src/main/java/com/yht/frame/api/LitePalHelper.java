@@ -4,7 +4,8 @@ import com.yht.frame.data.bean.DoctorBean;
 import com.yht.frame.data.bean.HospitalBean;
 import com.yht.frame.data.bean.PatientBean;
 
-import org.litepal.crud.DataSupport;
+import org.litepal.LitePal;
+import org.litepal.crud.LitePalSupport;
 
 import java.util.List;
 
@@ -13,33 +14,33 @@ import java.util.List;
  * @date 19/7/5 14:27
  * @des
  */
-public class LitePalHelper<T extends DataSupport> {
+public class LitePalHelper<T extends LitePalSupport> {
     /**
      * 存储医院
      */
     public void updateAll(List<T> list, final Class<T> classOfT) {
-        DataSupport.deleteAll(classOfT);
-        DataSupport.saveAll(list);
+        LitePal.deleteAll(classOfT);
+        LitePal.saveAll(list);
     }
 
     /**
      * 模糊查询 医院
      */
     public static List<HospitalBean> findHospitals(String key) {
-        return DataSupport.where("hospitalName like ?", "%" + key + "%").find(HospitalBean.class);
+        return LitePal.where("hospitalName like ?", "%" + key + "%").find(HospitalBean.class);
     }
 
     /**
      * 模糊查询 居民
      */
     public static List<PatientBean> findPatients(String key) {
-        return DataSupport.where("name like ?", "%" + key + "%").find(PatientBean.class);
+        return LitePal.where("name like ?", "%" + key + "%").find(PatientBean.class);
     }
 
     /**
      * 模糊查询 医生
      */
     public static List<DoctorBean> findDoctors(String key) {
-        return DataSupport.where("doctorName like ?", "%" + key + "%").find(DoctorBean.class);
+        return LitePal.where("doctorName like ?", "%" + key + "%").find(DoctorBean.class);
     }
 }

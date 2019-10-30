@@ -15,7 +15,7 @@ import com.yht.frame.http.listener.AbstractResponseAdapter;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.yihuantong.ZycApplication;
 
-import org.litepal.crud.DataSupport;
+import org.litepal.LitePal;
 
 import java.util.List;
 import java.util.Map;
@@ -67,7 +67,7 @@ public class HxHelper {
             if (TextUtils.isEmpty(username)) { return null; }
             EaseUser user = new EaseUser(username);
             if (username.startsWith(BaseData.BASE_DOCTOR_CODE)) {
-                List<DoctorBean> list = DataSupport.where("doctorCode = ?", username).find(DoctorBean.class);
+                List<DoctorBean> list = LitePal.where("doctorCode = ?", username).find(DoctorBean.class);
                 if (list != null && list.size() > 0) {
                     DoctorBean bean = list.get(0);
                     user.setNickname(bean.getDoctorName());
@@ -77,7 +77,7 @@ public class HxHelper {
                 }
             }
             else {
-                List<PatientBean> list = DataSupport.where("code = ?", username).find(PatientBean.class);
+                List<PatientBean> list = LitePal.where("code = ?", username).find(PatientBean.class);
                 if (list != null && list.size() > 0) {
                     PatientBean bean = list.get(0);
                     user.setNickname(bean.getName());

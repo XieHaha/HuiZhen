@@ -35,7 +35,7 @@ import com.yht.yihuantong.ui.adapter.DoctorAdapter;
 import com.yht.yihuantong.ui.main.listener.OnSearchListener;
 import com.yht.yihuantong.ui.patient.ChatContainerActivity;
 
-import org.litepal.crud.DataSupport;
+import org.litepal.LitePal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -186,7 +186,7 @@ public class DoctorFragment extends BaseFragment
      */
     public void getDoctorsByLocal() {
         //先从本地取
-        doctorBeans = DataSupport.findAll(DoctorBean.class);
+        doctorBeans = LitePal.findAll(DoctorBean.class);
         if (doctorBeans != null) {
             sortData();
             doctorAdapter.setNewData(doctorBeans);

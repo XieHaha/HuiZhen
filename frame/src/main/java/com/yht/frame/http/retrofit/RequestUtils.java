@@ -474,16 +474,9 @@ public class RequestUtils {
                                                                  listener));
     }
 
-    public static void getCheckTypeList(Context context, String token, String doctorCode, String projectName, int page,
-            final ResponseListener<BaseResponse> listener) {
-        Map<String, Object> params = new HashMap<>(16);
-        params.put("currentPage", page);
-        params.put("docCode", doctorCode);
-        if (!TextUtils.isEmpty(projectName)) {
-            params.put("projectName", projectName);
-        }
+    public static void getCheckTypeList(Context context, String token, final ResponseListener<BaseResponse> listener) {
         RetrofitManager.getApiUrlManager()
-                       .getCheckTypeList(token, params)
+                       .getCheckTypeList(token)
                        .compose(RxJavaHelper.observableIO2Main(context))
                        .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_CHECK_TYPE, listener));
     }
@@ -959,7 +952,7 @@ public class RequestUtils {
             imageData.add(body);
         }
         RetrofitManager.getApiUrlManager()
-                       .doctorReport(token, params,imageData)
+                       .doctorReport(token, params, imageData)
                        .compose(RxJavaHelper.observableIO2Main(context))
                        .subscribe(new AbstractLoadViewObserver<>(context, true, false, Tasks.DOCTOR_REPORT, listener));
     }

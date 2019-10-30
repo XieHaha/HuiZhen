@@ -40,6 +40,7 @@ import com.yht.frame.data.bean.RemoteDetailBean;
 import com.yht.frame.data.bean.RemoteHourBean;
 import com.yht.frame.data.bean.ReservationValidateBean;
 import com.yht.frame.data.bean.SelectCheckTypeBean;
+import com.yht.frame.data.bean.SelectCheckTypeParentBean;
 import com.yht.frame.data.bean.TransferDetailBean;
 import com.yht.frame.data.bean.VerifyCodeBean;
 import com.yht.frame.data.bean.VersionBean;
@@ -519,13 +520,11 @@ public interface ApiUrlManager {
     /**
      * 添加检查项目查询(医生端预约检查、选择检查项目)
      *
-     * @param info  map参数
      * @param token token
      * @return 返回值
      */
-    @GET("client/product/checkdoccode")
-    Observable<BaseResponse<List<SelectCheckTypeBean>>> getCheckTypeList(@Header("token") String token,
-            @QueryMap Map<String, Object> info);
+    @GET("client/product/queryProductList")
+    Observable<BaseResponse<List<SelectCheckTypeParentBean>>> getCheckTypeList(@Header("token") String token);
 
     /**
      * 添加检查项目查询 (获取医院下面的)

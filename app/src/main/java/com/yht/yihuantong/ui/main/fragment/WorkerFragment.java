@@ -41,6 +41,7 @@ import com.yht.frame.widgets.menu.TopRightMenu;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ZycApplication;
 import com.yht.yihuantong.ui.WebViewActivity;
+import com.yht.yihuantong.ui.check.SelectCheckTypeActivity;
 import com.yht.yihuantong.ui.check.ServiceHistoryActivity;
 import com.yht.yihuantong.ui.doctor.DoctorInfoActivity;
 import com.yht.yihuantong.ui.hint.NotifyHintActivity;
@@ -360,7 +361,9 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
                 startActivity(intent);
                 break;
             case R.id.view_flipper:
-                flipperDetail();
+                //                flipperDetail();
+                intent = new Intent(getContext(), SelectCheckTypeActivity.class);
+                startActivity(intent);
                 break;
             case R.id.layout_initiate_check:
                 intent = new Intent(getContext(), ServiceHistoryActivity.class);

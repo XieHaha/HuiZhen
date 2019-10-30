@@ -1,51 +1,167 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:fitsSystemWindows="true"
-    android:background="@color/color_ffffff">
+    android:background="@color/color_f8f9fa">
 
-    <include layout="@layout/public_title" />
+    <LinearLayout
+        android:id="@+id/layout_search"
+        android:orientation="horizontal"
+        android:paddingTop="6dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_ffffff">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="38dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="0dp">
+
+            <com.yht.frame.widgets.edittext.SuperEditText
+                android:id="@+id/et_search_check_type"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="@string/txt_add_check_hint"
+                android:textSize="@dimen/text_16"
+                android:textColorHint="@color/color_a1a8b3"
+                android:textColor="@color/color_373d4d"
+                android:imeOptions="actionDone"
+                android:singleLine="true"
+                android:background="@drawable/corner4_ebedf0_bg"
+                android:paddingStart="39dp"
+                android:paddingEnd="16dp"
+                app:hide_left_icon="true" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_search"
+                android:layout_centerVertical="true"
+                android:paddingStart="16dp"
+                android:paddingEnd="0dp" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/cancel"
+            android:gravity="center"
+            android:textColor="@color/color_373d4d"
+            android:textSize="@dimen/text_16"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_filter"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_below="@id/layout_search"
+        android:layout_height="52dp"
+        android:background="@color/color_ffffff">
+
+        <FrameLayout
+            android:id="@+id/layout_all_hospital"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_hospital_btn"
+                android:layout_width="wrap_content"
+                android:gravity="center"
+                android:textColor="@color/color_373d4d"
+                android:text="@string/txt_all_hospitals"
+                android:layout_gravity="center"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:drawableEnd="@drawable/selector_arrow_tab"
+                android:textSize="@dimen/text_16"
+                android:layout_height="match_parent" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/layout_all_service"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_service_btn"
+                android:layout_width="wrap_content"
+                android:gravity="center"
+                android:textColor="@color/color_373d4d"
+                android:text="@string/txt_all_services"
+                android:layout_gravity="center"
+                android:drawableEnd="@drawable/selector_arrow_tab"
+                android:textSize="@dimen/text_16"
+                android:layout_height="match_parent" />
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        android:layout_marginBottom="58dp"
+        android:layout_below="@id/layout_filter" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/hospital_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_below="@id/layout_filter"
+        android:layout_marginBottom="58dp" />
 
     <RelativeLayout
+        android:layout_alignParentBottom="true"
+        android:background="@color/color_ffffff"
         android:layout_width="match_parent"
-        android:layout_height="38dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="24dp">
+        android:layout_height="58dp">
 
-        <com.yht.frame.widgets.edittext.SuperEditText
-            android:id="@+id/et_search_check_type"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="@string/txt_add_check_hint"
-            android:textSize="@dimen/text_16"
-            android:textColorHint="@color/color_a1a8b3"
-            android:textColor="@color/color_373d4d"
-            android:imeOptions="actionDone"
-            android:singleLine="true"
-            android:background="@drawable/corner4_ebedf0_bg"
-            android:paddingStart="39dp"
-            android:paddingEnd="16dp"
-            app:hide_left_icon="true" />
-
-        <ImageView
+        <TextView
+            android:id="@+id/tv_selected"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/ic_search"
+            android:textColor="@color/color_373d4d"
+            android:textSize="@dimen/text_16"
+            android:layout_height="match_parent"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:gravity="center"
             android:layout_centerVertical="true"
-            android:paddingStart="16dp" />
+            android:text="@string/txt_calc_selected_num"
+            android:drawablePadding="5dp"
+            android:drawableEnd="@drawable/selector_arrow_tab" />
+
+        <TextView
+            android:id="@+id/tv_next"
+            android:layout_width="80dp"
+            android:layout_height="42dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="20dp"
+            android:textSize="@dimen/text_16"
+            android:textColor="@color/color_ffffff"
+            android:gravity="center"
+            android:text="@string/txt_sure"
+            android:background="@drawable/corner28_1491fc_bg" />
 
     </RelativeLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="visible">
 
-    </android.support.v7.widget.RecyclerView>
-
-</LinearLayout>
+</RelativeLayout>

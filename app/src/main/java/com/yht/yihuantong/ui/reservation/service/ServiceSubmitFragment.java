@@ -44,7 +44,6 @@ import com.yht.yihuantong.ZycApplication;
 import com.yht.yihuantong.ui.ImagePreviewActivity;
 import com.yht.yihuantong.ui.adapter.CheckTypeListViewAdapter;
 import com.yht.yihuantong.ui.check.SelectCheckTypeActivity;
-import com.yht.yihuantong.ui.check.SelectCheckTypeByHospitalActivity;
 import com.yht.yihuantong.ui.check.listener.OnCheckListener;
 
 import java.io.File;
@@ -233,7 +232,6 @@ public class ServiceSubmitFragment extends BaseFragment
         checkTypeData.add(bean);
         tvSelect.setVisibility(View.GONE);
         layoutCheckRoot.setVisibility(View.VISIBLE);
-        tvHospitalName.setText(bean.getHospitalName());
         initFullListView();
         initNextButton();
     }
@@ -290,7 +288,7 @@ public class ServiceSubmitFragment extends BaseFragment
 
     @OnClick({
             R.id.layout_select_check_type, R.id.tv_delete_all, R.id.layout_upload_one, R.id.iv_delete_one,
-            R.id.tv_submit_next, R.id.layout_add_hospital_check, R.id.layout_upload_two, R.id.layout_signature,
+            R.id.tv_submit_next, R.id.layout_upload_two, R.id.layout_signature,
             R.id.layout_camera })
     public void onViewClicked(View view) {
         Intent intent;
@@ -303,21 +301,6 @@ public class ServiceSubmitFragment extends BaseFragment
                 break;
             case R.id.tv_delete_all:
                 deleteAllSelectCheckType();
-                break;
-            case R.id.layout_add_hospital_check:
-                intent = new Intent(getContext(), SelectCheckTypeByHospitalActivity.class);
-                intent.putExtra(CommonData.KEY_TITLE, checkTypeData.get(0).getHospitalName());
-                intent.putExtra(CommonData.KEY_HOSPITAL_CODE, checkTypeData.get(0).getHospitalCode());
-                StringBuilder builder = new StringBuilder();
-                for (int i = 0; i < checkTypeData.size(); i++) {
-                    SelectCheckTypeBean bean = checkTypeData.get(i);
-                    builder.append(bean.getProjectCode());
-                    if (checkTypeData.size() - 1 != i) {
-                        builder.append(",");
-                    }
-                }
-                intent.putExtra(CommonData.KEY_PUBLIC, builder.toString());
-                startActivityForResult(intent, REQUEST_CODE_SELECT_CHECK);
                 break;
             case R.id.layout_upload_one:
                 if (TextUtils.isEmpty(confirmImageUrl)) {
@@ -407,7 +390,6 @@ public class ServiceSubmitFragment extends BaseFragment
             ArrayList<ReserveCheckTypeBean> list = new ArrayList<>();
             for (SelectCheckTypeBean bean : checkTypeData) {
                 ReserveCheckTypeBean checkBean = new ReserveCheckTypeBean();
-                checkBean.setHospitalCode(bean.getHospitalCode());
                 checkBean.setProductCode(bean.getProjectCode());
                 checkBean.setPrice(bean.getPrice());
                 list.add(checkBean);

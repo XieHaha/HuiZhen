@@ -38,7 +38,7 @@ import com.yht.yihuantong.ui.adapter.ViewPagerAdapter;
 import com.yht.yihuantong.ui.patient.fragment.PatientInfoFragment;
 
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
-import org.litepal.crud.DataSupport;
+import org.litepal.LitePal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -172,8 +172,8 @@ public class ChatContainerActivity extends BaseActivity implements EaseChatFragm
         //通知显示问题
         if (!TextUtils.isEmpty(chatCode)) {
             if (isDoctor) {
-                List<DoctorBean> list = DataSupport.where("doctorCode = ?", chatCode.toUpperCase())
-                                                   .find(DoctorBean.class);
+                List<DoctorBean> list = LitePal.where("doctorCode = ?", chatCode.toUpperCase())
+                                               .find(DoctorBean.class);
                 if (list != null && list.size() > 0) {
                     DoctorBean bean = list.get(0);
                     chatName = bean.getDoctorName();
@@ -182,7 +182,7 @@ public class ChatContainerActivity extends BaseActivity implements EaseChatFragm
                 publicTitleBarRightImg.setVisibility(View.VISIBLE);
             }
             else {
-                List<PatientBean> list = DataSupport.where("code = ?", chatCode.toUpperCase()).find(PatientBean.class);
+                List<PatientBean> list = LitePal.where("code = ?", chatCode.toUpperCase()).find(PatientBean.class);
                 if (list != null && list.size() > 0) {
                     PatientBean bean = list.get(0);
                     chatName = bean.getName();

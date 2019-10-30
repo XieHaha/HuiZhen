@@ -1,6 +1,6 @@
 package com.yht.frame.data.bean;
 
-import org.litepal.crud.DataSupport;
+import org.litepal.crud.LitePalSupport;
 
 import java.io.Serializable;
 
@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @date 19/8/15 18:49
  * @description 医生好友
  */
-public class DoctorBean extends DataSupport implements Serializable {
+public class DoctorBean extends LitePalSupport implements Serializable {
     private static final long serialVersionUID = 3455599584716949569L;
     private String departmentName;
     private String doctorCode;

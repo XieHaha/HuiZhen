@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.yht.frame.data.bean.SelectCheckTypeBean;
-import com.yht.frame.utils.BaseUtils;
 import com.yht.yihuantong.R;
 
 import java.util.List;
@@ -22,9 +21,6 @@ public class SelectCheckTypeAdapter extends BaseQuickAdapter<SelectCheckTypeBean
 
     @Override
     protected void convert(BaseViewHolder helper, SelectCheckTypeBean item) {
-        helper.setText(R.id.tv_hospital_name, item.getHospitalName())
-              .setText(R.id.tv_check_type_name, item.getProjectName())
-              .setText(R.id.tv_price,
-                       String.format(mContext.getString(R.string.txt_price), BaseUtils.getPrice(item.getPrice())));
+        helper.setText(R.id.tv_hospital_name, item.getHospitalName());
     }
 }

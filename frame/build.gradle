@@ -44,7 +44,7 @@ dependencies {
     //rxjava框架
     api 'com.trello.rxlifecycle2:rxlifecycle-components:2.1.0'
     //数据库
-    api 'org.litepal.android:core:1.6.1'
+    api 'org.litepal.android:java:3.0.0'
     //适配界面
 //    api 'me.jessyan:autosize:1.1.2'
     //知乎

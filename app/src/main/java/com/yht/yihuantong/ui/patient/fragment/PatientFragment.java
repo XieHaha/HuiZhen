@@ -38,7 +38,7 @@ import com.yht.yihuantong.ui.patient.ChatContainerActivity;
 import com.yht.yihuantong.ui.patient.LabelGroupActivity;
 import com.yht.yihuantong.ui.patient.RecentPatientGroupActivity;
 
-import org.litepal.crud.DataSupport;
+import org.litepal.LitePal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -196,7 +196,7 @@ public class PatientFragment extends BaseFragment
      */
     public void getPatientsByLocal() {
         //先从本地取
-        patientBeans = DataSupport.findAll(PatientBean.class);
+        patientBeans = LitePal.findAll(PatientBean.class);
         if (patientBeans != null) {
             sortData();
             patientAdapter.setNewData(patientBeans);

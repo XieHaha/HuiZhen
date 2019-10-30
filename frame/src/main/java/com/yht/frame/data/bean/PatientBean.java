@@ -2,7 +2,7 @@ package com.yht.frame.data.bean;
 
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 
-import org.litepal.crud.DataSupport;
+import org.litepal.crud.LitePalSupport;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
  *
  * @author dundun
  */
-public class PatientBean extends DataSupport implements Serializable, MultiItemEntity {
+public class PatientBean extends LitePalSupport implements Serializable, MultiItemEntity {
     private static final long serialVersionUID = -8620697034094662215L;
     private int age;
     private int sex;

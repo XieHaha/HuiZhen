@@ -1,6 +1,6 @@
 package com.yht.frame.data.bean;
 
-import org.litepal.crud.DataSupport;
+import org.litepal.crud.LitePalSupport;
 
 import java.io.Serializable;
 
@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @date 19/8/15 18:49
  * @description 医生扫码后信息
  */
-public class DoctorQrCodeBean extends DataSupport implements Serializable {
+public class DoctorQrCodeBean extends LitePalSupport implements Serializable {
     private static final long serialVersionUID = -3592347450050434576L;
     private String code;
     private String photo;
