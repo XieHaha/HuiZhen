@@ -1,9 +1,11 @@
 package com.yht.frame.data.bean;
 
+import org.litepal.LitePal;
 import org.litepal.crud.LitePalSupport;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author 顿顿
@@ -83,6 +85,10 @@ public class SelectCheckTypeBean extends LitePalSupport implements Serializable 
 
     public void setProductInfoList(ArrayList<SelectCheckTypeChildBean> productInfoList) {
         this.productInfoList = productInfoList;
+    }
+
+    public List<SelectCheckTypeChildBean> getChildServiceTypes(String id) {
+        return LitePal.where("parentId=?", id).find(SelectCheckTypeChildBean.class);
     }
 
     @Override

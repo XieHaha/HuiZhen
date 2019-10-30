@@ -159,7 +159,7 @@
             android:textColor="@color/color_ffffff"
             android:gravity="center"
             android:text="@string/txt_sure"
-            android:background="@drawable/corner28_1491fc_bg" />
+            android:background="@drawable/selector_public_next" />
 
     </RelativeLayout>
 

@@ -9,8 +9,6 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.yht.frame.api.LitePalHelper;
 import com.yht.frame.api.ThreadPoolHelper;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.Tasks;
@@ -21,14 +19,14 @@ import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.widgets.edittext.AbstractTextWatcher;
 import com.yht.frame.widgets.edittext.SuperEditText;
-import com.yht.frame.widgets.recyclerview.decoration.SideBarItemDecoration;
 import com.yht.yihuantong.R;
-import com.yht.yihuantong.ui.adapter.SelectCheckTypeAdapter;
+import com.yht.yihuantong.ui.adapter.SelectCheckTypeParentAdapter;
 
 import org.litepal.LitePal;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -38,7 +36,7 @@ import butterknife.OnClick;
  * @date 19/6/4 17:53
  * @des 医院选择
  */
-public class SelectCheckTypeActivity extends BaseActivity implements BaseQuickAdapter.OnItemClickListener {
+public class SelectCheckTypeActivity extends BaseActivity implements SelectCheckTypeParentAdapter.OnSelectedCallback {
     @BindView(R.id.et_search_check_type)
     SuperEditText etSearchCheckType;
     @BindView(R.id.tv_cancel)
@@ -59,19 +57,14 @@ public class SelectCheckTypeActivity extends BaseActivity implements BaseQuickAd
     RecyclerView hospitalRecyclerView;
     @BindView(R.id.tv_selected)
     TextView tvSelected;
-    /**
-     * 医院title
-     */
-    private SideBarItemDecoration decoration;
-    private SelectCheckTypeAdapter selectCheckTypeAdapter;
+    @BindView(R.id.tv_next)
+    TextView tvNext;
+    private SelectCheckTypeParentAdapter selectCheckTypeParentAdapter;
     /**
      * 医院数据
      */
     private List<SelectCheckTypeParentBean> selectCheckTypeParentBeans = new ArrayList<>();
-    /**
-     * 服务包 服务项数据
-     */
-    private List<SelectCheckTypeBean> selectCheckTypeBeans = new ArrayList<>();
+    private Map<Integer, ArrayList<Integer>> selectedPositions;
 
     @Override
     protected boolean isInitBackBtn() {
@@ -87,10 +80,10 @@ public class SelectCheckTypeActivity extends BaseActivity implements BaseQuickAd
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.addItemDecoration(decoration = new SideBarItemDecoration(this));
-        selectCheckTypeAdapter = new SelectCheckTypeAdapter(R.layout.item_check_select, selectCheckTypeBeans);
-        selectCheckTypeAdapter.setOnItemClickListener(this);
-        recyclerView.setAdapter(selectCheckTypeAdapter);
+        selectCheckTypeParentAdapter = new SelectCheckTypeParentAdapter(R.layout.item_check_select_root,
+                                                                        selectCheckTypeParentBeans);
+        selectCheckTypeParentAdapter.setOnSelectedCallback(this);
+        recyclerView.setAdapter(selectCheckTypeParentAdapter);
         getCheckTypeListByLocal();
         //本地没有数据
         if (selectCheckTypeParentBeans.size() == 0) {
@@ -113,9 +106,8 @@ public class SelectCheckTypeActivity extends BaseActivity implements BaseQuickAd
      * 获取本地数据
      */
     private void getCheckTypeListByLocal() {
-        selectCheckTypeParentBeans = LitePal.findAll(SelectCheckTypeParentBean.class);
-        selectCheckTypeBeans = LitePal.findAll(SelectCheckTypeBean.class, true);
-        selectCheckTypeAdapter.setNewData(selectCheckTypeBeans);
+        selectCheckTypeParentBeans = LitePal.findAll(SelectCheckTypeParentBean.class, true);
+        selectCheckTypeParentAdapter.setNewData(selectCheckTypeParentBeans);
     }
 
     /**
@@ -145,8 +137,12 @@ public class SelectCheckTypeActivity extends BaseActivity implements BaseQuickAd
     }
 
     @Override
-    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        hideSoftInputFromWindow();
+    public void onSelected(Map<Integer, ArrayList<Integer>> positions) {
+        selectedPositions = positions;
+        if (positions.size() > 0) {
+            tvNext.setSelected(true);
+        }
+        else { tvNext.setSelected(false); }
     }
 
     @Override
@@ -154,51 +150,43 @@ public class SelectCheckTypeActivity extends BaseActivity implements BaseQuickAd
         super.onResponseSuccess(task, response);
         if (task == Tasks.GET_CHECK_TYPE) {
             List<SelectCheckTypeParentBean> list = (List<SelectCheckTypeParentBean>)response.getData();
-            //重新组合数据
-            splitData(list);
+            saveLocal(list);
+            selectCheckTypeParentAdapter.setNewData(list);
         }
     }
 
     /**
-     * 去掉医院层级关系
+     * 已选择的服务包、服务项数据
      */
-    private void splitData(List<SelectCheckTypeParentBean> list) {
-        ArrayList<SelectCheckTypeBean> newData = new ArrayList<>();
-        for (SelectCheckTypeParentBean parentBean : list) {
-            List<SelectCheckTypeBean> beans = parentBean.getProductPackageList();
-            for (SelectCheckTypeBean bean : beans) {
-                bean.setHospitalCode(parentBean.getHospitalCode());
-                bean.setHospitalName(parentBean.getHospitalName());
-                newData.add(bean);
-            }
-        }
-        selectCheckTypeAdapter.setNewData(newData);
-        //保存医院数据
-        new LitePalHelper<SelectCheckTypeParentBean>().updateAll(list, SelectCheckTypeParentBean.class);
-        //保存服务包、服务项数据
-        saveLocal(newData);
+    private void selectedServiceData() {
     }
 
     /**
      * 保存到数据库
      */
-    private void saveLocal(ArrayList<SelectCheckTypeBean> list) {
+    private void saveLocal(List<SelectCheckTypeParentBean> list) {
         //保存数据
         ThreadPoolHelper.getInstance().execInSingle(() -> {
+            LitePal.deleteAll(SelectCheckTypeParentBean.class);
             LitePal.deleteAll(SelectCheckTypeBean.class);
             LitePal.deleteAll(SelectCheckTypeChildBean.class);
-            for (int j = 0; j < list.size(); j++) {
-                SelectCheckTypeBean oneBean = list.get(j);
-                List<SelectCheckTypeChildBean> twoBeans = oneBean.getProductInfoList();
-                if (twoBeans != null) {
-                    List<SelectCheckTypeChildBean> newTwoBeans = new ArrayList<>();
-                    for (int k = 0; k < twoBeans.size(); k++) {
-                        SelectCheckTypeChildBean twoBean = twoBeans.get(k);
-                        twoBean.setParentId(oneBean.getProjectCode());
-                        newTwoBeans.add(twoBean);
+            for (int i = 0; i < list.size(); i++) {
+                SelectCheckTypeParentBean parentBean = list.get(i);
+                ArrayList<SelectCheckTypeBean> oneBeans = parentBean.getProductPackageList();
+                for (int j = 0; j < oneBeans.size(); j++) {
+                    SelectCheckTypeBean oneBean = oneBeans.get(j);
+                    List<SelectCheckTypeChildBean> twoBeans = oneBean.getProductInfoList();
+                    if (twoBeans != null) {
+                        List<SelectCheckTypeChildBean> newTwoBeans = new ArrayList<>();
+                        for (int k = 0; k < twoBeans.size(); k++) {
+                            SelectCheckTypeChildBean twoBean = twoBeans.get(k);
+                            twoBean.setParentId(oneBean.getProjectCode());
+                            newTwoBeans.add(twoBean);
+                        }
+                        LitePal.saveAll(newTwoBeans);
                     }
-                    LitePal.saveAll(newTwoBeans);
                 }
+                LitePal.saveAll(oneBeans);
             }
             LitePal.saveAll(list);
         });
