@@ -8,7 +8,6 @@
     android:layout_marginStart="12dp"
     android:layout_marginEnd="12dp"
     android:paddingEnd="20dp"
-    android:paddingBottom="20dp"
     android:layout_marginTop="12dp">
 
     <LinearLayout
@@ -56,8 +55,41 @@
         android:layout_height="wrap_content"
         android:text="@string/txt_hint"
         android:layout_marginTop="10dp"
+        android:paddingBottom="20dp"
         android:paddingStart="10dp"
+        android:paddingEnd="0dp"
         android:textSize="@dimen/text_16"
         android:textColor="@color/color_373d4d" />
+
+
+    <RelativeLayout
+        android:id="@+id/layout_detail"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="42dp">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/app_hei_line"
+            android:background="@color/color_ebedf0"
+            android:layout_marginStart="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/txt_detail"
+            android:textSize="@dimen/text_13"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="0dp"
+            android:textColor="@color/color_a1a8b3" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_right"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true" />
+    </RelativeLayout>
 
 </LinearLayout>

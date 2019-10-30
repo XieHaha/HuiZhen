@@ -56,7 +56,6 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
-import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -175,7 +174,7 @@ public interface ApiUrlManager {
      * @param token token
      * @return 返回值
      */
-    @PUT("client/msg/allRead")
+    @POST("client/msg/allRead")
     Observable<BaseResponse<String>> updateAppUnReadMessageAll(@Header("token") String token);
 
     /**
@@ -185,7 +184,7 @@ public interface ApiUrlManager {
      * @param id    id
      * @return 返回值
      */
-    @PUT("client/msg/read/{id}")
+    @POST("client/msg/read/{id}")
     Observable<BaseResponse<String>> updateAppUnReadMessageById(@Header("token") String token, @Path("id") int id);
 
     /**
@@ -195,7 +194,7 @@ public interface ApiUrlManager {
      * @param unionId id
      * @return 返回值
      */
-    @PUT("client/msg/readByUid/{unionId}")
+    @POST("client/msg/readByUid/{unionId}")
     Observable<BaseResponse<String>> updateAppUnReadMessageByNotify(@Header("token") String token,
             @Path("unionId") String unionId);
 
