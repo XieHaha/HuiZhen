@@ -202,7 +202,7 @@ public class HospitalDetailActivity extends BaseActivity implements AdapterView.
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Intent intent = new Intent(this, ServiceDetailActivity.class);
+        Intent intent = new Intent(this, HospitalServiceDetailActivity.class);
         intent.putExtra(CommonData.KEY_PUBLIC_STRING, hospitalProductBeans.get(position).getProjectCode());
         startActivity(intent);
     }

@@ -391,7 +391,7 @@
             android:label=""
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
-            android:name=".ui.hospital.ServiceDetailActivity"
+            android:name=".ui.hospital.HospitalServiceDetailActivity"
             android:screenOrientation="portrait"
             android:label="@string/title_service_detail"
             android:windowSoftInputMode="adjustResize|stateHidden" />
@@ -437,6 +437,11 @@
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.check.AddDiagnosisActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/title_add_diagnosis"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".ui.check.DiagnosisDetailActivity"
             android:screenOrientation="portrait"
             android:label="@string/title_add_diagnosis"
             android:windowSoftInputMode="adjustResize|stateHidden" />

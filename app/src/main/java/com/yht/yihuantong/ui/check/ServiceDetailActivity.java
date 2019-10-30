@@ -462,7 +462,17 @@ public class ServiceDetailActivity extends BaseActivity
             TextView textView = view.findViewById(R.id.tv_check_report_name);
             textView.setText(bean.getName());
             view.setTag(i);
-            view.setOnClickListener(v -> FileDisplayActivity.show(this, newReportUrls, (Integer)v.getTag()));
+            view.setOnClickListener(v -> {
+                if (bean.getSuggestionType() == SUGGESTION_TYPE_DOCTOR) {
+                    Intent intent = new Intent(ServiceDetailActivity.this, DiagnosisDetailActivity.class);
+                    intent.putExtra(CommonData.KEY_CHECK_REPORT_LIST, getDoctorReportList(bean.getId()));
+                    intent.putExtra(CommonData.KEY_PUBLIC, curPosition);
+                    startActivity(intent);
+                }
+                else {
+                    FileDisplayActivity.show(this, getOtherReportList(), (Integer)v.getTag());
+                }
+            });
             layoutCheckReport.addView(view);
         }
     }
@@ -475,6 +485,14 @@ public class ServiceDetailActivity extends BaseActivity
         for (int i = 0; i < reportList.size(); i++) {
             CheckTypeByDetailBean bean = reportList.get(i);
             String reportUrl = bean.getReport();
+            //医生回执的不拆分
+            if (bean.getSuggestionType() == SUGGESTION_TYPE_DOCTOR) {
+                String name = bean.getName();
+                bean.setName(String.format(getString(R.string.txt_report_name), name));
+                bean.setReport(reportUrl);
+                newReportUrls.add(bean);
+                continue;
+            }
             String[] reportUrls = reportUrl.split(";");
             if (reportUrls.length > 1) {
                 for (int j = 0; j < reportUrls.length; j++) {
@@ -483,6 +501,8 @@ public class ServiceDetailActivity extends BaseActivity
                     checkTypeByDetailBean.setName(
                             String.format(getString(R.string.txt_report_name_by_num), name, (j + 1)));
                     checkTypeByDetailBean.setReport(reportUrls[j]);
+                    checkTypeByDetailBean.setSuggestionType(bean.getSuggestionType());
+                    checkTypeByDetailBean.setId(bean.getId());
                     newReportUrls.add(checkTypeByDetailBean);
                 }
             }
@@ -493,6 +513,39 @@ public class ServiceDetailActivity extends BaseActivity
                 newReportUrls.add(bean);
             }
         }
+    }
+
+    int curPosition = -1;
+
+    /**
+     * 获取医生诊断意见数据
+     */
+    private ArrayList<CheckTypeByDetailBean> getDoctorReportList(int id) {
+        ArrayList<CheckTypeByDetailBean> newData = new ArrayList<>();
+        for (int i = 0; i < reportList.size(); i++) {
+            CheckTypeByDetailBean bean = reportList.get(i);
+            if (bean.getSuggestionType() == SUGGESTION_TYPE_DOCTOR) {
+                newData.add(bean);
+                //当前点击的position
+                if (bean.getId() == id) {
+                    curPosition = newData.size() - 1;
+                }
+            }
+        }
+        return newData;
+    }
+
+    /**
+     * 获取其他报告数据
+     */
+    private ArrayList<CheckTypeByDetailBean> getOtherReportList() {
+        ArrayList<CheckTypeByDetailBean> newData = new ArrayList<>();
+        for (CheckTypeByDetailBean bean : newReportUrls) {
+            if (bean.getSuggestionType() != SUGGESTION_TYPE_DOCTOR) {
+                newData.add(bean);
+            }
+        }
+        return newData;
     }
 
     private SpannableString appendImage(int status, String showText) {

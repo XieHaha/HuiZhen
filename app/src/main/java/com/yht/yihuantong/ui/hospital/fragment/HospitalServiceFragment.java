@@ -21,7 +21,7 @@ import com.yht.frame.widgets.LoadViewHelper;
 import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.adapter.HospitalProductAdapter;
-import com.yht.yihuantong.ui.hospital.ServiceDetailActivity;
+import com.yht.yihuantong.ui.hospital.HospitalServiceDetailActivity;
 
 import java.util.ArrayList;
 
@@ -96,7 +96,7 @@ public class HospitalServiceFragment extends BaseFragment
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        Intent intent = new Intent(getContext(), ServiceDetailActivity.class);
+        Intent intent = new Intent(getContext(), HospitalServiceDetailActivity.class);
         intent.putExtra(CommonData.KEY_HOSPITAL_PRODUCT_BEAN, hospitalProductBeans.get(position));
         startActivity(intent);
     }

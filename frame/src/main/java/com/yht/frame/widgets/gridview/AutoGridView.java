@@ -32,6 +32,10 @@ public class AutoGridView extends RelativeLayout {
     private int gvWidth, gvHeight, imgWidth, imgSpace, imgPadding, numColumns = 4;
     private ArrayList<NormImage> images;
     private Context context;
+    /**
+     * 是否显示添加按钮及删除按钮
+     */
+    private boolean isAdd;
 
     public AutoGridView(Context context) {
         super(context);
@@ -80,6 +84,7 @@ public class AutoGridView extends RelativeLayout {
     }
 
     public void updateImg(ArrayList<NormImage> bitmaps, boolean isAdd) {
+        this.isAdd = isAdd;
         images.clear();
         images.addAll(bitmaps);
         if (bitmaps.size() < BaseData.BASE_IMAGE_SIZE_MAX && isAdd) {
@@ -134,7 +139,7 @@ public class AutoGridView extends RelativeLayout {
                 holder = (ViewHolder)convertView.getTag();
             }
             String url = images.get(position).getImageUrl();
-            if (!TextUtils.isEmpty(url)) {
+            if (!TextUtils.isEmpty(url) && isAdd) {
                 holder.ivDelete.setVisibility(VISIBLE);
                 holder.ivDelete.setOnClickListener(v -> {
                     if (onDeleteClickListener != null) {
