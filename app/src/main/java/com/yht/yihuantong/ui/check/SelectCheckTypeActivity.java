@@ -382,9 +382,25 @@ public class SelectCheckTypeActivity extends BaseActivity
         layoutFilterContentRoot.setVisibility(View.GONE);
     }
 
+    /**
+     * 刷新数据
+     */
+    private void refreshData() {
+        //默认选中全部医院、全部服务
+        curHospital = getString(R.string.txt_all_hospitals);
+        curServiceType = getString(R.string.txt_all_services);
+        //清除搜索已选状态
+        filterType = BASE_ONE;
+        selectedCodes.clear();
+        tvSelected.setText(String.format(getString(R.string.txt_calc_selected_num), selectedCodes.size()));
+        tvNext.setSelected(false);
+        //重新从服务器拉取数据
+        getCheckTypeList();
+    }
+
     @OnClick({
             R.id.tv_cancel, R.id.layout_all_hospital, R.id.layout_all_service, R.id.tv_selected, R.id.tv_next,
-            R.id.layout_bg })
+            R.id.layout_bg, R.id.tv_none_refresh })
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_cancel:
@@ -425,11 +441,16 @@ public class SelectCheckTypeActivity extends BaseActivity
             case R.id.tv_selected:
                 break;
             case R.id.tv_next:
+                if (tvNext.isSelected()) {
+                }
                 break;
             case R.id.layout_bg:
                 hideFilterLayout();
                 break;
             case R.id.tv_none_refresh:
+                etSearchCheckType.setText("");
+                layoutSearchNone.setVisibility(View.GONE);
+                refreshData();
                 break;
             default:
                 break;
@@ -485,12 +506,6 @@ public class SelectCheckTypeActivity extends BaseActivity
             saveLocal(list);
             bindServiceListData();
         }
-    }
-
-    /**
-     * 已选择的服务包、服务项数据
-     */
-    private void selectedServiceData() {
     }
 
     /**
