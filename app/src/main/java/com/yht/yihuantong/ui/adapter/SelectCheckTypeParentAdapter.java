@@ -1,8 +1,6 @@
 package com.yht.yihuantong.ui.adapter;
 
 import android.support.annotation.Nullable;
-import android.view.View;
-import android.widget.AdapterView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -22,9 +20,9 @@ import java.util.Map;
  */
 public class SelectCheckTypeParentAdapter extends BaseQuickAdapter<SelectCheckTypeParentBean, BaseViewHolder> {
     /**
-     * 已选择position
+     * 已选择code
      */
-    private Map<Integer, ArrayList<Integer>> positions = new HashMap<>();
+    private Map<String, ArrayList<String>> listMap = new HashMap<>();
 
     public SelectCheckTypeParentAdapter(int layoutResId, @Nullable List<SelectCheckTypeParentBean> data) {
         super(layoutResId, data);
@@ -36,33 +34,33 @@ public class SelectCheckTypeParentAdapter extends BaseQuickAdapter<SelectCheckTy
         FullListView listView = helper.getView(R.id.full_list_view);
         SelectCheckTypeAdapter selectCheckTypeAdapter = new SelectCheckTypeAdapter(mContext);
         selectCheckTypeAdapter.setList(item.getProductPackageList());
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                int parentPosition = helper.getAdapterPosition();
-                ArrayList<Integer> childPositions;
-                if (positions.containsKey(parentPosition)) {
-                    childPositions = positions.get(parentPosition);
-                    if (childPositions.contains(position)) {
-                        childPositions.remove(Integer.valueOf(position));
-                        //如果已经没有已选中的服务项，需移除key
-                        if (childPositions.size() == 0) {
-                            positions.remove(parentPosition);
-                        }
-                    }
-                    else {
-                        childPositions.add(position);
-                    }
+        selectCheckTypeAdapter.setSelectCodes(listMap.get(item.getHospitalCode()));
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+            ArrayList<String> childCodes;
+            String newCode = item.getProductPackageList().get(position).getProjectCode();
+            if (listMap.containsKey(item.getHospitalCode())) {
+                childCodes = listMap.get(item.getHospitalCode());
+                if (childCodes.contains(newCode)) {
+                    childCodes.remove(newCode);
                 }
                 else {
-                    childPositions = new ArrayList<>();
-                    childPositions.add(position);
+                    childCodes.add(newCode);
                 }
-                positions.put(parentPosition, childPositions);
-                selectCheckTypeAdapter.setSelectPositions(positions.get(parentPosition));
-                if (onSelectedCallback != null) {
-                    onSelectedCallback.onSelected(positions);
-                }
+            }
+            else {
+                childCodes = new ArrayList<>();
+                childCodes.add(newCode);
+            }
+            //如果已经没有已选中的服务项，需移除key
+            if (childCodes.size() == 0) {
+                listMap.remove(item.getHospitalCode());
+            }
+            else {
+                listMap.put(item.getHospitalCode(), childCodes);
+            }
+            selectCheckTypeAdapter.setSelectCodes(listMap.get(item.getHospitalCode()));
+            if (onSelectedCallback != null) {
+                onSelectedCallback.onSelected(listMap);
             }
         });
         listView.setAdapter(selectCheckTypeAdapter);
@@ -72,9 +70,9 @@ public class SelectCheckTypeParentAdapter extends BaseQuickAdapter<SelectCheckTy
         /**
          * 选择回调
          *
-         * @param positions 已选择的坐标
+         * @param data 已选择的code
          */
-        void onSelected(Map<Integer, ArrayList<Integer>> positions);
+        void onSelected(Map<String, ArrayList<String>> data);
     }
 
     private OnSelectedCallback onSelectedCallback;

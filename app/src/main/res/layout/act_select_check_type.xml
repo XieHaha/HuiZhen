@@ -164,4 +164,10 @@
     </RelativeLayout>
 
 
+    <include
+        layout="@layout/view_select_service_hospital"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layout_filter" />
+
 </RelativeLayout>

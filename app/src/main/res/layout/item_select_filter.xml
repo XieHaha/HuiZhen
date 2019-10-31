@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="43dp"
+    android:orientation="horizontal"
+    android:paddingTop="11dp"
+    android:paddingStart="20dp"
+    android:paddingEnd="20dp">
+
+    <TextView
+        android:id="@+id/tv_hospital_name"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:textColor="@color/txt_color_373d4d_1491fc_selector"
+        android:textSize="@dimen/text_16"
+        tools:text="医院" />
+
+    <ImageView
+        android:id="@+id/iv_hook"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_blue_hook"
+        android:layout_marginTop="8dp"
+        android:visibility="gone"
+        android:layout_marginStart="6dp" />
+
+</LinearLayout>

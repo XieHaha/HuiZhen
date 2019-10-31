@@ -24,7 +24,13 @@ import java.util.List;
  */
 public class SelectCheckTypeAdapter extends BaseAdapter {
     private Context context;
-    private ArrayList<Integer> selectPositions = new ArrayList<>();
+    /**
+     * 服务项、服务包code
+     */
+    private ArrayList<String> selectCodes = new ArrayList<>();
+    /**
+     * 服务项、服务包列表
+     */
     private List<SelectCheckTypeBean> list = new ArrayList<>();
 
     public SelectCheckTypeAdapter(Context context) {
@@ -39,8 +45,8 @@ public class SelectCheckTypeAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    public void setSelectPositions(ArrayList<Integer> selectPositions) {
-        this.selectPositions = selectPositions;
+    public void setSelectCodes(ArrayList<String> selectPositions) {
+        this.selectCodes = selectPositions;
         notifyDataSetChanged();
     }
 
@@ -83,7 +89,7 @@ public class SelectCheckTypeAdapter extends BaseAdapter {
         holder.tvName.setText(item.getProjectName());
         holder.tvPrice.setText(
                 String.format(context.getString(R.string.txt_price), BaseUtils.getPrice(item.getPrice())));
-        if (selectPositions.contains(position)) {
+        if (selectCodes != null && selectCodes.contains(item.getProjectCode())) {
             holder.ivSelect.setSelected(true);
         }
         else { holder.ivSelect.setSelected(false); }
