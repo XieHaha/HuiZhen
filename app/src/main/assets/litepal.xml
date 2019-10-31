@@ -38,6 +38,7 @@
         <mapping class="com.yht.frame.data.bean.SelectCheckTypeParentBean" />
         <mapping class="com.yht.frame.data.bean.SelectCheckTypeBean" />
         <mapping class="com.yht.frame.data.bean.SelectCheckTypeChildBean" />
+        <mapping class="com.yht.frame.data.bean.RecentlyUsedServiceBean" />
     </list>
 
     <!--

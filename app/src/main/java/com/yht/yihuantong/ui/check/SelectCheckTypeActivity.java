@@ -15,6 +15,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.yht.frame.api.ThreadPoolHelper;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.Tasks;
+import com.yht.frame.data.bean.RecentlyUsedServiceBean;
 import com.yht.frame.data.bean.SelectCheckTypeBean;
 import com.yht.frame.data.bean.SelectCheckTypeChildBean;
 import com.yht.frame.data.bean.SelectCheckTypeParentBean;
@@ -30,6 +31,7 @@ import com.yht.yihuantong.ui.adapter.SelectCheckTypeParentAdapter;
 import org.litepal.LitePal;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -71,6 +73,10 @@ public class SelectCheckTypeActivity extends BaseActivity
     ExpandableLayout layoutExpandable;
     @BindView(R.id.layout_filter_content_root)
     RelativeLayout layoutFilterContentRoot;
+    @BindView(R.id.tv_none)
+    TextView tvNone;
+    @BindView(R.id.layout_none)
+    RelativeLayout layoutNone;
     /**
      * 服务项
      */
@@ -96,6 +102,10 @@ public class SelectCheckTypeActivity extends BaseActivity
      */
     private ArrayList<String> filterServiceData;
     /**
+     * 最近使用的服务项、服务包code
+     */
+    private List<String> recentlyUsedServiceData;
+    /**
      * 当前选中的医院、选中的服务（全部服务or最近使用）
      */
     private String curHospital, curServiceType;
@@ -106,7 +116,7 @@ public class SelectCheckTypeActivity extends BaseActivity
     /**
      * 已选中的服务项、服务包
      */
-    private Map<String, ArrayList<String>> selectedServices;
+    private Map<String, ArrayList<String>> selectedServices = new HashMap<>();
 
     @Override
     protected boolean isInitBackBtn() {
@@ -135,11 +145,13 @@ public class SelectCheckTypeActivity extends BaseActivity
         selectCheckTypeFilterAdapter = new SelectCheckTypeFilterAdapter(R.layout.item_select_filter, new ArrayList<>());
         selectCheckTypeFilterAdapter.setOnItemClickListener(this);
         filterRecyclerView.setAdapter(selectCheckTypeFilterAdapter);
+        tvSelected.setText(String.format(getString(R.string.txt_calc_selected_num), selectedServices.size()));
     }
 
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
+        getRecentlyUsedListByLocal();
         getCheckTypeListByLocal();
         //本地没有数据
         if (selectCheckTypeParentBeans.size() == 0) {
@@ -167,6 +179,17 @@ public class SelectCheckTypeActivity extends BaseActivity
     }
 
     /**
+     * 获取最近使用数据
+     */
+    private void getRecentlyUsedListByLocal() {
+        recentlyUsedServiceData = new ArrayList<>();
+        List<RecentlyUsedServiceBean> list = LitePal.findAll(RecentlyUsedServiceBean.class);
+        for (RecentlyUsedServiceBean bean : list) {
+            recentlyUsedServiceData.add(bean.getCode());
+        }
+    }
+
+    /**
      * 获取检查项 全部
      */
     private void getCheckTypeList() {
@@ -185,18 +208,70 @@ public class SelectCheckTypeActivity extends BaseActivity
      * 服务项筛选数据集合
      */
     private void bindFilterServiceListData() {
-        if (TextUtils.equals(curHospital, getString(R.string.txt_all_hospitals))) {
-            selectCheckTypeParentAdapter.setNewData(selectCheckTypeParentBeans);
-            return;
-        }
+        //重新拉取本地数据
+        selectCheckTypeParentBeans = LitePal.findAll(SelectCheckTypeParentBean.class, true);
         filterCheckTypeParentBeans.clear();
-        for (SelectCheckTypeParentBean bean : selectCheckTypeParentBeans) {
-            if (TextUtils.equals(bean.getHospitalName(), curHospital)) {
-                filterCheckTypeParentBeans.add(bean);
-                break;
+        if (TextUtils.equals(curHospital, getString(R.string.txt_all_hospitals)) &&
+            TextUtils.equals(curServiceType, getString(R.string.txt_all_services))) {
+            //当前筛选条件为 全部医院、全部服务
+            filterCheckTypeParentBeans.addAll(selectCheckTypeParentBeans);
+        }
+        else {
+            if (TextUtils.equals(curHospital, getString(R.string.txt_all_hospitals))) {
+                //医院条件为全部医院  最近使用
+                for (SelectCheckTypeParentBean parentBean : selectCheckTypeParentBeans) {
+                    List<SelectCheckTypeBean> beans = parentBean.getProductPackageList();
+                    ArrayList<SelectCheckTypeBean> filterBeans = new ArrayList<>();
+                    for (SelectCheckTypeBean bean : beans) {
+                        //筛选出最近使用
+                        if (recentlyUsedServiceData.contains(bean.getProjectCode())) {
+                            filterBeans.add(bean);
+                        }
+                    }
+                    //当含有服务项数据才添加
+                    if (filterBeans.size() > 0) {
+                        parentBean.setProductPackageList(filterBeans);
+                        filterCheckTypeParentBeans.add(parentBean);
+                    }
+                }
+            }
+            else {
+                for (SelectCheckTypeParentBean parentBean : selectCheckTypeParentBeans) {
+                    if (TextUtils.equals(curHospital, parentBean.getHospitalName())) {
+                        if (!TextUtils.equals(curServiceType, getString(R.string.txt_all_services))) {
+                            //筛选条件为单个医院 最近服务
+                            List<SelectCheckTypeBean> beans = parentBean.getProductPackageList();
+                            ArrayList<SelectCheckTypeBean> filterBeans = new ArrayList<>();
+                            for (SelectCheckTypeBean bean : beans) {
+                                //筛选出最近使用
+                                if (recentlyUsedServiceData.contains(bean.getProjectCode())) {
+                                    filterBeans.add(bean);
+                                }
+                            }
+                            parentBean.setProductPackageList(filterBeans);
+                        }
+                        //当含有服务项数据才添加
+                        if (parentBean.getProductPackageList().size() > 0) {
+                            filterCheckTypeParentBeans.add(parentBean);
+                        }
+                        break;
+                    }
+                }
             }
         }
         selectCheckTypeParentAdapter.setNewData(filterCheckTypeParentBeans);
+        if (filterCheckTypeParentBeans.size() == 0) {
+            layoutNone.setVisibility(View.VISIBLE);
+            if (TextUtils.equals(curServiceType, getString(R.string.txt_all_services))) {
+                tvNone.setText(R.string.txt_none_service);
+            }
+            else {
+                tvNone.setText(R.string.txt_none_recently_used_service);
+            }
+        }
+        else {
+            layoutNone.setVisibility(View.GONE);
+        }
     }
 
     /**
@@ -295,12 +370,12 @@ public class SelectCheckTypeActivity extends BaseActivity
         if (filterType == BASE_ONE) {
             curHospital = filterHospitalData.get(position);
             tvHospitalBtn.setText(curHospital);
-            bindFilterServiceListData();
         }
         else {
             curServiceType = filterServiceData.get(position);
             tvServiceBtn.setText(curServiceType);
         }
+        bindFilterServiceListData();
         hideFilterLayout();
     }
 

@@ -163,6 +163,30 @@
 
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/layout_none"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="58dp"
+        android:visibility="gone"
+        android:layout_below="@id/layout_filter"
+        android:background="@color/color_f8f9fa">
+
+        <TextView
+            android:id="@+id/tv_none"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="43dp"
+            android:drawableTop="@mipmap/pic_none_service"
+            android:text="@string/txt_none_service"
+            android:textSize="15sp"
+            android:gravity="center"
+            android:textColor="@color/color_6a6f80"
+            android:layout_marginTop="120dp"
+            android:layout_centerHorizontal="true" />
+
+    </RelativeLayout>
+
 
     <include
         layout="@layout/view_select_service_hospital"
