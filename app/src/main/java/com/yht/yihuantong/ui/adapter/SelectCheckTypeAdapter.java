@@ -47,7 +47,6 @@ public class SelectCheckTypeAdapter extends BaseAdapter {
 
     public void setSelectCodes(ArrayList<String> selectPositions) {
         this.selectCodes = selectPositions;
-        notifyDataSetChanged();
     }
 
     @Override

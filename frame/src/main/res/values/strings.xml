@@ -83,6 +83,7 @@
     <string name="txt_none_medical_recording">暂无诊疗记录</string>
     <string name="txt_none_service">暂无服务项</string>
     <string name="txt_none_recently_used_service">暂无使用过的服务</string>
+    <string name="txt_none_service_refresh">暂无服务，点击刷新试试</string>
     <string name="txt_none_upgrade">功能升级</string>
     <string name="txt_none_doctor">无合作医生</string>
     <string name="txt_none_hospital_by_reserve">暂无合作医院\n无法为居民预约服务</string>
