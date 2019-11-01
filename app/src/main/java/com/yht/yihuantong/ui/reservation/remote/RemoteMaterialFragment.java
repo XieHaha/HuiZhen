@@ -213,7 +213,7 @@ public class RemoteMaterialFragment extends BaseFragment
             tvName.setText(reserveRemoteBean.getPatientName());
             tvIdCard.setText(reserveRemoteBean.getPatientIdCard());
             etAge.setText(age);
-            if (sex == BaseData.BASE_ONE) {
+            if (sex == BaseData.BASE_MALE) {
                 rbMale.setChecked(true);
             }
             else {

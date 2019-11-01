@@ -459,13 +459,22 @@ public class SelectCheckTypeActivity extends BaseActivity
         toUp.setAnimationListener(new AbstractAnimationListener() {
             @Override
             public void onAnimationEnd(Animation animation) {
-                layoutNoneShop.setVisibility(View.GONE);
-                layoutShop.setVisibility(View.GONE);
                 layoutShopBg.setVisibility(View.GONE);
+                if (shopBeans.size() > 0) {
+                    layoutShop.setVisibility(View.GONE);
+                }
+                else {
+                    layoutNoneShop.setVisibility(View.GONE);
+                }
             }
         });
+        if (shopBeans.size() > 0) {
+            layoutShop.startAnimation(toUp);
+        }
+        else {
+            layoutNoneShop.startAnimation(toUp);
+        }
         layoutShopBg.startAnimation(alpha);
-        layoutNoneShop.startAnimation(toUp);
     }
 
     /**
@@ -599,8 +608,20 @@ public class SelectCheckTypeActivity extends BaseActivity
                     if (list == null) {
                         list = new ArrayList<>();
                     }
-                    list.add(bean);
-                    data.setProductPackageList(list);
+                    else {
+                        if (list.contains(bean)) {
+                            list.remove(bean);
+                        }
+                        else {
+                            list.add(bean);
+                        }
+                    }
+                    if (list.size() == 0) {
+                        shopBeans.remove(data);
+                    }
+                    else {
+                        data.setProductPackageList(list);
+                    }
                     break;
                 }
             }

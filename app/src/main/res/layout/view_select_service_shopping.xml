@@ -59,7 +59,7 @@
             android:drawablePadding="3dp"
             android:paddingEnd="15dp" />
 
-        <android.support.v7.widget.RecyclerView
+        <com.yht.frame.widgets.recyclerview.SquareRecyclerView
             android:id="@+id/shop_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
