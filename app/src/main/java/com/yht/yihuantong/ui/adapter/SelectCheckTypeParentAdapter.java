@@ -31,9 +31,9 @@ public class SelectCheckTypeParentAdapter extends BaseQuickAdapter<SelectCheckTy
     protected void convert(BaseViewHolder helper, SelectCheckTypeParentBean item) {
         helper.setText(R.id.tv_hospital_name, item.getHospitalName());
         FullListView listView = helper.getView(R.id.full_list_view);
-        SelectCheckTypeAdapter selectCheckTypeAdapter = new SelectCheckTypeAdapter(mContext);
-        selectCheckTypeAdapter.setSelectCodes(selectCodes);
-        selectCheckTypeAdapter.setList(item.getProductPackageList());
+        SelectCheckTypeAdapter adapter = new SelectCheckTypeAdapter(mContext);
+        adapter.setSelectCodes(selectCodes);
+        adapter.setList(item.getProductPackageList());
         listView.setOnItemClickListener((parent, view, position, id) -> {
             SelectCheckTypeBean bean = item.getProductPackageList().get(position);
             String newCode = bean.getProjectCode();
@@ -43,13 +43,13 @@ public class SelectCheckTypeParentAdapter extends BaseQuickAdapter<SelectCheckTy
             else {
                 selectCodes.add(newCode);
             }
-            selectCheckTypeAdapter.setSelectCodes(selectCodes);
-            selectCheckTypeAdapter.notifyDataSetChanged();
+            adapter.setSelectCodes(selectCodes);
+            adapter.notifyDataSetChanged();
             if (onSelectedCallback != null) {
                 onSelectedCallback.onSelectedShop(item, bean);
             }
         });
-        listView.setAdapter(selectCheckTypeAdapter);
+        listView.setAdapter(adapter);
     }
 
     public void setSelectCodes(ArrayList<String> selectCodes) {

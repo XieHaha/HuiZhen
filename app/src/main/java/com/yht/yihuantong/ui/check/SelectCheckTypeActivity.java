@@ -35,6 +35,7 @@ import com.yht.yihuantong.ui.adapter.SelectCheckTypeAdapter;
 import com.yht.yihuantong.ui.adapter.SelectCheckTypeFilterAdapter;
 import com.yht.yihuantong.ui.adapter.SelectCheckTypeParentAdapter;
 import com.yht.yihuantong.ui.adapter.SelectCheckTypeShopAdapter;
+import com.yht.yihuantong.ui.adapter.ShopCheckTypeAdapter;
 
 import org.litepal.LitePal;
 
@@ -51,7 +52,8 @@ import butterknife.OnClick;
  */
 public class SelectCheckTypeActivity extends BaseActivity
         implements SelectCheckTypeParentAdapter.OnSelectedCallback, BaseQuickAdapter.OnItemClickListener,
-                   AdapterView.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
+                   AdapterView.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener,
+                   ShopCheckTypeAdapter.OnServiceDeleteListener {
     @BindView(R.id.et_search_check_type)
     SuperEditText etSearchCheckType;
     @BindView(R.id.tv_cancel)
@@ -180,7 +182,7 @@ public class SelectCheckTypeActivity extends BaseActivity
         curServiceType = getString(R.string.txt_all_services);
         //服务项列表
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        parentAdapter = new SelectCheckTypeParentAdapter(R.layout.item_check_select_root, parentBeans);
+        parentAdapter = new SelectCheckTypeParentAdapter(R.layout.item_check_select_root, filterBeans);
         parentAdapter.setOnSelectedCallback(this);
         recyclerView.setAdapter(parentAdapter);
         //医院列表数据
@@ -195,6 +197,7 @@ public class SelectCheckTypeActivity extends BaseActivity
         //购物车
         shopRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         shopAdapter = new SelectCheckTypeShopAdapter(R.layout.item_check_shop_root, shopBeans);
+        shopAdapter.setOnServiceDeleteListener(this);
         shopRecyclerView.setAdapter(shopAdapter);
         tvSelected.setText(String.format(getString(R.string.txt_calc_selected_num), selectedCodes.size()));
         tvSelected.setSelected(true);
@@ -301,7 +304,9 @@ public class SelectCheckTypeActivity extends BaseActivity
      * 服务项数据集合
      */
     private void bindServiceListData() {
-        parentAdapter.setNewData(parentBeans);
+        filterBeans.clear();
+        filterBeans.addAll(parentBeans);
+        parentAdapter.setNewData(filterBeans);
         bindFilterListData();
     }
 
@@ -431,6 +436,29 @@ public class SelectCheckTypeActivity extends BaseActivity
     }
 
     /**
+     * 更新购物车
+     */
+    private void updateShopCart() {
+        //购物车列表刷新
+        shopAdapter.setNewData(shopBeans);
+        //主数据列表刷新
+        parentAdapter.setSelectCodes(selectedCodes);
+        parentAdapter.notifyDataSetChanged();
+        //搜索列表刷新
+        searchAdapter.setSelectCodes(selectedCodes);
+        searchAdapter.notifyDataSetChanged();
+        tvSelected.setText(String.format(getString(R.string.txt_calc_selected_num), selectedCodes.size()));
+        if (selectedCodes.size() > 0) {
+            tvNext.setSelected(true);
+        }
+        else {
+            tvNext.setSelected(false);
+            layoutNoneShop.setVisibility(View.VISIBLE);
+            layoutShop.setVisibility(View.GONE);
+        }
+    }
+
+    /**
      * 显示购物车
      */
     private void showShopLayout() {
@@ -556,6 +584,11 @@ public class SelectCheckTypeActivity extends BaseActivity
                 hideShopLayout();
                 break;
             case R.id.tv_clear_shop:
+                //清除已选项
+                selectedCodes.clear();
+                //购物车数据初始化
+                shopBeans.clear();
+                updateShopCart();
                 break;
             default:
                 break;
@@ -567,13 +600,22 @@ public class SelectCheckTypeActivity extends BaseActivity
      */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        updateSelectedCodes(searchBeans.get(position).getProjectCode());
+        SelectCheckTypeBean bean = searchBeans.get(position);
+        updateSelectedCodes(bean.getProjectCode());
         //搜索列表
         searchAdapter.setSelectCodes(selectedCodes);
         searchAdapter.notifyDataSetChanged();
         //更新主列表
         parentAdapter.setSelectCodes(selectedCodes);
         parentAdapter.notifyDataSetChanged();
+        //更新购物车
+        for (SelectCheckTypeParentBean parentBean : parentBeans) {
+            ArrayList<SelectCheckTypeBean> list = parentBean.getProductPackageList();
+            for (SelectCheckTypeBean data : list) {
+                if (bean.equals(data)) {
+                }
+            }
+        }
     }
 
     /**
@@ -636,6 +678,25 @@ public class SelectCheckTypeActivity extends BaseActivity
             shopBeans.add(newBean);
         }
         shopAdapter.setNewData(shopBeans);
+    }
+
+    /**
+     * 购物车数据删除
+     */
+    @Override
+    public void onServiceDelete(String code) {
+        selectedCodes.remove(code);
+        for (int i = 0; i < shopBeans.size(); i++) {
+            SelectCheckTypeParentBean data = shopBeans.get(i);
+            ArrayList<SelectCheckTypeBean> list = data.getProductPackageList();
+            for (int j = 0; j < list.size(); j++) {
+                SelectCheckTypeBean bean = list.get(j);
+                if (TextUtils.equals(code, bean.getProjectCode())) {
+                    list.remove(bean);
+                }
+            }
+        }
+        updateShopCart();
     }
 
     @Override

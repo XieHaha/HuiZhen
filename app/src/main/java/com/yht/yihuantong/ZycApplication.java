@@ -27,6 +27,8 @@ import com.yht.yihuantong.chat.HxHelper;
 import org.litepal.LitePal;
 import org.litepal.LitePalApplication;
 
+import java.util.ArrayList;
+
 import cn.jpush.android.api.JPushInterface;
 
 /**
@@ -50,6 +52,7 @@ public class ZycApplication extends LitePalApplication {
      * 服务、转诊、远程权限
      */
     private boolean transferAble, serviceAble, remoteAble;
+    private ArrayList<String> selectCodes;
     /**
      * 调试模式
      * 1、微信登录
@@ -222,6 +225,14 @@ public class ZycApplication extends LitePalApplication {
     public void updateBaseUrl(String baseUrl) {
         this.baseUrl = baseUrl;
         RetrofitManager.getInstance().updateBaseUrl(baseUrl);
+    }
+
+    public ArrayList<String> getSelectCodes() {
+        return selectCodes;
+    }
+
+    public void setSelectCodes(ArrayList<String> selectCodes) {
+        this.selectCodes = selectCodes;
     }
 
     /**

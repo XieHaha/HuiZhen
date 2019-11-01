@@ -77,9 +77,9 @@ public class ShopCheckTypeAdapter extends BaseAdapter {
         holder.tvName.setText(item.getProjectName());
         holder.tvPrice.setText(
                 String.format(context.getString(R.string.txt_price), BaseUtils.getPrice(item.getPrice())));
-        holder.ivDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        holder.ivDelete.setOnClickListener(v -> {
+            if (onServiceDeleteListener != null) {
+                onServiceDeleteListener.onServiceDelete(item.getProjectCode());
             }
         });
     }
@@ -87,5 +87,15 @@ public class ShopCheckTypeAdapter extends BaseAdapter {
     private class ViewHolder {
         private TextView tvName, tvPrice;
         private ImageView ivDelete;
+    }
+
+    private OnServiceDeleteListener onServiceDeleteListener;
+
+    public void setOnServiceDeleteListener(OnServiceDeleteListener onServiceDeleteListener) {
+        this.onServiceDeleteListener = onServiceDeleteListener;
+    }
+
+    public interface OnServiceDeleteListener {
+        void onServiceDelete(String code);
     }
 }
