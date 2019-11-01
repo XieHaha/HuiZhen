@@ -17,6 +17,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 
 import com.yht.frame.R;
+import com.yht.frame.ui.AbstractAnimationListener;
 import com.yht.frame.widgets.picker.configure.PickerOptions;
 import com.yht.frame.widgets.picker.listener.OnDismissListener;
 import com.yht.frame.widgets.picker.utils.PickerViewAnimateUtil;
@@ -172,18 +173,10 @@ public class BasePickerView {
             }
             if (isAnim) {
                 //消失动画
-                outAnim.setAnimationListener(new Animation.AnimationListener() {
-                    @Override
-                    public void onAnimationStart(Animation animation) {
-                    }
-
+                outAnim.setAnimationListener(new AbstractAnimationListener() {
                     @Override
                     public void onAnimationEnd(Animation animation) {
                         dismissImmediately();
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animation animation) {
                     }
                 });
                 contentContainer.startAnimation(outAnim);

@@ -2,10 +2,13 @@ package com.yht.yihuantong.ui.check;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -22,6 +25,7 @@ import com.yht.frame.data.bean.SelectCheckTypeBean;
 import com.yht.frame.data.bean.SelectCheckTypeChildBean;
 import com.yht.frame.data.bean.SelectCheckTypeParentBean;
 import com.yht.frame.http.retrofit.RequestUtils;
+import com.yht.frame.ui.AbstractAnimationListener;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.widgets.edittext.AbstractTextWatcher;
 import com.yht.frame.widgets.edittext.SuperEditText;
@@ -30,6 +34,7 @@ import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.adapter.SelectCheckTypeAdapter;
 import com.yht.yihuantong.ui.adapter.SelectCheckTypeFilterAdapter;
 import com.yht.yihuantong.ui.adapter.SelectCheckTypeParentAdapter;
+import com.yht.yihuantong.ui.adapter.SelectCheckTypeShopAdapter;
 
 import org.litepal.LitePal;
 
@@ -46,7 +51,7 @@ import butterknife.OnClick;
  */
 public class SelectCheckTypeActivity extends BaseActivity
         implements SelectCheckTypeParentAdapter.OnSelectedCallback, BaseQuickAdapter.OnItemClickListener,
-                   AdapterView.OnItemClickListener {
+                   AdapterView.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
     @BindView(R.id.et_search_check_type)
     SuperEditText etSearchCheckType;
     @BindView(R.id.tv_cancel)
@@ -85,6 +90,18 @@ public class SelectCheckTypeActivity extends BaseActivity
     RelativeLayout layoutNone;
     @BindView(R.id.layout_search_none)
     RelativeLayout layoutSearchNone;
+    @BindView(R.id.layout_shop_bg)
+    RelativeLayout layoutShopBg;
+    @BindView(R.id.tv_clear_shop)
+    TextView tvClearShop;
+    @BindView(R.id.shop_recycler_view)
+    RecyclerView shopRecyclerView;
+    @BindView(R.id.layout_shop)
+    RelativeLayout layoutShop;
+    @BindView(R.id.layout_none_shop)
+    RelativeLayout layoutNoneShop;
+    @BindView(R.id.layout_refresh)
+    SwipeRefreshLayout layoutRefresh;
     /**
      * 服务项
      */
@@ -98,6 +115,10 @@ public class SelectCheckTypeActivity extends BaseActivity
      */
     private SelectCheckTypeAdapter searchAdapter;
     /**
+     * 购物车
+     */
+    private SelectCheckTypeShopAdapter shopAdapter;
+    /**
      * 医院 服务项、服务包数据集合
      */
     private List<SelectCheckTypeParentBean> parentBeans = new ArrayList<>();
@@ -105,6 +126,10 @@ public class SelectCheckTypeActivity extends BaseActivity
      * 医院 服务项、服务包数据集合  筛选结果
      */
     private List<SelectCheckTypeParentBean> filterBeans = new ArrayList<>();
+    /**
+     * 购物车
+     */
+    private List<SelectCheckTypeParentBean> shopBeans = new ArrayList<>();
     /**
      * 搜索结果
      */
@@ -147,6 +172,9 @@ public class SelectCheckTypeActivity extends BaseActivity
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
+        layoutRefresh.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light,
+                                              android.R.color.holo_orange_light, android.R.color.holo_green_light);
+        layoutRefresh.setOnRefreshListener(this);
         //默认选中全部医院、全部服务
         curHospital = getString(R.string.txt_all_hospitals);
         curServiceType = getString(R.string.txt_all_services);
@@ -165,7 +193,11 @@ public class SelectCheckTypeActivity extends BaseActivity
         searchRecyclerView.setOnItemClickListener(this);
         searchRecyclerView.setAdapter(searchAdapter);
         //购物车
+        shopRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        shopAdapter = new SelectCheckTypeShopAdapter(R.layout.item_check_shop_root, shopBeans);
+        shopRecyclerView.setAdapter(shopAdapter);
         tvSelected.setText(String.format(getString(R.string.txt_calc_selected_num), selectedCodes.size()));
+        tvSelected.setSelected(true);
     }
 
     @Override
@@ -398,9 +430,62 @@ public class SelectCheckTypeActivity extends BaseActivity
         getCheckTypeList();
     }
 
+    /**
+     * 显示购物车
+     */
+    private void showShopLayout() {
+        layoutShopBg.setVisibility(View.VISIBLE);
+        tvSelected.setSelected(false);
+        Animation toUp = AnimationUtils.loadAnimation(this, R.anim.anim_down_in);
+        Animation alpha = AnimationUtils.loadAnimation(this, R.anim.fade_in);
+        if (shopBeans.size() > 0) {
+            layoutShop.setVisibility(View.VISIBLE);
+            layoutShop.startAnimation(toUp);
+        }
+        else {
+            layoutNoneShop.setVisibility(View.VISIBLE);
+            layoutNoneShop.startAnimation(toUp);
+        }
+        layoutShopBg.startAnimation(alpha);
+    }
+
+    /**
+     * 隐藏购物车
+     */
+    private void hideShopLayout() {
+        tvSelected.setSelected(true);
+        Animation toUp = AnimationUtils.loadAnimation(this, R.anim.anim_down_out);
+        Animation alpha = AnimationUtils.loadAnimation(this, R.anim.fade_out);
+        toUp.setAnimationListener(new AbstractAnimationListener() {
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                layoutNoneShop.setVisibility(View.GONE);
+                layoutShop.setVisibility(View.GONE);
+                layoutShopBg.setVisibility(View.GONE);
+            }
+        });
+        layoutShopBg.startAnimation(alpha);
+        layoutNoneShop.startAnimation(toUp);
+    }
+
+    /**
+     * 已选code更新
+     */
+    private void updateSelectedCodes(String projectCode) {
+        if (selectedCodes.contains(projectCode)) {
+            selectedCodes.remove(projectCode);
+        }
+        else {
+            selectedCodes.add(projectCode);
+        }
+        if (selectedCodes.size() > 0) { tvNext.setSelected(true); }
+        else { tvNext.setSelected(false); }
+        tvSelected.setText(String.format(getString(R.string.txt_calc_selected_num), selectedCodes.size()));
+    }
+
     @OnClick({
             R.id.tv_cancel, R.id.layout_all_hospital, R.id.layout_all_service, R.id.tv_selected, R.id.tv_next,
-            R.id.layout_bg, R.id.tv_none_refresh })
+            R.id.layout_bg, R.id.tv_none_refresh, R.id.layout_shop_bg, R.id.tv_clear_shop })
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_cancel:
@@ -439,6 +524,12 @@ public class SelectCheckTypeActivity extends BaseActivity
                 }
                 break;
             case R.id.tv_selected:
+                if (tvSelected.isSelected()) {
+                    showShopLayout();
+                }
+                else {
+                    hideShopLayout();
+                }
                 break;
             case R.id.tv_next:
                 if (tvNext.isSelected()) {
@@ -452,28 +543,33 @@ public class SelectCheckTypeActivity extends BaseActivity
                 layoutSearchNone.setVisibility(View.GONE);
                 refreshData();
                 break;
+            case R.id.layout_shop_bg:
+                hideShopLayout();
+                break;
+            case R.id.tv_clear_shop:
+                break;
             default:
                 break;
         }
     }
 
+    /**
+     * 搜索列表
+     */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        String newCode = searchBeans.get(position).getProjectCode();
-        if (selectedCodes.contains(newCode)) {
-            selectedCodes.remove(newCode);
-        }
-        else {
-            selectedCodes.add(newCode);
-        }
+        updateSelectedCodes(searchBeans.get(position).getProjectCode());
+        //搜索列表
         searchAdapter.setSelectCodes(selectedCodes);
         searchAdapter.notifyDataSetChanged();
         //更新主列表
         parentAdapter.setSelectCodes(selectedCodes);
         parentAdapter.notifyDataSetChanged();
-        tvSelected.setText(String.format(getString(R.string.txt_calc_selected_num), selectedCodes.size()));
     }
 
+    /**
+     * 筛选条件列表
+     */
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         if (filterType == BASE_ONE) {
@@ -488,24 +584,58 @@ public class SelectCheckTypeActivity extends BaseActivity
         hideFilterLayout();
     }
 
+    /**
+     * 购物车数据源
+     */
     @Override
-    public void onSelected(ArrayList<String> data) {
-        selectedCodes = data;
-        if (selectedCodes.size() > 0) {
-            tvNext.setSelected(true);
+    public void onSelectedShop(SelectCheckTypeParentBean parentBean, SelectCheckTypeBean bean) {
+        updateSelectedCodes(bean.getProjectCode());
+        //购物车列表
+        SelectCheckTypeParentBean newBean;
+        if (shopBeans.contains(parentBean)) {
+            for (SelectCheckTypeParentBean data : shopBeans) {
+                if (data.equals(parentBean)) {
+                    ArrayList<SelectCheckTypeBean> list = data.getProductPackageList();
+                    if (list == null) {
+                        list = new ArrayList<>();
+                    }
+                    list.add(bean);
+                    data.setProductPackageList(list);
+                    break;
+                }
+            }
         }
-        else { tvNext.setSelected(false); }
-        tvSelected.setText(String.format(getString(R.string.txt_calc_selected_num), selectedCodes.size()));
+        else {
+            newBean = new SelectCheckTypeParentBean();
+            newBean.setHospitalCode(parentBean.getHospitalCode());
+            newBean.setHospitalName(parentBean.getHospitalName());
+            ArrayList<SelectCheckTypeBean> list = new ArrayList<>();
+            list.add(bean);
+            newBean.setProductPackageList(list);
+            shopBeans.add(newBean);
+        }
+        shopAdapter.setNewData(shopBeans);
+    }
+
+    @Override
+    public void onRefresh() {
+        refreshData();
     }
 
     @Override
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
         if (task == Tasks.GET_CHECK_TYPE) {
-            List<SelectCheckTypeParentBean> list = (List<SelectCheckTypeParentBean>)response.getData();
-            saveLocal(list);
+            parentBeans = (List<SelectCheckTypeParentBean>)response.getData();
+            saveLocal(parentBeans);
             bindServiceListData();
         }
+    }
+
+    @Override
+    public void onResponseEnd(Tasks task) {
+        super.onResponseEnd(task);
+        layoutRefresh.setRefreshing(false);
     }
 
     /**

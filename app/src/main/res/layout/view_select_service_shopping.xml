@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/layout_shop_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_50000000"
+        android:visibility="gone" />
+
+    <com.lijiankun24.shadowlayout.ShadowLayout
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:shadowColor="#1a000000"
+        app:shadowDx="0dp"
+        app:shadowDy="0dp"
+        app:shadowRadius="6dp"
+        app:shadowShape="rectangle"
+        app:shadowSide="top">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="58dp" />
+    </com.lijiankun24.shadowlayout.ShadowLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_shop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/layout"
+        android:paddingStart="20dp"
+        android:paddingEnd="0dp"
+        android:visibility="gone"
+        android:background="@color/color_ffffff">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:textColor="@color/color_6a6f80"
+            android:textSize="@dimen/text_14"
+            android:gravity="center"
+            android:text="@string/txt_selected_service" />
+
+        <TextView
+            android:id="@+id/tv_clear_shop"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:textColor="@color/color_a1a8b3"
+            android:textSize="@dimen/text_12"
+            android:gravity="center"
+            android:layout_alignParentEnd="true"
+            android:text="@string/txt_clear_all"
+            android:paddingStart="0dp"
+            android:drawableStart="@mipmap/ic_ashcan"
+            android:drawablePadding="3dp"
+            android:paddingEnd="15dp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/shop_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_clear_shop" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_none_shop"
+        android:layout_width="match_parent"
+        android:layout_height="102dp"
+        android:layout_above="@id/layout"
+        android:background="@color/color_ffffff"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textSize="@dimen/text_16"
+            android:textColor="@color/color_373d4d"
+            android:drawableTop="@mipmap/ic_point"
+            android:drawablePadding="9dp"
+            android:gravity="center"
+            android:text="@string/txt_selected_service_none" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/color_ffffff">
+
+        <TextView
+            android:id="@+id/tv_selected"
+            android:layout_width="wrap_content"
+            android:textColor="@color/color_373d4d"
+            android:textSize="@dimen/text_16"
+            android:layout_height="match_parent"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:gravity="center"
+            android:layout_centerVertical="true"
+            android:text="@string/txt_calc_selected_num"
+            android:drawablePadding="5dp"
+            android:drawableEnd="@drawable/selector_arrow_tab" />
+
+        <TextView
+            android:id="@+id/tv_next"
+            android:layout_width="80dp"
+            android:layout_height="42dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="20dp"
+            android:textSize="@dimen/text_16"
+            android:textColor="@color/color_ffffff"
+            android:gravity="center"
+            android:text="@string/txt_sure"
+            android:background="@drawable/selector_public_next" />
+    </RelativeLayout>
+</RelativeLayout>

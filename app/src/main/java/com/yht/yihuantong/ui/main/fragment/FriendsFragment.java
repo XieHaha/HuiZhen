@@ -21,6 +21,7 @@ import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.bean.LabelBean;
 import com.yht.frame.http.retrofit.RequestUtils;
+import com.yht.frame.ui.AbstractAnimationListener;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.widgets.edittext.AbstractTextWatcher;
@@ -284,19 +285,11 @@ public class FriendsFragment extends BaseFragment implements OnSearchListener, T
     private void hideSearchLayout() {
         Animation toUp = AnimationUtils.loadAnimation(getContext(), R.anim.anim_top_out);
         Animation alpha = AnimationUtils.loadAnimation(getContext(), R.anim.fade_out);
-        toUp.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-            }
-
+        toUp.setAnimationListener(new AbstractAnimationListener() {
             @Override
             public void onAnimationEnd(Animation animation) {
                 layoutSearch.setVisibility(View.GONE);
                 layoutBg.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
             }
         });
         layoutBg.startAnimation(alpha);

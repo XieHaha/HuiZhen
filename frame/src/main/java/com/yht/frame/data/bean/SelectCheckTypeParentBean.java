@@ -1,5 +1,7 @@
 package com.yht.frame.data.bean;
 
+import android.text.TextUtils;
+
 import org.litepal.crud.LitePalSupport;
 
 import java.io.Serializable;
@@ -47,5 +49,11 @@ public class SelectCheckTypeParentBean extends LitePalSupport implements Seriali
 
     public void setProductPackageList(ArrayList<SelectCheckTypeBean> productPackageList) {
         this.productPackageList = productPackageList;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        SelectCheckTypeParentBean bean = (SelectCheckTypeParentBean)obj;
+        return TextUtils.equals(hospitalCode, bean.getHospitalCode());
     }
 }

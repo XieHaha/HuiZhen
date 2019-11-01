@@ -4,6 +4,7 @@ import android.support.annotation.Nullable;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.yht.frame.data.bean.SelectCheckTypeBean;
 import com.yht.frame.data.bean.SelectCheckTypeParentBean;
 import com.yht.frame.widgets.recyclerview.FullListView;
 import com.yht.yihuantong.R;
@@ -34,7 +35,8 @@ public class SelectCheckTypeParentAdapter extends BaseQuickAdapter<SelectCheckTy
         selectCheckTypeAdapter.setSelectCodes(selectCodes);
         selectCheckTypeAdapter.setList(item.getProductPackageList());
         listView.setOnItemClickListener((parent, view, position, id) -> {
-            String newCode = item.getProductPackageList().get(position).getProjectCode();
+            SelectCheckTypeBean bean = item.getProductPackageList().get(position);
+            String newCode = bean.getProjectCode();
             if (selectCodes.contains(newCode)) {
                 selectCodes.remove(newCode);
             }
@@ -44,7 +46,7 @@ public class SelectCheckTypeParentAdapter extends BaseQuickAdapter<SelectCheckTy
             selectCheckTypeAdapter.setSelectCodes(selectCodes);
             selectCheckTypeAdapter.notifyDataSetChanged();
             if (onSelectedCallback != null) {
-                onSelectedCallback.onSelected(selectCodes);
+                onSelectedCallback.onSelectedShop(item, bean);
             }
         });
         listView.setAdapter(selectCheckTypeAdapter);
@@ -56,11 +58,12 @@ public class SelectCheckTypeParentAdapter extends BaseQuickAdapter<SelectCheckTy
 
     public interface OnSelectedCallback {
         /**
-         * 选择回调
+         * 购物车
          *
-         * @param data 已选择的code
+         * @param patentBean 医院
+         * @param bean       医院下服务包或服务项
          */
-        void onSelected(ArrayList<String> data);
+        void onSelectedShop(SelectCheckTypeParentBean patentBean, SelectCheckTypeBean bean);
     }
 
     private OnSelectedCallback onSelectedCallback;
