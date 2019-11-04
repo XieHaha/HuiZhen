@@ -46,7 +46,7 @@ public class SelectCheckTypeParentAdapter extends BaseQuickAdapter<SelectCheckTy
             adapter.setSelectCodes(selectCodes);
             adapter.notifyDataSetChanged();
             if (onSelectedCallback != null) {
-                onSelectedCallback.onSelectedShop(item, bean);
+                onSelectedCallback.onSelectedParent(item, bean);
             }
         });
         listView.setAdapter(adapter);
@@ -58,12 +58,12 @@ public class SelectCheckTypeParentAdapter extends BaseQuickAdapter<SelectCheckTy
 
     public interface OnSelectedCallback {
         /**
-         * 购物车
+         * 主列表回调
          *
          * @param patentBean 医院
          * @param bean       医院下服务包或服务项
          */
-        void onSelectedShop(SelectCheckTypeParentBean patentBean, SelectCheckTypeBean bean);
+        void onSelectedParent(SelectCheckTypeParentBean patentBean, SelectCheckTypeBean bean);
     }
 
     private OnSelectedCallback onSelectedCallback;

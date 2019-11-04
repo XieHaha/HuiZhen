@@ -13,6 +13,7 @@ import com.yht.frame.data.bean.SelectCheckTypeBean;
 import com.yht.frame.data.bean.SelectCheckTypeChildBean;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.ZycApplication;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,6 +89,7 @@ public class SelectCheckTypeAdapter extends BaseAdapter {
         holder.tvName.setText(item.getProjectName());
         holder.tvPrice.setText(
                 String.format(context.getString(R.string.txt_price), BaseUtils.getPrice(item.getPrice())));
+        selectCodes = ZycApplication.getInstance().getSelectCodes();
         if (selectCodes != null && selectCodes.contains(item.getProjectCode())) {
             holder.ivSelect.setSelected(true);
         }

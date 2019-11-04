@@ -31,6 +31,7 @@ import com.yht.frame.widgets.edittext.AbstractTextWatcher;
 import com.yht.frame.widgets.edittext.SuperEditText;
 import com.yht.frame.widgets.view.ExpandableLayout;
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.ZycApplication;
 import com.yht.yihuantong.ui.adapter.SelectCheckTypeAdapter;
 import com.yht.yihuantong.ui.adapter.SelectCheckTypeFilterAdapter;
 import com.yht.yihuantong.ui.adapter.SelectCheckTypeParentAdapter;
@@ -136,6 +137,10 @@ public class SelectCheckTypeActivity extends BaseActivity
      * 搜索结果
      */
     private List<SelectCheckTypeBean> searchBeans = new ArrayList<>();
+    /**
+     * 搜索结果 包含医院数据
+     */
+    private List<SelectCheckTypeParentBean> searchParentBeans = new ArrayList<>();
     /**
      * 医院筛选条件
      */
@@ -258,6 +263,7 @@ public class SelectCheckTypeActivity extends BaseActivity
     private void searchCheckTYpeListByLocal(String searchKey) {
         if (!TextUtils.isEmpty(searchKey)) {
             searchBeans.clear();
+            searchParentBeans.clear();
             //重新拉取本地数据
             parentBeans = LitePal.findAll(SelectCheckTypeParentBean.class, true);
             for (SelectCheckTypeParentBean parentBean : parentBeans) {
@@ -269,6 +275,7 @@ public class SelectCheckTypeActivity extends BaseActivity
                                         bean.getProjectAlias().contains(searchKey));
                     if (contains) {
                         searchBeans.add(bean);
+                        searchParentBeans.add(parentBean);
                     }
                     else {
                         //服务包下的服务项
@@ -276,6 +283,7 @@ public class SelectCheckTypeActivity extends BaseActivity
                         for (SelectCheckTypeChildBean childBean : childBeans) {
                             if (childBean.getProductName().contains(searchKey)) {
                                 searchBeans.add(bean);
+                                searchParentBeans.add(parentBean);
                                 //服务包下的服务项轮询到结果及跳出
                                 break;
                             }
@@ -285,7 +293,6 @@ public class SelectCheckTypeActivity extends BaseActivity
             }
             if (searchBeans.size() > 0) {
                 searchRecyclerView.setVisibility(View.VISIBLE);
-                searchAdapter.setSelectCodes(selectedCodes);
                 searchAdapter.setList(searchBeans);
             }
             else {
@@ -428,7 +435,10 @@ public class SelectCheckTypeActivity extends BaseActivity
         curServiceType = getString(R.string.txt_all_services);
         //清除搜索已选状态
         filterType = BASE_ONE;
+        //清除购物车
+        shopBeans.clear();
         selectedCodes.clear();
+        ZycApplication.getInstance().setSelectCodes(selectedCodes);
         tvSelected.setText(String.format(getString(R.string.txt_calc_selected_num), selectedCodes.size()));
         tvNext.setSelected(false);
         //重新从服务器拉取数据
@@ -436,20 +446,62 @@ public class SelectCheckTypeActivity extends BaseActivity
     }
 
     /**
-     * 更新购物车
+     * 添加服务后  更新购物车
+     */
+    private void addUpdateShopCart(SelectCheckTypeParentBean parentBean, SelectCheckTypeBean bean) {
+        //购物车列表
+        SelectCheckTypeParentBean newBean;
+        if (shopBeans.contains(parentBean)) {
+            for (SelectCheckTypeParentBean data : shopBeans) {
+                if (data.equals(parentBean)) {
+                    ArrayList<SelectCheckTypeBean> list = data.getProductPackageList();
+                    if (list == null) {
+                        list = new ArrayList<>();
+                    }
+                    else {
+                        if (list.contains(bean)) {
+                            list.remove(bean);
+                        }
+                        else {
+                            list.add(bean);
+                        }
+                    }
+                    if (list.size() == 0) {
+                        shopBeans.remove(data);
+                    }
+                    else {
+                        data.setProductPackageList(list);
+                    }
+                    break;
+                }
+            }
+        }
+        else {
+            newBean = new SelectCheckTypeParentBean();
+            newBean.setHospitalCode(parentBean.getHospitalCode());
+            newBean.setHospitalName(parentBean.getHospitalName());
+            ArrayList<SelectCheckTypeBean> list = new ArrayList<>();
+            list.add(bean);
+            newBean.setProductPackageList(list);
+            shopBeans.add(newBean);
+        }
+        shopAdapter.setNewData(shopBeans);
+    }
+
+    /**
+     * 删除后 更新购物车
      */
     private void updateShopCart() {
         //购物车列表刷新
         shopAdapter.setNewData(shopBeans);
         //主数据列表刷新
-        parentAdapter.setSelectCodes(selectedCodes);
         parentAdapter.notifyDataSetChanged();
         //搜索列表刷新
-        searchAdapter.setSelectCodes(selectedCodes);
         searchAdapter.notifyDataSetChanged();
         tvSelected.setText(String.format(getString(R.string.txt_calc_selected_num), selectedCodes.size()));
         if (selectedCodes.size() > 0) {
             tvNext.setSelected(true);
+            layoutNoneShop.setVisibility(View.GONE);
         }
         else {
             tvNext.setSelected(false);
@@ -488,12 +540,8 @@ public class SelectCheckTypeActivity extends BaseActivity
             @Override
             public void onAnimationEnd(Animation animation) {
                 layoutShopBg.setVisibility(View.GONE);
-                if (shopBeans.size() > 0) {
-                    layoutShop.setVisibility(View.GONE);
-                }
-                else {
-                    layoutNoneShop.setVisibility(View.GONE);
-                }
+                layoutShop.setVisibility(View.GONE);
+                layoutNoneShop.setVisibility(View.GONE);
             }
         });
         if (shopBeans.size() > 0) {
@@ -518,6 +566,7 @@ public class SelectCheckTypeActivity extends BaseActivity
         if (selectedCodes.size() > 0) { tvNext.setSelected(true); }
         else { tvNext.setSelected(false); }
         tvSelected.setText(String.format(getString(R.string.txt_calc_selected_num), selectedCodes.size()));
+        ZycApplication.getInstance().setSelectCodes(selectedCodes);
     }
 
     @OnClick({
@@ -586,6 +635,7 @@ public class SelectCheckTypeActivity extends BaseActivity
             case R.id.tv_clear_shop:
                 //清除已选项
                 selectedCodes.clear();
+                ZycApplication.getInstance().setSelectCodes(selectedCodes);
                 //购物车数据初始化
                 shopBeans.clear();
                 updateShopCart();
@@ -600,22 +650,15 @@ public class SelectCheckTypeActivity extends BaseActivity
      */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        SelectCheckTypeParentBean parentBean = searchParentBeans.get(position);
         SelectCheckTypeBean bean = searchBeans.get(position);
         updateSelectedCodes(bean.getProjectCode());
         //搜索列表
-        searchAdapter.setSelectCodes(selectedCodes);
         searchAdapter.notifyDataSetChanged();
         //更新主列表
-        parentAdapter.setSelectCodes(selectedCodes);
         parentAdapter.notifyDataSetChanged();
         //更新购物车
-        for (SelectCheckTypeParentBean parentBean : parentBeans) {
-            ArrayList<SelectCheckTypeBean> list = parentBean.getProductPackageList();
-            for (SelectCheckTypeBean data : list) {
-                if (bean.equals(data)) {
-                }
-            }
-        }
+        addUpdateShopCart(parentBean, bean);
     }
 
     /**
@@ -639,45 +682,9 @@ public class SelectCheckTypeActivity extends BaseActivity
      * 购物车数据源
      */
     @Override
-    public void onSelectedShop(SelectCheckTypeParentBean parentBean, SelectCheckTypeBean bean) {
+    public void onSelectedParent(SelectCheckTypeParentBean parentBean, SelectCheckTypeBean bean) {
         updateSelectedCodes(bean.getProjectCode());
-        //购物车列表
-        SelectCheckTypeParentBean newBean;
-        if (shopBeans.contains(parentBean)) {
-            for (SelectCheckTypeParentBean data : shopBeans) {
-                if (data.equals(parentBean)) {
-                    ArrayList<SelectCheckTypeBean> list = data.getProductPackageList();
-                    if (list == null) {
-                        list = new ArrayList<>();
-                    }
-                    else {
-                        if (list.contains(bean)) {
-                            list.remove(bean);
-                        }
-                        else {
-                            list.add(bean);
-                        }
-                    }
-                    if (list.size() == 0) {
-                        shopBeans.remove(data);
-                    }
-                    else {
-                        data.setProductPackageList(list);
-                    }
-                    break;
-                }
-            }
-        }
-        else {
-            newBean = new SelectCheckTypeParentBean();
-            newBean.setHospitalCode(parentBean.getHospitalCode());
-            newBean.setHospitalName(parentBean.getHospitalName());
-            ArrayList<SelectCheckTypeBean> list = new ArrayList<>();
-            list.add(bean);
-            newBean.setProductPackageList(list);
-            shopBeans.add(newBean);
-        }
-        shopAdapter.setNewData(shopBeans);
+        addUpdateShopCart(parentBean, bean);
     }
 
     /**
@@ -696,6 +703,7 @@ public class SelectCheckTypeActivity extends BaseActivity
                 }
             }
         }
+        ZycApplication.getInstance().setSelectCodes(selectedCodes);
         updateShopCart();
     }
 
