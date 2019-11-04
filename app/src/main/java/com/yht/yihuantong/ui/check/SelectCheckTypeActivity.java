@@ -167,6 +167,10 @@ public class SelectCheckTypeActivity extends BaseActivity
      * 筛选类型  1、医院   2、服务范围
      */
     private int filterType = BASE_ONE;
+    /**
+     * 强制更新
+     */
+    private boolean forcedUpdate = false;
 
     @Override
     protected boolean isInitBackBtn() {
@@ -184,6 +188,12 @@ public class SelectCheckTypeActivity extends BaseActivity
         if (getIntent() != null) {
             shopBeans = (ArrayList<SelectCheckTypeParentBean>)getIntent().getSerializableExtra(
                     CommonData.KEY_RESERVE_CHECK_TYPE_LIST);
+            //重新选择的强制更新
+            forcedUpdate = getIntent().getBooleanExtra(CommonData.KEY_INTENT_BOOLEAN, false);
+        }
+        if (!forcedUpdate) {
+            //忽略价格的强制更新
+            forcedUpdate = sharePreferenceUtil.getBoolean(CommonData.KEY_RESERVE_CHECK_UPDATE);
         }
         layoutRefresh.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light,
                                               android.R.color.holo_orange_light, android.R.color.holo_green_light);
@@ -224,11 +234,16 @@ public class SelectCheckTypeActivity extends BaseActivity
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-        getRecentlyUsedListByLocal();
-        getCheckTypeListByLocal();
-        //本地没有数据
-        if (parentBeans.size() == 0) {
+        if (forcedUpdate) {
             getCheckTypeList();
+        }
+        else {
+            getRecentlyUsedListByLocal();
+            getCheckTypeListByLocal();
+            //本地没有数据
+            if (parentBeans.size() == 0) {
+                getCheckTypeList();
+            }
         }
     }
 

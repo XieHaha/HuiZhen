@@ -210,6 +210,7 @@
                 android:layout_marginEnd="20dp"
                 android:layout_marginTop="20dp"
                 android:visibility="visible"
+                android:padding="1dp"
                 android:background="@drawable/corner2_stroke1_d9d9d9">
 
                 <ImageView

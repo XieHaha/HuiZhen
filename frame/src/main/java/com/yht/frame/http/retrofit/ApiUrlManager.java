@@ -492,7 +492,7 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @POST("order-check/create")
-    Observable<BaseResponse<String>> addReserveCheckOrder(@Header("token") String token,
+    Observable<BaseResponse<List<Object>>> addReserveCheckOrder(@Header("token") String token,
             @Body Map<String, Object> info);
 
     /**

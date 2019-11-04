@@ -25,7 +25,6 @@ import java.util.List;
  */
 public class SelectCheckTypeAdapter extends BaseAdapter {
     private Context context;
-    private boolean hidePrice;
     /**
      * 服务项、服务包列表
      */
@@ -41,10 +40,6 @@ public class SelectCheckTypeAdapter extends BaseAdapter {
         }
         this.list = list;
         notifyDataSetChanged();
-    }
-
-    public void setHidePrice(boolean hidePrice) {
-        this.hidePrice = hidePrice;
     }
 
     @Override
@@ -67,12 +62,7 @@ public class SelectCheckTypeAdapter extends BaseAdapter {
         ViewHolder holder;
         if (convertView == null) {
             holder = new ViewHolder();
-            if (hidePrice) {
-                convertView = LayoutInflater.from(context).inflate(R.layout.item_check_select_submit, parent, false);
-            }
-            else {
-                convertView = LayoutInflater.from(context).inflate(R.layout.item_check_select, parent, false);
-            }
+            convertView = LayoutInflater.from(context).inflate(R.layout.item_check_select, parent, false);
             holder.tvName = convertView.findViewById(R.id.tv_check_type_name);
             holder.tvPrice = convertView.findViewById(R.id.tv_price);
             holder.ivSelect = convertView.findViewById(R.id.iv_select);
@@ -89,15 +79,13 @@ public class SelectCheckTypeAdapter extends BaseAdapter {
     private void init(ViewHolder holder, int position) {
         SelectCheckTypeBean item = list.get(position);
         holder.tvName.setText(item.getProjectName());
-        if (!hidePrice) {
-            holder.tvPrice.setText(
-                    String.format(context.getString(R.string.txt_price), BaseUtils.getPrice(item.getPrice())));
-            ArrayList<String> selectCodes = ZycApplication.getInstance().getSelectCodes();
-            if (selectCodes != null && selectCodes.contains(item.getProjectCode())) {
-                holder.ivSelect.setSelected(true);
-            }
-            else { holder.ivSelect.setSelected(false); }
+        holder.tvPrice.setText(
+                String.format(context.getString(R.string.txt_price), BaseUtils.getPrice(item.getPrice())));
+        ArrayList<String> selectCodes = ZycApplication.getInstance().getSelectCodes();
+        if (selectCodes != null && selectCodes.contains(item.getProjectCode())) {
+            holder.ivSelect.setSelected(true);
         }
+        else { holder.ivSelect.setSelected(false); }
         List<SelectCheckTypeChildBean> childBeans = item.getChildServiceTypes(item.getProjectCode());
         holder.layoutCheck.removeAllViews();
         if (childBeans != null && childBeans.size() > 0) {
@@ -109,7 +97,7 @@ public class SelectCheckTypeAdapter extends BaseAdapter {
 
     private class ViewHolder {
         private TextView tvName, tvPrice;
-        private ImageView ivSelect, ivDot;
+        private ImageView ivSelect;
         private LinearLayout layoutCheck;
     }
 

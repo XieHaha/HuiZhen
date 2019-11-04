@@ -157,9 +157,9 @@ public interface CommonData {
      */
     String KEY_DEPART_CHILD_POSITION = "key_depart_child_position";
     /**
-     * 预约检查选择的检查项
+     * 检查项强制更新
      */
-    String KEY_RESERVE_CHECK_TYPE_BEAN = "key_reserve_check_type_bean";
+    String KEY_RESERVE_CHECK_UPDATE = "key_reserve_check_update";
     /**
      * 预约检查选择的检查项列表
      */

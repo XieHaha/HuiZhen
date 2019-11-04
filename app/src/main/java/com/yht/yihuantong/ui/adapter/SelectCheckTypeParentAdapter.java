@@ -19,10 +19,6 @@ import java.util.List;
  */
 public class SelectCheckTypeParentAdapter extends BaseQuickAdapter<SelectCheckTypeParentBean, BaseViewHolder> {
     /**
-     * 是否显示价格
-     */
-    private boolean hidePrice;
-    /**
      * 已选择code
      */
     private ArrayList<String> selectCodes = new ArrayList<>();
@@ -31,33 +27,26 @@ public class SelectCheckTypeParentAdapter extends BaseQuickAdapter<SelectCheckTy
         super(layoutResId, data);
     }
 
-    public void setHidePrice(boolean hidePrice) {
-        this.hidePrice = hidePrice;
-    }
-
     @Override
     protected void convert(BaseViewHolder helper, SelectCheckTypeParentBean item) {
         helper.setText(R.id.tv_hospital_name, item.getHospitalName());
         FullListView listView = helper.getView(R.id.full_list_view);
         SelectCheckTypeAdapter adapter = new SelectCheckTypeAdapter(mContext);
         adapter.setList(item.getProductPackageList());
-        adapter.setHidePrice(hidePrice);
-        if (!hidePrice) {
-            listView.setOnItemClickListener((parent, view, position, id) -> {
-                SelectCheckTypeBean bean = item.getProductPackageList().get(position);
-                String newCode = bean.getProjectCode();
-                if (selectCodes.contains(newCode)) {
-                    selectCodes.remove(newCode);
-                }
-                else {
-                    selectCodes.add(newCode);
-                }
-                if (onSelectedCallback != null) {
-                    onSelectedCallback.onSelectedParent(item, bean);
-                }
-                adapter.notifyDataSetChanged();
-            });
-        }
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+            SelectCheckTypeBean bean = item.getProductPackageList().get(position);
+            String newCode = bean.getProjectCode();
+            if (selectCodes.contains(newCode)) {
+                selectCodes.remove(newCode);
+            }
+            else {
+                selectCodes.add(newCode);
+            }
+            if (onSelectedCallback != null) {
+                onSelectedCallback.onSelectedParent(item, bean);
+            }
+            adapter.notifyDataSetChanged();
+        });
         listView.setAdapter(adapter);
     }
 

@@ -196,7 +196,6 @@ public class ServiceSubmitFragment extends BaseFragment implements RadioGroup.On
         serviceRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         serviceRecyclerView.setNestedScrollingEnabled(false);
         shopAdapter = new SelectCheckTypeParentAdapter(R.layout.item_check_select_submit_root, checkTypeData);
-        shopAdapter.setHidePrice(true);
         serviceRecyclerView.setAdapter(shopAdapter);
     }
 
@@ -241,6 +240,19 @@ public class ServiceSubmitFragment extends BaseFragment implements RadioGroup.On
             tvSelect.setText(R.string.txt_select_hint);
         }
         shopAdapter.setNewData(checkTypeData);
+        initNextButton();
+    }
+
+    /**
+     * 重新选择
+     */
+    public void reselect() {
+        //清除数据
+        checkTypeData.clear();
+        Intent intent = new Intent(getContext(), SelectCheckTypeActivity.class);
+        intent.putExtra(CommonData.KEY_INTENT_BOOLEAN, true);
+        intent.putExtra(CommonData.KEY_RESERVE_CHECK_TYPE_LIST, checkTypeData);
+        startActivityForResult(intent, REQUEST_CODE_SELECT_CHECK);
     }
 
     /**

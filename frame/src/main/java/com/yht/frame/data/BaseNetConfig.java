@@ -37,6 +37,14 @@ public interface BaseNetConfig {
      */
     int REQUEST_ORDER_ERROR = 6001;
     /**
+     * 预约服务提交时 服务项状态发生改变
+     */
+    int REQUEST_SUBMIT_SERVICE_STATUS_ERROR = 7001;
+    /**
+     * 预约服务提交时 服务项价格发生改变
+     */
+    int REQUEST_SUBMIT_SERVICE_PRICE_ERROR = 7002;
+    /**
      * 设置默认超时时间
      */
     int DEFAULT_TIME = 30;

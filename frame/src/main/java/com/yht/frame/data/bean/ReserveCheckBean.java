@@ -11,6 +11,7 @@ import java.util.ArrayList;
 public class ReserveCheckBean implements Serializable {
     private static final long serialVersionUID = -7797688942553183369L;
     private boolean notUpdate;
+    private boolean createIgnorePriceChange;
     private int age;
     private int isPregnancy;
     private int sex;
@@ -34,6 +35,14 @@ public class ReserveCheckBean implements Serializable {
 
     public void setNotUpdate(boolean notUpdate) {
         this.notUpdate = notUpdate;
+    }
+
+    public boolean isCreateIgnorePriceChange() {
+        return createIgnorePriceChange;
+    }
+
+    public void setCreateIgnorePriceChange(boolean createIgnorePriceChange) {
+        this.createIgnorePriceChange = createIgnorePriceChange;
     }
 
     public int getAge() {

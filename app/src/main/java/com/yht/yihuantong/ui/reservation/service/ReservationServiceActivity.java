@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -13,17 +14,23 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.yht.frame.data.BaseNetConfig;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.bean.PatientBean;
 import com.yht.frame.data.bean.ReserveCheckBean;
+import com.yht.frame.data.bean.ReserveCheckTypeBean;
+import com.yht.frame.data.bean.ServiceSubmitErrorBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.widgets.dialog.HintDialog;
+import com.yht.frame.widgets.dialog.ListDialog;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.check.listener.OnCheckListener;
 import com.yht.yihuantong.ui.reservation.ReservationSuccessActivity;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 
@@ -315,7 +322,7 @@ public class ReservationServiceActivity extends BaseActivity implements OnCheckL
                 break;
             case R.id.public_title_bar_more:
                 new HintDialog(this).setPhone(getString(R.string.txt_contact_service),
-                                              getString(R.string.txt_contact_service_phone),false)
+                                              getString(R.string.txt_contact_service_phone), false)
                                     .setOnEnterClickListener(
                                             () -> callPhone(getString(R.string.txt_contact_service_phone)))
                                     .show();
@@ -346,15 +353,69 @@ public class ReservationServiceActivity extends BaseActivity implements OnCheckL
     @Override
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
-        Intent intent;
-        String orderNo;
         if (task == Tasks.ADD_RESERVE_CHECK_ORDER) {
-            orderNo = (String)response.getData();
-            intent = new Intent(this, ReservationSuccessActivity.class);
-            intent.putExtra(CommonData.KEY_ORDER_ID, orderNo);
-            startActivity(intent);
+            startActivity(new Intent(this, ReservationSuccessActivity.class));
             finish();
         }
+    }
+
+    @Override
+    public void onResponseCode(Tasks task, BaseResponse response) {
+        super.onResponseCode(task, response);
+        ArrayList<ServiceSubmitErrorBean> list = (ArrayList<ServiceSubmitErrorBean>)response.getData();
+        if (response.getCode() == BaseNetConfig.REQUEST_SUBMIT_SERVICE_STATUS_ERROR) {
+            new ListDialog(this).setContentString(getString(R.string.txt_service_submit_status_error))
+                                .setHideRight(true)
+                                .setData(list)
+                                .setOnNextClickListener(new ListDialog.OnNextClickListener() {
+                                    @Override
+                                    public void onLeftClick() {
+                                        if (submitCheckFragment != null) {
+                                            submitCheckFragment.reselect();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onRightClick() {
+                                    }
+                                })
+                                .show();
+        }
+        else if (response.getCode() == BaseNetConfig.REQUEST_SUBMIT_SERVICE_PRICE_ERROR) {
+            new ListDialog(this).setContentString(getString(R.string.txt_service_submit_price_error))
+                                .setData(list)
+                                .setOnNextClickListener(new ListDialog.OnNextClickListener() {
+                                    @Override
+                                    public void onLeftClick() {
+                                        if (submitCheckFragment != null) {
+                                            submitCheckFragment.reselect();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onRightClick() {
+                                        continueSubmit(list);
+                                    }
+                                })
+                                .show();
+        }
+    }
+
+    /**
+     * 继续提交(忽略价格变动)
+     */
+    private void continueSubmit(ArrayList<ServiceSubmitErrorBean> list) {
+        //强制更新检查项
+        sharePreferenceUtil.putBoolean(CommonData.KEY_RESERVE_CHECK_UPDATE, true);
+        ArrayList<ReserveCheckTypeBean> checkTypeBeans = reserveCheckBean.getCheckTrans();
+        for (ReserveCheckTypeBean bean : checkTypeBeans) {
+            for (ServiceSubmitErrorBean errorBean : list) {
+                if (TextUtils.equals(bean.getProductCode(), errorBean.getCode())) {
+                    bean.setPrice(errorBean.getNewPrice());
+                }
+            }
+        }
+        addReserveCheckOrder();
     }
 
     /**

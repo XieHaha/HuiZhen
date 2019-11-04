@@ -434,10 +434,10 @@ public class RequestUtils {
         params.put("age", bean.getAge());
         params.put("allergyHistory", bean.getAllergyHistory());
         params.put("confirmPhoto", bean.getConfirmPhoto());
+        params.put("confirmType", bean.getConfirmType());
         params.put("familyHistory", bean.getFamilyHistory());
         params.put("idCardNo", bean.getIdCardNo());
         params.put("initResult", bean.getInitResult());
-        //        params.put("isPregnancy", bean.getIsPregnancy());
         params.put("pastHistory", bean.getPastHistory());
         params.put("phone", bean.getPhone());
         params.put("patientCode", bean.getPatientCode());
@@ -445,6 +445,7 @@ public class RequestUtils {
         params.put("payType", bean.getPayType());
         params.put("sex", bean.getSex());
         params.put("checkTrans", bean.getCheckTrans());
+        params.put("createIgnorePriceChange", bean.isCreateIgnorePriceChange());
         RetrofitManager.getApiUrlManager()
                        .addReserveCheckOrder(token, params)
                        .compose(RxJavaHelper.observableIO2Main(context))

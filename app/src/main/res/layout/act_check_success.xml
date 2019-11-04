@@ -30,7 +30,7 @@
         android:layout_height="42dp"
         android:layout_marginTop="61dp"
         android:background="@drawable/corner28_1491fc_bg"
-        android:text="@string/txt_look_check_detail"
+        android:text="@string/txt_look_check_list"
         android:gravity="center"
         android:textSize="@dimen/text_16"
         android:textColor="@color/color_ffffff"
