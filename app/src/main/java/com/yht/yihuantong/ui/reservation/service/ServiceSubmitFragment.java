@@ -12,6 +12,8 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -31,6 +33,7 @@ import com.yht.frame.data.bean.NormImage;
 import com.yht.frame.data.bean.ReserveCheckBean;
 import com.yht.frame.data.bean.ReserveCheckTypeBean;
 import com.yht.frame.data.bean.SelectCheckTypeBean;
+import com.yht.frame.data.bean.SelectCheckTypeParentBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.permission.Permission;
 import com.yht.frame.ui.BaseFragment;
@@ -38,11 +41,10 @@ import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.ScalingUtils;
 import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.frame.widgets.dialog.SignatureDialog;
-import com.yht.frame.widgets.recyclerview.FullListView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ZycApplication;
 import com.yht.yihuantong.ui.ImagePreviewActivity;
-import com.yht.yihuantong.ui.adapter.CheckTypeListViewAdapter;
+import com.yht.yihuantong.ui.adapter.SelectCheckTypeParentAdapter;
 import com.yht.yihuantong.ui.check.SelectCheckTypeActivity;
 import com.yht.yihuantong.ui.check.listener.OnCheckListener;
 
@@ -58,18 +60,9 @@ import butterknife.OnClick;
  * @date 19/6/14 14:23
  * @des 预约检查 确认提交
  */
-public class ServiceSubmitFragment extends BaseFragment
-        implements CheckTypeListViewAdapter.OnDeleteClickListener, RadioGroup.OnCheckedChangeListener {
+public class ServiceSubmitFragment extends BaseFragment implements RadioGroup.OnCheckedChangeListener {
     @BindView(R.id.tv_select)
     TextView tvSelect;
-    @BindView(R.id.full_listview)
-    FullListView fullListView;
-    @BindView(R.id.layout_check_root)
-    LinearLayout layoutCheckRoot;
-    @BindView(R.id.rb_yes)
-    RadioButton rbYes;
-    @BindView(R.id.rb_no)
-    RadioButton rbNo;
     @BindView(R.id.rb_self)
     RadioButton rbSelf;
     @BindView(R.id.rb_medicare)
@@ -84,10 +77,6 @@ public class ServiceSubmitFragment extends BaseFragment
     RelativeLayout layoutUploadOne;
     @BindView(R.id.tv_submit_next)
     TextView tvSubmitNext;
-    @BindView(R.id.tv_hospital_name)
-    TextView tvHospitalName;
-    @BindView(R.id.layout_pregnancy)
-    RadioGroup layoutPregnancy;
     @BindView(R.id.layout_payment)
     RadioGroup layoutPayment;
     @BindView(R.id.tv_signature)
@@ -102,12 +91,16 @@ public class ServiceSubmitFragment extends BaseFragment
     TextView tvTypeHint;
     @BindView(R.id.view_signature)
     View viewSignature;
+    @BindView(R.id.layout_check)
+    LinearLayout layoutCheck;
     @BindView(R.id.layout_signature)
     LinearLayout layoutSignature;
     @BindView(R.id.view_camera)
     View viewCamera;
     @BindView(R.id.layout_camera)
     LinearLayout layoutCamera;
+    @BindView(R.id.service_recycler_view)
+    RecyclerView serviceRecyclerView;
     private File cameraTempFile;
     private Uri mCurrentPhotoUri;
     private String mCurrentPhotoPath;
@@ -115,31 +108,31 @@ public class ServiceSubmitFragment extends BaseFragment
     /**
      * 已选择检查项目适配器
      */
-    private CheckTypeListViewAdapter checkTypeListviewAdapter;
+    private SelectCheckTypeParentAdapter shopAdapter;
     /**
-     * 检查项目数据
+     * 购物车
      */
-    private List<SelectCheckTypeBean> checkTypeData = new ArrayList<>();
+    private ArrayList<SelectCheckTypeParentBean> checkTypeData = new ArrayList<>();
     /**
-     * 拍照确认图片url
+     * 拍照确认图片url   签名
      */
-    private String confirmImageUrl;
+    private String confirmImageUrl, signatureImageUrl;
     /**
      * 缴费类型、转诊目的、转诊类型
      */
-    private int payTypeId, pregnancyId;
+    private int payTypeId;
+    /**
+     * 患者确认方式
+     */
+    private int sureType;
     /**
      * 图片
      */
     private ArrayList<NormImage> imagePaths = new ArrayList<>();
     /**
-     * 根据检查项目选择医院
+     * 选择检查项目
      */
-    public static final int REQUEST_CODE_SELECT_HOSPITAL = 100;
-    /**
-     * 根据医院选择检查项目
-     */
-    public static final int REQUEST_CODE_SELECT_CHECK = 101;
+    public static final int REQUEST_CODE_SELECT_CHECK = 100;
 
     @Override
     public int getLayoutID() {
@@ -161,9 +154,17 @@ public class ServiceSubmitFragment extends BaseFragment
     }
 
     @Override
+    public void initView(@NonNull Bundle savedInstanceState) {
+        super.initView(savedInstanceState);
+        initAdapter();
+    }
+
+    @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-        sureType(true);
+        //默认签名确认
+        sureType = BASE_TWO;
+        sureType();
         //默认自费
         payTypeId = rbSelf.getId();
     }
@@ -191,11 +192,12 @@ public class ServiceSubmitFragment extends BaseFragment
     /**
      * 检查项目列表
      */
-    private void initFullListView() {
-        checkTypeListviewAdapter = new CheckTypeListViewAdapter(getContext());
-        checkTypeListviewAdapter.setData(checkTypeData);
-        checkTypeListviewAdapter.setOnDeleteClickListener(this);
-        fullListView.setAdapter(checkTypeListviewAdapter);
+    private void initAdapter() {
+        serviceRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        serviceRecyclerView.setNestedScrollingEnabled(false);
+        shopAdapter = new SelectCheckTypeParentAdapter(R.layout.item_check_select_submit_root, checkTypeData);
+        shopAdapter.setHidePrice(true);
+        serviceRecyclerView.setAdapter(shopAdapter);
     }
 
     /**
@@ -223,48 +225,32 @@ public class ServiceSubmitFragment extends BaseFragment
     }
 
     /**
-     * 根据检查项目匹配医院回调
-     */
-    private void selectHospitalByCheckItem(Intent data) {
-        SelectCheckTypeBean bean = (SelectCheckTypeBean)data.getSerializableExtra(
-                CommonData.KEY_RESERVE_CHECK_TYPE_BEAN);
-        checkTypeData.clear();
-        checkTypeData.add(bean);
-        tvSelect.setVisibility(View.GONE);
-        layoutCheckRoot.setVisibility(View.VISIBLE);
-        initFullListView();
-        initNextButton();
-    }
-
-    /**
-     * 根据选择当前医院下的检查项目
-     *
-     * @param data
+     * 选择的检查项目
      */
     private void selectCheckItemByHospital(Intent data) {
-        ArrayList<SelectCheckTypeBean> list = (ArrayList<SelectCheckTypeBean>)data.getSerializableExtra(
+        ArrayList<SelectCheckTypeParentBean> list = (ArrayList<SelectCheckTypeParentBean>)data.getSerializableExtra(
                 CommonData.KEY_RESERVE_CHECK_TYPE_LIST);
-        checkTypeData.addAll(list);
-        checkTypeListviewAdapter.setData(checkTypeData);
-        checkTypeListviewAdapter.notifyDataSetChanged();
-    }
-
-    /**
-     * 全部删除已经选择的检查项目和医院
-     */
-    private void deleteAllSelectCheckType() {
         checkTypeData.clear();
-        tvSelect.setVisibility(View.VISIBLE);
-        layoutCheckRoot.setVisibility(View.GONE);
-        initNextButton();
+        checkTypeData.addAll(list);
+        if (checkTypeData.size() > 0) {
+            layoutCheck.setVisibility(View.VISIBLE);
+            tvSelect.setText(R.string.txt_add_service_goon);
+        }
+        else {
+            layoutCheck.setVisibility(View.GONE);
+            tvSelect.setText(R.string.txt_select_hint);
+        }
+        shopAdapter.setNewData(checkTypeData);
     }
 
     /**
      * next按钮可点击状态
      */
     private void initNextButton() {
+        boolean next = (!TextUtils.isEmpty(confirmImageUrl) && sureType == BASE_ONE) ||
+                       (sureType == BASE_TWO && !TextUtils.isEmpty(signatureImageUrl));
         //需要添加判断检查项目是否为空
-        if (checkTypeData.size() > 0 && !TextUtils.isEmpty(confirmImageUrl)) {
+        if (checkTypeData.size() > 0 && next) {
             tvSubmitNext.setSelected(true);
         }
         else {
@@ -274,33 +260,21 @@ public class ServiceSubmitFragment extends BaseFragment
 
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
-        switch (group.getId()) {
-            case R.id.layout_pregnancy:
-                pregnancyId = checkedId;
-                break;
-            case R.id.layout_payment:
-                payTypeId = checkedId;
-                break;
-            default:
-                break;
+        if (group.getId() == R.id.layout_payment) {
+            payTypeId = checkedId;
         }
     }
 
     @OnClick({
-            R.id.layout_select_check_type, R.id.tv_delete_all, R.id.layout_upload_one, R.id.iv_delete_one,
-            R.id.tv_submit_next, R.id.layout_upload_two, R.id.layout_signature,
-            R.id.layout_camera })
+            R.id.layout_select_check_type, R.id.layout_upload_one, R.id.iv_delete_one, R.id.tv_submit_next,
+            R.id.layout_upload_two, R.id.layout_signature, R.id.layout_camera })
     public void onViewClicked(View view) {
         Intent intent;
         switch (view.getId()) {
             case R.id.layout_select_check_type:
-                if (tvSelect.getVisibility() == View.VISIBLE) {
-                    intent = new Intent(getContext(), SelectCheckTypeActivity.class);
-                    startActivityForResult(intent, REQUEST_CODE_SELECT_HOSPITAL);
-                }
-                break;
-            case R.id.tv_delete_all:
-                deleteAllSelectCheckType();
+                intent = new Intent(getContext(), SelectCheckTypeActivity.class);
+                intent.putExtra(CommonData.KEY_RESERVE_CHECK_TYPE_LIST, checkTypeData);
+                startActivityForResult(intent, REQUEST_CODE_SELECT_CHECK);
                 break;
             case R.id.layout_upload_one:
                 if (TextUtils.isEmpty(confirmImageUrl)) {
@@ -321,14 +295,18 @@ public class ServiceSubmitFragment extends BaseFragment
                 submit();
                 break;
             case R.id.layout_signature:
-                sureType(true);
+                sureType = BASE_TWO;
+                sureType();
                 break;
             case R.id.layout_camera:
-                sureType(false);
+                sureType = BASE_ONE;
+                sureType();
                 break;
             case R.id.layout_upload_two:
-                new SignatureDialog(getContext()).setOnEnterClickListener(bitmap -> ivSignature.setImageBitmap(bitmap))
-                                                 .show();
+                new SignatureDialog(getContext()).setOnEnterClickListener(bitmap -> {
+                    sureType = BASE_TWO;
+                    uploadImage(new File(DirHelper.getPathImage() + SignatureDialog.SIGNATURE_FILE_NAME));
+                }).show();
                 break;
             default:
                 break;
@@ -337,48 +315,35 @@ public class ServiceSubmitFragment extends BaseFragment
 
     /**
      * 提交方式  （签名 or 拍照）
-     *
-     * @param type true 为签名
      */
-    private void sureType(boolean type) {
-        if (type) {
-            tvSignature.setSelected(true);
-            tvSignature.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-            viewSignature.setVisibility(View.VISIBLE);
-            tvCamera.setSelected(false);
-            tvCamera.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
-            viewCamera.setVisibility(View.INVISIBLE);
-            tvTypeHint.setText(R.string.txt_signature_people_transfer_hint);
-            layoutUploadOne.setVisibility(View.GONE);
-            layoutUploadTwo.setVisibility(View.VISIBLE);
+    private void sureType() {
+        switch (sureType) {
+            case BASE_ONE:
+                tvSignature.setSelected(false);
+                tvSignature.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+                viewSignature.setVisibility(View.INVISIBLE);
+                tvCamera.setSelected(true);
+                tvCamera.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+                viewCamera.setVisibility(View.VISIBLE);
+                tvTypeHint.setText(R.string.txt_camera_people_transfer_hint);
+                layoutUploadOne.setVisibility(View.VISIBLE);
+                layoutUploadTwo.setVisibility(View.GONE);
+                break;
+            case BASE_TWO:
+                tvSignature.setSelected(true);
+                tvSignature.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+                viewSignature.setVisibility(View.VISIBLE);
+                tvCamera.setSelected(false);
+                tvCamera.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+                viewCamera.setVisibility(View.INVISIBLE);
+                tvTypeHint.setText(R.string.txt_signature_people_transfer_hint);
+                layoutUploadOne.setVisibility(View.GONE);
+                layoutUploadTwo.setVisibility(View.VISIBLE);
+                break;
+            default:
+                break;
         }
-        else {
-            tvSignature.setSelected(false);
-            tvSignature.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
-            viewSignature.setVisibility(View.INVISIBLE);
-            tvCamera.setSelected(true);
-            tvCamera.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-            viewCamera.setVisibility(View.VISIBLE);
-            tvTypeHint.setText(R.string.txt_camera_people_transfer_hint);
-            layoutUploadOne.setVisibility(View.VISIBLE);
-            layoutUploadTwo.setVisibility(View.GONE);
-        }
-    }
-
-    /**
-     * 删除已选择检查项目
-     *
-     * @param position
-     */
-    @Override
-    public void onDelete(int position) {
-        checkTypeData.remove(position);
-        checkTypeListviewAdapter.setData(checkTypeData);
-        checkTypeListviewAdapter.notifyDataSetChanged();
-        //不存在检查项 删除已选医院
-        if (checkTypeData.size() == 0) {
-            deleteAllSelectCheckType();
-        }
+        initNextButton();
     }
 
     /**
@@ -386,13 +351,25 @@ public class ServiceSubmitFragment extends BaseFragment
      */
     private void submit() {
         if (tvSubmitNext.isSelected() && checkListener != null) {
-            reserveCheckBean.setConfirmPhoto(confirmImageUrl);
+            if (sureType == BASE_ONE) {
+                reserveCheckBean.setConfirmPhoto(confirmImageUrl);
+                reserveCheckBean.setConfirmType(String.valueOf(BASE_ONE));
+            }
+            else {
+                reserveCheckBean.setConfirmPhoto(signatureImageUrl);
+                reserveCheckBean.setConfirmType(String.valueOf(BASE_TWO));
+            }
             ArrayList<ReserveCheckTypeBean> list = new ArrayList<>();
-            for (SelectCheckTypeBean bean : checkTypeData) {
-                ReserveCheckTypeBean checkBean = new ReserveCheckTypeBean();
-                checkBean.setProductCode(bean.getProjectCode());
-                checkBean.setPrice(bean.getPrice());
-                list.add(checkBean);
+            for (SelectCheckTypeParentBean parentBean : checkTypeData) {
+                ArrayList<SelectCheckTypeBean> beans = parentBean.getProductPackageList();
+                for (SelectCheckTypeBean bean : beans) {
+                    ReserveCheckTypeBean checkBean = new ReserveCheckTypeBean();
+                    checkBean.setHospitalCode(parentBean.getHospitalCode());
+                    checkBean.setProductCode(bean.getProjectCode());
+                    checkBean.setPrice(bean.getPrice());
+                    checkBean.setType(bean.getType());
+                    list.add(checkBean);
+                }
             }
             //检查项列表
             reserveCheckBean.setCheckTrans(list);
@@ -413,12 +390,17 @@ public class ServiceSubmitFragment extends BaseFragment
     @Override
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
-        if (task == Tasks.UPLOAD_FILE) {
+        if (sureType == BASE_ONE) {
             confirmImageUrl = (String)response.getData();
             if (imagePaths.size() > 0) {
                 imagePaths.get(0).setImageUrl(confirmImageUrl);
             }
             initImage(true);
+        }
+        else {
+            signatureImageUrl = (String)response.getData();
+            Glide.with(this).load(signatureImageUrl).apply(GlideHelper.getOptionsPic(0)).into(ivSignature);
+            initNextButton();
         }
     }
 
@@ -435,11 +417,6 @@ public class ServiceSubmitFragment extends BaseFragment
                 imagePaths.add(normImage);
                 cameraTempFile = new File(mCurrentPhotoPath);
                 uploadImage(cameraTempFile);
-                break;
-            case REQUEST_CODE_SELECT_HOSPITAL:
-                if (data != null) {
-                    selectHospitalByCheckItem(data);
-                }
                 break;
             case REQUEST_CODE_SELECT_CHECK:
                 if (data != null) { selectCheckItemByHospital(data); }

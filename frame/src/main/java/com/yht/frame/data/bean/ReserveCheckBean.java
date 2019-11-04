@@ -25,6 +25,7 @@ public class ReserveCheckBean implements Serializable {
     private String patientName;
     private String payType;
     private String phone;
+    private String confirmType;
     private ArrayList<ReserveCheckTypeBean> checkTrans;
 
     public boolean isNotUpdate() {
@@ -145,6 +146,14 @@ public class ReserveCheckBean implements Serializable {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getConfirmType() {
+        return confirmType;
+    }
+
+    public void setConfirmType(String confirmType) {
+        this.confirmType = confirmType;
     }
 
     public ArrayList<ReserveCheckTypeBean> getCheckTrans() {

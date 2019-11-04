@@ -52,7 +52,10 @@ public class ZycApplication extends LitePalApplication {
      * 服务、转诊、远程权限
      */
     private boolean transferAble, serviceAble, remoteAble;
-    private ArrayList<String> selectCodes;
+    /**
+     * 预约服务已选服务项code
+     */
+    private ArrayList<String> selectCodes = new ArrayList<>();
     /**
      * 调试模式
      * 1、微信登录

@@ -1,5 +1,6 @@
 package com.yht.yihuantong.ui.check;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.yht.frame.api.ThreadPoolHelper;
 import com.yht.frame.data.BaseResponse;
+import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.bean.RecentlyUsedServiceBean;
 import com.yht.frame.data.bean.SelectCheckTypeBean;
@@ -132,7 +134,7 @@ public class SelectCheckTypeActivity extends BaseActivity
     /**
      * 购物车
      */
-    private List<SelectCheckTypeParentBean> shopBeans = new ArrayList<>();
+    private ArrayList<SelectCheckTypeParentBean> shopBeans = new ArrayList<>();
     /**
      * 搜索结果
      */
@@ -150,6 +152,10 @@ public class SelectCheckTypeActivity extends BaseActivity
      */
     private ArrayList<String> filterServiceData;
     /**
+     * 已选中的服务项、服务包
+     */
+    private ArrayList<String> selectedCodes = new ArrayList<>();
+    /**
      * 最近使用的服务项、服务包code
      */
     private List<String> recentlyUsedServiceData;
@@ -161,10 +167,6 @@ public class SelectCheckTypeActivity extends BaseActivity
      * 筛选类型  1、医院   2、服务范围
      */
     private int filterType = BASE_ONE;
-    /**
-     * 已选中的服务项、服务包
-     */
-    private ArrayList<String> selectedCodes = new ArrayList<>();
 
     @Override
     protected boolean isInitBackBtn() {
@@ -179,6 +181,10 @@ public class SelectCheckTypeActivity extends BaseActivity
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
+        if (getIntent() != null) {
+            shopBeans = (ArrayList<SelectCheckTypeParentBean>)getIntent().getSerializableExtra(
+                    CommonData.KEY_RESERVE_CHECK_TYPE_LIST);
+        }
         layoutRefresh.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light,
                                               android.R.color.holo_orange_light, android.R.color.holo_green_light);
         layoutRefresh.setOnRefreshListener(this);
@@ -204,6 +210,13 @@ public class SelectCheckTypeActivity extends BaseActivity
         shopAdapter = new SelectCheckTypeShopAdapter(R.layout.item_check_shop_root, shopBeans);
         shopAdapter.setOnServiceDeleteListener(this);
         shopRecyclerView.setAdapter(shopAdapter);
+        selectedCodes = ZycApplication.getInstance().getSelectCodes();
+        if (selectedCodes.size() > 0) {
+            tvNext.setSelected(true);
+        }
+        else {
+            tvNext.setSelected(false);
+        }
         tvSelected.setText(String.format(getString(R.string.txt_calc_selected_num), selectedCodes.size()));
         tvSelected.setSelected(true);
     }
@@ -619,6 +632,10 @@ public class SelectCheckTypeActivity extends BaseActivity
                 break;
             case R.id.tv_next:
                 if (tvNext.isSelected()) {
+                    Intent intent = new Intent();
+                    intent.putExtra(CommonData.KEY_RESERVE_CHECK_TYPE_LIST, shopBeans);
+                    setResult(RESULT_OK, intent);
+                    finish();
                 }
                 break;
             case R.id.layout_bg:

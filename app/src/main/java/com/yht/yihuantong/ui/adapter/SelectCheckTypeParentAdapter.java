@@ -19,6 +19,10 @@ import java.util.List;
  */
 public class SelectCheckTypeParentAdapter extends BaseQuickAdapter<SelectCheckTypeParentBean, BaseViewHolder> {
     /**
+     * 是否显示价格
+     */
+    private boolean hidePrice;
+    /**
      * 已选择code
      */
     private ArrayList<String> selectCodes = new ArrayList<>();
@@ -27,33 +31,34 @@ public class SelectCheckTypeParentAdapter extends BaseQuickAdapter<SelectCheckTy
         super(layoutResId, data);
     }
 
+    public void setHidePrice(boolean hidePrice) {
+        this.hidePrice = hidePrice;
+    }
+
     @Override
     protected void convert(BaseViewHolder helper, SelectCheckTypeParentBean item) {
         helper.setText(R.id.tv_hospital_name, item.getHospitalName());
         FullListView listView = helper.getView(R.id.full_list_view);
         SelectCheckTypeAdapter adapter = new SelectCheckTypeAdapter(mContext);
-        adapter.setSelectCodes(selectCodes);
         adapter.setList(item.getProductPackageList());
-        listView.setOnItemClickListener((parent, view, position, id) -> {
-            SelectCheckTypeBean bean = item.getProductPackageList().get(position);
-            String newCode = bean.getProjectCode();
-            if (selectCodes.contains(newCode)) {
-                selectCodes.remove(newCode);
-            }
-            else {
-                selectCodes.add(newCode);
-            }
-            adapter.setSelectCodes(selectCodes);
-            adapter.notifyDataSetChanged();
-            if (onSelectedCallback != null) {
-                onSelectedCallback.onSelectedParent(item, bean);
-            }
-        });
+        adapter.setHidePrice(hidePrice);
+        if (!hidePrice) {
+            listView.setOnItemClickListener((parent, view, position, id) -> {
+                SelectCheckTypeBean bean = item.getProductPackageList().get(position);
+                String newCode = bean.getProjectCode();
+                if (selectCodes.contains(newCode)) {
+                    selectCodes.remove(newCode);
+                }
+                else {
+                    selectCodes.add(newCode);
+                }
+                if (onSelectedCallback != null) {
+                    onSelectedCallback.onSelectedParent(item, bean);
+                }
+                adapter.notifyDataSetChanged();
+            });
+        }
         listView.setAdapter(adapter);
-    }
-
-    public void setSelectCodes(ArrayList<String> selectCodes) {
-        this.selectCodes = selectCodes;
     }
 
     public interface OnSelectedCallback {
