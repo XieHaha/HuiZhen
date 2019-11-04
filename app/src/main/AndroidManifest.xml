@@ -236,11 +236,6 @@
             android:label="@string/title_add_check"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
-            android:name=".ui.check.SelectCheckTypeByHospitalActivity"
-            android:screenOrientation="portrait"
-            android:label=""
-            android:windowSoftInputMode="adjustResize|stateHidden" />
-        <activity
             android:name=".ui.transfer.TransferInitiateListActivity"
             android:screenOrientation="portrait"
             android:label="@string/title_add_transfer"
