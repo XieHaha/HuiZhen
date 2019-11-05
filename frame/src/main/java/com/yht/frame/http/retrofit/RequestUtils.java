@@ -505,6 +505,7 @@ public class RequestUtils {
         Map<String, Object> params = new HashMap<>(16);
         params.put("allergyHistory", bean.getAllergyHistory());
         params.put("confirmPhoto", bean.getConfirmPhoto());
+        params.put("confirmType", bean.getConfirmType());
         params.put("familyHistory", bean.getFamilyHistory());
         params.put("initResult", bean.getInitResult());
         params.put("pastHistory", bean.getPastHistory());

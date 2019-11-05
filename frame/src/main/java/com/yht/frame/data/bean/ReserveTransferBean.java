@@ -16,6 +16,7 @@ public class ReserveTransferBean implements Serializable {
     private String isBind;
     private String allergyHistory;
     private String confirmPhoto;
+    private String confirmType;
     private String familyHistory;
     private String initResult;
     private String pastHistory;
@@ -88,6 +89,14 @@ public class ReserveTransferBean implements Serializable {
 
     public void setConfirmPhoto(String confirmPhoto) {
         this.confirmPhoto = confirmPhoto;
+    }
+
+    public String getConfirmType() {
+        return confirmType;
+    }
+
+    public void setConfirmType(String confirmType) {
+        this.confirmType = confirmType;
     }
 
     public String getFamilyHistory() {

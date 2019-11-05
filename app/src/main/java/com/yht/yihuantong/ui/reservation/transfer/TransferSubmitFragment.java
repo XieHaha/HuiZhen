@@ -1,5 +1,6 @@
 package com.yht.yihuantong.ui.reservation.transfer;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -48,6 +49,7 @@ import com.yht.yihuantong.utils.FileUrlUtil;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -137,7 +139,11 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
     /**
      * 拍照确认图片url
      */
-    private String confirmImageUrl;
+    private String confirmImageUrl, signatureImageUrl;
+    /**
+     * 患者确认方式
+     */
+    private int sureType;
     /**
      * 转诊目的其他原因
      */
@@ -173,7 +179,9 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-        sureType(true);
+        //默认签名确认
+        sureType = BASE_TWO;
+        sureType();
         //默认自费
         payTypeId = rbSelf.getId();
         //默认家属要求
@@ -209,8 +217,6 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
 
     /**
      * 点击返回回传数据
-     *
-     * @return
      */
     public ReserveTransferBean getReverseTransferBean() {
         return reverseTransferBean;
@@ -218,11 +224,9 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
 
     /**
      * 上传图片
-     *
-     * @param file
      */
     private void uploadImage(File file) {
-        ScalingUtils.resizePic(getContext(), file.getAbsolutePath());
+        ScalingUtils.resizePic(Objects.requireNonNull(getContext()), file.getAbsolutePath());
         RequestUtils.uploadImg(getContext(), loginBean.getToken(), file, this);
     }
 
@@ -309,7 +313,7 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
                 //裁剪完成，上传图片
                 Glide.with(this)
                      .load(FileUrlUtil.addTokenToUrl(confirmImageUrl))
-                     .apply(GlideHelper.getOptionsPic(BaseUtils.dp2px(getContext(), 4)))
+                     .apply(GlideHelper.getOptionsPic(BaseUtils.dp2px(Objects.requireNonNull(getContext()), 4)))
                      .into(ivUploadOne);
             }
             initNextButton();
@@ -324,22 +328,13 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
             clearAll = false;
         }
         else {
-            if (reverseTransferBean.getPatientName().equals(bean.getPatientName()) &&
-                reverseTransferBean.getPatientIdCardNo().equals(bean.getPatientIdCardNo())) {
-                //都相等 说明未改变用户
-                clearAll = false;
-            }
-            else {
-                //有不相等的 说明居民已经更改，需要清除原有已填写数据
-                clearAll = true;
-            }
+            clearAll = !reverseTransferBean.getPatientName().equals(bean.getPatientName()) ||
+                       !reverseTransferBean.getPatientIdCardNo().equals(bean.getPatientIdCardNo());
         }
     }
 
     /**
      * 图片处理
-     *
-     * @param status
      */
     private void initImage(boolean status) {
         if (status) {
@@ -347,7 +342,7 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
             //裁剪完成，上传图片
             Glide.with(this)
                  .load(mCurrentPhotoPath)
-                 .apply(GlideHelper.getOptionsPic(BaseUtils.dp2px(getContext(), 4)))
+                 .apply(GlideHelper.getOptionsPic(BaseUtils.dp2px(Objects.requireNonNull(getContext()), 4)))
                  .into(ivUploadOne);
         }
         else {
@@ -365,13 +360,14 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
     /**
      * 接诊医生回调
      */
+    @SuppressLint("SetTextI18n")
     private void initReceiveDoctor(boolean refresh) {
         layoutReceivingDoctor.setVisibility(View.VISIBLE);
         tvSelect.setVisibility(View.GONE);
         if (curReceiveDoctor != null) {
             Glide.with(this)
                  .load(curReceiveDoctor.getPhoto())
-                 .apply(GlideHelper.getOptions(BaseUtils.dp2px(getContext(), 4)))
+                 .apply(GlideHelper.getOptions(BaseUtils.dp2px(Objects.requireNonNull(getContext()), 4)))
                  .into(ivReceivingDoctor);
             tvReceivingDoctorName.setText(curReceiveDoctor.getDoctorName());
             tvReceivingDoctorTitle.setText(curReceiveDoctor.getHospitalName());
@@ -397,7 +393,9 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
      */
     private void initNextButton() {
         boolean other = rbOther.getId() != transferPurposeId || !TextUtils.isEmpty(otherString);
-        if (curReceiveDoctor != null && !TextUtils.isEmpty(confirmImageUrl) && other) {
+        boolean url = (!TextUtils.isEmpty(confirmImageUrl) && sureType == BASE_ONE) ||
+                      (sureType == BASE_TWO && !TextUtils.isEmpty(signatureImageUrl));
+        if (curReceiveDoctor != null && url && other) {
             tvSubmitNext.setSelected(true);
         }
         else {
@@ -407,8 +405,8 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
 
     @OnClick({
             R.id.layout_select_receiving_doctor, R.id.iv_receiving_doctor_call, R.id.iv_delete_one,
-            R.id.layout_upload_one, R.id.layout_upload_two, R.id.layout_signature,
-            R.id.layout_camera,R.id.tv_submit_next })
+            R.id.layout_upload_one, R.id.layout_upload_two, R.id.layout_signature, R.id.layout_camera,
+            R.id.tv_submit_next })
     public void onViewClicked(View view) {
         Intent intent;
         switch (view.getId()) {
@@ -427,7 +425,7 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
                     intent = new Intent(getContext(), ImagePreviewActivity.class);
                     intent.putExtra(ImagePreviewActivity.INTENT_URLS, imagePaths);
                     startActivity(intent);
-                    getActivity().overridePendingTransition(R.anim.anim_fade_in, R.anim.keep);
+                    Objects.requireNonNull(getActivity()).overridePendingTransition(R.anim.anim_fade_in, R.anim.keep);
                 }
                 break;
             case R.id.iv_delete_one:
@@ -436,6 +434,14 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
                 break;
             case R.id.tv_submit_next:
                 if (tvSubmitNext.isSelected() && onTransferListener != null) {
+                    if (sureType == BASE_ONE) {
+                        reverseTransferBean.setConfirmPhoto(confirmImageUrl);
+                        reverseTransferBean.setConfirmType(String.valueOf(BASE_ONE));
+                    }
+                    else {
+                        reverseTransferBean.setConfirmPhoto(signatureImageUrl);
+                        reverseTransferBean.setConfirmType(String.valueOf(BASE_TWO));
+                    }
                     onTransferListener.onTransferStepThree(reverseTransferBean);
                 }
                 break;
@@ -444,14 +450,18 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
                 deleteAllSelectCheckType();
                 break;
             case R.id.layout_signature:
-                sureType(true);
+                sureType = BASE_TWO;
+                sureType();
                 break;
             case R.id.layout_camera:
-                sureType(false);
+                sureType = BASE_ONE;
+                sureType();
                 break;
             case R.id.layout_upload_two:
-                new SignatureDialog(getContext()).setOnEnterClickListener(bitmap -> ivSignature.setImageBitmap(bitmap))
-                                                 .show();
+                new SignatureDialog(getContext()).setOnEnterClickListener(bitmap -> {
+                    sureType = BASE_TWO;
+                    uploadImage(new File(DirHelper.getPathImage() + SignatureDialog.SIGNATURE_FILE_NAME));
+                }).show();
                 break;
             default:
                 break;
@@ -460,39 +470,39 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
 
     /**
      * 提交方式  （签名 or 拍照）
-     *
-     * @param type true 为签名
      */
-    private void sureType(boolean type) {
-        if (type) {
-            tvSignature.setSelected(true);
-            tvSignature.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-            viewSignature.setVisibility(View.VISIBLE);
-            tvCamera.setSelected(false);
-            tvCamera.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
-            viewCamera.setVisibility(View.INVISIBLE);
-            tvTypeHint.setText(R.string.txt_signature_people_transfer_hint);
-            layoutUploadOne.setVisibility(View.GONE);
-            layoutUploadTwo.setVisibility(View.VISIBLE);
+    private void sureType() {
+        switch (sureType) {
+            case BASE_ONE:
+                tvSignature.setSelected(false);
+                tvSignature.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+                viewSignature.setVisibility(View.INVISIBLE);
+                tvCamera.setSelected(true);
+                tvCamera.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+                viewCamera.setVisibility(View.VISIBLE);
+                tvTypeHint.setText(R.string.txt_camera_people_transfer_hint);
+                layoutUploadOne.setVisibility(View.VISIBLE);
+                layoutUploadTwo.setVisibility(View.GONE);
+                break;
+            case BASE_TWO:
+                tvSignature.setSelected(true);
+                tvSignature.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+                viewSignature.setVisibility(View.VISIBLE);
+                tvCamera.setSelected(false);
+                tvCamera.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+                viewCamera.setVisibility(View.INVISIBLE);
+                tvTypeHint.setText(R.string.txt_signature_people_transfer_hint);
+                layoutUploadOne.setVisibility(View.GONE);
+                layoutUploadTwo.setVisibility(View.VISIBLE);
+                break;
+            default:
+                break;
         }
-        else {
-            tvSignature.setSelected(false);
-            tvSignature.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
-            viewSignature.setVisibility(View.INVISIBLE);
-            tvCamera.setSelected(true);
-            tvCamera.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-            viewCamera.setVisibility(View.VISIBLE);
-            tvTypeHint.setText(R.string.txt_camera_people_transfer_hint);
-            layoutUploadOne.setVisibility(View.VISIBLE);
-            layoutUploadTwo.setVisibility(View.GONE);
-        }
+        initNextButton();
     }
 
     /**
      * RadioGroup选择
-     *
-     * @param group
-     * @param checkedId
      */
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -541,12 +551,18 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
         if (task == Tasks.UPLOAD_FILE) {
-            confirmImageUrl = (String)response.getData();
-            reverseTransferBean.setConfirmPhoto(confirmImageUrl);
-            if (imagePaths.size() > 0) {
-                imagePaths.get(0).setImageUrl(confirmImageUrl);
+            if (sureType == BASE_ONE) {
+                confirmImageUrl = (String)response.getData();
+                if (imagePaths.size() > 0) {
+                    imagePaths.get(0).setImageUrl(confirmImageUrl);
+                }
+                initImage(true);
             }
-            initImage(true);
+            else {
+                signatureImageUrl = (String)response.getData();
+                Glide.with(this).load(signatureImageUrl).apply(GlideHelper.getOptionsPic(0)).into(ivSignature);
+                initNextButton();
+            }
         }
     }
 
@@ -587,24 +603,23 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
      */
     private void openCamera() {
         cameraTempFile = new File(DirHelper.getPathImage(), System.currentTimeMillis() + ".jpg");
-        if (cameraTempFile != null) {
-            mCurrentPhotoPath = cameraTempFile.getAbsolutePath();
-        }
+        mCurrentPhotoPath = cameraTempFile.getAbsolutePath();
         //选择拍照
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // 指定调用相机拍照后照片的储存路径
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            mCurrentPhotoUri = FileProvider.getUriForFile(getContext(), ZycApplication.getInstance().getPackageName() +
-                                                                        ".fileprovider", cameraTempFile);
+            mCurrentPhotoUri = FileProvider.getUriForFile(Objects.requireNonNull(getContext()),
+                                                          ZycApplication.getInstance().getPackageName() +
+                                                          ".fileprovider", cameraTempFile);
         }
         else {
             mCurrentPhotoUri = Uri.fromFile(cameraTempFile);
         }
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            List<ResolveInfo> resInfoList = getContext().getPackageManager()
-                                                        .queryIntentActivities(intent,
-                                                                               PackageManager.MATCH_DEFAULT_ONLY);
+            List<ResolveInfo> resInfoList = Objects.requireNonNull(getContext())
+                                                   .getPackageManager()
+                                                   .queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
             for (ResolveInfo resolveInfo : resInfoList) {
                 String packageName = resolveInfo.activityInfo.packageName;
                 getContext().grantUriPermission(packageName, mCurrentPhotoUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION |
