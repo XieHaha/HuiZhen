@@ -64,7 +64,7 @@ public class SignatureView extends View {
     /**
      * 背景色
      */
-    private int mBgColor = Color.TRANSPARENT;
+    private int mBgColor = Color.WHITE;
     /**
      * 点位计算   须大于30个点才保存
      */

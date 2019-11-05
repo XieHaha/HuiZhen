@@ -107,6 +107,8 @@ public class SelectCheckTypeActivity extends BaseActivity
     RelativeLayout layoutNoneShop;
     @BindView(R.id.layout_refresh)
     SwipeRefreshLayout layoutRefresh;
+    @BindView(R.id.layout_refresh_root)
+    RelativeLayout layoutRefreshRoot;
     /**
      * 服务项
      */
@@ -229,6 +231,11 @@ public class SelectCheckTypeActivity extends BaseActivity
         }
         tvSelected.setText(String.format(getString(R.string.txt_calc_selected_num), selectedCodes.size()));
         tvSelected.setSelected(true);
+        //是否显示刷新引导
+        boolean status = sharePreferenceUtil.getAlwaysBoolean(CommonData.KEY_SHOW_REFRESH_STATUS);
+        if (!status) {
+            layoutRefreshRoot.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -615,7 +622,7 @@ public class SelectCheckTypeActivity extends BaseActivity
 
     @OnClick({
             R.id.tv_cancel, R.id.layout_all_hospital, R.id.layout_all_service, R.id.tv_selected, R.id.tv_next,
-            R.id.layout_bg, R.id.tv_none_refresh, R.id.layout_shop_bg, R.id.tv_clear_shop })
+            R.id.layout_bg, R.id.tv_none_refresh, R.id.layout_shop_bg, R.id.tv_clear_shop, R.id.tv_know })
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_cancel:
@@ -687,6 +694,10 @@ public class SelectCheckTypeActivity extends BaseActivity
                 //购物车数据初始化
                 shopBeans.clear();
                 updateShopCart();
+                break;
+            case R.id.tv_know:
+                layoutRefreshRoot.setVisibility(View.GONE);
+                sharePreferenceUtil.putAlwaysBoolean(CommonData.KEY_SHOW_REFRESH_STATUS, true);
                 break;
             default:
                 break;

@@ -228,4 +228,8 @@ public interface CommonData {
      * 预约服务最近使用的服务项  服务包
      */
     String KEY_RECENTLY_USED_SERVICE = "key_recently_used_service";
+    /**
+     * 预约服务提示刷新显示状态  true为已显示
+     */
+    String KEY_SHOW_REFRESH_STATUS = "key_show_refresh_status";
 }

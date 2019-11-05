@@ -221,4 +221,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <include
+        layout="@layout/view_select_service_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
 </RelativeLayout>

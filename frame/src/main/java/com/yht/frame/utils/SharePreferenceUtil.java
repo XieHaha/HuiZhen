@@ -76,6 +76,28 @@ public class SharePreferenceUtil {
     }
 
     /**
+     * 存  不清除的数据
+     */
+    public void putAlwaysBoolean(String spKey, boolean spValue) {
+        spEditor = mContext.getSharedPreferences(FILE_NAME_OTHER, 0).edit();
+        spEditor.putBoolean(spKey, spValue);
+        spEditor.apply();
+    }
+
+    /**
+     * 取 不清除的数据
+     */
+    public boolean getAlwaysBoolean(String spKey) {
+        sp = mContext.getSharedPreferences(FILE_NAME_OTHER, 0);
+        //默认1 为有通知权限
+        boolean value = false;
+        if (sp != null) {
+            value = sp.getBoolean(spKey, false);
+        }
+        return value;
+    }
+
+    /**
      * 存
      */
     public void putString(String spKey, String spValue) {

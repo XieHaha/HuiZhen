@@ -8,6 +8,11 @@
     android:id="@+id/layout_root"
     android:background="@drawable/corner10_ffffff_bg">
 
+    <com.yht.frame.widgets.view.SignatureView
+        android:id="@+id/signature"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_centerInParent="true"
@@ -37,11 +42,6 @@
             android:rotation="90" />
 
     </LinearLayout>
-
-    <com.yht.frame.widgets.view.SignatureView
-        android:id="@+id/signature"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 
     <ImageView
         android:id="@+id/iv_delete"
