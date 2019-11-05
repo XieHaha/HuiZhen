@@ -34,9 +34,6 @@ public class SharePreferenceUtil {
 
     /**
      * 存  不清除的数据
-     *
-     * @param spKey
-     * @param spValue
      */
     public void putAlwaysString(String spKey, String spValue) {
         spEditor = mContext.getSharedPreferences(FILE_NAME_OTHER, 0).edit();
@@ -46,9 +43,6 @@ public class SharePreferenceUtil {
 
     /**
      * 取 不清除的数据
-     *
-     * @param spKey
-     * @return
      */
     public String getAlwaysString(String spKey) {
         sp = mContext.getSharedPreferences(FILE_NAME_OTHER, 0);
@@ -61,9 +55,6 @@ public class SharePreferenceUtil {
 
     /**
      * 存  不清除的数据
-     *
-     * @param spKey
-     * @param spValue
      */
     public void putAlwaysInteger(String spKey, int spValue) {
         spEditor = mContext.getSharedPreferences(FILE_NAME_OTHER, 0).edit();
@@ -73,9 +64,6 @@ public class SharePreferenceUtil {
 
     /**
      * 取 不清除的数据
-     *
-     * @param spKey
-     * @return
      */
     public int getAlwaysInteger(String spKey) {
         sp = mContext.getSharedPreferences(FILE_NAME_OTHER, 0);
@@ -89,9 +77,6 @@ public class SharePreferenceUtil {
 
     /**
      * 存
-     *
-     * @param spKey
-     * @param spValue
      */
     public void putString(String spKey, String spValue) {
         spEditor = mContext.getSharedPreferences(FILE_NAME, 0).edit();
@@ -101,9 +86,6 @@ public class SharePreferenceUtil {
 
     /**
      * 取
-     *
-     * @param spKey
-     * @return
      */
     public String getString(String spKey) {
         sp = mContext.getSharedPreferences(FILE_NAME, 0);
@@ -116,9 +98,27 @@ public class SharePreferenceUtil {
 
     /**
      * 存
-     *
-     * @param spKey
-     * @param spValue
+     */
+    public void putStringSet(String spKey, Set<String> spValue) {
+        spEditor = mContext.getSharedPreferences(FILE_NAME, 0).edit();
+        spEditor.putStringSet(spKey, spValue);
+        spEditor.apply();
+    }
+
+    /**
+     * 取
+     */
+    public Set<String> getStringSet(String spKey) {
+        sp = mContext.getSharedPreferences(FILE_NAME, 0);
+        Set<String> value = null;
+        if (sp != null) {
+            value = sp.getStringSet(spKey, null);
+        }
+        return value;
+    }
+
+    /**
+     * 存
      */
     public void putInt(String spKey, int spValue) {
         spEditor = mContext.getSharedPreferences(FILE_NAME, 0).edit();
@@ -128,9 +128,6 @@ public class SharePreferenceUtil {
 
     /**
      * 取
-     *
-     * @param spKey
-     * @return
      */
     public int getInt(String spKey) {
         sp = mContext.getSharedPreferences(FILE_NAME, 0);
@@ -143,9 +140,6 @@ public class SharePreferenceUtil {
 
     /**
      * 存
-     *
-     * @param spKey
-     * @param spValue
      */
     public void putBoolean(String spKey, boolean spValue) {
         spEditor = mContext.getSharedPreferences(FILE_NAME, 0).edit();
@@ -155,9 +149,6 @@ public class SharePreferenceUtil {
 
     /**
      * 取
-     *
-     * @param spKey
-     * @return
      */
     public boolean getBoolean(String spKey) {
         sp = mContext.getSharedPreferences(FILE_NAME, 0);
@@ -170,8 +161,6 @@ public class SharePreferenceUtil {
 
     /**
      * 删
-     *
-     * @param spKey
      */
     public void clear(String spKey) {
         sp = mContext.getSharedPreferences(FILE_NAME, 0);
@@ -182,10 +171,6 @@ public class SharePreferenceUtil {
 
     /**
      * 保存数据的方法，我们需要拿到保存数据的具体类型，然后根据类型调用不同的保存方法
-     *
-     * @param context
-     * @param key
-     * @param object
      */
     @SuppressWarnings("unchecked")
     public static void putObject(Context context, String key, Object object) {
@@ -219,11 +204,6 @@ public class SharePreferenceUtil {
 
     /**
      * 得到保存数据的方法，我们根据默认值得到保存的数据的具体类型，然后调用相对于的方法获取值
-     *
-     * @param context
-     * @param key
-     * @param defaultObject
-     * @return
      */
     public static Object getObject(Context context, String key, Object defaultObject) {
         SharedPreferences sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
@@ -247,9 +227,6 @@ public class SharePreferenceUtil {
 
     /**
      * 移除某个key值已经对应的值
-     *
-     * @param context
-     * @param key
      */
     public static void remove(Context context, String key) {
         SharedPreferences sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
@@ -261,21 +238,15 @@ public class SharePreferenceUtil {
 
     /**
      * 清除所有数据
-     *
-     * @param context
      */
     public static void clear(Context context) {
         SharedPreferences sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
         Editor editor = sp.edit();
-        editor.clear().commit();
+        editor.clear().apply();
     }
 
     /**
      * 查询某个key是否已经存在
-     *
-     * @param context
-     * @param key
-     * @return
      */
     public boolean contains(Context context, String key) {
         SharedPreferences sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);

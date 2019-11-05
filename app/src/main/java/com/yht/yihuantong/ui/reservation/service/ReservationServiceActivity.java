@@ -38,12 +38,15 @@ import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.frame.widgets.dialog.ListDialog;
 import com.yht.yihuantong.BuildConfig;
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.ZycApplication;
 import com.yht.yihuantong.ui.check.listener.OnCheckListener;
 import com.yht.yihuantong.ui.reservation.ReservationSuccessActivity;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import butterknife.BindView;
 
@@ -248,6 +251,13 @@ public class ReservationServiceActivity extends BaseActivity implements OnCheckL
      * 保存最近使用的服务项 服务包
      */
     private void saveRecentlyUsedService() {
+        Set<String> localData = sharePreferenceUtil.getStringSet(CommonData.KEY_RECENTLY_USED_SERVICE);
+        localData = new HashSet<>(localData);
+        List<String> codes = ZycApplication.getInstance().getSelectCodes();
+        localData.addAll(codes);
+        sharePreferenceUtil.putStringSet(CommonData.KEY_RECENTLY_USED_SERVICE, localData);
+        //清除临时数据
+        ZycApplication.getInstance().clearSelectCodes();
     }
 
     /**

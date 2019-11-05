@@ -224,4 +224,8 @@ public interface CommonData {
      * 远程会诊 结束时间
      */
     String KEY_REMOTE_END_HOUR = "key_remote_end_hour";
+    /**
+     * 预约服务最近使用的服务项  服务包
+     */
+    String KEY_RECENTLY_USED_SERVICE = "key_recently_used_service";
 }

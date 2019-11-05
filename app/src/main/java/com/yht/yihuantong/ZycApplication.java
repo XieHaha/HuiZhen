@@ -238,6 +238,12 @@ public class ZycApplication extends LitePalApplication {
         this.selectCodes = selectCodes;
     }
 
+    public void clearSelectCodes() {
+        if (selectCodes != null) {
+            selectCodes.clear();
+        }
+    }
+
     /**
      * 界面适配
      */

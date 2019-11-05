@@ -22,7 +22,6 @@ import com.yht.frame.api.ThreadPoolHelper;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
-import com.yht.frame.data.bean.RecentlyUsedServiceBean;
 import com.yht.frame.data.bean.SelectCheckTypeBean;
 import com.yht.frame.data.bean.SelectCheckTypeChildBean;
 import com.yht.frame.data.bean.SelectCheckTypeParentBean;
@@ -44,6 +43,7 @@ import org.litepal.LitePal;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -294,10 +294,10 @@ public class SelectCheckTypeActivity extends BaseActivity
      * 获取最近使用数据
      */
     private void getRecentlyUsedListByLocal() {
+        Set<String> recent = sharePreferenceUtil.getStringSet(CommonData.KEY_RECENTLY_USED_SERVICE);
         recentlyUsedServiceData = new ArrayList<>();
-        List<RecentlyUsedServiceBean> list = LitePal.findAll(RecentlyUsedServiceBean.class);
-        for (RecentlyUsedServiceBean bean : list) {
-            recentlyUsedServiceData.add(bean.getCode());
+        if (recent != null) {
+            recentlyUsedServiceData.addAll(recent);
         }
     }
 
@@ -482,7 +482,7 @@ public class SelectCheckTypeActivity extends BaseActivity
         //清除购物车
         shopBeans.clear();
         selectedCodes.clear();
-        ZycApplication.getInstance().setSelectCodes(selectedCodes);
+        ZycApplication.getInstance().clearSelectCodes();
         tvSelected.setText(String.format(getString(R.string.txt_calc_selected_num), selectedCodes.size()));
         tvNext.setSelected(false);
         //重新从服务器拉取数据
@@ -683,7 +683,7 @@ public class SelectCheckTypeActivity extends BaseActivity
             case R.id.tv_clear_shop:
                 //清除已选项
                 selectedCodes.clear();
-                ZycApplication.getInstance().setSelectCodes(selectedCodes);
+                ZycApplication.getInstance().clearSelectCodes();
                 //购物车数据初始化
                 shopBeans.clear();
                 updateShopCart();
@@ -750,6 +750,9 @@ public class SelectCheckTypeActivity extends BaseActivity
                     list.remove(bean);
                 }
             }
+            if (list.size() == 0) {
+                shopBeans.remove(data);
+            }
         }
         ZycApplication.getInstance().setSelectCodes(selectedCodes);
         updateShopCart();
@@ -769,6 +772,8 @@ public class SelectCheckTypeActivity extends BaseActivity
             bindServiceListData();
             //存储
             ThreadPoolHelper.getInstance().execInSingle(() -> saveLocal(parentBeans));
+            //重新拉取数据需要清除最近使用
+            sharePreferenceUtil.putStringSet(CommonData.KEY_RECENTLY_USED_SERVICE, null);
         }
     }
 
