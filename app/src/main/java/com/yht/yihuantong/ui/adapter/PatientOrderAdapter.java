@@ -1,5 +1,6 @@
 package com.yht.yihuantong.ui.adapter;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -57,9 +58,6 @@ public class PatientOrderAdapter extends BaseMultiItemQuickAdapter<PatientOrderB
 
     /**
      * 检查数据
-     *
-     * @param helper
-     * @param item
      */
     private void initCheckData(BaseViewHolder helper, PatientOrderBean item) {
         helper.setText(R.id.tv_check_name, R.string.txt_reserve_check)
@@ -86,9 +84,6 @@ public class PatientOrderAdapter extends BaseMultiItemQuickAdapter<PatientOrderB
 
     /**
      * 转诊数据
-     *
-     * @param helper
-     * @param item
      */
     private void initTransferData(BaseViewHolder helper, PatientOrderBean item) {
         helper.setText(R.id.tv_transfer_name, R.string.txt_reserve_transfer)
@@ -175,9 +170,6 @@ public class PatientOrderAdapter extends BaseMultiItemQuickAdapter<PatientOrderB
 
     /**
      * 添加检查项
-     *
-     * @param helper
-     * @param item
      */
     private void addCheckView(BaseViewHolder helper, PatientOrderBean item) {
         //检查项数据
@@ -188,25 +180,31 @@ public class PatientOrderAdapter extends BaseMultiItemQuickAdapter<PatientOrderB
         ArrayList<CheckTypeBean> reportList = new ArrayList<>();
         if (list != null && list.size() > 0) {
             for (int i = 0; i < list.size(); i++) {
-                CheckTypeBean checkTypeBean = list.get(i);
+                CheckTypeBean bean = list.get(i);
                 View view = LayoutInflater.from(mContext).inflate(R.layout.item_check_type, null);
-                TextView textView = view.findViewById(R.id.tv_check_type_name);
+                TextView serviceName = view.findViewById(R.id.tv_check_type_name);
                 ImageView imageDot = view.findViewById(R.id.iv_check_type_dot);
                 ImageView imageView = view.findViewById(R.id.iv_check_type_status);
-                textView.setText(checkTypeBean.getName());
-                int status = checkTypeBean.getStatus();
+                //服务包为空则显示服务项
+                if (TextUtils.isEmpty(bean.getPackName())) {
+                    serviceName.setText(bean.getName());
+                }
+                else {
+                    serviceName.setText(bean.getPackName());
+                }
+                int status = bean.getStatus();
                 //已完成（已上传报告）
                 if (status == CHECK_TYPE_STATUS_COMPLETE) {
-                    reportList.add(checkTypeBean);
+                    reportList.add(bean);
                 }
                 //检查项已取消
                 if (item.getStatus() != CHECK_ORDER_STATUS_CANCEL && status == CHECK_TYPE_STATUS_CANCEL) {
-                    textView.setSelected(true);
+                    serviceName.setSelected(true);
                     imageDot.setSelected(true);
                     imageView.setVisibility(View.VISIBLE);
                 }
                 else {
-                    textView.setSelected(false);
+                    serviceName.setSelected(false);
                     imageDot.setSelected(false);
                     imageView.setVisibility(View.GONE);
                 }
@@ -227,9 +225,6 @@ public class PatientOrderAdapter extends BaseMultiItemQuickAdapter<PatientOrderB
 
     /**
      * 添加报告
-     *
-     * @param helper
-     * @param reportList
      */
     private void addReportView(BaseViewHolder helper, ArrayList<CheckTypeBean> reportList) {
         //检查报告

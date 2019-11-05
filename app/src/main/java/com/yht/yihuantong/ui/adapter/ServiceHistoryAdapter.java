@@ -11,10 +11,10 @@ import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.yht.frame.data.BaseData;
-import com.yht.frame.data.type.CheckOrderStatus;
-import com.yht.frame.data.type.CheckTypeStatus;
 import com.yht.frame.data.bean.CheckBean;
 import com.yht.frame.data.bean.CheckTypeBean;
+import com.yht.frame.data.type.CheckOrderStatus;
+import com.yht.frame.data.type.CheckTypeStatus;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.yihuantong.R;
@@ -69,25 +69,25 @@ public class ServiceHistoryAdapter extends BaseQuickAdapter<CheckBean, BaseViewH
         for (int i = 0; i < checkTypeList.size(); i++) {
             CheckTypeBean bean = checkTypeList.get(i);
             View view = LayoutInflater.from(mContext).inflate(R.layout.item_check_type, null);
-            TextView textView = view.findViewById(R.id.tv_check_type_name);
+            TextView serviceName = view.findViewById(R.id.tv_check_type_name);
             ImageView imageDot = view.findViewById(R.id.iv_check_type_dot);
             ImageView imageView = view.findViewById(R.id.iv_check_type_status);
             if (bean.getItemType() == BaseData.BASE_ONE) {
-                textView.setText(bean.getName());
+                serviceName.setText(bean.getName());
             }
             else {
-                textView.setText(bean.getPackName());
+                serviceName.setText(bean.getPackName());
             }
             //如果订单为已取消，检查项不做处理
             if (item.getStatus() != CHECK_ORDER_STATUS_CANCEL &&
                 bean.getStatus() == CheckTypeStatus.CHECK_TYPE_STATUS_CANCEL) {
                 imageView.setVisibility(View.VISIBLE);
-                textView.setSelected(true);
+                serviceName.setSelected(true);
                 imageDot.setSelected(true);
             }
             else {
                 imageView.setVisibility(View.GONE);
-                textView.setSelected(false);
+                serviceName.setSelected(false);
                 imageDot.setSelected(false);
             }
             layout.addView(view);
