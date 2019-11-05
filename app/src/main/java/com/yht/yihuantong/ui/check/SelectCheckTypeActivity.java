@@ -238,8 +238,11 @@ public class SelectCheckTypeActivity extends BaseActivity
             getCheckTypeList();
         }
         else {
+            //获取最近使用
             getRecentlyUsedListByLocal();
+            //获取本地服务向数据
             getCheckTypeListByLocal();
+            bindServiceListData();
             //本地没有数据
             if (parentBeans.size() == 0) {
                 getCheckTypeList();
@@ -271,7 +274,20 @@ public class SelectCheckTypeActivity extends BaseActivity
      */
     private void getCheckTypeListByLocal() {
         parentBeans = LitePal.findAll(SelectCheckTypeParentBean.class, true);
-        bindServiceListData();
+        //过滤
+        filterNoneCheckHospital();
+    }
+
+    /**
+     * 过滤掉没有服务项、服务包的医院
+     */
+    private void filterNoneCheckHospital() {
+        for (int i = 0; i < parentBeans.size(); i++) {
+            SelectCheckTypeParentBean parentBean = parentBeans.get(i);
+            if (parentBean.getProductPackageList() == null || parentBean.getProductPackageList().size() == 0) {
+                parentBeans.remove(parentBean);
+            }
+        }
     }
 
     /**
@@ -293,7 +309,7 @@ public class SelectCheckTypeActivity extends BaseActivity
             searchBeans.clear();
             searchParentBeans.clear();
             //重新拉取本地数据
-            parentBeans = LitePal.findAll(SelectCheckTypeParentBean.class, true);
+            getCheckTypeListByLocal();
             for (SelectCheckTypeParentBean parentBean : parentBeans) {
                 ArrayList<SelectCheckTypeBean> beans = parentBean.getProductPackageList();
                 for (SelectCheckTypeBean bean : beans) {
@@ -350,7 +366,7 @@ public class SelectCheckTypeActivity extends BaseActivity
      */
     private void bindFilterServiceListData() {
         //重新拉取本地数据
-        parentBeans = LitePal.findAll(SelectCheckTypeParentBean.class, true);
+        getCheckTypeListByLocal();
         filterBeans.clear();
         if (TextUtils.equals(curHospital, getString(R.string.txt_all_hospitals)) &&
             TextUtils.equals(curServiceType, getString(R.string.txt_all_services))) {
@@ -749,8 +765,10 @@ public class SelectCheckTypeActivity extends BaseActivity
         super.onResponseSuccess(task, response);
         if (task == Tasks.GET_CHECK_TYPE) {
             parentBeans = (List<SelectCheckTypeParentBean>)response.getData();
-            saveLocal(parentBeans);
+            filterNoneCheckHospital();
             bindServiceListData();
+            //存储
+            ThreadPoolHelper.getInstance().execInSingle(() -> saveLocal(parentBeans));
         }
     }
 
@@ -789,5 +807,7 @@ public class SelectCheckTypeActivity extends BaseActivity
             }
             LitePal.saveAll(list);
         });
+        //变更更新状态为已更新
+        sharePreferenceUtil.putBoolean(CommonData.KEY_RESERVE_CHECK_UPDATE, false);
     }
 }

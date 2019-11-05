@@ -14,23 +14,36 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
+import com.yanzhenjie.nohttp.NoHttp;
+import com.yanzhenjie.nohttp.RequestMethod;
+import com.yanzhenjie.nohttp.rest.OnResponseListener;
+import com.yanzhenjie.nohttp.rest.Request;
+import com.yanzhenjie.nohttp.rest.RequestQueue;
+import com.yanzhenjie.nohttp.rest.Response;
 import com.yht.frame.data.BaseNetConfig;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
-import com.yht.frame.data.Tasks;
 import com.yht.frame.data.bean.PatientBean;
 import com.yht.frame.data.bean.ReserveCheckBean;
 import com.yht.frame.data.bean.ReserveCheckTypeBean;
 import com.yht.frame.data.bean.ServiceSubmitErrorBean;
-import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
+import com.yht.frame.utils.HuiZhenLog;
+import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.frame.widgets.dialog.ListDialog;
+import com.yht.yihuantong.BuildConfig;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.check.listener.OnCheckListener;
 import com.yht.yihuantong.ui.reservation.ReservationSuccessActivity;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -137,7 +150,104 @@ public class ReservationServiceActivity extends BaseActivity implements OnCheckL
      * 新增预约检查订单
      */
     private void addReserveCheckOrder() {
-        RequestUtils.addReserveCheckOrder(this, loginBean.getToken(), reserveCheckBean, this);
+        RequestQueue queue = NoHttp.getRequestQueueInstance();
+        final Request<String> request = NoHttp.createStringRequest(BuildConfig.BASE_BASIC_URL + "order-check/create",
+                                                                   RequestMethod.POST);
+        String params = new Gson().toJson(reserveCheckBean);
+        request.setDefineRequestBodyForJson(params);
+        HuiZhenLog.i("HTTP", "params:" + params);
+        request.addHeader("token", loginBean.getToken());
+        request.setConnectTimeout(30000);
+        request.setReadTimeout(30000);
+        queue.add(1, request, new OnResponseListener<String>() {
+            @Override
+            public void onStart(int what) {
+                showLoadingView();
+            }
+
+            @Override
+            public void onSucceed(int what, Response<String> response) {
+                String s = response.get();
+                submitSuccess(s);
+            }
+
+            @Override
+            public void onFailed(int what, Response<String> response) {
+                closeLoadingView();
+            }
+
+            @Override
+            public void onFinish(int what) {
+                closeLoadingView();
+            }
+        });
+    }
+
+    private void submitSuccess(String s) {
+        HuiZhenLog.i("HTTP", "response:" + s);
+        // 动态生成所需的java类的类型
+        Type type = new TypeToken<BaseResponse<List<ServiceSubmitErrorBean>>>() { }.getType();
+        Gson gson = new Gson();
+        BaseResponse<List<ServiceSubmitErrorBean>> baseResponse;
+        //获取code
+        JsonObject jsonObject = new JsonParser().parse(s).getAsJsonObject();
+        int code = jsonObject.get("code").getAsInt();
+        if (code == BaseNetConfig.REQUEST_SUCCESS) {
+            //提交成功需要保存最近使用的服务项
+            saveRecentlyUsedService();
+            startActivity(new Intent(this, ReservationSuccessActivity.class));
+            finish();
+        }
+        //服务项、服务包状态错误
+        else if (code == BaseNetConfig.REQUEST_SUBMIT_SERVICE_STATUS_ERROR) {
+            baseResponse = gson.fromJson(s, type);
+            showSubmitErrorDialog(baseResponse.getData(), true);
+        }
+        //服务项、服务包价格错误
+        else if (code == BaseNetConfig.REQUEST_SUBMIT_SERVICE_PRICE_ERROR) {
+            baseResponse = gson.fromJson(s, type);
+            showSubmitErrorDialog(baseResponse.getData(), false);
+        }
+        //token失效
+        else if (code == BaseNetConfig.REQUEST_TOKEN_ERROR) {
+            token(jsonObject.get("msg").getAsString());
+        }
+        //账号禁用
+        else if (code == BaseNetConfig.REQUEST_ACCOUNT_ERROR) {
+            accountError();
+        }
+        else {
+            ToastUtil.toast(this, jsonObject.get("msg").getAsString());
+        }
+    }
+
+    private void showSubmitErrorDialog(List<ServiceSubmitErrorBean> list, boolean hideRight) {
+        ListDialog listDialog = new ListDialog(this);
+        if (hideRight) {
+            listDialog.setContentString(getString(R.string.txt_service_submit_status_error)).setHideRight(true);
+        }
+        else {
+            listDialog.setContentString(getString(R.string.txt_service_submit_price_error));
+        }
+        listDialog.setData(list).setOnNextClickListener(new ListDialog.OnNextClickListener() {
+            @Override
+            public void onLeftClick() {
+                if (submitCheckFragment != null) {
+                    submitCheckFragment.reselect();
+                }
+            }
+
+            @Override
+            public void onRightClick() {
+                continueSubmit(list);
+            }
+        }).show();
+    }
+
+    /**
+     * 保存最近使用的服务项 服务包
+     */
+    private void saveRecentlyUsedService() {
     }
 
     /**
@@ -350,61 +460,10 @@ public class ReservationServiceActivity extends BaseActivity implements OnCheckL
         addReserveCheckOrder();
     }
 
-    @Override
-    public void onResponseSuccess(Tasks task, BaseResponse response) {
-        super.onResponseSuccess(task, response);
-        if (task == Tasks.ADD_RESERVE_CHECK_ORDER) {
-            startActivity(new Intent(this, ReservationSuccessActivity.class));
-            finish();
-        }
-    }
-
-    @Override
-    public void onResponseCode(Tasks task, BaseResponse response) {
-        super.onResponseCode(task, response);
-        ArrayList<ServiceSubmitErrorBean> list = (ArrayList<ServiceSubmitErrorBean>)response.getData();
-        if (response.getCode() == BaseNetConfig.REQUEST_SUBMIT_SERVICE_STATUS_ERROR) {
-            new ListDialog(this).setContentString(getString(R.string.txt_service_submit_status_error))
-                                .setHideRight(true)
-                                .setData(list)
-                                .setOnNextClickListener(new ListDialog.OnNextClickListener() {
-                                    @Override
-                                    public void onLeftClick() {
-                                        if (submitCheckFragment != null) {
-                                            submitCheckFragment.reselect();
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onRightClick() {
-                                    }
-                                })
-                                .show();
-        }
-        else if (response.getCode() == BaseNetConfig.REQUEST_SUBMIT_SERVICE_PRICE_ERROR) {
-            new ListDialog(this).setContentString(getString(R.string.txt_service_submit_price_error))
-                                .setData(list)
-                                .setOnNextClickListener(new ListDialog.OnNextClickListener() {
-                                    @Override
-                                    public void onLeftClick() {
-                                        if (submitCheckFragment != null) {
-                                            submitCheckFragment.reselect();
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onRightClick() {
-                                        continueSubmit(list);
-                                    }
-                                })
-                                .show();
-        }
-    }
-
     /**
      * 继续提交(忽略价格变动)
      */
-    private void continueSubmit(ArrayList<ServiceSubmitErrorBean> list) {
+    private void continueSubmit(List<ServiceSubmitErrorBean> list) {
         //强制更新检查项
         sharePreferenceUtil.putBoolean(CommonData.KEY_RESERVE_CHECK_UPDATE, true);
         ArrayList<ReserveCheckTypeBean> checkTypeBeans = reserveCheckBean.getCheckTrans();

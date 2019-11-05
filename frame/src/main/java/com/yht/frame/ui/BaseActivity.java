@@ -315,7 +315,7 @@ public abstract class BaseActivity extends RxAppCompatActivity
     /**
      * 账号禁用
      */
-    private void accountError() {
+    public void accountError() {
         Intent intent = new Intent(BaseData.BASE_ACCOUNT_ERROR_ACTION);
         intent.setPackage(getPackageName());
         sendBroadcast(intent);

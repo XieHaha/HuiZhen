@@ -4,7 +4,6 @@
     android:layout_width="280dp"
     android:layout_height="wrap_content"
     android:background="@drawable/corner10_ffffff_bg"
-    android:maxHeight="341dp"
     android:paddingTop="5dp">
 
     <ImageView
