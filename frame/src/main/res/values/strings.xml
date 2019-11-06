@@ -117,6 +117,7 @@
     <string name="to_expand_hint">展开</string>
     <string name="to_shrink_hint">收起</string>
     <string name="txt_price">￥%s</string>
+    <string name="txt_amount">x%s</string>
     <string name="txt_numbering">%d.&#160;%s:</string>
     <string name="txt_report_name_by_num">%s报告%d</string>
     <string name="txt_report_name">%s报告</string>

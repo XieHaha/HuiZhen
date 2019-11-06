@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:gravity="center_vertical"
-    android:paddingTop="5dp">
+    android:paddingTop="6dp">
 
     <ImageView
         android:id="@+id/iv_check_type_dot"
@@ -21,6 +21,8 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:textSize="@dimen/text_16"
+        android:singleLine="true"
+        android:ellipsize="end"
         android:textColor="@color/txt_color_373d4d_c5c8cc_selector"
         tools:text="检查"
         android:layout_marginEnd="12dp" />
@@ -29,7 +31,7 @@
         android:id="@+id/tv_check_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/color_373d4d"
+        android:textColor="@color/color_a1a8b3"
         android:textSize="@dimen/text_16"
         tools:text="￥110.00" />
 </LinearLayout>

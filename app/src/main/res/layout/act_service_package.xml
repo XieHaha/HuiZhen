@@ -28,8 +28,9 @@
                 android:textSize="@dimen/text_16"
                 android:textColor="@color/color_373d4d"
                 android:textStyle="bold"
+                android:layout_marginTop="16dp"
                 android:layout_marginStart="20dp"
-                android:layout_height="60dp"
+                android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:text="@string/txt_service_name" />
 
@@ -41,7 +42,7 @@
                 android:textSize="@dimen/text_16"
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp"
-                android:paddingBottom="20dp"
+                android:paddingBottom="14dp"
                 android:paddingTop="12dp"
                 tools:text="注意事项" />
 
@@ -56,7 +57,8 @@
                 android:textColor="@color/color_373d4d"
                 android:textStyle="bold"
                 android:layout_marginStart="20dp"
-                android:layout_height="60dp"
+                android:layout_marginTop="16dp"
+                android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:text="@string/txt_project_introduction" />
 
@@ -70,7 +72,7 @@
                 android:paddingEnd="20dp"
                 android:paddingBottom="20dp"
                 android:paddingTop="12dp"
-                android:text="最多展示三行最多展示三行最多展示三行最多展示三行最多展示三行最多展示三行最多展示三行最多展示三行最多展示三行最多展示三行最多展示三行最多展示三行最多展示三行最多展示三行最多展示三行最多展示三行最多展示三行" />
+                tools:text="" />
 
             <View
                 android:layout_width="match_parent"
@@ -83,7 +85,8 @@
                 android:textColor="@color/color_373d4d"
                 android:textStyle="bold"
                 android:layout_marginStart="20dp"
-                android:layout_height="60dp"
+                android:layout_marginTop="16dp"
+                android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:text="@string/txt_service_package_content" />
 
@@ -91,7 +94,11 @@
                 android:id="@+id/list_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:divider="@null" />
+                android:divider="@null"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="18dp"
+                android:layout_marginTop="6dp"/>
 
             <View
                 android:layout_width="match_parent"

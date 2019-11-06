@@ -16,12 +16,13 @@ import com.yht.frame.data.Tasks;
 import com.yht.frame.data.bean.BaseListBean;
 import com.yht.frame.data.bean.CooperateHospitalBean;
 import com.yht.frame.data.bean.HospitalProductBean;
+import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.widgets.LoadViewHelper;
 import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.adapter.HospitalProductAdapter;
-import com.yht.yihuantong.ui.hospital.HospitalServiceDetailActivity;
+import com.yht.yihuantong.ui.hospital.ServiceDetailActivity;
 
 import java.util.ArrayList;
 
@@ -90,13 +91,13 @@ public class HospitalServiceFragment extends BaseFragment
      * 获取合作医院下服务项
      */
     private void getHospitalProduct() {
-        //        RequestUtils.getCooperateHospitalProjectList(getContext(), loginBean.getToken(), curHospital.getHospitalCode(),
-        //                                                     BaseData.BASE_PAGE_DATA_NUM, page, this);
+        RequestUtils.getCooperateHospitalProjectList(getContext(), loginBean.getToken(), curHospital.getHospitalCode(),
+                                                     this);
     }
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        Intent intent = new Intent(getContext(), HospitalServiceDetailActivity.class);
+        Intent intent = new Intent(getContext(), ServiceDetailActivity.class);
         intent.putExtra(CommonData.KEY_HOSPITAL_PRODUCT_BEAN, hospitalProductBeans.get(position));
         startActivity(intent);
     }

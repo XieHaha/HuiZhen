@@ -106,7 +106,7 @@ public class SelectCheckTypeAdapter extends BaseAdapter {
         TextView tvContent = convertView.findViewById(R.id.tv_content);
         TextView tvNum = convertView.findViewById(R.id.tv_num);
         tvContent.setText(childBean.getProductName());
-        tvNum.setText("x" + childBean.getProductCount());
+        tvNum.setText(String.format(context.getString(R.string.txt_amount), childBean.getProductCount()));
         holder.layoutCheck.addView(convertView);
     }
 }

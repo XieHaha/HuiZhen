@@ -386,7 +386,7 @@
             android:label=""
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
-            android:name=".ui.hospital.HospitalServiceDetailActivity"
+            android:name=".ui.hospital.ServiceDetailActivity"
             android:screenOrientation="portrait"
             android:label="@string/title_service_detail"
             android:windowSoftInputMode="adjustResize|stateHidden" />

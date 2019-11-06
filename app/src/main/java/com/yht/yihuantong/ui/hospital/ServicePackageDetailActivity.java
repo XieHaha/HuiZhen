@@ -19,7 +19,8 @@ import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.widgets.recyclerview.FullListView;
 import com.yht.frame.widgets.textview.ExpandTextView;
 import com.yht.yihuantong.R;
-import com.yht.yihuantong.ui.reservation.remote.ReservationRemoteActivity;
+import com.yht.yihuantong.ZycApplication;
+import com.yht.yihuantong.ui.reservation.service.ReservationServiceActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -95,7 +96,11 @@ public class ServicePackageDetailActivity extends BaseActivity {
 
     @OnClick(R.id.tv_check_next)
     public void onViewClicked() {
-        Intent intent = new Intent(this, ReservationRemoteActivity.class);
+        //选中该服务
+        ArrayList<String> selectCodes = new ArrayList<>();
+        selectCodes.add(packageCode);
+        ZycApplication.getInstance().setSelectCodes(selectCodes);
+        Intent intent = new Intent(this, ReservationServiceActivity.class);
         startActivity(intent);
     }
 
@@ -130,11 +135,10 @@ public class ServicePackageDetailActivity extends BaseActivity {
         public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
                 holder = new ViewHolder();
-                convertView = getLayoutInflater().inflate(R.layout.item_hospital_project, parent, false);
-                holder.tvContent = convertView.findViewById(R.id.tv_content);
-                holder.tvNum = convertView.findViewById(R.id.tv_num);
-                holder.ivRight = convertView.findViewById(R.id.iv_right);
-                holder.line = convertView.findViewById(R.id.view);
+                convertView = getLayoutInflater().inflate(R.layout.item_check_by_income, parent, false);
+                holder.tvContent = convertView.findViewById(R.id.tv_check_type);
+                holder.tvNum = convertView.findViewById(R.id.tv_check_price);
+                holder.ivRight = convertView.findViewById(R.id.iv_check_type_dot);
                 convertView.setTag(holder);
             }
             else {
@@ -151,15 +155,12 @@ public class ServicePackageDetailActivity extends BaseActivity {
      */
     private void initProductDetail(ViewHolder holder, ProductBean bean) {
         holder.tvContent.setText(bean.getProductName());
-        holder.tvNum.setVisibility(View.VISIBLE);
-        holder.tvNum.setText("x" + bean.getCount());
+        holder.tvNum.setText(String.format(getString(R.string.txt_amount), String.valueOf(bean.getCount())));
         holder.ivRight.setVisibility(View.GONE);
-        holder.line.setVisibility(View.GONE);
     }
 
     private class ViewHolder {
         private TextView tvContent, tvNum;
         private ImageView ivRight;
-        private View line;
     }
 }

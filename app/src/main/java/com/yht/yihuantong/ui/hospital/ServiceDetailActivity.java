@@ -19,7 +19,7 @@ import butterknife.BindView;
  * @date 19/8/15 14:05
  * @des 医院服务项详情
  */
-public class HospitalServiceDetailActivity extends BaseActivity {
+public class ServiceDetailActivity extends BaseActivity {
     @BindView(R.id.tv_project_introduction)
     JustifiedTextView tvProjectIntroduction;
     @BindView(R.id.tv_project_notice)

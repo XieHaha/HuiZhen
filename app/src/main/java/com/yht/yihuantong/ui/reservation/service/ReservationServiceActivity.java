@@ -577,4 +577,11 @@ public class ReservationServiceActivity extends BaseActivity implements OnCheckL
                 break;
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //清除已选数据
+        ZycApplication.getInstance().clearSelectCodes();
+    }
 }
