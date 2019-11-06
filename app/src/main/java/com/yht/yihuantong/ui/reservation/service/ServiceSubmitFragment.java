@@ -302,6 +302,15 @@ public class ServiceSubmitFragment extends BaseFragment implements RadioGroup.On
         Intent intent;
         switch (view.getId()) {
             case R.id.layout_select_check_type:
+                //选中该服务
+                ArrayList<String> selectCodes = new ArrayList<>();
+                for (SelectCheckTypeParentBean parentBean : checkTypeData) {
+                    ArrayList<SelectCheckTypeBean> beans = parentBean.getProductPackageList();
+                    for (SelectCheckTypeBean bean : beans) {
+                        selectCodes.add(bean.getProjectCode());
+                    }
+                }
+                ZycApplication.getInstance().setSelectCodes(selectCodes);
                 intent = new Intent(getContext(), SelectCheckTypeActivity.class);
                 intent.putExtra(CommonData.KEY_RESERVE_CHECK_TYPE_LIST, checkTypeData);
                 startActivityForResult(intent, REQUEST_CODE_SELECT_CHECK);

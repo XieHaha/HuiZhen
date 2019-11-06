@@ -21,7 +21,6 @@ import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.widgets.recyclerview.FullListView;
 import com.yht.frame.widgets.textview.ExpandTextView;
 import com.yht.yihuantong.R;
-import com.yht.yihuantong.ZycApplication;
 import com.yht.yihuantong.ui.reservation.service.ReservationServiceActivity;
 
 import java.util.ArrayList;
@@ -116,10 +115,6 @@ public class ServicePackageDetailActivity extends BaseActivity {
 
     @OnClick(R.id.tv_check_next)
     public void onViewClicked() {
-        //选中该服务
-        ArrayList<String> selectCodes = new ArrayList<>();
-        selectCodes.add(packageCode);
-        ZycApplication.getInstance().setSelectCodes(selectCodes);
         Intent intent = new Intent(this, ReservationServiceActivity.class);
         intent.putExtra(CommonData.KEY_HOSPITAL_BEAN, healthPackageBean);
         intent.putExtra(CommonData.KEY_HOSPITAL_PRODUCT_BEAN, healthPackageDetailBean);
