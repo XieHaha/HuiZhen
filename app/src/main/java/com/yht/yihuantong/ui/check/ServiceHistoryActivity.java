@@ -172,7 +172,7 @@ public class ServiceHistoryActivity extends BaseActivity
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        Intent intent = new Intent(this, ServiceDetailActivity.class);
+        Intent intent = new Intent(this, ReservationServiceDetailActivity.class);
         intent.putExtra(CommonData.KEY_ORDER_ID, checkedList.get(position).getOrderNo());
         startActivity(intent);
     }

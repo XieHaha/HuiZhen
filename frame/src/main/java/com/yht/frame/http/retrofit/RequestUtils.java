@@ -714,7 +714,21 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .getCooperateHospitalPackageList(token, params)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_COOPERATE_HOSPITAL_PACKAGE_LIST,
+                       .subscribe(
+                               new AbstractLoadViewObserver<>(context, true, Tasks.GET_COOPERATE_HOSPITAL_PACKAGE_LIST,
+                                                              listener));
+    }
+
+    public static void getCooperateHospitalServiceList(Context context, String token, String hospitalCode, int pageSize,
+            int startPage, final ResponseListener<BaseResponse> listener) {
+        Map<String, Object> params = new HashMap<>(16);
+        params.put("hospitalCode", hospitalCode);
+        params.put("pageSize", pageSize);
+        params.put("startPage", startPage);
+        RetrofitManager.getApiUrlManager()
+                       .getCooperateHospitalServiceList(token, params)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_COOPERATE_HOSPITAL_PROJECT_LIST,
                                                                  listener));
     }
 

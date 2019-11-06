@@ -37,7 +37,6 @@
                 android:paddingBottom="16dp"
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp"
-                android:text="@string/txt_project_notice_hint"
                 android:textColor="@color/color_6a6f80"
                 android:layout_height="wrap_content" />
 

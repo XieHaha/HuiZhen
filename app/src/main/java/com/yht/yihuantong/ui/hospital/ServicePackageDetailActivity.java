@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.yht.frame.data.BaseResponse;
@@ -42,6 +43,8 @@ public class ServicePackageDetailActivity extends BaseActivity {
     FullListView listView;
     @BindView(R.id.tv_notice)
     TextView tvNotice;
+    @BindView(R.id.layout_reserve_service)
+    LinearLayout layoutReserveService;
     /**
      * 服务包编号
      */
@@ -55,6 +58,10 @@ public class ServicePackageDetailActivity extends BaseActivity {
      * 服务包内容
      */
     private List<ProductBean> hospitalProductBeans = new ArrayList<>();
+    /**
+     * 是否显示预约按钮
+     */
+    private boolean showReservation;
 
     @Override
     protected boolean isInitBackBtn() {
@@ -71,6 +78,10 @@ public class ServicePackageDetailActivity extends BaseActivity {
         super.initView(savedInstanceState);
         if (getIntent() != null) {
             packageCode = getIntent().getStringExtra(CommonData.KEY_ORDER_ID);
+            showReservation = getIntent().getBooleanExtra(CommonData.KEY_INTENT_BOOLEAN, false);
+        }
+        if (showReservation) {
+            layoutReserveService.setVisibility(View.VISIBLE);
         }
         productAdapter = new ProductAdapter();
         listView.setAdapter(productAdapter);

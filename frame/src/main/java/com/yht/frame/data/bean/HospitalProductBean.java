@@ -15,6 +15,11 @@ public class HospitalProductBean implements Serializable {
     private int productTypePid;
     private int isUp;
     private int platformStatus;
+    private int saleType;
+    private int payType;
+    private int allowUpdate;
+    private int grantEntityType;
+    private int suggestionType;
     private long suggestPrice;
     private long createAt;
     private long updateAt;
@@ -26,6 +31,7 @@ public class HospitalProductBean implements Serializable {
     private String hisId;
     private String notice;
     private String creator;
+    private String alias;
 
     public int getId() {
         return id;
@@ -161,5 +167,53 @@ public class HospitalProductBean implements Serializable {
 
     public void setCreator(String creator) {
         this.creator = creator;
+    }
+
+    public int getSaleType() {
+        return saleType;
+    }
+
+    public void setSaleType(int saleType) {
+        this.saleType = saleType;
+    }
+
+    public int getPayType() {
+        return payType;
+    }
+
+    public void setPayType(int payType) {
+        this.payType = payType;
+    }
+
+    public int getAllowUpdate() {
+        return allowUpdate;
+    }
+
+    public void setAllowUpdate(int allowUpdate) {
+        this.allowUpdate = allowUpdate;
+    }
+
+    public int getGrantEntityType() {
+        return grantEntityType;
+    }
+
+    public void setGrantEntityType(int grantEntityType) {
+        this.grantEntityType = grantEntityType;
+    }
+
+    public int getSuggestionType() {
+        return suggestionType;
+    }
+
+    public void setSuggestionType(int suggestionType) {
+        this.suggestionType = suggestionType;
+    }
+
+    public String getAlias() {
+        return alias;
+    }
+
+    public void setAlias(String alias) {
+        this.alias = alias;
     }
 }

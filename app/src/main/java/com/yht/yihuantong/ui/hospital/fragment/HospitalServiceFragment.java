@@ -91,8 +91,8 @@ public class HospitalServiceFragment extends BaseFragment
      * 获取合作医院下服务项
      */
     private void getHospitalProduct() {
-        RequestUtils.getCooperateHospitalProjectList(getContext(), loginBean.getToken(), curHospital.getHospitalCode(),
-                                                     this);
+        RequestUtils.getCooperateHospitalServiceList(getContext(), loginBean.getToken(), curHospital.getHospitalCode(),
+                                                     BaseData.BASE_PAGE_DATA_NUM, page, this);
     }
 
     @Override

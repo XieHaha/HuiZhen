@@ -33,7 +33,7 @@ import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.yht.frame.widgets.textview.JustifiedTextView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.adapter.PatientOrderAdapter;
-import com.yht.yihuantong.ui.check.ServiceDetailActivity;
+import com.yht.yihuantong.ui.check.ReservationServiceDetailActivity;
 import com.yht.yihuantong.ui.patient.EditLabelActivity;
 import com.yht.yihuantong.ui.patient.TransferDetailActivity;
 import com.yht.yihuantong.ui.remote.RemoteDetailActivity;
@@ -277,7 +277,7 @@ public class PatientInfoFragment extends BaseFragment
         PatientOrderBean bean = patientOrderBeans.get(position);
         switch (bean.getItemType()) {
             case PatientOrderBean.CHECK:
-                intent = new Intent(getContext(), ServiceDetailActivity.class);
+                intent = new Intent(getContext(), ReservationServiceDetailActivity.class);
                 break;
             case PatientOrderBean.TRANSFER:
                 intent = new Intent(getContext(), TransferDetailActivity.class);
@@ -286,7 +286,7 @@ public class PatientInfoFragment extends BaseFragment
                 intent = new Intent(getContext(), RemoteDetailActivity.class);
                 break;
             default:
-                intent = new Intent(getContext(), ServiceDetailActivity.class);
+                intent = new Intent(getContext(), ReservationServiceDetailActivity.class);
                 break;
         }
         intent.putExtra(CommonData.KEY_ORDER_ID, bean.getOrderNo());
@@ -295,7 +295,7 @@ public class PatientInfoFragment extends BaseFragment
 
     @Override
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-        Intent intent = new Intent(getContext(), ServiceDetailActivity.class);
+        Intent intent = new Intent(getContext(), ReservationServiceDetailActivity.class);
         intent.putExtra(CommonData.KEY_ORDER_ID, patientOrderBeans.get(position).getOrderNo());
         intent.putExtra(CommonData.KEY_INTENT_BOOLEAN, true);
         startActivity(intent);

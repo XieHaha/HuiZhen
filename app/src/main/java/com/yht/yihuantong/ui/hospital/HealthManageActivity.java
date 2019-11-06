@@ -106,6 +106,7 @@ public class HealthManageActivity extends BaseActivity
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         Intent intent = new Intent(this, ServicePackageDetailActivity.class);
         intent.putExtra(CommonData.KEY_ORDER_ID, healthPackageBeans.get(position).getPackageCode());
+        intent.putExtra(CommonData.KEY_INTENT_BOOLEAN, true);
         startActivity(intent);
     }
 

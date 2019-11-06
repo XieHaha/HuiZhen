@@ -14,7 +14,7 @@ import com.yht.frame.utils.HuiZhenLog;
 import com.yht.yihuantong.LifecycleHandler;
 import com.yht.yihuantong.ZycApplication;
 import com.yht.yihuantong.ui.auth.AuthDoctorActivity;
-import com.yht.yihuantong.ui.check.ServiceDetailActivity;
+import com.yht.yihuantong.ui.check.ReservationServiceDetailActivity;
 import com.yht.yihuantong.ui.login.LoginOptionsActivity;
 import com.yht.yihuantong.ui.main.MainActivity;
 import com.yht.yihuantong.ui.patient.ChatContainerActivity;
@@ -103,7 +103,7 @@ public class PushNotifyReceiver extends JPushMessageReceiver implements MessageT
             case MESSAGE_SERVICE_REPORT:
                 mainIntent = new Intent(context, MainActivity.class);
                 mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                baseIntent = new Intent(context, ServiceDetailActivity.class);
+                baseIntent = new Intent(context, ReservationServiceDetailActivity.class);
                 baseIntent.putExtra(CommonData.KEY_ORDER_ID, msgId);
                 if (!LifecycleHandler.isApplicationInForeground()) {
                     intents = new Intent[] { mainIntent, baseIntent };

@@ -49,7 +49,7 @@ import butterknife.OnClick;
  * @date 19/6/14 10:56
  * @des 预约服务详情
  */
-public class ServiceDetailActivity extends BaseActivity
+public class ReservationServiceDetailActivity extends BaseActivity
         implements CheckOrderStatus, CheckTypeStatus, SuggestionTypeStatus, LoadViewHelper.OnNextClickListener {
     @BindView(R.id.iv_patient_img)
     ImageView ivPatientImg;
@@ -385,7 +385,7 @@ public class ServiceDetailActivity extends BaseActivity
             reserveTime.setText(bean.getOrderAt());
             editAdvice.setVisibility(View.VISIBLE);
             editAdvice.setOnClickListener(v -> {
-                Intent intent = new Intent(ServiceDetailActivity.this, AddDiagnosisActivity.class);
+                Intent intent = new Intent(ReservationServiceDetailActivity.this, AddDiagnosisActivity.class);
                 intent.putExtra(CommonData.KEY_PUBLIC_STRING, bean.getName());
                 intent.putExtra(CommonData.KEY_ORDER_ID, orderNo);
                 intent.putExtra(CommonData.KEY_CHECK_TYPE_ID, bean.getId());
@@ -428,7 +428,7 @@ public class ServiceDetailActivity extends BaseActivity
             reserveTime.setText(childBean.getOrderAt());
             editAdvice.setVisibility(View.VISIBLE);
             editAdvice.setOnClickListener(v -> {
-                Intent intent = new Intent(ServiceDetailActivity.this, AddDiagnosisActivity.class);
+                Intent intent = new Intent(ReservationServiceDetailActivity.this, AddDiagnosisActivity.class);
                 intent.putExtra(CommonData.KEY_PUBLIC_STRING, childBean.getName());
                 intent.putExtra(CommonData.KEY_ORDER_ID, orderNo);
                 intent.putExtra(CommonData.KEY_CHECK_TYPE_ID, childBean.getId());
@@ -464,7 +464,7 @@ public class ServiceDetailActivity extends BaseActivity
             view.setTag(i);
             view.setOnClickListener(v -> {
                 if (bean.getSuggestionType() == SUGGESTION_TYPE_DOCTOR) {
-                    Intent intent = new Intent(ServiceDetailActivity.this, DiagnosisDetailActivity.class);
+                    Intent intent = new Intent(ReservationServiceDetailActivity.this, DiagnosisDetailActivity.class);
                     intent.putExtra(CommonData.KEY_CHECK_REPORT_LIST, getDoctorReportList(bean.getId()));
                     intent.putExtra(CommonData.KEY_PUBLIC, curPosition);
                     startActivity(intent);

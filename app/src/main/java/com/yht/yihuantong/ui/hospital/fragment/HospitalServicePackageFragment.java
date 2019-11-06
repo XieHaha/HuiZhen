@@ -98,7 +98,7 @@ public class HospitalServicePackageFragment extends BaseFragment
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         Intent intent = new Intent(getContext(), ServicePackageDetailActivity.class);
-        intent.putExtra(CommonData.KEY_HOSPITAL_PRODUCT_BEAN, hospitalProductBeans.get(position));
+        intent.putExtra(CommonData.KEY_ORDER_ID, hospitalProductBeans.get(position).getCode());
         startActivity(intent);
     }
 

@@ -18,6 +18,7 @@ import com.yht.frame.data.bean.HospitalBean;
 import com.yht.frame.data.bean.HospitalDepartBean;
 import com.yht.frame.data.bean.HospitalDepartChildBean;
 import com.yht.frame.data.bean.HospitalPackageBean;
+import com.yht.frame.data.bean.HospitalProductBean;
 import com.yht.frame.data.bean.HospitalProjectParentBean;
 import com.yht.frame.data.bean.HospitalTitleBean;
 import com.yht.frame.data.bean.IncomeDetailBean;
@@ -29,6 +30,7 @@ import com.yht.frame.data.bean.NotifyMessageBean;
 import com.yht.frame.data.bean.OrderNumStatisticsBean;
 import com.yht.frame.data.bean.PatientBean;
 import com.yht.frame.data.bean.PatientOrderBean;
+import com.yht.frame.data.bean.ProductBean;
 import com.yht.frame.data.bean.ProtocolBean;
 import com.yht.frame.data.bean.QrCodeBean;
 import com.yht.frame.data.bean.ReceiverBean;
@@ -728,6 +730,16 @@ public interface ApiUrlManager {
     @POST("client/product/listPackage")
     Observable<BaseResponse<BaseListBean<HospitalPackageBean>>> getCooperateHospitalPackageList(
             @Header("token") String token, @Body Map<String, Object> info);
+    /**
+     * 获取当前医生的合作医院下服务项列表
+     *
+     * @param info  参数
+     * @param token token
+     * @return 返回值
+     */
+    @POST("client/product/listProduct")
+    Observable<BaseResponse<BaseListBean<HospitalProductBean>>> getCooperateHospitalServiceList(
+            @Header("token") String token, @Body Map<String, Object> info);
 
     /**
      * 获取当前医生的合作医院下服务项详情
@@ -737,7 +749,7 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @GET("client/product/queryProductDetail")
-    Observable<BaseResponse<HospitalProjectParentBean>> queryProductDetail(@Header("token") String token,
+    Observable<BaseResponse<ProductBean>> queryProductDetail(@Header("token") String token,
             @Query("productCode") String productCode);
 
     /**
