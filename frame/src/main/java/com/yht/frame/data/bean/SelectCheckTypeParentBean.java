@@ -14,6 +14,9 @@ import java.util.ArrayList;
  */
 public class SelectCheckTypeParentBean extends LitePalSupport implements Serializable {
     private static final long serialVersionUID = -8735324027625934833L;
+    /**
+     * 1、直属   2、合作
+     */
     private int relation;
     private String hospitalCode;
     private String hospitalName;

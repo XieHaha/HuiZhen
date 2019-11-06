@@ -952,7 +952,7 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .queryPackageDetail(token, packageCode)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractLoadViewObserver<>(context, Tasks.QUERY_PACKAGE_DETAIL, listener));
+                       .subscribe(new AbstractLoadViewObserver<>(context, true, Tasks.QUERY_PACKAGE_DETAIL, listener));
     }
 
     public static void doctorReport(Context context, String token, int checkTranId, String orderNo,

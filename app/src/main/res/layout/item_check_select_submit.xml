@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:minHeight="63dp"
     android:paddingTop="6dp">
 
     <LinearLayout
@@ -37,6 +36,7 @@
         android:layout_width="match_parent"
         android:layout_marginStart="12dp"
         android:layout_marginEnd="0dp"
+        android:paddingBottom="12dp"
         android:layout_height="wrap_content">
 
     </LinearLayout>

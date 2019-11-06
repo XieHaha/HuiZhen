@@ -10,10 +10,19 @@ import java.util.ArrayList;
  */
 public class HealthPackageDetailBean implements Serializable {
     private static final long serialVersionUID = 3431140510018349442L;
+    private long suggestPrice;
     private String packageCode;
     private String packageName;
     private String description;
     private ArrayList<ProductBean> productInfoList;
+
+    public long getSuggestPrice() {
+        return suggestPrice;
+    }
+
+    public void setSuggestPrice(long suggestPrice) {
+        this.suggestPrice = suggestPrice;
+    }
 
     public String getPackageCode() {
         return packageCode;

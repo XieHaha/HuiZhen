@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
+import com.yht.frame.data.bean.HealthPackageBean;
 import com.yht.frame.data.bean.HealthPackageDetailBean;
 import com.yht.frame.data.bean.ProductBean;
 import com.yht.frame.http.retrofit.RequestUtils;
@@ -32,7 +33,7 @@ import butterknife.OnClick;
 /**
  * @author 顿顿
  * @date 19/9/26 11:09
- * @description
+ * @description 服务包详情
  */
 public class ServicePackageDetailActivity extends BaseActivity {
     @BindView(R.id.public_title_bar_title)
@@ -50,7 +51,11 @@ public class ServicePackageDetailActivity extends BaseActivity {
      */
     private String packageCode;
     /**
-     * 详情
+     * 医院code
+     */
+    private HealthPackageBean healthPackageBean;
+    /**
+     * 服务包详情
      */
     private HealthPackageDetailBean healthPackageDetailBean;
     private ProductAdapter productAdapter;
@@ -78,7 +83,11 @@ public class ServicePackageDetailActivity extends BaseActivity {
         super.initView(savedInstanceState);
         if (getIntent() != null) {
             packageCode = getIntent().getStringExtra(CommonData.KEY_ORDER_ID);
+            healthPackageBean = (HealthPackageBean)getIntent().getSerializableExtra(CommonData.KEY_HOSPITAL_BEAN);
             showReservation = getIntent().getBooleanExtra(CommonData.KEY_INTENT_BOOLEAN, false);
+        }
+        if (healthPackageBean != null) {
+            packageCode = healthPackageBean.getPackageCode();
         }
         if (showReservation) {
             layoutReserveService.setVisibility(View.VISIBLE);
@@ -112,6 +121,8 @@ public class ServicePackageDetailActivity extends BaseActivity {
         selectCodes.add(packageCode);
         ZycApplication.getInstance().setSelectCodes(selectCodes);
         Intent intent = new Intent(this, ReservationServiceActivity.class);
+        intent.putExtra(CommonData.KEY_HOSPITAL_BEAN, healthPackageBean);
+        intent.putExtra(CommonData.KEY_HOSPITAL_PRODUCT_BEAN, healthPackageDetailBean);
         startActivity(intent);
     }
 

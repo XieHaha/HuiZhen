@@ -27,9 +27,15 @@ import com.yanzhenjie.nohttp.rest.Response;
 import com.yht.frame.data.BaseNetConfig;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
+import com.yht.frame.data.bean.HealthPackageBean;
+import com.yht.frame.data.bean.HealthPackageDetailBean;
 import com.yht.frame.data.bean.PatientBean;
+import com.yht.frame.data.bean.ProductBean;
 import com.yht.frame.data.bean.ReserveCheckBean;
 import com.yht.frame.data.bean.ReserveCheckTypeBean;
+import com.yht.frame.data.bean.SelectCheckTypeBean;
+import com.yht.frame.data.bean.SelectCheckTypeChildBean;
+import com.yht.frame.data.bean.SelectCheckTypeParentBean;
 import com.yht.frame.data.bean.ServiceSubmitErrorBean;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.HuiZhenLog;
@@ -112,6 +118,18 @@ public class ReservationServiceActivity extends BaseActivity implements OnCheckL
      */
     private ReserveCheckBean reserveCheckBean;
     /**
+     * 医院code
+     */
+    private HealthPackageBean healthPackageBean;
+    /**
+     * 服务包详情 (预约该服务)
+     */
+    private HealthPackageDetailBean healthPackageDetailBean;
+    /**
+     * 医院数据  (预约该服务)
+     */
+    private SelectCheckTypeParentBean parentBean;
+    /**
      * 当前碎片
      */
     private int curPage;
@@ -133,19 +151,57 @@ public class ReservationServiceActivity extends BaseActivity implements OnCheckL
         if (getIntent() != null) {
             //居民详情页面回传数据
             patientBean = (PatientBean)getIntent().getSerializableExtra(CommonData.KEY_PATIENT_BEAN);
+            healthPackageDetailBean = (HealthPackageDetailBean)getIntent().getSerializableExtra(
+                    CommonData.KEY_HOSPITAL_PRODUCT_BEAN);
+            healthPackageBean = (HealthPackageBean)getIntent().getSerializableExtra(CommonData.KEY_HOSPITAL_BEAN);
         }
         initTitlePage();
+        //预约该服务所选数据
+        initServiceData();
     }
 
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         if (hasHistoryData()) {
-            //重新转诊直接进入到第二步
+            //直接进入到第二步
             tabReservationLicenseView();
         }
         else {
             tabReservationBaseView();
+        }
+    }
+
+    /**
+     * 预约该服务
+     */
+    private void initServiceData() {
+        if (healthPackageDetailBean != null && healthPackageBean != null) {
+            //服务包
+            SelectCheckTypeBean selectCheckTypeBean = new SelectCheckTypeBean();
+            selectCheckTypeBean.setPrice(healthPackageDetailBean.getSuggestPrice());
+            selectCheckTypeBean.setProjectCode(healthPackageDetailBean.getPackageCode());
+            selectCheckTypeBean.setProjectName(healthPackageDetailBean.getPackageName());
+            //服务包下服务项
+            ArrayList<SelectCheckTypeChildBean> childList = new ArrayList<>();
+            ArrayList<ProductBean> oldList = healthPackageDetailBean.getProductInfoList();
+            if (oldList != null) {
+                for (ProductBean productBean : oldList) {
+                    SelectCheckTypeChildBean childBean = new SelectCheckTypeChildBean();
+                    childBean.setProductCode(productBean.getProductCode());
+                    childBean.setProductName(productBean.getProductName());
+                    childBean.setProductCount(String.valueOf(productBean.getCount()));
+                    childList.add(childBean);
+                }
+            }
+            selectCheckTypeBean.setProductInfoList(childList);
+            ArrayList<SelectCheckTypeBean> list = new ArrayList<>();
+            list.add(selectCheckTypeBean);
+            //医院数据
+            parentBean = new SelectCheckTypeParentBean();
+            parentBean.setHospitalCode(healthPackageBean.getHospitalCode());
+            parentBean.setHospitalName(healthPackageBean.getHospitalName());
+            parentBean.setProductPackageList(list);
         }
     }
 
@@ -252,7 +308,12 @@ public class ReservationServiceActivity extends BaseActivity implements OnCheckL
      */
     private void saveRecentlyUsedService() {
         Set<String> localData = sharePreferenceUtil.getStringSet(CommonData.KEY_RECENTLY_USED_SERVICE);
-        localData = new HashSet<>(localData);
+        if (localData != null) {
+            localData = new HashSet<>(localData);
+        }
+        else {
+            localData = new HashSet<>();
+        }
         List<String> codes = ZycApplication.getInstance().getSelectCodes();
         localData.addAll(codes);
         sharePreferenceUtil.putStringSet(CommonData.KEY_RECENTLY_USED_SERVICE, localData);
@@ -289,7 +350,7 @@ public class ReservationServiceActivity extends BaseActivity implements OnCheckL
     }
 
     /**
-     * 居民基本数据回填
+     * 居民基本数据回填 (从居民详情页进入)
      */
     private void initPatientBaseData() {
         //预约检查
@@ -352,6 +413,9 @@ public class ReservationServiceActivity extends BaseActivity implements OnCheckL
             submitCheckFragment = new ServiceSubmitFragment();
             submitCheckFragment.setOnCheckListener(this);
             submitCheckFragment.setReserveCheckBean(reserveCheckBean);
+            if (parentBean != null) {
+                submitCheckFragment.setParentBean(parentBean);
+            }
             fragmentTransaction.add(R.id.layout_frame_root, submitCheckFragment);
         }
         else {

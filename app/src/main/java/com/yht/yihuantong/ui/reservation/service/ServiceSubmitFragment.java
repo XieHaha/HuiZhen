@@ -44,7 +44,7 @@ import com.yht.frame.widgets.dialog.SignatureDialog;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ZycApplication;
 import com.yht.yihuantong.ui.ImagePreviewActivity;
-import com.yht.yihuantong.ui.adapter.SelectCheckTypeParentAdapter;
+import com.yht.yihuantong.ui.adapter.SelectCheckTypeParentSubmitAdapter;
 import com.yht.yihuantong.ui.check.SelectCheckTypeActivity;
 import com.yht.yihuantong.ui.check.listener.OnCheckListener;
 
@@ -106,9 +106,13 @@ public class ServiceSubmitFragment extends BaseFragment implements RadioGroup.On
     private String mCurrentPhotoPath;
     private ReserveCheckBean reserveCheckBean;
     /**
+     * 预约该服务入口传递的数据
+     */
+    private SelectCheckTypeParentBean parentBean;
+    /**
      * 已选择检查项目适配器
      */
-    private SelectCheckTypeParentAdapter shopAdapter;
+    private SelectCheckTypeParentSubmitAdapter shopAdapter;
     /**
      * 购物车
      */
@@ -156,6 +160,18 @@ public class ServiceSubmitFragment extends BaseFragment implements RadioGroup.On
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
+        //预约服务数据 (预约该服务入口)
+        if (parentBean != null) {
+            checkTypeData.add(parentBean);
+            if (checkTypeData.size() > 0) {
+                layoutCheck.setVisibility(View.VISIBLE);
+                tvSelect.setText(R.string.txt_add_service_goon);
+            }
+            else {
+                layoutCheck.setVisibility(View.GONE);
+                tvSelect.setText(R.string.txt_select_hint);
+            }
+        }
         initAdapter();
     }
 
@@ -179,10 +195,12 @@ public class ServiceSubmitFragment extends BaseFragment implements RadioGroup.On
         this.reserveCheckBean = reserveCheckBean;
     }
 
+    public void setParentBean(SelectCheckTypeParentBean parentBean) {
+        this.parentBean = parentBean;
+    }
+
     /**
      * 上传图片
-     *
-     * @param file
      */
     private void uploadImage(File file) {
         ScalingUtils.resizePic(getContext(), file.getAbsolutePath());
@@ -195,7 +213,7 @@ public class ServiceSubmitFragment extends BaseFragment implements RadioGroup.On
     private void initAdapter() {
         serviceRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         serviceRecyclerView.setNestedScrollingEnabled(false);
-        shopAdapter = new SelectCheckTypeParentAdapter(R.layout.item_check_select_submit_root, checkTypeData);
+        shopAdapter = new SelectCheckTypeParentSubmitAdapter(R.layout.item_check_select_submit_root, checkTypeData);
         serviceRecyclerView.setAdapter(shopAdapter);
     }
 
