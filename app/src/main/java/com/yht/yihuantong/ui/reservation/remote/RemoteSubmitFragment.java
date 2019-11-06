@@ -257,6 +257,9 @@ public class RemoteSubmitFragment extends BaseFragment {
         switch (view.getId()) {
             case R.id.layout_select_check_type:
                 intent = new Intent(getContext(), ConsultationTimeActivity.class);
+                intent.putExtra(CommonData.KEY_REMOTE_DATE, date);
+                intent.putExtra(CommonData.KEY_REMOTE_START_HOUR, startHour);
+                intent.putExtra(CommonData.KEY_REMOTE_END_HOUR, endHour);
                 startActivityForResult(intent, REQUEST_CODE_SELECT_REMOTE_HOUR);
                 break;
             case R.id.layout_hospital_depart:
