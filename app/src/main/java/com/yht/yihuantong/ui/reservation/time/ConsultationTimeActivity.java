@@ -68,7 +68,14 @@ public class ConsultationTimeActivity extends BaseActivity
     ImageView ivAdd;
     @BindView(R.id.tv_verify_time)
     TextView tvVerifyTime;
-    private int tempYear, tempMonth;
+    /**
+     * 当前的年月
+     */
+    private int nowYear, nowMonth, nowDay;
+    /**
+     * 选中的时间
+     */
+    private Calendar selectCalendar;
     private LinearLayoutManager layoutManager;
     /**
      * 时间条
@@ -179,16 +186,17 @@ public class ConsultationTimeActivity extends BaseActivity
      * 日历初始化
      */
     private void initCalendarView() {
-        tempYear = calendarView.getCurYear();
-        tempMonth = calendarView.getCurMonth();
+        nowYear = calendarView.getCurYear();
+        nowMonth = calendarView.getCurMonth();
+        nowDay = calendarView.getCurDay();
         //设置范围 当前时间往后50年
-        calendarView.setRange(tempYear, tempMonth, calendarView.getCurDay(), tempYear + 50, 12, 31);
+        calendarView.setRange(nowYear, nowMonth, calendarView.getCurDay(), nowYear + 50, 12, 31);
         //设置显示起始星期
         calendarView.setWeekStarWithMon();
         //设置高
         calendarView.setCalendarItemHeight(BaseUtils.dp2px(this, 40));
         //初始化
-        tvYear.setText(String.format(getString(R.string.txt_year_and_month), tempYear, tempMonth));
+        tvYear.setText(String.format(getString(R.string.txt_year_and_month), nowYear, nowMonth));
         ivLeft.setSelected(false);
         ivRight.setSelected(true);
     }
@@ -197,11 +205,21 @@ public class ConsultationTimeActivity extends BaseActivity
      * 计算可选时间范围 （已过期时间及已预约时间 ）
      */
     private void calcHourRange() {
-        calcAppointed();
-        //获取当前时间
-        java.util.Calendar todayCalendar = java.util.Calendar.getInstance();
-        int hour = todayCalendar.get(java.util.Calendar.HOUR_OF_DAY);
-        int minute = todayCalendar.get(java.util.Calendar.MINUTE);
+        selectCalendar = calendarView.getSelectedCalendar();
+        boolean today = selectCalendar.getDay() == nowDay && selectCalendar.getMonth() == nowMonth &&
+                        selectCalendar.getYear() == nowYear;
+        int hour, minute;
+        if (today) {
+            //获取当前时间
+            java.util.Calendar todayCalendar = java.util.Calendar.getInstance();
+            hour = todayCalendar.get(java.util.Calendar.HOUR_OF_DAY);
+            minute = todayCalendar.get(java.util.Calendar.MINUTE);
+        }
+        else {
+            //默认从6点开始
+            hour = 5;
+            minute = 59;
+        }
         //计算可选时段的开始时间
         if (hour >= START_HOUR) {
             //当前时间大于6点
@@ -244,6 +262,7 @@ public class ConsultationTimeActivity extends BaseActivity
                 startPosition++;
             }
         }
+        calcHourRange();
     }
 
     /**
@@ -260,8 +279,8 @@ public class ConsultationTimeActivity extends BaseActivity
 
     private Calendar getSchemeCalendar(int day) {
         Calendar calendar = new Calendar();
-        calendar.setYear(tempYear);
-        calendar.setMonth(tempMonth);
+        calendar.setYear(nowYear);
+        calendar.setMonth(nowMonth);
         calendar.setDay(day);
         return calendar;
     }
@@ -291,7 +310,7 @@ public class ConsultationTimeActivity extends BaseActivity
     }
 
     /**
-     * 减时间
+     * 清除时间或减少时间
      */
     private void subtract() {
         if (selectPositions.size() <= 0) {
@@ -420,11 +439,11 @@ public class ConsultationTimeActivity extends BaseActivity
 
     @Override
     public void onMonthChange(int year, int month) {
-        if (tempYear < year) {
+        if (nowYear < year) {
             ivLeft.setSelected(true);
         }
-        else if (tempYear == year) {
-            if (tempMonth < month) {
+        else if (nowYear == year) {
+            if (nowMonth < month) {
                 ivLeft.setSelected(true);
             }
             else {
@@ -443,7 +462,7 @@ public class ConsultationTimeActivity extends BaseActivity
         switch (task) {
             case GET_REMOTE_TIME:
                 appointedHours = (ArrayList<RemoteHourBean>)response.getData();
-                calcHourRange();
+                calcAppointed();
                 break;
             default:
                 break;
