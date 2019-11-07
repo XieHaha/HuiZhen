@@ -151,12 +151,17 @@ public class RemoteSubmitFragment extends BaseFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        initPageData();
+    }
+
+    @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         //默认签名确认
         sureType = BASE_TWO;
         sureType();
-        initPageData();
     }
 
     public void setReserveRemoteBean(ReserveRemoteBean bean) {
@@ -173,6 +178,9 @@ public class RemoteSubmitFragment extends BaseFragment {
             tvSelectHint.setVisibility(View.INVISIBLE);
             tvDepartSelect.setText(R.string.txt_select_depart_hint1);
             tvDepartSelect.setSelected(false);
+            //移除所有已添加子VIEW
+            layoutDepart.removeAllViews();
+            remoteDepartBeans.clear();
         }
         else {
             //数据回填
@@ -422,18 +430,6 @@ public class RemoteSubmitFragment extends BaseFragment {
                 reserveRemoteBean.setConfirmFile(signatureImageUrl);
                 reserveRemoteBean.setConfirmType(String.valueOf(BASE_TWO));
             }
-            reserveRemoteBean.setStartAt(date + " " + startHour);
-            reserveRemoteBean.setEndAt(date + " " + endHour);
-            ArrayList<DepartInfoBean> list = new ArrayList<>();
-            for (RemoteDepartBean bean : remoteDepartBeans) {
-                DepartInfoBean departInfoBean = new DepartInfoBean();
-                departInfoBean.setHospitalDepartmentId(bean.getDepartmentId());
-                departInfoBean.setHospitalDepartmentName(bean.getDepartmentName());
-                departInfoBean.setHospitalCode(bean.getHospitalCode());
-                departInfoBean.setHospitalName(bean.getHospitalName());
-                list.add(departInfoBean);
-            }
-            reserveRemoteBean.setHosDeptInfo(list);
             onRemoteListener.onRemoteStepThree(reserveRemoteBean);
         }
     }
@@ -481,6 +477,8 @@ public class RemoteSubmitFragment extends BaseFragment {
                     date = data.getStringExtra(CommonData.KEY_REMOTE_DATE);
                     startHour = data.getStringExtra(CommonData.KEY_REMOTE_START_HOUR);
                     endHour = data.getStringExtra(CommonData.KEY_REMOTE_END_HOUR);
+                    reserveRemoteBean.setStartAt(date + " " + startHour);
+                    reserveRemoteBean.setEndAt(date + " " + endHour);
                     selectReservationTime();
                 }
                 break;
@@ -489,6 +487,17 @@ public class RemoteSubmitFragment extends BaseFragment {
                     remoteDepartBeans = (ArrayList<RemoteDepartBean>)data.getSerializableExtra(
                             CommonData.KEY_REMOTE_DEPART_LIST);
                     remoteDepartId = data.getIntegerArrayListExtra(CommonData.KEY_REMOTE_DEPART_LIST_ID);
+
+                    ArrayList<DepartInfoBean> list = new ArrayList<>();
+                    for (RemoteDepartBean bean : remoteDepartBeans) {
+                        DepartInfoBean departInfoBean = new DepartInfoBean();
+                        departInfoBean.setHospitalDepartmentId(bean.getDepartmentId());
+                        departInfoBean.setHospitalDepartmentName(bean.getDepartmentName());
+                        departInfoBean.setHospitalCode(bean.getHospitalCode());
+                        departInfoBean.setHospitalName(bean.getHospitalName());
+                        list.add(departInfoBean);
+                    }
+                    reserveRemoteBean.setHosDeptInfo(list);
                     selectDepartItemByHospital();
                 }
                 break;
