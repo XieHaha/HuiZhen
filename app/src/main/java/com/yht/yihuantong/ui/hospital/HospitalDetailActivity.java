@@ -124,7 +124,7 @@ public class HospitalDetailActivity extends BaseActivity implements AdapterView.
                 }
             });
             if (BASE_STRING_ONE_TAG.equals(curHospital.getCooperateStatus())) {
-                ivStatus.setImageResource(R.mipmap.ic_cooperation);
+                ivStatus.setImageResource(R.mipmap.ic_label_cooperation);
                 ArrayList<String> values = new ArrayList<>();
                 for (String string : curHospital.getServiceList()) {
                     switch (string) {
@@ -144,7 +144,7 @@ public class HospitalDetailActivity extends BaseActivity implements AdapterView.
                 tvHospitalBusiness.setText(StringUtils.join(values, ","));
             }
             else {
-                ivStatus.setImageResource(R.mipmap.ic_no_cooperation);
+                ivStatus.setImageResource(R.mipmap.ic_label_no_cooperation);
                 tvHospitalBusiness.setText(R.string.txt_business_support_not);
             }
         }

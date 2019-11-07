@@ -84,9 +84,9 @@ public class IncomeDetailActivity extends BaseActivity implements CurrencyDetail
     }
 
     private void initBitmap() {
-        bitmapCancel = BitmapFactory.decodeResource(getApplication().getResources(), R.mipmap.ic_tag_cancel);
-        bitmapNoreach = BitmapFactory.decodeResource(getApplication().getResources(), R.mipmap.ic_tag_noreach);
-        bitmapReach = BitmapFactory.decodeResource(getApplication().getResources(), R.mipmap.ic_tag_reach);
+        bitmapCancel = BitmapFactory.decodeResource(getApplication().getResources(), R.mipmap.ic_label_cancel);
+        bitmapNoreach = BitmapFactory.decodeResource(getApplication().getResources(), R.mipmap.ic_label_noreach);
+        bitmapReach = BitmapFactory.decodeResource(getApplication().getResources(), R.mipmap.ic_label_reach);
     }
 
     private void initPage() {

@@ -28,7 +28,7 @@ public class CooperateHospitalAdapter extends BaseQuickAdapter<CooperateHospital
     protected void convert(BaseViewHolder helper, CooperateHospitalBean item) {
         helper.setText(R.id.tv_hospital, item.getHospitalName());
         if (TextUtils.equals(item.getCooperateStatus(), BaseData.BASE_STRING_ONE_TAG)) {
-            helper.setImageResource(R.id.iv_status, R.mipmap.ic_cooperation);
+            helper.setImageResource(R.id.iv_status, R.mipmap.ic_label_cooperation);
             helper.setText(R.id.tv_reserve, R.string.txt_business_support);
             ArrayList<String> values = new ArrayList<>();
             for (String string : item.getServiceList()) {
@@ -49,7 +49,7 @@ public class CooperateHospitalAdapter extends BaseQuickAdapter<CooperateHospital
             helper.setText(R.id.tv_reserve_content, StringUtils.join(values, ","));
         }
         else {
-            helper.setImageResource(R.id.iv_status, R.mipmap.ic_no_cooperation);
+            helper.setImageResource(R.id.iv_status, R.mipmap.ic_label_no_cooperation);
             helper.setText(R.id.tv_reserve, R.string.txt_business_support_not).setText(R.id.tv_reserve_content, "");
         }
         if (mData.size() - 1 == helper.getAdapterPosition()) {

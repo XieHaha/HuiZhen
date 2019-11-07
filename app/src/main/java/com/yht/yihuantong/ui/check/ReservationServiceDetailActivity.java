@@ -183,9 +183,9 @@ public class ReservationServiceDetailActivity extends BaseActivity
      * 检查项状态图
      */
     private void initBitmap() {
-        bitmapCancel = BitmapFactory.decodeResource(getApplication().getResources(), R.mipmap.ic_tag_cancel);
-        bitmapNoReach = BitmapFactory.decodeResource(getApplication().getResources(), R.mipmap.ic_tag_noreach);
-        bitmapReach = BitmapFactory.decodeResource(getApplication().getResources(), R.mipmap.ic_tag_reach);
+        bitmapCancel = BitmapFactory.decodeResource(getApplication().getResources(), R.mipmap.ic_label_cancel);
+        bitmapNoReach = BitmapFactory.decodeResource(getApplication().getResources(), R.mipmap.ic_label_noreach);
+        bitmapReach = BitmapFactory.decodeResource(getApplication().getResources(), R.mipmap.ic_label_reach);
     }
 
     /**
@@ -243,7 +243,7 @@ public class ReservationServiceDetailActivity extends BaseActivity
         int status = checkDetailBean.getStatus();
         switch (status) {
             case CHECK_ORDER_STATUS_INCOMPLETE:
-                ivCheckStatus.setImageResource(R.mipmap.ic_tag_status_check_incomplete);
+                ivCheckStatus.setImageResource(R.mipmap.ic_tag_check_incomplete);
                 layoutCancelResult.setVisibility(View.GONE);
                 tvCheckStatus.setText(getString(R.string.txt_status_incomplete));
                 break;

@@ -7,11 +7,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -28,7 +30,7 @@ import com.yht.frame.data.type.RemoteOrderStatus;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
-import com.yht.frame.utils.ToastUtil;
+import com.yht.frame.utils.HuiZhenLog;
 import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.frame.widgets.recyclerview.FullListView;
 import com.yht.frame.widgets.textview.JustifiedTextView;
@@ -154,9 +156,9 @@ public class RemoteDetailActivity extends BaseActivity implements RemoteOrderSta
      * 检查项状态图
      */
     private void initBitmap() {
-        bitmapReceived = BitmapFactory.decodeResource(getApplication().getResources(), R.mipmap.ic_tag_cancel);
-        bitmapWait = BitmapFactory.decodeResource(getApplication().getResources(), R.mipmap.ic_tag_noreach);
-        bitmapRefused = BitmapFactory.decodeResource(getApplication().getResources(), R.mipmap.ic_tag_reach);
+        bitmapReceived = BitmapFactory.decodeResource(getApplication().getResources(), R.mipmap.ic_label_accepted);
+        bitmapWait = BitmapFactory.decodeResource(getApplication().getResources(), R.mipmap.ic_label_accepting);
+        bitmapRefused = BitmapFactory.decodeResource(getApplication().getResources(), R.mipmap.ic_label_refuesd);
     }
 
     /**
@@ -166,9 +168,6 @@ public class RemoteDetailActivity extends BaseActivity implements RemoteOrderSta
         if (remoteDetailBean == null) { return; }
         fileBeans = remoteDetailBean.getPatientResourceList();
         bindAnnexData();
-        //受邀方数据
-        remoteInvitedBeans = remoteDetailBean.getInvitationList();
-        invitedAdapter.notifyDataSetChanged();
         //患者基础信息
         Glide.with(this)
              .load(FileUrlUtil.addTokenToUrl(remoteDetailBean.getPatientPhoto()))
@@ -234,6 +233,10 @@ public class RemoteDetailActivity extends BaseActivity implements RemoteOrderSta
             default:
                 break;
         }
+        //受邀方数据
+        remoteInvitedBeans = remoteDetailBean.getInvitationList();
+        invitedAdapter.notifyDataSetChanged();
+        setListViewHeightBasedOnChildren(fullListView, remoteInvitedBeans.size());
     }
 
     /**
@@ -252,9 +255,10 @@ public class RemoteDetailActivity extends BaseActivity implements RemoteOrderSta
     private void addView() {
         for (int i = 0; i < fileBeans.size(); i++) {
             FileBean bean = fileBeans.get(i);
-            TextView textView = (TextView)getLayoutInflater().inflate(R.layout.item_remote_depart_simple, null);
+            View view = getLayoutInflater().inflate(R.layout.item_check_report, null);
+            TextView textView = view.findViewById(R.id.tv_check_report_name);
             textView.setText(bean.getName());
-            layoutAnnex.addView(textView);
+            layoutAnnex.addView(view);
         }
     }
 
@@ -324,17 +328,17 @@ public class RemoteDetailActivity extends BaseActivity implements RemoteOrderSta
         holder.tvDoctorName.setText(remoteBean.getDoctorName());
         holder.tvHospitalAndDepart.setText(
                 String.format(getString(R.string.txt_joiner), remoteBean.getHospitalDepartmentName(),
-                              remoteBean.getHospitalName()));
+                              remoteBean.getHospitalName() + " "));
         //订单状态为待审核、被拒绝 不显示受邀方状态
-        if (orderStatus != REMOTE_ORDER_STATUS_REVIEW_REFUSE && orderStatus != REMOTE_ORDER_STATUS_UNDER_REVIEW) {
+        if (orderStatus == REMOTE_ORDER_STATUS_REVIEW_REFUSE || orderStatus == REMOTE_ORDER_STATUS_UNDER_REVIEW) {
             holder.layoutRefuseReason.setVisibility(View.GONE);
             holder.layoutAdvice.setVisibility(View.GONE);
+        }
+        else {
             holder.tvHospitalAndDepart.append(appendImage(remoteBean.getStatus(),
                                                           String.format(getString(R.string.txt_joiner),
                                                                         remoteBean.getHospitalDepartmentName(),
-                                                                        remoteBean.getHospitalName())));
-        }
-        else {
+                                                                        remoteBean.getHospitalName() + " ")));
             switch (remoteBean.getStatus()) {
                 case INVITED_PARTY_STATUS_RECEIVED:
                 case INVITED_PARTY_STATUS_WAIT:
@@ -342,12 +346,20 @@ public class RemoteDetailActivity extends BaseActivity implements RemoteOrderSta
                     //显示会诊意见
                     if (remoteBean.isResultStatus()) {
                         holder.layoutAdvice.setVisibility(View.VISIBLE);
-                        holder.tvResult.setText(remoteBean.getResult());
-                        holder.tvAdviceBtn.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                ToastUtil.toast(RemoteDetailActivity.this, "展开会诊意见");
+                        holder.tvDoctorName.setText(remoteBean.getDoctorName());
+                        if (TextUtils.isEmpty(remoteBean.getResult())) {
+                            holder.tvResult.setText(R.string.txt_consultation_advice_none);
+                        }
+                        else { holder.tvResult.setText(remoteBean.getResult()); }
+                        holder.tvAdviceBtn.setOnClickListener(v -> {
+                            holder.tvAdviceBtn.setSelected(!holder.tvAdviceBtn.isSelected());
+                            if (holder.tvAdviceBtn.isSelected()) {
+                                holder.tvResult.setVisibility(View.VISIBLE);
                             }
+                            else {
+                                holder.tvResult.setVisibility(View.GONE);
+                            }
+                            setListViewHeightBasedOnChildren(fullListView, remoteInvitedBeans.size());
                         });
                     }
                     else {
@@ -373,13 +385,13 @@ public class RemoteDetailActivity extends BaseActivity implements RemoteOrderSta
         CenterImageSpan imgSpan;
         switch (status) {
             case INVITED_PARTY_STATUS_RECEIVED:
-                imgSpan = new CenterImageSpan(this, bitmapWait);
+                imgSpan = new CenterImageSpan(this, bitmapReceived);
                 break;
             case INVITED_PARTY_STATUS_WAIT:
-                imgSpan = new CenterImageSpan(this, bitmapRefused);
+                imgSpan = new CenterImageSpan(this, bitmapWait);
                 break;
             case INVITED_PARTY_STATUS_REFUSED:
-                imgSpan = new CenterImageSpan(this, bitmapReceived);
+                imgSpan = new CenterImageSpan(this, bitmapRefused);
                 break;
             default:
                 imgSpan = new CenterImageSpan(this, bitmapReceived);
@@ -395,5 +407,42 @@ public class RemoteDetailActivity extends BaseActivity implements RemoteOrderSta
         private JustifiedTextView tvResult;
         private LinearLayout layoutRefuseReason;
         private RelativeLayout layoutAdvice;
+    }
+
+    /**
+     * 设置高度
+     */
+    private void setListViewHeightBasedOnChildren(ListView listView, int count) {
+        if (listView == null || invitedAdapter == null) {
+            return;
+        }
+        int totalHeight = 0;
+        for (int i = 0; i < count; i++) {
+            View listItem = invitedAdapter.getView(i, null, listView);
+            listItem.measure(0, 0);
+            HuiZhenLog.i(TAG, "childHeight:" + listItem.getMeasuredHeight());
+            totalHeight += listItem.getMeasuredHeight();
+        }
+        HuiZhenLog.i(TAG, "height:" + totalHeight);
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (count - 1));
+        listView.setLayoutParams(params);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (bitmapReceived != null) {
+            bitmapReceived.recycle();
+            bitmapReceived = null;
+        }
+        if (bitmapWait != null) {
+            bitmapWait.recycle();
+            bitmapWait = null;
+        }
+        if (bitmapRefused != null) {
+            bitmapRefused.recycle();
+            bitmapRefused = null;
+        }
     }
 }

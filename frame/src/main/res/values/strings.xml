@@ -317,6 +317,7 @@
     <string name="txt_consultation_status">会诊状态</string>
     <string name="txt_consultation_times">会诊时长</string>
     <string name="txt_consultation_advice">会诊意见</string>
+    <string name="txt_consultation_advice_none">暂未填写会诊意见</string>
     <string name="txt_receiving_doctor">接诊医生</string>
     <string name="txt_receiving_hospital">接诊医院</string>
     <string name="txt_receiving_depart">接诊科室</string>

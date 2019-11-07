@@ -473,6 +473,7 @@ public class RemoteSubmitFragment extends BaseFragment {
                     remoteDepartBeans.clear();
                     remoteDepartId.clear();
                     layoutDepart.removeAllViews();
+                    reserveRemoteBean.setHosDeptInfo(null);
                     //选择的时间
                     date = data.getStringExtra(CommonData.KEY_REMOTE_DATE);
                     startHour = data.getStringExtra(CommonData.KEY_REMOTE_START_HOUR);
@@ -487,7 +488,6 @@ public class RemoteSubmitFragment extends BaseFragment {
                     remoteDepartBeans = (ArrayList<RemoteDepartBean>)data.getSerializableExtra(
                             CommonData.KEY_REMOTE_DEPART_LIST);
                     remoteDepartId = data.getIntegerArrayListExtra(CommonData.KEY_REMOTE_DEPART_LIST_ID);
-
                     ArrayList<DepartInfoBean> list = new ArrayList<>();
                     for (RemoteDepartBean bean : remoteDepartBeans) {
                         DepartInfoBean departInfoBean = new DepartInfoBean();

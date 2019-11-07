@@ -41,7 +41,7 @@
                     android:id="@+id/iv_status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@mipmap/ic_cooperation" />
+                    android:src="@mipmap/ic_label_cooperation" />
 
             </LinearLayout>
 

@@ -42,7 +42,7 @@ public class TransferInitiateAdapter extends BaseQuickAdapter<TransferDetailBean
                 helper.setGone(R.id.layout_receiving_doctor, false)
                       .setGone(R.id.layout_receiving_depart, false)
                       .setGone(R.id.layout_receiving_hospital, false)
-                      .setImageResource(R.id.iv_transfer_status_in, R.mipmap.ic_tag_status_wait_transfer);
+                      .setImageResource(R.id.iv_transfer_status_in, R.mipmap.ic_tag_wait_transfer);
                 break;
             case TRANSFER_STATUS_RECEIVED:
                 helper.setGone(R.id.layout_receiving_doctor, true)
@@ -51,19 +51,19 @@ public class TransferInitiateAdapter extends BaseQuickAdapter<TransferDetailBean
                       .setText(R.id.tv_receiving_doctor, item.getTargetDoctorName())
                       .setText(R.id.tv_receiving_depart, item.getTargetHospitalDepartmentName())
                       .setText(R.id.tv_receiving_hospital, item.getTargetHospitalName())
-                      .setImageResource(R.id.iv_transfer_status_in, R.mipmap.ic_tag_status_received);
+                      .setImageResource(R.id.iv_transfer_status_in, R.mipmap.ic_tag_received);
                 break;
             case TRANSFER_STATUS_CANCEL:
                 helper.setGone(R.id.layout_receiving_doctor, false)
                       .setGone(R.id.layout_receiving_depart, false)
                       .setGone(R.id.layout_receiving_hospital, false)
-                      .setImageResource(R.id.iv_transfer_status_in, R.mipmap.ic_tag_status_cancel);
+                      .setImageResource(R.id.iv_transfer_status_in, R.mipmap.ic_tag_cancel);
                 break;
             case TRANSFER_STATUS_REFUSE:
                 helper.setGone(R.id.layout_receiving_doctor, false)
                       .setGone(R.id.layout_receiving_depart, false)
                       .setGone(R.id.layout_receiving_hospital, false)
-                      .setImageResource(R.id.iv_transfer_status_in, R.mipmap.ic_tag_status_reject);
+                      .setImageResource(R.id.iv_transfer_status_in, R.mipmap.ic_tag_reject);
                 break;
             default:
                 break;

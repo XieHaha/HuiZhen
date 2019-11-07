@@ -58,7 +58,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/color_373d4d"
             android:textSize="@dimen/text_16"
-            tools:text="科室-医院" />
+            tools:text="医生" />
 
         <TextView
             android:id="@+id/tv_advice_btn"
@@ -66,19 +66,21 @@
             android:layout_height="wrap_content"
             android:textColor="@color/color_a1a8b3"
             android:textSize="@dimen/text_16"
+            android:text="@string/txt_consultation_advice"
             android:layout_alignParentEnd="true"
-            android:drawableEnd="@drawable/selector_arrow_tab"
+            android:drawableEnd="@drawable/selector_gray_arrow_tab"
             android:drawablePadding="5dp"
-            tools:text="科室-医院" />
+            android:paddingBottom="5dp" />
 
         <com.yht.frame.widgets.textview.JustifiedTextView
             android:id="@+id/tv_result"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:lineSpacingMultiplier="1.1"
             android:padding="10dp"
-            android:layout_below="@id/tv_doctor_name"
+            android:layout_below="@id/tv_advice_btn"
             android:textSize="@dimen/text_13"
+            android:visibility="gone"
             android:textColor="@color/color_a1a8b3"
             android:layout_marginTop="6dp"
             tools:text="会诊意见会诊意见会诊意见会诊意见会诊意见会诊意见会诊意见会诊意见会诊意见会诊意见会诊意见会诊意见会诊意见会诊意见会诊意见会诊意见会诊意见会诊意见"

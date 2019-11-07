@@ -45,13 +45,13 @@ public class ServiceHistoryAdapter extends BaseQuickAdapter<CheckBean, BaseViewH
         int status = item.getStatus();
         switch (status) {
             case CHECK_ORDER_STATUS_INCOMPLETE:
-                helper.setImageResource(R.id.iv_check_status_in, R.mipmap.ic_tag_status_check_incomplete);
+                helper.setImageResource(R.id.iv_check_status_in, R.mipmap.ic_tag_check_incomplete);
                 break;
             case CHECK_ORDER_STATUS_COMPLETE:
-                helper.setImageResource(R.id.iv_check_status_in, R.mipmap.ic_tag_status_complete);
+                helper.setImageResource(R.id.iv_check_status_in, R.mipmap.ic_tag_complete);
                 break;
             case CHECK_ORDER_STATUS_CANCEL:
-                helper.setImageResource(R.id.iv_check_status_in, R.mipmap.ic_tag_status_cancel);
+                helper.setImageResource(R.id.iv_check_status_in, R.mipmap.ic_tag_cancel);
                 break;
             default:
                 break;

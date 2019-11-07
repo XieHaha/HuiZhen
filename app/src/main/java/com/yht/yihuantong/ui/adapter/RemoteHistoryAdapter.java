@@ -52,13 +52,13 @@ public class RemoteHistoryAdapter extends BaseQuickAdapter<RemoteBean, BaseViewH
                 helper.setImageResource(R.id.iv_status, R.mipmap.ic_tag_all_refuse);
                 break;
             case REMOTE_ORDER_STATUS_COMPLETE:
-                helper.setImageResource(R.id.iv_status, R.mipmap.ic_tag_status_complete);
+                helper.setImageResource(R.id.iv_status, R.mipmap.ic_tag_complete);
                 break;
             case REMOTE_ORDER_STATUS_CLOSED:
             case REMOTE_ORDER_STATUS_TIMEOUT_CLOSE:
             case REMOTE_ORDER_STATUS_INTERRRUPT_CLOSE:
             case REMOTE_ORDER_STATUS_ALL_REFUSE_CLOSE:
-                helper.setImageResource(R.id.iv_status, R.mipmap.ic_tag_status_closed);
+                helper.setImageResource(R.id.iv_status, R.mipmap.ic_tag_closed);
                 break;
             case REMOTE_ORDER_STATUS_UNDER_REVIEW:
                 helper.setImageResource(R.id.iv_status, R.mipmap.ic_tag_wait_review);
