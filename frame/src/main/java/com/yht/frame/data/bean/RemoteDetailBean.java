@@ -20,7 +20,10 @@ public class RemoteDetailBean implements Serializable {
     private String patientCode;
     private String patientName;
     private String patientPhoto;
+    private String patientIdCardNo;
+    private String patientMobile;
     private String sourceDoctorName;
+    private String sourceDoctorCode;
     private String sourceDoctorPhoto;
     private String sourceHospitalName;
     private String sourceHospitalDepartmentName;
@@ -225,5 +228,29 @@ public class RemoteDetailBean implements Serializable {
 
     public void setPatientResourceList(ArrayList<FileBean> patientResourceList) {
         this.patientResourceList = patientResourceList;
+    }
+
+    public String getPatientIdCardNo() {
+        return patientIdCardNo;
+    }
+
+    public void setPatientIdCardNo(String patientIdCardNo) {
+        this.patientIdCardNo = patientIdCardNo;
+    }
+
+    public String getPatientMobile() {
+        return patientMobile;
+    }
+
+    public void setPatientMobile(String patientMobile) {
+        this.patientMobile = patientMobile;
+    }
+
+    public String getSourceDoctorCode() {
+        return sourceDoctorCode;
+    }
+
+    public void setSourceDoctorCode(String sourceDoctorCode) {
+        this.sourceDoctorCode = sourceDoctorCode;
     }
 }

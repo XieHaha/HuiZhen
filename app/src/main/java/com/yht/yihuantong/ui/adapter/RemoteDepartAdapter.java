@@ -23,7 +23,7 @@ public class RemoteDepartAdapter extends BaseMultiItemQuickAdapter<MultiItemEnti
     /**
      * 已选择的科室
      */
-    private ArrayList<Integer> selectedRemoteDepartPositions = new ArrayList<>();
+    private ArrayList<Integer> selectedRemoteDepartIds = new ArrayList<>();
 
     public RemoteDepartAdapter(List<MultiItemEntity> data) {
         super(data);
@@ -59,7 +59,7 @@ public class RemoteDepartAdapter extends BaseMultiItemQuickAdapter<MultiItemEnti
                 RemoteDepartBean remoteDepartBean = (RemoteDepartBean)item;
                 helper.setText(R.id.tv_depart, remoteDepartBean.getDepartmentName());
                 ImageView image = helper.getView(R.id.iv_select);
-                if (selectedRemoteDepartPositions.contains(helper.getAdapterPosition())) {
+                if (selectedRemoteDepartIds.contains(remoteDepartBean.getDepartmentId())) {
                     image.setSelected(true);
                     if (onRemoteDepartSelectListener != null) {
                         //二次选择时，历史数据回填
@@ -72,8 +72,7 @@ public class RemoteDepartAdapter extends BaseMultiItemQuickAdapter<MultiItemEnti
                 //点击事件处理
                 helper.itemView.setOnClickListener(v -> {
                     if (onRemoteDepartSelectListener != null) {
-                        onRemoteDepartSelectListener.onRemoteDepartSelect(remoteDepartBean,
-                                                                          helper.getAdapterPosition());
+                        onRemoteDepartSelectListener.onRemoteDepartSelect(remoteDepartBean);
                     }
                 });
                 break;
@@ -98,8 +97,8 @@ public class RemoteDepartAdapter extends BaseMultiItemQuickAdapter<MultiItemEnti
         notifyDataSetChanged();
     }
 
-    public void setSelectedRemoteDepartPositions(ArrayList<Integer> selectedRemoteDepartPositions) {
-        this.selectedRemoteDepartPositions = selectedRemoteDepartPositions;
+    public void setSelectedRemoteDepartIds(ArrayList<Integer> selectedRemoteDepartPositions) {
+        this.selectedRemoteDepartIds = selectedRemoteDepartPositions;
     }
 
     private OnRemoteDepartSelectListener onRemoteDepartSelectListener;
@@ -113,9 +112,8 @@ public class RemoteDepartAdapter extends BaseMultiItemQuickAdapter<MultiItemEnti
          * 已选科室
          *
          * @param remoteDepartBean 数据
-         * @param position         index
          */
-        void onRemoteDepartSelect(RemoteDepartBean remoteDepartBean, int position);
+        void onRemoteDepartSelect(RemoteDepartBean remoteDepartBean);
 
         /**
          * 历史数据回填

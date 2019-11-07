@@ -114,6 +114,7 @@
     <string name="txt_space">%s&#160;&#160;</string>
     <string name="txt_space_two">%s&#160;&#160;%s</string>
     <string name="txt_joiner">%s&#160;-&#160;%s</string>
+    <string name="txt_date_joiner">%s&#160;%s-%s</string>
     <string name="to_expand_hint">展开</string>
     <string name="to_shrink_hint">收起</string>
     <string name="txt_price">￥%s</string>

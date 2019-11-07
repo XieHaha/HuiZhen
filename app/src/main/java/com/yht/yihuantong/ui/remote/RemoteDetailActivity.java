@@ -1,5 +1,6 @@
 package com.yht.yihuantong.ui.remote;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -33,6 +34,7 @@ import com.yht.frame.widgets.recyclerview.FullListView;
 import com.yht.frame.widgets.textview.JustifiedTextView;
 import com.yht.frame.widgets.view.CenterImageSpan;
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.ui.reservation.remote.ReservationRemoteActivity;
 import com.yht.yihuantong.utils.FileUrlUtil;
 
 import java.util.ArrayList;
@@ -177,7 +179,7 @@ public class RemoteDetailActivity extends BaseActivity implements RemoteOrderSta
                              ? getString(R.string.txt_sex_male)
                              : getString(R.string.txt_sex_female));
         tvPatientAge.setText(String.valueOf(remoteDetailBean.getPatientAge()));
-        tvInitiateTime.setText(BaseUtils.formatDate(remoteDetailBean.getStartAt(), BaseUtils.YYYY_MM_DD_HH_MM_SS));
+        tvInitiateTime.setText(BaseUtils.timeFormat(remoteDetailBean.getStartAt(), remoteDetailBean.getEndAt()));
         tvInitiateDepart.setText(remoteDetailBean.getSourceHospitalDepartmentName());
         tvInitiateHospital.setText(remoteDetailBean.getSourceHospitalName());
         tvPastMedical.setText(remoteDetailBean.getPastHistory());
@@ -258,6 +260,9 @@ public class RemoteDetailActivity extends BaseActivity implements RemoteOrderSta
 
     @OnClick(R.id.tv_again_apply)
     public void onViewClicked() {
+        Intent intent = new Intent(this, ReservationRemoteActivity.class);
+        intent.putExtra(CommonData.KEY_REMOTE_ORDER_BEAN, remoteDetailBean);
+        startActivity(intent);
     }
 
     @Override

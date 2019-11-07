@@ -68,9 +68,9 @@ public class SelectRemoteDepartActivity extends BaseActivity
      */
     private ArrayList<RemoteDepartBean> selectedRemoteDepartBeans = new ArrayList<>();
     /**
-     * 选择的科室 position
+     * 选择的科室 id
      */
-    private ArrayList<Integer> selectedRemoteDepartPosition = new ArrayList<>();
+    private ArrayList<Integer> selectedRemoteDepartId = new ArrayList<>();
     /**
      * 最多可选的科室
      */
@@ -95,12 +95,12 @@ public class SelectRemoteDepartActivity extends BaseActivity
         super.initView(savedInstanceState);
         if (getIntent() != null) {
             initRemoteHour(getIntent());
-            selectedRemoteDepartPosition = getIntent().getIntegerArrayListExtra(
-                    CommonData.KEY_REMOTE_DEPART_LIST_POSITION);
+            selectedRemoteDepartId = getIntent().getIntegerArrayListExtra(
+                    CommonData.KEY_REMOTE_DEPART_LIST_ID);
         }
         publicTitleBarMore.setVisibility(View.VISIBLE);
         publicTitleBarMore.setText(R.string.txt_sure);
-        if (selectedRemoteDepartPosition != null && selectedRemoteDepartPosition.size() > 0) {
+        if (selectedRemoteDepartId != null && selectedRemoteDepartId.size() > 0) {
             publicTitleBarMore.setSelected(true);
         }
         loadViewHelper = new LoadViewHelper(this);
@@ -136,7 +136,7 @@ public class SelectRemoteDepartActivity extends BaseActivity
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         remoteDepartAdapter = new RemoteDepartAdapter(remoteDepartGroup);
         //赋值已选择的科室
-        remoteDepartAdapter.setSelectedRemoteDepartPositions(selectedRemoteDepartPosition);
+        remoteDepartAdapter.setSelectedRemoteDepartIds(selectedRemoteDepartId);
         remoteDepartAdapter.setLoadMoreView(new CustomLoadMoreView());
         remoteDepartAdapter.setOnRemoteDepartSelectListener(this);
         remoteDepartAdapter.loadMoreEnd();
@@ -186,7 +186,7 @@ public class SelectRemoteDepartActivity extends BaseActivity
                 if (publicTitleBarMore.isSelected()) {
                     Intent intent = new Intent();
                     intent.putExtra(CommonData.KEY_REMOTE_DEPART_LIST, selectedRemoteDepartBeans);
-                    intent.putExtra(CommonData.KEY_REMOTE_DEPART_LIST_POSITION, selectedRemoteDepartPosition);
+                    intent.putExtra(CommonData.KEY_REMOTE_DEPART_LIST_ID, selectedRemoteDepartId);
                     setResult(RESULT_OK, intent);
                     finish();
                 }
@@ -204,18 +204,18 @@ public class SelectRemoteDepartActivity extends BaseActivity
     }
 
     @Override
-    public void onRemoteDepartSelect(RemoteDepartBean remoteDepartBean, int position) {
+    public void onRemoteDepartSelect(RemoteDepartBean remoteDepartBean) {
         if (selectedRemoteDepartBeans.size() >= MAX_DEPART) {
             ToastUtil.toast(this, R.string.txt_add_depart_max);
             return;
         }
         if (selectedRemoteDepartBeans.contains(remoteDepartBean)) {
             selectedRemoteDepartBeans.remove(remoteDepartBean);
-            selectedRemoteDepartPosition.remove(Integer.valueOf(position));
+            selectedRemoteDepartId.remove(Integer.valueOf(remoteDepartBean.getDepartmentId()));
         }
         else {
             selectedRemoteDepartBeans.add(remoteDepartBean);
-            selectedRemoteDepartPosition.add(position);
+            selectedRemoteDepartId.add(remoteDepartBean.getDepartmentId());
         }
         if (selectedRemoteDepartBeans.size() > 0) {
             publicTitleBarMore.setSelected(true);
@@ -224,7 +224,7 @@ public class SelectRemoteDepartActivity extends BaseActivity
             publicTitleBarMore.setSelected(false);
         }
         //刷新数据
-        remoteDepartAdapter.setSelectedRemoteDepartPositions(selectedRemoteDepartPosition);
+        remoteDepartAdapter.setSelectedRemoteDepartIds(selectedRemoteDepartId);
         remoteDepartAdapter.notifyDataSetChanged();
     }
 
@@ -275,6 +275,6 @@ public class SelectRemoteDepartActivity extends BaseActivity
         startHour = data.getStringExtra(CommonData.KEY_REMOTE_START_HOUR);
         endHour = data.getStringExtra(CommonData.KEY_REMOTE_END_HOUR);
         //时间
-        tvTime.setText(date + " " + startHour + "-" + endHour);
+        tvTime.setText(String.format(getString(R.string.txt_date_joiner), date, startHour, endHour));
     }
 }

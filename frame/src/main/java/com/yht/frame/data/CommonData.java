@@ -211,7 +211,7 @@ public interface CommonData {
     /**
      * 选择的远程科室列表 下标
      */
-    String KEY_REMOTE_DEPART_LIST_POSITION = "key_remote_depart_list_position";
+    String KEY_REMOTE_DEPART_LIST_ID = "key_remote_depart_list_position";
     /**
      * 远程会诊 日期
      */
@@ -232,4 +232,8 @@ public interface CommonData {
      * 预约服务提示刷新显示状态  true为已显示
      */
     String KEY_SHOW_REFRESH_STATUS = "key_show_refresh_status";
+    /**
+     * 会诊订单
+     */
+    String KEY_REMOTE_ORDER_BEAN = "key_remote_order_bean";
 }

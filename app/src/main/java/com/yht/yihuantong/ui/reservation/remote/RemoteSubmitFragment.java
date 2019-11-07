@@ -115,9 +115,13 @@ public class RemoteSubmitFragment extends BaseFragment {
      */
     private ArrayList<RemoteDepartBean> remoteDepartBeans = new ArrayList<>();
     /**
-     * 已选科室
+     * 已选科室 id
      */
-    private ArrayList<Integer> remoteDepartPositions = new ArrayList<>();
+    private ArrayList<Integer> remoteDepartId = new ArrayList<>();
+    /**
+     * 二次编辑 是否清空所有已填数据
+     */
+    private boolean clearAll;
     /**
      * 选择远程会诊时间
      */
@@ -152,10 +156,80 @@ public class RemoteSubmitFragment extends BaseFragment {
         //默认签名确认
         sureType = BASE_TWO;
         sureType();
+        initPageData();
     }
 
-    public void setReserveRemoteBean(ReserveRemoteBean reserveRemoteBean) {
-        this.reserveRemoteBean = reserveRemoteBean;
+    public void setReserveRemoteBean(ReserveRemoteBean bean) {
+        clearAll(bean);
+        this.reserveRemoteBean = bean;
+    }
+
+    /**
+     * 页面逻辑
+     */
+    private void initPageData() {
+        if (clearAll) {
+            tvSelect.setText("");
+            tvSelectHint.setVisibility(View.INVISIBLE);
+            tvDepartSelect.setText(R.string.txt_select_depart_hint1);
+            tvDepartSelect.setSelected(false);
+        }
+        else {
+            //数据回填
+            initRemoteData();
+        }
+    }
+
+    /**
+     * 已有数据回填（订单数据）
+     */
+    private void initRemoteData() {
+        if (reserveRemoteBean != null) {
+            remoteDepartBeans.clear();
+            remoteDepartId.clear();
+            long start = BaseUtils.date2TimeStamp(reserveRemoteBean.getStartAt(), BaseUtils.YYYY_MM_DD_HH_MM);
+            long end = BaseUtils.date2TimeStamp(reserveRemoteBean.getEndAt(), BaseUtils.YYYY_MM_DD_HH_MM);
+            tvSelect.setText(timeFormat(start, end));
+            ArrayList<DepartInfoBean> hosDeptInfo = reserveRemoteBean.getHosDeptInfo();
+            if (hosDeptInfo != null) {
+                for (DepartInfoBean info : hosDeptInfo) {
+                    RemoteDepartBean bean = new RemoteDepartBean();
+                    bean.setDepartmentId(info.getHospitalDepartmentId());
+                    bean.setDepartmentName(info.getHospitalDepartmentName());
+                    bean.setHospitalCode(info.getHospitalCode());
+                    bean.setHospitalName(info.getHospitalName());
+                    remoteDepartBeans.add(bean);
+                    remoteDepartId.add(info.getHospitalDepartmentId());
+                }
+            }
+            selectDepartItemByHospital();
+        }
+    }
+
+    /**
+     * 根据时间戳返回时间范围
+     */
+    public String timeFormat(long start, long end) {
+        if (start == 0 || end == 0) {
+            return "";
+        }
+        date = BaseUtils.formatDate(start, BaseUtils.YYYY_MM_DD);
+        startHour = BaseUtils.formatDate(start, BaseUtils.HH_MM);
+        endHour = BaseUtils.formatDate(end, BaseUtils.HH_MM);
+        return date + " " + startHour + "-" + endHour;
+    }
+
+    /**
+     * 涉及到数据回填逻辑，如果更改了居民，需要清空原有已填写数据
+     */
+    private void clearAll(ReserveRemoteBean bean) {
+        if (reserveRemoteBean == null || bean == null) {
+            clearAll = false;
+        }
+        else {
+            clearAll = !reserveRemoteBean.getPatientName().equals(bean.getPatientName()) ||
+                       !reserveRemoteBean.getPatientIdCard().equals(bean.getPatientIdCard());
+        }
     }
 
     /**
@@ -193,34 +267,24 @@ public class RemoteSubmitFragment extends BaseFragment {
     /**
      * 选择时间回调
      */
-    private void selectHospitalByCheckItem(Intent data) {
-        //如果重新选择时间  需要清除已选科室
-        if (TextUtils.isEmpty(date)) {
-            remoteDepartBeans.clear();
-            remoteDepartPositions.clear();
-            layoutDepart.removeAllViews();
-        }
-        date = data.getStringExtra(CommonData.KEY_REMOTE_DATE);
-        startHour = data.getStringExtra(CommonData.KEY_REMOTE_START_HOUR);
-        endHour = data.getStringExtra(CommonData.KEY_REMOTE_END_HOUR);
-        tvSelect.setText(date + " " + startHour + "-" + endHour);
+    private void selectReservationTime() {
+        tvSelect.setText(String.format(getString(R.string.txt_date_joiner), date, startHour, endHour));
         initNextButton();
     }
 
     /**
-     * 选择科室回调
+     * 科室数据处理
      */
-    private void selectDepartItemByHospital(Intent data) {
+    private void selectDepartItemByHospital() {
         //移除所有已添加子VIEW
         layoutDepart.removeAllViews();
-        remoteDepartBeans = (ArrayList<RemoteDepartBean>)data.getSerializableExtra(CommonData.KEY_REMOTE_DEPART_LIST);
-        remoteDepartPositions = data.getIntegerArrayListExtra(CommonData.KEY_REMOTE_DEPART_LIST_POSITION);
         if (remoteDepartBeans != null && remoteDepartBeans.size() > 0) {
             for (int i = 0; i < remoteDepartBeans.size(); i++) {
                 RemoteDepartBean bean = remoteDepartBeans.get(i);
                 TextView textView = (TextView)LayoutInflater.from(getContext())
                                                             .inflate(R.layout.item_remote_depart_simple, null);
-                textView.setText(bean.getDepartmentName() + " - " + bean.getHospitalName());
+                textView.setText(String.format(getString(R.string.txt_joiner), bean.getDepartmentName(),
+                                               bean.getHospitalName()));
                 layoutDepart.addView(textView);
             }
             tvSelectHint.setVisibility(View.VISIBLE);
@@ -268,7 +332,7 @@ public class RemoteSubmitFragment extends BaseFragment {
                     intent.putExtra(CommonData.KEY_REMOTE_DATE, date);
                     intent.putExtra(CommonData.KEY_REMOTE_START_HOUR, startHour);
                     intent.putExtra(CommonData.KEY_REMOTE_END_HOUR, endHour);
-                    intent.putExtra(CommonData.KEY_REMOTE_DEPART_LIST_POSITION, remoteDepartPositions);
+                    intent.putExtra(CommonData.KEY_REMOTE_DEPART_LIST_ID, remoteDepartId);
                     startActivityForResult(intent, REQUEST_CODE_SELECT_DEPART);
                 }
                 else {
@@ -409,11 +473,24 @@ public class RemoteSubmitFragment extends BaseFragment {
                 break;
             case REQUEST_CODE_SELECT_REMOTE_HOUR:
                 if (data != null) {
-                    selectHospitalByCheckItem(data);
+                    //如果重新选择时间  需要清除已选科室
+                    remoteDepartBeans.clear();
+                    remoteDepartId.clear();
+                    layoutDepart.removeAllViews();
+                    //选择的时间
+                    date = data.getStringExtra(CommonData.KEY_REMOTE_DATE);
+                    startHour = data.getStringExtra(CommonData.KEY_REMOTE_START_HOUR);
+                    endHour = data.getStringExtra(CommonData.KEY_REMOTE_END_HOUR);
+                    selectReservationTime();
                 }
                 break;
             case REQUEST_CODE_SELECT_DEPART:
-                if (data != null) { selectDepartItemByHospital(data); }
+                if (data != null) {
+                    remoteDepartBeans = (ArrayList<RemoteDepartBean>)data.getSerializableExtra(
+                            CommonData.KEY_REMOTE_DEPART_LIST);
+                    remoteDepartId = data.getIntegerArrayListExtra(CommonData.KEY_REMOTE_DEPART_LIST_ID);
+                    selectDepartItemByHospital();
+                }
                 break;
             default:
                 break;
@@ -426,9 +503,7 @@ public class RemoteSubmitFragment extends BaseFragment {
      */
     private void openCamera() {
         cameraTempFile = new File(DirHelper.getPathImage(), System.currentTimeMillis() + ".jpg");
-        if (cameraTempFile != null) {
-            mCurrentPhotoPath = cameraTempFile.getAbsolutePath();
-        }
+        mCurrentPhotoPath = cameraTempFile.getAbsolutePath();
         //选择拍照
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // 指定调用相机拍照后照片的储存路径

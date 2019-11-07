@@ -108,14 +108,30 @@ public class BaseUtils {
     }
 
     /**
+     * 根据时间戳返回时间范围
+     */
+    public static String timeFormat(long start, long end) {
+        String date = formatDate(start, YYYY_MM_DD);
+        String startHour = formatDate(start, HH_MM);
+        String endHour = formatDate(end, HH_MM);
+        return date + " " + startHour + "-" + endHour;
+    }
+
+    public static String timeStringFormat(String startTime, String endTime) {
+        if (TextUtils.isEmpty(startTime) || TextUtils.isEmpty(endTime)) {
+            return "";
+        }
+        return timeFormat(date2TimeStamp(startTime, YYYY_MM_DD_HH_MM), date2TimeStamp(endTime, YYYY_MM_DD_HH_MM));
+    }
+
+    /**
      * 字符串转换为java.util.Date<br>
      */
     public static Date formatDate(String time, String format) {
         SimpleDateFormat formatter;
         time = time.trim();
         formatter = new SimpleDateFormat(format, Locale.getDefault());
-        Date ctime = formatter.parse(time, new ParsePosition(0));
-        return ctime;
+        return formatter.parse(time, new ParsePosition(0));
     }
 
     /**

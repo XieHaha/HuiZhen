@@ -180,10 +180,10 @@ public class RemoteMaterialFragment extends BaseFragment
             familyMedicalHis = "";
             allergiesHis = "";
         }
-        initCheckData();
+        initRemoteData();
     }
 
-    private void initCheckData() {
+    private void initRemoteData() {
         if (reserveRemoteBean != null) {
             BankCardTextWatcher.bind(tvIdCard, this);
             if (!TextUtils.isEmpty(reserveRemoteBean.getPatientCode())) {
@@ -231,6 +231,8 @@ public class RemoteMaterialFragment extends BaseFragment
             pastHistoryData.add(familyMedicalHis);
             pastHistoryData.add(allergiesHis);
             initPastHistory();
+            //附件资料
+            initFile();
             //病情描述
             initDescription();
             //诊断史
@@ -346,27 +348,56 @@ public class RemoteMaterialFragment extends BaseFragment
     }
 
     /**
+     * 附件
+     */
+    private void initFile() {
+        imagePaths.clear();
+        String source = reserveRemoteBean.getPatientResource();
+        if (!TextUtils.isEmpty(source)) {
+            String[] sources = source.split(",");
+            for (String value : sources) {
+                NormImage normImage = new NormImage();
+                normImage.setImageUrl(value);
+                imagePaths.add(normImage);
+            }
+            autoGridView.updateImg(imagePaths, true);
+        }
+    }
+
+    /**
      * 诊断内容
      */
     private void initDescription() {
-        tvDescriptionNum.setText(String.format(getString(R.string.txt_calc_num), description.length()));
-        etDescription.setSelection(description.length());
+        int length = 0;
+        if (!TextUtils.isEmpty(description)) {
+            length = description.length();
+        }
+        tvDescriptionNum.setText(String.format(getString(R.string.txt_calc_num), length));
+        etDescription.setSelection(length);
     }
 
     /**
      * 诊断内容
      */
     private void initDiagnosis() {
-        tvDiagnosisNum.setText(String.format(getString(R.string.txt_calc_num), diagnosisHis.length()));
-        etDiagnosis.setSelection(diagnosisHis.length());
+        int length = 0;
+        if (!TextUtils.isEmpty(diagnosisHis)) {
+            length = diagnosisHis.length();
+        }
+        tvDiagnosisNum.setText(String.format(getString(R.string.txt_calc_num), length));
+        etDiagnosis.setSelection(length);
     }
 
     /**
      * 诊断内容
      */
     private void initPurpose() {
-        tvPurposeNum.setText(String.format(getString(R.string.txt_calc_num), purpose.length()));
-        etPurpose.setSelection(purpose.length());
+        int length = 0;
+        if (!TextUtils.isEmpty(purpose)) {
+            length = purpose.length();
+        }
+        tvPurposeNum.setText(String.format(getString(R.string.txt_calc_num), length));
+        etPurpose.setSelection(length);
     }
 
     /**

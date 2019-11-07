@@ -16,14 +16,21 @@ import android.widget.TextView;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
+import com.yht.frame.data.bean.DepartInfoBean;
+import com.yht.frame.data.bean.FileBean;
 import com.yht.frame.data.bean.PatientBean;
+import com.yht.frame.data.bean.RemoteDetailBean;
+import com.yht.frame.data.bean.RemoteInvitedBean;
 import com.yht.frame.data.bean.ReserveRemoteBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
+import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.remote.listener.OnRemoteListener;
 import com.yht.yihuantong.ui.reservation.ReservationSuccessActivity;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 
@@ -89,6 +96,10 @@ public class ReservationRemoteActivity extends BaseActivity implements OnRemoteL
      */
     private ReserveRemoteBean reserveRemoteBean;
     /**
+     * 详情数据 (重新发起)
+     */
+    private RemoteDetailBean remoteDetailBean;
+    /**
      * 当前碎片
      */
     private int curPage;
@@ -110,6 +121,8 @@ public class ReservationRemoteActivity extends BaseActivity implements OnRemoteL
         if (getIntent() != null) {
             //居民详情页面回传数据
             patientBean = (PatientBean)getIntent().getSerializableExtra(CommonData.KEY_PATIENT_BEAN);
+            //会诊详情页面回传数据(重新转诊)
+            remoteDetailBean = (RemoteDetailBean)getIntent().getSerializableExtra(CommonData.KEY_REMOTE_ORDER_BEAN);
         }
         initTitlePage();
     }
@@ -156,6 +169,10 @@ public class ReservationRemoteActivity extends BaseActivity implements OnRemoteL
             initPatientBaseData();
             return true;
         }
+        else if (remoteDetailBean != null) {
+            initRemoteOrderData();
+            return true;
+        }
         else {
             return false;
         }
@@ -176,6 +193,51 @@ public class ReservationRemoteActivity extends BaseActivity implements OnRemoteL
         reserveRemoteBean.setPast(patientBean.getPast());
         reserveRemoteBean.setFamily(patientBean.getFamily());
         reserveRemoteBean.setAllergy(patientBean.getAllergy());
+    }
+
+    /**
+     * 会诊订单数据回填（重新发起）
+     */
+    private void initRemoteOrderData() {
+        //远程会诊
+        reserveRemoteBean = new ReserveRemoteBean();
+        reserveRemoteBean.setPatientName(remoteDetailBean.getPatientName());
+        reserveRemoteBean.setPatientIdCard(remoteDetailBean.getPatientIdCardNo());
+        reserveRemoteBean.setPatientCode(remoteDetailBean.getPatientCode());
+        reserveRemoteBean.setPatientSex(remoteDetailBean.getSex());
+        reserveRemoteBean.setPatientAge(remoteDetailBean.getPatientAge());
+        reserveRemoteBean.setPatientMobile(remoteDetailBean.getPatientMobile());
+        reserveRemoteBean.setPast(remoteDetailBean.getPastHistory());
+        reserveRemoteBean.setFamily(remoteDetailBean.getFamilyHistory());
+        reserveRemoteBean.setAllergy(remoteDetailBean.getAllergyHistory());
+        reserveRemoteBean.setDescIll(remoteDetailBean.getDescIll());
+        reserveRemoteBean.setDestination(remoteDetailBean.getDestination());
+        reserveRemoteBean.setInitResult(remoteDetailBean.getInitResult());
+        reserveRemoteBean.setStartAt(BaseUtils.formatDate(remoteDetailBean.getStartAt(), BaseUtils.YYYY_MM_DD_HH_MM));
+        reserveRemoteBean.setEndAt(BaseUtils.formatDate(remoteDetailBean.getEndAt(), BaseUtils.YYYY_MM_DD_HH_MM));
+        //受邀方信息
+        ArrayList<DepartInfoBean> list = new ArrayList<>();
+        ArrayList<RemoteInvitedBean> beans = remoteDetailBean.getInvitationList();
+        for (RemoteInvitedBean bean : beans) {
+            DepartInfoBean infoBean = new DepartInfoBean();
+            infoBean.setHospitalDepartmentId(bean.getHospitalDepartmentId());
+            infoBean.setHospitalDepartmentName(bean.getHospitalDepartmentName());
+            infoBean.setHospitalName(bean.getHospitalName());
+            infoBean.setHospitalCode(bean.getHospitalCode());
+            list.add(infoBean);
+        }
+        reserveRemoteBean.setHosDeptInfo(list);
+        //附件
+        StringBuilder builder = new StringBuilder();
+        ArrayList<FileBean> fileBeans = remoteDetailBean.getPatientResourceList();
+        for (int i = 0; i < fileBeans.size(); i++) {
+            FileBean file = fileBeans.get(i);
+            builder.append(file.getFileUrl());
+            if (fileBeans.size() - 1 != i) {
+                builder.append(",");
+            }
+        }
+        reserveRemoteBean.setPatientResource(builder.toString());
     }
 
     private void tabReservationBaseView() {
@@ -369,7 +431,7 @@ public class ReservationRemoteActivity extends BaseActivity implements OnRemoteL
             return false;
         }
         else if (curPage == 1) {
-            if (patientBean != null) {
+            if (patientBean != null || remoteDetailBean != null) {
                 return true;
             }
             if (materialFragment != null) {
