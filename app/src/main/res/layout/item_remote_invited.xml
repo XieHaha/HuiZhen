@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -72,19 +73,27 @@
             android:drawablePadding="5dp"
             android:paddingBottom="5dp" />
 
-        <com.yht.frame.widgets.textview.JustifiedTextView
-            android:id="@+id/tv_result"
+        <com.yht.frame.widgets.view.ExpandableLayout
+            android:id="@+id/layout_other"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:lineSpacingMultiplier="1.1"
-            android:padding="10dp"
-            android:layout_below="@id/tv_advice_btn"
-            android:textSize="@dimen/text_13"
-            android:visibility="gone"
-            android:textColor="@color/color_a1a8b3"
-            android:layout_marginTop="6dp"
-            tools:text="会诊意见会诊意见会诊意见会诊意见会诊意见会诊意见会诊意见会诊意见会诊意见会诊意见会诊意见会诊意见会诊意见会诊意见会诊意见会诊意见会诊意见会诊意见"
-            android:background="@drawable/corner4_f8f9fa_bg" />
+            app:el_duration="200"
+            app:el_expanded="false"
+            android:layout_below="@id/tv_advice_btn">
+
+            <com.yht.frame.widgets.textview.JustifiedTextView
+                android:id="@+id/tv_result"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lineSpacingMultiplier="1.1"
+                android:padding="10dp"
+                android:textSize="@dimen/text_13"
+                android:textColor="@color/color_a1a8b3"
+                android:layout_marginTop="6dp"
+                tools:text="会诊意见会诊意见会诊意见会诊意见会诊意见会诊意见会诊意见会诊意见会诊意见会诊意见会诊意见会诊意见会诊意见会诊意见会诊意见会诊意见会诊意见会诊意见"
+                android:background="@drawable/corner4_f8f9fa_bg" />
+
+        </com.yht.frame.widgets.view.ExpandableLayout>
     </RelativeLayout>
 
 </LinearLayout>
