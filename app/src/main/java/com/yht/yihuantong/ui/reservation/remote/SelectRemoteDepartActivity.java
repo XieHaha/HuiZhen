@@ -76,6 +76,10 @@ public class SelectRemoteDepartActivity extends BaseActivity
      */
     private final int MAX_DEPART = 5;
     /**
+     * 是否更新过时间
+     */
+    private boolean isUpdateTime;
+    /**
      * 选择时间
      */
     private static final int REQUEST_CODE_REMOTE_TIME = 100;
@@ -95,8 +99,7 @@ public class SelectRemoteDepartActivity extends BaseActivity
         super.initView(savedInstanceState);
         if (getIntent() != null) {
             initRemoteHour(getIntent());
-            selectedRemoteDepartId = getIntent().getIntegerArrayListExtra(
-                    CommonData.KEY_REMOTE_DEPART_LIST_ID);
+            selectedRemoteDepartId = getIntent().getIntegerArrayListExtra(CommonData.KEY_REMOTE_DEPART_LIST_ID);
         }
         publicTitleBarMore.setVisibility(View.VISIBLE);
         publicTitleBarMore.setText(R.string.txt_sure);
@@ -185,6 +188,11 @@ public class SelectRemoteDepartActivity extends BaseActivity
             case R.id.public_title_bar_more:
                 if (publicTitleBarMore.isSelected()) {
                     Intent intent = new Intent();
+                    if (isUpdateTime) {
+                        intent.putExtra(CommonData.KEY_REMOTE_DATE, date);
+                        intent.putExtra(CommonData.KEY_REMOTE_START_HOUR, startHour);
+                        intent.putExtra(CommonData.KEY_REMOTE_END_HOUR, endHour);
+                    }
                     intent.putExtra(CommonData.KEY_REMOTE_DEPART_LIST, selectedRemoteDepartBeans);
                     intent.putExtra(CommonData.KEY_REMOTE_DEPART_LIST_ID, selectedRemoteDepartId);
                     setResult(RESULT_OK, intent);
@@ -240,6 +248,8 @@ public class SelectRemoteDepartActivity extends BaseActivity
         super.onResponseSuccess(task, response);
         if (task == Tasks.GET_REMOTE_DEPARTMENT_INFO) {
             remoteDepartBeans = (ArrayList<RemoteDepartBean>)response.getData();
+            //清除已有数据
+            remoteDepartGroup.clear();
             if (remoteDepartBeans != null && remoteDepartBeans.size() > 0) {
                 initGroupData();
             }
@@ -259,9 +269,14 @@ public class SelectRemoteDepartActivity extends BaseActivity
             return;
         }
         if (requestCode == REQUEST_CODE_REMOTE_TIME) {
+            //更新时间
+            isUpdateTime = true;
             initRemoteHour(data);
             //初始化数据
-            if (selectedRemoteDepartBeans != null) { selectedRemoteDepartBeans.clear(); }
+            selectedRemoteDepartBeans.clear();
+            selectedRemoteDepartId.clear();
+            publicTitleBarMore.setSelected(false);
+            //更改时间后需要重新拉取科室数据
             getRemoteDepartmentInfo();
         }
     }
@@ -269,7 +284,6 @@ public class SelectRemoteDepartActivity extends BaseActivity
     /**
      * 时间
      */
-    @SuppressLint("SetTextI18n")
     private void initRemoteHour(Intent data) {
         date = data.getStringExtra(CommonData.KEY_REMOTE_DATE);
         startHour = data.getStringExtra(CommonData.KEY_REMOTE_START_HOUR);

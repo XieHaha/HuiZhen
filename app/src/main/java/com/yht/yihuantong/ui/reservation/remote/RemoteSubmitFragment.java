@@ -485,6 +485,16 @@ public class RemoteSubmitFragment extends BaseFragment {
                 break;
             case REQUEST_CODE_SELECT_DEPART:
                 if (data != null) {
+                    String date = data.getStringExtra(CommonData.KEY_REMOTE_DATE);
+                    String startHour = data.getStringExtra(CommonData.KEY_REMOTE_START_HOUR);
+                    String endHour = data.getStringExtra(CommonData.KEY_REMOTE_END_HOUR);
+                    if (!TextUtils.isEmpty(date) && !TextUtils.isEmpty(startHour) && !TextUtils.isEmpty(endHour)) {
+                        this.date = date;
+                        this.startHour = startHour;
+                        this.endHour = endHour;
+                        reserveRemoteBean.setStartAt(date + " " + startHour);
+                        reserveRemoteBean.setEndAt(date + " " + endHour);
+                    }
                     remoteDepartBeans = (ArrayList<RemoteDepartBean>)data.getSerializableExtra(
                             CommonData.KEY_REMOTE_DEPART_LIST);
                     remoteDepartId = data.getIntegerArrayListExtra(CommonData.KEY_REMOTE_DEPART_LIST_ID);
