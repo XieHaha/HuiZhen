@@ -7,7 +7,6 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.yht.frame.R;
 import com.yht.frame.data.BaseData;
 import com.yht.frame.data.bean.ServiceSubmitErrorBean;
-import com.yht.frame.data.type.CurrencyDetailType;
 import com.yht.frame.utils.BaseUtils;
 
 import java.util.List;
@@ -17,14 +16,13 @@ import java.util.List;
  * @date 19/6/10 12:18
  * @description 收入记录
  */
-public class DialogListAdapter extends BaseQuickAdapter<ServiceSubmitErrorBean, BaseViewHolder>
-        implements CurrencyDetailType {
+public class ErrorServiceAdapter extends BaseQuickAdapter<ServiceSubmitErrorBean, BaseViewHolder> {
     /**
      * 1、服务项状态   2、服务项价格
      */
     private int type;
 
-    public DialogListAdapter(int layoutResId, @Nullable List<ServiceSubmitErrorBean> data) {
+    public ErrorServiceAdapter(int layoutResId, @Nullable List<ServiceSubmitErrorBean> data) {
         super(layoutResId, data);
     }
 

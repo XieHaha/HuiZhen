@@ -468,6 +468,8 @@
     <string name="txt_annex_data">附件资料</string>
     <string name="txt_apply_again">重新发起</string>
     <string name="txt_refuse_reason">拒绝原因：</string>
+    <string name="txt_select_time_again">重新选择时间</string>
+    <string name="txt_select_depart_again">重新选择科室</string>
 
     <!--转诊申请-->
     <string name="txt_visiting">接诊</string>

@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.yht.frame.R;
 import com.yht.frame.data.BaseData;
 import com.yht.frame.data.bean.ServiceSubmitErrorBean;
-import com.yht.frame.widgets.dialog.adapter.DialogListAdapter;
+import com.yht.frame.widgets.dialog.adapter.ErrorServiceAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ import java.util.List;
  * @author dundun
  * 列表
  */
-public class ListDialog extends Dialog implements View.OnClickListener {
+public class ErrorServiceListDialog extends Dialog implements View.OnClickListener {
     private Context context;
     private View view;
     private ImageView ivCancel;
@@ -31,7 +31,7 @@ public class ListDialog extends Dialog implements View.OnClickListener {
     /**
      *
      */
-    private DialogListAdapter dialogListAdapter;
+    private ErrorServiceAdapter errorServiceAdapter;
     /**
      * 数据源
      */
@@ -44,7 +44,7 @@ public class ListDialog extends Dialog implements View.OnClickListener {
     private boolean hideRight;
     private boolean isShow;
 
-    public ListDialog(Context context) {
+    public ErrorServiceListDialog(Context context) {
         super(context, R.style.ActionSheetDialogStyle);
         this.context = context;
     }
@@ -65,45 +65,45 @@ public class ListDialog extends Dialog implements View.OnClickListener {
         tvRight = findViewById(R.id.dialog_simple_right);
         view = findViewById(R.id.view_line);
         recyclerView = findViewById(R.id.recycler_view);
-        dialogListAdapter = new DialogListAdapter(R.layout.item_dialog_list, data);
+        errorServiceAdapter = new ErrorServiceAdapter(R.layout.item_dialog_list, data);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        recyclerView.setAdapter(dialogListAdapter);
+        recyclerView.setAdapter(errorServiceAdapter);
         tvLeft.setOnClickListener(this);
         tvRight.setOnClickListener(this);
         ivCancel.setOnClickListener(this);
     }
 
-    public ListDialog setData(List<ServiceSubmitErrorBean> data) {
+    public ErrorServiceListDialog setData(List<ServiceSubmitErrorBean> data) {
         this.data = data;
         return this;
     }
 
-    public ListDialog setHideRight(boolean hideRight) {
+    public ErrorServiceListDialog setHideRight(boolean hideRight) {
         this.hideRight = hideRight;
         return this;
     }
 
-    public ListDialog setContentString(String contentString) {
+    public ErrorServiceListDialog setContentString(String contentString) {
         this.contentString = contentString;
         return this;
     }
 
-    public ListDialog setLeftSelect(boolean leftSelect) {
+    public ErrorServiceListDialog setLeftSelect(boolean leftSelect) {
         this.leftSelect = leftSelect;
         return this;
     }
 
-    public ListDialog setLeftString(String leftString) {
+    public ErrorServiceListDialog setLeftString(String leftString) {
         this.leftString = leftString;
         return this;
     }
 
-    public ListDialog setRightString(String rightString) {
+    public ErrorServiceListDialog setRightString(String rightString) {
         this.rightString = rightString;
         return this;
     }
 
-    public ListDialog setRightSelect(boolean rightSelect) {
+    public ErrorServiceListDialog setRightSelect(boolean rightSelect) {
         this.rightSelect = rightSelect;
         return this;
     }
@@ -140,9 +140,9 @@ public class ListDialog extends Dialog implements View.OnClickListener {
                 tvRight.setText(rightString);
                 tvRight.setSelected(true);
                 tvLeft.setSelected(false);
-                dialogListAdapter.setType(BaseData.BASE_TWO);
+                errorServiceAdapter.setType(BaseData.BASE_TWO);
             }
-            dialogListAdapter.setNewData(data);
+            errorServiceAdapter.setNewData(data);
             isShow = true;
         }
     }
@@ -155,7 +155,7 @@ public class ListDialog extends Dialog implements View.OnClickListener {
         void onRightClick();
     }
 
-    public ListDialog setOnNextClickListener(OnNextClickListener onNextClickListener) {
+    public ErrorServiceListDialog setOnNextClickListener(OnNextClickListener onNextClickListener) {
         this.onNextClickListener = onNextClickListener;
         return this;
     }

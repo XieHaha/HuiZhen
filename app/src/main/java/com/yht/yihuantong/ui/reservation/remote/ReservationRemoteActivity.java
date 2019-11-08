@@ -13,6 +13,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.yht.frame.data.BaseNetConfig;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
@@ -25,12 +28,15 @@ import com.yht.frame.data.bean.ReserveRemoteBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
+import com.yht.frame.widgets.dialog.ErrorDepartListDialog;
 import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.remote.listener.OnRemoteListener;
 import com.yht.yihuantong.ui.reservation.ReservationSuccessActivity;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -86,7 +92,7 @@ public class ReservationRemoteActivity extends BaseActivity implements OnRemoteL
     /**
      * 确认提交(远程会诊)
      */
-    private RemoteSubmitFragment submitCheckFragment;
+    private RemoteSubmitFragment remoteSubmitFragment;
     /**
      * 居民回填数据
      */
@@ -282,16 +288,16 @@ public class ReservationRemoteActivity extends BaseActivity implements OnRemoteL
     private void tabCheckResultView() {
         fragmentTransaction = fragmentManager.beginTransaction();
         hideAll(fragmentTransaction);
-        if (submitCheckFragment == null) {
-            submitCheckFragment = new RemoteSubmitFragment();
-            submitCheckFragment.setOnRemoteListener(this);
-            submitCheckFragment.setReserveRemoteBean(reserveRemoteBean);
-            fragmentTransaction.add(R.id.layout_frame_root, submitCheckFragment);
+        if (remoteSubmitFragment == null) {
+            remoteSubmitFragment = new RemoteSubmitFragment();
+            remoteSubmitFragment.setOnRemoteListener(this);
+            remoteSubmitFragment.setReserveRemoteBean(reserveRemoteBean);
+            fragmentTransaction.add(R.id.layout_frame_root, remoteSubmitFragment);
         }
         else {
-            fragmentTransaction.show(submitCheckFragment);
-            submitCheckFragment.setReserveRemoteBean(reserveRemoteBean);
-            submitCheckFragment.onResume();
+            fragmentTransaction.show(remoteSubmitFragment);
+            remoteSubmitFragment.setReserveRemoteBean(reserveRemoteBean);
+            remoteSubmitFragment.onResume();
         }
         fragmentTransaction.commitAllowingStateLoss();
         selectTab(BASE_TWO);
@@ -307,8 +313,8 @@ public class ReservationRemoteActivity extends BaseActivity implements OnRemoteL
         if (materialFragment != null) {
             transaction.hide(materialFragment);
         }
-        if (submitCheckFragment != null) {
-            transaction.hide(submitCheckFragment);
+        if (remoteSubmitFragment != null) {
+            transaction.hide(remoteSubmitFragment);
         }
     }
 
@@ -407,16 +413,58 @@ public class ReservationRemoteActivity extends BaseActivity implements OnRemoteL
     @Override
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
-        Intent intent;
-        String orderNo;
         if (task == Tasks.ADD_RESERVE_REMOTE_ORDER) {
-            orderNo = (String)response.getData();
-            intent = new Intent(this, ReservationSuccessActivity.class);
+            String orderNo = (String)response.getData();
+            Intent intent = new Intent(this, ReservationSuccessActivity.class);
             intent.putExtra(CommonData.KEY_RESERVATION_TYPE, BASE_TWO);
             intent.putExtra(CommonData.KEY_ORDER_ID, orderNo);
             startActivity(intent);
             finish();
         }
+    }
+
+    @Override
+    public void onResponseCode(Tasks task, BaseResponse response) {
+        super.onResponseCode(task, response);
+        //时间错误
+        if (response.getCode() == BaseNetConfig.REQUEST_SUBMIT_REMOTE_TIME_ERROR) {
+            // 动态生成所需的java类的类型
+            Type type = new TypeToken<List<DepartInfoBean>>() { }.getType();
+            Gson gson = new Gson();
+            String jsonString = (String)response.getData();
+            List<DepartInfoBean> errorDepart = gson.fromJson(jsonString, type);
+            showSubmitErrorDialog(response.getMsg(), errorDepart);
+        }
+        //科室错误
+        else if (response.getCode() == BaseNetConfig.REQUEST_SUBMIT_REMOTE_DEPART_ERROR) {
+            showSubmitErrorDialog(response.getMsg(), null);
+        }
+    }
+
+    private void showSubmitErrorDialog(String hint, List<DepartInfoBean> list) {
+        new ErrorDepartListDialog(this).setContentString(hint)
+                                       .setHideRight(true)
+                                       .setData(list)
+                                       .setOnNextClickListener(new ErrorDepartListDialog.OnNextClickListener() {
+                                           @Override
+                                           public void onLeftClick() {
+                                               if (remoteSubmitFragment != null) {
+                                                   if (list == null) {
+                                                       //重新选择时间
+                                                       remoteSubmitFragment.reselect(1);
+                                                   }
+                                                   else {
+                                                       //重新选择科室
+                                                       remoteSubmitFragment.reselect(2);
+                                                   }
+                                               }
+                                           }
+
+                                           @Override
+                                           public void onRightClick() {
+                                           }
+                                       })
+                                       .show();
     }
 
     /**
@@ -469,8 +517,8 @@ public class ReservationRemoteActivity extends BaseActivity implements OnRemoteL
                 }
                 break;
             case BASE_TWO:
-                if (submitCheckFragment != null) {
-                    submitCheckFragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
+                if (remoteSubmitFragment != null) {
+                    remoteSubmitFragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
                 }
                 break;
             default:
@@ -492,8 +540,8 @@ public class ReservationRemoteActivity extends BaseActivity implements OnRemoteL
                 }
                 break;
             case BASE_TWO:
-                if (submitCheckFragment != null) {
-                    submitCheckFragment.onPermissionNeedExplanation(permissionName);
+                if (remoteSubmitFragment != null) {
+                    remoteSubmitFragment.onPermissionNeedExplanation(permissionName);
                 }
                 break;
             default:
@@ -516,8 +564,8 @@ public class ReservationRemoteActivity extends BaseActivity implements OnRemoteL
                 }
                 break;
             case BASE_TWO:
-                if (submitCheckFragment != null) {
-                    submitCheckFragment.onNoPermissionNeeded(permissionName);
+                if (remoteSubmitFragment != null) {
+                    remoteSubmitFragment.onNoPermissionNeeded(permissionName);
                 }
                 break;
             default:

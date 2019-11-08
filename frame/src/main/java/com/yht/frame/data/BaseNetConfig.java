@@ -45,6 +45,14 @@ public interface BaseNetConfig {
      */
     int REQUEST_SUBMIT_SERVICE_PRICE_ERROR = 7002;
     /**
+     * 预约会诊提交时 时间错误
+     */
+    int REQUEST_SUBMIT_REMOTE_TIME_ERROR = 7003;
+    /**
+     * 预约会诊提交时 科室错误
+     */
+    int REQUEST_SUBMIT_REMOTE_DEPART_ERROR = 7004;
+    /**
      * 设置默认超时时间
      */
     int DEFAULT_TIME = 30;

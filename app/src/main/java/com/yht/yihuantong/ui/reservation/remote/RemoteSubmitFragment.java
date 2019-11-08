@@ -308,6 +308,31 @@ public class RemoteSubmitFragment extends BaseFragment {
     }
 
     /**
+     * 重新选择
+     * 1、重新选择时间 2、或者科室
+     */
+    public void reselect(int type) {
+        Intent intent;
+        if (type == BASE_ONE) {
+            intent = new Intent(getContext(), ConsultationTimeActivity.class);
+            startActivityForResult(intent, REQUEST_CODE_SELECT_REMOTE_HOUR);
+        }
+        else {
+            //清除已选的科室信息
+            remoteDepartId.clear();
+            remoteDepartBeans.clear();
+            layoutDepart.removeAllViews();
+            reserveRemoteBean.setHosDeptInfo(null);
+            intent = new Intent(getContext(), SelectRemoteDepartActivity.class);
+            intent.putExtra(CommonData.KEY_REMOTE_DATE, date);
+            intent.putExtra(CommonData.KEY_REMOTE_START_HOUR, startHour);
+            intent.putExtra(CommonData.KEY_REMOTE_END_HOUR, endHour);
+            intent.putExtra(CommonData.KEY_REMOTE_DEPART_LIST_ID, remoteDepartId);
+            startActivityForResult(intent, REQUEST_CODE_SELECT_DEPART);
+        }
+    }
+
+    /**
      * next按钮可点击状态
      */
     private void initNextButton() {

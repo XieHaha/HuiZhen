@@ -41,7 +41,7 @@ import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.HuiZhenLog;
 import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.widgets.dialog.HintDialog;
-import com.yht.frame.widgets.dialog.ListDialog;
+import com.yht.frame.widgets.dialog.ErrorServiceListDialog;
 import com.yht.yihuantong.BuildConfig;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ZycApplication;
@@ -281,14 +281,14 @@ public class ReservationServiceActivity extends BaseActivity implements OnCheckL
     }
 
     private void showSubmitErrorDialog(List<ServiceSubmitErrorBean> list, boolean hideRight) {
-        ListDialog listDialog = new ListDialog(this);
+        ErrorServiceListDialog listDialog = new ErrorServiceListDialog(this);
         if (hideRight) {
             listDialog.setContentString(getString(R.string.txt_service_submit_status_error)).setHideRight(true);
         }
         else {
             listDialog.setContentString(getString(R.string.txt_service_submit_price_error));
         }
-        listDialog.setData(list).setOnNextClickListener(new ListDialog.OnNextClickListener() {
+        listDialog.setData(list).setOnNextClickListener(new ErrorServiceListDialog.OnNextClickListener() {
             @Override
             public void onLeftClick() {
                 if (submitCheckFragment != null) {
