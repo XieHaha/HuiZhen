@@ -43,6 +43,7 @@ public class NotifyMessageAdapter extends BaseQuickAdapter<NotifyMessageBean, Ba
         String type = item.getMsgType();
         switch (type) {
             case MESSAGE_SERVICE_REPORT:
+            case MESSAGE_SERVICE_ADVICE:
             case MESSAGE_TRANSFER_REJECT:
             case MESSAGE_TRANSFER_RECEIVED:
             case MESSAGE_TRANSFER_OTHER:

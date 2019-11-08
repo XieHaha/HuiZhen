@@ -27,6 +27,7 @@ import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.adapter.NotifyMessageAdapter;
+import com.yht.yihuantong.ui.check.AddDiagnosisActivity;
 import com.yht.yihuantong.ui.check.ReservationServiceDetailActivity;
 import com.yht.yihuantong.ui.currency.IncomeDetailActivity;
 import com.yht.yihuantong.ui.currency.WithdrawDetailActivity;
@@ -163,6 +164,13 @@ public class NotifyMessageFragment extends BaseFragment
                 intent = new Intent(getContext(), ReservationServiceDetailActivity.class);
                 intent.putExtra(CommonData.KEY_ORDER_ID, orderNo);
                 intent.putExtra(CommonData.KEY_PUBLIC, true);
+                startActivity(intent);
+                break;
+            case MESSAGE_SERVICE_ADVICE:
+                intent = new Intent(getContext(), AddDiagnosisActivity.class);
+                intent.putExtra(CommonData.KEY_ORDER_ID, orderNo);
+                //                intent.putExtra(CommonData.KEY_PUBLIC_STRING, bean.getName());
+                //                intent.putExtra(CommonData.KEY_CHECK_TYPE_ID, bean.getId());
                 startActivity(intent);
                 break;
             case MESSAGE_TRANSFER_REJECT:

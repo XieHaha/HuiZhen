@@ -14,6 +14,7 @@ import com.yht.frame.utils.HuiZhenLog;
 import com.yht.yihuantong.LifecycleHandler;
 import com.yht.yihuantong.ZycApplication;
 import com.yht.yihuantong.ui.auth.AuthDoctorActivity;
+import com.yht.yihuantong.ui.check.AddDiagnosisActivity;
 import com.yht.yihuantong.ui.check.ReservationServiceDetailActivity;
 import com.yht.yihuantong.ui.login.LoginOptionsActivity;
 import com.yht.yihuantong.ui.main.MainActivity;
@@ -105,6 +106,21 @@ public class PushNotifyReceiver extends JPushMessageReceiver implements MessageT
                 mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 baseIntent = new Intent(context, ReservationServiceDetailActivity.class);
                 baseIntent.putExtra(CommonData.KEY_ORDER_ID, msgId);
+                if (!LifecycleHandler.isApplicationInForeground()) {
+                    intents = new Intent[] { mainIntent, baseIntent };
+                    context.startActivities(intents);
+                }
+                else {
+                    context.startActivity(baseIntent);
+                }
+                break;
+            case MESSAGE_SERVICE_ADVICE:
+                mainIntent = new Intent(context, MainActivity.class);
+                mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                baseIntent = new Intent(context, AddDiagnosisActivity.class);
+                baseIntent.putExtra(CommonData.KEY_ORDER_ID, msgId);
+                //                baseIntent.putExtra(CommonData.KEY_PUBLIC_STRING, bean.getName());
+                //                baseIntent.putExtra(CommonData.KEY_CHECK_TYPE_ID, bean.getId());
                 if (!LifecycleHandler.isApplicationInForeground()) {
                     intents = new Intent[] { mainIntent, baseIntent };
                     context.startActivities(intents);

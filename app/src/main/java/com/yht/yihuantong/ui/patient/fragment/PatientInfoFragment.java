@@ -91,7 +91,7 @@ public class PatientInfoFragment extends BaseFragment
      */
     private boolean applyServiceAble = false;
     /**
-     * 是否能发起服务
+     * 是否能发起会诊
      */
     private boolean applyRemoteAble = false;
     /**

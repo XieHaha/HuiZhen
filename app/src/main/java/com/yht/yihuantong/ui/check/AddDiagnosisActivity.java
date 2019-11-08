@@ -3,7 +3,6 @@ package com.yht.yihuantong.ui.check;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
@@ -80,13 +79,6 @@ public class AddDiagnosisActivity extends BaseActivity
     private List<String> paths;
     private ArrayList<File> files = new ArrayList<>();
     private int currentUploadImgIndex = -1;
-    private Handler dealImgHandler = new Handler(msg -> {
-        //图片显示完开始上传图片
-        showLoadingView();
-        currentUploadImgIndex = 0;
-        uploadImage(new File(paths.get(currentUploadImgIndex)));
-        return true;
-    });
 
     @Override
     protected boolean isInitBackBtn() {

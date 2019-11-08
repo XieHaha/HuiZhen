@@ -19,6 +19,10 @@ public interface MessageType {
      */
     String MESSAGE_SERVICE_REPORT = "C007";
     /**
+     * 诊断意见
+     */
+    String MESSAGE_SERVICE_ADVICE = "C008";
+    /**
      * 收到转诊申请
      */
     String MESSAGE_TRANSFER_APPLY = "D002";
