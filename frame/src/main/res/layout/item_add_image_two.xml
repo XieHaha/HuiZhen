@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="86dp"
     android:layout_height="75dp"
     android:layout_marginEnd="7dp">
@@ -12,10 +13,23 @@
         android:background="@drawable/corner4_ebedf0_bg">
 
         <ImageView
+            android:id="@+id/image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/ic_camera"
+            android:src="@mipmap/ic_image_add"
             android:layout_centerInParent="true" />
+
+        <TextView
+            android:id="@+id/tv_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/dp_10"
+            android:textColor="@color/color_a1a8b3"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="3dp"
+            android:layout_below="@id/image"
+            tools:text="4/10"
+            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/iv_upload"

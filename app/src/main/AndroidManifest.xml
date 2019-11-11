@@ -434,7 +434,7 @@
             android:name=".ui.check.AddDiagnosisActivity"
             android:screenOrientation="portrait"
             android:label="@string/title_add_diagnosis"
-            android:windowSoftInputMode="adjustResize|stateHidden" />
+            android:windowSoftInputMode="stateAlwaysVisible" />
         <activity
             android:name=".ui.check.DiagnosisDetailActivity"
             android:screenOrientation="portrait"

@@ -13,6 +13,7 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.yht.frame.R;
@@ -36,6 +37,14 @@ public class AutoGridView extends RelativeLayout {
      * 是否显示添加按钮及删除按钮
      */
     private boolean isAdd;
+    /**
+     * 是否显示数量统计
+     */
+    private boolean showNum;
+    /**
+     * 最大数
+     */
+    private int maxTotal;
 
     public AutoGridView(Context context) {
         super(context);
@@ -81,6 +90,11 @@ public class AutoGridView extends RelativeLayout {
             gridView.setLayoutParams(new LayoutParams(gvWidth, gvHeight));
             gridView.invalidate();
         }
+    }
+
+    public void setShowNum(boolean showNum, int maxTotal) {
+        this.maxTotal = maxTotal;
+        this.showNum = showNum;
     }
 
     public void updateImg(ArrayList<NormImage> bitmaps, boolean isAdd) {
@@ -133,6 +147,7 @@ public class AutoGridView extends RelativeLayout {
                 convertView = LayoutInflater.from(context).inflate(R.layout.item_add_image_two, parent, false);
                 holder.imageView = convertView.findViewById(R.id.iv_upload);
                 holder.ivDelete = convertView.findViewById(R.id.iv_delete);
+                holder.tvNum = convertView.findViewById(R.id.tv_num);
                 convertView.setTag(holder);
             }
             else {
@@ -150,6 +165,14 @@ public class AutoGridView extends RelativeLayout {
             else {
                 holder.ivDelete.setVisibility(GONE);
             }
+            if (showNum) {
+                holder.tvNum.setVisibility(VISIBLE);
+                holder.tvNum.setText(
+                        String.format(context.getString(R.string.txt_percent_num), images.size() - 1, maxTotal));
+            }
+            else {
+                holder.tvNum.setVisibility(GONE);
+            }
             Glide.with(context)
                  .load(url)
                  .apply(GlideHelper.getOptionsPic(BaseUtils.dp2px(context, 4)))
@@ -160,6 +183,7 @@ public class AutoGridView extends RelativeLayout {
 
     private class ViewHolder {
         private ImageView imageView, ivDelete;
+        private TextView tvNum;
     }
 
     public interface OnDeleteClickListener {

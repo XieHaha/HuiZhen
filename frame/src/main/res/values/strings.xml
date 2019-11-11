@@ -348,6 +348,7 @@
     <string name="txt_reject_result">拒绝原因</string>
     <string name="txt_report">报告单</string>
     <string name="txt_report_num">(已上传%d/%d)</string>
+    <string name="txt_percent_num">%d/%d</string>
     <string name="txt_first_doctor">初诊医生</string>
     <string name="txt_first_time">初诊时间</string>
     <string name="txt_first_diagnosis_introduce">初步诊断及病情简介</string>

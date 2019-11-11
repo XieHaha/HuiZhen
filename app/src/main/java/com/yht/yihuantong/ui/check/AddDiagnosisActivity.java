@@ -101,6 +101,7 @@ public class AddDiagnosisActivity extends BaseActivity
         }
         publicTitleBarMore.setVisibility(View.VISIBLE);
         publicTitleBarBack.setOnClickListener(this);
+        autoGridView.setShowNum(true, 10);
         autoGridView.updateImg(imagePaths, true);
     }
 
