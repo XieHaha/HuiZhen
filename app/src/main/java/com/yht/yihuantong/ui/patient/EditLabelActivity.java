@@ -1,5 +1,6 @@
 package com.yht.yihuantong.ui.patient;
 
+import android.annotation.SuppressLint;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -250,6 +251,7 @@ public class EditLabelActivity extends BaseActivity
      */
     private void searchLabel(String tag) {
         if (!TextUtils.isEmpty(tag)) {
+//            publicTitleBarMore.setSelected(true);
             searchLabels.clear();
             for (String string : allLabelList) {
                 if (string.contains(tag)) {
@@ -259,6 +261,7 @@ public class EditLabelActivity extends BaseActivity
             initSearchList(searchLabels, tag);
         }
         else {
+//            publicTitleBarMore.setSelected(false);
             initSearchList(null, "");
         }
     }
@@ -287,7 +290,14 @@ public class EditLabelActivity extends BaseActivity
     @OnClick(R.id.public_title_bar_more)
     public void onViewClicked() {
         if (publicTitleBarMore.isSelected()) {
-            savePatientLabel();
+//            String content = inputEditText.getText().toString();
+//            //先判断输入框是否有内容、没有就提交保存，有内容先添加标签在保存
+//            if (TextUtils.isEmpty(content)) {
+                savePatientLabel();
+//            }
+//            else {
+//                addLabel(content);
+//            }
         }
     }
 
@@ -310,6 +320,7 @@ public class EditLabelActivity extends BaseActivity
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         TextView textView = (TextView)v;
@@ -407,6 +418,7 @@ public class EditLabelActivity extends BaseActivity
     /**
      * 添加标签
      */
+    @SuppressLint("ClickableViewAccessibility")
     private void addLabel(String content) {
         if (TextUtils.isEmpty(content)) { return; }
         setLabelHighLight(false);
@@ -435,10 +447,8 @@ public class EditLabelActivity extends BaseActivity
             //清空编辑框
             inputEditText.setText("");
         }
-        if (selectedLabelList.contains(content)) {
-            //防止重复添加
-            selectedLabelList.remove(content);
-        }
+        //防止重复添加
+        selectedLabelList.remove(content);
         //重新将新的标签添加在最后（顺序重排）
         selectedLabelList.add(content);
         updateAllLabelSelectStatus();
@@ -518,7 +528,7 @@ public class EditLabelActivity extends BaseActivity
      * 创建输入标签
      */
     private EditText createInputLabel() {
-        inputEditText = (EditText)getLayoutInflater().inflate(R.layout.item_edit_label, null, false);
+        inputEditText = (EditText)getLayoutInflater().inflate(R.layout.item_edit_label, null);
         inputEditText.setOnEditorActionListener(this);
         inputEditText.setOnKeyListener(this);
         inputEditText.setLayoutParams(params);
