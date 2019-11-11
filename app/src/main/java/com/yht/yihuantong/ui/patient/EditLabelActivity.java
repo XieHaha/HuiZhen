@@ -90,6 +90,10 @@ public class EditLabelActivity extends BaseActivity
      */
     private boolean curHighLight = false;
     /**
+     * 标签输入框是否为空
+     */
+    private boolean isEmpty = true;
+    /**
      * 已有标签初始值（判断本次编辑是否修改）
      */
     private String initString = "";
@@ -215,7 +219,7 @@ public class EditLabelActivity extends BaseActivity
                     //保存已有标签初始值
                     initString = builder.toString();
                     //添加标签
-                    addLabel(bean.getTagName());
+                    addLabel(bean.getTagName(), false);
                 }
             }
         }
@@ -251,7 +255,7 @@ public class EditLabelActivity extends BaseActivity
      */
     private void searchLabel(String tag) {
         if (!TextUtils.isEmpty(tag)) {
-//            publicTitleBarMore.setSelected(true);
+            isEmpty = false;
             searchLabels.clear();
             for (String string : allLabelList) {
                 if (string.contains(tag)) {
@@ -261,9 +265,10 @@ public class EditLabelActivity extends BaseActivity
             initSearchList(searchLabels, tag);
         }
         else {
-//            publicTitleBarMore.setSelected(false);
+            isEmpty = true;
             initSearchList(null, "");
         }
+        initNextButton();
     }
 
     /**
@@ -290,14 +295,14 @@ public class EditLabelActivity extends BaseActivity
     @OnClick(R.id.public_title_bar_more)
     public void onViewClicked() {
         if (publicTitleBarMore.isSelected()) {
-//            String content = inputEditText.getText().toString();
-//            //先判断输入框是否有内容、没有就提交保存，有内容先添加标签在保存
-//            if (TextUtils.isEmpty(content)) {
+            String content = inputEditText.getText().toString();
+            //先判断输入框是否有内容、没有就提交保存，有内容先添加标签在保存
+            if (TextUtils.isEmpty(content)) {
                 savePatientLabel();
-//            }
-//            else {
-//                addLabel(content);
-//            }
+            }
+            else {
+                addLabel(content, true);
+            }
         }
     }
 
@@ -343,7 +348,7 @@ public class EditLabelActivity extends BaseActivity
      */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        addLabel(searchLabels.get(position));
+        addLabel(searchLabels.get(position), false);
         hideSoftInputFromWindow();
     }
 
@@ -374,7 +379,7 @@ public class EditLabelActivity extends BaseActivity
                 updateAllLabelSelectStatus();
             }
             else {
-                addLabel(allLabelList.get(position));
+                addLabel(allLabelList.get(position), false);
             }
         }
         return false;
@@ -387,7 +392,7 @@ public class EditLabelActivity extends BaseActivity
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
         if (actionId == EditorInfo.IME_ACTION_DONE) {
             String content = inputEditText.getText().toString();
-            addLabel(content);
+            addLabel(content, false);
         }
         return true;
     }
@@ -417,9 +422,10 @@ public class EditLabelActivity extends BaseActivity
 
     /**
      * 添加标签
+     * saveAble  是否新增标签的同时提交保存
      */
     @SuppressLint("ClickableViewAccessibility")
-    private void addLabel(String content) {
+    private void addLabel(String content, boolean saveAble) {
         if (TextUtils.isEmpty(content)) { return; }
         setLabelHighLight(false);
         if (!isExist(content)) {
@@ -447,12 +453,21 @@ public class EditLabelActivity extends BaseActivity
             //清空编辑框
             inputEditText.setText("");
         }
-        //防止重复添加
-        selectedLabelList.remove(content);
+        if (selectedLabelList.contains(content)) {
+            //防止重复添加
+            selectedLabelList.remove(content);
+            //如果输入框内容是已有标签，则不保存
+            saveAble = false;
+        }
         //重新将新的标签添加在最后（顺序重排）
         selectedLabelList.add(content);
         updateAllLabelSelectStatus();
-        initNextButton();
+        if (saveAble) {
+            savePatientLabel();
+        }
+        else {
+            initNextButton();
+        }
     }
 
     /**
@@ -564,7 +579,8 @@ public class EditLabelActivity extends BaseActivity
         for (String string : selectedLabelList) {
             builder.append(string);
         }
-        if (TextUtils.equals(builder.toString(), initString)) {
+        //标签内容未更新  并且标签输入框也未有内容
+        if (TextUtils.equals(builder.toString(), initString) && isEmpty) {
             publicTitleBarMore.setSelected(false);
         }
         else {
