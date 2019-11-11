@@ -225,7 +225,7 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
         if (!NotifySettingUtils.hasNotify(Objects.requireNonNull(getActivity()))) {
             long date = sharePreferenceUtil.getAlwaysLong(CommonData.KEY_NOTIFICATION_CONTROL);
             long diff = System.currentTimeMillis() - date - TimeUtil.TIME_WEEK;
-            if (date > 0 && diff > 0) {
+            if (date == 0 || diff > 0) {
                 startActivity(new Intent(getContext(), NotifyHintActivity.class));
                 getActivity().overridePendingTransition(R.anim.actionsheet_dialog_in, R.anim.keep);
             }

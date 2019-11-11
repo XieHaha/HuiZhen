@@ -210,12 +210,21 @@ public class PastHistoryActivity extends BaseActivity {
                 if (publicTitleBarMore.isSelected()) { save(); }
                 break;
             case R.id.iv_past_medical_his:
+                if (!PastHistoryUtil.verifyPastMedical(this, pastMedicalHis)) {
+                    pastMedicalHis = "";
+                }
                 initPastMedicalHis(true);
                 break;
             case R.id.iv_family_medical_his:
+                if (!PastHistoryUtil.verifyFamilyMedical(this, familyMedicalHis)) {
+                    familyMedicalHis = "";
+                }
                 initFamilyMedicalHis(true);
                 break;
             case R.id.iv_allergies:
+                if (!PastHistoryUtil.verifyAllergies(this, allergiesHis)) {
+                    allergiesHis = "";
+                }
                 initAllergies(true);
                 break;
             default:
