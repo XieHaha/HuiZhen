@@ -167,8 +167,13 @@ public class AutoGridView extends RelativeLayout {
             }
             if (showNum) {
                 holder.tvNum.setVisibility(VISIBLE);
-                holder.tvNum.setText(
-                        String.format(context.getString(R.string.txt_percent_num), images.size() - 1, maxTotal));
+                if (images.size() == 1) {
+                    holder.tvNum.setText(R.string.txt_add_image_hint);
+                }
+                else {
+                    holder.tvNum.setText(
+                            String.format(context.getString(R.string.txt_percent_num), images.size() - 1, maxTotal));
+                }
             }
             else {
                 holder.tvNum.setVisibility(GONE);

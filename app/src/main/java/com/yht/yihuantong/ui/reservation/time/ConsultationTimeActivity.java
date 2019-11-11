@@ -23,7 +23,6 @@ import com.yht.frame.data.bean.TimeBarBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
-import com.yht.frame.utils.HuiZhenLog;
 import com.yht.frame.utils.ToastUtil;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.adapter.TimeSelectionAdapter;
@@ -220,8 +219,13 @@ public class ConsultationTimeActivity extends BaseActivity
     private void calcSelected() {
         int startPosition = hour.indexOf(startHour);
         startSelectedPosition = startPosition;
-        int endPosition = hour.indexOf(endHour);
-        HuiZhenLog.i(TAG, "start:" + startPosition + "  end: " + endPosition);
+        int endPosition;
+        if (TextUtils.equals(endHour, "23:59")) {
+            endPosition = hour.size();
+        }
+        else {
+            endPosition = hour.indexOf(endHour);
+        }
         int size = endPosition - startPosition;
         for (int j = 0; j < size; j++) {
             selectPositions.add(startPosition);
@@ -232,7 +236,7 @@ public class ConsultationTimeActivity extends BaseActivity
             tvVerifyTime.setSelected(true);
             int total = startSelectedPosition + selectPositions.size();
             //可预约时间已经超过24点  不可再加.
-            if (total + 1 == ALL_TIME_BAR) {
+            if (total == ALL_TIME_BAR) {
                 ivAdd.setSelected(false);
             }
             else {
@@ -342,8 +346,9 @@ public class ConsultationTimeActivity extends BaseActivity
         }
         //把已选时间点添加到列表中
         selectPositions.add(total);
+        total = startSelectedPosition + selectPositions.size();
         //可预约时间已经超过24点  不可再加.
-        if (total + 1 == ALL_TIME_BAR) {
+        if (total == ALL_TIME_BAR) {
             ivAdd.setSelected(false);
         }
         else {
@@ -453,9 +458,17 @@ public class ConsultationTimeActivity extends BaseActivity
         //获取当前选择的日期
         Calendar calendar = calendarView.getSelectedCalendar();
         String date = calendar.getYear() + "-" + calendar.getMonth() + "-" + calendar.getDay();
+        //开始时间
         String startHour = timeBarBeans.get(selectPositions.get(0)).getHourString();
-        String endHour = timeBarBeans.get(selectPositions.get(selectPositions.size() - 1) + 1).getHourString();
-        HuiZhenLog.i(TAG, "date:" + date + "  startHour:" + startHour + "  endHour:" + endHour);
+        //截止时间
+        String endHour;
+        int position = selectPositions.get(selectPositions.size() - 1);
+        if (position >= timeBarBeans.size() - 1) {
+            endHour = "23:59";
+        }
+        else {
+            endHour = timeBarBeans.get(position + 1).getHourString();
+        }
         //回调到科室列表
         Intent intent = new Intent();
         intent.putExtra(CommonData.KEY_REMOTE_DATE, date);
