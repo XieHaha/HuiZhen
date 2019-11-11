@@ -56,21 +56,21 @@ public class SharePreferenceUtil {
     /**
      * 存  不清除的数据
      */
-    public void putAlwaysInteger(String spKey, int spValue) {
+    public void putAlwaysLong(String spKey, long spValue) {
         spEditor = mContext.getSharedPreferences(FILE_NAME_OTHER, 0).edit();
-        spEditor.putInt(spKey, spValue);
+        spEditor.putLong(spKey, spValue);
         spEditor.apply();
     }
 
     /**
      * 取 不清除的数据
      */
-    public int getAlwaysInteger(String spKey) {
+    public long getAlwaysLong(String spKey) {
         sp = mContext.getSharedPreferences(FILE_NAME_OTHER, 0);
         //默认1 为有通知权限
-        int value = 1;
+        long value = 1;
         if (sp != null) {
-            value = sp.getInt(spKey, 1);
+            value = sp.getLong(spKey, 1);
         }
         return value;
     }

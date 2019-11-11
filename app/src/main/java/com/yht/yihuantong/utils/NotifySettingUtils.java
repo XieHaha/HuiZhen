@@ -26,8 +26,6 @@ public class NotifySettingUtils {
 
     /**
      * 设置界面
-     *
-     * @param activity
      */
     public static void openNotifySetting(Activity activity) {
         try {

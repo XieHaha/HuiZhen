@@ -18,6 +18,7 @@ import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.bean.FileBean;
+import com.yht.frame.data.bean.NormImage;
 import com.yht.frame.data.bean.RemoteDetailBean;
 import com.yht.frame.data.bean.RemoteInvitedBean;
 import com.yht.frame.data.type.InvitedPartyStatus;
@@ -25,12 +26,16 @@ import com.yht.frame.data.type.RemoteOrderStatus;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
+import com.yht.frame.utils.MimeUtils;
+import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.frame.widgets.textview.JustifiedTextView;
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.ui.ImagePreviewActivity;
 import com.yht.yihuantong.ui.adapter.RemoteDetailInviteAdapter;
 import com.yht.yihuantong.ui.reservation.remote.ReservationRemoteActivity;
 import com.yht.yihuantong.utils.FileUrlUtil;
+import com.yht.yihuantong.utils.FileUtils;
 
 import java.util.ArrayList;
 
@@ -100,9 +105,13 @@ public class RemoteDetailActivity extends BaseActivity implements RemoteOrderSta
      */
     private RemoteDetailInviteAdapter invitedAdapter;
     /**
-     * 会诊受邀方
+     * 附件资料
      */
     private ArrayList<FileBean> fileBeans = new ArrayList<>();
+    /**
+     * 附件资料中的图片
+     */
+    private ArrayList<NormImage> normImages = new ArrayList<>();
     /**
      * 会诊受邀方
      */
@@ -255,6 +264,32 @@ public class RemoteDetailActivity extends BaseActivity implements RemoteOrderSta
             View view = getLayoutInflater().inflate(R.layout.item_check_report, null);
             TextView textView = view.findViewById(R.id.tv_check_report_name);
             textView.setText(bean.getName());
+            //获取文件格式
+            String type = MimeUtils.getMime(FileUtils.getFileExtNoPoint(bean.getFileUrl()));
+            if (BaseData.BASE_IMAGE_TYPE.contains(type)) {
+                //如果为图片格式
+                view.setTag(true);
+                NormImage normImage = new NormImage();
+                normImage.setImageUrl(bean.getFileUrl());
+                normImages.add(normImage);
+            }
+            else {
+                view.setTag(false);
+            }
+            view.setOnClickListener(v -> {
+                boolean image = (boolean)v.getTag();
+                if (image) {
+                    //查看大图
+                    Intent intent = new Intent(RemoteDetailActivity.this, ImagePreviewActivity.class);
+                    intent.putExtra(ImagePreviewActivity.INTENT_URLS, normImages);
+//                    intent.putExtra(ImagePreviewActivity.INTENT_POSITION, position);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.anim_fade_in, R.anim.keep);
+                }
+                else {
+                    ToastUtil.toast(RemoteDetailActivity.this, R.string.txt_open_file_error);
+                }
+            });
             layoutAnnex.addView(view);
         }
     }

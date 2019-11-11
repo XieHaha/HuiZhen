@@ -32,6 +32,10 @@ public class TimeUtil {
      */
     private static final long TIME_TWO_DAYS = 2 * TIME_ONE_DAY;
     /**
+     * 一周
+     */
+    public static final long TIME_WEEK = 7 * TIME_ONE_DAY;
+    /**
      * 一年
      */
     private static final long TIME_ONE_YEAR = 365 * TIME_ONE_DAY;

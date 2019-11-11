@@ -35,6 +35,7 @@ import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.permission.Permission;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
+import com.yht.frame.utils.TimeUtil;
 import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.frame.widgets.menu.MenuItem;
 import com.yht.frame.widgets.menu.TopRightMenu;
@@ -218,13 +219,13 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
     }
 
     /**
-     * 是否需要提示通知权限   只显示一次
+     * 是否需要提示通知权限   没有通知权限（每周提醒一次）
      */
     private void initNotifyHint() {
-        int type = sharePreferenceUtil.getAlwaysInteger(CommonData.KEY_NOTIFICATION_CONTROL);
-        //表示用户未操作过
-        if (type != BASE_TWO) {
-            if (!NotifySettingUtils.hasNotify(Objects.requireNonNull(getActivity()))) {
+        if (!NotifySettingUtils.hasNotify(Objects.requireNonNull(getActivity()))) {
+            long date = sharePreferenceUtil.getAlwaysLong(CommonData.KEY_NOTIFICATION_CONTROL);
+            long diff = System.currentTimeMillis() - date - TimeUtil.TIME_WEEK;
+            if (date > 0 && diff > 0) {
                 startActivity(new Intent(getContext(), NotifyHintActivity.class));
                 getActivity().overridePendingTransition(R.anim.actionsheet_dialog_in, R.anim.keep);
             }

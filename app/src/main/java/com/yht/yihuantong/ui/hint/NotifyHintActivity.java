@@ -2,7 +2,6 @@ package com.yht.yihuantong.ui.hint;
 
 import android.view.View;
 
-import com.yht.frame.data.BaseData;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.yihuantong.R;
@@ -25,14 +24,13 @@ public class NotifyHintActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_open_notify_next:
-                //表示不再提示通知权限的提醒
-                sharePreferenceUtil.putAlwaysInteger(CommonData.KEY_NOTIFICATION_CONTROL, BaseData.BASE_TWO);
+                //表示7天内不再提示通知权限的提醒  时间戳存储
+                sharePreferenceUtil.putAlwaysLong(CommonData.KEY_NOTIFICATION_CONTROL, System.currentTimeMillis());
                 NotifySettingUtils.openNotifySetting(this);
                 finish();
                 break;
             case R.id.tv_notify_ignore:
-                //表示不再提示通知权限的提醒
-                sharePreferenceUtil.putAlwaysInteger(CommonData.KEY_NOTIFICATION_CONTROL, BaseData.BASE_TWO);
+                sharePreferenceUtil.putAlwaysLong(CommonData.KEY_NOTIFICATION_CONTROL, System.currentTimeMillis());
                 finish();
                 overridePendingTransition(R.anim.keep, R.anim.actionsheet_dialog_out);
                 break;

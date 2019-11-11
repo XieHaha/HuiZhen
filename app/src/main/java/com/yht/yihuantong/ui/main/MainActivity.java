@@ -255,8 +255,6 @@ public class MainActivity extends BaseActivity
 
     /**
      * 极光alias推送设置
-     *
-     * @param alias
      */
     private void setJPushAlias(String alias) {
         TagAliasOperatorHelper.TagAliasBean tagAliasBean = new TagAliasOperatorHelper.TagAliasBean();
@@ -592,10 +590,6 @@ public class MainActivity extends BaseActivity
     /**
      * 返回键 后台运行
      * 如果前一个activity未finish  会导致无法返回到后台
-     *
-     * @param keyCode
-     * @param event
-     * @return
      */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
