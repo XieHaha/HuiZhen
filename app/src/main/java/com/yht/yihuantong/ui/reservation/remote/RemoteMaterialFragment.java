@@ -360,8 +360,8 @@ public class RemoteMaterialFragment extends BaseFragment
                 normImage.setImageUrl(value);
                 imagePaths.add(normImage);
             }
-            autoGridView.updateImg(imagePaths, true);
         }
+        autoGridView.updateImg(imagePaths, true);
     }
 
     /**
