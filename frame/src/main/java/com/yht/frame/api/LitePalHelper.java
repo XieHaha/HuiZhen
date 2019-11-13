@@ -12,9 +12,12 @@ import java.util.List;
 /**
  * @author 顿顿
  * @date 19/7/5 14:27
- * @des
  */
 public class LitePalHelper<T extends LitePalSupport> {
+    /**
+     * 数据库
+     */
+    public static final String DATA_BASE_NAME = "yhtd";
     /**
      * 存储医院
      */

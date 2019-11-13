@@ -6,11 +6,8 @@ import android.content.Intent;
 
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
+import com.yht.frame.api.LitePalHelper;
 import com.yht.frame.data.CommonData;
-import com.yht.frame.data.bean.DoctorBean;
-import com.yht.frame.data.bean.PatientBean;
-import com.yht.frame.data.bean.SelectCheckTypeBean;
-import com.yht.frame.data.bean.SelectCheckTypeChildBean;
 import com.yht.frame.ui.AppManager;
 import com.yht.frame.utils.SharePreferenceUtil;
 import com.yht.yihuantong.ui.hint.HintLoginActivity;
@@ -53,10 +50,7 @@ public class LoginOutBroadcastReceiver extends BroadcastReceiver {
             //清除本地数据
             SharePreferenceUtil.clear(context);
             //清除数据库数据
-            LitePal.deleteAll(PatientBean.class);
-            LitePal.deleteAll(DoctorBean.class);
-            LitePal.deleteAll(SelectCheckTypeBean.class);
-            LitePal.deleteAll(SelectCheckTypeChildBean.class);
+            LitePal.deleteDatabase(LitePalHelper.DATA_BASE_NAME);
             //极光推送
             JPushInterface.deleteAlias(context, BASE_ONE);
             //删除环信会话列表
