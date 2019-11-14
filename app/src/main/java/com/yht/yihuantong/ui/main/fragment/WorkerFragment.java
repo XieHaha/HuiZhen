@@ -36,7 +36,6 @@ import com.yht.frame.permission.Permission;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.TimeUtil;
-import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.frame.widgets.menu.MenuItem;
 import com.yht.frame.widgets.menu.TopRightMenu;
@@ -124,8 +123,7 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
         if (isPrepared) {
             if (getUserVisibleHint()) {
                 fillData();
-            }
-            else if (viewFlipper.isFlipping()) {
+            } else if (viewFlipper.isFlipping()) {
                 viewFlipper.stopFlipping();
             }
         }
@@ -148,8 +146,7 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
     @Override
     public void initView(View view, @NonNull Bundle savedInstanceState) {
         super.initView(view, savedInstanceState);
-        statusBarFix.setLayoutParams(
-                new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getStateBarHeight(getActivity())));
+        statusBarFix.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getStateBarHeight(getActivity())));
         publicMainTitleScan.setVisibility(View.VISIBLE);
         iNotifyChangeListenerServer = ApiManager.getInstance().getServer();
         view.postOnAnimationDelayed(this::initNotifyHint, 2000);
@@ -161,23 +158,20 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
         publicMainTitle.setText(loginBean.getDoctorName());
         tvPersonalDepart.setText(loginBean.getDepartmentName());
         tvPersonalHospital.setText(loginBean.getHospitalName());
-        Glide.with(this)
-             .load(FileUrlUtil.addTokenToUrl(loginBean.getPhoto()))
-             .apply(GlideHelper.getOptions(BaseUtils.dp2px(Objects.requireNonNull(getContext()), 4)))
-             .into(ivPersonalImage);
+        Glide.with(this).load(FileUrlUtil.addTokenToUrl(loginBean.getPhoto())).apply(GlideHelper.getOptions(BaseUtils.dp2px(Objects.requireNonNull(getContext()), 4))).into(ivPersonalImage);
     }
 
     @Override
     public void initListener() {
         super.initListener();
-        iNotifyChangeListenerServer.registerDoctorTransferPatientListener(transferApply, RegisterType.REGISTER);
+        iNotifyChangeListenerServer.registerDoctorTransferPatientListener(transferApply,
+                RegisterType.REGISTER);
     }
 
     public void fillData() {
         if (BaseUtils.isNetworkAvailable(Objects.requireNonNull(getContext()))) {
             getBanner();
-        }
-        else {
+        } else {
             initFlipper();
         }
         getStudioOrderStatistics();
@@ -188,7 +182,8 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
      * 扫码后获取居民信息
      */
     private void getPatientByQrId(String qrId) {
-        RequestUtils.getPatientByQrId(getContext(), loginBean.getToken(), qrId, BaseData.BASE_ONE, this);
+        RequestUtils.getPatientByQrId(getContext(), loginBean.getToken(), qrId, BaseData.BASE_ONE
+                , this);
     }
 
     /**
@@ -266,8 +261,7 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
             if (bean.getBannerId() != -1) {
                 Intent intent = new Intent(getContext(), WebViewActivity.class);
                 intent.putExtra(CommonData.KEY_PUBLIC,
-                                ZycApplication.getInstance().getBaseUrl() + BaseNetConfig.BASE_BASIC_BANNER_URL +
-                                bean.getBannerId());
+                        ZycApplication.getInstance().getBaseUrl() + BaseNetConfig.BASE_BASIC_BANNER_URL + bean.getBannerId());
                 intent.putExtra(CommonData.KEY_TITLE, bean.getBannerRemark());
                 startActivity(intent);
             }
@@ -278,23 +272,13 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
      * 订单数量
      */
     private void initStatistics() {
-        tvInitiateCheckNum.setText(
-                orderNumStatisticsBean.getInitiateOrderCheck() <= BaseData.BASE_MEAASGE_DISPLAY_NUM ? String.valueOf(
-                        orderNumStatisticsBean.getInitiateOrderCheck()) : getString(R.string.txt_max_num));
-        tvInitiateTransferNum.setText(
-                orderNumStatisticsBean.getInitiateOrderTransfer() <= BaseData.BASE_MEAASGE_DISPLAY_NUM ? String.valueOf(
-                        orderNumStatisticsBean.getInitiateOrderTransfer()) : getString(R.string.txt_max_num));
-        tvInitiateRemoteNum.setText(
-                orderNumStatisticsBean.getInitiateRemoteCheck() <= BaseData.BASE_MEAASGE_DISPLAY_NUM ? String.valueOf(
-                        orderNumStatisticsBean.getInitiateRemoteCheck()) : getString(R.string.txt_max_num));
+        tvInitiateCheckNum.setText(orderNumStatisticsBean.getInitiateOrderCheck() <= BaseData.BASE_MEAASGE_DISPLAY_NUM ? String.valueOf(orderNumStatisticsBean.getInitiateOrderCheck()) : getString(R.string.txt_max_num));
+        tvInitiateTransferNum.setText(orderNumStatisticsBean.getInitiateOrderTransfer() <= BaseData.BASE_MEAASGE_DISPLAY_NUM ? String.valueOf(orderNumStatisticsBean.getInitiateOrderTransfer()) : getString(R.string.txt_max_num));
+        tvInitiateRemoteNum.setText(orderNumStatisticsBean.getInitiateRemoteCheck() <= BaseData.BASE_MEAASGE_DISPLAY_NUM ? String.valueOf(orderNumStatisticsBean.getInitiateRemoteCheck()) : getString(R.string.txt_max_num));
         if (orderNumStatisticsBean.getPendingOrderTransfer() != BaseData.BASE_ZERO) {
-            tvReceivingTransferNum.setText(
-                    orderNumStatisticsBean.getPendingOrderTransfer() <= BaseData.BASE_MEAASGE_DISPLAY_NUM
-                    ? String.valueOf(orderNumStatisticsBean.getPendingOrderTransfer())
-                    : getString(R.string.txt_max_num));
+            tvReceivingTransferNum.setText(orderNumStatisticsBean.getPendingOrderTransfer() <= BaseData.BASE_MEAASGE_DISPLAY_NUM ? String.valueOf(orderNumStatisticsBean.getPendingOrderTransfer()) : getString(R.string.txt_max_num));
             layoutReceivingTransferNum.setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             layoutReceivingTransferNum.setVisibility(View.GONE);
         }
     }
@@ -302,19 +286,18 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
     private void initMenu() {
         TopRightMenu mTopRightMenu = new TopRightMenu(getActivity());
         List<MenuItem> menuItems = new ArrayList<>();
-        menuItems.add(new MenuItem(R.mipmap.ic_patient_richscan, getString(R.string.txt_menu_patient)));
-        menuItems.add(new MenuItem(R.mipmap.ic_doctor_richscan, getString(R.string.txt_menu_doctor)));
+        menuItems.add(new MenuItem(R.mipmap.ic_patient_richscan,
+                getString(R.string.txt_menu_patient)));
+        menuItems.add(new MenuItem(R.mipmap.ic_doctor_richscan,
+                getString(R.string.txt_menu_doctor)));
         menuItems.add(new MenuItem(R.mipmap.ic_richscan, getString(R.string.title_camera_scan)));
-        mTopRightMenu.setHeight(BaseUtils.dp2px(getContext(), 200))
-                     .addMenuList(menuItems)
-                     .setOnMenuItemClickListener(this)
-                     .showAsDropDown(publicMainTitleScan, -BaseUtils.dp2px(getContext(), 124), 10);
+        mTopRightMenu.setHeight(BaseUtils.dp2px(getContext(), 200)).addMenuList(menuItems).setOnMenuItemClickListener(this).showAsDropDown(publicMainTitleScan, -BaseUtils.dp2px(getContext(), 124), 10);
     }
 
-    @OnClick({
-            R.id.public_main_title_scan, R.id.layout_personal_base, R.id.layout_check, R.id.layout_transfer,
-            R.id.layout_remote, R.id.view_flipper, R.id.layout_initiate_check, R.id.layout_initiate_transfer,
-            R.id.layout_initiate_remote, R.id.layout_transfer_apply, R.id.layout_health_manager })
+    @OnClick({R.id.public_main_title_scan, R.id.layout_personal_base, R.id.layout_check,
+            R.id.layout_transfer, R.id.layout_remote, R.id.view_flipper,
+            R.id.layout_initiate_check, R.id.layout_initiate_transfer,
+            R.id.layout_initiate_remote, R.id.layout_transfer_apply, R.id.layout_health_manager})
     public void onViewClicked(View view) {
         Intent intent;
         switch (view.getId()) {
@@ -328,8 +311,7 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
                 if (ZycApplication.getInstance().isServiceAble()) {
                     intent = new Intent(getContext(), ReservationServiceActivity.class);
                     startActivity(intent);
-                }
-                else {
+                } else {
                     intent = new Intent(getContext(), ReservationDisableActivity.class);
                     startActivity(intent);
                 }
@@ -338,8 +320,7 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
                 if (ZycApplication.getInstance().isTransferAble()) {
                     intent = new Intent(getContext(), ReservationTransferActivity.class);
                     startActivity(intent);
-                }
-                else {
+                } else {
                     intent = new Intent(getContext(), ReservationDisableActivity.class);
                     intent.putExtra(CommonData.KEY_CHECK_OR_TRANSFER, true);
                     startActivity(intent);
@@ -349,8 +330,7 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
                 if (ZycApplication.getInstance().isRemoteAble()) {
                     intent = new Intent(getContext(), ReservationRemoteActivity.class);
                     startActivity(intent);
-                }
-                else {
+                } else {
                     intent = new Intent(getContext(), ReservationDisableActivity.class);
                     intent.putExtra(CommonData.KEY_CHECK_OR_TRANSFER, true);
                     startActivity(intent);
@@ -362,27 +342,29 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
                 startActivity(intent);
                 break;
             case R.id.view_flipper:
-//                flipperDetail();
-                ToastUtil.toast(getContext(),"ceshi  v3.1.1");
+                flipperDetail();
                 break;
             case R.id.layout_initiate_check:
                 intent = new Intent(getContext(), ServiceHistoryActivity.class);
                 if (orderNumStatisticsBean != null) {
-                    intent.putExtra(CommonData.KEY_PUBLIC, orderNumStatisticsBean.getInitiateOrderCheck());
+                    intent.putExtra(CommonData.KEY_PUBLIC,
+                            orderNumStatisticsBean.getInitiateOrderCheck());
                 }
                 startActivity(intent);
                 break;
             case R.id.layout_initiate_transfer:
                 intent = new Intent(getContext(), TransferInitiateListActivity.class);
                 if (orderNumStatisticsBean != null) {
-                    intent.putExtra(CommonData.KEY_PUBLIC, orderNumStatisticsBean.getInitiateOrderTransfer());
+                    intent.putExtra(CommonData.KEY_PUBLIC,
+                            orderNumStatisticsBean.getInitiateOrderTransfer());
                 }
                 startActivity(intent);
                 break;
             case R.id.layout_initiate_remote:
                 intent = new Intent(getContext(), RemoteHistoryActivity.class);
                 if (orderNumStatisticsBean != null) {
-                    intent.putExtra(CommonData.KEY_PUBLIC, orderNumStatisticsBean.getInitiateRemoteCheck());
+                    intent.putExtra(CommonData.KEY_PUBLIC,
+                            orderNumStatisticsBean.getInitiateRemoteCheck());
                 }
                 startActivity(intent);
                 break;
@@ -414,7 +396,7 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
                 startActivity(intent);
                 break;
             case BASE_TWO:
-                permissionHelper.request(new String[] { Permission.CAMERA });
+                permissionHelper.request(new String[]{Permission.CAMERA});
                 break;
             default:
                 break;
@@ -427,15 +409,15 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
         Intent intent;
         switch (task) {
             case GET_STUDIO_ORDER_STATISTICS:
-                orderNumStatisticsBean = (OrderNumStatisticsBean)response.getData();
+                orderNumStatisticsBean = (OrderNumStatisticsBean) response.getData();
                 initStatistics();
                 break;
             case GET_BANNER:
-                bannerBeans = (List<BannerBean>)response.getData();
+                bannerBeans = (List<BannerBean>) response.getData();
                 initFlipper();
                 break;
             case GET_VALIDATE_HOSPITAL_LIST:
-                ReservationValidateBean bean = (ReservationValidateBean)response.getData();
+                ReservationValidateBean bean = (ReservationValidateBean) response.getData();
                 if (bean != null) {
                     ZycApplication.getInstance().setServiceAble(bean.isJc());
                     ZycApplication.getInstance().setTransferAble(bean.isZz());
@@ -443,7 +425,7 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
                 }
                 break;
             case GET_PATIENT_BY_QR_ID:
-                PatientBean patientBean = (PatientBean)response.getData();
+                PatientBean patientBean = (PatientBean) response.getData();
                 //添加成功  刷新居民列表
                 NotifyChangeListenerManager.getInstance().notifyPatientListChanged("");
                 //跳转到居民信息界面
@@ -453,15 +435,14 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
                 startActivity(intent);
                 break;
             case GET_DOCTOR_BY_QR_ID:
-                DoctorQrCodeBean doctorBean = (DoctorQrCodeBean)response.getData();
+                DoctorQrCodeBean doctorBean = (DoctorQrCodeBean) response.getData();
                 if (doctorBean.isFriend()) {
                     intent = new Intent(getContext(), ChatContainerActivity.class);
                     intent.putExtra(CommonData.KEY_CHAT_ID, doctorBean.getCode());
                     intent.putExtra(CommonData.KEY_CHAT_NAME, doctorBean.getName());
                     intent.putExtra(CommonData.KEY_DOCTOR_CHAT, true);
                     startActivity(intent);
-                }
-                else {
+                } else {
                     intent = new Intent(getContext(), DoctorInfoActivity.class);
                     intent.putExtra(CommonData.KEY_DOCTOR_QR_CODE_BEAN, doctorBean);
                     startActivity(intent);
@@ -495,8 +476,7 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
                 default:
                     return baseBasicRemoteUrl;
             }
-        }
-        else {
+        } else {
             return baseBasicRemoteUrl;
         }
     }
@@ -523,8 +503,7 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
                     intent = new Intent(getContext(), RemoteLoginActivity.class);
                     intent.putExtra(CommonData.KEY_PUBLIC_STRING, content);
                     startActivity(intent);
-                }
-                else {
+                } else {
                     //居民、医生二维码
                     Uri uri = Uri.parse(content);
                     if (uri != null && !uri.isOpaque()) {
@@ -534,21 +513,17 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
                             //1为医生  2为居民
                             if (BASE_STRING_ONE_TAG.equals(mode)) {
                                 getDoctorByQrId(value);
-                            }
-                            else {
+                            } else {
                                 getPatientByQrId(value);
                             }
-                        }
-                        else {
+                        } else {
                             qrError();
                         }
-                    }
-                    else {
+                    } else {
                         qrError();
                     }
                 }
-            }
-            else {
+            } else {
                 qrError();
             }
         }
@@ -562,7 +537,7 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
     @Override
     public void onNoPermissionNeeded(@NonNull Object permissionName) {
         if (permissionName instanceof String[]) {
-            if (isSamePermission(Permission.CAMERA, ((String[])permissionName)[0])) {
+            if (isSamePermission(Permission.CAMERA, ((String[]) permissionName)[0])) {
                 openScan();
             }
         }
@@ -571,6 +546,7 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
     @Override
     public void onDestroy() {
         super.onDestroy();
-        iNotifyChangeListenerServer.registerDoctorTransferPatientListener(transferApply, RegisterType.UNREGISTER);
+        iNotifyChangeListenerServer.registerDoctorTransferPatientListener(transferApply,
+                RegisterType.UNREGISTER);
     }
 }
