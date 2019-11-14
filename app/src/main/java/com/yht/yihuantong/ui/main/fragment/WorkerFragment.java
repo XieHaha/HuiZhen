@@ -36,6 +36,7 @@ import com.yht.frame.permission.Permission;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.TimeUtil;
+import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.frame.widgets.menu.MenuItem;
 import com.yht.frame.widgets.menu.TopRightMenu;
@@ -361,7 +362,8 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
                 startActivity(intent);
                 break;
             case R.id.view_flipper:
-                flipperDetail();
+//                flipperDetail();
+                ToastUtil.toast(getContext(),"ceshi  v3.1.1");
                 break;
             case R.id.layout_initiate_check:
                 intent = new Intent(getContext(), ServiceHistoryActivity.class);
