@@ -71,7 +71,7 @@
     </declare-styleable>
 
     <declare-styleable name="MultiLineEditText">
-        <attr name="maxLength" format="integer"/>
+        <attr name="maxLength" format="integer" />
     </declare-styleable>
 
     <declare-styleable name="ExpandTextView">
@@ -92,5 +92,12 @@
             <enum name="shrink" value="0" />
             <enum name="expand" value="1" />
         </attr>
+    </declare-styleable>
+
+    <declare-styleable name="RedStarTextView">
+        <attr name="android:text" />
+        <attr name="show" format="boolean" />
+        <attr name="starType" format="string|reference" />
+        <attr name="starColor" format="color|reference" />
     </declare-styleable>
 </resources>

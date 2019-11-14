@@ -86,10 +86,10 @@
 
         <activity
             android:name=".ui.hint.IntentParseActivity"
-            android:screenOrientation="portrait"
             android:label=""
-            android:windowSoftInputMode="adjustPan|stateHidden"
-            android:parentActivityName=".ui.main.MainActivity">
+            android:parentActivityName=".ui.main.MainActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.main.MainActivity" />
@@ -105,96 +105,96 @@
         </activity>
         <activity
             android:name=".ui.main.MainActivity"
-            android:screenOrientation="portrait"
             android:launchMode="singleTop"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".ui.login.LoginOptionsActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden"
-            android:launchMode="singleTop" />
+            android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".ui.login.LoginActivity"
-            android:screenOrientation="portrait"
             android:label=""
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".ui.auth.AuthDoctorActivity"
-            android:screenOrientation="portrait"
             android:label="@string/title_auth"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".ui.auth.SelectHospitalByAuthActivity"
-            android:screenOrientation="portrait"
             android:label="@string/title_select_hospital"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysVisible" />
         <activity
             android:name=".ui.auth.AddInfoActivity"
-            android:screenOrientation="portrait"
             android:label="@string/title_add_hospital"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysVisible" />
         <activity
             android:name=".ui.auth.SelectDepartActivity"
-            android:screenOrientation="portrait"
             android:label="@string/title_select_depart"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".ui.personal.PersonalActivity"
-            android:screenOrientation="portrait"
             android:label=""
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".ui.personal.SettingActivity"
-            android:screenOrientation="portrait"
             android:label="@string/title_setting"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".ui.personal.AboutActivity"
-            android:screenOrientation="portrait"
             android:label="@string/title_about"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".ui.personal.AboutIntroductionActivity"
-            android:screenOrientation="portrait"
             android:label="@string/title_about2"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".ui.currency.CurrencyActivity"
-            android:screenOrientation="portrait"
             android:label=""
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".ui.personal.PersonalInfoActivity"
-            android:screenOrientation="portrait"
             android:label="@string/title_personal_info"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".ui.currency.WithdrawDetailActivity"
-            android:screenOrientation="portrait"
             android:label="@string/title_withdraw_detail"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".ui.currency.IncomeDetailActivity"
-            android:screenOrientation="portrait"
             android:label="@string/title_income_detail"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".ui.login.AccountDisableActivity"
-            android:screenOrientation="portrait"
             android:label=""
-            android:windowSoftInputMode="adjustPan|stateHidden"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".ui.check.ServiceHistoryActivity"
-            android:screenOrientation="portrait"
             android:label="@string/txt_reserve_check"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".ui.check.ReservationServiceDetailActivity"
-            android:screenOrientation="portrait"
             android:label="@string/txt_reserve_check_detail"
-            android:windowSoftInputMode="adjustPan|stateHidden"
-            android:parentActivityName=".ui.main.MainActivity">
+            android:parentActivityName=".ui.main.MainActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden">
             <!--<meta-data-->
             <!--android:name="android.support.PARENT_ACTIVITY"-->
             <!--android:value=".ui.main.MainActivity" />-->
@@ -212,40 +212,40 @@
         </activity>
         <activity
             android:name=".ui.reservation.service.ReservationServiceActivity"
-            android:screenOrientation="portrait"
             android:label="@string/txt_reserve_check"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.reservation.transfer.ReservationTransferActivity"
-            android:screenOrientation="portrait"
             android:label="@string/txt_reserve_transfer"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.reservation.remote.ReservationRemoteActivity"
-            android:screenOrientation="portrait"
             android:label="@string/txt_remote_consultation"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.reservation.ReservationSuccessActivity"
-            android:screenOrientation="portrait"
             android:label="@string/txt_reserve_check"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.check.SelectCheckTypeActivity"
-            android:screenOrientation="portrait"
             android:label="@string/title_add_check"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.transfer.TransferInitiateListActivity"
-            android:screenOrientation="portrait"
             android:label="@string/title_add_transfer"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.transfer.TransferInitiateDetailActivity"
-            android:screenOrientation="portrait"
             android:label="@string/title_transfer_detail"
-            android:windowSoftInputMode="adjustResize|stateHidden"
-            android:parentActivityName=".ui.main.MainActivity">
+            android:parentActivityName=".ui.main.MainActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.main.MainActivity" />
@@ -263,20 +263,20 @@
         </activity>
         <activity
             android:name=".ui.transfer.SelectReceivingDoctorActivity"
-            android:screenOrientation="portrait"
             android:label="@string/txt_select_doctor"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.transfer.TransferReceiveListActivity"
-            android:screenOrientation="portrait"
             android:label="@string/title_transfer_apply"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.transfer.TransferReceiveDetailActivity"
-            android:screenOrientation="portrait"
             android:label="@string/title_receiving_transfer_apply"
-            android:windowSoftInputMode="adjustResize|stateHidden"
-            android:parentActivityName=".ui.main.MainActivity">
+            android:parentActivityName=".ui.main.MainActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden">
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -295,166 +295,170 @@
         </activity>
         <activity
             android:name=".ui.transfer.TransferEditActivity"
-            android:screenOrientation="portrait"
             android:label="@string/txt_visiting"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.transfer.SelectHospitalByTransferActivity"
-            android:screenOrientation="portrait"
             android:label="@string/title_select_hospital"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.transfer.TransferAgainActivity"
-            android:screenOrientation="portrait"
             android:label="@string/title_transfer_again"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.patient.ChatContainerActivity"
-            android:screenOrientation="portrait"
             android:label=""
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.WebViewActivity"
-            android:screenOrientation="portrait"
             android:label="@string/txt_about_protocol"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.x5.FileDisplayActivity"
-            android:screenOrientation="portrait"
             android:label=""
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.patient.TransferDetailActivity"
-            android:screenOrientation="portrait"
             android:label="@string/title_receiving_transfer_detail"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.remote.RemoteDetailActivity"
-            android:screenOrientation="portrait"
             android:label="@string/title_remote_detail"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.remote.RemoteLoginActivity"
-            android:screenOrientation="portrait"
             android:label=""
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.login.BindPhoneActivity"
-            android:screenOrientation="portrait"
             android:label=""
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.ImagePreviewActivity"
-            android:screenOrientation="portrait"
             android:label=""
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.reservation.ReservationDisableActivity"
-            android:screenOrientation="portrait"
             android:label=""
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.personal.PersonalNewActivity"
-            android:screenOrientation="portrait"
             android:label="@string/title_personal_center"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.hospital.CooperateHospitalListActivity"
-            android:screenOrientation="portrait"
             android:label="@string/title_cooperate_hospital"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.hospital.HospitalServiceListActivity"
-            android:screenOrientation="portrait"
             android:label=""
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.main.QrCodeActivity"
-            android:screenOrientation="portrait"
             android:label=""
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.doctor.DoctorInfoActivity"
-            android:screenOrientation="portrait"
             android:label="@string/title_doctor_info"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
 
         <activity
             android:name=".ui.hospital.HospitalDetailActivity"
-            android:screenOrientation="portrait"
             android:label=""
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.hospital.ServiceDetailActivity"
-            android:screenOrientation="portrait"
             android:label="@string/title_service_detail"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.patient.EditLabelActivity"
-            android:screenOrientation="portrait"
             android:label="@string/title_edit_patient_label"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.patient.LabelGroupActivity"
-            android:screenOrientation="portrait"
             android:label="@string/txt_patient_label"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.patient.LabelPatientActivity"
-            android:screenOrientation="portrait"
             android:label=""
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.patient.RecentPatientGroupActivity"
-            android:screenOrientation="portrait"
             android:label="@string/title_recent_patient"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.hospital.HealthManageActivity"
-            android:screenOrientation="portrait"
             android:label="@string/txt_service_package"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.hospital.ServicePackageDetailActivity"
-            android:screenOrientation="portrait"
             android:label="@string/title_service_detail"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.remote.RemoteHistoryActivity"
-            android:screenOrientation="portrait"
             android:label="@string/title_add_remote"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.reservation.PastHistoryActivity"
-            android:screenOrientation="portrait"
             android:label="@string/title_past_history"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.check.AddDiagnosisActivity"
-            android:screenOrientation="portrait"
             android:label="@string/title_add_diagnosis"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysVisible" />
         <activity
             android:name=".ui.check.DiagnosisDetailActivity"
-            android:screenOrientation="portrait"
             android:label="@string/title_add_diagnosis"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.reservation.time.ConsultationTimeActivity"
-            android:screenOrientation="portrait"
             android:label="@string/title_consultation_time"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.reservation.remote.SelectRemoteDepartActivity"
-            android:screenOrientation="portrait"
             android:label="@string/title_add_depart"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
-
+        <activity
+            android:name=".ui.auth.PhotoInstanceActivity"
+            android:label="@string/title_instance"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.remote.ErrorActivity"
-            android:screenOrientation="portrait"
             android:label=""
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.hint.HintLoginActivity"
@@ -463,14 +467,14 @@
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.hint.NotifyHintActivity"
-            android:screenOrientation="portrait"
             android:label=""
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
 
         <activity
             android:name=".ui.hint.UrlManagerActivity"
-            android:screenOrientation="portrait"
             android:label="URL管理"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
 
         <!--腾讯X5-->
@@ -533,15 +537,15 @@
         <!-- Rich push 核心功能 since 2.0.6-->
         <activity
             android:name="cn.jpush.android.ui.PopWinActivity"
-            android:theme="@style/MyDialogStyle"
-            android:exported="false"></activity>
+            android:exported="false"
+            android:theme="@style/MyDialogStyle"></activity>
 
         <!-- Required SDK核心功能-->
         <activity
             android:name="cn.jpush.android.ui.PushActivity"
             android:configChanges="orientation|keyboardHidden"
-            android:theme="@android:style/Theme.NoTitleBar"
-            android:exported="false">
+            android:exported="false"
+            android:theme="@android:style/Theme.NoTitleBar">
             <intent-filter>
                 <action android:name="cn.jpush.android.ui.PushActivity" />
 
@@ -566,10 +570,10 @@
 
         <!-- since 3.0.9 Required SDK 核心功能-->
         <provider
-            android:authorities="${applicationId}.DataProvider"
             android:name="cn.jpush.android.service.DataProvider"
-            android:process=":pushcore"
-            android:exported="false" />
+            android:authorities="${applicationId}.DataProvider"
+            android:exported="false"
+            android:process=":pushcore" />
 
         <!-- since 1.8.0 option 可选项。用于同一设备中不同应用的JPush服务相互拉起的功能。 -->
         <!-- 若不启用该功能可删除该组件，将不拉起其他应用也不能被其他应用拉起 -->
@@ -586,8 +590,8 @@
 
         <!-- since 3.1.0 Required SDK 核心功能-->
         <provider
-            android:authorities="${applicationId}.DownloadProvider"
             android:name="cn.jpush.android.service.DownloadProvider"
+            android:authorities="${applicationId}.DownloadProvider"
             android:exported="true" />
 
         <!-- Required SDK核心功能-->

@@ -43,6 +43,7 @@
     <string name="title_add_remote">已发起会诊</string>
     <string name="title_consultation_time">选择会诊时间</string>
     <string name="title_add_depart">添加医院-科室</string>
+    <string name="title_instance">证书照片实例</string>
 
     <!--公用-->
     <string name="txt_app_name">会珍</string>
@@ -234,6 +235,7 @@
     <string name="txt_hospital_hint">请选择医院</string>
     <string name="txt_depart_hint">请选择科室</string>
     <string name="txt_title_hint">请选择职称</string>
+    <string name="txt_instance_hint">医师执业证书正确示例</string>
 
     <!--个人中心-->
     <string name="txt_star">****</string>

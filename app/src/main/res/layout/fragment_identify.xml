@@ -3,39 +3,41 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/color_ffffff"
     android:orientation="vertical"
-    android:paddingTop="19dp"
-    android:paddingStart="20dp"
-    android:background="@color/color_ffffff">
+    android:paddingEnd="0dp">
 
     <RelativeLayout
         android:id="@+id/layout_name"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingStart="7dp"
+        android:paddingTop="19dp"
+        android:paddingEnd="0dp">
 
-        <TextView
+        <com.yht.frame.widgets.textview.RedStarTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/text_16"
-            android:textColor="@color/color_373d4d"
             android:text="@string/txt_patient_name"
+            android:textColor="@color/color_373d4d"
+            android:textSize="@dimen/text_16"
             android:textStyle="bold" />
 
         <com.yht.frame.widgets.edittext.SuperEditText
             android:id="@+id/et_patient_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
             android:layout_marginStart="45dp"
             android:layout_marginEnd="20dp"
-            android:hint="@string/txt_patient_name_hint"
-            android:textSize="@dimen/text_16"
-            android:textColorHint="@color/color_a1a8b3"
-            android:textColor="@color/color_373d4d"
-            android:imeOptions="actionNext"
-            android:singleLine="true"
             android:background="@null"
             android:gravity="end"
-            android:layout_alignParentEnd="true"
+            android:hint="@string/txt_patient_name_hint"
+            android:imeOptions="actionNext"
+            android:singleLine="true"
+            android:textColor="@color/color_373d4d"
+            android:textColorHint="@color/color_a1a8b3"
+            android:textSize="@dimen/text_16"
             app:hide_left_icon="true" />
 
         <View
@@ -53,34 +55,36 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/layout_name"
-        android:layout_marginTop="19dp">
+        android:paddingStart="7dp"
+        android:paddingTop="19dp"
+        android:paddingEnd="0dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/text_16"
-            android:textColor="@color/color_373d4d"
             android:text="@string/txt_id_card_hint"
+            android:textColor="@color/color_373d4d"
+            android:textSize="@dimen/text_16"
             android:textStyle="bold" />
 
         <com.yht.frame.widgets.edittext.SuperEditText
             android:id="@+id/et_patient_id_card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
             android:layout_marginStart="35dp"
             android:layout_marginEnd="20dp"
+            android:background="@null"
+            android:digits="0123456789xX"
+            android:gravity="end"
             android:hint="@string/txt_patient_id_card_hint"
-            android:textSize="@dimen/text_16"
-            android:textColorHint="@color/color_a1a8b3"
-            android:textColor="@color/color_373d4d"
             android:imeOptions="actionDone"
             android:inputType="number|textEmailAddress"
-            android:digits="0123456789xX"
-            android:singleLine="true"
-            android:background="@null"
             android:maxLength="20"
-            android:gravity="end"
-            android:layout_alignParentEnd="true"
+            android:singleLine="true"
+            android:textColor="@color/color_373d4d"
+            android:textColorHint="@color/color_a1a8b3"
+            android:textSize="@dimen/text_16"
             app:hide_left_icon="true" />
 
         <View
@@ -95,8 +99,9 @@
     <RelativeLayout
         android:id="@+id/layout_scan"
         android:layout_width="match_parent"
-        android:layout_below="@id/layout_id_card"
         android:layout_height="36dp"
+        android:layout_below="@id/layout_id_card"
+        android:layout_marginStart="12dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="12dp"
         android:background="@drawable/corner4_f8f9fa_bg">
@@ -104,37 +109,37 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/txt_scan_patient_hint"
-            android:gravity="center"
             android:layout_centerInParent="true"
-            android:textSize="@dimen/text_13"
             android:drawableStart="@mipmap/ic_scan_blue"
             android:drawablePadding="8dp"
-            android:textColor="@color/color_6a6f80" />
+            android:gravity="center"
+            android:text="@string/txt_scan_patient_hint"
+            android:textColor="@color/color_6a6f80"
+            android:textSize="@dimen/text_13" />
     </RelativeLayout>
 
 
     <TextView
         android:id="@+id/tv_identify_next"
         android:layout_width="match_parent"
-        android:layout_marginEnd="31dp"
-        android:layout_marginStart="19dp"
         android:layout_height="42dp"
-        android:layout_marginTop="20dp"
         android:layout_below="@id/layout_scan"
-        android:background="@drawable/selector_public_next"
-        android:text="@string/txt_next"
+        android:layout_marginStart="19dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="31dp"
+        android:background="@drawable/corner28_1491fc_bg"
         android:gravity="center"
-        android:textSize="@dimen/text_16"
-        android:textColor="@color/color_ffffff" />
+        android:text="@string/txt_next"
+        android:textColor="@color/color_ffffff"
+        android:textSize="@dimen/text_16" />
 
     <ListView
         android:id="@+id/list_view"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_below="@id/layout_name"
-        android:divider="@null"
         android:background="@color/color_ffffff"
-        android:visibility="gone"
-        android:layout_height="match_parent" />
+        android:divider="@null"
+        android:visibility="gone" />
 
 </RelativeLayout>

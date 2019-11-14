@@ -6,6 +6,7 @@ import android.text.Selection;
 import android.text.TextWatcher;
 import android.widget.EditText;
 
+import com.yht.yihuantong.ui.reservation.remote.RemoteIdentifyFragment;
 import com.yht.yihuantong.ui.reservation.service.ServiceIdentifyFragment;
 import com.yht.yihuantong.ui.reservation.transfer.TransferIdentifyFragment;
 
@@ -66,10 +67,13 @@ public class BankCardTextWatcher implements TextWatcher {
     public void onTextChanged(CharSequence s, int start, int before, int count) {
         if (fragment != null) {
             if (fragment instanceof ServiceIdentifyFragment) {
-                ((ServiceIdentifyFragment)fragment).onCardTextChanged(s, start, before, count);
+                ((ServiceIdentifyFragment) fragment).onCardTextChanged(s, start, before, count);
             }
             if (fragment instanceof TransferIdentifyFragment) {
-                ((TransferIdentifyFragment)fragment).onCardTextChanged(s, start, before, count);
+                ((TransferIdentifyFragment) fragment).onCardTextChanged(s, start, before, count);
+            }
+            if (fragment instanceof RemoteIdentifyFragment) {
+                ((RemoteIdentifyFragment) fragment).onCardTextChanged(s, start, before, count);
             }
         }
         int length = s.length();
@@ -90,8 +94,7 @@ public class BankCardTextWatcher implements TextWatcher {
             while (index < buffer.length()) {
                 if (buffer.charAt(index) == ' ') {
                     buffer.deleteCharAt(index);
-                }
-                else {
+                } else {
                     index++;
                 }
             }
@@ -114,8 +117,7 @@ public class BankCardTextWatcher implements TextWatcher {
             String str = buffer.toString();
             if (selectionIndex > str.length()) {
                 selectionIndex = str.length();
-            }
-            else if (selectionIndex < 0) {
+            } else if (selectionIndex < 0) {
                 selectionIndex = 0;
             }
             editText.setText(str);

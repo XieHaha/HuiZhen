@@ -59,8 +59,6 @@ public class ServiceIdentifyFragment extends BaseFragment
     SuperEditText etPatientName;
     @BindView(R.id.et_patient_id_card)
     SuperEditText etPatientIdCard;
-    @BindView(R.id.tv_identify_next)
-    TextView tvIdentifyNext;
     @BindView(R.id.list_view)
     ListView listView;
     private String name, idCard;
@@ -107,18 +105,12 @@ public class ServiceIdentifyFragment extends BaseFragment
     public void initListener() {
         super.initListener();
         etPatientIdCard.setOnFocusChangeListener(this);
-        etPatientName.setFilters(new InputFilter[] { emojiFilter });
+        etPatientName.setFilters(new InputFilter[]{emojiFilter});
         etPatientName.setOnEditorActionListener(this);
         etPatientName.addTextChangedListener(new AbstractTextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 name = s.toString().trim().trim();
-                if (!TextUtils.isEmpty(idCard) && !TextUtils.isEmpty(s)) {
-                    tvIdentifyNext.setSelected(true);
-                }
-                else {
-                    tvIdentifyNext.setSelected(false);
-                }
                 int mTextMaxlenght = 0;
                 Editable editable = etPatientName.getText();
                 //得到最初字段的长度大小,用于光标位置的判断
@@ -132,8 +124,7 @@ public class ServiceIdentifyFragment extends BaseFragment
                     //如果不在这个范围比如是汉字的话就是两个字符
                     if (charAt >= 32 && charAt <= 122) {
                         mTextMaxlenght++;
-                    }
-                    else {
+                    } else {
                         mTextMaxlenght += 2;
                     }
                     // 当最大字符大于10时,进行字段的截取,并进行提示字段的大小
@@ -154,11 +145,9 @@ public class ServiceIdentifyFragment extends BaseFragment
                 //扫码不做处理
                 if (!scanResult) {
                     searchPatient(etPatientName.getText().toString().trim());
-                }
-                else {
+                } else {
                     scanResult = false;
                 }
-                initNextButton();
             }
         });
     }
@@ -188,8 +177,7 @@ public class ServiceIdentifyFragment extends BaseFragment
         if (!TextUtils.isEmpty(tag)) {
             searchPatients = LitePalHelper.findPatients(tag);
             initSearchList(searchPatients, tag);
-        }
-        else {
+        } else {
             initSearchList(null, "");
         }
     }
@@ -199,32 +187,28 @@ public class ServiceIdentifyFragment extends BaseFragment
             listView.setVisibility(View.VISIBLE);
             searchPatientAdapter.setSearchKey(tag);
             searchPatientAdapter.setList(list);
-        }
-        else {
+        } else {
             searchPatientAdapter.setSearchKey(tag);
             listView.setVisibility(View.GONE);
         }
     }
 
-    @OnClick({ R.id.tv_identify_next, R.id.layout_scan })
+    @OnClick({R.id.tv_identify_next, R.id.layout_scan})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_identify_next:
-                if (tvIdentifyNext.isSelected()) {
-                    //已经校验过  不在校验
-                    if (reserveCheckBean != null && idCard.equals(reserveCheckBean.getIdCardNo()) &&
+                //已经校验过  不在校验
+                if (reserveCheckBean != null && idCard.equals(reserveCheckBean.getIdCardNo()) &&
                         name.equals(reserveCheckBean.getPatientName())) {
-                        if (checkListener != null) {
-                            checkListener.onCheckStepOne(reserveCheckBean);
-                        }
+                    if (checkListener != null) {
+                        checkListener.onCheckStepOne(reserveCheckBean);
                     }
-                    else {
-                        verifyPatient();
-                    }
+                } else {
+                    verifyPatient();
                 }
                 break;
             case R.id.layout_scan:
-                permissionHelper.request(new String[] { Permission.CAMERA });
+                permissionHelper.request(new String[]{Permission.CAMERA});
                 break;
             default:
                 break;
@@ -238,7 +222,6 @@ public class ServiceIdentifyFragment extends BaseFragment
             if (!TextUtils.isEmpty(idCard) && !BaseUtils.isCardNum(idCard)) {
                 ToastUtil.toast(getContext(), R.string.toast_id_card_error);
             }
-            initNextButton();
         }
     }
 
@@ -255,15 +238,11 @@ public class ServiceIdentifyFragment extends BaseFragment
      */
     public void onCardTextChanged(CharSequence s, int start, int before, int count) {
         idCard = s.toString().replace(" ", "");
-        initNextButton();
     }
 
     private void initNextButton() {
         if (!TextUtils.isEmpty(name) && BaseUtils.isCardNum(idCard)) {
-            tvIdentifyNext.setSelected(true);
-        }
-        else {
-            tvIdentifyNext.setSelected(false);
+        } else {
         }
     }
 
@@ -274,7 +253,6 @@ public class ServiceIdentifyFragment extends BaseFragment
         etPatientName.setText(name = bean.getName());
         etPatientName.setSelection(name.length());
         etPatientIdCard.setText(idCard = bean.getIdCard());
-        initNextButton();
     }
 
     /**
@@ -298,7 +276,7 @@ public class ServiceIdentifyFragment extends BaseFragment
         super.onResponseSuccess(task, response);
         switch (task) {
             case VERIFY_PATIENT:
-                patientBean = (PatientBean)response.getData();
+                patientBean = (PatientBean) response.getData();
                 //新用户
                 if (patientBean == null) {
                     if (checkListener != null) {
@@ -307,12 +285,10 @@ public class ServiceIdentifyFragment extends BaseFragment
                         reserveCheckBean.setIdCardNo(idCard);
                         checkListener.onCheckStepOne(reserveCheckBean);
                     }
-                }
-                else {
+                } else {
                     if (!name.equals(patientBean.getName())) {
                         ToastUtil.toast(getContext(), R.string.txt_identity_information_error);
-                    }
-                    else {
+                    } else {
                         if (checkListener != null) {
                             checkData();
                         }
@@ -320,7 +296,7 @@ public class ServiceIdentifyFragment extends BaseFragment
                 }
                 break;
             case GET_PATIENT_BY_QR_ID:
-                PatientBean patientBean = (PatientBean)response.getData();
+                PatientBean patientBean = (PatientBean) response.getData();
                 if (patientBean != null) {
                     scanResult = true;
                     name = patientBean.getName();
@@ -329,7 +305,6 @@ public class ServiceIdentifyFragment extends BaseFragment
                     etPatientName.setSelection(name.length());
                     etPatientIdCard.setText(idCard);
                     etPatientIdCard.setSelection(etPatientIdCard.getText().toString().length());
-                    initNextButton();
                 }
                 break;
             default:
@@ -352,16 +327,13 @@ public class ServiceIdentifyFragment extends BaseFragment
                     String value = uri.getQueryParameter("p");
                     if (!TextUtils.isEmpty(value) && BASE_STRING_TWO_TAG.equals(mode)) {
                         getPatientByQrId(value);
-                    }
-                    else {
+                    } else {
                         qrError();
                     }
-                }
-                else {
+                } else {
                     qrError();
                 }
-            }
-            else {
+            } else {
                 qrError();
             }
         }

@@ -35,6 +35,7 @@ import com.yht.frame.widgets.textview.JustifiedTextView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.ImagePreviewActivity;
 import com.yht.yihuantong.ui.adapter.AddImageAdapter;
+import com.yht.yihuantong.ui.auth.PhotoInstanceActivity;
 import com.yht.yihuantong.ui.auth.listener.OnAuthStepListener;
 import com.yht.yihuantong.ui.dialog.listener.OnMediaItemClickListener;
 import com.yht.yihuantong.utils.MatisseUtils;
@@ -256,6 +257,7 @@ public class AuthLicenseFragment extends BaseFragment
                 }
                 break;
             case R.id.tv_instance:
+                startActivity(new Intent(getContext(), PhotoInstanceActivity.class));
                 break;
             default:
                 break;
