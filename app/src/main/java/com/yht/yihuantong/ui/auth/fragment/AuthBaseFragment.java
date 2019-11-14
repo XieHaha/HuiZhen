@@ -2,14 +2,9 @@ package com.yht.yihuantong.ui.auth.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.v4.content.FileProvider;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.Selection;
@@ -42,7 +37,6 @@ import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.frame.widgets.edittext.AbstractTextWatcher;
 import com.yht.frame.widgets.edittext.SuperEditText;
 import com.yht.yihuantong.R;
-import com.yht.yihuantong.ZycApplication;
 import com.yht.yihuantong.ui.auth.SelectDepartActivity;
 import com.yht.yihuantong.ui.auth.SelectHospitalByAuthActivity;
 import com.yht.yihuantong.ui.auth.listener.OnAuthStepListener;
@@ -67,8 +61,8 @@ import butterknife.OnClick;
  * @date 19/5/17 14:55
  * @description 认证基础信息
  */
-public class AuthBaseFragment extends BaseFragment
-        implements OnMediaItemClickListener, OnTitleItemClickListener, RadioGroup.OnCheckedChangeListener {
+public class AuthBaseFragment extends BaseFragment implements OnMediaItemClickListener,
+        OnTitleItemClickListener, RadioGroup.OnCheckedChangeListener {
     @BindView(R.id.layout_upload_img)
     RelativeLayout layoutUploadImg;
     @BindView(R.id.et_auth_base_name)
@@ -131,12 +125,12 @@ public class AuthBaseFragment extends BaseFragment
     @Override
     public void initView(View view, @NonNull Bundle savedInstanceState) {
         super.initView(view, savedInstanceState);
+        tvAuthBaseNext.setSelected(true);
         getDoctorTitle();
         //不为空代表已经提交过认证信息
         if (doctorAuthBean != null) {
             initPage();
-        }
-        else {
+        } else {
             doctorAuthBean = new DoctorAuthBean();
         }
     }
@@ -144,14 +138,13 @@ public class AuthBaseFragment extends BaseFragment
     @Override
     public void initListener() {
         super.initListener();
-        etAuthBaseName.setFilters(new InputFilter[] { emojiFilter });
+        etAuthBaseName.setFilters(new InputFilter[]{emojiFilter});
         etAuthBaseName.addTextChangedListener(new AbstractTextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 super.onTextChanged(s, start, before, count);
                 String name = s.toString().trim();
                 doctorAuthBean.setDoctorName(name);
-                initNextButton();
                 int mTextMaxlenght = 0;
                 Editable editable = etAuthBaseName.getText();
                 //得到最初字段的长度大小,用于光标位置的判断
@@ -165,8 +158,7 @@ public class AuthBaseFragment extends BaseFragment
                     //如果不在这个范围比如是汉字的话就是两个字符
                     if (charAt >= 32 && charAt <= 122) {
                         mTextMaxlenght++;
-                    }
-                    else {
+                    } else {
                         mTextMaxlenght += 2;
                     }
                     // 当最大字符大于10时,进行字段的截取,并进行提示字段的大小
@@ -203,22 +195,15 @@ public class AuthBaseFragment extends BaseFragment
         if (doctorAuthBean.getDoctorSex() != BaseData.BASE_ZERO) {
             if (doctorAuthBean.getDoctorSex() == BaseData.BASE_MALE) {
                 rbMale.setChecked(true);
-            }
-            else {
+            } else {
                 rbFemale.setChecked(true);
             }
         }
-        Glide.with(this)
-             .load(FileUrlUtil.addTokenToUrl(doctorAuthBean.getDoctorPhoto()))
-             .apply(GlideHelper.getOptions(BaseUtils.dp2px(getContext(), 4)))
-             .into(ivAuthBaseImg);
-        initNextButton();
+        Glide.with(this).load(FileUrlUtil.addTokenToUrl(doctorAuthBean.getDoctorPhoto())).apply(GlideHelper.getOptions(BaseUtils.dp2px(getContext(), 4))).into(ivAuthBaseImg);
     }
 
     /**
      * 上传图片
-     *
-     * @param file
      */
     private void uploadImage(File file) {
         RequestUtils.uploadImg(getContext(), loginBean.getToken(), file, this);
@@ -228,7 +213,8 @@ public class AuthBaseFragment extends BaseFragment
      * 获取职称
      */
     private void getDoctorTitle() {
-        RequestUtils.getDataByType(getContext(), loginBean.getToken(), DataDictionary.DATA_JOB_TITLE, this);
+        RequestUtils.getDataByType(getContext(), loginBean.getToken(),
+                DataDictionary.DATA_JOB_TITLE, this);
     }
 
     /**
@@ -239,8 +225,7 @@ public class AuthBaseFragment extends BaseFragment
             doctorAuthBean.setLastApplyDepartmentId(curDepart.getDepartmentId());
             tvAuthBaseDepart.setText(curDepart.getDepartmentName());
             tvAuthBaseDepart.setSelected(true);
-        }
-        else {
+        } else {
             doctorAuthBean.setLastApplyDepartmentId(0);
             tvAuthBaseDepart.setText(R.string.txt_select_hint);
             tvAuthBaseDepart.setSelected(false);
@@ -250,16 +235,28 @@ public class AuthBaseFragment extends BaseFragment
     /**
      * 判断
      */
-    private void initNextButton() {
-        if (TextUtils.isEmpty(doctorAuthBean.getDoctorPhoto()) || TextUtils.isEmpty(doctorAuthBean.getDoctorName()) ||
-            TextUtils.isEmpty(doctorAuthBean.getLastApplyHospitalName()) ||
-            TextUtils.isEmpty(doctorAuthBean.getJobTitle()) || doctorAuthBean.getDoctorSex() == 0 ||
-            doctorAuthBean.getLastApplyDepartmentId() == 0) {
-            tvAuthBaseNext.setSelected(false);
+    private boolean initNextButton() {
+        if (TextUtils.isEmpty(doctorAuthBean.getDoctorPhoto())) {
+            ToastUtil.toast(getContext(), R.string.txt_header_image_hint);
+            return false;
         }
-        else {
-            tvAuthBaseNext.setSelected(true);
+        if (TextUtils.isEmpty(doctorAuthBean.getDoctorName())) {
+            ToastUtil.toast(getContext(), R.string.txt_input_name_hint);
+            return false;
         }
+        if (TextUtils.isEmpty(doctorAuthBean.getLastApplyHospitalName())) {
+            ToastUtil.toast(getContext(), R.string.txt_hospital_hint);
+            return false;
+        }
+        if (doctorAuthBean.getLastApplyDepartmentId() == 0) {
+            ToastUtil.toast(getContext(), R.string.txt_depart_hint);
+            return false;
+        }
+        if (TextUtils.isEmpty(doctorAuthBean.getJobTitle())) {
+            ToastUtil.toast(getContext(), R.string.txt_title_hint);
+            return false;
+        }
+        return true;
     }
 
     public void setDoctorAuthBean(DoctorAuthBean doctorAuthBean) {
@@ -270,22 +267,20 @@ public class AuthBaseFragment extends BaseFragment
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         if (checkedId == rbMale.getId()) {
             doctorAuthBean.setDoctorSex(BaseData.BASE_MALE);
-        }
-        else {
+        } else {
             doctorAuthBean.setDoctorSex(BaseData.BASE_FEMALE);
         }
-        initNextButton();
     }
 
-    @OnClick({
-            R.id.layout_upload_img, R.id.layout_base_hospital, R.id.layout_base_depart, R.id.layout_base_title,
-            R.id.tv_auth_base_next })
+    @OnClick({R.id.layout_upload_img, R.id.layout_base_hospital, R.id.layout_base_depart,
+            R.id.layout_base_title, R.id.tv_auth_base_next})
     public void onViewClicked(View view) {
         Intent intent;
         switch (view.getId()) {
             case R.id.layout_upload_img:
-                //                new DownDialog(getContext()).setData(data).setOnMediaItemClickListener(this).show();
-                permissionHelper.request(new String[] { Permission.CAMERA, Permission.STORAGE_WRITE });
+                //                new DownDialog(getContext()).setData(data)
+                //                .setOnMediaItemClickListener(this).show();
+                permissionHelper.request(new String[]{Permission.CAMERA, Permission.STORAGE_WRITE});
                 break;
             case R.id.layout_base_hospital:
                 intent = new Intent(getContext(), SelectHospitalByAuthActivity.class);
@@ -294,23 +289,20 @@ public class AuthBaseFragment extends BaseFragment
             case R.id.layout_base_depart:
                 if (!TextUtils.isEmpty(doctorAuthBean.getLastApplyHospitalName())) {
                     intent = new Intent(getContext(), SelectDepartActivity.class);
-                    intent.putExtra(CommonData.KEY_HOSPITAL_CODE, doctorAuthBean.getLastApplyHospitalCode());
+                    intent.putExtra(CommonData.KEY_HOSPITAL_CODE,
+                            doctorAuthBean.getLastApplyHospitalCode());
                     intent.putExtra(CommonData.KEY_DEPART_POSITION, positionOne);
                     intent.putExtra(CommonData.KEY_DEPART_CHILD_POSITION, positionTwo);
                     startActivityForResult(intent, REQUEST_CODE_DEPART);
-                }
-                else {
+                } else {
                     ToastUtil.toast(getContext(), R.string.txt_select_hospital);
                 }
                 break;
             case R.id.layout_base_title:
-                new DownDialog(getContext()).setData(titleData)
-                                            .setCurPosition(titleData.indexOf(doctorAuthBean.getJobTitle()))
-                                            .setOnTitleItemClickListener(this)
-                                            .show();
+                new DownDialog(getContext()).setData(titleData).setCurPosition(titleData.indexOf(doctorAuthBean.getJobTitle())).setOnTitleItemClickListener(this).show();
                 break;
             case R.id.tv_auth_base_next:
-                if (tvAuthBaseNext.isSelected() && onAuthStepListener != null) {
+                if (initNextButton() && onAuthStepListener != null) {
                     onAuthStepListener.onAuthOne(doctorAuthBean);
                 }
                 break;
@@ -321,17 +313,15 @@ public class AuthBaseFragment extends BaseFragment
 
     /**
      * 相机 相册回调
-     *
-     * @param position
      */
     @Override
     public void onMediaItemClick(int position) {
         switch (position) {
             case 0:
-                permissionHelper.request(new String[] { Permission.CAMERA, Permission.STORAGE_WRITE });
+                permissionHelper.request(new String[]{Permission.CAMERA, Permission.STORAGE_WRITE});
                 break;
             case 1:
-                permissionHelper.request(new String[] { Permission.STORAGE_WRITE });
+                permissionHelper.request(new String[]{Permission.STORAGE_WRITE});
                 break;
             default:
                 break;
@@ -340,15 +330,12 @@ public class AuthBaseFragment extends BaseFragment
 
     /**
      * 职称
-     *
-     * @param position
      */
     @Override
     public void onTitleItemClick(int position) {
         doctorAuthBean.setJobTitle(titleData.get(position));
         tvAuthBaseTitle.setText(titleData.get(position));
         tvAuthBaseTitle.setSelected(true);
-        initNextButton();
     }
 
     @Override
@@ -358,16 +345,13 @@ public class AuthBaseFragment extends BaseFragment
             case UPLOAD_FILE:
                 //图片上传成功
                 if (task == Tasks.UPLOAD_FILE) {
-                    Glide.with(this)
-                         .load(cutFileUri)
-                         .apply(GlideHelper.getOptions(BaseUtils.dp2px(getContext(), 4)))
-                         .into(ivAuthBaseImg);
-                    doctorAuthBean.setDoctorPhoto((String)response.getData());
-                    initNextButton();
+                    Glide.with(this).load(cutFileUri).apply(GlideHelper.getOptions(BaseUtils.dp2px(getContext(), 4))).into(ivAuthBaseImg);
+                    doctorAuthBean.setDoctorPhoto((String) response.getData());
                 }
                 break;
             case DATA_JOB_TITLE:
-                ArrayList<HospitalTitleBean> list = (ArrayList<HospitalTitleBean>)response.getData();
+                ArrayList<HospitalTitleBean> list =
+                        (ArrayList<HospitalTitleBean>) response.getData();
                 titleData = new ArrayList<>();
                 if (list != null && list.size() > 0) {
                     for (HospitalTitleBean bean : list) {
@@ -385,40 +369,6 @@ public class AuthBaseFragment extends BaseFragment
      */
     private void openPhoto() {
         MatisseUtils.open(this, true, 1);
-    }
-
-    /**
-     * 打开相机
-     */
-    private void openCamera() {
-        cameraTempFile = new File(DirHelper.getPathImage(), System.currentTimeMillis() + ".jpg");
-        if (cameraTempFile != null) {
-            mCurrentPhotoPath = cameraTempFile.getAbsolutePath();
-        }
-        //选择拍照
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // 指定调用相机拍照后照片的储存路径
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            mCurrentPhotoUri = FileProvider.getUriForFile(getContext(), ZycApplication.getInstance().getPackageName() +
-                                                                        ".fileprovider", cameraTempFile);
-        }
-        else {
-            mCurrentPhotoUri = Uri.fromFile(cameraTempFile);
-        }
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            List<ResolveInfo> resInfoList = getContext().getPackageManager()
-                                                        .queryIntentActivities(intent,
-                                                                               PackageManager.MATCH_DEFAULT_ONLY);
-            for (ResolveInfo resolveInfo : resInfoList) {
-                String packageName = resolveInfo.activityInfo.packageName;
-                getContext().grantUriPermission(packageName, mCurrentPhotoUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION |
-                                                                               Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            }
-        }
-        // 指定调用相机拍照后照片的储存路径
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, mCurrentPhotoUri);
-        startActivityForResult(intent, RC_PICK_CAMERA);
     }
 
     /**
@@ -456,22 +406,22 @@ public class AuthBaseFragment extends BaseFragment
                 break;
             //医院选择
             case REQUEST_CODE_HOSPITAL:
-                HospitalBean bean = (HospitalBean)data.getSerializableExtra(CommonData.KEY_HOSPITAL_BEAN);
+                HospitalBean bean =
+                        (HospitalBean) data.getSerializableExtra(CommonData.KEY_HOSPITAL_BEAN);
                 doctorAuthBean.setLastApplyHospitalName(bean.getHospitalName());
                 doctorAuthBean.setLastApplyHospitalCode(bean.getHospitalCode());
                 tvAuthBaseHospital.setText(bean.getHospitalName());
                 tvAuthBaseHospital.setSelected(true);
                 //重新选择医院后  需初始化科室
                 initDepartData(false);
-                initNextButton();
                 break;
             //科室选择
             case REQUEST_CODE_DEPART:
-                curDepart = (HospitalDepartChildBean)data.getSerializableExtra(CommonData.KEY_DEPART_BEAN);
+                curDepart =
+                        (HospitalDepartChildBean) data.getSerializableExtra(CommonData.KEY_DEPART_BEAN);
                 positionOne = data.getIntExtra(CommonData.KEY_DEPART_POSITION, -1);
                 positionTwo = data.getIntExtra(CommonData.KEY_DEPART_CHILD_POSITION, -1);
                 initDepartData(true);
-                initNextButton();
                 break;
             default:
                 break;
@@ -482,22 +432,23 @@ public class AuthBaseFragment extends BaseFragment
     @Override
     public void onNoPermissionNeeded(@NonNull Object permissionName) {
         if (permissionName instanceof String[]) {
-            if (isSamePermission(Permission.STORAGE_WRITE, ((String[])permissionName)[0])) {
+            if (isSamePermission(Permission.STORAGE_WRITE, ((String[]) permissionName)[0])) {
                 openPhoto();
-            }
-            else if (isSamePermission(Permission.CAMERA, ((String[])permissionName)[0])) {
+            } else if (isSamePermission(Permission.CAMERA, ((String[]) permissionName)[0])) {
                 //                openCamera();
                 openPhoto();
             }
         }
     }
 
-    InputFilter emojiFilter = new InputFilter() {
+    private InputFilter emojiFilter = new InputFilter() {
         private String filterImoji = "[^a-zA-Z ·.\u4E00-\u9FA5]";
-        Pattern emoji = Pattern.compile(filterImoji, Pattern.UNICODE_CASE | Pattern.CASE_INSENSITIVE);
+        Pattern emoji = Pattern.compile(filterImoji,
+                Pattern.UNICODE_CASE | Pattern.CASE_INSENSITIVE);
 
         @Override
-        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+        public CharSequence filter(CharSequence source, int start, int end, Spanned dest,
+                                   int dstart, int dend) {
             Matcher emojiMatcher = emoji.matcher(source);
             if (emojiMatcher.find()) {
                 ToastUtil.toast(getContext(), R.string.txt_not_support_input);

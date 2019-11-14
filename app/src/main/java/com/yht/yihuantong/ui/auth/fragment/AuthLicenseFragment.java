@@ -2,17 +2,11 @@ package com.yht.yihuantong.ui.auth.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.FileProvider;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
@@ -26,7 +20,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.yht.frame.api.DirHelper;
 import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
@@ -38,8 +31,8 @@ import com.yht.frame.permission.Permission;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.ScalingUtils;
+import com.yht.frame.widgets.textview.JustifiedTextView;
 import com.yht.yihuantong.R;
-import com.yht.yihuantong.ZycApplication;
 import com.yht.yihuantong.ui.ImagePreviewActivity;
 import com.yht.yihuantong.ui.adapter.AddImageAdapter;
 import com.yht.yihuantong.ui.auth.listener.OnAuthStepListener;
@@ -61,15 +54,13 @@ import butterknife.OnClick;
  */
 public class AuthLicenseFragment extends BaseFragment
         implements OnMediaItemClickListener, BaseQuickAdapter.OnItemClickListener,
-                   BaseQuickAdapter.OnItemChildClickListener {
-    @BindView(R.id.tv_auth_license_last)
-    TextView tvAuthLicenseLast;
+        BaseQuickAdapter.OnItemChildClickListener {
     @BindView(R.id.tv_auth_license_submit)
     TextView tvAuthLicenseSubmit;
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
-    @BindView(R.id.text1)
-    TextView textView;
+    @BindView(R.id.tv_hint)
+    JustifiedTextView tvHint;
     /**
      * 照片adapter
      */
@@ -78,10 +69,6 @@ public class AuthLicenseFragment extends BaseFragment
      * 上传数据mondle
      */
     private DoctorAuthBean doctorAuthBean;
-    /**
-     * 裁剪前的uri
-     */
-    private Uri mCurrentPhotoUri;
     private String mCurrentPhotoPath;
     /**
      * 已上传图片
@@ -121,6 +108,7 @@ public class AuthLicenseFragment extends BaseFragment
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
         spannableString(getString(R.string.txt_upload_card_hint));
+        tvAuthLicenseSubmit.setSelected(true);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         addImageAdapter = new AddImageAdapter(R.layout.item_add_image, imagePaths);
         addImageAdapter.setOnItemClickListener(this);
@@ -133,8 +121,7 @@ public class AuthLicenseFragment extends BaseFragment
         super.initData(savedInstanceState);
         if (doctorAuthBean != null && !TextUtils.isEmpty(doctorAuthBean.getCertFront())) {
             initPage();
-        }
-        else {
+        } else {
             //占位图
             imagePaths = new ArrayList<>();
             imagePaths.add(new NormImage());
@@ -185,13 +172,13 @@ public class AuthLicenseFragment extends BaseFragment
     private void spannableString(String s) {
         SpannableString style = new SpannableString(s);
         //大小
-        style.setSpan(new AbsoluteSizeSpan(BaseUtils.sp2px(getContext(), 16)), 4, 10, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        style.setSpan(new AbsoluteSizeSpan(BaseUtils.sp2px(getContext(), 16)), 4, 13, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         //颜色
-        style.setSpan(new ForegroundColorSpan(ContextCompat.getColor(getContext(), R.color.color_373d4d)), 4, 10,
-                      Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        style.setSpan(new ForegroundColorSpan(ContextCompat.getColor(getContext(), R.color.color_373d4d)), 4, 13,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         //粗体
-        style.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), 4, 10, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        textView.setText(style);
+        style.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), 4, 13, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        tvHint.setText(style);
     }
 
     /**
@@ -201,8 +188,7 @@ public class AuthLicenseFragment extends BaseFragment
         //等于2表示里面至少有一张真实图片(可能存在占位图)
         if (imagePaths.size() == BaseData.BASE_TWO) {
             tvAuthLicenseSubmit.setSelected(true);
-        }
-        else {
+        } else {
             tvAuthLicenseSubmit.setSelected(false);
         }
     }
@@ -210,7 +196,7 @@ public class AuthLicenseFragment extends BaseFragment
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         if (!TextUtils.isEmpty(imagePaths.get(position).getImagePath()) ||
-            !TextUtils.isEmpty(imagePaths.get(position).getImageUrl())) {
+                !TextUtils.isEmpty(imagePaths.get(position).getImageUrl())) {
             //查看大图
             Intent intent = new Intent(getContext(), ImagePreviewActivity.class);
             ArrayList<NormImage> list = new ArrayList<>();
@@ -225,9 +211,8 @@ public class AuthLicenseFragment extends BaseFragment
             intent.putExtra(ImagePreviewActivity.INTENT_POSITION, position);
             startActivity(intent);
             getActivity().overridePendingTransition(R.anim.anim_fade_in, R.anim.keep);
-        }
-        else {
-            permissionHelper.request(new String[] { Permission.CAMERA, Permission.STORAGE_WRITE });
+        } else {
+            permissionHelper.request(new String[]{Permission.CAMERA, Permission.STORAGE_WRITE});
         }
     }
 
@@ -236,12 +221,11 @@ public class AuthLicenseFragment extends BaseFragment
         if (position == BaseData.BASE_ONE) {
             //设置占位图
             imagePaths.set(position, new NormImage());
-        }
-        else {
+        } else {
             //先移除
             imagePaths.remove(imagePaths.get(position));
             if (!TextUtils.isEmpty(imagePaths.get(position).getImagePath()) ||
-                !TextUtils.isEmpty(imagePaths.get(position).getImageUrl())) {
+                    !TextUtils.isEmpty(imagePaths.get(position).getImageUrl())) {
                 //占位图
                 imagePaths.add(new NormImage());
             }
@@ -250,7 +234,7 @@ public class AuthLicenseFragment extends BaseFragment
         initNextButton();
     }
 
-    @OnClick({ R.id.tv_auth_license_last, R.id.tv_auth_license_submit })
+    @OnClick({R.id.tv_auth_license_last, R.id.tv_auth_license_submit, R.id.tv_instance})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_auth_license_last:
@@ -264,13 +248,14 @@ public class AuthLicenseFragment extends BaseFragment
                         String url = imagePaths.get(i).getImageUrl();
                         if (i == BASE_ZERO) {
                             doctorAuthBean.setCertFront(url);
-                        }
-                        else if (i == BASE_ONE) {
+                        } else if (i == BASE_ONE) {
                             doctorAuthBean.setCertBack(url);
                         }
                     }
                     onAuthStepListener.onAuthTwo(BASE_TWO, doctorAuthBean);
                 }
+                break;
+            case R.id.tv_instance:
                 break;
             default:
                 break;
@@ -281,10 +266,10 @@ public class AuthLicenseFragment extends BaseFragment
     public void onMediaItemClick(int position) {
         switch (position) {
             case 0:
-                permissionHelper.request(new String[] { Permission.CAMERA, Permission.STORAGE_WRITE });
+                permissionHelper.request(new String[]{Permission.CAMERA, Permission.STORAGE_WRITE});
                 break;
             case 1:
-                permissionHelper.request(new String[] { Permission.STORAGE_WRITE });
+                permissionHelper.request(new String[]{Permission.STORAGE_WRITE});
                 break;
             default:
                 break;
@@ -304,47 +289,11 @@ public class AuthLicenseFragment extends BaseFragment
         MatisseUtils.open(this, true, num);
     }
 
-    File tempFile;
-
-    /**
-     * 打开相机
-     */
-    private void openCamera() {
-        tempFile = new File(DirHelper.getPathImage(), System.currentTimeMillis() + ".jpg");
-        if (tempFile != null) {
-            mCurrentPhotoPath = tempFile.getAbsolutePath();
-        }
-        //选择拍照
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // 指定调用相机拍照后照片的储存路径
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            mCurrentPhotoUri = FileProvider.getUriForFile(getContext(), ZycApplication.getInstance().getPackageName() +
-                                                                        ".fileprovider", tempFile);
-        }
-        else {
-            mCurrentPhotoUri = Uri.fromFile(tempFile);
-        }
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            List<ResolveInfo> resInfoList = getContext().getPackageManager()
-                                                        .queryIntentActivities(intent,
-                                                                               PackageManager.MATCH_DEFAULT_ONLY);
-            for (ResolveInfo resolveInfo : resInfoList) {
-                String packageName = resolveInfo.activityInfo.packageName;
-                getContext().grantUriPermission(packageName, mCurrentPhotoUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION |
-                                                                               Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            }
-        }
-        // 指定调用相机拍照后照片的储存路径
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, mCurrentPhotoUri);
-        startActivityForResult(intent, RC_PICK_CAMERA);
-    }
-
     @Override
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
         if (task == Tasks.UPLOAD_FILE) {
-            String url = (String)response.getData();
+            String url = (String) response.getData();
             if (imagePaths.size() == 0 || TextUtils.isEmpty(imagePaths.get(0).getImageUrl())) {
                 imagePaths.clear();
                 NormImage normImage = new NormImage();
@@ -352,8 +301,7 @@ public class AuthLicenseFragment extends BaseFragment
                 imagePaths.add(normImage);
                 //占位
                 imagePaths.add(new NormImage());
-            }
-            else {
+            } else {
                 imagePaths.get(1).setImageUrl(url);
             }
             addImageAdapter.setNewData(imagePaths);
@@ -361,8 +309,7 @@ public class AuthLicenseFragment extends BaseFragment
             if (currentUploadImgIndex == 0) {
                 currentUploadImgIndex = 1;
                 dealImgHandler.sendEmptyMessage(0);
-            }
-            else if (currentUploadImgIndex == 1) {
+            } else if (currentUploadImgIndex == 1) {
                 currentUploadImgIndex = -1;
             }
         }
@@ -381,8 +328,7 @@ public class AuthLicenseFragment extends BaseFragment
                     normImage.setImagePath(paths.get(0));
                     imagePaths.set(imagePaths.size() - 1, normImage);
                     uploadImage(new File(paths.get(0)));
-                }
-                else {
+                } else {
                     imagePaths.clear();
                     currentUploadImgIndex = 0;
                     dealImgHandler.sendEmptyMessage(0);
@@ -403,10 +349,9 @@ public class AuthLicenseFragment extends BaseFragment
     @Override
     public void onNoPermissionNeeded(@NonNull Object permissionName) {
         if (permissionName instanceof String[]) {
-            if (isSamePermission(Permission.STORAGE_WRITE, ((String[])permissionName)[0])) {
+            if (isSamePermission(Permission.STORAGE_WRITE, ((String[]) permissionName)[0])) {
                 openPhoto();
-            }
-            else if (isSamePermission(Permission.CAMERA, ((String[])permissionName)[0])) {
+            } else if (isSamePermission(Permission.CAMERA, ((String[]) permissionName)[0])) {
                 //                openCamera();
                 openPhoto();
             }

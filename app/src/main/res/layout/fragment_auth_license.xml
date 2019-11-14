@@ -2,94 +2,98 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_ffffff"
-    android:scrollbars="none"
-    android:fillViewport="true">
+    android:background="@color/color_f8f9fa"
+    android:fillViewport="true"
+    android:scrollbars="none">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_ffffff"
         android:orientation="vertical"
-        android:layout_height="match_parent"
-        android:paddingTop="20dp"
-        android:paddingStart="20dp"
-        android:paddingEnd="13dp"
-        android:paddingBottom="31dp">
+        android:paddingTop="16dp">
 
         <TextView
-            android:id="@+id/text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/text_16"
-            android:textColor="@color/color_373d4d"
+            android:layout_marginStart="20dp"
             android:text="@string/txt_upload_card"
+            android:textColor="@color/color_373d4d"
+            android:textSize="@dimen/text_16"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/text1"
+        <com.yht.frame.widgets.textview.JustifiedTextView
+            android:id="@+id/tv_hint"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/text_15"
-            android:textColor="@color/color_6a6f80"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="12dp"
             android:text="@string/txt_upload_card_hint"
-            android:layout_below="@id/text"
-            android:layout_marginTop="12dp" />
+            android:textColor="@color/color_6a6f80"
+            android:textSize="@dimen/text_15" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/color_f8f9fa" />
+
+        <TextView
+            android:id="@+id/tv_instance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:drawableStart="@mipmap/ic_hour"
+            android:drawablePadding="4dp"
+            android:gravity="center"
+            android:paddingStart="20dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="5dp"
+            android:text="@string/txt_photo_instance"
+            android:textColor="@color/color_1491fc"
+            android:textSize="@dimen/text_14" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/text1"
-            android:layout_marginTop="30dp">
-
-        </android.support.v7.widget.RecyclerView>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:textSize="@dimen/text_13"
-            android:textColor="@color/color_a1a8b3"
-            android:layout_marginEnd="7dp"
-            android:padding="14dp"
-            android:text="@string/txt_auth_hint"
-            android:background="@drawable/corner4_dot"
-            android:layout_below="@id/recycler_view" />
-
+            android:layout_marginStart="20dp"
+            android:paddingBottom="20dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="42dp"
-            android:orientation="horizontal"
-            android:layout_marginEnd="20dp"
-            android:layout_marginStart="13dp"
-            android:layout_alignParentBottom="true">
-
-            <TextView
-                android:id="@+id/tv_auth_license_last"
-                android:layout_width="wrap_content"
-                android:layout_weight="1"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="20dp"
-                android:background="@drawable/corner28_stroke1_1491fc"
-                android:text="@string/txt_last"
-                android:gravity="center"
-                android:textSize="@dimen/text_16"
-                android:textColor="@color/color_1491fc" />
+            android:layout_height="match_parent"
+            android:background="@color/color_f8f9fa"
+            android:orientation="vertical"
+            android:paddingStart="35dp"
+            android:paddingTop="7dp"
+            android:paddingEnd="35dp">
 
             <TextView
                 android:id="@+id/tv_auth_license_submit"
-                android:layout_width="wrap_content"
-                android:layout_weight="1"
-                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
                 android:background="@drawable/selector_public_next"
-                android:text="@string/txt_submit_review"
                 android:gravity="center"
-                android:textSize="@dimen/text_16"
-                android:textColor="@color/color_ffffff" />
+                android:lineSpacingMultiplier="1.1"
+                android:text="@string/txt_submit_review"
+                android:textColor="@color/color_ffffff"
+                android:textSize="@dimen/text_16" />
+
+            <TextView
+                android:id="@+id/tv_auth_license_last"
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/corner28_stroke1_1491fc"
+                android:gravity="center"
+                android:text="@string/txt_last"
+                android:textColor="@color/color_1491fc"
+                android:textSize="@dimen/text_16" />
 
         </LinearLayout>
 
-    </RelativeLayout>
+    </LinearLayout>
 
 </ScrollView>

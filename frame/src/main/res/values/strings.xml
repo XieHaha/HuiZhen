@@ -195,7 +195,7 @@
     <string name="txt_auth_license">医生执照</string>
     <string name="txt_auth_result">认证结果</string>
     <string name="txt_upload_img">上传照片</string>
-    <string name="txt_upload_img_hint">请上传你的真实头像</string>
+    <string name="txt_upload_img_hint">上传本人正面免冠近照</string>
     <string name="txt_name">姓名</string>
     <string name="txt_patient_name">居民姓名</string>
     <string name="txt_name_hint">请填写本人真实姓名</string>
@@ -221,14 +221,19 @@
     <string name="txt_title_attending_physician">主治医师</string>
     <string name="txt_title_hospitalization__physician">住院医师</string>
     <string name="txt_upload_card">上传证件</string>
-    <string name="txt_upload_card_hint">请上传&#160;医生执业证书&#160;前两页。\n照片仅用于认证您的真实身份，不向用户展示。</string>
-    <string name="txt_auth_hint">温馨提示：\n请确保图片中的姓名、科室、医院、证件编号等所有信息清晰可见。</string>
-    <string name="txt_submit_review">提交审核</string>
+    <string name="txt_upload_card_hint">请上传&#160;医师执业证书信息页。\n请确保图片中医师照片、姓名、证书编号、执业医院、执业范围、变更信息等清晰可见。照片仅用于认证您的真实身份，不向用户展示。</string>
+    <string name="txt_photo_instance">照片实例</string>
+    <string name="txt_submit_review">提交认证</string>
     <string name="txt_submit_again">重新认证</string>
     <string name="txt_review">审核中</string>
     <string name="txt_review_hint">我们将尽快完成审核，请耐心等候</string>
     <string name="txt_review_failure">审核未通过</string>
     <string name="txt_review_failure_hint">失败原因50字，超级过的十几个 啊火锅和军事基地，手机号改户火锅看帅哥开始减肥。是开花结果后。</string>
+    <string name="txt_header_image_hint">请上传本人正面免冠近照</string>
+    <string name="txt_input_name_hint">请输入姓名</string>
+    <string name="txt_hospital_hint">请选择医院</string>
+    <string name="txt_depart_hint">请选择科室</string>
+    <string name="txt_title_hint">请选择职称</string>
 
     <!--个人中心-->
     <string name="txt_star">****</string>

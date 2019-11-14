@@ -40,18 +40,6 @@ public class AddImageAdapter extends BaseQuickAdapter<NormImage, BaseViewHolder>
                  .load(FileUrlUtil.addTokenToUrl(item.getImageUrl()))
                  .apply(GlideHelper.getOptionsPic(BaseUtils.dp2px(mContext, 4)))
                  .into((ImageView)helper.getView(R.id.iv_upload));
-            //            if (TextUtils.isEmpty(item.getImagePath())) {
-            //                Glide.with(mContext)
-            //                     .load(FileUrlUtil.addTokenToUrl(item.getImageUrl()))
-            //                     .apply(GlideHelper.getOptionsPic(BaseUtils.dp2px(mContext, 4)))
-            //                     .into((ImageView)helper.getView(R.id.iv_upload));
-            //            }
-            //            else {
-            //                Glide.with(mContext)
-            //                     .load(item.getImagePath())
-            //                     .apply(GlideHelper.getOptionsPic(BaseUtils.dp2px(mContext, 4)))
-            //                     .into((ImageView)helper.getView(R.id.iv_upload));
-            //            }
             helper.setVisible(R.id.iv_delete, true).addOnClickListener(R.id.iv_delete);
         }
     }
