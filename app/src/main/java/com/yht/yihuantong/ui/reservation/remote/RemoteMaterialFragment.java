@@ -49,8 +49,8 @@ import butterknife.OnClick;
  * @date 19/6/14 14:23
  * @description 完善资料
  */
-public class RemoteMaterialFragment extends BaseFragment
-        implements View.OnFocusChangeListener, AdapterView.OnItemClickListener, AutoGridView.OnDeleteClickListener {
+public class RemoteMaterialFragment extends BaseFragment implements View.OnFocusChangeListener,
+        AdapterView.OnItemClickListener, AutoGridView.OnDeleteClickListener {
     @BindView(R.id.tv_name)
     TextView tvName;
     @BindView(R.id.rb_male)
@@ -108,8 +108,8 @@ public class RemoteMaterialFragment extends BaseFragment
     /**
      * 基础信息
      */
-    private int sex;
-    private String age, phone, pastMedicalHis = "", familyMedicalHis = "", allergiesHis = "", diagnosisHis = "", description = "", purpose = "";
+    private String age, phone, pastMedicalHis = "", familyMedicalHis = "", allergiesHis = "",
+            diagnosisHis = "", description = "", purpose = "";
     /**
      * 二次编辑 是否清空所有已填数据
      */
@@ -186,6 +186,7 @@ public class RemoteMaterialFragment extends BaseFragment
     private void initRemoteData() {
         if (reserveRemoteBean != null) {
             BankCardTextWatcher.bind(tvIdCard, this);
+            int sex;
             if (!TextUtils.isEmpty(reserveRemoteBean.getPatientCode())) {
                 //老用户
                 editStatus(false);
@@ -196,8 +197,7 @@ public class RemoteMaterialFragment extends BaseFragment
                 pastMedicalHis = reserveRemoteBean.getPast();
                 familyMedicalHis = reserveRemoteBean.getFamily();
                 allergiesHis = reserveRemoteBean.getAllergy();
-            }
-            else {
+            } else {
                 //新用户
                 editStatus(true);
                 age = BaseUtils.getAgeByCard(reserveRemoteBean.getPatientIdCard());
@@ -205,8 +205,7 @@ public class RemoteMaterialFragment extends BaseFragment
                 reserveRemoteBean.setPatientSex(sex);
                 if (!TextUtils.isEmpty(age)) {
                     reserveRemoteBean.setPatientAge(Integer.valueOf(age));
-                }
-                else {
+                } else {
                     reserveRemoteBean.setPatientAge(0);
                 }
             }
@@ -215,8 +214,7 @@ public class RemoteMaterialFragment extends BaseFragment
             etAge.setText(age);
             if (sex == BaseData.BASE_MALE) {
                 rbMale.setChecked(true);
-            }
-            else {
+            } else {
                 rbFemale.setChecked(true);
             }
             //病情描述
@@ -249,10 +247,9 @@ public class RemoteMaterialFragment extends BaseFragment
     private void clearAllCheckData(ReserveRemoteBean bean) {
         if (reserveRemoteBean == null || bean == null) {
             clearAll = false;
-        }
-        else {
-            clearAll = !reserveRemoteBean.getPatientName().equals(bean.getPatientName()) ||
-                       !reserveRemoteBean.getPatientIdCard().equals(bean.getPatientIdCard());
+        } else {
+            clearAll =
+                    !reserveRemoteBean.getPatientName().equals(bean.getPatientName()) || !reserveRemoteBean.getPatientIdCard().equals(bean.getPatientIdCard());
         }
     }
 
@@ -264,8 +261,7 @@ public class RemoteMaterialFragment extends BaseFragment
         if (!mode && !BaseData.BASE_STRING_ONE_TAG.equals(reserveRemoteBean.getIsBind())) {
             etPhone.setFocusable(true);
             etPhone.setFocusableInTouchMode(true);
-        }
-        else {
+        } else {
             etPhone.setFocusable(mode);
             etPhone.setFocusableInTouchMode(mode);
         }
@@ -284,8 +280,7 @@ public class RemoteMaterialFragment extends BaseFragment
                 initNextButton();
                 if (!TextUtils.isEmpty(age)) {
                     reserveRemoteBean.setPatientAge(Integer.valueOf(age));
-                }
-                else {
+                } else {
                     reserveRemoteBean.setPatientAge(0);
                 }
             }
@@ -343,7 +338,8 @@ public class RemoteMaterialFragment extends BaseFragment
      */
     private void initPastHistory() {
         tvPastMedical.setText(PastHistoryUtil.getPastMedical(getContext(), pastHistoryData.get(0)));
-        tvFamilyMedical.setText(PastHistoryUtil.getFamilyMedical(getContext(), pastHistoryData.get(1)));
+        tvFamilyMedical.setText(PastHistoryUtil.getFamilyMedical(getContext(),
+                pastHistoryData.get(1)));
         tvAllergies.setText(PastHistoryUtil.getAllergies(getContext(), pastHistoryData.get(2)));
     }
 
@@ -424,9 +420,8 @@ public class RemoteMaterialFragment extends BaseFragment
             intent.putExtra(ImagePreviewActivity.INTENT_POSITION, position);
             startActivity(intent);
             getActivity().overridePendingTransition(R.anim.anim_fade_in, R.anim.keep);
-        }
-        else {
-            permissionHelper.request(new String[] { Permission.CAMERA, Permission.STORAGE_WRITE });
+        } else {
+            permissionHelper.request(new String[]{Permission.CAMERA, Permission.STORAGE_WRITE});
         }
     }
 
@@ -450,11 +445,9 @@ public class RemoteMaterialFragment extends BaseFragment
      */
     private void initNextButton() {
         //判断手机号和诊断史
-        if (BaseUtils.isMobileNumber(phone) && !TextUtils.isEmpty(description) && !TextUtils.isEmpty(diagnosisHis) &&
-            !TextUtils.isEmpty(purpose) && !TextUtils.isEmpty(age)) {
+        if (BaseUtils.isMobileNumber(phone) && !TextUtils.isEmpty(description) && !TextUtils.isEmpty(diagnosisHis) && !TextUtils.isEmpty(purpose) && !TextUtils.isEmpty(age)) {
             tvMaterialNext.setSelected(true);
-        }
-        else {
+        } else {
             tvMaterialNext.setSelected(false);
         }
     }
@@ -468,8 +461,7 @@ public class RemoteMaterialFragment extends BaseFragment
         }
     }
 
-    @OnClick({
-            R.id.tv_material_next, R.id.layout_past })
+    @OnClick({R.id.tv_material_next, R.id.layout_past})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.layout_past:
@@ -492,7 +484,7 @@ public class RemoteMaterialFragment extends BaseFragment
         super.onResponseSuccess(task, response);
         switch (task) {
             case UPLOAD_FILE:
-                String url = (String)response.getData();
+                String url = (String) response.getData();
                 NormImage normImage = new NormImage();
                 normImage.setImageUrl(url);
                 imagePaths.add(normImage);
@@ -500,8 +492,7 @@ public class RemoteMaterialFragment extends BaseFragment
                 if (paths.size() - 1 > currentUploadImgIndex) {
                     currentUploadImgIndex++;
                     uploadImage(new File(paths.get(currentUploadImgIndex)));
-                }
-                else {
+                } else {
                     //上传完后赋值
                     initPatientResource();
                     closeLoadingView();
@@ -525,8 +516,7 @@ public class RemoteMaterialFragment extends BaseFragment
             reserveRemoteBean.setFamily(pastHistoryData.get(1));
             reserveRemoteBean.setAllergy(pastHistoryData.get(2));
             initNextButton();
-        }
-        else if (requestCode == RC_PICK_IMG) {
+        } else if (requestCode == RC_PICK_IMG) {
             paths = Matisse.obtainPathResult(data);
             if (paths != null && paths.size() > 0) {
                 dealImgHandler.sendEmptyMessage(0);
@@ -537,7 +527,7 @@ public class RemoteMaterialFragment extends BaseFragment
     @Override
     public void onNoPermissionNeeded(@NonNull Object permissionName) {
         if (permissionName instanceof String[]) {
-            if (isSamePermission(Permission.CAMERA, ((String[])permissionName)[0])) {
+            if (isSamePermission(Permission.CAMERA, ((String[]) permissionName)[0])) {
                 openPhoto();
             }
         }
