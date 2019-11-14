@@ -363,7 +363,7 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
                 break;
             case R.id.view_flipper:
 //                flipperDetail();
-                ToastUtil.toast(getContext(),"ceshi  v3.1.1");
+                ToastUtil.toast(getContext(),"ceshi  master");
                 break;
             case R.id.layout_initiate_check:
                 intent = new Intent(getContext(), ServiceHistoryActivity.class);
