@@ -143,11 +143,18 @@
                 android:layout_height="41dp"
                 android:orientation="horizontal">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="7dp"
+                    android:gravity="center_vertical"
+                    android:text="*  "
+                    android:textColor="#ff3b30" />
+
                 <LinearLayout
                     android:id="@+id/layout_signature"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
                     android:gravity="center_horizontal"
                     android:orientation="vertical">
 
@@ -173,7 +180,7 @@
                     android:id="@+id/layout_camera"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_marginStart="60dp"
                     android:gravity="center_horizontal"
                     android:orientation="vertical">
 
@@ -195,6 +202,17 @@
 
                 </LinearLayout>
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="end"
+                    android:paddingStart="0dp"
+                    android:paddingEnd="20dp"
+                    android:text="@string/txt_one_of_two"
+                    android:textColor="@color/color_a1a8b3"
+                    android:textSize="@dimen/text_14" />
+
             </LinearLayout>
 
             <View
@@ -210,7 +228,6 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
                 android:background="@drawable/corner2_stroke1_d9d9d9"
-                android:padding="1dp"
                 android:visibility="visible">
 
                 <ImageView
