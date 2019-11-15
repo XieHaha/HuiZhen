@@ -11,8 +11,12 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.yht.frame.data.CommonData;
 import com.yht.frame.data.bean.NormImage;
 import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.widgets.imagepreview.transformer.ImageTransformer;
@@ -21,14 +25,15 @@ import com.yht.frame.widgets.imagepreview.view.ImageLoadingView;
 import com.yht.frame.widgets.imagepreview.view.ImagePreviewView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.utils.FileUrlUtil;
-
+import com.yht.yihuantong.utils.MatisseUtils;
 
 import java.util.ArrayList;
 
 /**
  * @author dundun
  */
-public class ImagePreviewActivity extends Activity implements ViewPager.OnPageChangeListener {
+public class ImagePreviewActivity extends Activity implements ViewPager.OnPageChangeListener,
+        View.OnClickListener {
     public static final String INTENT_URLS = "intent_urls";
     public static final String INTENT_POSITION = "intent_position";
     /**
@@ -36,6 +41,9 @@ public class ImagePreviewActivity extends Activity implements ViewPager.OnPageCh
      */
     private ArrayList<NormImage> urls;
     private ArrayList<ImagePreviewView> imgPreViews = new ArrayList<>();
+    private RelativeLayout layoutTitle;
+    private ImageView ivBack;
+    private TextView tvUpdate;
     /**
      * 图片加载动画view
      */
@@ -48,6 +56,10 @@ public class ImagePreviewActivity extends Activity implements ViewPager.OnPageCh
      * 当前page 游标
      */
     private int currentIndex;
+    /**
+     * 是否显示title
+     */
+    private boolean showTitle;
     /**
      * 图片加载  开始
      */
@@ -64,6 +76,10 @@ public class ImagePreviewActivity extends Activity implements ViewPager.OnPageCh
      * 图片加载  取消
      */
     private static final int LOAD_CANCEL = 300;
+    /**
+     * 选择图片
+     */
+    public static final int RC_PICK_IMG = 0x0001;
     private Handler mHandler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
@@ -98,6 +114,15 @@ public class ImagePreviewActivity extends Activity implements ViewPager.OnPageCh
         if (intent != null) {
             urls = (ArrayList<NormImage>) intent.getSerializableExtra(INTENT_URLS);
             currentIndex = intent.getIntExtra(INTENT_POSITION, 0);
+            showTitle = intent.getBooleanExtra(CommonData.KEY_INTENT_BOOLEAN, false);
+        }
+        if (showTitle) {
+            layoutTitle = findViewById(R.id.layout_title);
+            ivBack = findViewById(R.id.public_title_bar_back);
+            tvUpdate = findViewById(R.id.public_title_bar_more);
+            layoutTitle.setVisibility(View.VISIBLE);
+            ivBack.setOnClickListener(this);
+            tvUpdate.setOnClickListener(this);
         }
         mLoadingView = findViewById(R.id.act_image_view_loading);
         //图片游标
@@ -145,6 +170,32 @@ public class ImagePreviewActivity extends Activity implements ViewPager.OnPageCh
     public void onPageScrollStateChanged(int state) {
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.public_title_bar_back:
+                onBackPressed();
+                break;
+            case R.id.public_title_bar_more:
+                MatisseUtils.open(this, true, 1);
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+        if (requestCode == RC_PICK_IMG) {
+            setResult(RESULT_OK, data);
+            onBackPressed();
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
     class TouchImageAdapter extends PagerAdapter {
         @Override
         public int getCount() {
@@ -155,9 +206,6 @@ public class ImagePreviewActivity extends Activity implements ViewPager.OnPageCh
         @Override
         public View instantiateItem(@NonNull final ViewGroup container, final int position) {
             ImagePreviewView currentPreviewView = imgPreViews.get(position);
-            //                        currentPreviewView.loadingImageAsync(urls.get(position)
-            //                        .getImagePath(), urls.get(position).getImageUrl(),
-            //                                                             position);
             currentPreviewView.loadingImageAsync(urls.get(position).getImagePath(),
                     FileUrlUtil.addTokenToUrl(urls.get(position).getImageUrl()));
             container.addView(currentPreviewView, LinearLayout.LayoutParams.MATCH_PARENT,

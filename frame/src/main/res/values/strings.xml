@@ -44,6 +44,7 @@
     <string name="title_consultation_time">选择会诊时间</string>
     <string name="title_add_depart">添加医院-科室</string>
     <string name="title_instance">证书照片实例</string>
+    <string name="title_header_image">免冠近照</string>
 
     <!--公用-->
     <string name="txt_app_name">会珍</string>
@@ -67,6 +68,7 @@
     <string name="txt_agree">同意</string>
     <string name="txt_disagree">不同意</string>
     <string name="txt_edit">编辑</string>
+    <string name="txt_update">更换</string>
     <string name="txt_delete_all">全部删除</string>
     <string name="txt_next">下一步</string>
     <string name="txt_last">上一步</string>

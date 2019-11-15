@@ -27,6 +27,7 @@ import com.yht.frame.data.bean.DoctorAuthBean;
 import com.yht.frame.data.bean.HospitalBean;
 import com.yht.frame.data.bean.HospitalDepartChildBean;
 import com.yht.frame.data.bean.HospitalTitleBean;
+import com.yht.frame.data.bean.NormImage;
 import com.yht.frame.data.type.DataDictionary;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.permission.Permission;
@@ -37,6 +38,7 @@ import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.frame.widgets.edittext.AbstractTextWatcher;
 import com.yht.frame.widgets.edittext.SuperEditText;
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.ui.ImagePreviewActivity;
 import com.yht.yihuantong.ui.auth.SelectDepartActivity;
 import com.yht.yihuantong.ui.auth.SelectHospitalByAuthActivity;
 import com.yht.yihuantong.ui.auth.listener.OnAuthStepListener;
@@ -50,6 +52,7 @@ import com.zhihu.matisse.Matisse;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -100,10 +103,13 @@ public class AuthBaseFragment extends BaseFragment implements OnMediaItemClickLi
      */
     private HospitalDepartChildBean curDepart;
     private Uri cutFileUri;
-    private File cameraTempFile, cutFile;
-    private Uri mCurrentPhotoUri;
-    private String mCurrentPhotoPath;
+    private File cutFile;
     private List<String> titleData = new ArrayList<>();
+    ArrayList<NormImage> imagePaths = new ArrayList<>();
+    /**
+     * 已上传的头像URL
+     */
+    private String headerImageUrl;
     /**
      * 当前选中的科室position 一二级科室
      */
@@ -116,6 +122,10 @@ public class AuthBaseFragment extends BaseFragment implements OnMediaItemClickLi
      * 科室选择
      */
     public static final int REQUEST_CODE_DEPART = 200;
+    /**
+     * 头像更新
+     */
+    public static final int REQUEST_NEW_HEADER_IMAGE = 300;
 
     @Override
     public int getLayoutID() {
@@ -278,9 +288,18 @@ public class AuthBaseFragment extends BaseFragment implements OnMediaItemClickLi
         Intent intent;
         switch (view.getId()) {
             case R.id.layout_upload_img:
-                //                new DownDialog(getContext()).setData(data)
-                //                .setOnMediaItemClickListener(this).show();
-                permissionHelper.request(new String[]{Permission.CAMERA, Permission.STORAGE_WRITE});
+                if (TextUtils.isEmpty(headerImageUrl)) {
+                    permissionHelper.request(new String[]{Permission.CAMERA,
+                            Permission.STORAGE_WRITE});
+
+                } else {
+                    //查看大图
+                    intent = new Intent(getContext(), ImagePreviewActivity.class);
+                    intent.putExtra(ImagePreviewActivity.INTENT_URLS, imagePaths);
+                    intent.putExtra(CommonData.KEY_INTENT_BOOLEAN, true);
+                    startActivityForResult(intent, REQUEST_NEW_HEADER_IMAGE);
+                    Objects.requireNonNull(getActivity()).overridePendingTransition(R.anim.anim_fade_in, R.anim.keep);
+                }
                 break;
             case R.id.layout_base_hospital:
                 intent = new Intent(getContext(), SelectHospitalByAuthActivity.class);
@@ -344,10 +363,13 @@ public class AuthBaseFragment extends BaseFragment implements OnMediaItemClickLi
         switch (task) {
             case UPLOAD_FILE:
                 //图片上传成功
-                if (task == Tasks.UPLOAD_FILE) {
-                    Glide.with(this).load(cutFileUri).apply(GlideHelper.getOptions(BaseUtils.dp2px(getContext(), 4))).into(ivAuthBaseImg);
-                    doctorAuthBean.setDoctorPhoto((String) response.getData());
-                }
+                Glide.with(this).load(cutFileUri).apply(GlideHelper.getOptions(BaseUtils.dp2px(getContext(), 4))).into(ivAuthBaseImg);
+                headerImageUrl = (String) response.getData();
+                imagePaths.clear();
+                NormImage normImage = new NormImage();
+                normImage.setImageUrl(headerImageUrl);
+                imagePaths.add(normImage);
+                doctorAuthBean.setDoctorPhoto(headerImageUrl);
                 break;
             case DATA_JOB_TITLE:
                 ArrayList<HospitalTitleBean> list =
@@ -386,25 +408,15 @@ public class AuthBaseFragment extends BaseFragment implements OnMediaItemClickLi
         }
         switch (requestCode) {
             case RC_PICK_IMG:
-                List<Uri> uris = Matisse.obtainResult(data);
-                List<String> paths = Matisse.obtainPathResult(data);
-                if (null != paths && 0 != paths.size()) {
-                    cameraTempFile = new File(paths.get(0));
-                    String fileName = "corp" + System.currentTimeMillis() + ".jpg";
-                    cutFile = new File(DirHelper.getPathCache(), fileName);
-                    startCutImg(uris.get(0), Uri.fromFile(cutFile));
-                }
-                break;
-            case RC_PICK_CAMERA:
-                cameraTempFile = new File(mCurrentPhotoPath);
-                String fileName = "corp" + System.currentTimeMillis() + ".jpg";
-                cutFile = new File(DirHelper.getPathCache(), fileName);
-                startCutImg(mCurrentPhotoUri, Uri.fromFile(cutFile));
+                headerImageCallBack(data);
                 break;
             case RC_CROP_IMG:
                 uploadImage(cutFile);
                 break;
             //医院选择
+            case REQUEST_NEW_HEADER_IMAGE:
+                headerImageCallBack(data);
+                break;
             case REQUEST_CODE_HOSPITAL:
                 HospitalBean bean =
                         (HospitalBean) data.getSerializableExtra(CommonData.KEY_HOSPITAL_BEAN);
@@ -427,6 +439,16 @@ public class AuthBaseFragment extends BaseFragment implements OnMediaItemClickLi
                 break;
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void headerImageCallBack(Intent data) {
+        List<Uri> uris = Matisse.obtainResult(data);
+        List<String> paths = Matisse.obtainPathResult(data);
+        if (null != paths && 0 != paths.size()) {
+            String fileName = "corp" + System.currentTimeMillis() + ".jpg";
+            cutFile = new File(DirHelper.getPathCache(), fileName);
+            startCutImg(uris.get(0), Uri.fromFile(cutFile));
+        }
     }
 
     @Override
