@@ -3,6 +3,7 @@ package com.yht.frame.widgets.textview;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.support.v7.widget.AppCompatTextView;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -26,14 +27,11 @@ public class RedStarTextView extends AppCompatTextView {
     /**
      * 默认颜色
      */
-    private int starColor = 0xFFFF3B30;
-    /**
-     * 是否显示特殊符号  默认显示
-     */
-    private boolean show;
+    private int starColor = Color.RED;
 
     public RedStarTextView(Context context) {
         super(context);
+        init(context, null);
     }
 
     public RedStarTextView(Context context, AttributeSet attrs) {
@@ -48,26 +46,22 @@ public class RedStarTextView extends AppCompatTextView {
 
     private void init(Context context, AttributeSet attrs) {
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.RedStarTextView);
-        show = ta.getBoolean(R.styleable.RedStarTextView_show, true);
         starType = ta.getString(R.styleable.RedStarTextView_starType);
         if (TextUtils.isEmpty(starType)) {
             starType = "* ";
         }
-        starColor = ta.getInteger(R.styleable.RedStarTextView_starColor, 0xFFFF3B30);
+        starColor = ta.getInteger(R.styleable.RedStarTextView_starColor, Color.RED);
         String text = ta.getString(R.styleable.RedStarTextView_android_text);
         ta.recycle();
         setGravity(Gravity.CENTER_VERTICAL);
         setText(text);
     }
 
-    @Override
-    public void setText(CharSequence text, BufferType type) {
-        if (show) {
-            Spannable span = new SpannableString(starType + text);
-            span.setSpan(new ForegroundColorSpan(starColor), 0, starType.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            setText(span);
-        } else {
-            super.setText(text, type);
-        }
+    public void setText(String text) {
+        Spannable span = new SpannableString(starType + text);
+        span.setSpan(new ForegroundColorSpan(starColor), 0, starType.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        setText(span);
+
     }
 }

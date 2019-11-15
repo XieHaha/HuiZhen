@@ -18,6 +18,7 @@
         <com.yht.frame.widgets.textview.RedStarTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:text="@string/txt_patient_name"
             android:textColor="@color/color_373d4d"
             android:textSize="@dimen/text_16"
@@ -59,9 +60,10 @@
         android:paddingTop="19dp"
         android:paddingEnd="0dp">
 
-        <TextView
+        <com.yht.frame.widgets.textview.RedStarTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:text="@string/txt_id_card_hint"
             android:textColor="@color/color_373d4d"
             android:textSize="@dimen/text_16"

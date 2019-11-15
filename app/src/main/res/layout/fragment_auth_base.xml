@@ -12,16 +12,18 @@
         android:orientation="vertical"
         android:layout_height="wrap_content"
         android:paddingTop="20dp"
-        android:paddingStart="20dp"
+        android:paddingStart="7dp"
+        android:paddingEnd="0dp"
         android:paddingBottom="31dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="30dp"
+            android:paddingStart="0dp"
             android:paddingEnd="20dp">
 
-            <TextView
+            <com.yht.frame.widgets.textview.RedStarTextView
                 android:id="@+id/tv_auth_base_up"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -36,6 +38,7 @@
                 android:textSize="@dimen/text_15"
                 android:textColor="@color/color_6a6f80"
                 android:text="@string/txt_upload_img_hint"
+                android:layout_marginStart="13dp"
                 android:layout_below="@id/tv_auth_base_up"
                 android:layout_marginTop="12dp" />
 
@@ -64,7 +67,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
+            <com.yht.frame.widgets.textview.RedStarTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_16"
@@ -102,7 +105,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
+            <com.yht.frame.widgets.textview.RedStarTextView
                 android:id="@+id/tv_auth_base_sex"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -160,7 +163,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="18dp">
 
-            <TextView
+            <com.yht.frame.widgets.textview.RedStarTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_16"
@@ -197,7 +200,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="18dp">
 
-            <TextView
+            <com.yht.frame.widgets.textview.RedStarTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_16"
@@ -233,7 +236,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="18dp">
 
-            <TextView
+            <com.yht.frame.widgets.textview.RedStarTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_16"

@@ -9,139 +9,144 @@
         android:id="@+id/layout_past"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="19dp"
-        android:paddingStart="20dp"
-        android:paddingTop="19dp">
+        android:paddingStart="7dp"
+        android:paddingTop="19dp"
+        android:paddingEnd="0dp"
+        android:paddingBottom="19dp">
 
-        <TextView
+        <com.yht.frame.widgets.textview.RedStarTextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/title_past_history"
             android:textColor="@color/color_373d4d"
             android:textSize="@dimen/text_16"
-            android:textStyle="bold"
-            android:text="@string/title_past_history" />
+            android:textStyle="bold" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/ic_right"
+            android:layout_alignParentEnd="true"
             android:layout_marginEnd="20dp"
-            android:layout_alignParentEnd="true" />
+            android:src="@mipmap/ic_right" />
 
         <View
             android:id="@+id/line"
             android:layout_width="match_parent"
             android:layout_height="@dimen/app_hei_line"
-            android:background="@color/color_ebedf0"
             android:layout_below="@id/title"
+            android:layout_marginStart="13dp"
             android:layout_marginTop="19dp"
-            android:layout_marginBottom="12dp" />
+            android:layout_marginBottom="12dp"
+            android:background="@color/color_ebedf0" />
 
         <LinearLayout
             android:id="@+id/layout_past_medical_his"
             android:layout_width="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal"
             android:layout_height="wrap_content"
-            android:layout_below="@id/line">
+            android:layout_below="@id/line"
+            android:layout_marginStart="13dp"
+            android:gravity="center"
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/text_16"
+                android:text="@string/txt_past_medical_his"
                 android:textColor="@color/color_373d4d"
-                android:text="@string/txt_past_medical_his" />
+                android:textSize="@dimen/text_16" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/text_16"
+                android:text="："
                 android:textColor="@color/color_373d4d"
-                android:text="：" />
+                android:textSize="@dimen/text_16" />
 
             <TextView
                 android:id="@+id/tv_past_medical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/text_16"
-                android:singleLine="true"
                 android:layout_marginEnd="20dp"
                 android:ellipsize="end"
-                tools:text="病史病史病史病史病史病史病史病史病史病史病史"
-                android:textColor="@color/color_373d4d" />
+                android:singleLine="true"
+                android:textColor="@color/color_373d4d"
+                android:textSize="@dimen/text_16"
+                tools:text="病史病史病史病史病史病史病史病史病史病史病史" />
 
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/layout_family_medical_his"
             android:layout_width="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal"
             android:layout_height="wrap_content"
+            android:layout_below="@id/layout_past_medical_his"
+            android:layout_marginStart="13dp"
             android:layout_marginTop="6dp"
-            android:layout_below="@id/layout_past_medical_his">
+            android:gravity="center"
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/text_16"
+                android:text="@string/txt_family_medical_his"
                 android:textColor="@color/color_373d4d"
-                android:text="@string/txt_family_medical_his" />
+                android:textSize="@dimen/text_16" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/text_16"
+                android:text="："
                 android:textColor="@color/color_373d4d"
-                android:text="：" />
+                android:textSize="@dimen/text_16" />
 
             <TextView
                 android:id="@+id/tv_family_medical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/text_16"
-                android:singleLine="true"
                 android:layout_marginEnd="20dp"
                 android:ellipsize="end"
-                tools:text="病史病史病史病史病史病史病史病史病史病史病史"
-                android:textColor="@color/color_373d4d" />
+                android:singleLine="true"
+                android:textColor="@color/color_373d4d"
+                android:textSize="@dimen/text_16"
+                tools:text="病史病史病史病史病史病史病史病史病史病史病史" />
 
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/layout_allergies"
             android:layout_width="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal"
             android:layout_height="wrap_content"
+            android:layout_below="@id/layout_family_medical_his"
+            android:layout_marginStart="13dp"
             android:layout_marginTop="6dp"
-            android:layout_below="@id/layout_family_medical_his">
+            android:gravity="center"
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/text_16"
+                android:text="@string/txt_allergies"
                 android:textColor="@color/color_373d4d"
-                android:text="@string/txt_allergies" />
+                android:textSize="@dimen/text_16" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/text_16"
+                android:text="："
                 android:textColor="@color/color_373d4d"
-                android:text="：" />
+                android:textSize="@dimen/text_16" />
 
             <TextView
                 android:id="@+id/tv_allergies"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/text_16"
-                android:singleLine="true"
                 android:layout_marginEnd="20dp"
                 android:ellipsize="end"
-                tools:text="病史病史病史病史病史病史病史病史病史病史病史"
-                android:textColor="@color/color_373d4d" />
+                android:singleLine="true"
+                android:textColor="@color/color_373d4d"
+                android:textSize="@dimen/text_16"
+                tools:text="病史病史病史病史病史病史病史病史病史病史病史" />
 
         </LinearLayout>
 
@@ -155,56 +160,59 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="19dp"
-        android:paddingStart="20dp"
-        android:paddingTop="19dp">
+        android:paddingStart="7dp"
+        android:paddingTop="19dp"
+        android:paddingEnd="0dp"
+        android:paddingBottom="19dp">
 
-        <TextView
+        <com.yht.frame.widgets.textview.RedStarTextView
             android:id="@+id/title333"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/txt_condition_description"
             android:textColor="@color/color_373d4d"
             android:textSize="@dimen/text_16"
-            android:textStyle="bold"
-            android:text="@string/txt_condition_description" />
+            android:textStyle="bold" />
 
         <View
             android:id="@+id/line333"
             android:layout_width="match_parent"
             android:layout_height="@dimen/app_hei_line"
-            android:background="@color/color_ebedf0"
             android:layout_below="@id/title333"
+            android:layout_marginStart="13dp"
             android:layout_marginTop="19dp"
-            android:layout_marginBottom="12dp" />
+            android:layout_marginBottom="12dp"
+            android:background="@color/color_ebedf0" />
 
         <com.yht.frame.widgets.edittext.MultiLineEditText
             android:id="@+id/et_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="60dp"
             android:layout_below="@id/line333"
+            android:layout_marginStart="13dp"
+            android:layout_marginEnd="20dp"
             android:background="@null"
-            android:hint="@string/txt_condition_description_hint"
-            android:textColorHint="@color/color_a1a8b3"
-            android:textSize="@dimen/text_16"
             android:gravity="top"
-            android:maxLength="500"
+            android:hint="@string/txt_condition_description_hint"
             android:imeOptions="actionDone"
+            android:maxLength="500"
+            android:minHeight="60dp"
             android:textColor="@color/color_373d4d"
-            android:layout_marginEnd="20dp" />
+            android:textColorHint="@color/color_a1a8b3"
+            android:textSize="@dimen/text_16" />
 
         <TextView
             android:id="@+id/tv_description_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/text_16"
-            android:textColor="#c5c8cc"
             android:layout_below="@id/et_description"
-            android:text="@string/txt_calc_num_five"
-            android:gravity="center_vertical"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp" />
+            android:layout_marginEnd="20dp"
+            android:gravity="center_vertical"
+            android:text="@string/txt_calc_num_five"
+            android:textColor="#c5c8cc"
+            android:textSize="@dimen/text_16" />
 
     </RelativeLayout>
 
@@ -216,56 +224,59 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="19dp"
-        android:paddingStart="20dp"
-        android:paddingTop="19dp">
+        android:paddingStart="7dp"
+        android:paddingTop="19dp"
+        android:paddingEnd="0dp"
+        android:paddingBottom="19dp">
 
-        <TextView
+        <com.yht.frame.widgets.textview.RedStarTextView
             android:id="@+id/title33"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/txt_first_diagnosis"
             android:textColor="@color/color_373d4d"
             android:textSize="@dimen/text_16"
-            android:textStyle="bold"
-            android:text="@string/txt_first_diagnosis" />
+            android:textStyle="bold" />
 
         <View
             android:id="@+id/line33"
             android:layout_width="match_parent"
             android:layout_height="@dimen/app_hei_line"
-            android:background="@color/color_ebedf0"
             android:layout_below="@id/title33"
+            android:layout_marginStart="13dp"
             android:layout_marginTop="19dp"
-            android:layout_marginBottom="12dp" />
+            android:layout_marginBottom="12dp"
+            android:background="@color/color_ebedf0" />
 
         <com.yht.frame.widgets.edittext.MultiLineEditText
             android:id="@+id/et_diagnosis"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="60dp"
             android:layout_below="@id/line33"
+            android:layout_marginStart="13dp"
+            android:layout_marginEnd="20dp"
             android:background="@null"
-            android:hint="@string/txt_first_diagnosis_hint"
-            android:textColorHint="@color/color_a1a8b3"
-            android:textSize="@dimen/text_16"
             android:gravity="top"
-            android:maxLength="500"
+            android:hint="@string/txt_first_diagnosis_hint"
             android:imeOptions="actionDone"
+            android:maxLength="500"
+            android:minHeight="60dp"
             android:textColor="@color/color_373d4d"
-            android:layout_marginEnd="20dp" />
+            android:textColorHint="@color/color_a1a8b3"
+            android:textSize="@dimen/text_16" />
 
         <TextView
             android:id="@+id/tv_diagnosis_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/text_16"
-            android:textColor="#c5c8cc"
             android:layout_below="@id/et_diagnosis"
-            android:text="@string/txt_calc_num_five"
-            android:gravity="center_vertical"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp" />
+            android:layout_marginEnd="20dp"
+            android:gravity="center_vertical"
+            android:text="@string/txt_calc_num_five"
+            android:textColor="#c5c8cc"
+            android:textSize="@dimen/text_16" />
 
     </RelativeLayout>
 
@@ -277,94 +288,97 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="19dp"
-        android:paddingStart="20dp"
-        android:paddingTop="19dp">
+        android:paddingStart="7dp"
+        android:paddingTop="19dp"
+        android:paddingEnd="0dp"
+        android:paddingBottom="19dp">
 
-        <TextView
+        <com.yht.frame.widgets.textview.RedStarTextView
             android:id="@+id/title3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/txt_consultation_purpose"
             android:textColor="@color/color_373d4d"
             android:textSize="@dimen/text_16"
-            android:textStyle="bold"
-            android:text="@string/txt_consultation_purpose" />
+            android:textStyle="bold" />
 
         <View
             android:id="@+id/line3"
             android:layout_width="match_parent"
             android:layout_height="@dimen/app_hei_line"
-            android:background="@color/color_ebedf0"
             android:layout_below="@id/title3"
+            android:layout_marginStart="13dp"
             android:layout_marginTop="19dp"
-            android:layout_marginBottom="12dp" />
+            android:layout_marginBottom="12dp"
+            android:background="@color/color_ebedf0" />
 
         <com.yht.frame.widgets.edittext.MultiLineEditText
             android:id="@+id/et_purpose"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="60dp"
             android:layout_below="@id/line3"
+            android:layout_marginStart="13dp"
+            android:layout_marginEnd="20dp"
             android:background="@null"
-            android:hint="@string/txt_consultation_purpose_hint"
-            android:textColorHint="@color/color_a1a8b3"
-            android:textSize="@dimen/text_16"
             android:gravity="top"
-            android:maxLength="500"
+            android:hint="@string/txt_consultation_purpose_hint"
             android:imeOptions="actionDone"
+            android:maxLength="500"
+            android:minHeight="60dp"
             android:textColor="@color/color_373d4d"
-            android:layout_marginEnd="20dp" />
+            android:textColorHint="@color/color_a1a8b3"
+            android:textSize="@dimen/text_16" />
 
         <TextView
             android:id="@+id/tv_purpose_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/text_16"
-            android:textColor="#c5c8cc"
             android:layout_below="@id/et_purpose"
-            android:text="@string/txt_calc_num_five"
-            android:gravity="center_vertical"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp" />
+            android:layout_marginEnd="20dp"
+            android:gravity="center_vertical"
+            android:text="@string/txt_calc_num_five"
+            android:textColor="#c5c8cc"
+            android:textSize="@dimen/text_16" />
 
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="19dp"
-        android:paddingTop="19dp">
+        android:paddingTop="19dp"
+        android:paddingBottom="19dp">
 
         <TextView
             android:id="@+id/title3333"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/color_373d4d"
-            android:textSize="@dimen/text_16"
             android:paddingStart="20dp"
             android:paddingEnd="0dp"
-            android:textStyle="bold"
-            android:text="@string/txt_upload_data" />
+            android:text="@string/txt_upload_data"
+            android:textColor="@color/color_373d4d"
+            android:textSize="@dimen/text_16"
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/color_a1a8b3"
-            android:textSize="@dimen/text_16"
             android:layout_toEndOf="@id/title3333"
-            android:text="@string/txt_not_required" />
+            android:text="@string/txt_not_required"
+            android:textColor="@color/color_a1a8b3"
+            android:textSize="@dimen/text_16" />
 
         <View
             android:id="@+id/line3333"
             android:layout_width="match_parent"
             android:layout_height="@dimen/app_hei_line"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="0dp"
-            android:background="@color/color_ebedf0"
             android:layout_below="@id/title3333"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="19dp"
-            android:layout_marginBottom="12dp" />
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="12dp"
+            android:background="@color/color_ebedf0" />
 
         <com.yht.frame.widgets.gridview.AutoGridView
             android:id="@+id/auto_grid_view"
@@ -377,22 +391,22 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="84dp"
+        android:background="@color/color_f8f9fa"
         android:gravity="center"
-        android:paddingBottom="21dp"
-        android:paddingEnd="35dp"
         android:paddingStart="35dp"
         android:paddingTop="21dp"
-        android:background="@color/color_f8f9fa">
+        android:paddingEnd="35dp"
+        android:paddingBottom="21dp">
 
         <TextView
             android:id="@+id/tv_material_next"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/selector_public_next"
-            android:text="@string/txt_next"
             android:gravity="center"
-            android:textSize="@dimen/text_16"
-            android:textColor="@color/color_ffffff" />
+            android:text="@string/txt_next"
+            android:textColor="@color/color_ffffff"
+            android:textSize="@dimen/text_16" />
     </LinearLayout>
 
 </LinearLayout>

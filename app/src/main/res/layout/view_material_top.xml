@@ -8,26 +8,27 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingStart="7dp"
         android:paddingTop="19dp"
-        android:paddingStart="20dp">
+        android:paddingEnd="0dp">
 
-        <TextView
+        <com.yht.frame.widgets.textview.RedStarTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/text_16"
-            android:textColor="@color/color_373d4d"
             android:text="@string/txt_name"
+            android:textColor="@color/color_373d4d"
+            android:textSize="@dimen/text_16"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
             android:layout_marginStart="35dp"
             android:layout_marginEnd="20dp"
-            android:textSize="@dimen/text_16"
             android:textColor="@color/color_373d4d"
-            android:layout_alignParentEnd="true" />
+            android:textSize="@dimen/text_16" />
 
         <View
             android:layout_width="match_parent"
@@ -41,48 +42,49 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="20dp">
+        android:paddingStart="7dp"
+        android:paddingEnd="0dp">
 
-        <TextView
+        <com.yht.frame.widgets.textview.RedStarTextView
             android:id="@+id/tv_auth_base_sex"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/text_16"
-            android:textColor="@color/color_373d4d"
+            android:layout_marginTop="18dp"
             android:text="@string/txt_sex"
-            android:textStyle="bold"
-            android:layout_marginTop="18dp" />
+            android:textColor="@color/color_373d4d"
+            android:textSize="@dimen/text_16"
+            android:textStyle="bold" />
 
         <RadioGroup
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="35dp"
-            android:layout_marginEnd="20dp"
             android:layout_alignParentEnd="true"
-            android:orientation="horizontal"
-            android:layout_marginTop="18dp">
+            android:layout_marginStart="35dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginEnd="20dp"
+            android:orientation="horizontal">
 
             <RadioButton
                 android:id="@+id/rb_male"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/text_16"
-                android:textColor="@color/color_373d4d"
-                android:text="@string/txt_sex_male"
                 android:button="@drawable/selector_public_status"
+                android:gravity="center"
                 android:paddingHorizontal="4dp"
-                android:gravity="center" />
+                android:text="@string/txt_sex_male"
+                android:textColor="@color/color_373d4d"
+                android:textSize="@dimen/text_16" />
 
             <RadioButton
                 android:id="@+id/rb_female"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/text_16"
-                android:textColor="@color/color_373d4d"
-                android:text="@string/txt_sex_female"
                 android:layout_marginStart="16dp"
                 android:button="@drawable/selector_public_status"
-                android:paddingHorizontal="4dp" />
+                android:paddingHorizontal="4dp"
+                android:text="@string/txt_sex_female"
+                android:textColor="@color/color_373d4d"
+                android:textSize="@dimen/text_16" />
         </RadioGroup>
 
         <View
@@ -97,34 +99,35 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingStart="7dp"
         android:paddingTop="19dp"
-        android:paddingStart="20dp">
+        android:paddingEnd="0dp">
 
-        <TextView
+        <com.yht.frame.widgets.textview.RedStarTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/text_16"
-            android:textColor="@color/color_373d4d"
             android:text="@string/txt_age"
+            android:textColor="@color/color_373d4d"
+            android:textSize="@dimen/text_16"
             android:textStyle="bold" />
 
         <com.yht.frame.widgets.edittext.SuperEditText
             android:id="@+id/et_age"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
             android:layout_marginStart="35dp"
             android:layout_marginEnd="20dp"
-            android:hint="@string/txt_age_hint"
-            android:textSize="@dimen/text_16"
-            android:textColorHint="@color/color_a1a8b3"
-            android:textColor="@color/color_373d4d"
-            android:inputType="number"
-            android:maxLength="3"
-            android:imeOptions="actionNext"
-            android:singleLine="true"
             android:background="@null"
             android:gravity="end"
-            android:layout_alignParentEnd="true"
+            android:hint="@string/txt_age_hint"
+            android:imeOptions="actionNext"
+            android:inputType="number"
+            android:maxLength="3"
+            android:singleLine="true"
+            android:textColor="@color/color_373d4d"
+            android:textColorHint="@color/color_a1a8b3"
+            android:textSize="@dimen/text_16"
             app:hide_left_icon="true" />
 
         <View
@@ -139,30 +142,31 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingStart="7dp"
         android:paddingTop="19dp"
-        android:paddingStart="20dp">
+        android:paddingEnd="0dp">
 
-        <TextView
+        <com.yht.frame.widgets.textview.RedStarTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/text_16"
-            android:textColor="@color/color_373d4d"
             android:text="@string/txt_id_card_hint"
+            android:textColor="@color/color_373d4d"
+            android:textSize="@dimen/text_16"
             android:textStyle="bold" />
 
         <com.yht.frame.widgets.edittext.SuperEditText
             android:id="@+id/tv_id_card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
             android:layout_marginStart="35dp"
             android:layout_marginEnd="20dp"
-            android:textSize="@dimen/text_16"
-            android:textColor="@color/color_373d4d"
-            android:layout_alignParentEnd="true"
-            android:singleLine="true"
             android:background="@null"
-            android:focusableInTouchMode="false"
             android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:singleLine="true"
+            android:textColor="@color/color_373d4d"
+            android:textSize="@dimen/text_16"
             app:hide_left_icon="true" />
 
         <View
@@ -177,35 +181,36 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingStart="7dp"
         android:paddingTop="19dp"
-        android:paddingStart="20dp">
+        android:paddingEnd="0dp">
 
-        <TextView
+        <com.yht.frame.widgets.textview.RedStarTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/text_16"
-            android:textColor="@color/color_373d4d"
             android:text="@string/txt_contact_type"
+            android:textColor="@color/color_373d4d"
+            android:textSize="@dimen/text_16"
             android:textStyle="bold" />
 
         <com.yht.frame.widgets.edittext.SuperEditText
             android:id="@+id/et_phone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minWidth="150dp"
+            android:layout_alignParentEnd="true"
             android:layout_marginStart="35dp"
             android:layout_marginEnd="20dp"
-            android:hint="@string/txt_login_account_hint"
-            android:textSize="@dimen/text_16"
-            android:textColorHint="@color/color_a1a8b3"
-            android:textColor="@color/color_373d4d"
-            android:imeOptions="actionNext"
-            android:singleLine="true"
             android:background="@null"
+            android:gravity="end"
+            android:hint="@string/txt_login_account_hint"
+            android:imeOptions="actionNext"
             android:inputType="phone"
             android:maxLength="11"
-            android:gravity="end"
-            android:layout_alignParentEnd="true"
+            android:minWidth="150dp"
+            android:singleLine="true"
+            android:textColor="@color/color_373d4d"
+            android:textColorHint="@color/color_a1a8b3"
+            android:textSize="@dimen/text_16"
             app:hide_left_icon="true" />
 
         <View

@@ -96,7 +96,6 @@
 
     <declare-styleable name="RedStarTextView">
         <attr name="android:text" />
-        <attr name="show" format="boolean" />
         <attr name="starType" format="string|reference" />
         <attr name="starColor" format="color|reference" />
     </declare-styleable>
