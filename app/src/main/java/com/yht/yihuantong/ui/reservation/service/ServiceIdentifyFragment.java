@@ -54,7 +54,8 @@ import butterknife.OnClick;
  * @des 身份确认
  */
 public class ServiceIdentifyFragment extends BaseFragment
-        implements View.OnFocusChangeListener, AdapterView.OnItemClickListener, TextView.OnEditorActionListener {
+        implements View.OnFocusChangeListener, AdapterView.OnItemClickListener,
+        TextView.OnEditorActionListener {
     @BindView(R.id.et_patient_name)
     SuperEditText etPatientName;
     @BindView(R.id.et_patient_id_card)
@@ -160,7 +161,8 @@ public class ServiceIdentifyFragment extends BaseFragment
      * 扫码后获取居民信息
      */
     private void getPatientByQrId(String qrId) {
-        RequestUtils.getPatientByQrId(getContext(), loginBean.getToken(), qrId, BaseData.BASE_ZERO, this);
+        RequestUtils.getPatientByQrId(getContext(), loginBean.getToken(), qrId,
+                BaseData.BASE_ZERO, this);
     }
 
     /**
@@ -197,14 +199,16 @@ public class ServiceIdentifyFragment extends BaseFragment
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_identify_next:
-                //已经校验过  不在校验
-                if (reserveCheckBean != null && idCard.equals(reserveCheckBean.getIdCardNo()) &&
-                        name.equals(reserveCheckBean.getPatientName())) {
-                    if (checkListener != null) {
-                        checkListener.onCheckStepOne(reserveCheckBean);
+                if (initNextButton()) {
+                    //已经校验过  不在校验
+                    if (reserveCheckBean != null && idCard.equals(reserveCheckBean.getIdCardNo()) &&
+                            name.equals(reserveCheckBean.getPatientName())) {
+                        if (checkListener != null) {
+                            checkListener.onCheckStepOne(reserveCheckBean);
+                        }
+                    } else {
+                        verifyPatient();
                     }
-                } else {
-                    verifyPatient();
                 }
                 break;
             case R.id.layout_scan:
@@ -240,10 +244,16 @@ public class ServiceIdentifyFragment extends BaseFragment
         idCard = s.toString().replace(" ", "");
     }
 
-    private void initNextButton() {
-        if (!TextUtils.isEmpty(name) && BaseUtils.isCardNum(idCard)) {
-        } else {
+    private boolean initNextButton() {
+        if (TextUtils.isEmpty(name)) {
+            ToastUtil.toast(getContext(), R.string.toast_input_name);
+            return false;
         }
+        if (TextUtils.isEmpty(idCard)) {
+            ToastUtil.toast(getContext(), R.string.toast_input_id_card);
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -377,10 +387,12 @@ public class ServiceIdentifyFragment extends BaseFragment
 
     InputFilter emojiFilter = new InputFilter() {
         private String filterImoji = "[^a-zA-Z ·.\u4E00-\u9FA5]";
-        Pattern emoji = Pattern.compile(filterImoji, Pattern.UNICODE_CASE | Pattern.CASE_INSENSITIVE);
+        Pattern emoji = Pattern.compile(filterImoji,
+                Pattern.UNICODE_CASE | Pattern.CASE_INSENSITIVE);
 
         @Override
-        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+        public CharSequence filter(CharSequence source, int start, int end, Spanned dest,
+                                   int dstart, int dend) {
             Matcher emojiMatcher = emoji.matcher(source);
             if (emojiMatcher.find()) {
                 ToastUtil.toast(getContext(), R.string.txt_not_support_input);

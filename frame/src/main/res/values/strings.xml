@@ -516,6 +516,20 @@
     <string name="toast_load_image_error">图片加载失败</string>
     <string name="toast_version_update_hint">当前已是最新版本</string>
     <string name="txt_download_hint">开始下载</string>
+    <string name="toast_input_name">请输入居民姓名</string>
+    <string name="toast_input_age">请输入居民年龄</string>
+    <string name="toast_input_id_card">请输入居明身份证</string>
+    <string name="toast_input_phone">请输入居明联系方式</string>
+    <string name="toast_input_description">请输入病情描述</string>
+    <string name="toast_input_diagnosisHis">请输入初步诊断</string>
+    <string name="toast_input_diagnosisHis_description">请输入初步诊断及居民病情简介</string>
+    <string name="toast_input_remote_purpose">请输入会诊目的</string>
+    <string name="toast_select_time">请选择会诊时间</string>
+    <string name="toast_select_hospital_depart">请选择会诊医院-科室</string>
+    <string name="toast_select_sure_type">请居民签名确认或拍照确认</string>
+    <string name="toast_select_service">请选择服务</string>
+    <string name="toast_select_recv_doctor">请选择接诊医生</string>
+    <string name="toast_input_transfer_purpose">请填写转诊目的</string>
 
     <!--loadview-->
     <string name="brvah_loading">加载中&#8230;</string>

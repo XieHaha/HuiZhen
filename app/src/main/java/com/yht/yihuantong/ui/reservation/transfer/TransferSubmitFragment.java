@@ -35,6 +35,7 @@ import com.yht.frame.permission.Permission;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.ScalingUtils;
+import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.frame.widgets.dialog.SignatureDialog;
 import com.yht.frame.widgets.edittext.AbstractTextWatcher;
@@ -102,8 +103,6 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
     ImageView ivDeleteOne;
     @BindView(R.id.layout_upload_one)
     RelativeLayout layoutUploadOne;
-    @BindView(R.id.tv_submit_next)
-    TextView tvSubmitNext;
     @BindView(R.id.group_transfer_type)
     RadioGroup groupTransferType;
     @BindView(R.id.group_transfer_purpose)
@@ -201,11 +200,11 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 super.onTextChanged(s, start, before, count);
                 otherString = s.toString().trim();
-                tvNoticeNum.setText(String.format(getString(R.string.txt_calc_num_thirty), otherString.length()));
+                tvNoticeNum.setText(String.format(getString(R.string.txt_calc_num_thirty),
+                        otherString.length()));
                 if (reverseTransferBean != null) {
                     reverseTransferBean.setTransferTarget(otherString);
                 }
-                initNextButton();
             }
         });
     }
@@ -238,8 +237,7 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
             rbUp.setChecked(true);
             rbFamilyRequire.setChecked(true);
             rbSelf.setChecked(true);
-        }
-        else {
+        } else {
             //数据回填
             initTransferData();
         }
@@ -251,28 +249,23 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
             if (reverseTransferBean.getTransferType() == BASE_ZERO) {
                 transferTypeId = rbUp.getId();
                 rbUp.setChecked(true);
-            }
-            else if (reverseTransferBean.getTransferType() == BASE_ONE) {
+            } else if (reverseTransferBean.getTransferType() == BASE_ONE) {
                 transferTypeId = rbDown.getId();
                 rbDown.setChecked(true);
-            }
-            else {
+            } else {
                 reverseTransferBean.setTransferType(BASE_ZERO);
             }
             //缴费类型
             if (reverseTransferBean.getPayType() == BASE_ZERO) {
                 payTypeId = rbSelf.getId();
                 rbSelf.setChecked(true);
-            }
-            else if (reverseTransferBean.getPayType() == BASE_ONE) {
+            } else if (reverseTransferBean.getPayType() == BASE_ONE) {
                 payTypeId = rbMedicare.getId();
                 rbMedicare.setChecked(true);
-            }
-            else if (reverseTransferBean.getPayType() == BASE_TWO) {
+            } else if (reverseTransferBean.getPayType() == BASE_TWO) {
                 payTypeId = rbNcms.getId();
                 rbNcms.setChecked(true);
-            }
-            else {
+            } else {
                 reverseTransferBean.setPayType(BASE_ZERO);
             }
             //转诊目的
@@ -280,20 +273,17 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
                 if (getString(R.string.txt_family_require).equals(reverseTransferBean.getTransferTarget())) {
                     transferPurposeId = rbFamilyRequire.getId();
                     rbFamilyRequire.setChecked(true);
-                }
-                else if (getString(R.string.txt_rehabilitation).equals(reverseTransferBean.getTransferTarget())) {
+                } else if (getString(R.string.txt_rehabilitation).equals(reverseTransferBean.getTransferTarget())) {
                     rbRehabilitation.setChecked(true);
                     transferPurposeId = rbRehabilitation.getId();
-                }
-                else {
+                } else {
                     transferPurposeId = rbOther.getId();
                     rbOther.setChecked(true);
                     layoutOther.expand();
                     otherString = reverseTransferBean.getTransferTarget();
                     etOther.setText(otherString);
                 }
-            }
-            else {
+            } else {
                 reverseTransferBean.setTransferTarget(getString(R.string.txt_family_require));
             }
             //接诊医生
@@ -312,11 +302,10 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
                 ivDeleteOne.setVisibility(View.VISIBLE);
                 //裁剪完成，上传图片
                 Glide.with(this)
-                     .load(FileUrlUtil.addTokenToUrl(confirmImageUrl))
-                     .apply(GlideHelper.getOptionsPic(BaseUtils.dp2px(Objects.requireNonNull(getContext()), 4)))
-                     .into(ivUploadOne);
+                        .load(FileUrlUtil.addTokenToUrl(confirmImageUrl))
+                        .apply(GlideHelper.getOptionsPic(BaseUtils.dp2px(Objects.requireNonNull(getContext()), 4)))
+                        .into(ivUploadOne);
             }
-            initNextButton();
         }
     }
 
@@ -326,10 +315,9 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
     private void clearAll(ReserveTransferBean bean) {
         if (reverseTransferBean == null || bean == null) {
             clearAll = false;
-        }
-        else {
+        } else {
             clearAll = !reverseTransferBean.getPatientName().equals(bean.getPatientName()) ||
-                       !reverseTransferBean.getPatientIdCardNo().equals(bean.getPatientIdCardNo());
+                    !reverseTransferBean.getPatientIdCardNo().equals(bean.getPatientIdCardNo());
         }
     }
 
@@ -341,11 +329,10 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
             ivDeleteOne.setVisibility(View.VISIBLE);
             //裁剪完成，上传图片
             Glide.with(this)
-                 .load(mCurrentPhotoPath)
-                 .apply(GlideHelper.getOptionsPic(BaseUtils.dp2px(Objects.requireNonNull(getContext()), 4)))
-                 .into(ivUploadOne);
-        }
-        else {
+                    .load(mCurrentPhotoPath)
+                    .apply(GlideHelper.getOptionsPic(BaseUtils.dp2px(Objects.requireNonNull(getContext()), 4)))
+                    .into(ivUploadOne);
+        } else {
             imagePaths.clear();
             ivUploadOne.setImageDrawable(null);
             ivDeleteOne.setVisibility(View.GONE);
@@ -354,7 +341,6 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
             confirmImageUrl = "";
             mCurrentPhotoPath = "";
         }
-        initNextButton();
     }
 
     /**
@@ -366,16 +352,15 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
         tvSelect.setVisibility(View.GONE);
         if (curReceiveDoctor != null) {
             Glide.with(this)
-                 .load(curReceiveDoctor.getPhoto())
-                 .apply(GlideHelper.getOptions(BaseUtils.dp2px(Objects.requireNonNull(getContext()), 4)))
-                 .into(ivReceivingDoctor);
+                    .load(curReceiveDoctor.getPhoto())
+                    .apply(GlideHelper.getOptions(BaseUtils.dp2px(Objects.requireNonNull(getContext()), 4)))
+                    .into(ivReceivingDoctor);
             tvReceivingDoctorName.setText(curReceiveDoctor.getDoctorName());
             tvReceivingDoctorTitle.setText(curReceiveDoctor.getHospitalName());
             tvReceivingDoctorHospitalDepart.setText(
                     curReceiveDoctor.getJobTitle() + "  " + curReceiveDoctor.getDepartmentName());
             ivReceivingDoctorDelete.setImageResource(R.mipmap.ic_delete_red);
         }
-        if (refresh) { initNextButton(); }
     }
 
     /**
@@ -385,28 +370,35 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
         curReceiveDoctor = null;
         tvSelect.setVisibility(View.VISIBLE);
         layoutReceivingDoctor.setVisibility(View.GONE);
-        initNextButton();
     }
 
     /**
      * next
      */
-    private void initNextButton() {
+    private boolean initNextButton() {
         boolean other = rbOther.getId() != transferPurposeId || !TextUtils.isEmpty(otherString);
+        if (!other) {
+            ToastUtil.toast(getContext(), R.string.toast_input_transfer_purpose);
+            return false;
+        }
+        if (curReceiveDoctor == null) {
+            ToastUtil.toast(getContext(), R.string.toast_select_recv_doctor);
+            return false;
+        }
         boolean url = (!TextUtils.isEmpty(confirmImageUrl) && sureType == BASE_ONE) ||
-                      (sureType == BASE_TWO && !TextUtils.isEmpty(signatureImageUrl));
-        if (curReceiveDoctor != null && url && other) {
-            tvSubmitNext.setSelected(true);
+                (sureType == BASE_TWO && !TextUtils.isEmpty(signatureImageUrl));
+        if (!url) {
+            ToastUtil.toast(getContext(), R.string.toast_select_sure_type);
+            return false;
         }
-        else {
-            tvSubmitNext.setSelected(false);
-        }
+        return true;
     }
 
     @OnClick({
             R.id.layout_select_receiving_doctor, R.id.iv_receiving_doctor_call, R.id.iv_delete_one,
-            R.id.layout_upload_one, R.id.layout_upload_two, R.id.layout_signature, R.id.layout_camera,
-            R.id.tv_submit_next })
+            R.id.layout_upload_one, R.id.layout_upload_two, R.id.layout_signature,
+            R.id.layout_camera,
+            R.id.tv_submit_next})
     public void onViewClicked(View view) {
         Intent intent;
         switch (view.getId()) {
@@ -418,9 +410,9 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
                 break;
             case R.id.layout_upload_one:
                 if (TextUtils.isEmpty(confirmImageUrl)) {
-                    permissionHelper.request(new String[] { Permission.CAMERA, Permission.STORAGE_WRITE });
-                }
-                else {
+                    permissionHelper.request(new String[]{Permission.CAMERA,
+                            Permission.STORAGE_WRITE});
+                } else {
                     //查看大图
                     intent = new Intent(getContext(), ImagePreviewActivity.class);
                     intent.putExtra(ImagePreviewActivity.INTENT_URLS, imagePaths);
@@ -433,12 +425,11 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
                 initImage(false);
                 break;
             case R.id.tv_submit_next:
-                if (tvSubmitNext.isSelected() && onTransferListener != null) {
+                if (initNextButton() && onTransferListener != null) {
                     if (sureType == BASE_ONE) {
                         reverseTransferBean.setConfirmPhoto(confirmImageUrl);
                         reverseTransferBean.setConfirmType(String.valueOf(BASE_ONE));
-                    }
-                    else {
+                    } else {
                         reverseTransferBean.setConfirmPhoto(signatureImageUrl);
                         reverseTransferBean.setConfirmType(String.valueOf(BASE_TWO));
                     }
@@ -498,7 +489,6 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
             default:
                 break;
         }
-        initNextButton();
     }
 
     /**
@@ -510,35 +500,31 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
             case R.id.group_transfer_type:
                 transferTypeId = checkedId;
                 //转诊类型
-                reverseTransferBean.setTransferType(transferTypeId == rbUp.getId() ? BASE_ZERO : BASE_ONE);
+                reverseTransferBean.setTransferType(transferTypeId == rbUp.getId() ? BASE_ZERO :
+                        BASE_ONE);
                 break;
             case R.id.group_transfer_purpose:
                 transferPurposeId = checkedId;
                 if (checkedId == rbOther.getId()) {
                     layoutOther.expand();
-                }
-                else {
+                } else {
                     layoutOther.collapse();
                 }
                 //转诊目的
                 if (transferPurposeId == rbFamilyRequire.getId()) {
                     reverseTransferBean.setTransferTarget(getString(R.string.txt_family_require));
-                }
-                else if (transferPurposeId == rbRehabilitation.getId()) {
+                } else if (transferPurposeId == rbRehabilitation.getId()) {
                     reverseTransferBean.setTransferTarget(getString(R.string.txt_rehabilitation));
                 }
-                initNextButton();
                 break;
             case R.id.group_payment:
                 payTypeId = checkedId;
                 //缴费类型
                 if (payTypeId == rbSelf.getId()) {
                     reverseTransferBean.setPayType(BASE_ZERO);
-                }
-                else if (payTypeId == rbMedicare.getId()) {
+                } else if (payTypeId == rbMedicare.getId()) {
                     reverseTransferBean.setPayType(BASE_ONE);
-                }
-                else {
+                } else {
                     reverseTransferBean.setPayType(BASE_TWO);
                 }
                 break;
@@ -552,16 +538,14 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
         super.onResponseSuccess(task, response);
         if (task == Tasks.UPLOAD_FILE) {
             if (sureType == BASE_ONE) {
-                confirmImageUrl = (String)response.getData();
+                confirmImageUrl = (String) response.getData();
                 if (imagePaths.size() > 0) {
                     imagePaths.get(0).setImageUrl(confirmImageUrl);
                 }
                 initImage(true);
-            }
-            else {
-                signatureImageUrl = (String)response.getData();
+            } else {
+                signatureImageUrl = (String) response.getData();
                 Glide.with(this).load(signatureImageUrl).apply(GlideHelper.getOptionsPic(0)).into(ivSignature);
-                initNextButton();
             }
         }
     }
@@ -582,7 +566,8 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
                 break;
             case REQUEST_CODE_SELECT_DOCTOR:
                 if (data != null) {
-                    curReceiveDoctor = (ReceiverDoctorBean)data.getSerializableExtra(CommonData.KEY_DOCTOR_BEAN);
+                    curReceiveDoctor =
+                            (ReceiverDoctorBean) data.getSerializableExtra(CommonData.KEY_DOCTOR_BEAN);
                 }
                 reverseTransferBean.setReceiveDoctorCode(curReceiveDoctor.getDoctorCode());
                 reverseTransferBean.setReceiveDoctorName(curReceiveDoctor.getDoctorName());
@@ -610,20 +595,20 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             mCurrentPhotoUri = FileProvider.getUriForFile(Objects.requireNonNull(getContext()),
-                                                          ZycApplication.getInstance().getPackageName() +
-                                                          ".fileprovider", cameraTempFile);
-        }
-        else {
+                    ZycApplication.getInstance().getPackageName() +
+                            ".fileprovider", cameraTempFile);
+        } else {
             mCurrentPhotoUri = Uri.fromFile(cameraTempFile);
         }
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             List<ResolveInfo> resInfoList = Objects.requireNonNull(getContext())
-                                                   .getPackageManager()
-                                                   .queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+                    .getPackageManager()
+                    .queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
             for (ResolveInfo resolveInfo : resInfoList) {
                 String packageName = resolveInfo.activityInfo.packageName;
-                getContext().grantUriPermission(packageName, mCurrentPhotoUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION |
-                                                                               Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                getContext().grantUriPermission(packageName, mCurrentPhotoUri,
+                        Intent.FLAG_GRANT_WRITE_URI_PERMISSION |
+                                Intent.FLAG_GRANT_READ_URI_PERMISSION);
             }
         }
         // 指定调用相机拍照后照片的储存路径
@@ -634,7 +619,7 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
     @Override
     public void onNoPermissionNeeded(@NonNull Object permissionName) {
         if (permissionName instanceof String[]) {
-            if (isSamePermission(Permission.CAMERA, ((String[])permissionName)[0])) {
+            if (isSamePermission(Permission.CAMERA, ((String[]) permissionName)[0])) {
                 openCamera();
             }
         }

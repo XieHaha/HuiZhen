@@ -298,7 +298,7 @@
             android:layout_marginStart="19dp"
             android:layout_marginTop="30dp"
             android:layout_marginEnd="31dp"
-            android:background="@drawable/selector_public_next"
+            android:background="@drawable/corner28_1491fc_bg"
             android:gravity="center"
             android:text="@string/txt_sure_submit"
             android:textColor="@color/color_ffffff"

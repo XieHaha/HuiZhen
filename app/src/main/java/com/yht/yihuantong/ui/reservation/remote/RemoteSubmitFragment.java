@@ -64,8 +64,6 @@ public class RemoteSubmitFragment extends BaseFragment {
     ImageView ivDeleteOne;
     @BindView(R.id.layout_upload_one)
     RelativeLayout layoutUploadOne;
-    @BindView(R.id.tv_submit_next)
-    TextView tvSubmitNext;
     @BindView(R.id.tv_signature)
     TextView tvSignature;
     @BindView(R.id.tv_camera)
@@ -181,8 +179,7 @@ public class RemoteSubmitFragment extends BaseFragment {
             //移除所有已添加子VIEW
             layoutDepart.removeAllViews();
             remoteDepartBeans.clear();
-        }
-        else {
+        } else {
             //数据回填
             initRemoteData();
         }
@@ -195,8 +192,10 @@ public class RemoteSubmitFragment extends BaseFragment {
         if (reserveRemoteBean != null) {
             remoteDepartBeans.clear();
             remoteDepartId.clear();
-            long start = BaseUtils.date2TimeStamp(reserveRemoteBean.getStartAt(), BaseUtils.YYYY_MM_DD_HH_MM);
-            long end = BaseUtils.date2TimeStamp(reserveRemoteBean.getEndAt(), BaseUtils.YYYY_MM_DD_HH_MM);
+            long start = BaseUtils.date2TimeStamp(reserveRemoteBean.getStartAt(),
+                    BaseUtils.YYYY_MM_DD_HH_MM);
+            long end = BaseUtils.date2TimeStamp(reserveRemoteBean.getEndAt(),
+                    BaseUtils.YYYY_MM_DD_HH_MM);
             tvSelect.setText(timeFormat(start, end));
             ArrayList<DepartInfoBean> hosDeptInfo = reserveRemoteBean.getHosDeptInfo();
             if (hosDeptInfo != null) {
@@ -233,10 +232,9 @@ public class RemoteSubmitFragment extends BaseFragment {
     private void clearAll(ReserveRemoteBean bean) {
         if (reserveRemoteBean == null || bean == null) {
             clearAll = false;
-        }
-        else {
+        } else {
             clearAll = !reserveRemoteBean.getPatientName().equals(bean.getPatientName()) ||
-                       !reserveRemoteBean.getPatientIdCard().equals(bean.getPatientIdCard());
+                    !reserveRemoteBean.getPatientIdCard().equals(bean.getPatientIdCard());
         }
     }
 
@@ -256,11 +254,10 @@ public class RemoteSubmitFragment extends BaseFragment {
             ivDeleteOne.setVisibility(View.VISIBLE);
             //裁剪完成，上传图片
             Glide.with(this)
-                 .load(mCurrentPhotoPath)
-                 .apply(GlideHelper.getOptionsPic(BaseUtils.dp2px(getContext(), 4)))
-                 .into(ivUploadOne);
-        }
-        else {
+                    .load(mCurrentPhotoPath)
+                    .apply(GlideHelper.getOptionsPic(BaseUtils.dp2px(getContext(), 4)))
+                    .into(ivUploadOne);
+        } else {
             imagePaths.clear();
             ivUploadOne.setImageDrawable(null);
             ivDeleteOne.setVisibility(View.GONE);
@@ -269,15 +266,14 @@ public class RemoteSubmitFragment extends BaseFragment {
             confirmImageUrl = "";
             mCurrentPhotoPath = "";
         }
-        initNextButton();
     }
 
     /**
      * 选择时间回调
      */
     private void selectReservationTime() {
-        tvSelect.setText(String.format(getString(R.string.txt_date_joiner), date, startHour, endHour));
-        initNextButton();
+        tvSelect.setText(String.format(getString(R.string.txt_date_joiner), date, startHour,
+                endHour));
     }
 
     /**
@@ -289,22 +285,21 @@ public class RemoteSubmitFragment extends BaseFragment {
         if (remoteDepartBeans != null && remoteDepartBeans.size() > 0) {
             for (int i = 0; i < remoteDepartBeans.size(); i++) {
                 RemoteDepartBean bean = remoteDepartBeans.get(i);
-                TextView textView = (TextView)LayoutInflater.from(getContext())
-                                                            .inflate(R.layout.item_remote_depart_simple, null);
-                textView.setText(String.format(getString(R.string.txt_joiner), bean.getDepartmentName(),
-                                               bean.getHospitalName()));
+                TextView textView = (TextView) LayoutInflater.from(getContext())
+                        .inflate(R.layout.item_remote_depart_simple, null);
+                textView.setText(String.format(getString(R.string.txt_joiner),
+                        bean.getDepartmentName(),
+                        bean.getHospitalName()));
                 layoutDepart.addView(textView);
             }
             tvSelectHint.setVisibility(View.VISIBLE);
             tvDepartSelect.setText(R.string.txt_add);
             tvDepartSelect.setSelected(true);
-        }
-        else {
+        } else {
             tvSelectHint.setVisibility(View.INVISIBLE);
             tvDepartSelect.setText(R.string.txt_select_depart_hint1);
             tvDepartSelect.setSelected(false);
         }
-        initNextButton();
     }
 
     /**
@@ -316,8 +311,7 @@ public class RemoteSubmitFragment extends BaseFragment {
         if (type == BASE_ONE) {
             intent = new Intent(getContext(), ConsultationTimeActivity.class);
             startActivityForResult(intent, REQUEST_CODE_SELECT_REMOTE_HOUR);
-        }
-        else {
+        } else {
             //清除已选的科室信息
             remoteDepartId.clear();
             remoteDepartBeans.clear();
@@ -335,20 +329,28 @@ public class RemoteSubmitFragment extends BaseFragment {
     /**
      * next按钮可点击状态
      */
-    private void initNextButton() {
+    private boolean initNextButton() {
+        if (TextUtils.isEmpty(date)) {
+            ToastUtil.toast(getContext(), R.string.toast_select_time);
+            return false;
+        }
+        if (remoteDepartBeans == null || remoteDepartBeans.size() == 0) {
+            ToastUtil.toast(getContext(), R.string.toast_select_hospital_depart);
+            return false;
+        }
         boolean next = (!TextUtils.isEmpty(confirmImageUrl) && sureType == BASE_ONE) ||
-                       (sureType == BASE_TWO && !TextUtils.isEmpty(signatureImageUrl));
-        if (next && !TextUtils.isEmpty(date) && remoteDepartBeans.size() > 0) {
-            tvSubmitNext.setSelected(true);
+                (sureType == BASE_TWO && !TextUtils.isEmpty(signatureImageUrl));
+        if (!next) {
+            ToastUtil.toast(getContext(), R.string.toast_select_sure_type);
+            return false;
         }
-        else {
-            tvSubmitNext.setSelected(false);
-        }
+        return true;
     }
 
     @OnClick({
-            R.id.layout_select_check_type, R.id.layout_hospital_depart, R.id.layout_upload_one, R.id.iv_delete_one,
-            R.id.tv_submit_next, R.id.layout_upload_two, R.id.layout_signature, R.id.layout_camera })
+            R.id.layout_select_check_type, R.id.layout_hospital_depart, R.id.layout_upload_one,
+            R.id.iv_delete_one,
+            R.id.tv_submit_next, R.id.layout_upload_two, R.id.layout_signature, R.id.layout_camera})
     public void onViewClicked(View view) {
         Intent intent;
         switch (view.getId()) {
@@ -367,16 +369,15 @@ public class RemoteSubmitFragment extends BaseFragment {
                     intent.putExtra(CommonData.KEY_REMOTE_END_HOUR, endHour);
                     intent.putExtra(CommonData.KEY_REMOTE_DEPART_LIST_ID, remoteDepartId);
                     startActivityForResult(intent, REQUEST_CODE_SELECT_DEPART);
-                }
-                else {
+                } else {
                     ToastUtil.toast(getContext(), R.string.txt_hour_empty_hint);
                 }
                 break;
             case R.id.layout_upload_one:
                 if (TextUtils.isEmpty(confirmImageUrl)) {
-                    permissionHelper.request(new String[] { Permission.CAMERA, Permission.STORAGE_WRITE });
-                }
-                else {
+                    permissionHelper.request(new String[]{Permission.CAMERA,
+                            Permission.STORAGE_WRITE});
+                } else {
                     //查看大图
                     intent = new Intent(getContext(), ImagePreviewActivity.class);
                     intent.putExtra(ImagePreviewActivity.INTENT_URLS, imagePaths);
@@ -439,19 +440,17 @@ public class RemoteSubmitFragment extends BaseFragment {
             default:
                 break;
         }
-        initNextButton();
     }
 
     /**
      * 提交数据
      */
     private void submit() {
-        if (tvSubmitNext.isSelected() && onRemoteListener != null) {
+        if (initNextButton() && onRemoteListener != null) {
             if (sureType == BASE_ONE) {
                 reserveRemoteBean.setConfirmFile(confirmImageUrl);
                 reserveRemoteBean.setConfirmType(String.valueOf(BASE_ONE));
-            }
-            else {
+            } else {
                 reserveRemoteBean.setConfirmFile(signatureImageUrl);
                 reserveRemoteBean.setConfirmType(String.valueOf(BASE_TWO));
             }
@@ -464,16 +463,14 @@ public class RemoteSubmitFragment extends BaseFragment {
         super.onResponseSuccess(task, response);
         if (task == Tasks.UPLOAD_FILE) {
             if (sureType == BASE_ONE) {
-                confirmImageUrl = (String)response.getData();
+                confirmImageUrl = (String) response.getData();
                 if (imagePaths.size() > 0) {
                     imagePaths.get(0).setImageUrl(confirmImageUrl);
                 }
                 initImage(true);
-            }
-            else {
-                signatureImageUrl = (String)response.getData();
+            } else {
+                signatureImageUrl = (String) response.getData();
                 Glide.with(this).load(signatureImageUrl).apply(GlideHelper.getOptionsPic(0)).into(ivSignature);
-                initNextButton();
             }
         }
     }
@@ -520,9 +517,10 @@ public class RemoteSubmitFragment extends BaseFragment {
                         reserveRemoteBean.setStartAt(date + " " + startHour);
                         reserveRemoteBean.setEndAt(date + " " + endHour);
                     }
-                    remoteDepartBeans = (ArrayList<RemoteDepartBean>)data.getSerializableExtra(
+                    remoteDepartBeans = (ArrayList<RemoteDepartBean>) data.getSerializableExtra(
                             CommonData.KEY_REMOTE_DEPART_LIST);
-                    remoteDepartId = data.getIntegerArrayListExtra(CommonData.KEY_REMOTE_DEPART_LIST_ID);
+                    remoteDepartId =
+                            data.getIntegerArrayListExtra(CommonData.KEY_REMOTE_DEPART_LIST_ID);
                     ArrayList<DepartInfoBean> list = new ArrayList<>();
                     for (RemoteDepartBean bean : remoteDepartBeans) {
                         DepartInfoBean departInfoBean = new DepartInfoBean();
@@ -553,20 +551,21 @@ public class RemoteSubmitFragment extends BaseFragment {
         // 指定调用相机拍照后照片的储存路径
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            mCurrentPhotoUri = FileProvider.getUriForFile(getContext(), ZycApplication.getInstance().getPackageName() +
-                                                                        ".fileprovider", cameraTempFile);
-        }
-        else {
+            mCurrentPhotoUri = FileProvider.getUriForFile(getContext(),
+                    ZycApplication.getInstance().getPackageName() +
+                            ".fileprovider", cameraTempFile);
+        } else {
             mCurrentPhotoUri = Uri.fromFile(cameraTempFile);
         }
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             List<ResolveInfo> resInfoList = getContext().getPackageManager()
-                                                        .queryIntentActivities(intent,
-                                                                               PackageManager.MATCH_DEFAULT_ONLY);
+                    .queryIntentActivities(intent,
+                            PackageManager.MATCH_DEFAULT_ONLY);
             for (ResolveInfo resolveInfo : resInfoList) {
                 String packageName = resolveInfo.activityInfo.packageName;
-                getContext().grantUriPermission(packageName, mCurrentPhotoUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION |
-                                                                               Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                getContext().grantUriPermission(packageName, mCurrentPhotoUri,
+                        Intent.FLAG_GRANT_WRITE_URI_PERMISSION |
+                                Intent.FLAG_GRANT_READ_URI_PERMISSION);
             }
         }
         // 指定调用相机拍照后照片的储存路径
@@ -577,7 +576,7 @@ public class RemoteSubmitFragment extends BaseFragment {
     @Override
     public void onNoPermissionNeeded(@NonNull Object permissionName) {
         if (permissionName instanceof String[]) {
-            if (isSamePermission(Permission.CAMERA, ((String[])permissionName)[0])) {
+            if (isSamePermission(Permission.CAMERA, ((String[]) permissionName)[0])) {
                 openCamera();
             }
         }

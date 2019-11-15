@@ -67,8 +67,6 @@ public class RemoteMaterialFragment extends BaseFragment implements View.OnFocus
     MultiLineEditText etDiagnosis;
     @BindView(R.id.tv_diagnosis_num)
     TextView tvDiagnosisNum;
-    @BindView(R.id.tv_material_next)
-    TextView tvMaterialNext;
     @BindView(R.id.layout_past_medical_his)
     LinearLayout layoutPastMedicalHis;
     @BindView(R.id.layout_family_medical_his)
@@ -237,7 +235,6 @@ public class RemoteMaterialFragment extends BaseFragment implements View.OnFocus
             initDiagnosis();
             //会珍目的
             initPurpose();
-            initNextButton();
         }
     }
 
@@ -277,7 +274,6 @@ public class RemoteMaterialFragment extends BaseFragment implements View.OnFocus
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 super.onTextChanged(s, start, before, count);
                 age = s.toString().trim();
-                initNextButton();
                 if (!TextUtils.isEmpty(age)) {
                     reserveRemoteBean.setPatientAge(Integer.valueOf(age));
                 } else {
@@ -294,8 +290,6 @@ public class RemoteMaterialFragment extends BaseFragment implements View.OnFocus
                 if (BaseUtils.isMobileNumber(phone)) {
                     reserveRemoteBean.setPatientMobile(phone);
                 }
-                //判断手机号和诊断史
-                initNextButton();
             }
         });
         etDescription.addTextChangedListener(new AbstractTextWatcher() {
@@ -303,7 +297,6 @@ public class RemoteMaterialFragment extends BaseFragment implements View.OnFocus
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 super.onTextChanged(s, start, before, count);
                 description = s.toString().trim();
-                initNextButton();
                 initDescription();
                 //病情描述
                 reserveRemoteBean.setDescIll(description);
@@ -314,7 +307,6 @@ public class RemoteMaterialFragment extends BaseFragment implements View.OnFocus
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 super.onTextChanged(s, start, before, count);
                 diagnosisHis = s.toString().trim();
-                initNextButton();
                 initDiagnosis();
                 //初步诊断
                 reserveRemoteBean.setInitResult(diagnosisHis);
@@ -325,7 +317,6 @@ public class RemoteMaterialFragment extends BaseFragment implements View.OnFocus
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 super.onTextChanged(s, start, before, count);
                 purpose = s.toString().trim();
-                initNextButton();
                 initPurpose();
                 //会诊目的
                 reserveRemoteBean.setDestination(purpose);
@@ -373,7 +364,7 @@ public class RemoteMaterialFragment extends BaseFragment implements View.OnFocus
     }
 
     /**
-     * 诊断内容
+     * 初步诊断
      */
     private void initDiagnosis() {
         int length = 0;
@@ -385,7 +376,7 @@ public class RemoteMaterialFragment extends BaseFragment implements View.OnFocus
     }
 
     /**
-     * 诊断内容
+     * 会诊目的
      */
     private void initPurpose() {
         int length = 0;
@@ -430,7 +421,6 @@ public class RemoteMaterialFragment extends BaseFragment implements View.OnFocus
         imagePaths.remove(position);
         autoGridView.updateImg(imagePaths, true);
         initPatientResource();
-        initNextButton();
     }
 
     /**
@@ -443,13 +433,28 @@ public class RemoteMaterialFragment extends BaseFragment implements View.OnFocus
     /**
      * next
      */
-    private void initNextButton() {
-        //判断手机号和诊断史
-        if (BaseUtils.isMobileNumber(phone) && !TextUtils.isEmpty(description) && !TextUtils.isEmpty(diagnosisHis) && !TextUtils.isEmpty(purpose) && !TextUtils.isEmpty(age)) {
-            tvMaterialNext.setSelected(true);
-        } else {
-            tvMaterialNext.setSelected(false);
+    private boolean initNextButton() {
+        if (TextUtils.isEmpty(age)) {
+            ToastUtil.toast(getContext(), R.string.toast_input_age);
+            return false;
         }
+        if (!BaseUtils.isMobileNumber(phone)) {
+            ToastUtil.toast(getContext(), R.string.toast_input_phone);
+            return false;
+        }
+        if (TextUtils.isEmpty(description)) {
+            ToastUtil.toast(getContext(), R.string.toast_input_description);
+            return false;
+        }
+        if (TextUtils.isEmpty(diagnosisHis)) {
+            ToastUtil.toast(getContext(), R.string.toast_input_diagnosisHis);
+            return false;
+        }
+        if (TextUtils.isEmpty(purpose)) {
+            ToastUtil.toast(getContext(), R.string.toast_input_remote_purpose);
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -470,7 +475,7 @@ public class RemoteMaterialFragment extends BaseFragment implements View.OnFocus
                 startActivityForResult(intent, REQUEST_CODE_PAST_HISTORY);
                 break;
             case R.id.tv_material_next:
-                if (tvMaterialNext.isSelected() && onRemoteListener != null) {
+                if (initNextButton() && onRemoteListener != null) {
                     onRemoteListener.onRemoteStepTwo(reserveRemoteBean);
                 }
                 break;
@@ -497,7 +502,6 @@ public class RemoteMaterialFragment extends BaseFragment implements View.OnFocus
                     initPatientResource();
                     closeLoadingView();
                 }
-                initNextButton();
                 break;
             default:
                 break;
@@ -515,7 +519,6 @@ public class RemoteMaterialFragment extends BaseFragment implements View.OnFocus
             reserveRemoteBean.setPast(pastHistoryData.get(0));
             reserveRemoteBean.setFamily(pastHistoryData.get(1));
             reserveRemoteBean.setAllergy(pastHistoryData.get(2));
-            initNextButton();
         } else if (requestCode == RC_PICK_IMG) {
             paths = Matisse.obtainPathResult(data);
             if (paths != null && paths.size() > 0) {

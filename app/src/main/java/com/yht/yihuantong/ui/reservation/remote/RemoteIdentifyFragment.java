@@ -54,7 +54,8 @@ import butterknife.OnClick;
  * @des 身份确认
  */
 public class RemoteIdentifyFragment extends BaseFragment
-        implements View.OnFocusChangeListener, AdapterView.OnItemClickListener, TextView.OnEditorActionListener {
+        implements View.OnFocusChangeListener, AdapterView.OnItemClickListener,
+        TextView.OnEditorActionListener {
     @BindView(R.id.et_patient_name)
     SuperEditText etPatientName;
     @BindView(R.id.et_patient_id_card)
@@ -148,7 +149,6 @@ public class RemoteIdentifyFragment extends BaseFragment
                 } else {
                     scanResult = false;
                 }
-                initNextButton();
             }
         });
     }
@@ -161,7 +161,8 @@ public class RemoteIdentifyFragment extends BaseFragment
      * 扫码后获取居民信息
      */
     private void getPatientByQrId(String qrId) {
-        RequestUtils.getPatientByQrId(getContext(), loginBean.getToken(), qrId, BaseData.BASE_ZERO, this);
+        RequestUtils.getPatientByQrId(getContext(), loginBean.getToken(), qrId,
+                BaseData.BASE_ZERO, this);
     }
 
     /**
@@ -198,14 +199,16 @@ public class RemoteIdentifyFragment extends BaseFragment
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_identify_next:
-                //已经校验过  不在校验
-                if (reserveRemoteBean != null && idCard.equals(reserveRemoteBean.getPatientIdCard()) &&
-                        name.equals(reserveRemoteBean.getPatientName())) {
-                    if (onRemoteListener != null) {
-                        onRemoteListener.onRemoteStepOne(reserveRemoteBean);
+                if (initNextButton()) {
+                    //已经校验过  不在校验
+                    if (reserveRemoteBean != null && idCard.equals(reserveRemoteBean.getPatientIdCard()) &&
+                            name.equals(reserveRemoteBean.getPatientName())) {
+                        if (onRemoteListener != null) {
+                            onRemoteListener.onRemoteStepOne(reserveRemoteBean);
+                        }
+                    } else {
+                        verifyPatient();
                     }
-                } else {
-                    verifyPatient();
                 }
                 break;
             case R.id.layout_scan:
@@ -223,7 +226,6 @@ public class RemoteIdentifyFragment extends BaseFragment
             if (!TextUtils.isEmpty(idCard) && !BaseUtils.isCardNum(idCard)) {
                 ToastUtil.toast(getContext(), R.string.toast_id_card_error);
             }
-            initNextButton();
         }
     }
 
@@ -240,13 +242,18 @@ public class RemoteIdentifyFragment extends BaseFragment
      */
     public void onCardTextChanged(CharSequence s, int start, int before, int count) {
         idCard = s.toString().replace(" ", "");
-        initNextButton();
     }
 
-    private void initNextButton() {
-        if (!TextUtils.isEmpty(name) && BaseUtils.isCardNum(idCard)) {
-        } else {
+    private boolean initNextButton() {
+        if (TextUtils.isEmpty(name)) {
+            ToastUtil.toast(getContext(), R.string.toast_input_name);
+            return false;
         }
+        if (TextUtils.isEmpty(idCard)) {
+            ToastUtil.toast(getContext(), R.string.toast_input_id_card);
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -256,7 +263,6 @@ public class RemoteIdentifyFragment extends BaseFragment
         etPatientName.setText(name = bean.getName());
         etPatientName.setSelection(name.length());
         etPatientIdCard.setText(idCard = bean.getIdCard());
-        initNextButton();
     }
 
     /**
@@ -309,7 +315,6 @@ public class RemoteIdentifyFragment extends BaseFragment
                     etPatientName.setSelection(name.length());
                     etPatientIdCard.setText(idCard);
                     etPatientIdCard.setSelection(etPatientIdCard.getText().toString().length());
-                    initNextButton();
                 }
                 break;
             default:
@@ -379,12 +384,14 @@ public class RemoteIdentifyFragment extends BaseFragment
         onRemoteListener.onRemoteStepOne(reserveRemoteBean);
     }
 
-    InputFilter emojiFilter = new InputFilter() {
+    private InputFilter emojiFilter = new InputFilter() {
         private String filterImoji = "[^a-zA-Z ·.\u4E00-\u9FA5]";
-        Pattern emoji = Pattern.compile(filterImoji, Pattern.UNICODE_CASE | Pattern.CASE_INSENSITIVE);
+        Pattern emoji = Pattern.compile(filterImoji,
+                Pattern.UNICODE_CASE | Pattern.CASE_INSENSITIVE);
 
         @Override
-        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+        public CharSequence filter(CharSequence source, int start, int end, Spanned dest,
+                                   int dstart, int dend) {
             Matcher emojiMatcher = emoji.matcher(source);
             if (emojiMatcher.find()) {
                 ToastUtil.toast(getContext(), R.string.txt_not_support_input);

@@ -242,7 +242,7 @@
             android:id="@+id/tv_material_next"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/selector_public_next"
+            android:background="@drawable/corner28_1491fc_bg"
             android:gravity="center"
             android:text="@string/txt_next"
             android:textColor="@color/color_ffffff"

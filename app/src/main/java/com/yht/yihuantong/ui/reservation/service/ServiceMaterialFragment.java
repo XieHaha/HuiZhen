@@ -51,8 +51,6 @@ public class ServiceMaterialFragment extends BaseFragment implements View.OnFocu
     MultiLineEditText etDiagnosis;
     @BindView(R.id.tv_diagnosis_num)
     TextView tvDiagnosisNum;
-    @BindView(R.id.tv_material_next)
-    TextView tvMaterialNext;
     @BindView(R.id.layout_past_medical_his)
     LinearLayout layoutPastMedicalHis;
     @BindView(R.id.layout_family_medical_his)
@@ -75,7 +73,8 @@ public class ServiceMaterialFragment extends BaseFragment implements View.OnFocu
      * 基础信息
      */
     private int sex;
-    private String age, phone, pastMedicalHis = "", familyMedicalHis = "", allergiesHis = "", diagnosisHis = "";
+    private String age, phone, pastMedicalHis = "", familyMedicalHis = "", allergiesHis = "",
+            diagnosisHis = "";
     /**
      * 既往史数据
      */
@@ -142,8 +141,7 @@ public class ServiceMaterialFragment extends BaseFragment implements View.OnFocu
                 pastMedicalHis = reserveCheckBean.getPastHistory();
                 familyMedicalHis = reserveCheckBean.getFamilyHistory();
                 allergiesHis = reserveCheckBean.getAllergyHistory();
-            }
-            else {
+            } else {
                 //新用户
                 editStatus(true);
                 age = BaseUtils.getAgeByCard(reserveCheckBean.getIdCardNo());
@@ -151,8 +149,7 @@ public class ServiceMaterialFragment extends BaseFragment implements View.OnFocu
                 reserveCheckBean.setSex(sex);
                 if (!TextUtils.isEmpty(age)) {
                     reserveCheckBean.setAge(Integer.valueOf(age));
-                }
-                else {
+                } else {
                     reserveCheckBean.setAge(0);
                 }
             }
@@ -161,8 +158,7 @@ public class ServiceMaterialFragment extends BaseFragment implements View.OnFocu
             etAge.setText(age);
             if (sex == BaseData.BASE_ONE) {
                 rbMale.setChecked(true);
-            }
-            else {
+            } else {
                 rbFemale.setChecked(true);
             }
             //初步诊断
@@ -175,7 +171,6 @@ public class ServiceMaterialFragment extends BaseFragment implements View.OnFocu
             initPastHistory();
             //诊断史
             initDiagnosis();
-            initNextButton();
         }
     }
 
@@ -185,10 +180,9 @@ public class ServiceMaterialFragment extends BaseFragment implements View.OnFocu
     private void clearAllCheckData(ReserveCheckBean bean) {
         if (reserveCheckBean == null || bean == null) {
             clearAll = false;
-        }
-        else {
+        } else {
             clearAll = !reserveCheckBean.getPatientName().equals(bean.getPatientName()) ||
-                       !reserveCheckBean.getIdCardNo().equals(bean.getIdCardNo());
+                    !reserveCheckBean.getIdCardNo().equals(bean.getIdCardNo());
         }
     }
 
@@ -200,8 +194,7 @@ public class ServiceMaterialFragment extends BaseFragment implements View.OnFocu
         if (!mode && !BaseData.BASE_STRING_ONE_TAG.equals(reserveCheckBean.getIsBind())) {
             etPhone.setFocusable(true);
             etPhone.setFocusableInTouchMode(true);
-        }
-        else {
+        } else {
             etPhone.setFocusable(mode);
             etPhone.setFocusableInTouchMode(mode);
         }
@@ -217,11 +210,9 @@ public class ServiceMaterialFragment extends BaseFragment implements View.OnFocu
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 super.onTextChanged(s, start, before, count);
                 age = s.toString().trim();
-                initNextButton();
                 if (!TextUtils.isEmpty(age)) {
                     reserveCheckBean.setAge(Integer.valueOf(age));
-                }
-                else {
+                } else {
                     reserveCheckBean.setAge(0);
                 }
             }
@@ -235,8 +226,6 @@ public class ServiceMaterialFragment extends BaseFragment implements View.OnFocu
                 if (BaseUtils.isMobileNumber(phone)) {
                     reserveCheckBean.setPhone(phone);
                 }
-                //判断手机号和诊断史
-                initNextButton();
             }
         });
         etDiagnosis.addTextChangedListener(new AbstractTextWatcher() {
@@ -244,7 +233,6 @@ public class ServiceMaterialFragment extends BaseFragment implements View.OnFocu
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 super.onTextChanged(s, start, before, count);
                 diagnosisHis = s.toString().trim();
-                initNextButton();
                 initDiagnosis();
                 reserveCheckBean.setInitResult(diagnosisHis);
             }
@@ -256,7 +244,8 @@ public class ServiceMaterialFragment extends BaseFragment implements View.OnFocu
      */
     private void initPastHistory() {
         tvPastMedical.setText(PastHistoryUtil.getPastMedical(getContext(), pastHistoryData.get(0)));
-        tvFamilyMedical.setText(PastHistoryUtil.getFamilyMedical(getContext(), pastHistoryData.get(1)));
+        tvFamilyMedical.setText(PastHistoryUtil.getFamilyMedical(getContext(),
+                pastHistoryData.get(1)));
         tvAllergies.setText(PastHistoryUtil.getAllergies(getContext(), pastHistoryData.get(2)));
     }
 
@@ -264,21 +253,28 @@ public class ServiceMaterialFragment extends BaseFragment implements View.OnFocu
      * 诊断内容
      */
     private void initDiagnosis() {
-        tvDiagnosisNum.setText(String.format(getString(R.string.txt_calc_num), diagnosisHis.length()));
+        tvDiagnosisNum.setText(String.format(getString(R.string.txt_calc_num),
+                diagnosisHis.length()));
         etDiagnosis.setSelection(diagnosisHis.length());
     }
 
     /**
      * next
      */
-    private void initNextButton() {
-        //判断手机号和诊断史
-        if (BaseUtils.isMobileNumber(phone) && !TextUtils.isEmpty(diagnosisHis) && !TextUtils.isEmpty(age)) {
-            tvMaterialNext.setSelected(true);
+    private boolean initNextButton() {
+        if (TextUtils.isEmpty(age)) {
+            ToastUtil.toast(getContext(), R.string.toast_input_age);
+            return false;
         }
-        else {
-            tvMaterialNext.setSelected(false);
+        if (!BaseUtils.isMobileNumber(phone)) {
+            ToastUtil.toast(getContext(), R.string.toast_input_phone);
+            return false;
         }
+        if (TextUtils.isEmpty(diagnosisHis)) {
+            ToastUtil.toast(getContext(), R.string.toast_input_diagnosisHis_description);
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -291,11 +287,11 @@ public class ServiceMaterialFragment extends BaseFragment implements View.OnFocu
     }
 
     @OnClick({
-            R.id.tv_material_next, R.id.layout_past })
+            R.id.tv_material_next, R.id.layout_past})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_material_next:
-                if (tvMaterialNext.isSelected() && checkListener != null) {
+                if (initNextButton() && checkListener != null) {
                     checkListener.onCheckStepTwo(reserveCheckBean);
                 }
                 break;
@@ -319,7 +315,6 @@ public class ServiceMaterialFragment extends BaseFragment implements View.OnFocu
             reserveCheckBean.setPastHistory(pastHistoryData.get(0));
             reserveCheckBean.setFamilyHistory(pastHistoryData.get(1));
             reserveCheckBean.setAllergyHistory(pastHistoryData.get(2));
-            initNextButton();
         }
     }
 

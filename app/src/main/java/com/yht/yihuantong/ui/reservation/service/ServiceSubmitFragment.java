@@ -39,6 +39,7 @@ import com.yht.frame.permission.Permission;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.ScalingUtils;
+import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.frame.widgets.dialog.SignatureDialog;
 import com.yht.yihuantong.R;
@@ -75,8 +76,6 @@ public class ServiceSubmitFragment extends BaseFragment implements RadioGroup.On
     ImageView ivDeleteOne;
     @BindView(R.id.layout_upload_one)
     RelativeLayout layoutUploadOne;
-    @BindView(R.id.tv_submit_next)
-    TextView tvSubmitNext;
     @BindView(R.id.layout_payment)
     RadioGroup layoutPayment;
     @BindView(R.id.tv_signature)
@@ -166,8 +165,7 @@ public class ServiceSubmitFragment extends BaseFragment implements RadioGroup.On
             if (checkTypeData.size() > 0) {
                 layoutCheck.setVisibility(View.VISIBLE);
                 tvSelect.setText(R.string.txt_add_service_goon);
-            }
-            else {
+            } else {
                 layoutCheck.setVisibility(View.GONE);
                 tvSelect.setText(R.string.txt_select_hint);
             }
@@ -213,7 +211,9 @@ public class ServiceSubmitFragment extends BaseFragment implements RadioGroup.On
     private void initAdapter() {
         serviceRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         serviceRecyclerView.setNestedScrollingEnabled(false);
-        shopAdapter = new SelectCheckTypeParentSubmitAdapter(R.layout.item_check_select_submit_root, checkTypeData);
+        shopAdapter =
+                new SelectCheckTypeParentSubmitAdapter(R.layout.item_check_select_submit_root,
+                        checkTypeData);
         serviceRecyclerView.setAdapter(shopAdapter);
     }
 
@@ -225,11 +225,10 @@ public class ServiceSubmitFragment extends BaseFragment implements RadioGroup.On
             ivDeleteOne.setVisibility(View.VISIBLE);
             //裁剪完成，上传图片
             Glide.with(this)
-                 .load(mCurrentPhotoPath)
-                 .apply(GlideHelper.getOptionsPic(BaseUtils.dp2px(getContext(), 4)))
-                 .into(ivUploadOne);
-        }
-        else {
+                    .load(mCurrentPhotoPath)
+                    .apply(GlideHelper.getOptionsPic(BaseUtils.dp2px(getContext(), 4)))
+                    .into(ivUploadOne);
+        } else {
             imagePaths.clear();
             ivUploadOne.setImageDrawable(null);
             ivDeleteOne.setVisibility(View.GONE);
@@ -238,27 +237,25 @@ public class ServiceSubmitFragment extends BaseFragment implements RadioGroup.On
             confirmImageUrl = "";
             mCurrentPhotoPath = "";
         }
-        initNextButton();
     }
 
     /**
      * 选择的检查项目
      */
     private void selectCheckItemByHospital(Intent data) {
-        ArrayList<SelectCheckTypeParentBean> list = (ArrayList<SelectCheckTypeParentBean>)data.getSerializableExtra(
-                CommonData.KEY_RESERVE_CHECK_TYPE_LIST);
+        ArrayList<SelectCheckTypeParentBean> list =
+                (ArrayList<SelectCheckTypeParentBean>) data.getSerializableExtra(
+                        CommonData.KEY_RESERVE_CHECK_TYPE_LIST);
         checkTypeData.clear();
         checkTypeData.addAll(list);
         if (checkTypeData.size() > 0) {
             layoutCheck.setVisibility(View.VISIBLE);
             tvSelect.setText(R.string.txt_add_service_goon);
-        }
-        else {
+        } else {
             layoutCheck.setVisibility(View.GONE);
             tvSelect.setText(R.string.txt_select_hint);
         }
         shopAdapter.setNewData(checkTypeData);
-        initNextButton();
     }
 
     /**
@@ -276,16 +273,19 @@ public class ServiceSubmitFragment extends BaseFragment implements RadioGroup.On
     /**
      * next按钮可点击状态
      */
-    private void initNextButton() {
-        boolean next = (!TextUtils.isEmpty(confirmImageUrl) && sureType == BASE_ONE) ||
-                       (sureType == BASE_TWO && !TextUtils.isEmpty(signatureImageUrl));
+    private boolean initNextButton() {
         //需要添加判断检查项目是否为空
-        if (checkTypeData.size() > 0 && next) {
-            tvSubmitNext.setSelected(true);
+        if (checkTypeData == null || checkTypeData.size() == 0) {
+            ToastUtil.toast(getContext(), R.string.toast_select_service);
+            return false;
         }
-        else {
-            tvSubmitNext.setSelected(false);
+        boolean next = (!TextUtils.isEmpty(confirmImageUrl) && sureType == BASE_ONE) ||
+                (sureType == BASE_TWO && !TextUtils.isEmpty(signatureImageUrl));
+        if (!next) {
+            ToastUtil.toast(getContext(), R.string.toast_select_sure_type);
+            return false;
         }
+        return true;
     }
 
     @Override
@@ -296,8 +296,9 @@ public class ServiceSubmitFragment extends BaseFragment implements RadioGroup.On
     }
 
     @OnClick({
-            R.id.layout_select_check_type, R.id.layout_upload_one, R.id.iv_delete_one, R.id.tv_submit_next,
-            R.id.layout_upload_two, R.id.layout_signature, R.id.layout_camera })
+            R.id.layout_select_check_type, R.id.layout_upload_one, R.id.iv_delete_one,
+            R.id.tv_submit_next,
+            R.id.layout_upload_two, R.id.layout_signature, R.id.layout_camera})
     public void onViewClicked(View view) {
         Intent intent;
         switch (view.getId()) {
@@ -317,9 +318,9 @@ public class ServiceSubmitFragment extends BaseFragment implements RadioGroup.On
                 break;
             case R.id.layout_upload_one:
                 if (TextUtils.isEmpty(confirmImageUrl)) {
-                    permissionHelper.request(new String[] { Permission.CAMERA, Permission.STORAGE_WRITE });
-                }
-                else {
+                    permissionHelper.request(new String[]{Permission.CAMERA,
+                            Permission.STORAGE_WRITE});
+                } else {
                     //查看大图
                     intent = new Intent(getContext(), ImagePreviewActivity.class);
                     intent.putExtra(ImagePreviewActivity.INTENT_URLS, imagePaths);
@@ -382,19 +383,17 @@ public class ServiceSubmitFragment extends BaseFragment implements RadioGroup.On
             default:
                 break;
         }
-        initNextButton();
     }
 
     /**
      * 提交数据
      */
     private void submit() {
-        if (tvSubmitNext.isSelected() && checkListener != null) {
+        if (initNextButton() && checkListener != null) {
             if (sureType == BASE_ONE) {
                 reserveCheckBean.setConfirmPhoto(confirmImageUrl);
                 reserveCheckBean.setConfirmType(String.valueOf(BASE_ONE));
-            }
-            else {
+            } else {
                 reserveCheckBean.setConfirmPhoto(signatureImageUrl);
                 reserveCheckBean.setConfirmType(String.valueOf(BASE_TWO));
             }
@@ -415,11 +414,9 @@ public class ServiceSubmitFragment extends BaseFragment implements RadioGroup.On
             //缴费类型
             if (payTypeId == rbSelf.getId()) {
                 reserveCheckBean.setPayType(String.valueOf(BaseData.BASE_ZERO));
-            }
-            else if (payTypeId == rbMedicare.getId()) {
+            } else if (payTypeId == rbMedicare.getId()) {
                 reserveCheckBean.setPayType(String.valueOf(BaseData.BASE_ONE));
-            }
-            else {
+            } else {
                 reserveCheckBean.setPayType(String.valueOf(BaseData.BASE_TWO));
             }
             checkListener.onCheckStepThree(reserveCheckBean);
@@ -430,16 +427,14 @@ public class ServiceSubmitFragment extends BaseFragment implements RadioGroup.On
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
         if (sureType == BASE_ONE) {
-            confirmImageUrl = (String)response.getData();
+            confirmImageUrl = (String) response.getData();
             if (imagePaths.size() > 0) {
                 imagePaths.get(0).setImageUrl(confirmImageUrl);
             }
             initImage(true);
-        }
-        else {
-            signatureImageUrl = (String)response.getData();
+        } else {
+            signatureImageUrl = (String) response.getData();
             Glide.with(this).load(signatureImageUrl).apply(GlideHelper.getOptionsPic(0)).into(ivSignature);
-            initNextButton();
         }
     }
 
@@ -458,7 +453,9 @@ public class ServiceSubmitFragment extends BaseFragment implements RadioGroup.On
                 uploadImage(cameraTempFile);
                 break;
             case REQUEST_CODE_SELECT_CHECK:
-                if (data != null) { selectCheckItemByHospital(data); }
+                if (data != null) {
+                    selectCheckItemByHospital(data);
+                }
                 break;
             default:
                 break;
@@ -479,20 +476,21 @@ public class ServiceSubmitFragment extends BaseFragment implements RadioGroup.On
         // 指定调用相机拍照后照片的储存路径
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            mCurrentPhotoUri = FileProvider.getUriForFile(getContext(), ZycApplication.getInstance().getPackageName() +
-                                                                        ".fileprovider", cameraTempFile);
-        }
-        else {
+            mCurrentPhotoUri = FileProvider.getUriForFile(getContext(),
+                    ZycApplication.getInstance().getPackageName() +
+                            ".fileprovider", cameraTempFile);
+        } else {
             mCurrentPhotoUri = Uri.fromFile(cameraTempFile);
         }
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             List<ResolveInfo> resInfoList = getContext().getPackageManager()
-                                                        .queryIntentActivities(intent,
-                                                                               PackageManager.MATCH_DEFAULT_ONLY);
+                    .queryIntentActivities(intent,
+                            PackageManager.MATCH_DEFAULT_ONLY);
             for (ResolveInfo resolveInfo : resInfoList) {
                 String packageName = resolveInfo.activityInfo.packageName;
-                getContext().grantUriPermission(packageName, mCurrentPhotoUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION |
-                                                                               Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                getContext().grantUriPermission(packageName, mCurrentPhotoUri,
+                        Intent.FLAG_GRANT_WRITE_URI_PERMISSION |
+                                Intent.FLAG_GRANT_READ_URI_PERMISSION);
             }
         }
         // 指定调用相机拍照后照片的储存路径
@@ -503,7 +501,7 @@ public class ServiceSubmitFragment extends BaseFragment implements RadioGroup.On
     @Override
     public void onNoPermissionNeeded(@NonNull Object permissionName) {
         if (permissionName instanceof String[]) {
-            if (isSamePermission(Permission.CAMERA, ((String[])permissionName)[0])) {
+            if (isSamePermission(Permission.CAMERA, ((String[]) permissionName)[0])) {
                 openCamera();
             }
         }

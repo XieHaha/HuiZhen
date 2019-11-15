@@ -51,8 +51,6 @@ public class TransferMaterialFragment extends BaseFragment implements View.OnFoc
     MultiLineEditText etDiagnosis;
     @BindView(R.id.tv_diagnosis_num)
     TextView tvDiagnosisNum;
-    @BindView(R.id.tv_material_next)
-    TextView tvMaterialNext;
     @BindView(R.id.layout_past_medical_his)
     LinearLayout layoutPastMedicalHis;
     @BindView(R.id.layout_family_medical_his)
@@ -143,16 +141,14 @@ public class TransferMaterialFragment extends BaseFragment implements View.OnFoc
                 pastMedicalHis = reverseTransferBean.getPastHistory();
                 familyMedicalHis = reverseTransferBean.getFamilyHistory();
                 allergiesHis = reverseTransferBean.getAllergyHistory();
-            }
-            else {
+            } else {
                 //新用户
                 editStatus(true);
                 age = BaseUtils.getAgeByCard(reverseTransferBean.getPatientIdCardNo());
                 sex = BaseUtils.getSexByCard(reverseTransferBean.getPatientIdCardNo());
                 if (!TextUtils.isEmpty(age)) {
                     reverseTransferBean.setPatientAge(Integer.valueOf(age));
-                }
-                else {
+                } else {
                     reverseTransferBean.setPatientAge(0);
                 }
                 reverseTransferBean.setSex(sex);
@@ -162,8 +158,7 @@ public class TransferMaterialFragment extends BaseFragment implements View.OnFoc
             etAge.setText(age);
             if (sex == BaseData.BASE_ONE) {
                 rbMale.setChecked(true);
-            }
-            else {
+            } else {
                 rbFemale.setChecked(true);
             }
             //初步诊断
@@ -176,7 +171,6 @@ public class TransferMaterialFragment extends BaseFragment implements View.OnFoc
             initPastHistory();
             //诊断史
             initDiagnosis();
-            initNextButton();
         }
     }
 
@@ -186,10 +180,9 @@ public class TransferMaterialFragment extends BaseFragment implements View.OnFoc
     private void clearAllTransferData(ReserveTransferBean bean) {
         if (reverseTransferBean == null || bean == null) {
             clearAll = false;
-        }
-        else {
+        } else {
             clearAll = !reverseTransferBean.getPatientName().equals(bean.getPatientName()) ||
-                       !reverseTransferBean.getPatientIdCardNo().equals(bean.getPatientIdCardNo());
+                    !reverseTransferBean.getPatientIdCardNo().equals(bean.getPatientIdCardNo());
         }
     }
 
@@ -201,8 +194,7 @@ public class TransferMaterialFragment extends BaseFragment implements View.OnFoc
         if (!mode && !BaseData.BASE_STRING_ONE_TAG.equals(reverseTransferBean.getIsBind())) {
             etPhone.setFocusable(true);
             etPhone.setFocusableInTouchMode(true);
-        }
-        else {
+        } else {
             etPhone.setFocusable(mode);
             etPhone.setFocusableInTouchMode(mode);
         }
@@ -218,12 +210,10 @@ public class TransferMaterialFragment extends BaseFragment implements View.OnFoc
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 super.onTextChanged(s, start, before, count);
                 age = s.toString().trim();
-                initNextButton();
                 if (reverseTransferBean != null) {
                     if (!TextUtils.isEmpty(age)) {
                         reverseTransferBean.setPatientAge(Integer.valueOf(age));
-                    }
-                    else {
+                    } else {
                         reverseTransferBean.setPatientAge(0);
                     }
                 }
@@ -238,8 +228,6 @@ public class TransferMaterialFragment extends BaseFragment implements View.OnFoc
                 if (BaseUtils.isMobileNumber(phone) && reverseTransferBean != null) {
                     reverseTransferBean.setPatientMobile(phone);
                 }
-                //判断手机号和诊断史
-                initNextButton();
             }
         });
         etDiagnosis.addTextChangedListener(new AbstractTextWatcher() {
@@ -247,9 +235,10 @@ public class TransferMaterialFragment extends BaseFragment implements View.OnFoc
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 super.onTextChanged(s, start, before, count);
                 diagnosisHis = s.toString().trim();
-                initNextButton();
                 initDiagnosis();
-                if (reverseTransferBean != null) { reverseTransferBean.setInitResult(diagnosisHis); }
+                if (reverseTransferBean != null) {
+                    reverseTransferBean.setInitResult(diagnosisHis);
+                }
             }
         });
     }
@@ -259,7 +248,8 @@ public class TransferMaterialFragment extends BaseFragment implements View.OnFoc
      */
     private void initPastHistory() {
         tvPastMedical.setText(PastHistoryUtil.getPastMedical(getContext(), pastHistoryData.get(0)));
-        tvFamilyMedical.setText(PastHistoryUtil.getFamilyMedical(getContext(), pastHistoryData.get(1)));
+        tvFamilyMedical.setText(PastHistoryUtil.getFamilyMedical(getContext(),
+                pastHistoryData.get(1)));
         tvAllergies.setText(PastHistoryUtil.getAllergies(getContext(), pastHistoryData.get(2)));
     }
 
@@ -267,21 +257,28 @@ public class TransferMaterialFragment extends BaseFragment implements View.OnFoc
      * 诊断内容
      */
     private void initDiagnosis() {
-        tvDiagnosisNum.setText(String.format(getString(R.string.txt_calc_num), diagnosisHis.length()));
+        tvDiagnosisNum.setText(String.format(getString(R.string.txt_calc_num),
+                diagnosisHis.length()));
         etDiagnosis.setSelection(diagnosisHis.length());
     }
 
     /**
      * next
      */
-    private void initNextButton() {
-        //判断手机号和诊断史
-        if (BaseUtils.isMobileNumber(phone) && !TextUtils.isEmpty(diagnosisHis) && !TextUtils.isEmpty(age)) {
-            tvMaterialNext.setSelected(true);
+    private boolean initNextButton() {
+        if (TextUtils.isEmpty(age)) {
+            ToastUtil.toast(getContext(), R.string.toast_input_age);
+            return false;
         }
-        else {
-            tvMaterialNext.setSelected(false);
+        if (!BaseUtils.isMobileNumber(phone)) {
+            ToastUtil.toast(getContext(), R.string.toast_input_phone);
+            return false;
         }
+        if (TextUtils.isEmpty(diagnosisHis)) {
+            ToastUtil.toast(getContext(), R.string.toast_input_diagnosisHis_description);
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -294,11 +291,11 @@ public class TransferMaterialFragment extends BaseFragment implements View.OnFoc
     }
 
     @OnClick({
-            R.id.tv_material_next, R.id.layout_past })
+            R.id.tv_material_next, R.id.layout_past})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_material_next:
-                if (tvMaterialNext.isSelected() && onTransferListener != null) {
+                if (initNextButton() && onTransferListener != null) {
                     onTransferListener.onTransferStepTwo(reverseTransferBean);
                 }
                 break;
@@ -322,7 +319,6 @@ public class TransferMaterialFragment extends BaseFragment implements View.OnFoc
             reverseTransferBean.setPastHistory(pastHistoryData.get(0));
             reverseTransferBean.setFamilyHistory(pastHistoryData.get(1));
             reverseTransferBean.setAllergyHistory(pastHistoryData.get(2));
-            initNextButton();
         }
     }
 
