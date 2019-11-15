@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -21,7 +22,6 @@ import com.yht.frame.widgets.imagepreview.view.ImagePreviewView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.utils.FileUrlUtil;
 
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -96,7 +96,7 @@ public class ImagePreviewActivity extends Activity implements ViewPager.OnPageCh
         setContentView(R.layout.activity_image_view);
         Intent intent = getIntent();
         if (intent != null) {
-            urls = (ArrayList<NormImage>)intent.getSerializableExtra(INTENT_URLS);
+            urls = (ArrayList<NormImage>) intent.getSerializableExtra(INTENT_URLS);
             currentIndex = intent.getIntExtra(INTENT_POSITION, 0);
         }
         mLoadingView = findViewById(R.id.act_image_view_loading);
@@ -151,26 +151,28 @@ public class ImagePreviewActivity extends Activity implements ViewPager.OnPageCh
             return urls.size();
         }
 
-        @NotNull
+        @NonNull
         @Override
-        public View instantiateItem(@NotNull final ViewGroup container, final int position) {
+        public View instantiateItem(@NonNull final ViewGroup container, final int position) {
             ImagePreviewView currentPreviewView = imgPreViews.get(position);
-            //                        currentPreviewView.loadingImageAsync(urls.get(position).getImagePath(), urls.get(position).getImageUrl(),
+            //                        currentPreviewView.loadingImageAsync(urls.get(position)
+            //                        .getImagePath(), urls.get(position).getImageUrl(),
             //                                                             position);
             currentPreviewView.loadingImageAsync(urls.get(position).getImagePath(),
-                                                 FileUrlUtil.addTokenToUrl(urls.get(position).getImageUrl()));
+                    FileUrlUtil.addTokenToUrl(urls.get(position).getImageUrl()));
             container.addView(currentPreviewView, LinearLayout.LayoutParams.MATCH_PARENT,
-                              LinearLayout.LayoutParams.MATCH_PARENT);
+                    LinearLayout.LayoutParams.MATCH_PARENT);
             return currentPreviewView;
         }
 
         @Override
-        public void destroyItem(@NotNull ViewGroup container, int position, @NotNull Object object) {
-            container.removeView((View)object);
+        public void destroyItem(@NonNull ViewGroup container, int position,
+                                @NonNull Object object) {
+            container.removeView((View) object);
         }
 
         @Override
-        public boolean isViewFromObject(@NotNull View view, @NotNull Object object) {
+        public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
             return view == object;
         }
     }
