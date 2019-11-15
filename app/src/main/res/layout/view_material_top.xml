@@ -188,7 +188,7 @@
         <com.yht.frame.widgets.textview.RedStarTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/txt_contact_type"
+            android:text="@string/txt_login_account_hint"
             android:textColor="@color/color_373d4d"
             android:textSize="@dimen/text_16"
             android:textStyle="bold" />

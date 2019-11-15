@@ -12,6 +12,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.yht.frame.data.bean.PatientBean;
+import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.widgets.edittext.SuperEditText;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.utils.text.BankCardTextWatcher;
@@ -82,7 +83,7 @@ public class SearchPatientAdapter extends BaseAdapter {
 
     private void init(ViewHolder holder, int position) {
         PatientBean bean = list.get(position);
-        holder.etIdCard.setText(bean.getIdCard());
+        holder.etIdCard.setText(BaseUtils.asteriskUserCard(bean.getIdCard(),8));
         holder.tvName.setText(setKeyWordColor(bean.getName(), searchKey == null ? "" : searchKey));
     }
 

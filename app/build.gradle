@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
 
-def releaseTime() {
+static def releaseTime() {
     return new Date().format("MM月dd日", TimeZone.getTimeZone("UTC"))
 }
 

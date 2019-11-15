@@ -223,7 +223,7 @@ public class TransferReceiveDetailActivity extends BaseActivity
         tvTransferNotice.setText(transferBean.getNote());
         tvPatientName.setText(transferBean.getPatientName());
         tvPhone.setText(BaseUtils.asteriskUserPhone(transferBean.getPatientMobile()));
-        tvIcCard.setText(BaseUtils.asteriskUserCard(transferBean.getPatientIdCardNo()));
+        tvIcCard.setText(BaseUtils.asteriskUserCard(transferBean.getPatientIdCardNo(),12));
         tvPatientSex.setText(transferBean.getSex() == BaseData.BASE_ONE
                              ? getString(R.string.txt_sex_male)
                              : getString(R.string.txt_sex_female));

@@ -294,18 +294,20 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
         mTopRightMenu.setHeight(BaseUtils.dp2px(getContext(), 200)).addMenuList(menuItems).setOnMenuItemClickListener(this).showAsDropDown(publicMainTitleScan, -BaseUtils.dp2px(getContext(), 124), 10);
     }
 
-    @OnClick({R.id.public_main_title_scan, R.id.layout_personal_base, R.id.layout_check,
+    @OnClick({R.id.public_main_title, R.id.public_main_title_scan, R.id.layout_personal_base,
+            R.id.layout_check,
             R.id.layout_transfer, R.id.layout_remote, R.id.view_flipper,
             R.id.layout_initiate_check, R.id.layout_initiate_transfer,
             R.id.layout_initiate_remote, R.id.layout_transfer_apply, R.id.layout_health_manager})
     public void onViewClicked(View view) {
         Intent intent;
         switch (view.getId()) {
-            case R.id.public_main_title_scan:
-                initMenu();
-                break;
+            case R.id.public_main_title:
             case R.id.layout_personal_base:
                 startActivity(new Intent(getContext(), PersonalNewActivity.class));
+                break;
+            case R.id.public_main_title_scan:
+                initMenu();
                 break;
             case R.id.layout_check:
                 if (ZycApplication.getInstance().isServiceAble()) {

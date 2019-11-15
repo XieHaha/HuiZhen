@@ -34,9 +34,12 @@ import java.util.regex.Pattern;
  */
 public class BaseUtils {
     private static final String TAG = BaseUtils.class.getSimpleName();
-    public static String filterImoji = "[\ud83c\udc00-\ud83c\udfff]|[\ud83d\udc00-\ud83d\udfff]|[\ud83e\udc00-\ud83e\udfff]|[\u2600-\u27ff]";
-    private static final String REGEX_PHONE = "^((13[0-9])|(14[0-9])|(15[0-9])|(16[0-9])|(17[0-9])|(18[0-9])|(19[0-9]))\\d{8}$";
-    private static final String REGEX_CARD_NUM = "(^[1-8][0-7]{2}\\d{3}([12]\\d{3})(0[1-9]|1[012])(0[1-9]|[12]\\d|3[01])\\d{3}([0-9Xx])$)";
+    public static String filterImoji = "[\ud83c\udc00-\ud83c\udfff]|[\ud83d\udc00-\ud83d\udfff" +
+            "]|[\ud83e\udc00-\ud83e\udfff]|[\u2600-\u27ff]";
+    private static final String REGEX_PHONE = "^((13[0-9])|(14[0-9])|(15[0-9])|(16[0-9])|" +
+            "(17[0-9])|(18[0-9])|(19[0-9]))\\d{8}$";
+    private static final String REGEX_CARD_NUM = "(^[1-8][0-7]{2}\\d{3}([12]\\d{3})" +
+            "(0[1-9]|1[012])(0[1-9]|[12]\\d|3[01])\\d{3}([0-9Xx])$)";
     public static final String YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd HH:mm:ss";
     public static final String YYYY_MM_DD_HH_MM = "yyyy-MM-dd HH:mm";
     public static final String YYYY_MM_DD = "yyyy-MM-dd";
@@ -50,31 +53,44 @@ public class BaseUtils {
      */
     public static String asteriskUserPhone(String mobiles)
             throws NullPointerException, StringIndexOutOfBoundsException {
-        if (TextUtils.isEmpty(mobiles) || mobiles.length() < BaseData.BASE_PHONE_DEFAULT_LENGTH) { return ""; }
-        return mobiles.substring(0, 3) + "****" + mobiles.substring(7, mobiles.length());
+        if (TextUtils.isEmpty(mobiles) || mobiles.length() < BaseData.BASE_PHONE_DEFAULT_LENGTH) {
+            return "";
+        }
+        return mobiles.substring(0, 3) + "****" + mobiles.substring(7);
     }
 
     /**
      * 身份证 星号处理    asterisk（星号）
      */
-    public static String asteriskUserCard(String idCard) throws NullPointerException, StringIndexOutOfBoundsException {
-        if (TextUtils.isEmpty(idCard) || idCard.length() < BaseData.BASE_ID_CARD_LENGTH) { return ""; }
-        return idCard.substring(0, 3) + "************" + idCard.substring(15, idCard.length());
+    public static String asteriskUserCard(String idCard, int num) throws NullPointerException,
+            StringIndexOutOfBoundsException {
+        if (TextUtils.isEmpty(idCard) || idCard.length() < BaseData.BASE_ID_CARD_LENGTH) {
+            return "";
+        }
+        if (num == 12) {
+            return idCard.substring(0, 3) + "************" + idCard.substring(15);
+        } else {
+            return idCard.substring(0, 6) + "********" + idCard.substring(14);
+        }
     }
 
     /**
      * 手机号 空格    asterisk（星号）
      */
-    public static String spaceUserCard(String idCard) throws NullPointerException, StringIndexOutOfBoundsException {
-        if (TextUtils.isEmpty(idCard) || idCard.length() < BaseData.BASE_ID_CARD_LENGTH) { return ""; }
-        return idCard.substring(0, 6) + " " + idCard.substring(6, 14) + " " + idCard.substring(14, idCard.length());
+    public static String spaceUserCard(String idCard) throws NullPointerException,
+            StringIndexOutOfBoundsException {
+        if (TextUtils.isEmpty(idCard) || idCard.length() < BaseData.BASE_ID_CARD_LENGTH) {
+            return "";
+        }
+        return idCard.substring(0, 6) + " " + idCard.substring(6, 14) + " " + idCard.substring(14);
     }
 
     /**
      * 网络是否可用
      */
     public static boolean isNetworkAvailable(Context context) {
-        ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager cm =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = cm.getActiveNetworkInfo();
         return null != networkInfo && networkInfo.isConnected();
     }
@@ -83,12 +99,12 @@ public class BaseUtils {
      * 将dp值转换为像素值
      */
     public static int dp2px(Context context, int dp) {
-        return (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
-                                              context.getResources().getDisplayMetrics());
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
+                context.getResources().getDisplayMetrics());
     }
 
     public static int px2dp(Context context, float pxValue) {
-        return (int)(pxValue / context.getResources().getDisplayMetrics().density + 0.5f);
+        return (int) (pxValue / context.getResources().getDisplayMetrics().density + 0.5f);
     }
 
     /**
@@ -96,7 +112,7 @@ public class BaseUtils {
      */
     public static int px2sp(Context context, float pxValue) {
         final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
-        return (int)(pxValue / fontScale + 0.5f);
+        return (int) (pxValue / fontScale + 0.5f);
     }
 
     /**
@@ -104,7 +120,7 @@ public class BaseUtils {
      */
     public static int sp2px(Context context, float spValue) {
         final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
-        return (int)(spValue * fontScale + 0.5f);
+        return (int) (spValue * fontScale + 0.5f);
     }
 
     /**
@@ -121,7 +137,8 @@ public class BaseUtils {
         if (TextUtils.isEmpty(startTime) || TextUtils.isEmpty(endTime)) {
             return "";
         }
-        return timeFormat(date2TimeStamp(startTime, YYYY_MM_DD_HH_MM), date2TimeStamp(endTime, YYYY_MM_DD_HH_MM));
+        return timeFormat(date2TimeStamp(startTime, YYYY_MM_DD_HH_MM), date2TimeStamp(endTime,
+                YYYY_MM_DD_HH_MM));
     }
 
     /**
@@ -164,8 +181,7 @@ public class BaseUtils {
         try {
             SimpleDateFormat sdf = new SimpleDateFormat(format);
             return sdf.parse(date).getTime();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return 0;
@@ -211,18 +227,15 @@ public class BaseUtils {
                 count += n;
             }
             out.flush();
-        }
-        finally {
+        } finally {
             try {
                 out.close();
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 HuiZhenLog.e(TAG, e.getMessage());
             }
             try {
                 in.close();
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 HuiZhenLog.e(TAG, e.getMessage());
             }
         }
@@ -235,25 +248,24 @@ public class BaseUtils {
      * @param list 要进行排序的数据源
      */
     public static void sortPatientData(List<PatientBean> list) {
-        if (list == null || list.size() == 0) { return; }
+        if (list == null || list.size() == 0) {
+            return;
+        }
         for (int i = 0; i < list.size(); i++) {
             PatientBean bean = list.get(i);
             String tag = Pinyin.toPinyin(bean.getName().substring(0, 1).charAt(0)).substring(0, 1);
             if (tag.matches("[A-Za-z]")) {
                 bean.setIndexTag(tag.toUpperCase());
-            }
-            else {
+            } else {
                 bean.setIndexTag("#");
             }
         }
         Collections.sort(list, (o1, o2) -> {
             if ("#".equals(o1.getIndexTag())) {
                 return 1;
-            }
-            else if ("#".equals(o2.getIndexTag())) {
+            } else if ("#".equals(o2.getIndexTag())) {
                 return -1;
-            }
-            else {
+            } else {
                 return o1.getIndexTag().compareTo(o2.getIndexTag());
             }
         });
@@ -265,25 +277,25 @@ public class BaseUtils {
      * @param list 要进行排序的数据源
      */
     public static void sortDoctorData(List<DoctorBean> list) {
-        if (list == null || list.size() == 0) { return; }
+        if (list == null || list.size() == 0) {
+            return;
+        }
         for (int i = 0; i < list.size(); i++) {
             DoctorBean bean = list.get(i);
-            String tag = Pinyin.toPinyin(bean.getDoctorName().substring(0, 1).charAt(0)).substring(0, 1);
+            String tag =
+                    Pinyin.toPinyin(bean.getDoctorName().substring(0, 1).charAt(0)).substring(0, 1);
             if (tag.matches("[A-Za-z]")) {
                 bean.setIndexTag(tag.toUpperCase());
-            }
-            else {
+            } else {
                 bean.setIndexTag("#");
             }
         }
         Collections.sort(list, (o1, o2) -> {
             if ("#".equals(o1.getIndexTag())) {
                 return 1;
-            }
-            else if ("#".equals(o2.getIndexTag())) {
+            } else if ("#".equals(o2.getIndexTag())) {
                 return -1;
-            }
-            else {
+            } else {
                 return o1.getIndexTag().compareTo(o2.getIndexTag());
             }
         });
@@ -295,25 +307,25 @@ public class BaseUtils {
      * @param list 要进行排序的数据源
      */
     public static void sortReceiveDoctorData(List<ReceiverDoctorBean> list) {
-        if (list == null || list.size() == 0) { return; }
+        if (list == null || list.size() == 0) {
+            return;
+        }
         for (int i = 0; i < list.size(); i++) {
             ReceiverDoctorBean bean = list.get(i);
-            String tag = Pinyin.toPinyin(bean.getDoctorName().substring(0, 1).charAt(0)).substring(0, 1);
+            String tag =
+                    Pinyin.toPinyin(bean.getDoctorName().substring(0, 1).charAt(0)).substring(0, 1);
             if (tag.matches("[A-Za-z]")) {
                 bean.setIndexTag(tag.toUpperCase());
-            }
-            else {
+            } else {
                 bean.setIndexTag("#");
             }
         }
         Collections.sort(list, (o1, o2) -> {
             if ("#".equals(o1.getIndexTag())) {
                 return 1;
-            }
-            else if ("#".equals(o2.getIndexTag())) {
+            } else if ("#".equals(o2.getIndexTag())) {
                 return -1;
-            }
-            else {
+            } else {
                 return o1.getIndexTag().compareTo(o2.getIndexTag());
             }
         });
@@ -324,7 +336,9 @@ public class BaseUtils {
      * @return tags 返回一个包含所有Tag字母在内的字符串
      */
     public static String getTags(List<PatientBean> beans) {
-        if (beans == null) { return ""; }
+        if (beans == null) {
+            return "";
+        }
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < beans.size(); i++) {
             if (!builder.toString().contains(beans.get(i).getIndexTag())) {
@@ -339,7 +353,9 @@ public class BaseUtils {
      * @return tags 返回一个包含所有Tag字母在内的字符串
      */
     public static String getDoctorTags(List<DoctorBean> beans) {
-        if (beans == null) { return ""; }
+        if (beans == null) {
+            return "";
+        }
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < beans.size(); i++) {
             if (!builder.toString().contains(beans.get(i).getIndexTag())) {
@@ -354,7 +370,9 @@ public class BaseUtils {
      * @return tags 返回一个包含所有Tag字母在内的字符串
      */
     public static String getReceiveDoctorTags(List<ReceiverDoctorBean> beans) {
-        if (beans == null) { return ""; }
+        if (beans == null) {
+            return "";
+        }
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < beans.size(); i++) {
             if (!builder.toString().contains(beans.get(i).getIndexTag())) {
@@ -369,7 +387,9 @@ public class BaseUtils {
      * @return tags 返回一个包含所有Tag字母在内的字符串
      */
     public static String getTimeTags(List<String> beans) {
-        if (beans == null) { return ""; }
+        if (beans == null) {
+            return "";
+        }
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < beans.size(); i++) {
             if (!builder.toString().contains(beans.get(i))) {
@@ -410,8 +430,7 @@ public class BaseUtils {
         int sex;
         if (Integer.parseInt(idCard.substring(16).substring(0, 1)) % 2 == 0) {
             sex = 2;
-        }
-        else {
+        } else {
             sex = 1;
         }
         return sex;
@@ -421,7 +440,9 @@ public class BaseUtils {
      * 将秒数转为   字符串时间模式   "hh:mm:ss"
      */
     public static String getTimeMode(long time) {
-        if (time <= 0) { return INIT_TIME; }
+        if (time <= 0) {
+            return INIT_TIME;
+        }
         long hour, min, sec;
         String hourStr, minStr, secStr;
         hour = time / 3600;
@@ -429,20 +450,17 @@ public class BaseUtils {
         sec = time % 3600 % 60;
         if (hour < 10) {
             hourStr = "0" + hour;
-        }
-        else {
+        } else {
             hourStr = "" + hour;
         }
         if (min < 10) {
             minStr = "0" + min;
-        }
-        else {
+        } else {
             minStr = "" + min;
         }
         if (sec < 10) {
             secStr = "0" + sec;
-        }
-        else {
+        } else {
             secStr = "" + sec;
         }
         return hourStr + ":" + minStr + ":" + secStr;
@@ -456,8 +474,7 @@ public class BaseUtils {
             //#.00 表示两位小数
             DecimalFormat df = new DecimalFormat("#0.00");
             return df.format(price / 100f);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return "";
         }
