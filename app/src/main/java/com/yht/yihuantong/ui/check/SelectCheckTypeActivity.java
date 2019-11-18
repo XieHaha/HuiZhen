@@ -1,6 +1,8 @@
 package com.yht.yihuantong.ui.check;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -164,6 +166,7 @@ public class SelectCheckTypeActivity extends BaseActivity
      * 最近使用的服务项、服务包code
      */
     private List<String> recentlyUsedServiceData;
+    private Bitmap bitmap;
     /**
      * 当前选中的医院、选中的服务（全部服务or最近使用）
      */
@@ -200,6 +203,8 @@ public class SelectCheckTypeActivity extends BaseActivity
             //忽略价格的强制更新
             forcedUpdate = sharePreferenceUtil.getBoolean(CommonData.KEY_RESERVE_CHECK_UPDATE);
         }
+        bitmap = BitmapFactory.decodeResource(getApplication().getResources(),
+                R.mipmap.ic_label_noreach);
         layoutRefresh.setColorSchemeResources(android.R.color.holo_blue_light,
                 android.R.color.holo_red_light,
                 android.R.color.holo_orange_light, android.R.color.holo_green_light);
@@ -211,6 +216,7 @@ public class SelectCheckTypeActivity extends BaseActivity
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         parentAdapter = new SelectCheckTypeParentAdapter(R.layout.item_check_select_root,
                 filterBeans);
+        parentAdapter.setBitmap(bitmap);
         parentAdapter.setOnSelectedCallback(this);
         recyclerView.setAdapter(parentAdapter);
         //医院列表数据
@@ -221,6 +227,7 @@ public class SelectCheckTypeActivity extends BaseActivity
         filterRecyclerView.setAdapter(filterAdapter);
         //搜索列表
         searchAdapter = new SelectCheckTypeAdapter(this);
+        searchAdapter.setBitmap(bitmap);
         searchRecyclerView.setOnItemClickListener(this);
         searchRecyclerView.setAdapter(searchAdapter);
         //购物车
@@ -821,5 +828,14 @@ public class SelectCheckTypeActivity extends BaseActivity
         });
         //变更更新状态为已更新
         sharePreferenceUtil.putBoolean(CommonData.KEY_RESERVE_CHECK_UPDATE, false);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (bitmap != null) {
+            bitmap.recycle();
+            bitmap = null;
+        }
     }
 }

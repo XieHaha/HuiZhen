@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:minHeight="63dp"
+    android:orientation="vertical"
     android:paddingTop="20dp">
 
     <LinearLayout
@@ -18,16 +18,21 @@
             android:layout_height="wrap_content"
             android:src="@drawable/selector_public_status" />
 
-        <TextView
-            android:id="@+id/tv_check_type_name"
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textColor="@color/color_373d4d"
-            android:textSize="@dimen/text_16"
-            android:layout_marginEnd="20dp"
             android:layout_marginStart="7dp"
-            tools:text="检查名字" />
+            android:layout_marginEnd="20dp"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/tv_check_type_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_373d4d"
+                android:textSize="@dimen/text_16"
+                tools:text="检查名字" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tv_price"
@@ -41,19 +46,19 @@
 
     <LinearLayout
         android:id="@+id/layout_check"
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_marginTop="5dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="28dp"
+        android:layout_marginTop="5dp"
         android:layout_marginEnd="0dp"
-        android:layout_height="wrap_content">
+        android:orientation="vertical">
 
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/app_hei_line"
-        android:background="@color/color_ebedf0"
         android:layout_marginStart="28dp"
-        android:layout_marginTop="20dp" />
+        android:layout_marginTop="20dp"
+        android:background="@color/color_ebedf0" />
 </LinearLayout>

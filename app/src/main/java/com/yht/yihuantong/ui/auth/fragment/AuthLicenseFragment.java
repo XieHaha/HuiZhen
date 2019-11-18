@@ -4,11 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -17,7 +12,12 @@ import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.view.View;
-import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.yht.frame.data.BaseData;
@@ -56,8 +56,6 @@ import butterknife.OnClick;
 public class AuthLicenseFragment extends BaseFragment
         implements OnMediaItemClickListener, BaseQuickAdapter.OnItemClickListener,
         BaseQuickAdapter.OnItemChildClickListener {
-    @BindView(R.id.tv_auth_license_submit)
-    TextView tvAuthLicenseSubmit;
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.tv_hint)
@@ -109,7 +107,6 @@ public class AuthLicenseFragment extends BaseFragment
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
         spannableString(getString(R.string.txt_upload_card_hint));
-        tvAuthLicenseSubmit.setSelected(true);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         addImageAdapter = new AddImageAdapter(R.layout.item_add_image, imagePaths);
         addImageAdapter.setOnItemClickListener(this);
@@ -164,7 +161,6 @@ public class AuthLicenseFragment extends BaseFragment
             imagePaths.add(new NormImage());
         }
         addImageAdapter.setNewData(imagePaths);
-        initNextButton();
     }
 
     /**
@@ -173,25 +169,24 @@ public class AuthLicenseFragment extends BaseFragment
     private void spannableString(String s) {
         SpannableString style = new SpannableString(s);
         //大小
-        style.setSpan(new AbsoluteSizeSpan(BaseUtils.sp2px(getContext(), 16)), 4, 13, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        style.setSpan(new AbsoluteSizeSpan(BaseUtils.sp2px(getContext(), 16)), 4, 13,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         //颜色
-        style.setSpan(new ForegroundColorSpan(ContextCompat.getColor(getContext(), R.color.color_373d4d)), 4, 13,
+        style.setSpan(new ForegroundColorSpan(ContextCompat.getColor(getContext(),
+                R.color.color_373d4d)), 4, 13,
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         //粗体
-        style.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), 4, 13, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        style.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), 4, 13,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         tvHint.setText(style);
     }
 
     /**
      * 判断 下一步按钮
      */
-    private void initNextButton() {
+    private boolean initNextButton() {
         //等于2表示里面至少有一张真实图片(可能存在占位图)
-        if (imagePaths.size() == BaseData.BASE_TWO) {
-            tvAuthLicenseSubmit.setSelected(true);
-        } else {
-            tvAuthLicenseSubmit.setSelected(false);
-        }
+        return imagePaths.size() == BaseData.BASE_TWO;
     }
 
     @Override
@@ -232,7 +227,6 @@ public class AuthLicenseFragment extends BaseFragment
             }
         }
         addImageAdapter.setNewData(imagePaths);
-        initNextButton();
     }
 
     @OnClick({R.id.tv_auth_license_last, R.id.tv_auth_license_submit, R.id.tv_instance})
@@ -244,7 +238,7 @@ public class AuthLicenseFragment extends BaseFragment
                 }
                 break;
             case R.id.tv_auth_license_submit:
-                if (tvAuthLicenseSubmit.isSelected() && onAuthStepListener != null) {
+                if (initNextButton() && onAuthStepListener != null) {
                     for (int i = 0; i < imagePaths.size(); i++) {
                         String url = imagePaths.get(i).getImageUrl();
                         if (i == BASE_ZERO) {
@@ -307,7 +301,6 @@ public class AuthLicenseFragment extends BaseFragment
                 imagePaths.get(1).setImageUrl(url);
             }
             addImageAdapter.setNewData(imagePaths);
-            initNextButton();
             if (currentUploadImgIndex == 0) {
                 currentUploadImgIndex = 1;
                 dealImgHandler.sendEmptyMessage(0);

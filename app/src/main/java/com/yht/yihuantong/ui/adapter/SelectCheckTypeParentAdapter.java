@@ -1,5 +1,7 @@
 package com.yht.yihuantong.ui.adapter;
 
+import android.graphics.Bitmap;
+
 import androidx.annotation.Nullable;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -17,14 +19,21 @@ import java.util.List;
  * @date 19/6/5 14:25
  * @des 检查项目
  */
-public class SelectCheckTypeParentAdapter extends BaseQuickAdapter<SelectCheckTypeParentBean, BaseViewHolder> {
+public class SelectCheckTypeParentAdapter extends BaseQuickAdapter<SelectCheckTypeParentBean,
+        BaseViewHolder> {
+    private Bitmap bitmap;
     /**
      * 已选择code
      */
     private ArrayList<String> selectCodes = new ArrayList<>();
 
-    public SelectCheckTypeParentAdapter(int layoutResId, @Nullable List<SelectCheckTypeParentBean> data) {
+    public SelectCheckTypeParentAdapter(int layoutResId,
+                                        @Nullable List<SelectCheckTypeParentBean> data) {
         super(layoutResId, data);
+    }
+
+    public void setBitmap(Bitmap bitmap) {
+        this.bitmap = bitmap;
     }
 
     @Override
@@ -32,14 +41,14 @@ public class SelectCheckTypeParentAdapter extends BaseQuickAdapter<SelectCheckTy
         helper.setText(R.id.tv_hospital_name, item.getHospitalName());
         FullListView listView = helper.getView(R.id.full_list_view);
         SelectCheckTypeAdapter adapter = new SelectCheckTypeAdapter(mContext);
+        adapter.setBitmap(bitmap);
         adapter.setList(item.getProductPackageList());
         listView.setOnItemClickListener((parent, view, position, id) -> {
             SelectCheckTypeBean bean = item.getProductPackageList().get(position);
             String newCode = bean.getProjectCode();
             if (selectCodes.contains(newCode)) {
                 selectCodes.remove(newCode);
-            }
-            else {
+            } else {
                 selectCodes.add(newCode);
             }
             if (onSelectedCallback != null) {
