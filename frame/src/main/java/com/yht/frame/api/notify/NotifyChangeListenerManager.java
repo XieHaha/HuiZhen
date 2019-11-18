@@ -1,6 +1,6 @@
 package com.yht.frame.api.notify;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.yht.frame.utils.HuiZhenLog;
 

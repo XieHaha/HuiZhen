@@ -3,8 +3,8 @@ package com.yht.frame.widgets.edittext;
 import android.content.Context;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.AppCompatEditText;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.widget.AppCompatEditText;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 

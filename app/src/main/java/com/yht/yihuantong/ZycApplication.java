@@ -3,8 +3,9 @@ package com.yht.yihuantong;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.support.multidex.MultiDex;
 import android.text.TextUtils;
+
+import androidx.multidex.MultiDex;
 
 import com.google.gson.Gson;
 import com.hyphenate.chat.EMClient;

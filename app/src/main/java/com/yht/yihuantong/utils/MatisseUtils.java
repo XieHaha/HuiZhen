@@ -2,7 +2,7 @@ package com.yht.yihuantong.utils;
 
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 
 import com.yht.frame.R;
 import com.yht.yihuantong.ZycApplication;

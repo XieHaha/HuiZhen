@@ -2,7 +2,7 @@ package com.yht.yihuantong.ui.auth;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.TextUtils;

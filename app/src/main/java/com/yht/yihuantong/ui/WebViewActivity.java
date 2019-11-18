@@ -2,7 +2,7 @@ package com.yht.yihuantong.ui;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;

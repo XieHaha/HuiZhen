@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -57,7 +57,7 @@
                 android:layout_marginStart="20dp"
                 android:background="@color/color_ebedf0" />
 
-            <android.support.v7.widget.RecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/service_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
@@ -304,4 +304,4 @@
             android:textColor="@color/color_ffffff"
             android:textSize="@dimen/text_16" />
     </LinearLayout>
-</android.support.v4.widget.NestedScrollView>
+</androidx.core.widget.NestedScrollView>

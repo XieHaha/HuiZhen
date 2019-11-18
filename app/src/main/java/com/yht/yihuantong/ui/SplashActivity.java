@@ -3,7 +3,7 @@ package com.yht.yihuantong.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.hyphenate.chat.EMClient;

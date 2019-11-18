@@ -3,7 +3,7 @@ package com.yht.yihuantong.ui.reservation.time;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 import android.view.View;
 
 import com.haibin.calendarview.Calendar;

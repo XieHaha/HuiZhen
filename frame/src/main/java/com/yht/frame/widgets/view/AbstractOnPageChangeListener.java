@@ -1,6 +1,6 @@
 package com.yht.frame.widgets.view;
 
-import android.support.v4.view.ViewPager;
+import androidx.viewpager.widget.ViewPager;
 
 /**
  * @author 顿顿

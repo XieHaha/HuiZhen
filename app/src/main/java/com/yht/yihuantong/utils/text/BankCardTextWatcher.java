@@ -1,6 +1,6 @@
 package com.yht.yihuantong.utils.text;
 
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 import android.text.Editable;
 import android.text.Selection;
 import android.text.TextWatcher;

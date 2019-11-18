@@ -3,9 +3,9 @@ package com.yht.yihuantong.ui.hint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.TaskStackBuilder;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.Nullable;
+import androidx.core.app.TaskStackBuilder;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.yht.yihuantong.BuildConfig;
 import com.yht.yihuantong.R;

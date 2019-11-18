@@ -1,7 +1,7 @@
 package com.yht.yihuantong.ui.hint;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.widget.TextView;
 
 import com.hyphenate.chat.EMClient;
