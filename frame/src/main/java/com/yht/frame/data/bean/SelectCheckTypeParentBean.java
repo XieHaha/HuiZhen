@@ -21,6 +21,10 @@ public class SelectCheckTypeParentBean extends LitePalSupport implements Seriali
     private String hospitalCode;
     private String hospitalName;
     private ArrayList<SelectCheckTypeBean> productPackageList;
+    /**
+     * 排序
+     */
+    private String indexTag;
 
     public int getRelation() {
         return relation;
@@ -52,6 +56,14 @@ public class SelectCheckTypeParentBean extends LitePalSupport implements Seriali
 
     public void setProductPackageList(ArrayList<SelectCheckTypeBean> productPackageList) {
         this.productPackageList = productPackageList;
+    }
+
+    public String getIndexTag() {
+        return indexTag;
+    }
+
+    public void setIndexTag(String indexTag) {
+        this.indexTag = indexTag;
     }
 
     @Override
