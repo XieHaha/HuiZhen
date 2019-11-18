@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -15,6 +14,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.bumptech.glide.Glide;
 import com.yht.frame.data.BaseData;
@@ -50,7 +51,8 @@ import butterknife.OnClick;
  * @des 预约服务详情
  */
 public class ReservationServiceDetailActivity extends BaseActivity
-        implements CheckOrderStatus, CheckTypeStatus, SuggestionTypeStatus, LoadViewHelper.OnNextClickListener {
+        implements CheckOrderStatus, CheckTypeStatus, SuggestionTypeStatus,
+        LoadViewHelper.OnNextClickListener {
     @BindView(R.id.iv_patient_img)
     ImageView ivPatientImg;
     @BindView(R.id.tv_patient_name)
@@ -61,6 +63,10 @@ public class ReservationServiceDetailActivity extends BaseActivity
     TextView tvPatientSex;
     @BindView(R.id.tv_check_doctor_top)
     TextView tvCheckDoctorTop;
+    @BindView(R.id.tv_check_doctor_hospital_depart)
+    TextView tvCheckDoctorHospitalDepart;
+    @BindView(R.id.tv_check_doctor_hospital_depart_bottom)
+    TextView tvCheckDoctorHospitalDepartBottom;
     @BindView(R.id.tv_check_time_top)
     TextView tvCheckTimeTop;
     @BindView(R.id.tv_check_diagnosis_top)
@@ -172,8 +178,7 @@ public class ReservationServiceDetailActivity extends BaseActivity
         initBasePage();
         if (BaseUtils.isNetworkAvailable(this)) {
             getReserveCheckOrderDetail();
-        }
-        else {
+        } else {
             layoutHint.setVisibility(View.VISIBLE);
             loadViewHelper.load(LoadViewHelper.NONE_NETWORK);
         }
@@ -183,9 +188,12 @@ public class ReservationServiceDetailActivity extends BaseActivity
      * 检查项状态图
      */
     private void initBitmap() {
-        bitmapCancel = BitmapFactory.decodeResource(getApplication().getResources(), R.mipmap.ic_label_cancel);
-        bitmapNoReach = BitmapFactory.decodeResource(getApplication().getResources(), R.mipmap.ic_label_noreach);
-        bitmapReach = BitmapFactory.decodeResource(getApplication().getResources(), R.mipmap.ic_label_reach);
+        bitmapCancel = BitmapFactory.decodeResource(getApplication().getResources(),
+                R.mipmap.ic_label_cancel);
+        bitmapNoReach = BitmapFactory.decodeResource(getApplication().getResources(),
+                R.mipmap.ic_label_noreach);
+        bitmapReach = BitmapFactory.decodeResource(getApplication().getResources(),
+                R.mipmap.ic_label_reach);
     }
 
     /**
@@ -202,8 +210,7 @@ public class ReservationServiceDetailActivity extends BaseActivity
         if (isShowBottom) {
             layoutBottom.setVisibility(View.VISIBLE);
             layoutTop.setVisibility(View.GONE);
-        }
-        else {
+        } else {
             layoutBottom.setVisibility(View.GONE);
             layoutContact.setVisibility(View.GONE);
             layoutTop.setVisibility(View.VISIBLE);
@@ -222,21 +229,26 @@ public class ReservationServiceDetailActivity extends BaseActivity
         tvFamilyMedical.setText(checkDetailBean.getFamilyHistory());
         tvAllergies.setText(checkDetailBean.getAllergyHistory());
         Glide.with(this)
-             .load(FileUrlUtil.addTokenToUrl(checkDetailBean.getPatientPhoto()))
-             .apply(GlideHelper.getOptions(BaseUtils.dp2px(this, 4)))
-             .into(ivPatientImg);
+                .load(FileUrlUtil.addTokenToUrl(checkDetailBean.getPatientPhoto()))
+                .apply(GlideHelper.getOptions(BaseUtils.dp2px(this, 4)))
+                .into(ivPatientImg);
         tvPatientName.setText(checkDetailBean.getPatientName());
         tvPatientSex.setText(checkDetailBean.getSex() == BaseData.BASE_ONE
-                             ? getString(R.string.txt_sex_male)
-                             : getString(R.string.txt_sex_female));
+                ? getString(R.string.txt_sex_male)
+                : getString(R.string.txt_sex_female));
         tvPatientAge.setText(String.valueOf(checkDetailBean.getPatientAge()));
         if (isShowBottom) {
             tvCheckDoctorBottom.setText(checkDetailBean.getDoctorName());
+            tvCheckDoctorHospitalDepartBottom.setText(String.format(getString(R.string.txt_joiner),
+                    checkDetailBean.getSourceHospitalDepartmentName(),
+                    checkDetailBean.getSourceHospitalName()));
             tvCheckTimeBottom.setText(checkDetailBean.getCreateAt());
             tvCheckDiagnosisBottom.setText(checkDetailBean.getInitResult());
-        }
-        else {
+        } else {
             tvCheckDoctorTop.setText(checkDetailBean.getDoctorName());
+            tvCheckDoctorHospitalDepart.setText(String.format(getString(R.string.txt_joiner),
+                    checkDetailBean.getSourceHospitalDepartmentName(),
+                    checkDetailBean.getSourceHospitalName()));
             tvCheckTimeTop.setText(checkDetailBean.getCreateAt());
             tvCheckDiagnosisTop.setText(checkDetailBean.getInitResult());
         }
@@ -263,11 +275,9 @@ public class ReservationServiceDetailActivity extends BaseActivity
         int payType = checkDetailBean.getPayType();
         if (payType == BaseData.BASE_ZERO) {
             tvCheckPayment.setText(getString(R.string.txt_self_pay));
-        }
-        else if (payType == BaseData.BASE_ONE) {
+        } else if (payType == BaseData.BASE_ONE) {
             tvCheckPayment.setText(getString(R.string.txt_medicare));
-        }
-        else {
+        } else {
             tvCheckPayment.setText(getString(R.string.txt_self_medicare));
         }
         if (isScrollBottom) {
@@ -277,10 +287,13 @@ public class ReservationServiceDetailActivity extends BaseActivity
 
     @OnClick(R.id.tv_check_next)
     public void onViewClicked() {
-        if (checkDetailBean == null) { return; }
-        new HintDialog(this).setPhone(getString(R.string.txt_contact_patient_phone), checkDetailBean.getPatientMobile())
-                            .setOnEnterClickListener(() -> callPhone(checkDetailBean.getPatientMobile()))
-                            .show();
+        if (checkDetailBean == null) {
+            return;
+        }
+        new HintDialog(this).setPhone(getString(R.string.txt_contact_patient_phone),
+                checkDetailBean.getPatientMobile())
+                .setOnEnterClickListener(() -> callPhone(checkDetailBean.getPatientMobile()))
+                .show();
     }
 
     @Override
@@ -293,7 +306,7 @@ public class ReservationServiceDetailActivity extends BaseActivity
         super.onResponseSuccess(task, response);
         if (task == Tasks.GET_RESERVE_CHECK_ORDER_DETAIL) {
             layoutHint.setVisibility(View.GONE);
-            checkDetailBean = (CheckDetailBean)response.getData();
+            checkDetailBean = (CheckDetailBean) response.getData();
             initDetailData();
         }
     }
@@ -317,12 +330,10 @@ public class ReservationServiceDetailActivity extends BaseActivity
                 splitReportUrl();
                 //添加报告
                 addCheckReport();
-            }
-            else {
+            } else {
                 layoutCheckReportRoot.setVisibility(View.GONE);
             }
-        }
-        else {
+        } else {
             layoutCheckReportRoot.setVisibility(View.GONE);
         }
     }
@@ -338,8 +349,7 @@ public class ReservationServiceDetailActivity extends BaseActivity
         TextView tvType = view.findViewById(R.id.tv_check_type);
         if (bean.getItemType() == BASE_ONE) {
             serviceType(bean, view, tvType, imageView);
-        }
-        else {
+        } else {
             //服务包
             tvType.setText(String.format(getString(R.string.txt_space), bean.getPackName()));
             //服务包下的服务项父布局
@@ -348,7 +358,8 @@ public class ReservationServiceDetailActivity extends BaseActivity
             if (childCheck != null && childCheck.size() > 0) {
                 for (int i = 0; i < childCheck.size(); i++) {
                     CheckTypeByDetailBean childBean = childCheck.get(i);
-                    View childView = getLayoutInflater().inflate(R.layout.item_child_check_by_detail, null);
+                    View childView =
+                            getLayoutInflater().inflate(R.layout.item_child_check_by_detail, null);
                     layoutChildCheck.addView(servicePackage(childBean, childView));
                 }
             }
@@ -359,7 +370,8 @@ public class ReservationServiceDetailActivity extends BaseActivity
     /**
      * 服务项
      */
-    private void serviceType(CheckTypeByDetailBean bean, View view, TextView tvType, ImageView imageView) {
+    private void serviceType(CheckTypeByDetailBean bean, View view, TextView tvType,
+                             ImageView imageView) {
         //填写诊断意见
         TextView editAdvice = view.findViewById(R.id.tv_check_edit);
         //预约就诊时间
@@ -375,8 +387,7 @@ public class ReservationServiceDetailActivity extends BaseActivity
             tvType.append(appendImage(bean.getStatus(), bean.getName()));
             tvType.setSelected(true);
             imageView.setSelected(true);
-        }
-        else {
+        } else {
             tvType.setSelected(false);
             imageView.setSelected(false);
         }
@@ -385,14 +396,14 @@ public class ReservationServiceDetailActivity extends BaseActivity
             reserveTime.setText(bean.getOrderAt());
             editAdvice.setVisibility(View.VISIBLE);
             editAdvice.setOnClickListener(v -> {
-                Intent intent = new Intent(ReservationServiceDetailActivity.this, AddDiagnosisActivity.class);
+                Intent intent = new Intent(ReservationServiceDetailActivity.this,
+                        AddDiagnosisActivity.class);
                 intent.putExtra(CommonData.KEY_PUBLIC_STRING, bean.getName());
                 intent.putExtra(CommonData.KEY_ORDER_ID, orderNo);
                 intent.putExtra(CommonData.KEY_CHECK_TYPE_ID, bean.getId());
                 startActivityForResult(intent, REQUEST_CODE_EDIT_ADVICE);
             });
-        }
-        else {
+        } else {
             editAdvice.setVisibility(View.GONE);
             layoutReserveTime.setVisibility(View.GONE);
         }
@@ -416,11 +427,10 @@ public class ReservationServiceDetailActivity extends BaseActivity
         }
         //订单和服务项均为已取消状态
         if (checkDetailBean.getStatus() != CHECK_ORDER_STATUS_CANCEL &&
-            childBean.getStatus() == CHECK_TYPE_STATUS_CANCEL) {
+                childBean.getStatus() == CHECK_TYPE_STATUS_CANCEL) {
             tvType.append(appendImage(childBean.getStatus(), childBean.getName()));
             tvType.setSelected(true);
-        }
-        else {
+        } else {
             tvType.setSelected(false);
         }
         if (showAdvice(childBean)) {
@@ -428,14 +438,14 @@ public class ReservationServiceDetailActivity extends BaseActivity
             reserveTime.setText(childBean.getOrderAt());
             editAdvice.setVisibility(View.VISIBLE);
             editAdvice.setOnClickListener(v -> {
-                Intent intent = new Intent(ReservationServiceDetailActivity.this, AddDiagnosisActivity.class);
+                Intent intent = new Intent(ReservationServiceDetailActivity.this,
+                        AddDiagnosisActivity.class);
                 intent.putExtra(CommonData.KEY_PUBLIC_STRING, childBean.getName());
                 intent.putExtra(CommonData.KEY_ORDER_ID, orderNo);
                 intent.putExtra(CommonData.KEY_CHECK_TYPE_ID, childBean.getId());
                 startActivityForResult(intent, REQUEST_CODE_EDIT_ADVICE);
             });
-        }
-        else {
+        } else {
             editAdvice.setVisibility(View.GONE);
             layoutReserveTime.setVisibility(View.GONE);
         }
@@ -448,7 +458,7 @@ public class ReservationServiceDetailActivity extends BaseActivity
      */
     private boolean showAdvice(CheckTypeByDetailBean bean) {
         return TextUtils.equals(checkDetailBean.getDoctorCode(), loginBean.getDoctorCode()) &&
-               bean.getStatus() == CHECK_TYPE_STATUS_PAID && bean.getSuggestionType() == SUGGESTION_TYPE_DOCTOR;
+                bean.getStatus() == CHECK_TYPE_STATUS_PAID && bean.getSuggestionType() == SUGGESTION_TYPE_DOCTOR;
     }
 
     /**
@@ -464,13 +474,14 @@ public class ReservationServiceDetailActivity extends BaseActivity
             view.setTag(i);
             view.setOnClickListener(v -> {
                 if (bean.getSuggestionType() == SUGGESTION_TYPE_DOCTOR) {
-                    Intent intent = new Intent(ReservationServiceDetailActivity.this, DiagnosisDetailActivity.class);
-                    intent.putExtra(CommonData.KEY_CHECK_REPORT_LIST, getDoctorReportList(bean.getId()));
+                    Intent intent = new Intent(ReservationServiceDetailActivity.this,
+                            DiagnosisDetailActivity.class);
+                    intent.putExtra(CommonData.KEY_CHECK_REPORT_LIST,
+                            getDoctorReportList(bean.getId()));
                     intent.putExtra(CommonData.KEY_PUBLIC, curPosition);
                     startActivity(intent);
-                }
-                else {
-                    FileDisplayActivity.show(this, getOtherReportList(), (Integer)v.getTag());
+                } else {
+                    FileDisplayActivity.show(this, getOtherReportList(), (Integer) v.getTag());
                 }
             });
             layoutCheckReport.addView(view);
@@ -499,14 +510,14 @@ public class ReservationServiceDetailActivity extends BaseActivity
                     CheckTypeByDetailBean checkTypeByDetailBean = new CheckTypeByDetailBean();
                     String name = bean.getName();
                     checkTypeByDetailBean.setName(
-                            String.format(getString(R.string.txt_report_name_by_num), name, (j + 1)));
+                            String.format(getString(R.string.txt_report_name_by_num), name,
+                                    (j + 1)));
                     checkTypeByDetailBean.setReport(reportUrls[j]);
                     checkTypeByDetailBean.setSuggestionType(bean.getSuggestionType());
                     checkTypeByDetailBean.setId(bean.getId());
                     newReportUrls.add(checkTypeByDetailBean);
                 }
-            }
-            else {
+            } else {
                 String name = bean.getName();
                 bean.setName(String.format(getString(R.string.txt_report_name), name));
                 bean.setReport(reportUrls[0]);

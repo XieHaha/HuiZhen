@@ -397,9 +397,9 @@
     <string name="txt_self_pay">自费</string>
     <string name="txt_medicare">医保</string>
     <string name="txt_self_medicare">新农合</string>
-    <string name="txt_check_success_hint">恭喜你，提交成功。\n医院将尽快确认预约，与居民联系。</string>
-    <string name="txt_transfer_success_hint">恭喜你，提交成功。\n医院将尽快与居民联系确认预约。</string>
-    <string name="txt_remote_success_hint">恭喜你，提交成功。\n等待您的科室审核此次会诊申请。</string>
+    <string name="txt_check_success_hint">提交成功。\nn医院将尽快与居民联系确认预约。</string>
+    <string name="txt_transfer_success_hint">提交成功。\医生将尽快与您联系，处理转诊。</string>
+    <string name="txt_remote_success_hint">提交成功。\n等待您的科室审核此次会诊申请。</string>
     <string name="txt_look_check_list">查看预约记录</string>
     <string name="txt_look_check_detail">查看服务详情</string>
     <string name="txt_service_submit_status_error">以下服务项暂不支持预约：</string>

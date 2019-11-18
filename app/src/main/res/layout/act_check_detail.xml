@@ -3,21 +3,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
 
     <include
-        layout="@layout/public_title"
-        android:id="@+id/title_bar" />
+        android:id="@+id/title_bar"
+        layout="@layout/public_title" />
 
     <ScrollView
         android:id="@+id/scroll_view"
         android:layout_width="match_parent"
-        android:scrollbars="none"
         android:layout_height="match_parent"
-        android:layout_below="@id/title_bar"
         android:layout_above="@id/layout_contact"
-        android:background="@color/color_ffffff">
+        android:layout_below="@id/title_bar"
+        android:background="@color/color_ffffff"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -35,53 +35,53 @@
                     android:id="@+id/iv_patient_img"
                     android:layout_width="56dp"
                     android:layout_height="56dp"
-                    android:src="@mipmap/ic_default_header_r"
-                    android:layout_marginStart="12dp" />
+                    android:layout_marginStart="12dp"
+                    android:src="@mipmap/ic_default_header_r" />
 
                 <TextView
                     android:id="@+id/tv_patient_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textStyle="bold"
+                    android:layout_marginStart="12dp"
+                    android:layout_toEndOf="@id/iv_patient_img"
                     android:textColor="@color/color_373d4d"
                     android:textSize="@dimen/text_20"
-                    tools:text="姓名"
-                    android:layout_toEndOf="@id/iv_patient_img"
-                    android:layout_marginStart="12dp" />
+                    android:textStyle="bold"
+                    tools:text="姓名" />
 
                 <TextView
                     android:id="@+id/tv_patient_age"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_patient_name"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_toEndOf="@id/iv_patient_img"
                     android:textColor="@color/color_373d4d"
                     android:textSize="@dimen/text_14"
-                    tools:text="0岁"
-                    android:layout_toEndOf="@id/iv_patient_img"
-                    android:layout_below="@id/tv_patient_name"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginStart="12dp" />
+                    tools:text="0岁" />
 
                 <View
                     android:id="@+id/line"
                     android:layout_width="@dimen/app_hei_line"
                     android:layout_height="12dp"
+                    android:layout_below="@id/tv_patient_name"
+                    android:layout_marginStart="8dp"
                     android:layout_marginTop="12dp"
                     android:layout_toEndOf="@id/tv_patient_age"
-                    android:layout_below="@id/tv_patient_name"
-                    android:background="#c5c8cc"
-                    android:layout_marginStart="8dp" />
+                    android:background="#c5c8cc" />
 
                 <TextView
                     android:id="@+id/tv_patient_sex"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_patient_name"
+                    android:layout_marginStart="11dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_toEndOf="@id/line"
                     android:textColor="@color/color_373d4d"
                     android:textSize="@dimen/text_14"
-                    tools:text="性别"
-                    android:layout_toEndOf="@id/line"
-                    android:layout_below="@id/tv_patient_name"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginStart="11dp" />
+                    tools:text="性别" />
 
                 <ImageView
                     android:id="@+id/iv_check_status"
@@ -96,104 +96,104 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/app_hei_line"
                 android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
-                android:background="@color/color_ebedf0"
-                android:layout_marginTop="20dp" />
+                android:background="@color/color_ebedf0" />
 
             <LinearLayout
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingTop="20dp"
                 android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:layout_height="wrap_content">
+                android:paddingTop="20dp"
+                android:paddingEnd="20dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_16"
+                    android:text="@string/txt_past_medical_his"
                     android:textColor="@color/color_373d4d"
-                    android:textStyle="bold"
-                    android:text="@string/txt_past_medical_his" />
+                    android:textSize="@dimen/text_16"
+                    android:textStyle="bold" />
 
                 <com.yht.frame.widgets.textview.JustifiedTextView
                     android:id="@+id/tv_past_medical"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_16"
-                    android:textColor="@color/color_373d4d"
-                    android:lineSpacingMultiplier="1.1"
                     android:layout_marginTop="12dp"
+                    android:lineSpacingMultiplier="1.1"
+                    android:textColor="@color/color_373d4d"
+                    android:textSize="@dimen/text_16"
                     tools:text="医生" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/app_hei_line"
-                    android:background="@color/color_ebedf0"
-                    android:layout_marginTop="20dp" />
+                    android:layout_marginTop="20dp"
+                    android:background="@color/color_ebedf0" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingTop="20dp"
                 android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:layout_height="wrap_content">
+                android:paddingTop="20dp"
+                android:paddingEnd="20dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_16"
+                    android:text="@string/txt_family_medical_his"
                     android:textColor="@color/color_373d4d"
-                    android:textStyle="bold"
-                    android:text="@string/txt_family_medical_his" />
+                    android:textSize="@dimen/text_16"
+                    android:textStyle="bold" />
 
                 <com.yht.frame.widgets.textview.JustifiedTextView
                     android:id="@+id/tv_family_medical"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_16"
+                    android:layout_marginTop="12dp"
                     android:lineSpacingMultiplier="1.1"
                     android:textColor="@color/color_373d4d"
-                    android:layout_marginTop="12dp"
+                    android:textSize="@dimen/text_16"
                     tools:text="医生" />
 
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/app_hei_line"
-                    android:background="@color/color_ebedf0"
-                    android:layout_marginTop="20dp" />
+                    android:layout_marginTop="20dp"
+                    android:background="@color/color_ebedf0" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingTop="20dp"
-                android:paddingBottom="20dp"
                 android:paddingStart="20dp"
+                android:paddingTop="20dp"
                 android:paddingEnd="20dp"
-                android:layout_height="wrap_content">
+                android:paddingBottom="20dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_16"
+                    android:text="@string/txt_allergies"
                     android:textColor="@color/color_373d4d"
-                    android:textStyle="bold"
-                    android:text="@string/txt_allergies" />
+                    android:textSize="@dimen/text_16"
+                    android:textStyle="bold" />
 
                 <com.yht.frame.widgets.textview.JustifiedTextView
                     android:id="@+id/tv_allergies"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_16"
-                    android:textColor="@color/color_373d4d"
-                    android:lineSpacingMultiplier="1.1"
                     android:layout_marginTop="12dp"
+                    android:lineSpacingMultiplier="1.1"
+                    android:textColor="@color/color_373d4d"
+                    android:textSize="@dimen/text_16"
                     tools:text="医生" />
 
 
@@ -208,64 +208,70 @@
                 android:id="@+id/layout_top"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="vertical"
                 android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:orientation="vertical">
+                android:paddingEnd="20dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingTop="20dp"
-                    android:layout_height="wrap_content">
+                    android:paddingTop="20dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/text_16"
+                        android:text="@string/txt_first_doctor"
                         android:textColor="@color/color_373d4d"
-                        android:textStyle="bold"
-                        android:text="@string/txt_first_doctor" />
+                        android:textSize="@dimen/text_16"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/tv_check_doctor_top"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/text_16"
-                        android:textColor="@color/color_373d4d"
                         android:layout_marginTop="12dp"
-                        tools:text="医生">
+                        android:textColor="@color/color_373d4d"
+                        android:textSize="@dimen/text_16"
+                        tools:text="医生" />
 
-                    </TextView>
+                    <TextView
+                        android:id="@+id/tv_check_doctor_hospital_depart"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/color_373d4d"
+                        android:textSize="@dimen/text_16"
+                        tools:text="科室-医院" />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/app_hei_line"
-                        android:background="@color/color_ebedf0"
-                        android:layout_marginTop="20dp" />
+                        android:layout_marginTop="20dp"
+                        android:background="@color/color_ebedf0" />
 
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingTop="20dp"
-                    android:layout_height="wrap_content">
+                    android:paddingTop="20dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/text_16"
+                        android:text="@string/txt_first_time"
                         android:textColor="@color/color_373d4d"
-                        android:textStyle="bold"
-                        android:text="@string/txt_first_time" />
+                        android:textSize="@dimen/text_16"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/tv_check_time_top"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/text_16"
-                        android:textColor="@color/color_373d4d"
                         android:layout_marginTop="12dp"
+                        android:textColor="@color/color_373d4d"
+                        android:textSize="@dimen/text_16"
                         tools:text="时间">
 
                     </TextView>
@@ -273,32 +279,32 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/app_hei_line"
-                        android:background="@color/color_ebedf0"
-                        android:layout_marginTop="20dp" />
+                        android:layout_marginTop="20dp"
+                        android:background="@color/color_ebedf0" />
 
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingTop="20dp"
-                    android:layout_height="wrap_content">
+                    android:paddingTop="20dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/text_16"
+                        android:text="@string/txt_first_diagnosis_introduce"
                         android:textColor="@color/color_373d4d"
-                        android:textStyle="bold"
-                        android:text="@string/txt_first_diagnosis_introduce" />
+                        android:textSize="@dimen/text_16"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/tv_check_diagnosis_top"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/text_16"
-                        android:textColor="@color/color_373d4d"
                         android:layout_marginTop="12dp"
+                        android:textColor="@color/color_373d4d"
+                        android:textSize="@dimen/text_16"
                         tools:text="没钱">
 
                     </TextView>
@@ -306,35 +312,35 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/app_hei_line"
-                        android:background="@color/color_ebedf0"
-                        android:layout_marginTop="20dp" />
+                        android:layout_marginTop="20dp"
+                        android:background="@color/color_ebedf0" />
 
                 </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingTop="20dp"
                 android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:layout_height="wrap_content">
+                android:paddingTop="20dp"
+                android:paddingEnd="20dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_16"
+                    android:text="@string/txt_payment"
                     android:textColor="@color/color_373d4d"
-                    android:textStyle="bold"
-                    android:text="@string/txt_payment" />
+                    android:textSize="@dimen/text_16"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tv_check_payment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_16"
-                    android:textColor="@color/color_373d4d"
                     android:layout_marginTop="12dp"
+                    android:textColor="@color/color_373d4d"
+                    android:textSize="@dimen/text_16"
                     tools:text="自费">
 
                 </TextView>
@@ -342,68 +348,68 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/app_hei_line"
-                    android:background="@color/color_ebedf0"
-                    android:layout_marginTop="20dp" />
+                    android:layout_marginTop="20dp"
+                    android:background="@color/color_ebedf0" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/layout_check_type_root"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingTop="20dp"
                 android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:layout_height="wrap_content">
+                android:paddingTop="20dp"
+                android:paddingEnd="20dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_16"
+                    android:text="@string/txt_currency_income_project"
                     android:textColor="@color/color_373d4d"
-                    android:textStyle="bold"
-                    android:text="@string/txt_currency_income_project" />
+                    android:textSize="@dimen/text_16"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:id="@+id/layout_check_type"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginTop="7dp">
+                    android:layout_marginTop="7dp"
+                    android:orientation="vertical">
 
                 </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/app_hei_line"
-                    android:background="@color/color_ebedf0"
-                    android:layout_marginTop="20dp" />
+                    android:layout_marginTop="20dp"
+                    android:background="@color/color_ebedf0" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingTop="20dp"
                 android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:layout_height="wrap_content">
+                android:paddingTop="20dp"
+                android:paddingEnd="20dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_16"
+                    android:text="@string/txt_check_hospital"
                     android:textColor="@color/color_373d4d"
-                    android:textStyle="bold"
-                    android:text="@string/txt_check_hospital" />
+                    android:textSize="@dimen/text_16"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tv_check_hospital"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_16"
-                    android:textColor="@color/color_373d4d"
                     android:layout_marginTop="12dp"
+                    android:textColor="@color/color_373d4d"
+                    android:textSize="@dimen/text_16"
                     tools:text="医院">
 
                 </TextView>
@@ -411,35 +417,35 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/app_hei_line"
-                    android:background="@color/color_ebedf0"
-                    android:layout_marginTop="20dp" />
+                    android:layout_marginTop="20dp"
+                    android:background="@color/color_ebedf0" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:orientation="vertical"
-                android:paddingTop="20dp"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
                 android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="20dp"
+                android:paddingTop="20dp"
+                android:paddingEnd="20dp"
                 android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_16"
+                    android:text="@string/txt_pregnancy"
                     android:textColor="@color/color_373d4d"
-                    android:textStyle="bold"
-                    android:text="@string/txt_pregnancy" />
+                    android:textSize="@dimen/text_16"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tv_check_pregnancy"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_16"
-                    android:textColor="@color/color_373d4d"
                     android:layout_marginTop="12dp"
+                    android:textColor="@color/color_373d4d"
+                    android:textSize="@dimen/text_16"
                     tools:text="否">
 
                 </TextView>
@@ -447,34 +453,34 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/app_hei_line"
-                    android:background="@color/color_ebedf0"
-                    android:layout_marginTop="20dp" />
+                    android:layout_marginTop="20dp"
+                    android:background="@color/color_ebedf0" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingTop="20dp"
                 android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:layout_height="wrap_content">
+                android:paddingTop="20dp"
+                android:paddingEnd="20dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_16"
+                    android:text="@string/txt_status"
                     android:textColor="@color/color_373d4d"
-                    android:textStyle="bold"
-                    android:text="@string/txt_status" />
+                    android:textSize="@dimen/text_16"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tv_check_status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_16"
-                    android:textColor="@color/color_373d4d"
                     android:layout_marginTop="12dp"
+                    android:textColor="@color/color_373d4d"
+                    android:textSize="@dimen/text_16"
                     tools:text="已取消">
 
                 </TextView>
@@ -482,35 +488,35 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/app_hei_line"
-                    android:background="@color/color_ebedf0"
-                    android:layout_marginTop="20dp" />
+                    android:layout_marginTop="20dp"
+                    android:background="@color/color_ebedf0" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/layout_cancel_result"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingTop="20dp"
                 android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:layout_height="wrap_content">
+                android:paddingTop="20dp"
+                android:paddingEnd="20dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_16"
+                    android:text="@string/txt_cancel_result"
                     android:textColor="@color/color_373d4d"
-                    android:textStyle="bold"
-                    android:text="@string/txt_cancel_result" />
+                    android:textSize="@dimen/text_16"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tv_check_cancel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_16"
-                    android:textColor="@color/color_373d4d"
                     android:layout_marginTop="12dp"
+                    android:textColor="@color/color_373d4d"
+                    android:textSize="@dimen/text_16"
                     tools:text="没钱">
 
                 </TextView>
@@ -518,48 +524,48 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/app_hei_line"
-                    android:background="@color/color_ebedf0"
-                    android:layout_marginTop="20dp" />
+                    android:layout_marginTop="20dp"
+                    android:background="@color/color_ebedf0" />
 
             </LinearLayout>
 
             <RelativeLayout
                 android:id="@+id/layout_check_report_root"
                 android:layout_width="match_parent"
-                android:orientation="vertical"
-                android:paddingTop="20dp"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
                 android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="20dp"
+                android:paddingTop="20dp"
+                android:paddingEnd="20dp"
                 android:visibility="visible">
 
                 <TextView
                     android:id="@+id/text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_16"
+                    android:text="@string/txt_report"
                     android:textColor="@color/color_373d4d"
-                    android:textStyle="bold"
-                    android:text="@string/txt_report" />
+                    android:textSize="@dimen/text_16"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tv_check_report"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_16"
-                    android:textColor="@color/color_1491fc"
-                    android:text="@string/txt_report_num"
-                    android:layout_toEndOf="@id/text"
                     android:layout_marginStart="5dp"
+                    android:layout_toEndOf="@id/text"
+                    android:text="@string/txt_report_num"
+                    android:textColor="@color/color_1491fc"
+                    android:textSize="@dimen/text_16"
                     android:visibility="invisible" />
 
                 <LinearLayout
                     android:id="@+id/layout_check_report"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_check_report"
                     android:orientation="vertical"
-                    android:paddingBottom="15dp"
-                    android:layout_below="@id/tv_check_report">
+                    android:paddingBottom="15dp">
 
                 </LinearLayout>
 
@@ -569,9 +575,9 @@
                 android:id="@+id/layout_bottom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="vertical"
                 android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:orientation="vertical">
+                android:paddingEnd="20dp">
 
                 <View
                     android:layout_width="match_parent"
@@ -580,58 +586,64 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingTop="20dp"
-                    android:layout_height="wrap_content">
+                    android:paddingTop="20dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/text_16"
+                        android:text="@string/txt_first_doctor"
                         android:textColor="@color/color_373d4d"
-                        android:textStyle="bold"
-                        android:text="@string/txt_first_doctor" />
+                        android:textSize="@dimen/text_16"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/tv_check_doctor_bottom"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/text_16"
-                        android:textColor="@color/color_373d4d"
                         android:layout_marginTop="12dp"
-                        tools:text="医生">
+                        android:textColor="@color/color_373d4d"
+                        android:textSize="@dimen/text_16"
+                        tools:text="医生" />
 
-                    </TextView>
+                    <TextView
+                        android:id="@+id/tv_check_doctor_hospital_depart_bottom"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/color_373d4d"
+                        android:textSize="@dimen/text_16"
+                        tools:text="医生" />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/app_hei_line"
-                        android:background="@color/color_ebedf0"
-                        android:layout_marginTop="20dp" />
+                        android:layout_marginTop="20dp"
+                        android:background="@color/color_ebedf0" />
 
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingTop="20dp"
-                    android:layout_height="wrap_content">
+                    android:paddingTop="20dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/text_16"
+                        android:text="@string/txt_first_time"
                         android:textColor="@color/color_373d4d"
-                        android:textStyle="bold"
-                        android:text="@string/txt_first_time" />
+                        android:textSize="@dimen/text_16"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/tv_check_time_bottom"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/text_16"
-                        android:textColor="@color/color_373d4d"
                         android:layout_marginTop="12dp"
+                        android:textColor="@color/color_373d4d"
+                        android:textSize="@dimen/text_16"
                         tools:text="时间">
 
                     </TextView>
@@ -639,32 +651,32 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/app_hei_line"
-                        android:background="@color/color_ebedf0"
-                        android:layout_marginTop="20dp" />
+                        android:layout_marginTop="20dp"
+                        android:background="@color/color_ebedf0" />
 
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingTop="20dp"
-                    android:layout_height="wrap_content">
+                    android:paddingTop="20dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/text_16"
+                        android:text="@string/txt_first_diagnosis_introduce"
                         android:textColor="@color/color_373d4d"
-                        android:textStyle="bold"
-                        android:text="@string/txt_first_diagnosis_introduce" />
+                        android:textSize="@dimen/text_16"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/tv_check_diagnosis_bottom"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/text_16"
-                        android:textColor="@color/color_373d4d"
                         android:layout_marginTop="12dp"
+                        android:textColor="@color/color_373d4d"
+                        android:textSize="@dimen/text_16"
                         tools:text="没钱">
 
                     </TextView>
@@ -672,8 +684,8 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/app_hei_line"
-                        android:background="@color/color_ebedf0"
-                        android:layout_marginTop="20dp" />
+                        android:layout_marginTop="20dp"
+                        android:background="@color/color_ebedf0" />
 
                 </LinearLayout>
             </LinearLayout>
@@ -685,13 +697,13 @@
     <LinearLayout
         android:id="@+id/layout_contact"
         android:layout_width="match_parent"
-        android:layout_alignParentBottom="true"
         android:layout_height="68dp"
+        android:layout_alignParentBottom="true"
         android:background="@color/color_ffffff"
         android:gravity="center"
         android:paddingStart="35dp"
-        android:paddingEnd="35dp"
         android:paddingTop="13dp"
+        android:paddingEnd="35dp"
         android:paddingBottom="13dp">
 
         <TextView
@@ -699,20 +711,20 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/corner28_1491fc_bg"
+            android:gravity="center"
             android:text="@string/txt_contact_patient"
             android:textColor="@color/color_ffffff"
-            android:textSize="@dimen/text_16"
-            android:gravity="center" />
+            android:textSize="@dimen/text_16" />
 
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/layout_hint"
         android:layout_width="match_parent"
-        android:background="@color/color_ffffff"
+        android:layout_height="match_parent"
         android:layout_below="@id/title_bar"
-        android:visibility="gone"
-        android:layout_height="match_parent">
+        android:background="@color/color_ffffff"
+        android:visibility="gone">
 
         <include layout="@layout/public_hint" />
 

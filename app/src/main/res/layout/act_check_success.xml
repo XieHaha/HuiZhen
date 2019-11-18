@@ -19,8 +19,8 @@
         android:id="@+id/tv_success_hint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/text_15"
-        android:textColor="@color/color_6a6f80"
+        android:textSize="@dimen/text_16"
+        android:textColor="@color/color_373d4d"
         android:text="@string/txt_check_success_hint"
         android:gravity="center" />
 
