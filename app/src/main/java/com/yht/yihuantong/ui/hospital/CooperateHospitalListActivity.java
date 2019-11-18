@@ -101,7 +101,7 @@ public class CooperateHospitalListActivity extends BaseActivity
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         Intent intent = new Intent(this, HospitalDetailActivity.class);
-        intent.putExtra(CommonData.KEY_HOSPITAL_BEAN, hospitalBeans.get(position).getHospitalCode());
+        intent.putExtra(CommonData.KEY_HOSPITAL_CODE, hospitalBeans.get(position).getHospitalCode());
         startActivity(intent);
     }
 
