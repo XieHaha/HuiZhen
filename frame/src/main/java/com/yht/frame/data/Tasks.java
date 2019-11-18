@@ -246,6 +246,10 @@ WE_CHAT_LOGIN,
      */
     GET_COOPERATE_HOSPITAL_LIST,
     /**
+     * 获取当前医生的合作医院详情
+     */
+    GET_COOPERATE_HOSPITAL_DETAIL,
+    /**
      * 获取当前医生的合作医院下服务项
      */
     GET_COOPERATE_HOSPITAL_PROJECT_LIST,

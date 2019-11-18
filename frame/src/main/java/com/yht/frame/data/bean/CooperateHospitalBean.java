@@ -16,6 +16,7 @@ public class CooperateHospitalBean implements Serializable {
     private String address;
     private String introduce;
     private List<String> serviceList;
+    private HospitalProjectParentBean productList;
 
     public String getHospitalName() {
         return hospitalName;
@@ -63,5 +64,13 @@ public class CooperateHospitalBean implements Serializable {
 
     public void setServiceList(List<String> serviceList) {
         this.serviceList = serviceList;
+    }
+
+    public HospitalProjectParentBean getProductList() {
+        return productList;
+    }
+
+    public void setProductList(HospitalProjectParentBean productList) {
+        this.productList = productList;
     }
 }

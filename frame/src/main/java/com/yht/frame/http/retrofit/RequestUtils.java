@@ -695,6 +695,14 @@ public class RequestUtils {
                        .subscribe(new AbstractLoadViewObserver<>(context, show, Tasks.GET_COOPERATE_HOSPITAL_LIST,
                                                                  listener));
     }
+    public static void getCooperateHospitalDetail(Context context, String token, String hospitalCode,
+                                                  final ResponseListener<BaseResponse> listener) {
+        RetrofitManager.getApiUrlManager()
+                .getCooperateHospitalDetail(token, hospitalCode)
+                .compose(RxJavaHelper.observableIO2Main(context))
+                .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_COOPERATE_HOSPITAL_DETAIL,
+                        listener));
+    }
 
     public static void getCooperateHospitalProjectList(Context context, String token, String hospitalCode,
             final ResponseListener<BaseResponse> listener) {

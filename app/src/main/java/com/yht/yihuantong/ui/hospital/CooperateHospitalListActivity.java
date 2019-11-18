@@ -2,11 +2,12 @@ package com.yht.yihuantong.ui.hospital;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+
 import androidx.annotation.NonNull;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.view.View;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.yht.frame.data.BaseData;
@@ -100,7 +101,7 @@ public class CooperateHospitalListActivity extends BaseActivity
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         Intent intent = new Intent(this, HospitalDetailActivity.class);
-        intent.putExtra(CommonData.KEY_HOSPITAL_BEAN, hospitalBeans.get(position));
+        intent.putExtra(CommonData.KEY_HOSPITAL_BEAN, hospitalBeans.get(position).getHospitalCode());
         startActivity(intent);
     }
 

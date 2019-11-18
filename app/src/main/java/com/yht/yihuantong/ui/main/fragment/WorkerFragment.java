@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +13,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
+
+import androidx.annotation.NonNull;
 
 import com.bumptech.glide.Glide;
 import com.umeng.analytics.AnalyticsConfig;
@@ -35,6 +36,7 @@ import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.permission.Permission;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
+import com.yht.frame.utils.HuiZhenLog;
 import com.yht.frame.utils.TimeUtil;
 import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.frame.widgets.menu.MenuItem;
@@ -204,6 +206,7 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
      * 获取所有订单数量
      */
     private void getStudioOrderStatistics() {
+        HuiZhenLog.i(TAG, "TOKEN:" + loginBean.getToken());
         RequestUtils.getStudioOrderStatistics(getContext(), loginBean.getToken(), this);
     }
 

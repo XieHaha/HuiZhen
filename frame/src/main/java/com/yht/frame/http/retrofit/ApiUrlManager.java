@@ -710,6 +710,16 @@ public interface ApiUrlManager {
             @Header("token") String token, @Body Map<String, Integer> info);
 
     /**
+     * 获取当前医生的合作医院详情
+     *
+     * @param hospitalCode 参数
+     * @param token        token
+     * @return 返回值
+     */
+    @GET("client/hospital/cooperate/detail")
+    Observable<BaseResponse<CooperateHospitalBean>> getCooperateHospitalDetail(@Header("token") String token,
+                                                                                   @Query("hospitalCode") String hospitalCode);
+    /**
      * 获取当前医生的合作医院下服务项目列表
      *
      * @param hospitalCode 参数

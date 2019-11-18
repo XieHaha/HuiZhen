@@ -2,7 +2,6 @@ package com.yht.yihuantong.ui.hospital;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
@@ -67,6 +68,7 @@ public class HospitalDetailActivity extends BaseActivity implements AdapterView.
      * 当前医院
      */
     private CooperateHospitalBean curHospital;
+    private String hospitalCode;
     /**
      * 服务项数据
      */
@@ -94,7 +96,7 @@ public class HospitalDetailActivity extends BaseActivity implements AdapterView.
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
         if (getIntent() != null) {
-            curHospital = (CooperateHospitalBean)getIntent().getSerializableExtra(CommonData.KEY_HOSPITAL_BEAN);
+            hospitalCode = getIntent().getStringExtra(CommonData.KEY_HOSPITAL_CODE);
         }
         productAdapter = new ProductAdapter();
         fullListView.setOnItemClickListener(this);
@@ -102,24 +104,34 @@ public class HospitalDetailActivity extends BaseActivity implements AdapterView.
     }
 
     @Override
-    public void initData(@NonNull Bundle savedInstanceState) {
-        super.initData(savedInstanceState);
+    public void fillNetWorkData() {
+        super.fillNetWorkData();
+        getCooperateHospitalDetail();
+    }
+
+    /**
+     * 获取合作医院详情
+     */
+    private void getCooperateHospitalDetail() {
+        RequestUtils.getCooperateHospitalDetail(this, loginBean.getToken(), hospitalCode, this);
+    }
+
+    private void bindData() {
         if (curHospital != null) {
             publicTitleBarTitle.setText(curHospital.getHospitalName());
             tvHospitalAddress.setText(curHospital.getAddress());
-            tvHospitalProject.setText(String.format(getString(R.string.txt_item), hospitalProjectBeans.size()));
+            tvHospitalProject.setText(String.format(getString(R.string.txt_item),
+                    hospitalProjectBeans.size()));
             if (TextUtils.isEmpty(curHospital.getIntroduce())) {
                 tvHospitalIntroduction.setText(R.string.txt_none);
-            }
-            else {
+            } else {
                 tvHospitalIntroduction.setText(curHospital.getIntroduce());
             }
             tvHospitalIntroduction.post(() -> {
                 if (tvHospitalIntroduction.getLineCount() > MAX_NUM) {
                     tvMore.setVisibility(View.VISIBLE);
                     initIntroduction(true);
-                }
-                else {
+                } else {
                     tvMore.setVisibility(View.GONE);
                 }
             });
@@ -142,25 +154,34 @@ public class HospitalDetailActivity extends BaseActivity implements AdapterView.
                     }
                 }
                 tvHospitalBusiness.setText(StringUtils.join(values, ","));
-            }
-            else {
+            } else {
                 ivStatus.setImageResource(R.mipmap.ic_label_no_cooperation);
                 tvHospitalBusiness.setText(R.string.txt_business_support_not);
             }
+
+            //服务项数据
+            hospitalProjectParentBean = curHospital.getProductList();
+            if (hospitalProjectParentBean.getPackageProductInfoList() != null &&
+                    hospitalProjectParentBean.getPackageProductInfoList().size() > 0) {
+                layoutProduct.setVisibility(View.VISIBLE);
+                hospitalProjectBeans.addAll(hospitalProjectParentBean.getPackageProductInfoList());
+                if (hospitalProjectParentBean.getCount() > MAX_NUM) {
+                    tvProductMore.setVisibility(View.VISIBLE);
+                } else {
+                    tvProductMore.setVisibility(View.GONE);
+                }
+                setListViewHeightBasedOnChildren(fullListView, productAdapter,
+                        hospitalProjectBeans.size() > MAX_NUM
+                                ? MAX_NUM
+                                : hospitalProjectBeans.size());
+            } else {
+                layoutProduct.setVisibility(View.GONE);
+            }
+            tvHospitalProject.setText(
+                    String.format(getString(R.string.txt_item),
+                            hospitalProjectParentBean.getCount()));
+            productAdapter.notifyDataSetChanged();
         }
-    }
-
-    @Override
-    public void fillNetWorkData() {
-        super.fillNetWorkData();
-        getCooperateHospitalProjectList();
-    }
-
-    /**
-     * 获取合作医院下服务项(只有5条数据)
-     */
-    private void getCooperateHospitalProjectList() {
-        RequestUtils.getCooperateHospitalProjectList(this, loginBean.getToken(), curHospital.getHospitalCode(), this);
     }
 
     /**
@@ -173,15 +194,14 @@ public class HospitalDetailActivity extends BaseActivity implements AdapterView.
             tvMore.setSelected(false);
             tvMore.setText(R.string.txt_pack_down);
             tvHospitalIntroduction.setMaxLines(MAX_NUM);
-        }
-        else {
+        } else {
             tvMore.setSelected(true);
             tvMore.setText(R.string.txt_pack_up);
             tvHospitalIntroduction.setMaxLines(Integer.MAX_VALUE);
         }
     }
 
-    @OnClick({ R.id.layout_more_project, R.id.tv_more })
+    @OnClick({R.id.layout_more_project, R.id.tv_more})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.layout_more_project:
@@ -208,8 +228,7 @@ public class HospitalDetailActivity extends BaseActivity implements AdapterView.
         if (type == BASE_ONE) {
             //服务项
             intent = new Intent(this, ServiceDetailActivity.class);
-        }
-        else {
+        } else {
             //服务包
             intent = new Intent(this, ServicePackageDetailActivity.class);
         }
@@ -220,28 +239,9 @@ public class HospitalDetailActivity extends BaseActivity implements AdapterView.
     @Override
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
-        if (task == Tasks.GET_COOPERATE_HOSPITAL_PROJECT_LIST) {
-            hospitalProjectParentBean = (HospitalProjectParentBean)response.getData();
-            if (hospitalProjectParentBean.getPackageProductInfoList() != null &&
-                hospitalProjectParentBean.getPackageProductInfoList().size() > 0) {
-                layoutProduct.setVisibility(View.VISIBLE);
-                hospitalProjectBeans.addAll(hospitalProjectParentBean.getPackageProductInfoList());
-                if (hospitalProjectParentBean.getCount() > MAX_NUM) {
-                    tvProductMore.setVisibility(View.VISIBLE);
-                }
-                else {
-                    tvProductMore.setVisibility(View.GONE);
-                }
-                setListViewHeightBasedOnChildren(fullListView, productAdapter, hospitalProjectBeans.size() > MAX_NUM
-                                                                               ? MAX_NUM
-                                                                               : hospitalProjectBeans.size());
-            }
-            else {
-                layoutProduct.setVisibility(View.GONE);
-            }
-            tvHospitalProject.setText(
-                    String.format(getString(R.string.txt_item), hospitalProjectParentBean.getCount()));
-            productAdapter.notifyDataSetChanged();
+        if (task == Tasks.GET_COOPERATE_HOSPITAL_DETAIL) {
+            curHospital = (CooperateHospitalBean) response.getData();
+            bindData();
         }
     }
 
@@ -268,19 +268,17 @@ public class HospitalDetailActivity extends BaseActivity implements AdapterView.
             if (convertView == null) {
                 holder = new ViewHolder();
                 convertView = LayoutInflater.from(HospitalDetailActivity.this)
-                                            .inflate(R.layout.item_hospital_project, parent, false);
+                        .inflate(R.layout.item_hospital_project, parent, false);
                 holder.tvContent = convertView.findViewById(R.id.tv_content);
                 holder.line = convertView.findViewById(R.id.view);
                 convertView.setTag(holder);
-            }
-            else {
-                holder = (ViewHolder)convertView.getTag();
+            } else {
+                holder = (ViewHolder) convertView.getTag();
             }
             holder.tvContent.setText(hospitalProjectBeans.get(position).getProjectName());
             if (position == hospitalProjectBeans.size() - 1 || position == MAX_NUM - 1) {
                 holder.line.setVisibility(View.GONE);
-            }
-            else {
+            } else {
                 holder.line.setVisibility(View.VISIBLE);
             }
             return convertView;
@@ -297,7 +295,8 @@ public class HospitalDetailActivity extends BaseActivity implements AdapterView.
      *
      * @param listView
      */
-    private void setListViewHeightBasedOnChildren(ListView listView, BaseAdapter baseAdapter, int count) {
+    private void setListViewHeightBasedOnChildren(ListView listView, BaseAdapter baseAdapter,
+                                                  int count) {
         if (listView == null || baseAdapter == null) {
             return;
         }

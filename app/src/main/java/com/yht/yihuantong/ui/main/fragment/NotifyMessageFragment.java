@@ -2,13 +2,14 @@ package com.yht.yihuantong.ui.main.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.gson.Gson;
@@ -27,10 +28,10 @@ import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.adapter.NotifyMessageAdapter;
-import com.yht.yihuantong.ui.check.AddDiagnosisActivity;
 import com.yht.yihuantong.ui.check.ReservationServiceDetailActivity;
 import com.yht.yihuantong.ui.currency.IncomeDetailActivity;
 import com.yht.yihuantong.ui.currency.WithdrawDetailActivity;
+import com.yht.yihuantong.ui.hospital.HospitalDetailActivity;
 import com.yht.yihuantong.ui.main.listener.OnMessageUpdateListener;
 import com.yht.yihuantong.ui.transfer.TransferInitiateDetailActivity;
 import com.yht.yihuantong.ui.transfer.TransferReceiveDetailActivity;
@@ -167,10 +168,8 @@ public class NotifyMessageFragment extends BaseFragment
                 startActivity(intent);
                 break;
             case MESSAGE_SERVICE_ADVICE:
-                intent = new Intent(getContext(), AddDiagnosisActivity.class);
+                intent = new Intent(getContext(), ReservationServiceDetailActivity.class);
                 intent.putExtra(CommonData.KEY_ORDER_ID, orderNo);
-                //                intent.putExtra(CommonData.KEY_PUBLIC_STRING, bean.getName());
-                //                intent.putExtra(CommonData.KEY_CHECK_TYPE_ID, bean.getId());
                 startActivity(intent);
                 break;
             case MESSAGE_TRANSFER_REJECT:
@@ -197,6 +196,11 @@ public class NotifyMessageFragment extends BaseFragment
             case MESSAGE_CURRENCY_DEDUCTION:
                 intent = new Intent(getContext(), WithdrawDetailActivity.class);
                 intent.putExtra(CommonData.KEY_DOCTOR_CURRENCY_ID, orderNo);
+                startActivity(intent);
+                break;
+            case MESSAGE_COOPERATE_ACCOUNT_CREATE:
+                intent = new Intent(getContext(), HospitalDetailActivity.class);
+                intent.putExtra(CommonData.KEY_HOSPITAL_CODE, orderNo);
                 startActivity(intent);
                 break;
             default:
