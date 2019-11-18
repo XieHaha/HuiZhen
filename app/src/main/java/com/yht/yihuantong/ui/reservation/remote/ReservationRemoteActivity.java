@@ -3,15 +3,16 @@ package com.yht.yihuantong.ui.reservation.remote;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -126,9 +127,11 @@ public class ReservationRemoteActivity extends BaseActivity implements OnRemoteL
         fragmentManager = getSupportFragmentManager();
         if (getIntent() != null) {
             //居民详情页面回传数据
-            patientBean = (PatientBean)getIntent().getSerializableExtra(CommonData.KEY_PATIENT_BEAN);
+            patientBean =
+                    (PatientBean) getIntent().getSerializableExtra(CommonData.KEY_PATIENT_BEAN);
             //会诊详情页面回传数据(重新转诊)
-            remoteDetailBean = (RemoteDetailBean)getIntent().getSerializableExtra(CommonData.KEY_REMOTE_ORDER_BEAN);
+            remoteDetailBean =
+                    (RemoteDetailBean) getIntent().getSerializableExtra(CommonData.KEY_REMOTE_ORDER_BEAN);
         }
         initTitlePage();
     }
@@ -139,8 +142,7 @@ public class ReservationRemoteActivity extends BaseActivity implements OnRemoteL
         if (hasHistoryData()) {
             //重新转诊直接进入到第二步
             tabReservationLicenseView();
-        }
-        else {
+        } else {
             tabReservationBaseView();
         }
     }
@@ -174,12 +176,10 @@ public class ReservationRemoteActivity extends BaseActivity implements OnRemoteL
         if (patientBean != null) {
             initPatientBaseData();
             return true;
-        }
-        else if (remoteDetailBean != null) {
+        } else if (remoteDetailBean != null) {
             initRemoteOrderData();
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -219,8 +219,10 @@ public class ReservationRemoteActivity extends BaseActivity implements OnRemoteL
         reserveRemoteBean.setDescIll(remoteDetailBean.getDescIll());
         reserveRemoteBean.setDestination(remoteDetailBean.getDestination());
         reserveRemoteBean.setInitResult(remoteDetailBean.getInitResult());
-        reserveRemoteBean.setStartAt(BaseUtils.formatDate(remoteDetailBean.getStartAt(), BaseUtils.YYYY_MM_DD_HH_MM));
-        reserveRemoteBean.setEndAt(BaseUtils.formatDate(remoteDetailBean.getEndAt(), BaseUtils.YYYY_MM_DD_HH_MM));
+        reserveRemoteBean.setStartAt(BaseUtils.formatDate(remoteDetailBean.getStartAt(),
+                BaseUtils.YYYY_MM_DD_HH_MM));
+        reserveRemoteBean.setEndAt(BaseUtils.formatDate(remoteDetailBean.getEndAt(),
+                BaseUtils.YYYY_MM_DD_HH_MM));
         //受邀方信息
         ArrayList<DepartInfoBean> list = new ArrayList<>();
         ArrayList<RemoteInvitedBean> beans = remoteDetailBean.getInvitationList();
@@ -236,11 +238,13 @@ public class ReservationRemoteActivity extends BaseActivity implements OnRemoteL
         //附件
         StringBuilder builder = new StringBuilder();
         ArrayList<FileBean> fileBeans = remoteDetailBean.getPatientResourceList();
-        for (int i = 0; i < fileBeans.size(); i++) {
-            FileBean file = fileBeans.get(i);
-            builder.append(file.getFileUrl());
-            if (fileBeans.size() - 1 != i) {
-                builder.append(",");
+        if (fileBeans != null) {
+            for (int i = 0; i < fileBeans.size(); i++) {
+                FileBean file = fileBeans.get(i);
+                builder.append(file.getFileUrl());
+                if (fileBeans.size() - 1 != i) {
+                    builder.append(",");
+                }
             }
         }
         reserveRemoteBean.setPatientResource(builder.toString());
@@ -254,8 +258,7 @@ public class ReservationRemoteActivity extends BaseActivity implements OnRemoteL
             identifyFragment.setOnRemoteListener(this);
             identifyFragment.setReserveRemoteBean(reserveRemoteBean);
             fragmentTransaction.add(R.id.layout_frame_root, identifyFragment);
-        }
-        else {
+        } else {
             fragmentTransaction.show(identifyFragment);
             identifyFragment.setReserveRemoteBean(reserveRemoteBean);
             identifyFragment.onResume();
@@ -272,8 +275,7 @@ public class ReservationRemoteActivity extends BaseActivity implements OnRemoteL
             materialFragment.setOnRemoteListener(this);
             materialFragment.setReserveRemoteBean(reserveRemoteBean);
             fragmentTransaction.add(R.id.layout_frame_root, materialFragment);
-        }
-        else {
+        } else {
             fragmentTransaction.show(materialFragment);
             materialFragment.setReserveRemoteBean(reserveRemoteBean);
             materialFragment.onResume();
@@ -293,8 +295,7 @@ public class ReservationRemoteActivity extends BaseActivity implements OnRemoteL
             remoteSubmitFragment.setOnRemoteListener(this);
             remoteSubmitFragment.setReserveRemoteBean(reserveRemoteBean);
             fragmentTransaction.add(R.id.layout_frame_root, remoteSubmitFragment);
-        }
-        else {
+        } else {
             fragmentTransaction.show(remoteSubmitFragment);
             remoteSubmitFragment.setReserveRemoteBean(reserveRemoteBean);
             remoteSubmitFragment.onResume();
@@ -382,10 +383,10 @@ public class ReservationRemoteActivity extends BaseActivity implements OnRemoteL
                 break;
             case R.id.public_title_bar_more:
                 new HintDialog(this).setPhone(getString(R.string.txt_contact_service),
-                                              getString(R.string.txt_contact_service_phone), false)
-                                    .setOnEnterClickListener(
-                                            () -> callPhone(getString(R.string.txt_contact_service_phone)))
-                                    .show();
+                        getString(R.string.txt_contact_service_phone), false)
+                        .setOnEnterClickListener(
+                                () -> callPhone(getString(R.string.txt_contact_service_phone)))
+                        .show();
                 break;
             default:
                 break;
@@ -414,7 +415,7 @@ public class ReservationRemoteActivity extends BaseActivity implements OnRemoteL
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
         if (task == Tasks.ADD_RESERVE_REMOTE_ORDER) {
-            String orderNo = (String)response.getData();
+            String orderNo = (String) response.getData();
             Intent intent = new Intent(this, ReservationSuccessActivity.class);
             intent.putExtra(CommonData.KEY_RESERVATION_TYPE, BASE_TWO);
             intent.putExtra(CommonData.KEY_ORDER_ID, orderNo);
@@ -428,43 +429,43 @@ public class ReservationRemoteActivity extends BaseActivity implements OnRemoteL
         super.onResponseCode(task, response);
         //时间错误
         if (response.getCode() == BaseNetConfig.REQUEST_SUBMIT_REMOTE_TIME_ERROR) {
-            // 动态生成所需的java类的类型
-            Type type = new TypeToken<List<DepartInfoBean>>() { }.getType();
-            Gson gson = new Gson();
-            String jsonString = (String)response.getData();
-            List<DepartInfoBean> errorDepart = gson.fromJson(jsonString, type);
-            showSubmitErrorDialog(response.getMsg(), errorDepart);
+            showSubmitErrorDialog(response.getMsg(), null);
         }
         //科室错误
         else if (response.getCode() == BaseNetConfig.REQUEST_SUBMIT_REMOTE_DEPART_ERROR) {
-            showSubmitErrorDialog(response.getMsg(), null);
+            // 动态生成所需的java类的类型
+            Type type = new TypeToken<List<DepartInfoBean>>() {
+            }.getType();
+            Gson gson = new Gson();
+            String jsonString = (String) response.getData();
+            List<DepartInfoBean> errorDepart = gson.fromJson(jsonString, type);
+            showSubmitErrorDialog(response.getMsg(), errorDepart);
         }
     }
 
     private void showSubmitErrorDialog(String hint, List<DepartInfoBean> list) {
         new ErrorDepartListDialog(this).setContentString(hint)
-                                       .setHideRight(true)
-                                       .setData(list)
-                                       .setOnNextClickListener(new ErrorDepartListDialog.OnNextClickListener() {
-                                           @Override
-                                           public void onLeftClick() {
-                                               if (remoteSubmitFragment != null) {
-                                                   if (list == null) {
-                                                       //重新选择时间
-                                                       remoteSubmitFragment.reselect(1);
-                                                   }
-                                                   else {
-                                                       //重新选择科室
-                                                       remoteSubmitFragment.reselect(2);
-                                                   }
-                                               }
-                                           }
+                .setHideRight(true)
+                .setData(list)
+                .setOnNextClickListener(new ErrorDepartListDialog.OnNextClickListener() {
+                    @Override
+                    public void onLeftClick() {
+                        if (remoteSubmitFragment != null) {
+                            if (list == null) {
+                                //重新选择时间
+                                remoteSubmitFragment.reselect(1);
+                            } else {
+                                //重新选择科室
+                                remoteSubmitFragment.reselect(2);
+                            }
+                        }
+                    }
 
-                                           @Override
-                                           public void onRightClick() {
-                                           }
-                                       })
-                                       .show();
+                    @Override
+                    public void onRightClick() {
+                    }
+                })
+                .show();
     }
 
     /**
@@ -477,8 +478,7 @@ public class ReservationRemoteActivity extends BaseActivity implements OnRemoteL
             curPage = 1;
             tabReservationLicenseView();
             return false;
-        }
-        else if (curPage == 1) {
+        } else if (curPage == 1) {
             if (patientBean != null || remoteDetailBean != null) {
                 return true;
             }
@@ -504,21 +504,24 @@ public class ReservationRemoteActivity extends BaseActivity implements OnRemoteL
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-            @NonNull int[] grantResults) {
+                                           @NonNull int[] grantResults) {
         switch (curPage) {
             case BASE_ZERO:
                 if (identifyFragment != null) {
-                    identifyFragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
+                    identifyFragment.onRequestPermissionsResult(requestCode, permissions,
+                            grantResults);
                 }
                 break;
             case BASE_ONE:
                 if (materialFragment != null) {
-                    materialFragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
+                    materialFragment.onRequestPermissionsResult(requestCode, permissions,
+                            grantResults);
                 }
                 break;
             case BASE_TWO:
                 if (remoteSubmitFragment != null) {
-                    remoteSubmitFragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
+                    remoteSubmitFragment.onRequestPermissionsResult(requestCode, permissions,
+                            grantResults);
                 }
                 break;
             default:
