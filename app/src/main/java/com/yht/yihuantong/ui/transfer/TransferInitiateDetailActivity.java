@@ -2,14 +2,15 @@ package com.yht.yihuantong.ui.transfer;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.core.app.NavUtils;
-import androidx.core.app.TaskStackBuilder;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.core.app.NavUtils;
+import androidx.core.app.TaskStackBuilder;
 
 import com.bumptech.glide.Glide;
 import com.yht.frame.data.BaseData;
@@ -154,7 +155,8 @@ public class TransferInitiateDetailActivity extends BaseActivity
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         if (getIntent() != null) {
-            transferBean = (TransferDetailBean)getIntent().getSerializableExtra(CommonData.KEY_TRANSFER_ORDER_BEAN);
+            transferBean =
+                    (TransferDetailBean) getIntent().getSerializableExtra(CommonData.KEY_TRANSFER_ORDER_BEAN);
             orderNo = getIntent().getStringExtra(CommonData.KEY_ORDER_ID);
             isOuterChain = getIntent().getBooleanExtra(CommonData.KEY_IS_OUTER_CHAIN, false);
         }
@@ -165,8 +167,7 @@ public class TransferInitiateDetailActivity extends BaseActivity
         if (BaseUtils.isNetworkAvailable(this)) {
             getTransferOrderDetail();
             getValidateHospitalList();
-        }
-        else {
+        } else {
             layoutHint.setVisibility(View.VISIBLE);
             loadViewHelper.load(LoadViewHelper.NONE_NETWORK);
         }
@@ -183,28 +184,26 @@ public class TransferInitiateDetailActivity extends BaseActivity
         tvFamilyMedical.setText(transferBean.getFamilyHistory());
         tvAllergies.setText(transferBean.getAllergyHistory());
         Glide.with(this)
-             .load(FileUrlUtil.addTokenToUrl(transferBean.getPhoto()))
-             .apply(GlideHelper.getOptions(BaseUtils.dp2px(this, 4)))
-             .into(ivPatientImg);
+                .load(FileUrlUtil.addTokenToUrl(transferBean.getPhoto()))
+                .apply(GlideHelper.getOptions(BaseUtils.dp2px(this, 4)))
+                .into(ivPatientImg);
         tvPatientName.setText(transferBean.getPatientName());
         tvPatientSex.setText(transferBean.getSex() == BaseData.BASE_ONE
-                             ? getString(R.string.txt_sex_male)
-                             : getString(R.string.txt_sex_female));
+                ? getString(R.string.txt_sex_male)
+                : getString(R.string.txt_sex_female));
         tvPatientAge.setText(String.valueOf(transferBean.getPatientAge()));
         tvTransferTime.setText(transferBean.getTransferDate());
         tvInitiateDiagnosis.setText(transferBean.getInitResult());
         tvTransferType.setText(transferBean.getTransferType() == BaseData.BASE_ZERO
-                               ? getString(R.string.txt_transfer_up)
-                               : getString(R.string.txt_transfer_down));
+                ? getString(R.string.txt_transfer_up)
+                : getString(R.string.txt_transfer_down));
         tvTransferPurpose.setText(transferBean.getTransferTarget());
         int payType = transferBean.getPayType();
         if (payType == BaseData.BASE_ZERO) {
             tvPayment.setText(getString(R.string.txt_self_pay));
-        }
-        else if (payType == BaseData.BASE_ONE) {
+        } else if (payType == BaseData.BASE_ONE) {
             tvPayment.setText(getString(R.string.txt_medicare));
-        }
-        else {
+        } else {
             tvPayment.setText(getString(R.string.txt_self_medicare));
         }
         tvReceivingDoctor.setText(transferBean.getTargetDoctorName());
@@ -267,7 +266,8 @@ public class TransferInitiateDetailActivity extends BaseActivity
      * 取消转诊
      */
     private void cancelReserveTransferOrder() {
-        RequestUtils.cancelReserveTransferOrder(this, loginBean.getToken(), cancelReason, orderNo, this);
+        RequestUtils.cancelReserveTransferOrder(this, loginBean.getToken(), cancelReason, orderNo
+                , this);
     }
 
     /**
@@ -282,15 +282,19 @@ public class TransferInitiateDetailActivity extends BaseActivity
      */
     private void getPatientExistTransfer() {
         if (transferBean != null) {
-            RequestUtils.getPatientExistTransfer(this, loginBean.getToken(), transferBean.getPatientCode(), this);
+            RequestUtils.getPatientExistTransfer(this, loginBean.getToken(),
+                    transferBean.getPatientCode(), this);
         }
     }
 
     @OnClick({
-            R.id.public_title_bar_back, R.id.tv_transfer_again, R.id.tv_contact_patient, R.id.tv_contact_doctor,
-            R.id.tv_contact_patient_one, R.id.tv_contact_doctor_one })
+            R.id.public_title_bar_back, R.id.tv_transfer_again, R.id.tv_contact_patient,
+            R.id.tv_contact_doctor,
+            R.id.tv_contact_patient_one, R.id.tv_contact_doctor_one})
     public void onViewClicked(View view) {
-        if (transferBean == null) { return; }
+        if (transferBean == null) {
+            return;
+        }
         switch (view.getId()) {
             case R.id.public_title_bar_back:
                 hideSoftInputFromWindow();
@@ -300,28 +304,26 @@ public class TransferInitiateDetailActivity extends BaseActivity
             case R.id.tv_transfer_again:
                 if (TRANSFER_STATUS_WAIT == transferBean.getReceiveStatus()) {
                     new InputDialog(this).Builder()
-                                         .setCancelable(false)
-                                         .setCanceledOnTouchOutside(false)
-                                         .setEditHintText(getString(R.string.txt_cancel_transfer_reason_hint))
-                                         .setCancleBtnTxt(getString(R.string.txt_sure_cancel))
-                                         .setEnterBtnTxt(getString(R.string.txt_think_again))
-                                         .setEnterSelect(true)
-                                         .setLeft(true)
-                                         .setOnCancelClickListener(() -> {
-                                         })
-                                         .setResultListener(result -> {
-                                             cancelReason = result;
-                                             cancelReserveTransferOrder();
-                                         })
-                                         .show();
-                }
-                else {
+                            .setCancelable(false)
+                            .setCanceledOnTouchOutside(false)
+                            .setEditHintText(getString(R.string.txt_cancel_transfer_reason_hint))
+                            .setCancleBtnTxt(getString(R.string.txt_sure_cancel))
+                            .setEnterBtnTxt(getString(R.string.txt_think_again))
+                            .setEnterSelect(true)
+                            .setLeft(true)
+                            .setOnCancelClickListener(() -> {
+                            })
+                            .setResultListener(result -> {
+                                cancelReason = result;
+                                cancelReserveTransferOrder();
+                            })
+                            .show();
+                } else {
                     if (applyTransferAble) {
                         getPatientExistTransfer();
-                    }
-                    else {
+                    } else {
                         Intent intent = new Intent(this, ReservationDisableActivity.class);
-                        intent.putExtra(CommonData.KEY_CHECK_OR_TRANSFER, true);
+                        intent.putExtra(CommonData.KEY_RESERVATION_TYPE, BASE_ONE);
                         startActivity(intent);
                     }
                 }
@@ -329,16 +331,16 @@ public class TransferInitiateDetailActivity extends BaseActivity
             case R.id.tv_contact_patient:
             case R.id.tv_contact_patient_one:
                 new HintDialog(this).setPhone(getString(R.string.txt_contact_patient_phone),
-                                              transferBean.getPatientMobile())
-                                    .setOnEnterClickListener(() -> callPhone(transferBean.getPatientMobile()))
-                                    .show();
+                        transferBean.getPatientMobile())
+                        .setOnEnterClickListener(() -> callPhone(transferBean.getPatientMobile()))
+                        .show();
                 break;
             case R.id.tv_contact_doctor:
             case R.id.tv_contact_doctor_one:
                 new HintDialog(this).setPhone(getString(R.string.txt_contact_doctor_phone),
-                                              transferBean.getTargetDoctorMobile())
-                                    .setOnEnterClickListener(() -> callPhone(transferBean.getTargetDoctorMobile()))
-                                    .show();
+                        transferBean.getTargetDoctorMobile())
+                        .setOnEnterClickListener(() -> callPhone(transferBean.getTargetDoctorMobile()))
+                        .show();
                 break;
             default:
                 break;
@@ -356,7 +358,7 @@ public class TransferInitiateDetailActivity extends BaseActivity
         switch (task) {
             case GET_TRANSFER_ORDER_DETAIL:
                 layoutHint.setVisibility(View.GONE);
-                transferBean = (TransferDetailBean)response.getData();
+                transferBean = (TransferDetailBean) response.getData();
                 initDetailData();
                 break;
             case CANCEL_RESERVE_TRANSFER_ORDER:
@@ -365,11 +367,10 @@ public class TransferInitiateDetailActivity extends BaseActivity
                 getTransferOrderDetail();
                 break;
             case GET_PATIENT_EXIST_TRANSFER:
-                boolean exist = (boolean)response.getData();
+                boolean exist = (boolean) response.getData();
                 if (exist) {
                     ToastUtil.toast(this, R.string.txt_patient_exist_transfer);
-                }
-                else {
+                } else {
                     //重新转诊
                     Intent intent = new Intent(this, ReservationTransferActivity.class);
                     intent.putExtra(CommonData.KEY_TRANSFER_ORDER_BEAN, transferBean);
@@ -377,7 +378,7 @@ public class TransferInitiateDetailActivity extends BaseActivity
                 }
                 break;
             case GET_VALIDATE_HOSPITAL_LIST:
-                ReservationValidateBean bean = (ReservationValidateBean)response.getData();
+                ReservationValidateBean bean = (ReservationValidateBean) response.getData();
                 if (bean != null) {
                     applyTransferAble = bean.isZz();
                 }
@@ -403,13 +404,11 @@ public class TransferInitiateDetailActivity extends BaseActivity
                 Intent upIntent = NavUtils.getParentActivityIntent(this);
                 if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
                     TaskStackBuilder.create(this).addNextIntentWithParentStack(upIntent).startActivities();
-                }
-                else {
+                } else {
                     upIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     NavUtils.navigateUpTo(this, upIntent);
                 }
-            }
-            else {
+            } else {
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
             }

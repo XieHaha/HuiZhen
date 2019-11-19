@@ -327,7 +327,7 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
                     startActivity(intent);
                 } else {
                     intent = new Intent(getContext(), ReservationDisableActivity.class);
-                    intent.putExtra(CommonData.KEY_CHECK_OR_TRANSFER, true);
+                    intent.putExtra(CommonData.KEY_RESERVATION_TYPE, BASE_ONE);
                     startActivity(intent);
                 }
                 break;
@@ -337,7 +337,7 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
                     startActivity(intent);
                 } else {
                     intent = new Intent(getContext(), ReservationDisableActivity.class);
-                    intent.putExtra(CommonData.KEY_CHECK_OR_TRANSFER, true);
+                    intent.putExtra(CommonData.KEY_RESERVATION_TYPE, BASE_TWO);
                     startActivity(intent);
                 }
                 break;

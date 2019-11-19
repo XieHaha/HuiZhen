@@ -1,8 +1,10 @@
 package com.yht.yihuantong.ui.reservation;
 
 import android.os.Bundle;
-import androidx.annotation.NonNull;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.yht.frame.data.CommonData;
 import com.yht.frame.ui.BaseActivity;
@@ -18,12 +20,15 @@ import butterknife.BindView;
 public class ReservationDisableActivity extends BaseActivity {
     @BindView(R.id.public_title_bar_title)
     TextView publicTitleBarTitle;
+    @BindView(R.id.iv_pic)
+    ImageView ivPic;
     @BindView(R.id.tv_disable_hint)
     TextView tvDisableHint;
+
     /**
-     * 是否为转诊
+     * 预约类型  默认预约服务
      */
-    private boolean isTransfer;
+    private int reservationType;
 
     @Override
     protected boolean isInitBackBtn() {
@@ -39,15 +44,23 @@ public class ReservationDisableActivity extends BaseActivity {
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         if (getIntent() != null) {
-            isTransfer = getIntent().getBooleanExtra(CommonData.KEY_CHECK_OR_TRANSFER, false);
+            reservationType = getIntent().getIntExtra(CommonData.KEY_RESERVATION_TYPE, 0);
         }
-        if (isTransfer) {
-            publicTitleBarTitle.setText(R.string.txt_reserve_transfer);
-            tvDisableHint.setText(R.string.txt_none_hospital_by_reserve_transfer);
-        }
-        else {
-            publicTitleBarTitle.setText(R.string.txt_reserve_check);
-            tvDisableHint.setText(R.string.txt_none_hospital_by_reserve);
+
+        switch (reservationType) {
+            case BASE_ONE:
+                publicTitleBarTitle.setText(R.string.txt_reserve_transfer);
+                tvDisableHint.setText(R.string.txt_none_hospital_by_reserve_transfer);
+                break;
+            case BASE_TWO:
+                publicTitleBarTitle.setText(R.string.txt_remote_consultation);
+                tvDisableHint.setText(R.string.txt_none_permission_by_reserve_remote);
+                ivPic.setImageResource(R.mipmap.pic_account_disable);
+                break;
+            default:
+                publicTitleBarTitle.setText(R.string.txt_reserve_check);
+                tvDisableHint.setText(R.string.txt_none_hospital_by_reserve);
+                break;
         }
     }
 }

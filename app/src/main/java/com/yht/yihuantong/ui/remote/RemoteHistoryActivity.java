@@ -2,13 +2,14 @@ package com.yht.yihuantong.ui.remote;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.yht.frame.data.BaseData;
@@ -40,7 +41,7 @@ import butterknife.OnClick;
  */
 public class RemoteHistoryActivity extends BaseActivity
         implements BaseQuickAdapter.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener,
-                   BaseQuickAdapter.RequestLoadMoreListener, LoadViewHelper.OnNextClickListener {
+        BaseQuickAdapter.RequestLoadMoreListener, LoadViewHelper.OnNextClickListener {
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.layout_refresh)
@@ -85,9 +86,9 @@ public class RemoteHistoryActivity extends BaseActivity
             num = getIntent().getIntExtra(CommonData.KEY_PUBLIC, 0);
         }
         if (num > 0) {
-            publicTitleBarTitle.setText(String.format(getString(R.string.title_add_remote_num), num));
-        }
-        else {
+            publicTitleBarTitle.setText(String.format(getString(R.string.title_add_remote_num),
+                    num));
+        } else {
             publicTitleBarTitle.setText(R.string.title_add_remote);
         }
     }
@@ -95,16 +96,16 @@ public class RemoteHistoryActivity extends BaseActivity
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-        layoutRefresh.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light,
-                                              android.R.color.holo_orange_light, android.R.color.holo_green_light);
+        layoutRefresh.setColorSchemeResources(android.R.color.holo_blue_light,
+                android.R.color.holo_red_light,
+                android.R.color.holo_orange_light, android.R.color.holo_green_light);
         layoutRefresh.setOnRefreshListener(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         initAdapter();
         if (BaseUtils.isNetworkAvailable(this)) {
             getReserveRemoteOrderList(true);
             getValidateHospitalList();
-        }
-        else {
+        } else {
             layoutReserveService.setVisibility(View.GONE);
             layoutNone.setVisibility(View.VISIBLE);
             loadViewHelper.load(LoadViewHelper.NONE_NETWORK);
@@ -115,8 +116,9 @@ public class RemoteHistoryActivity extends BaseActivity
      * 获取订单列表
      */
     private void getReserveRemoteOrderList(boolean showLoading) {
-        RequestUtils.getReserveRemoteOrderList(this, loginBean.getToken(), BaseData.BASE_PAGE_DATA_NUM, page,
-                                               showLoading, this);
+        RequestUtils.getReserveRemoteOrderList(this, loginBean.getToken(),
+                BaseData.BASE_PAGE_DATA_NUM, page,
+                showLoading, this);
     }
 
     /**
@@ -139,11 +141,14 @@ public class RemoteHistoryActivity extends BaseActivity
 
     @OnClick(R.id.tv_remote_next)
     public void onViewClicked() {
+        Intent intent;
         if (applyRemoteAble) {
-            startActivity(new Intent(this, ReservationRemoteActivity.class));
-        }
-        else {
-            startActivity(new Intent(this, ReservationDisableActivity.class));
+            intent = new Intent(this, ReservationRemoteActivity.class);
+            startActivity(intent);
+        } else {
+            intent = new Intent(this, ReservationDisableActivity.class);
+            intent.putExtra(CommonData.KEY_RESERVATION_TYPE, BASE_TWO);
+            startActivity(intent);
         }
     }
 
@@ -166,7 +171,7 @@ public class RemoteHistoryActivity extends BaseActivity
             case GET_RESERVE_REMOTE_ORDER_LIST:
                 layoutReserveService.setVisibility(View.VISIBLE);
                 layoutNone.setVisibility(View.GONE);
-                List<RemoteBean> list = (List<RemoteBean>)response.getData();
+                List<RemoteBean> list = (List<RemoteBean>) response.getData();
                 if (page == BaseData.BASE_ONE) {
                     remoteBeans.clear();
                 }
@@ -174,27 +179,24 @@ public class RemoteHistoryActivity extends BaseActivity
                 remoteHistoryAdapter.setNewData(remoteBeans);
                 if (list != null && list.size() >= BaseData.BASE_PAGE_DATA_NUM) {
                     remoteHistoryAdapter.loadMoreComplete();
-                }
-                else {
+                } else {
                     if (remoteBeans.size() > BaseData.BASE_PAGE_DATA_NUM) {
                         remoteHistoryAdapter.loadMoreEnd();
-                    }
-                    else {
+                    } else {
                         remoteHistoryAdapter.setEnableLoadMore(false);
                     }
                 }
                 if (remoteBeans != null && remoteBeans.size() > 0) {
                     recyclerView.setVisibility(View.VISIBLE);
                     layoutNone.setVisibility(View.GONE);
-                }
-                else {
+                } else {
                     recyclerView.setVisibility(View.GONE);
                     layoutNone.setVisibility(View.VISIBLE);
                     loadViewHelper.load(LoadViewHelper.NONE_RECORDING);
                 }
                 break;
             case GET_VALIDATE_HOSPITAL_LIST:
-                ReservationValidateBean bean = (ReservationValidateBean)response.getData();
+                ReservationValidateBean bean = (ReservationValidateBean) response.getData();
                 if (bean != null) {
                     applyRemoteAble = bean.isRemote();
                 }

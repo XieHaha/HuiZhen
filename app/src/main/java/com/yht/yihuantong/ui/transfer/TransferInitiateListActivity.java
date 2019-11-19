@@ -3,13 +3,14 @@ package com.yht.yihuantong.ui.transfer;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.yht.frame.data.BaseData;
@@ -43,8 +44,8 @@ import butterknife.OnClick;
  */
 public class TransferInitiateListActivity extends BaseActivity
         implements BaseQuickAdapter.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener,
-                   BaseQuickAdapter.RequestLoadMoreListener, BaseQuickAdapter.OnItemChildClickListener,
-                   LoadViewHelper.OnNextClickListener {
+        BaseQuickAdapter.RequestLoadMoreListener, BaseQuickAdapter.OnItemChildClickListener,
+        LoadViewHelper.OnNextClickListener {
     @BindView(R.id.recyclerview)
     RecyclerView recyclerView;
     @BindView(R.id.layout_refresh)
@@ -102,8 +103,7 @@ public class TransferInitiateListActivity extends BaseActivity
         }
         if (num > 0) {
             publicTitleBarTitle.setText(String.format(getString(R.string.title_add_transfer), num));
-        }
-        else {
+        } else {
             publicTitleBarTitle.setText(R.string.txt_initiate_transfer);
         }
     }
@@ -111,8 +111,9 @@ public class TransferInitiateListActivity extends BaseActivity
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-        layoutRefresh.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light,
-                                              android.R.color.holo_orange_light, android.R.color.holo_green_light);
+        layoutRefresh.setColorSchemeResources(android.R.color.holo_blue_light,
+                android.R.color.holo_red_light,
+                android.R.color.holo_orange_light, android.R.color.holo_green_light);
         timeItemDecoration = new TimeItemDecoration(this, false);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(timeItemDecoration);
@@ -120,8 +121,7 @@ public class TransferInitiateListActivity extends BaseActivity
         if (BaseUtils.isNetworkAvailable(this)) {
             getInitiateTransferOrderList(true);
             getValidateHospitalList();
-        }
-        else {
+        } else {
             layoutReserveTransfer.setVisibility(View.GONE);
             layoutNone.setVisibility(View.VISIBLE);
             loadViewHelper.load(LoadViewHelper.NONE_NETWORK);
@@ -132,7 +132,8 @@ public class TransferInitiateListActivity extends BaseActivity
      * 适配器处理
      */
     private void initAdapter() {
-        transferInitiateAdapter = new TransferInitiateAdapter(R.layout.item_transfer_history, transferList);
+        transferInitiateAdapter = new TransferInitiateAdapter(R.layout.item_transfer_history,
+                transferList);
         transferInitiateAdapter.setLoadMoreView(new CustomLoadMoreView());
         transferInitiateAdapter.setOnLoadMoreListener(this, recyclerView);
         transferInitiateAdapter.setOnItemClickListener(this);
@@ -151,8 +152,9 @@ public class TransferInitiateListActivity extends BaseActivity
      * 查询发起的转诊记录
      */
     private void getInitiateTransferOrderList(boolean showLoading) {
-        RequestUtils.getInitiateTransferOrderList(this, loginBean.getToken(), BaseData.BASE_PAGE_DATA_NUM, page,
-                                                  showLoading, this);
+        RequestUtils.getInitiateTransferOrderList(this, loginBean.getToken(),
+                BaseData.BASE_PAGE_DATA_NUM, page,
+                showLoading, this);
     }
 
     /**
@@ -168,7 +170,8 @@ public class TransferInitiateListActivity extends BaseActivity
     private void sortTransferData() {
         titleBars.clear();
         for (TransferDetailBean bean : transferList) {
-            long time = BaseUtils.date2TimeStamp(bean.getTransferDate(), BaseUtils.YYYY_MM_DD_HH_MM);
+            long time = BaseUtils.date2TimeStamp(bean.getTransferDate(),
+                    BaseUtils.YYYY_MM_DD_HH_MM);
             titleBars.add(BaseUtils.formatDate(time, BaseUtils.YYYY_MM_DD));
         }
         //返回一个包含所有Tag字符串并赋值给tagsStr
@@ -182,10 +185,9 @@ public class TransferInitiateListActivity extends BaseActivity
         if (applyTransferAble) {
             intent = new Intent(this, ReservationTransferActivity.class);
             startActivity(intent);
-        }
-        else {
+        } else {
             intent = new Intent(this, ReservationDisableActivity.class);
-            intent.putExtra(CommonData.KEY_CHECK_OR_TRANSFER, true);
+            intent.putExtra(CommonData.KEY_RESERVATION_TYPE, BASE_ONE);
             startActivity(intent);
         }
     }
@@ -220,7 +222,7 @@ public class TransferInitiateListActivity extends BaseActivity
             case GET_INITIATE_TRANSFER_ORDER_LIST:
                 layoutReserveTransfer.setVisibility(View.VISIBLE);
                 layoutNone.setVisibility(View.GONE);
-                List<TransferDetailBean> list = (List<TransferDetailBean>)response.getData();
+                List<TransferDetailBean> list = (List<TransferDetailBean>) response.getData();
                 if (page == BaseData.BASE_ONE) {
                     transferList.clear();
                 }
@@ -229,27 +231,24 @@ public class TransferInitiateListActivity extends BaseActivity
                 transferInitiateAdapter.setNewData(transferList);
                 if (list != null && list.size() >= BaseData.BASE_PAGE_DATA_NUM) {
                     transferInitiateAdapter.loadMoreComplete();
-                }
-                else {
+                } else {
                     if (transferList.size() > BaseData.BASE_PAGE_DATA_NUM) {
                         transferInitiateAdapter.loadMoreEnd();
-                    }
-                    else {
+                    } else {
                         transferInitiateAdapter.setEnableLoadMore(false);
                     }
                 }
                 if (transferList != null && transferList.size() > 0) {
                     recyclerView.setVisibility(View.VISIBLE);
                     layoutNone.setVisibility(View.GONE);
-                }
-                else {
+                } else {
                     recyclerView.setVisibility(View.GONE);
                     layoutNone.setVisibility(View.VISIBLE);
                     loadViewHelper.load(LoadViewHelper.NONE_RECORDING);
                 }
                 break;
             case GET_VALIDATE_HOSPITAL_LIST:
-                ReservationValidateBean bean = (ReservationValidateBean)response.getData();
+                ReservationValidateBean bean = (ReservationValidateBean) response.getData();
                 if (bean != null) {
                     applyTransferAble = bean.isZz();
                 }
