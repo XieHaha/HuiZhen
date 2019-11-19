@@ -309,6 +309,7 @@
     <string name="txt_service_package">服务包</string>
     <string name="txt_service">服务项</string>
     <string name="txt_service_name">服务名称</string>
+    <string name="txt_preparation">筹备中</string>
 
     <!--会珍币管理-->
     <string name="txt_currency_arrival">已到账</string>
