@@ -98,7 +98,7 @@
             android:layout_gravity="end"
             android:layout_marginTop="3dp"
             android:layout_marginBottom="12dp"
-            android:drawableEnd="@mipmap/ic_right_gray"
+            android:drawableEnd="@mipmap/ic_right"
             android:drawablePadding="10dp"
             android:gravity="center_vertical"
             android:text="@string/txt_click_look_more"

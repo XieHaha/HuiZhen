@@ -164,7 +164,7 @@
     <string name="txt_made_service">定制服务包</string>
     <string name="txt_health_service">居民健康服务</string>
     <string name="txt_scan_hint">会珍医生版扫一扫，添加我</string>
-    <string name="txt_wechat_scan_hint">微信扫一扫，添加我</string>
+    <string name="txt_wechat_scan_hint">居民微信扫一扫，添加我</string>
 
     <!--相机-->
     <string name="txt_camera_hint">将二维码放入框中，即可自动扫描</string>

@@ -1,43 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/color_f8f9fa">
-
-    <View
-        android:id="@+id/status_bar_fix"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="@color/color_f8f9fa" />
+    android:background="@color/color_1491fc">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/app_title_bar_height">
+        android:layout_height="@dimen/app_title_bar_height"
+        android:layout_marginTop="40dp">
 
         <ImageView
             android:id="@+id/public_title_bar_back"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:paddingTop="12dp"
-            android:paddingBottom="12dp"
-            android:paddingRight="16dp"
+            android:layout_centerVertical="true"
             android:paddingLeft="16dp"
-            android:visibility="visible"
-            android:src="@mipmap/ic_back_blue"
-            android:layout_centerVertical="true" />
+            android:paddingTop="12dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="12dp"
+            android:src="@mipmap/ic_left_gray"
+            android:visibility="visible" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:textSize="@dimen/text_18"
-            android:singleLine="true"
             android:ellipsize="marquee"
             android:marqueeRepeatLimit="marquee_forever"
             android:maxWidth="200dp"
-            android:textColor="@color/color_373d4d"
+            android:singleLine="true"
             android:text="@string/title_my_qr_code"
+            android:textColor="@color/color_ffffff"
+            android:textSize="@dimen/text_18"
             android:textStyle="bold" />
 
     </RelativeLayout>
@@ -46,4 +40,26 @@
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-</LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="72dp">
+
+        <ImageView
+            android:id="@+id/iv_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/selector_circular_alpha_tab" />
+
+        <ImageView
+            android:id="@+id/iv_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:src="@drawable/selector_circular_alpha_tab" />
+
+    </LinearLayout>
+</RelativeLayout>
