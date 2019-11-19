@@ -49,8 +49,9 @@ import static com.yht.frame.data.Tasks.GET_APP_MESSAGE_LIST;
  * @des 消息列表
  */
 public class NotifyMessageFragment extends BaseFragment
-        implements SwipeRefreshLayout.OnRefreshListener, BaseQuickAdapter.RequestLoadMoreListener, MessageType,
-                   BaseQuickAdapter.OnItemClickListener {
+        implements SwipeRefreshLayout.OnRefreshListener, BaseQuickAdapter.RequestLoadMoreListener
+        , MessageType,
+        BaseQuickAdapter.OnItemClickListener {
     @BindView(R.id.layout_refresh)
     SwipeRefreshLayout layoutRefresh;
     @BindView(R.id.recycler_view)
@@ -62,6 +63,10 @@ public class NotifyMessageFragment extends BaseFragment
      * 通知消息列表
      */
     private List<NotifyMessageBean> messageList = new ArrayList<>();
+    /**
+     * 当前操作的消息 position
+     */
+    private int curPosition;
     /**
      * 页码
      */
@@ -88,8 +93,9 @@ public class NotifyMessageFragment extends BaseFragment
     @Override
     public void initView(View view, @NonNull Bundle savedInstanceState) {
         super.initView(view, savedInstanceState);
-        layoutRefresh.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light,
-                                              android.R.color.holo_orange_light, android.R.color.holo_green_light);
+        layoutRefresh.setColorSchemeResources(android.R.color.holo_blue_light,
+                android.R.color.holo_red_light,
+                android.R.color.holo_orange_light, android.R.color.holo_green_light);
         layoutRefresh.setOnRefreshListener(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         initAdapter();
@@ -106,15 +112,18 @@ public class NotifyMessageFragment extends BaseFragment
     public void initListener() {
         super.initListener();
         //注册消息状态监听
-        iNotifyChangeListenerServer.registerSystemMessageStatusChangeListener(messageUpdate, RegisterType.REGISTER);
-        iNotifyChangeListenerServer.registerSingleMessageStatusChangeListener(singleMessage, RegisterType.REGISTER);
+        iNotifyChangeListenerServer.registerSystemMessageStatusChangeListener(messageUpdate,
+                RegisterType.REGISTER);
+        iNotifyChangeListenerServer.registerSingleMessageStatusChangeListener(singleMessage,
+                RegisterType.REGISTER);
     }
 
     /**
      * 获取消息列表
      */
     private void getAppMessageList() {
-        RequestUtils.getAppMessageList(getContext(), loginBean.getToken(), BaseData.BASE_PAGE_DATA_NUM, page, this);
+        RequestUtils.getAppMessageList(getContext(), loginBean.getToken(),
+                BaseData.BASE_PAGE_DATA_NUM, page, this);
     }
 
     /**
@@ -135,7 +144,8 @@ public class NotifyMessageFragment extends BaseFragment
      * 适配器处理
      */
     private void initAdapter() {
-        notifyMessageAdapter = new NotifyMessageAdapter(R.layout.item_notify_message_currency, messageList);
+        notifyMessageAdapter = new NotifyMessageAdapter(R.layout.item_notify_message_currency,
+                messageList);
         notifyMessageAdapter.setLoadMoreView(new CustomLoadMoreView());
         notifyMessageAdapter.setOnLoadMoreListener(this, recyclerView);
         notifyMessageAdapter.setOnItemClickListener(this);
@@ -154,7 +164,9 @@ public class NotifyMessageFragment extends BaseFragment
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         NotifyMessageBean bean = messageList.get(position);
         if (bean.getState() == BASE_ZERO) {
+            curPosition = position;
             //单条消息已读
+            messageList.get(position).setState(1);
             updateAppUnReadMessageById(messageList.get(position).getId());
         }
         Intent intent;
@@ -213,7 +225,7 @@ public class NotifyMessageFragment extends BaseFragment
         super.onResponseSuccess(task, response);
         switch (task) {
             case GET_APP_MESSAGE_LIST:
-                List<NotifyMessageBean> list = (List<NotifyMessageBean>)response.getData();
+                List<NotifyMessageBean> list = (List<NotifyMessageBean>) response.getData();
                 if (page == BaseData.BASE_ONE) {
                     messageList.clear();
                 }
@@ -222,35 +234,32 @@ public class NotifyMessageFragment extends BaseFragment
                 notifyMessageAdapter.setNewData(messageList);
                 if (list.size() >= BaseData.BASE_PAGE_DATA_NUM) {
                     notifyMessageAdapter.loadMoreComplete();
-                }
-                else {
+                } else {
                     if (messageList.size() > BaseData.BASE_PAGE_DATA_NUM) {
                         notifyMessageAdapter.loadMoreEnd();
-                    }
-                    else {
+                    } else {
                         notifyMessageAdapter.setEnableLoadMore(false);
                     }
                 }
                 if (messageList != null && messageList.size() > 0) {
                     tvNoneMessage.setVisibility(View.GONE);
                     recyclerView.setVisibility(View.VISIBLE);
-                }
-                else {
+                } else {
                     tvNoneMessage.setVisibility(View.VISIBLE);
                     recyclerView.setVisibility(View.GONE);
                 }
+                if (onMessageUpdateListener != null) {
+                    onMessageUpdateListener.onMessageUpdate();
+                }
                 break;
             case UPDATE_APP_UNREAD_MESSAGE_BY_ID:
-                getAppMessageList();
+                notifyMessageAdapter.notifyItemChanged(curPosition);
                 if (onMessageUpdateListener != null) {
                     onMessageUpdateListener.onMessageUpdate();
                 }
                 break;
             case UPDATE_APP_UNREAD_MESSAGE_BY_NOTIFY:
                 getAppMessageList();
-                if (onMessageUpdateListener != null) {
-                    onMessageUpdateListener.onMessageUpdate();
-                }
                 break;
             default:
                 break;
@@ -260,7 +269,9 @@ public class NotifyMessageFragment extends BaseFragment
     @Override
     public void onResponseEnd(Tasks task) {
         super.onResponseEnd(task);
-        if (task == GET_APP_MESSAGE_LIST) { layoutRefresh.setRefreshing(false); }
+        if (task == GET_APP_MESSAGE_LIST) {
+            layoutRefresh.setRefreshing(false);
+        }
     }
 
     /**
@@ -287,8 +298,7 @@ public class NotifyMessageFragment extends BaseFragment
     private String getMessageTypeId(String data) {
         if (!TextUtils.isEmpty(data)) {
             return new Gson().fromJson(data, MessageIdBean.class).getOrderNo();
-        }
-        else {
+        } else {
             return "";
         }
     }
@@ -296,8 +306,10 @@ public class NotifyMessageFragment extends BaseFragment
     @Override
     public void onDestroy() {
         super.onDestroy();
-        iNotifyChangeListenerServer.registerSystemMessageStatusChangeListener(messageUpdate, RegisterType.UNREGISTER);
-        iNotifyChangeListenerServer.registerSingleMessageStatusChangeListener(singleMessage, RegisterType.UNREGISTER);
+        iNotifyChangeListenerServer.registerSystemMessageStatusChangeListener(messageUpdate,
+                RegisterType.UNREGISTER);
+        iNotifyChangeListenerServer.registerSingleMessageStatusChangeListener(singleMessage,
+                RegisterType.UNREGISTER);
     }
 
     private OnMessageUpdateListener onMessageUpdateListener;

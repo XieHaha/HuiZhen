@@ -2,12 +2,13 @@ package com.yht.yihuantong.ui.reservation;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.yht.frame.data.CommonData;
 import com.yht.frame.ui.BaseActivity;
@@ -96,7 +97,8 @@ public class PastHistoryActivity extends BaseActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 super.onTextChanged(s, start, before, count);
                 pastMedicalHis = s.toString().trim();
-                tvPastMedicalHisNum.setText(String.format(getString(R.string.txt_calc_num), pastMedicalHis.length()));
+                tvPastMedicalHisNum.setText(String.format(getString(R.string.txt_calc_num),
+                        pastMedicalHis.length()));
                 initNextButton();
             }
         });
@@ -115,7 +117,8 @@ public class PastHistoryActivity extends BaseActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 super.onTextChanged(s, start, before, count);
                 allergiesHis = s.toString().trim();
-                tvAllergiesNum.setText(String.format(getString(R.string.txt_calc_num), allergiesHis.length()));
+                tvAllergiesNum.setText(String.format(getString(R.string.txt_calc_num),
+                        allergiesHis.length()));
                 initNextButton();
             }
         });
@@ -129,15 +132,18 @@ public class PastHistoryActivity extends BaseActivity {
             etPastMedicalHis.setVisibility(View.VISIBLE);
             layoutPastMedicalHis.setVisibility(View.GONE);
             etPastMedicalHis.setText(pastMedicalHis);
-            etPastMedicalHis.setSelection(pastMedicalHis.length());
-            tvPastMedicalHisNum.setText(String.format(getString(R.string.txt_calc_num), pastMedicalHis.length()));
-        }
-        else {
+            if (!TextUtils.isEmpty(pastMedicalHis)) {
+                etPastMedicalHis.setSelection(pastMedicalHis.length());
+            }
+            tvPastMedicalHisNum.setText(String.format(getString(R.string.txt_calc_num),
+                    pastMedicalHis.length()));
+        } else {
             etPastMedicalHis.setText("");
             etPastMedicalHis.setVisibility(View.INVISIBLE);
             layoutPastMedicalHis.setVisibility(View.VISIBLE);
             tvPastMedicalHisNum.setText(
-                    String.format(getString(R.string.txt_calc_num), tvPastMedicalHisNot.getText().toString().length()));
+                    String.format(getString(R.string.txt_calc_num),
+                            tvPastMedicalHisNot.getText().toString().length()));
         }
     }
 
@@ -149,15 +155,17 @@ public class PastHistoryActivity extends BaseActivity {
             etFamilyMedicalHis.setVisibility(View.VISIBLE);
             layoutFamilyMedicalHis.setVisibility(View.GONE);
             etFamilyMedicalHis.setText(familyMedicalHis);
-            etFamilyMedicalHis.setSelection(familyMedicalHis.length());
-            tvFamilyMedicalHisNum.setText(String.format(getString(R.string.txt_calc_num), familyMedicalHis.length()));
-        }
-        else {
+            if (!TextUtils.isEmpty(familyMedicalHis)) {
+                etFamilyMedicalHis.setSelection(familyMedicalHis.length());
+            }
+            tvFamilyMedicalHisNum.setText(String.format(getString(R.string.txt_calc_num),
+                    familyMedicalHis.length()));
+        } else {
             etFamilyMedicalHis.setText("");
             etFamilyMedicalHis.setVisibility(View.INVISIBLE);
             layoutFamilyMedicalHis.setVisibility(View.VISIBLE);
             tvFamilyMedicalHisNum.setText(String.format(getString(R.string.txt_calc_num),
-                                                        tvFamilyMedicalHisNot.getText().toString().length()));
+                    tvFamilyMedicalHisNot.getText().toString().length()));
         }
     }
 
@@ -169,15 +177,18 @@ public class PastHistoryActivity extends BaseActivity {
             etAllergies.setVisibility(View.VISIBLE);
             layoutAllergies.setVisibility(View.GONE);
             etAllergies.setText(allergiesHis);
-            etAllergies.setSelection(allergiesHis.length());
-            tvAllergiesNum.setText(String.format(getString(R.string.txt_calc_num), allergiesHis.length()));
-        }
-        else {
+            if (!TextUtils.isEmpty(allergiesHis)) {
+                etAllergies.setSelection(allergiesHis.length());
+            }
+            tvAllergiesNum.setText(String.format(getString(R.string.txt_calc_num),
+                    allergiesHis.length()));
+        } else {
             etAllergies.setText("");
             etAllergies.setVisibility(View.INVISIBLE);
             layoutAllergies.setVisibility(View.VISIBLE);
             tvAllergiesNum.setText(
-                    String.format(getString(R.string.txt_calc_num), tvAllergiesNot.getText().toString().length()));
+                    String.format(getString(R.string.txt_calc_num),
+                            tvAllergiesNot.getText().toString().length()));
         }
     }
 
@@ -186,11 +197,10 @@ public class PastHistoryActivity extends BaseActivity {
      */
     private void initNextButton() {
         if (TextUtils.equals(pastMedicalHis, pastHistoryData.get(0)) &&
-            TextUtils.equals(familyMedicalHis, pastHistoryData.get(1)) &&
-            TextUtils.equals(allergiesHis, pastHistoryData.get(2))) {
+                TextUtils.equals(familyMedicalHis, pastHistoryData.get(1)) &&
+                TextUtils.equals(allergiesHis, pastHistoryData.get(2))) {
             publicTitleBarMore.setSelected(false);
-        }
-        else {
+        } else {
             publicTitleBarMore.setSelected(true);
         }
     }
@@ -203,11 +213,14 @@ public class PastHistoryActivity extends BaseActivity {
         }
     }
 
-    @OnClick({ R.id.public_title_bar_more, R.id.iv_past_medical_his, R.id.iv_family_medical_his, R.id.iv_allergies })
+    @OnClick({R.id.public_title_bar_more, R.id.iv_past_medical_his, R.id.iv_family_medical_his,
+            R.id.iv_allergies})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.public_title_bar_more:
-                if (publicTitleBarMore.isSelected()) { save(); }
+                if (publicTitleBarMore.isSelected()) {
+                    save();
+                }
                 break;
             case R.id.iv_past_medical_his:
                 if (!PastHistoryUtil.verifyPastMedical(this, pastMedicalHis)) {
@@ -250,15 +263,14 @@ public class PastHistoryActivity extends BaseActivity {
     private void onFinish() {
         if (publicTitleBarMore.isSelected()) {
             new HintDialog(this).setContentString(R.string.txt_save_edit)
-                                .setCancleBtnTxt(R.string.txt_not_save)
-                                .setOnCancelClickListener(this::finish)
-                                .setEnterBtnTxt(R.string.txt_save)
-                                .setEnterSelect(true)
-                                .setDeleteVisible(View.VISIBLE)
-                                .setOnEnterClickListener(this::save)
-                                .show();
-        }
-        else {
+                    .setCancleBtnTxt(R.string.txt_not_save)
+                    .setOnCancelClickListener(this::finish)
+                    .setEnterBtnTxt(R.string.txt_save)
+                    .setEnterSelect(true)
+                    .setDeleteVisible(View.VISIBLE)
+                    .setOnEnterClickListener(this::save)
+                    .show();
+        } else {
             finish();
         }
     }
