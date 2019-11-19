@@ -504,24 +504,25 @@ public class ReservationServiceDetailActivity extends BaseActivity
                 newReportUrls.add(bean);
                 continue;
             }
-            String[] reportUrls = reportUrl.split(";");
-            if (reportUrls.length > 1) {
-                for (int j = 0; j < reportUrls.length; j++) {
-                    CheckTypeByDetailBean checkTypeByDetailBean = new CheckTypeByDetailBean();
+            if (!TextUtils.isEmpty(reportUrl)) {
+                String[] reportUrls = reportUrl.split(";");
+                if (reportUrls.length > 1) {
+                    for (int j = 0; j < reportUrls.length; j++) {
+                        CheckTypeByDetailBean checkTypeByDetailBean = new CheckTypeByDetailBean();
+                        String name = bean.getName();
+                        checkTypeByDetailBean.setName(
+                                String.format(getString(R.string.txt_report_name_by_num), name, (j + 1)));
+                        checkTypeByDetailBean.setReport(reportUrls[j]);
+                        checkTypeByDetailBean.setSuggestionType(bean.getSuggestionType());
+                        checkTypeByDetailBean.setId(bean.getId());
+                        newReportUrls.add(checkTypeByDetailBean);
+                    }
+                } else {
                     String name = bean.getName();
-                    checkTypeByDetailBean.setName(
-                            String.format(getString(R.string.txt_report_name_by_num), name,
-                                    (j + 1)));
-                    checkTypeByDetailBean.setReport(reportUrls[j]);
-                    checkTypeByDetailBean.setSuggestionType(bean.getSuggestionType());
-                    checkTypeByDetailBean.setId(bean.getId());
-                    newReportUrls.add(checkTypeByDetailBean);
+                    bean.setName(String.format(getString(R.string.txt_report_name), name));
+                    bean.setReport(reportUrls[0]);
+                    newReportUrls.add(bean);
                 }
-            } else {
-                String name = bean.getName();
-                bean.setName(String.format(getString(R.string.txt_report_name), name));
-                bean.setReport(reportUrls[0]);
-                newReportUrls.add(bean);
             }
         }
     }

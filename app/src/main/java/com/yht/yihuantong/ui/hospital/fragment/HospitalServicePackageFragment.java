@@ -2,11 +2,12 @@ package com.yht.yihuantong.ui.hospital.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+
 import androidx.annotation.NonNull;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.view.View;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.yht.frame.data.BaseData;
@@ -35,7 +36,7 @@ import butterknife.BindView;
  */
 public class HospitalServicePackageFragment extends BaseFragment
         implements BaseQuickAdapter.RequestLoadMoreListener, BaseQuickAdapter.OnItemClickListener,
-                   SwipeRefreshLayout.OnRefreshListener, LoadViewHelper.OnNextClickListener {
+        SwipeRefreshLayout.OnRefreshListener, LoadViewHelper.OnNextClickListener {
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.refresh_layout)
@@ -62,7 +63,7 @@ public class HospitalServicePackageFragment extends BaseFragment
         loadViewHelper = new LoadViewHelper(view);
         loadViewHelper.setOnNextClickListener(this);
         refreshLayout.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light,
-                                              android.R.color.holo_orange_light, android.R.color.holo_green_light);
+                android.R.color.holo_orange_light, android.R.color.holo_green_light);
         hospitalPackageAdapter = new HospitalPackageAdapter(R.layout.item_hospital_project, hospitalProductBeans);
         hospitalPackageAdapter.setLoadMoreView(new CustomLoadMoreView());
         hospitalPackageAdapter.setOnLoadMoreListener(this, recyclerView);
@@ -91,8 +92,10 @@ public class HospitalServicePackageFragment extends BaseFragment
      * 获取合作医院下服务包
      */
     private void getHospitalProduct() {
-        RequestUtils.getCooperateHospitalPackageList(getContext(), loginBean.getToken(), curHospital.getHospitalCode(),
-                                                     BaseData.BASE_PAGE_DATA_NUM, page, this);
+        if (curHospital != null) {
+            RequestUtils.getCooperateHospitalPackageList(getContext(), loginBean.getToken(),
+                    curHospital.getHospitalCode(), BaseData.BASE_PAGE_DATA_NUM, page, this);
+        }
     }
 
     @Override
@@ -106,7 +109,7 @@ public class HospitalServicePackageFragment extends BaseFragment
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
         if (task == Tasks.GET_COOPERATE_HOSPITAL_PACKAGE_LIST) {
-            BaseListBean<HospitalPackageBean> baseListBean = (BaseListBean<HospitalPackageBean>)response.getData();
+            BaseListBean<HospitalPackageBean> baseListBean = (BaseListBean<HospitalPackageBean>) response.getData();
             if (page == BaseData.BASE_ONE) {
                 hospitalProductBeans.clear();
             }
@@ -115,19 +118,16 @@ public class HospitalServicePackageFragment extends BaseFragment
             if (hospitalProductBeans.size() > 0) {
                 refreshLayout.setVisibility(View.VISIBLE);
                 if (baseListBean.getRecords() != null &&
-                    baseListBean.getRecords().size() >= BaseData.BASE_PAGE_DATA_NUM) {
+                        baseListBean.getRecords().size() >= BaseData.BASE_PAGE_DATA_NUM) {
                     hospitalPackageAdapter.loadMoreComplete();
-                }
-                else {
+                } else {
                     if (hospitalProductBeans.size() > BaseData.BASE_PAGE_DATA_NUM) {
                         hospitalPackageAdapter.loadMoreEnd();
-                    }
-                    else {
+                    } else {
                         hospitalPackageAdapter.setEnableLoadMore(false);
                     }
                 }
-            }
-            else {
+            } else {
                 refreshLayout.setVisibility(View.GONE);
                 loadViewHelper.load(LoadViewHelper.NONE_RECORDING);
             }

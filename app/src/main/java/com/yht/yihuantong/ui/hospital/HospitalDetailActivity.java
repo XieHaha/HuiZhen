@@ -120,8 +120,6 @@ public class HospitalDetailActivity extends BaseActivity implements AdapterView.
         if (curHospital != null) {
             publicTitleBarTitle.setText(curHospital.getHospitalName());
             tvHospitalAddress.setText(curHospital.getAddress());
-            tvHospitalProject.setText(String.format(getString(R.string.txt_item),
-                    hospitalProjectBeans.size()));
             if (TextUtils.isEmpty(curHospital.getIntroduce())) {
                 tvHospitalIntroduction.setText(R.string.txt_none);
             } else {
@@ -177,9 +175,12 @@ public class HospitalDetailActivity extends BaseActivity implements AdapterView.
             } else {
                 layoutProduct.setVisibility(View.GONE);
             }
-            tvHospitalProject.setText(
-                    String.format(getString(R.string.txt_item),
-                            hospitalProjectParentBean.getCount()));
+            if (hospitalProjectParentBean.getCount() > 0) {
+                tvHospitalProject.setText(String.format(getString(R.string.txt_item),
+                        hospitalProjectParentBean.getCount()));
+            } else {
+                tvHospitalProject.setText(R.string.txt_preparation);
+            }
             productAdapter.notifyDataSetChanged();
         }
     }
