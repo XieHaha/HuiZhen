@@ -5,10 +5,11 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.view.View;
+
 import androidx.core.content.ContextCompat;
 import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
-import android.view.View;
 
 import com.yht.frame.R;
 import com.yht.frame.utils.BaseUtils;
@@ -22,7 +23,7 @@ import java.util.List;
 public class TimeItemDecoration extends RecyclerView.ItemDecoration {
     private Paint mPaint;
     private List<String> titleBars;
-    private static final int DIVIDER_HEIGHT = 80;
+    private static final int DIVIDER_HEIGHT = 40;
     private Context mContext;
     private final Rect mBounds = new Rect();
     private String titleBar;

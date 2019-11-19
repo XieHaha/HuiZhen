@@ -2,13 +2,14 @@ package com.yht.yihuantong.ui.check;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.yht.frame.data.BaseData;
@@ -42,8 +43,8 @@ import butterknife.OnClick;
  */
 public class ServiceHistoryActivity extends BaseActivity
         implements BaseQuickAdapter.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener,
-                   BaseQuickAdapter.RequestLoadMoreListener, BaseQuickAdapter.OnItemChildClickListener,
-                   LoadViewHelper.OnNextClickListener {
+        BaseQuickAdapter.RequestLoadMoreListener, BaseQuickAdapter.OnItemChildClickListener,
+        LoadViewHelper.OnNextClickListener {
     @BindView(R.id.recyclerview)
     RecyclerView recyclerView;
     @BindView(R.id.layout_refresh)
@@ -91,8 +92,7 @@ public class ServiceHistoryActivity extends BaseActivity
         }
         if (num > 0) {
             publicTitleBarTitle.setText(String.format(getString(R.string.title_add_service), num));
-        }
-        else {
+        } else {
             publicTitleBarTitle.setText(R.string.txt_initiate_check);
         }
     }
@@ -100,8 +100,9 @@ public class ServiceHistoryActivity extends BaseActivity
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-        layoutRefresh.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light,
-                                              android.R.color.holo_orange_light, android.R.color.holo_green_light);
+        layoutRefresh.setColorSchemeResources(android.R.color.holo_blue_light,
+                android.R.color.holo_red_light,
+                android.R.color.holo_orange_light, android.R.color.holo_green_light);
         layoutRefresh.setOnRefreshListener(this);
         timeItemDecoration = new TimeItemDecoration(this, false);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -110,8 +111,7 @@ public class ServiceHistoryActivity extends BaseActivity
         if (BaseUtils.isNetworkAvailable(this)) {
             getReserveCheckOrderList(true);
             getValidateHospitalList();
-        }
-        else {
+        } else {
             layoutReserveService.setVisibility(View.GONE);
             layoutNone.setVisibility(View.VISIBLE);
             loadViewHelper.load(LoadViewHelper.NONE_NETWORK);
@@ -122,8 +122,9 @@ public class ServiceHistoryActivity extends BaseActivity
      * 获取订单列表
      */
     private void getReserveCheckOrderList(boolean showLoading) {
-        RequestUtils.getReserveCheckOrderList(this, loginBean.getToken(), BaseData.BASE_PAGE_DATA_NUM, page,
-                                              showLoading, this);
+        RequestUtils.getReserveCheckOrderList(this, loginBean.getToken(),
+                BaseData.BASE_PAGE_DATA_NUM, page,
+                showLoading, this);
     }
 
     /**
@@ -152,7 +153,8 @@ public class ServiceHistoryActivity extends BaseActivity
         titleBars.clear();
         for (CheckBean bean : checkedList) {
             String time = BaseUtils.formatDate(
-                    BaseUtils.date2TimeStamp(bean.getCreateAt(), BaseUtils.YYYY_MM_DD_HH_MM_SS), BaseUtils.YYYY_MM_DD);
+                    BaseUtils.date2TimeStamp(bean.getCreateAt(), BaseUtils.YYYY_MM_DD_HH_MM_SS),
+                    BaseUtils.YYYY_MM_DD);
             titleBars.add(time);
         }
         //返回一个包含所有Tag字符串并赋值给tagsStr
@@ -164,8 +166,7 @@ public class ServiceHistoryActivity extends BaseActivity
     public void onViewClicked() {
         if (applyServiceAble) {
             startActivity(new Intent(this, ReservationServiceActivity.class));
-        }
-        else {
+        } else {
             startActivity(new Intent(this, ReservationDisableActivity.class));
         }
     }
@@ -197,7 +198,7 @@ public class ServiceHistoryActivity extends BaseActivity
             case GET_RESERVE_CHECK_ORDER_LIST:
                 layoutReserveService.setVisibility(View.VISIBLE);
                 layoutNone.setVisibility(View.GONE);
-                List<CheckBean> list = (List<CheckBean>)response.getData();
+                List<CheckBean> list = (List<CheckBean>) response.getData();
                 if (page == BaseData.BASE_ONE) {
                     checkedList.clear();
                 }
@@ -206,27 +207,24 @@ public class ServiceHistoryActivity extends BaseActivity
                 checkHistoryAdapter.setNewData(checkedList);
                 if (list != null && list.size() >= BaseData.BASE_PAGE_DATA_NUM) {
                     checkHistoryAdapter.loadMoreComplete();
-                }
-                else {
+                } else {
                     if (checkedList.size() > BaseData.BASE_PAGE_DATA_NUM) {
                         checkHistoryAdapter.loadMoreEnd();
-                    }
-                    else {
+                    } else {
                         checkHistoryAdapter.setEnableLoadMore(false);
                     }
                 }
                 if (checkedList != null && checkedList.size() > 0) {
                     recyclerView.setVisibility(View.VISIBLE);
                     layoutNone.setVisibility(View.GONE);
-                }
-                else {
+                } else {
                     recyclerView.setVisibility(View.GONE);
                     layoutNone.setVisibility(View.VISIBLE);
                     loadViewHelper.load(LoadViewHelper.NONE_RECORDING);
                 }
                 break;
             case GET_VALIDATE_HOSPITAL_LIST:
-                ReservationValidateBean bean = (ReservationValidateBean)response.getData();
+                ReservationValidateBean bean = (ReservationValidateBean) response.getData();
                 if (bean != null) {
                     applyServiceAble = bean.isJc();
                 }

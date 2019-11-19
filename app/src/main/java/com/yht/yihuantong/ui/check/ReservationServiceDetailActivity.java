@@ -24,7 +24,7 @@ import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.bean.CheckDetailBean;
 import com.yht.frame.data.bean.CheckTypeByDetailBean;
-import com.yht.frame.data.type.CheckOrderStatus;
+import com.yht.frame.data.type.ServiceOrderStatus;
 import com.yht.frame.data.type.CheckTypeStatus;
 import com.yht.frame.data.type.SuggestionTypeStatus;
 import com.yht.frame.http.retrofit.RequestUtils;
@@ -51,7 +51,7 @@ import butterknife.OnClick;
  * @des 预约服务详情
  */
 public class ReservationServiceDetailActivity extends BaseActivity
-        implements CheckOrderStatus, CheckTypeStatus, SuggestionTypeStatus,
+        implements ServiceOrderStatus, CheckTypeStatus, SuggestionTypeStatus,
         LoadViewHelper.OnNextClickListener {
     @BindView(R.id.iv_patient_img)
     ImageView ivPatientImg;

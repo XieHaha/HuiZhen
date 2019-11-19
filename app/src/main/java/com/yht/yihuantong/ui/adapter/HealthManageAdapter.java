@@ -5,7 +5,7 @@ import androidx.annotation.Nullable;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.yht.frame.data.bean.HealthPackageBean;
-import com.yht.frame.data.type.CheckOrderStatus;
+import com.yht.frame.data.type.ServiceOrderStatus;
 import com.yht.yihuantong.R;
 
 import java.util.List;
@@ -16,7 +16,7 @@ import java.util.List;
  * @des 健康管理
  */
 public class HealthManageAdapter extends BaseQuickAdapter<HealthPackageBean, BaseViewHolder>
-        implements CheckOrderStatus {
+        implements ServiceOrderStatus {
     public HealthManageAdapter(int layoutResId, @Nullable List<HealthPackageBean> data) {
         super(layoutResId, data);
     }

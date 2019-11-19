@@ -3,16 +3,17 @@ package com.yht.yihuantong.ui.patient.fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -59,10 +60,10 @@ import butterknife.OnClick;
  */
 public class PatientInfoFragment extends BaseFragment
         implements BaseQuickAdapter.RequestLoadMoreListener, BaseQuickAdapter.OnItemClickListener,
-                   BaseQuickAdapter.OnItemChildClickListener {
+        BaseQuickAdapter.OnItemChildClickListener {
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
-    private TextView tvName, tvAge, tvSex, tvNoLabel, tvAddTime;
+    private TextView tvName, tvAge, tvSex, tvNoLabel, tvAddTime, tvMedicalServiceTitle;
     private JustifiedTextView tvPastMedical, familyMedical, tvAllergies;
     private LinearLayout layoutEditLabel;
     private TagFlowLayout flowLayout;
@@ -137,15 +138,17 @@ public class PatientInfoFragment extends BaseFragment
      * 获取居民详情
      */
     private void getPatientDetail() {
-        RequestUtils.getPatientDetailByPatientCode(getContext(), patientCode, loginBean.getToken(), this);
+        RequestUtils.getPatientDetailByPatientCode(getContext(), patientCode,
+                loginBean.getToken(), this);
     }
 
     /**
      * 获取居民订单记录
      */
     private void getPatientOrderList(boolean showLoadView) {
-        RequestUtils.getPatientOrderListByPatientCode(getContext(), patientCode, loginBean.getToken(),
-                                                      BaseData.BASE_PAGE_DATA_NUM, page, showLoadView, this);
+        RequestUtils.getPatientOrderListByPatientCode(getContext(), patientCode,
+                loginBean.getToken(),
+                BaseData.BASE_PAGE_DATA_NUM, page, showLoadView, this);
     }
 
     /**
@@ -166,7 +169,8 @@ public class PatientInfoFragment extends BaseFragment
      * header
      */
     private void initHeaderView() {
-        headerView = LayoutInflater.from(getContext()).inflate(R.layout.view_patient_info_header, null);
+        headerView = LayoutInflater.from(getContext()).inflate(R.layout.view_patient_info_header,
+                null);
         layoutEditLabel = headerView.findViewById(R.id.layout_edit_label);
         flowLayout = headerView.findViewById(R.id.layout_flow);
         ivHeadImg = headerView.findViewById(R.id.iv_patient_img);
@@ -178,6 +182,7 @@ public class PatientInfoFragment extends BaseFragment
         tvAllergies = headerView.findViewById(R.id.tv_allergies);
         tvNoLabel = headerView.findViewById(R.id.tv_no_label);
         tvAddTime = headerView.findViewById(R.id.tv_add_time);
+        tvMedicalServiceTitle = headerView.findViewById(R.id.tv_medical_service_title);
         layoutEditLabel.setOnClickListener(this);
     }
 
@@ -185,7 +190,8 @@ public class PatientInfoFragment extends BaseFragment
      * footer
      */
     private void initFooterView() {
-        footerView = LayoutInflater.from(getContext()).inflate(R.layout.view_patient_info_footer, null);
+        footerView = LayoutInflater.from(getContext()).inflate(R.layout.view_patient_info_footer,
+                null);
     }
 
     private void initAdapter() {
@@ -208,16 +214,16 @@ public class PatientInfoFragment extends BaseFragment
         tvName.setText(patientBean.getName());
         tvAge.setText(String.valueOf(patientBean.getAge()));
         tvSex.setText(patientBean.getSex() == BaseData.BASE_MALE
-                      ? getString(R.string.txt_sex_male)
-                      : getString(R.string.txt_sex_female));
+                ? getString(R.string.txt_sex_male)
+                : getString(R.string.txt_sex_female));
         tvAddTime.setText(patientBean.getAddTime());
         tvPastMedical.setText(patientBean.getPast());
         familyMedical.setText(patientBean.getFamily());
         tvAllergies.setText(patientBean.getAllergy());
         Glide.with(this)
-             .load(patientBean.getPhoto())
-             .apply(GlideHelper.getOptions(BaseUtils.dp2px(getContext(), 4)))
-             .into(ivHeadImg);
+                .load(patientBean.getPhoto())
+                .apply(GlideHelper.getOptions(BaseUtils.dp2px(getContext(), 4)))
+                .into(ivHeadImg);
         if (patientBean.getTagList() != null && patientBean.getTagList().size() > 0) {
             //初始化适配器
             TagAdapter<String> tagAdapter = new TagAdapter<String>(patientBean.getTagList()) {
@@ -229,8 +235,7 @@ public class PatientInfoFragment extends BaseFragment
             flowLayout.setAdapter(tagAdapter);
             tvNoLabel.setVisibility(View.GONE);
             flowLayout.setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             tvNoLabel.setVisibility(View.VISIBLE);
             flowLayout.setVisibility(View.GONE);
         }
@@ -240,14 +245,16 @@ public class PatientInfoFragment extends BaseFragment
      * 创建一个正常状态的标签
      */
     private TextView createNewLabel(String label, ViewGroup parent) {
-        TextView textView = (TextView)getLayoutInflater().inflate(R.layout.item_text_label, parent, false);
+        TextView textView = (TextView) getLayoutInflater().inflate(R.layout.item_text_label,
+                parent, false);
         textView.setBackgroundResource(R.drawable.corner28_stroke1_c5c8cc);
         textView.setTextColor(ContextCompat.getColor(getContext(), R.color.color_6a6f80));
         //设置边界
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                                                                         ViewGroup.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams params =
+                new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT);
         params.setMargins(BaseUtils.dp2px(getContext(), 6), BaseUtils.dp2px(getContext(), 10),
-                          BaseUtils.dp2px(getContext(), 6), 0);
+                BaseUtils.dp2px(getContext(), 6), 0);
         textView.setLayoutParams(params);
         if (parent != null) {
             textView.setCompoundDrawables(null, null, null, null);
@@ -263,7 +270,8 @@ public class PatientInfoFragment extends BaseFragment
         List<String> titleBars = new ArrayList<>();
         for (PatientOrderBean bean : patientOrderBeans) {
             String time = BaseUtils.formatDate(
-                    BaseUtils.date2TimeStamp(bean.getCreateAt(), BaseUtils.YYYY_MM_DD_HH_MM_SS), BaseUtils.YYYY_MM_DD);
+                    BaseUtils.date2TimeStamp(bean.getCreateAt(), BaseUtils.YYYY_MM_DD_HH_MM_SS),
+                    BaseUtils.YYYY_MM_DD);
             titleBars.add(time);
         }
         //返回一个包含所有Tag字母在内的字符串并赋值给tagsStr
@@ -301,7 +309,7 @@ public class PatientInfoFragment extends BaseFragment
         startActivity(intent);
     }
 
-    @OnClick({ R.id.tv_reserve_check, R.id.tv_reserve_transfer, R.id.tv_reserve_remote })
+    @OnClick({R.id.tv_reserve_check, R.id.tv_reserve_transfer, R.id.tv_reserve_remote})
     public void onViewClicked(View view) {
         Intent intent;
         switch (view.getId()) {
@@ -310,8 +318,7 @@ public class PatientInfoFragment extends BaseFragment
                     intent = new Intent(getContext(), ReservationServiceActivity.class);
                     intent.putExtra(CommonData.KEY_PATIENT_BEAN, patientBean);
                     startActivity(intent);
-                }
-                else {
+                } else {
                     intent = new Intent(getContext(), ReservationDisableActivity.class);
                     startActivity(intent);
                 }
@@ -324,8 +331,7 @@ public class PatientInfoFragment extends BaseFragment
                     intent = new Intent(getContext(), ReservationRemoteActivity.class);
                     intent.putExtra(CommonData.KEY_PATIENT_BEAN, patientBean);
                     startActivity(intent);
-                }
-                else {
+                } else {
                     intent = new Intent(getContext(), ReservationDisableActivity.class);
                     startActivity(intent);
                 }
@@ -350,49 +356,46 @@ public class PatientInfoFragment extends BaseFragment
         super.onResponseSuccess(task, response);
         switch (task) {
             case GET_PATIENT_DETAIL_BY_PATIENT_CODE:
-                patientBean = (PatientBean)response.getData();
+                patientBean = (PatientBean) response.getData();
                 initPatientBaseInfo();
                 break;
             case GET_PATIENT_ORDER_LIST_BY_PATIENT_CODE:
-                List<PatientOrderBean> list = (List<PatientOrderBean>)response.getData();
+                List<PatientOrderBean> list = (List<PatientOrderBean>) response.getData();
                 if (page == BASE_ONE) {
                     patientOrderBeans.clear();
                 }
                 patientOrderBeans.addAll(list);
                 sortOrderList();
                 patientOrderAdapter.setNewData(patientOrderBeans);
-                if (list != null && list.size() < BASE_PAGE_DATA_NUM) {
+                if (list.size() < BASE_PAGE_DATA_NUM) {
                     if (patientOrderBeans.size() > BASE_PAGE_DATA_NUM) {
                         patientOrderAdapter.loadMoreEnd();
-                    }
-                    else {
+                    } else {
                         patientOrderAdapter.setEnableLoadMore(false);
                     }
-                }
-                else {
+                } else {
                     patientOrderAdapter.loadMoreComplete();
                 }
                 if (patientOrderBeans != null && patientOrderBeans.size() > 0) {
+                    tvMedicalServiceTitle.setVisibility(View.VISIBLE);
                     patientOrderAdapter.removeAllFooterView();
-                }
-                else {
+                } else {
+                    tvMedicalServiceTitle.setVisibility(View.GONE);
                     patientOrderAdapter.addFooterView(footerView);
                 }
                 break;
             case GET_PATIENT_EXIST_TRANSFER:
                 //预约转诊前判断是否已有转诊未处理
-                boolean exist = (boolean)response.getData();
+                boolean exist = (boolean) response.getData();
                 if (exist) {
                     ToastUtil.toast(getContext(), R.string.txt_patient_exist_transfer);
-                }
-                else {
+                } else {
                     Intent intent;
                     if (applyTransferAble) {
                         intent = new Intent(getContext(), ReservationTransferActivity.class);
                         intent.putExtra(CommonData.KEY_PATIENT_BEAN, patientBean);
                         startActivity(intent);
-                    }
-                    else {
+                    } else {
                         intent = new Intent(getContext(), ReservationDisableActivity.class);
                         intent.putExtra(CommonData.KEY_CHECK_OR_TRANSFER, true);
                         startActivity(intent);
@@ -400,7 +403,7 @@ public class PatientInfoFragment extends BaseFragment
                 }
                 break;
             case GET_VALIDATE_HOSPITAL_LIST:
-                ReservationValidateBean bean = (ReservationValidateBean)response.getData();
+                ReservationValidateBean bean = (ReservationValidateBean) response.getData();
                 if (bean != null) {
                     applyTransferAble = bean.isZz();
                     applyServiceAble = bean.isJc();

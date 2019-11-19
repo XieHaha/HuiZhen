@@ -75,6 +75,7 @@
     <string name="txt_pack_up">收起</string>
     <string name="txt_pack_down">展开更多</string>
     <string name="txt_look_more">查看更多</string>
+    <string name="txt_click_look_more">点击查看更多</string>
     <string name="txt_loading_again">重新加载</string>
     <string name="txt_none_network">抱歉，好像网络出问题了</string>
     <string name="txt_none_message">暂无消息</string>
@@ -288,6 +289,7 @@
     <string name="txt_recent_one_month">1个月内&#160;(%d)</string>
     <string name="txt_recent_three_month">3个月内&#160;(%d)</string>
     <string name="txt_recent_six_month">6个月内&#160;(%d)</string>
+    <string name="txt_medical_service">诊疗服务</string>
 
     <!--医院相关-->
     <string name="txt_hospital_overview">医院概况</string>
@@ -397,8 +399,8 @@
     <string name="txt_self_pay">自费</string>
     <string name="txt_medicare">医保</string>
     <string name="txt_self_medicare">新农合</string>
-    <string name="txt_check_success_hint">提交成功。\nn医院将尽快与居民联系确认预约。</string>
-    <string name="txt_transfer_success_hint">提交成功。\医生将尽快与您联系，处理转诊。</string>
+    <string name="txt_check_success_hint">提交成功。\n医院将尽快与居民联系确认预约。</string>
+    <string name="txt_transfer_success_hint">提交成功。\n医生将尽快与您联系，处理转诊。</string>
     <string name="txt_remote_success_hint">提交成功。\n等待您的科室审核此次会诊申请。</string>
     <string name="txt_look_check_list">查看预约记录</string>
     <string name="txt_look_check_detail">查看服务详情</string>

@@ -20,7 +20,7 @@ import com.yht.yihuantong.R;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.yht.frame.data.type.CheckOrderStatus.CHECK_ORDER_STATUS_CANCEL;
+import static com.yht.frame.data.type.ServiceOrderStatus.CHECK_ORDER_STATUS_CANCEL;
 
 /**
  * @author 顿顿
@@ -29,6 +29,11 @@ import static com.yht.frame.data.type.CheckOrderStatus.CHECK_ORDER_STATUS_CANCEL
  */
 public class PatientOrderAdapter extends BaseMultiItemQuickAdapter<PatientOrderBean, BaseViewHolder>
         implements CheckTypeStatus, PatientOrderStatus, ConsultationStatus {
+    /**
+     * 最大展示条数
+     */
+    private int MAX_SHOW_NUN = 3;
+
     /**
      * @param data A new list is created out of this one to avoid mutable list
      */
@@ -61,9 +66,9 @@ public class PatientOrderAdapter extends BaseMultiItemQuickAdapter<PatientOrderB
      */
     private void initCheckData(BaseViewHolder helper, PatientOrderBean item) {
         helper.setText(R.id.tv_check_name, R.string.txt_reserve_check)
-              .setImageResource(R.id.iv_check_img, R.mipmap.ic_check)
-              .setText(R.id.tv_check_hospital, item.getTargetHospitalName())
-              .addOnClickListener(R.id.layout_check_report_root);
+                .setImageResource(R.id.iv_check_img, R.mipmap.ic_check)
+                .setText(R.id.tv_check_hospital, item.getTargetHospitalName())
+                .addOnClickListener(R.id.layout_check_report_root);
         //订单状态
         int status = item.getStatus();
         switch (status) {
@@ -87,15 +92,15 @@ public class PatientOrderAdapter extends BaseMultiItemQuickAdapter<PatientOrderB
      */
     private void initTransferData(BaseViewHolder helper, PatientOrderBean item) {
         helper.setText(R.id.tv_transfer_name, R.string.txt_reserve_transfer)
-              .setText(R.id.tv_transfer_doctor, item.getSourceDoctorName())
-              .setText(R.id.tv_transfer_depart, item.getSourceHospitalDepartmentName())
-              .setText(R.id.tv_transfer_hospital, item.getSourceHospitalName())
-              .setText(R.id.tv_receiving_doctor, item.getTargetDoctorName())
-              .setText(R.id.tv_receiving_depart, item.getTargetHospitalDepartmentName())
-              .setText(R.id.tv_receiving_hospital, item.getTargetHospitalName())
-              .setImageResource(R.id.iv_transfer_img, R.mipmap.ic_transfer)
-              .setVisible(R.id.layout_transfer_root, true)
-              .setGone(R.id.layout_transfer_purpose, false);
+                .setText(R.id.tv_transfer_doctor, item.getSourceDoctorName())
+                .setText(R.id.tv_transfer_depart, item.getSourceHospitalDepartmentName())
+                .setText(R.id.tv_transfer_hospital, item.getSourceHospitalName())
+                .setText(R.id.tv_receiving_doctor, item.getTargetDoctorName())
+                .setText(R.id.tv_receiving_depart, item.getTargetHospitalDepartmentName())
+                .setText(R.id.tv_receiving_hospital, item.getTargetHospitalName())
+                .setImageResource(R.id.iv_transfer_img, R.mipmap.ic_transfer)
+                .setVisible(R.id.layout_transfer_root, true)
+                .setGone(R.id.layout_transfer_purpose, false);
         //订单状态
         int status = item.getStatus();
         switch (status) {
@@ -121,12 +126,13 @@ public class PatientOrderAdapter extends BaseMultiItemQuickAdapter<PatientOrderB
      */
     private void initRemoteData(BaseViewHolder helper, PatientOrderBean item) {
         helper.setImageResource(R.id.iv_remote_img, R.mipmap.ic_remote)
-              .setText(R.id.tv_remote_name, R.string.txt_remote_consultation)
-              .setText(R.id.tv_initiate_doctor, item.getSourceDoctorName())
-              .setText(R.id.tv_initiate_depart, item.getSourceHospitalDepartmentName())
-              .setText(R.id.tv_initiate_hospital, item.getSourceHospitalName());
+                .setText(R.id.tv_remote_name, R.string.txt_remote_consultation)
+                .setText(R.id.tv_initiate_doctor, item.getSourceDoctorName())
+                .setText(R.id.tv_initiate_depart, item.getSourceHospitalDepartmentName())
+                .setText(R.id.tv_initiate_hospital, item.getSourceHospitalName());
         ArrayList<RemoteInvitedBean> list = item.getInvitationList();
-        StringBuilder consultationDoctor = new StringBuilder(), consultationDepart = new StringBuilder(), consultationHospital = new StringBuilder();
+        StringBuilder consultationDoctor = new StringBuilder(), consultationDepart =
+                new StringBuilder(), consultationHospital = new StringBuilder();
         if (list != null && list.size() > 0) {
             for (int i = 0; i < list.size(); i++) {
                 RemoteInvitedBean bean = list.get(i);
@@ -141,8 +147,8 @@ public class PatientOrderAdapter extends BaseMultiItemQuickAdapter<PatientOrderB
             }
         }
         helper.setText(R.id.tv_consultation_doctor, consultationDoctor.toString())
-              .setText(R.id.tv_consultation_depart, consultationDepart.toString())
-              .setText(R.id.tv_consultation_hospital, consultationHospital.toString());
+                .setText(R.id.tv_consultation_depart, consultationDepart.toString())
+                .setText(R.id.tv_consultation_hospital, consultationHospital.toString());
         //订单状态
         int status = item.getStatus();
         switch (status) {
@@ -176,20 +182,24 @@ public class PatientOrderAdapter extends BaseMultiItemQuickAdapter<PatientOrderB
         LinearLayout layout = helper.getView(R.id.layout_check_type);
         layout.removeAllViews();
         ArrayList<CheckTypeBean> list = item.getTrans();
-        //已经上传了报告的检查项
-        ArrayList<CheckTypeBean> reportList = new ArrayList<>();
         if (list != null && list.size() > 0) {
+            //最多展示三条数据 超过三条显示查看更多
+            if (list.size() > MAX_SHOW_NUN) {
+                helper.setVisible(R.id.tv_look_more, true).setGone(R.id.tv_space, false);
+            } else {
+                helper.setGone(R.id.tv_look_more, false).setVisible(R.id.tv_space, true);
+            }
+            //已经上传了报告的检查项
+            ArrayList<CheckTypeBean> reportList = new ArrayList<>();
             for (int i = 0; i < list.size(); i++) {
                 CheckTypeBean bean = list.get(i);
                 View view = LayoutInflater.from(mContext).inflate(R.layout.item_check_type, null);
                 TextView serviceName = view.findViewById(R.id.tv_check_type_name);
                 ImageView imageDot = view.findViewById(R.id.iv_check_type_dot);
-                ImageView imageView = view.findViewById(R.id.iv_check_type_status);
                 //服务包为空则显示服务项
                 if (TextUtils.isEmpty(bean.getPackName())) {
                     serviceName.setText(bean.getName());
-                }
-                else {
+                } else {
                     serviceName.setText(bean.getPackName());
                 }
                 int status = bean.getStatus();
@@ -201,24 +211,22 @@ public class PatientOrderAdapter extends BaseMultiItemQuickAdapter<PatientOrderB
                 if (item.getStatus() != CHECK_ORDER_STATUS_CANCEL && status == CHECK_TYPE_STATUS_CANCEL) {
                     serviceName.setSelected(true);
                     imageDot.setSelected(true);
-                    imageView.setVisibility(View.VISIBLE);
-                }
-                else {
+                } else {
                     serviceName.setSelected(false);
                     imageDot.setSelected(false);
-                    imageView.setVisibility(View.GONE);
                 }
-                layout.addView(view);
+                //最多展示3条数据
+                if (i < MAX_SHOW_NUN) {
+                    layout.addView(view);
+                }
             }
             if (reportList.size() > 0) {
                 helper.setGone(R.id.layout_check_report_root, true);
                 addReportView(helper, reportList);
-            }
-            else {
+            } else {
                 helper.setGone(R.id.layout_check_report_root, false);
             }
-        }
-        else {
+        } else {
             helper.setGone(R.id.layout_check_report_root, false);
         }
     }
