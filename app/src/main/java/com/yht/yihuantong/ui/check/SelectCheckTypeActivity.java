@@ -6,10 +6,13 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -114,6 +117,8 @@ public class SelectCheckTypeActivity extends BaseActivity
     SwipeRefreshLayout layoutRefresh;
     @BindView(R.id.layout_refresh_root)
     RelativeLayout layoutRefreshRoot;
+    @BindView(R.id.iv_path)
+    ImageView ivPath;
     /**
      * 服务项
      */
@@ -248,6 +253,7 @@ public class SelectCheckTypeActivity extends BaseActivity
         boolean status = sharePreferenceUtil.getAlwaysBoolean(CommonData.KEY_SHOW_REFRESH_STATUS);
         if (!status) {
             layoutRefreshRoot.setVisibility(View.VISIBLE);
+            startAnim();
         }
     }
 
@@ -624,10 +630,25 @@ public class SelectCheckTypeActivity extends BaseActivity
         ZycApplication.getInstance().setSelectCodes(selectedCodes);
     }
 
-    @OnClick({
-            R.id.tv_cancel, R.id.layout_all_hospital, R.id.layout_all_service, R.id.tv_selected,
-            R.id.tv_next,
-            R.id.layout_bg, R.id.tv_none_refresh, R.id.layout_shop_bg, R.id.tv_clear_shop,
+    /**
+     * 手指下拉动画
+     */
+    private void startAnim() {
+        float y = ivPath.getY();
+        Animation animation = new TranslateAnimation(ivPath.getX(), ivPath.getX(), y - 120, y + 140);
+        animation.setRepeatMode(Animation.RESTART);
+        animation.setRepeatCount(Animation.INFINITE);
+        animation.setInterpolator(new AccelerateDecelerateInterpolator());
+        animation.setDuration(1250);
+        ivPath.startAnimation(animation);
+    }
+
+    private void endAnim() {
+        ivPath.clearAnimation();
+    }
+
+    @OnClick({R.id.tv_cancel, R.id.layout_all_hospital, R.id.layout_all_service, R.id.tv_selected,
+            R.id.tv_next, R.id.layout_bg, R.id.tv_none_refresh, R.id.layout_shop_bg, R.id.tv_clear_shop,
             R.id.tv_know})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -697,6 +718,7 @@ public class SelectCheckTypeActivity extends BaseActivity
                 updateShopCart();
                 break;
             case R.id.tv_know:
+                endAnim();
                 layoutRefreshRoot.setVisibility(View.GONE);
                 sharePreferenceUtil.putAlwaysBoolean(CommonData.KEY_SHOW_REFRESH_STATUS, true);
                 break;
