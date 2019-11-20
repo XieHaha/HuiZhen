@@ -1,48 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:orientation="vertical"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
 
     <include
-        layout="@layout/public_title"
-        android:id="@+id/title_bar" />
+        android:id="@+id/title_bar"
+        layout="@layout/public_title" />
 
     <LinearLayout
         android:id="@+id/layout_report_list"
         android:layout_width="match_parent"
         android:layout_height="68dp"
-        android:paddingStart="35dp"
-        android:paddingEnd="35dp"
-        android:gravity="center"
         android:layout_alignParentBottom="true"
-        android:background="@color/color_ffffff">
+        android:background="@color/color_ffffff"
+        android:gravity="center"
+        android:paddingStart="35dp"
+        android:paddingEnd="35dp">
 
         <TextView
             android:id="@+id/tv_report"
             android:layout_width="match_parent"
             android:layout_height="42dp"
             android:background="@drawable/corner28_1491fc_bg"
-            android:text="@string/txt_open_other_report"
             android:gravity="center"
-            android:textSize="@dimen/text_16"
-            android:textColor="@color/color_ffffff" />
+            android:text="@string/txt_open_other_report"
+            android:textColor="@color/color_ffffff"
+            android:textSize="@dimen/text_16" />
     </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_diagnosis_detail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/layout_report_list"
+        android:layout_below="@id/title_bar"
+        android:background="@color/color_f8f9fa"
+        android:visibility="gone">
+
+        <com.yht.frame.widgets.textview.JustifiedTextView
+            android:id="@+id/tv_advice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@color/color_ffffff"
+            android:lineSpacingMultiplier="1.1"
+            android:paddingStart="20dp"
+            android:paddingTop="12dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="12dp" />
+
+
+        <com.yht.frame.widgets.gridview.AutoGridView
+            android:id="@+id/auto_grid_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_advice"
+            android:layout_marginTop="10dp" />
+    </RelativeLayout>
 
     <com.tencent.smtt.sdk.WebView
         android:id="@+id/web_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/title_bar"
-        android:layout_above="@id/layout_report_list" />
+        android:layout_above="@id/layout_report_list"
+        android:layout_below="@id/title_bar" />
 
 
     <com.yht.yihuantong.ui.x5.FileReaderView
         android:id="@+id/documentReaderView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/title_bar"
-        android:layout_above="@id/layout_report_list" />
+        android:layout_above="@id/layout_report_list"
+        android:layout_below="@id/title_bar" />
 
 </RelativeLayout>

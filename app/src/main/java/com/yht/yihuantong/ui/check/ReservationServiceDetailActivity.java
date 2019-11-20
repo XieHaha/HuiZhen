@@ -472,18 +472,7 @@ public class ReservationServiceDetailActivity extends BaseActivity
             TextView textView = view.findViewById(R.id.tv_check_report_name);
             textView.setText(bean.getName());
             view.setTag(i);
-            view.setOnClickListener(v -> {
-                if (bean.getSuggestionType() == SUGGESTION_TYPE_DOCTOR) {
-                    Intent intent = new Intent(ReservationServiceDetailActivity.this,
-                            DiagnosisDetailActivity.class);
-                    intent.putExtra(CommonData.KEY_CHECK_REPORT_LIST,
-                            getDoctorReportList(bean.getId()));
-                    intent.putExtra(CommonData.KEY_PUBLIC, curPosition);
-                    startActivity(intent);
-                } else {
-                    FileDisplayActivity.show(this, getOtherReportList(), (Integer) v.getTag());
-                }
-            });
+            view.setOnClickListener(v -> FileDisplayActivity.show(this, newReportUrls, (Integer) v.getTag()));
             layoutCheckReport.addView(view);
         }
     }
@@ -525,39 +514,6 @@ public class ReservationServiceDetailActivity extends BaseActivity
                 }
             }
         }
-    }
-
-    int curPosition = -1;
-
-    /**
-     * 获取医生诊断意见数据
-     */
-    private ArrayList<CheckTypeByDetailBean> getDoctorReportList(int id) {
-        ArrayList<CheckTypeByDetailBean> newData = new ArrayList<>();
-        for (int i = 0; i < reportList.size(); i++) {
-            CheckTypeByDetailBean bean = reportList.get(i);
-            if (bean.getSuggestionType() == SUGGESTION_TYPE_DOCTOR) {
-                newData.add(bean);
-                //当前点击的position
-                if (bean.getId() == id) {
-                    curPosition = newData.size() - 1;
-                }
-            }
-        }
-        return newData;
-    }
-
-    /**
-     * 获取其他报告数据
-     */
-    private ArrayList<CheckTypeByDetailBean> getOtherReportList() {
-        ArrayList<CheckTypeByDetailBean> newData = new ArrayList<>();
-        for (CheckTypeByDetailBean bean : newReportUrls) {
-            if (bean.getSuggestionType() != SUGGESTION_TYPE_DOCTOR) {
-                newData.add(bean);
-            }
-        }
-        return newData;
     }
 
     private SpannableString appendImage(int status, String showText) {

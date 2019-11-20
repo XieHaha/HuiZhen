@@ -3,10 +3,14 @@ package com.yht.yihuantong.ui.x5;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;
@@ -17,11 +21,17 @@ import com.yht.frame.api.FileTransferServer;
 import com.yht.frame.data.BaseData;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.bean.CheckTypeByDetailBean;
+import com.yht.frame.data.bean.NormImage;
+import com.yht.frame.data.type.SuggestionTypeStatus;
+import com.yht.frame.permission.Permission;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.MimeUtils;
 import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.widgets.dialog.PercentDialog;
+import com.yht.frame.widgets.gridview.AutoGridView;
+import com.yht.frame.widgets.textview.JustifiedTextView;
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.ui.ImagePreviewActivity;
 import com.yht.yihuantong.ui.dialog.DownDialog;
 import com.yht.yihuantong.ui.dialog.listener.OnMediaItemClickListener;
 import com.yht.yihuantong.utils.FileUtils;
@@ -37,7 +47,7 @@ import butterknife.OnClick;
  *
  * @author dundun 2019年3月5日17:33:04
  */
-public class FileDisplayActivity extends BaseActivity implements OnMediaItemClickListener {
+public class FileDisplayActivity extends BaseActivity implements OnMediaItemClickListener, SuggestionTypeStatus, AdapterView.OnItemClickListener {
     @BindView(R.id.public_title_bar_title)
     TextView tvTitle;
     @BindView(R.id.documentReaderView)
@@ -46,6 +56,12 @@ public class FileDisplayActivity extends BaseActivity implements OnMediaItemClic
     WebView webView;
     @BindView(R.id.layout_report_list)
     LinearLayout layoutReportList;
+    @BindView(R.id.auto_grid_view)
+    AutoGridView autoGridView;
+    @BindView(R.id.tv_advice)
+    JustifiedTextView tvAdvice;
+    @BindView(R.id.layout_diagnosis_detail)
+    RelativeLayout layoutDiagnosisDetail;
     /**
      * 报告列表
      */
@@ -58,6 +74,7 @@ public class FileDisplayActivity extends BaseActivity implements OnMediaItemClic
      * 下载进度
      */
     private PercentDialog percentDialog;
+    private ArrayList<NormImage> imagePaths = new ArrayList<>();
     /**
      * 文件总大小
      */
@@ -94,6 +111,26 @@ public class FileDisplayActivity extends BaseActivity implements OnMediaItemClic
         }
         initReportListDialog();
         distinguishFile();
+    }
+
+    @Override
+    public void initListener() {
+        autoGridView.setOnItemClickListener(this);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        if (imagePaths.size() > position) {
+            //查看大图
+            Intent intent = new Intent(this, ImagePreviewActivity.class);
+            intent.putExtra(ImagePreviewActivity.INTENT_URLS, imagePaths);
+            intent.putExtra(ImagePreviewActivity.INTENT_POSITION, position);
+            startActivity(intent);
+            overridePendingTransition(R.anim.anim_fade_in, R.anim.keep);
+        }
+        else {
+            permissionHelper.request(new String[] { Permission.CAMERA, Permission.STORAGE_WRITE });
+        }
     }
 
     /**
@@ -139,6 +176,7 @@ public class FileDisplayActivity extends BaseActivity implements OnMediaItemClic
                             .show();
     }
 
+
     /**
      * 判断文件格式，选择不同方式打开
      */
@@ -146,26 +184,54 @@ public class FileDisplayActivity extends BaseActivity implements OnMediaItemClic
         CheckTypeByDetailBean bean = reportList.get(curPosition);
         tvTitle.setText(bean.getName());
         String url = bean.getReport();
-        String fileName = url.substring(url.lastIndexOf("/") + 1);
-        String filePath = DirHelper.getPathFile() + "/" + fileName;
-        //获取文件格式
-        String type = MimeUtils.getMime(FileUtils.getFileExtNoPoint(filePath));
-        if (BaseData.BASE_IMAGE_TYPE.contains(type)) {
-            //如果为图片格式 直接加载网络url
-            webView.setVisibility(View.VISIBLE);
+        if(bean.getSuggestionType() == SUGGESTION_TYPE_DOCTOR)
+        {
+            webView.setVisibility(View.GONE);
             fileReaderView.setVisibility(View.GONE);
-            webView.loadUrl(url);
-        }
-        else {
-            File file = new File(filePath);
-            if (file != null && file.exists()) {
-                openFile(filePath);
+            layoutDiagnosisDetail.setVisibility(View.VISIBLE);
+            //医生录入
+            imagePaths.clear();
+            tvAdvice.setText(bean.getSuggestionText());
+            String reports = bean.getReport();
+            if (!TextUtils.isEmpty(reports)) {
+                autoGridView.setVisibility(View.VISIBLE);
+                String[] data = reports.split(";");
+                for (String string : data) {
+                    NormImage normImage = new NormImage();
+                    normImage.setImageUrl(string);
+                    imagePaths.add(normImage);
+                }
+                autoGridView.updateImg(imagePaths, false);
             }
             else {
-                //本地文件不存在
-                downReportFile(url, fileName);
+                autoGridView.setVisibility(View.GONE);
+            }
+
+        }else {
+            //科室录入
+            layoutDiagnosisDetail.setVisibility(View.GONE);
+            String fileName = url.substring(url.lastIndexOf("/") + 1);
+            String filePath = DirHelper.getPathFile() + "/" + fileName;
+            //获取文件格式
+            String type = MimeUtils.getMime(FileUtils.getFileExtNoPoint(filePath));
+            if (BaseData.BASE_IMAGE_TYPE.contains(type)) {
+                //如果为图片格式 直接加载网络url
+                webView.setVisibility(View.VISIBLE);
+                fileReaderView.setVisibility(View.GONE);
+                webView.loadUrl(url);
+            }
+            else {
+                File file = new File(filePath);
+                if ( file.exists()) {
+                    openFile(filePath);
+                }
+                else {
+                    //本地文件不存在
+                    downReportFile(url, fileName);
+                }
             }
         }
+
     }
 
     private void openFile(String filePath) {
