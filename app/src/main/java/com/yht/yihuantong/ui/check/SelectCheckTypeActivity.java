@@ -283,7 +283,7 @@ public class SelectCheckTypeActivity extends BaseActivity
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 super.onTextChanged(s, start, before, count);
-                searchCheckTYpeListByLocal(s.toString());
+                searchCheckTypeListByLocal(s.toString());
             }
         });
     }
@@ -330,7 +330,7 @@ public class SelectCheckTypeActivity extends BaseActivity
     /**
      * 搜索数据集合
      */
-    private void searchCheckTYpeListByLocal(String searchKey) {
+    private void searchCheckTypeListByLocal(String searchKey) {
         if (!TextUtils.isEmpty(searchKey)) {
             searchBeans.clear();
             searchParentBeans.clear();
@@ -364,6 +364,7 @@ public class SelectCheckTypeActivity extends BaseActivity
             if (searchBeans.size() > 0) {
                 searchRecyclerView.setVisibility(View.VISIBLE);
                 searchAdapter.setList(searchBeans);
+                layoutSearchNone.setVisibility(View.GONE);
             } else {
                 searchRecyclerView.setVisibility(View.GONE);
                 layoutSearchNone.setVisibility(View.VISIBLE);
@@ -382,6 +383,11 @@ public class SelectCheckTypeActivity extends BaseActivity
         filterBeans.clear();
         filterBeans.addAll(parentBeans);
         parentAdapter.setNewData(filterBeans);
+        if (filterBeans.size() > 0) {
+            layoutNone.setVisibility(View.GONE);
+        } else {
+            layoutNone.setVisibility(View.VISIBLE);
+        }
         bindFilterListData();
     }
 
@@ -501,6 +507,8 @@ public class SelectCheckTypeActivity extends BaseActivity
         //默认选中全部医院、全部服务
         curHospital = getString(R.string.txt_all_hospitals);
         curServiceType = getString(R.string.txt_all_services);
+        tvHospitalBtn.setText(curHospital);
+        tvServiceBtn.setText(curServiceType);
         //清除搜索已选状态
         filterType = BASE_ONE;
         //清除购物车
