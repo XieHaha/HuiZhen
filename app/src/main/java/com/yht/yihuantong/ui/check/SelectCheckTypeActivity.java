@@ -318,7 +318,7 @@ public class SelectCheckTypeActivity extends BaseActivity
      * 获取检查项 全部
      */
     private void getCheckTypeList(boolean show) {
-        RequestUtils.getCheckTypeList(this, loginBean.getToken(), show,this);
+        RequestUtils.getCheckTypeList(this, loginBean.getToken(), show, this);
     }
 
     /**
@@ -334,12 +334,14 @@ public class SelectCheckTypeActivity extends BaseActivity
      * 过滤掉没有服务项、服务包的医院
      */
     private void filterNoneCheckHospital() {
+        ArrayList<SelectCheckTypeParentBean> nullData = new ArrayList<>();
         for (int i = 0; i < parentBeans.size(); i++) {
             SelectCheckTypeParentBean parentBean = parentBeans.get(i);
             if (parentBean.getProductPackageList() == null || parentBean.getProductPackageList().size() == 0) {
-                parentBeans.remove(parentBean);
+                nullData.add(parentBean);
             }
         }
+        parentBeans.removeAll(nullData);
     }
 
     /**

@@ -54,6 +54,7 @@ public class NotifyMessageAdapter extends BaseQuickAdapter<NotifyMessageBean, Ba
             case MESSAGE_TRANSFER_SYSTEM_CANCEL_R:
             case MESSAGE_CURRENCY_ARRIVED:
             case MESSAGE_CURRENCY_DEDUCTION:
+            case MESSAGE_DIRECTLY_ACCOUNT_CREATE:
             case MESSAGE_COOPERATE_ACCOUNT_CREATE:
                 helper.setVisible(R.id.layout_detail, true);
                 break;

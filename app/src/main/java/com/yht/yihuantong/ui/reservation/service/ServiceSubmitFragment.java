@@ -263,8 +263,6 @@ public class ServiceSubmitFragment extends BaseFragment implements RadioGroup.On
      * 重新选择
      */
     public void reselect() {
-        //清除数据
-        checkTypeData.clear();
         Intent intent = new Intent(getContext(), SelectCheckTypeActivity.class);
         intent.putExtra(CommonData.KEY_INTENT_BOOLEAN, true);
         intent.putExtra(CommonData.KEY_RESERVE_CHECK_TYPE_LIST, checkTypeData);
