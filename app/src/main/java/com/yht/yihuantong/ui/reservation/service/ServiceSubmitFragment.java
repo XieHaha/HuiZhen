@@ -9,11 +9,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.content.FileProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -22,6 +17,12 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.FileProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.yht.frame.api.DirHelper;
@@ -167,7 +168,7 @@ public class ServiceSubmitFragment extends BaseFragment implements RadioGroup.On
                 tvSelect.setText(R.string.txt_add_service_goon);
             } else {
                 layoutCheck.setVisibility(View.GONE);
-                tvSelect.setText(R.string.txt_select_hint);
+                tvSelect.setText(R.string.txt_add_service);
             }
         }
         initAdapter();
@@ -253,7 +254,7 @@ public class ServiceSubmitFragment extends BaseFragment implements RadioGroup.On
             tvSelect.setText(R.string.txt_add_service_goon);
         } else {
             layoutCheck.setVisibility(View.GONE);
-            tvSelect.setText(R.string.txt_select_hint);
+            tvSelect.setText(R.string.txt_add_service);
         }
         shopAdapter.setNewData(checkTypeData);
     }

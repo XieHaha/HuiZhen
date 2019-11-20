@@ -10,6 +10,7 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -266,8 +267,9 @@ public class SelectCheckTypeActivity extends BaseActivity
         } else {
             //获取最近使用
             getRecentlyUsedListByLocal();
-            //获取本地服务向数据
+            //获取本地服务项数据
             getCheckTypeListByLocal();
+            //绑定数据
             bindServiceListData();
             //本地没有数据
             if (parentBeans.size() == 0) {
@@ -284,6 +286,30 @@ public class SelectCheckTypeActivity extends BaseActivity
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 super.onTextChanged(s, start, before, count);
                 searchCheckTypeListByLocal(s.toString());
+            }
+        });
+        searchRecyclerView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                switch (scrollState) {
+                    case SCROLL_STATE_IDLE:
+                        //滑动停止时调用
+                        break;
+                    case SCROLL_STATE_TOUCH_SCROLL:
+                        hideSoftInputFromWindow();
+                        //正在滚动时调用
+                        break;
+                    case SCROLL_STATE_FLING:
+                        //手指快速滑动时,在离开ListView由于惯性滑动
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
+                                 int totalItemCount) {
             }
         });
     }
@@ -388,6 +414,7 @@ public class SelectCheckTypeActivity extends BaseActivity
         } else {
             layoutNone.setVisibility(View.VISIBLE);
         }
+        //筛选条件
         bindFilterListData();
     }
 
@@ -511,15 +538,64 @@ public class SelectCheckTypeActivity extends BaseActivity
         tvServiceBtn.setText(curServiceType);
         //清除搜索已选状态
         filterType = BASE_ONE;
-        //清除购物车
-        shopBeans.clear();
-        selectedCodes.clear();
-        ZycApplication.getInstance().clearSelectCodes();
-        tvSelected.setText(String.format(getString(R.string.txt_calc_selected_num),
-                selectedCodes.size()));
-        tvNext.setSelected(false);
         //重新从服务器拉取数据
         getCheckTypeList();
+    }
+
+    /**
+     * 刷新数据后需要清除掉已失效的数据
+     */
+    private void refreshDataInit() {
+        if (shopBeans.size() == 0) {
+            return;
+        }
+        ArrayList<SelectCheckTypeParentBean> newShop = new ArrayList<>();
+        ArrayList<String> newSelected = new ArrayList<>();
+
+        for (int i = 0; i < parentBeans.size(); i++) {
+            SelectCheckTypeParentBean parentBean = parentBeans.get(i);
+            ArrayList<SelectCheckTypeBean> beans = parentBean.getProductPackageList();
+            for (int j = 0; j < beans.size(); j++) {
+                SelectCheckTypeBean bean = beans.get(j);
+                if (selectedCodes.contains(bean.getProjectCode())) {
+                    newSelected.add(bean.getProjectCode());
+                    if (newShop.contains(parentBean)) {
+                        for (SelectCheckTypeParentBean data : newShop) {
+                            if (data.equals(parentBean)) {
+                                ArrayList<SelectCheckTypeBean> list = data.getProductPackageList();
+                                if (list == null) {
+                                    list = new ArrayList<>();
+                                }
+                                list.add(bean);
+                                data.setProductPackageList(list);
+                                break;
+                            }
+                        }
+                    } else {
+                        SelectCheckTypeParentBean newBean = new SelectCheckTypeParentBean();
+                        newBean.setHospitalCode(parentBean.getHospitalCode());
+                        newBean.setHospitalName(parentBean.getHospitalName());
+                        ArrayList<SelectCheckTypeBean> list = new ArrayList<>();
+                        list.add(bean);
+                        newBean.setProductPackageList(list);
+                        newShop.add(newBean);
+                    }
+                }
+            }
+        }
+
+        shopBeans.clear();
+        shopBeans.addAll(newShop);
+        selectedCodes.clear();
+        selectedCodes.addAll(newSelected);
+        ZycApplication.getInstance().setSelectCodes(selectedCodes);
+        tvSelected.setText(String.format(getString(R.string.txt_calc_selected_num),
+                selectedCodes.size()));
+        if (selectedCodes.size() > 0) {
+            tvNext.setSelected(true);
+        } else {
+            tvNext.setSelected(false);
+        }
     }
 
     /**
@@ -817,14 +893,18 @@ public class SelectCheckTypeActivity extends BaseActivity
         if (task == Tasks.GET_CHECK_TYPE) {
             List<SelectCheckTypeParentBean> list =
                     (List<SelectCheckTypeParentBean>) response.getData();
+            //排序
             sortHospitalData(list);
             //过滤无服务医院
             filterNoneCheckHospital();
+            //购物车、数据过滤
+            refreshDataInit();
+            //绑定列表服务项数据
             bindServiceListData();
             //存储
             ThreadPoolHelper.getInstance().execInSingle(() -> saveLocal(parentBeans));
             //重新拉取数据需要清除最近使用
-            sharePreferenceUtil.putStringSet(CommonData.KEY_RECENTLY_USED_SERVICE, null);
+            // sharePreferenceUtil.putStringSet(CommonData.KEY_RECENTLY_USED_SERVICE, null);
         }
     }
 

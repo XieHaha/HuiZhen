@@ -39,7 +39,7 @@
                 android:drawableEnd="@mipmap/ic_right"
                 android:drawablePadding="11dp"
                 android:gravity="center"
-                android:text="@string/txt_select_hint"
+                android:text="@string/txt_add_service"
                 android:textColor="@color/color_a1a8b3"
                 android:textSize="@dimen/text_16" />
 
