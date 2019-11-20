@@ -49,7 +49,7 @@ public interface BaseData {
     /**
      * 多选图片最大数量
      */
-    int BASE_IMAGE_SIZE_MAX = 9;
+    int BASE_IMAGE_SIZE_MAX = 10;
     /**
      * 广告页最长等待时间
      */

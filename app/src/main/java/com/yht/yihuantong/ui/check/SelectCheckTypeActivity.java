@@ -263,7 +263,7 @@ public class SelectCheckTypeActivity extends BaseActivity
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         if (forcedUpdate) {
-            getCheckTypeList();
+            getCheckTypeList(true);
         } else {
             //获取最近使用
             getRecentlyUsedListByLocal();
@@ -273,7 +273,7 @@ public class SelectCheckTypeActivity extends BaseActivity
             bindServiceListData();
             //本地没有数据
             if (parentBeans.size() == 0) {
-                getCheckTypeList();
+                getCheckTypeList(true);
             }
         }
     }
@@ -317,8 +317,8 @@ public class SelectCheckTypeActivity extends BaseActivity
     /**
      * 获取检查项 全部
      */
-    private void getCheckTypeList() {
-        RequestUtils.getCheckTypeList(this, loginBean.getToken(), this);
+    private void getCheckTypeList(boolean show) {
+        RequestUtils.getCheckTypeList(this, loginBean.getToken(), show,this);
     }
 
     /**
@@ -539,7 +539,7 @@ public class SelectCheckTypeActivity extends BaseActivity
         //清除搜索已选状态
         filterType = BASE_ONE;
         //重新从服务器拉取数据
-        getCheckTypeList();
+        getCheckTypeList(false);
     }
 
     /**

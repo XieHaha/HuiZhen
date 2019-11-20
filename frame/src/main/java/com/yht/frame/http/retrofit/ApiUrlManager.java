@@ -119,7 +119,8 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @POST("client/doctor/introduce")
-    Observable<BaseResponse<LoginBean>> updateIntroduce(@Header("token") String token, @Body Map<String, String> info);
+    Observable<BaseResponse<LoginBean>> updateIntroduce(@Header("token") String token,
+                                                        @Body Map<String, String> info);
 
     /**
      * 用户协议最后更新时间
@@ -138,7 +139,8 @@ public interface ApiUrlManager {
      */
     @Multipart
     @POST("client/file/upload_file")
-    Observable<BaseResponse<String>> uploadImg(@Header("token") String token, @Part MultipartBody.Part file);
+    Observable<BaseResponse<String>> uploadImg(@Header("token") String token,
+                                               @Part MultipartBody.Part file);
 
     /**
      * 上传图片  水印
@@ -149,7 +151,8 @@ public interface ApiUrlManager {
      */
     @Multipart
     @POST("client/file/upload_image_file")
-    Observable<BaseResponse<String>> uploadImgWaterMark(@Header("token") String token, @Part MultipartBody.Part file);
+    Observable<BaseResponse<String>> uploadImgWaterMark(@Header("token") String token,
+                                                        @Part MultipartBody.Part file);
 
     /**
      * 获取消息列表
@@ -160,7 +163,8 @@ public interface ApiUrlManager {
      */
     @POST("client/msg/list/app")
     Observable<BaseResponse<List<NotifyMessageBean>>> getAppMessageList(@Header("token") String token,
-            @Body Map<String, Integer> info);
+                                                                        @Body Map<String,
+                                                                                Integer> info);
 
     /**
      * 获取未读消息总数
@@ -188,7 +192,8 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @POST("client/msg/read/{id}")
-    Observable<BaseResponse<String>> updateAppUnReadMessageById(@Header("token") String token, @Path("id") int id);
+    Observable<BaseResponse<String>> updateAppUnReadMessageById(@Header("token") String token,
+                                                                @Path("id") int id);
 
     /**
      * 单条消息已读 通知点击
@@ -199,7 +204,7 @@ public interface ApiUrlManager {
      */
     @POST("client/msg/readByUid/{unionId}")
     Observable<BaseResponse<String>> updateAppUnReadMessageByNotify(@Header("token") String token,
-            @Path("unionId") String unionId);
+                                                                    @Path("unionId") String unionId);
 
     /**
      * 获取医院列表 （医生认证模块）
@@ -228,7 +233,7 @@ public interface ApiUrlManager {
      */
     @GET("client/hospital/selectInput/transToOther/{orderNo}")
     Observable<BaseResponse<List<HospitalBean>>> getHospitalListByTransferOther(@Header("token") String token,
-            @Path("orderNo") String orderNo);
+                                                                                @Path("orderNo") String orderNo);
 
     /**
      * 医生接诊时选择接诊医院或者改变接诊信息时选择医院
@@ -257,7 +262,7 @@ public interface ApiUrlManager {
      */
     @GET("client/department/first/{hospitalCode}")
     Observable<BaseResponse<List<HospitalDepartBean>>> getDepartOneListByReverse(@Header("token") String token,
-            @Path("hospitalCode") String hospitalCode);
+                                                                                 @Path("hospitalCode") String hospitalCode);
 
     /**
      * 获取当前医生有预约转诊权限的合作医院下面的二级级科室
@@ -268,8 +273,9 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @GET("client/department/second/{hospitalCode}/{pid}")
-    Observable<BaseResponse<List<HospitalDepartChildBean>>> getDepartTwoListByReverse(@Header("token") String token,
-            @Path("hospitalCode") String hospitalCode, @Path("pid") int pid);
+    Observable<BaseResponse<List<HospitalDepartChildBean>>> getDepartTwoListByReverse(@Header(
+            "token") String token,
+                                                                                      @Path("hospitalCode") String hospitalCode, @Path("pid") int pid);
 
     /**
      * 获取当前医生有预约转诊权限的合作医院下面的医生
@@ -280,7 +286,7 @@ public interface ApiUrlManager {
      */
     @POST("client/doctor/v2/zzDoctors")
     Observable<BaseResponse<ReceiverBean>> getDoctorListByReverse(@Header("token") String token,
-            @Body Map<String, Object> info);
+                                                                  @Body Map<String, Object> info);
 
     /**
      * 接诊医生
@@ -291,7 +297,7 @@ public interface ApiUrlManager {
      */
     @POST("client/doctor/v2/jzDoctors")
     Observable<BaseResponse<ReceiverBean>> getReceivingDoctorList(@Header("token") String token,
-            @Body Map<String, Object> info);
+                                                                  @Body Map<String, Object> info);
 
     /**
      * 获取科室树
@@ -302,7 +308,7 @@ public interface ApiUrlManager {
      */
     @POST("client/department/tree")
     Observable<BaseResponse<List<HospitalDepartBean>>> getDepartTree(@Header("token") String token,
-            @Body Map<String, String> info);
+                                                                     @Body Map<String, String> info);
 
     /**
      * 提交医生认证数据
@@ -312,7 +318,8 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @POST("client/doctor/auth")
-    Observable<BaseResponse<LoginBean>> submitDoctorAuth(@Header("token") String token, @Body Map<String, Object> info);
+    Observable<BaseResponse<LoginBean>> submitDoctorAuth(@Header("token") String token,
+                                                         @Body Map<String, Object> info);
 
     /**
      * 获取已提交认证信息
@@ -323,7 +330,7 @@ public interface ApiUrlManager {
      */
     @GET("client/doctor/authInfo/{mobile}")
     Observable<BaseResponse<DoctorAuthBean>> getDoctorAuth(@Header("token") String token,
-            @Path("mobile") String mobile);
+                                                           @Path("mobile") String mobile);
 
     /**
      * 获取医生个人详情
@@ -334,7 +341,7 @@ public interface ApiUrlManager {
      */
     @GET("client/doctor/model/{mobile}")
     Observable<BaseResponse<ReceiverDoctorBean>> getDoctorInfo(@Header("token") String token,
-            @Path("mobile") String mobile);
+                                                               @Path("mobile") String mobile);
 
     /**
      * 获取指定类型的字典数据
@@ -345,7 +352,7 @@ public interface ApiUrlManager {
      */
     @GET("dm/query-by-type")
     Observable<BaseResponse<List<HospitalTitleBean>>> getDataByType(@Header("token") String token,
-            @Query("type") String info);
+                                                                    @Query("type") String info);
 
     /**
      * 医生基本信息加收入信息(总收入 已到账 余额 本月收入 本月已到账)
@@ -365,7 +372,7 @@ public interface ApiUrlManager {
      */
     @GET("client/doctorcenter/doctor_income")
     Observable<BaseResponse<IncomeDetailBean>> getDoctorIncomeDetail(@Header("token") String token,
-            @Query("doctorOrderTranId") int info);
+                                                                     @Query("doctorOrderTranId") int info);
 
     /**
      * 医生提现信息
@@ -376,7 +383,7 @@ public interface ApiUrlManager {
      */
     @GET("client/doctorcenter/doctor_cash")
     Observable<BaseResponse<WithDrawDetailBean>> getDoctorWithdraw(@Header("token") String token,
-            @Query("doctorOrderTranId") int info);
+                                                                   @Query("doctorOrderTranId") int info);
 
     /**
      * 医生某月收入汇总 (纯收入(不包含提现) 预约检查+预约转诊+远程会珍)
@@ -387,7 +394,7 @@ public interface ApiUrlManager {
      */
     @GET("client/doctorcenter/doctor_cash_by_month")
     Observable<BaseResponse<List<HospitalTitleBean>>> getDoctorWithdrawByMonth(@Header("token") String token,
-            @Query("query_month") String info);
+                                                                               @Query("query_month") String info);
 
     /**
      * 医生收入明细信息 (医生提现+预约检查+预约转诊+远程会珍)
@@ -398,7 +405,7 @@ public interface ApiUrlManager {
      */
     @GET("client/doctorcenter/doctor_tran_list")
     Observable<BaseResponse<List<DoctorCurrencyDetailBean>>> getDoctorIncomeList(@Header("token") String token,
-            @QueryMap Map<String, Integer> info);
+                                                                                 @QueryMap Map<String, Integer> info);
 
     /**
      * 医生收入明细信息 (不包含提现)
@@ -408,8 +415,9 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @GET("client/doctorcenter/doctor_tran_list_only_income")
-    Observable<BaseResponse<List<DoctorCurrencyDetailBean>>> getDoctorIncomeWithOutList(@Header("token") String token,
-            @QueryMap Map<String, Object> info);
+    Observable<BaseResponse<List<DoctorCurrencyDetailBean>>> getDoctorIncomeWithOutList(@Header(
+            "token") String token,
+                                                                                        @QueryMap Map<String, Object> info);
 
     /**
      * 医生某月收入明细信息 (纯收入(不包含提现) 预约检查+预约转诊+远程会珍)
@@ -419,8 +427,9 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @GET("client/doctorcenter/doctor_tran_list_by_month")
-    Observable<BaseResponse<List<DoctorCurrencyDetailBean>>> getDoctorIncomeByMonthList(@Header("token") String token,
-            @QueryMap Map<String, Integer> info);
+    Observable<BaseResponse<List<DoctorCurrencyDetailBean>>> getDoctorIncomeByMonthList(@Header(
+            "token") String token,
+                                                                                        @QueryMap Map<String, Integer> info);
 
     /**
      * 根据医生编码获取居民列表信息
@@ -431,7 +440,7 @@ public interface ApiUrlManager {
      */
     @GET("client/patient/getbydoccode")
     Observable<BaseResponse<List<PatientBean>>> getPatientListByDoctorCode(@Header("token") String token,
-            @Query("code") String info);
+                                                                           @Query("code") String info);
 
     /**
      * 获取医生好友列表信息
@@ -451,7 +460,7 @@ public interface ApiUrlManager {
      */
     @GET("client/patient/getbypatcode")
     Observable<BaseResponse<PatientBean>> getPatientDetailByPatientCode(@Header("token") String token,
-            @Query("code") String info);
+                                                                        @Query("code") String info);
 
     /**
      * 根据居民编码获取居民订单记录
@@ -461,8 +470,9 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @GET("order/query-patient-order")
-    Observable<BaseResponse<List<PatientOrderBean>>> getPatientOrderListByPatientCode(@Header("token") String token,
-            @QueryMap Map<String, Object> info);
+    Observable<BaseResponse<List<PatientOrderBean>>> getPatientOrderListByPatientCode(@Header(
+            "token") String token,
+                                                                                      @QueryMap Map<String, Object> info);
 
     /**
      * 居民验证（根据身份证号、姓名验证是否匹配）
@@ -473,7 +483,7 @@ public interface ApiUrlManager {
      */
     @GET("client/patient/getpatbyidcardname")
     Observable<BaseResponse<PatientBean>> verifyPatient(@Header("token") String token,
-            @QueryMap Map<String, String> info);
+                                                        @QueryMap Map<String, String> info);
 
     /**
      * 查询居民是否存在未完成的转诊单
@@ -484,7 +494,7 @@ public interface ApiUrlManager {
      */
     @GET("order-transfer/exist")
     Observable<BaseResponse<Boolean>> getPatientExistTransfer(@Header("token") String token,
-            @Query("patientCode") String info);
+                                                              @Query("patientCode") String info);
 
     /**
      * 新增预约检查订单
@@ -495,7 +505,7 @@ public interface ApiUrlManager {
      */
     @POST("order-check/create")
     Observable<BaseResponse<List<Object>>> addReserveCheckOrder(@Header("token") String token,
-            @Body Map<String, Object> info);
+                                                                @Body Map<String, Object> info);
 
     /**
      * 查询检查订单列表
@@ -506,7 +516,8 @@ public interface ApiUrlManager {
      */
     @GET("order-check/query-doctor-order")
     Observable<BaseResponse<List<CheckBean>>> getReserveCheckOrderList(@Header("token") String token,
-            @QueryMap Map<String, Integer> info);
+                                                                       @QueryMap Map<String,
+                                                                               Integer> info);
 
     /**
      * 查询检查订单详情
@@ -517,7 +528,7 @@ public interface ApiUrlManager {
      */
     @GET("order-check/query-detail")
     Observable<BaseResponse<CheckDetailBean>> getReserveCheckOrderDetail(@Header("token") String token,
-            @Query("orderNo") String info);
+                                                                         @Query("orderNo") String info);
 
     /**
      * 添加检查项目查询(医生端预约检查、选择检查项目)
@@ -536,8 +547,9 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @GET("client/product/checkhoscode")
-    Observable<BaseResponse<List<SelectCheckTypeBean>>> getCheckTypeByHospitalList(@Header("token") String token,
-            @QueryMap Map<String, Object> info);
+    Observable<BaseResponse<List<SelectCheckTypeBean>>> getCheckTypeByHospitalList(@Header("token"
+    ) String token,
+                                                                                   @QueryMap Map<String, Object> info);
 
     /**
      * 新增预约转诊订单
@@ -548,7 +560,7 @@ public interface ApiUrlManager {
      */
     @POST("order-transfer/add")
     Observable<BaseResponse<String>> addReserveTransferOrder(@Header("token") String token,
-            @Body Map<String, Object> info);
+                                                             @Body Map<String, Object> info);
 
     /**
      * 取消预约转诊订单
@@ -559,7 +571,7 @@ public interface ApiUrlManager {
      */
     @POST("order-transfer/cancel")
     Observable<BaseResponse<String>> cancelReserveTransferOrder(@Header("token") String token,
-            @Body Map<String, String> info);
+                                                                @Body Map<String, String> info);
 
     /**
      * 接受预约转诊订单
@@ -570,7 +582,7 @@ public interface ApiUrlManager {
      */
     @POST("order-transfer/receive")
     Observable<BaseResponse<String>> receiveReserveTransferOrder(@Header("token") String token,
-            @Body Map<String, String> info);
+                                                                 @Body Map<String, String> info);
 
     /**
      * 变更接诊信息
@@ -581,7 +593,7 @@ public interface ApiUrlManager {
      */
     @POST("order-transfer/updateReceiveInfo")
     Observable<BaseResponse<String>> updateReserveTransferOrder(@Header("token") String token,
-            @Body Map<String, String> info);
+                                                                @Body Map<String, String> info);
 
     /**
      * 拒绝预约转诊订单
@@ -592,7 +604,7 @@ public interface ApiUrlManager {
      */
     @POST("order-transfer/reject")
     Observable<BaseResponse<String>> rejectReserveTransferOrder(@Header("token") String token,
-            @Body Map<String, String> info);
+                                                                @Body Map<String, String> info);
 
     /**
      * 再次转诊给其他医生
@@ -603,7 +615,7 @@ public interface ApiUrlManager {
      */
     @POST("order-transfer/transferAgain")
     Observable<BaseResponse<String>> transferAgainOtherDoctor(@Header("token") String token,
-            @Body Map<String, String> info);
+                                                              @Body Map<String, String> info);
 
     /**
      * 查询发起的转诊记录
@@ -613,8 +625,9 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @GET("order-transfer/initiate/list")
-    Observable<BaseResponse<List<TransferDetailBean>>> getInitiateTransferOrderList(@Header("token") String token,
-            @QueryMap Map<String, Integer> info);
+    Observable<BaseResponse<List<TransferDetailBean>>> getInitiateTransferOrderList(@Header(
+            "token") String token,
+                                                                                    @QueryMap Map<String, Integer> info);
 
     /**
      * 查询转诊记录  根据状态
@@ -625,7 +638,7 @@ public interface ApiUrlManager {
      */
     @GET("order-transfer/status/list")
     Observable<BaseResponse<List<TransferDetailBean>>> getTransferStatusOrderList(@Header("token") String token,
-            @QueryMap Map<String, Integer> info);
+                                                                                  @QueryMap Map<String, Integer> info);
 
     /**
      * 查询转诊详情
@@ -636,7 +649,7 @@ public interface ApiUrlManager {
      */
     @GET("order-transfer/detail/get")
     Observable<BaseResponse<TransferDetailBean>> getTransferOrderDetail(@Header("token") String token,
-            @Query("orderNo") String info);
+                                                                        @Query("orderNo") String info);
 
     /**
      * 工作室 所有订单数量
@@ -664,7 +677,8 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @GET("version/current-version")
-    Observable<BaseResponse<VersionBean>> getVersion(@Header("token") String token, @Query("device") String info);
+    Observable<BaseResponse<VersionBean>> getVersion(@Header("token") String token, @Query(
+            "device") String info);
 
     /**
      * 添加聊天（开始聊天）
@@ -674,7 +688,8 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @POST("client/chatcountdown/add")
-    Observable<BaseResponse<ChatTimeBean>> startChat(@Header("token") String token, @Body Map<String, String> info);
+    Observable<BaseResponse<ChatTimeBean>> startChat(@Header("token") String token,
+                                                     @Body Map<String, String> info);
 
     /**
      * 获取剩余时间
@@ -685,7 +700,7 @@ public interface ApiUrlManager {
      */
     @POST("client/chatcountdown/getstoptime")
     Observable<BaseResponse<ChatTimeBean>> getChatLastTime(@Header("token") String token,
-            @Body Map<String, String> info);
+                                                           @Body Map<String, String> info);
 
     /**
      * 结束聊天
@@ -695,7 +710,8 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @POST("client/chatcountdown/updatestoptime")
-    Observable<BaseResponse<String>> endChat(@Header("token") String token, @Body Map<String, String> info);
+    Observable<BaseResponse<String>> endChat(@Header("token") String token, @Body Map<String,
+            String> info);
     //二期 3.0.1
 
     /**
@@ -718,7 +734,8 @@ public interface ApiUrlManager {
      */
     @GET("client/hospital/cooperate/detail")
     Observable<BaseResponse<CooperateHospitalBean>> getCooperateHospitalDetail(@Header("token") String token,
-                                                                                   @Query("hospitalCode") String hospitalCode);
+                                                                               @Query("hospitalCode") String hospitalCode);
+
     /**
      * 获取当前医生的合作医院下服务项目列表
      *
@@ -727,8 +744,9 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @GET("client/product/queryHospitalPackageProduct")
-    Observable<BaseResponse<HospitalProjectParentBean>> getCooperateHospitalProjectList(@Header("token") String token,
-            @Query("hospitalCode") String hospitalCode);
+    Observable<BaseResponse<HospitalProjectParentBean>> getCooperateHospitalProjectList(@Header(
+            "token") String token,
+                                                                                        @Query("hospitalCode") String hospitalCode);
 
     /**
      * 获取当前医生的合作医院下服务包列表
@@ -740,6 +758,7 @@ public interface ApiUrlManager {
     @POST("client/product/listPackage")
     Observable<BaseResponse<BaseListBean<HospitalPackageBean>>> getCooperateHospitalPackageList(
             @Header("token") String token, @Body Map<String, Object> info);
+
     /**
      * 获取当前医生的合作医院下服务项列表
      *
@@ -760,7 +779,7 @@ public interface ApiUrlManager {
      */
     @GET("client/product/queryProductDetail")
     Observable<BaseResponse<ProductBean>> queryProductDetail(@Header("token") String token,
-            @Query("productCode") String productCode);
+                                                             @Query("productCode") String productCode);
 
     /**
      * 获取医生二维码（医生端扫描）
@@ -780,7 +799,7 @@ public interface ApiUrlManager {
      */
     @GET("client/tag/patient/{patientCode}")
     Observable<BaseResponse<LabelSetBean>> getLabel(@Header("token") String token,
-            @Path("patientCode") String patientCode);
+                                                    @Path("patientCode") String patientCode);
 
     /**
      * 保存居民标签
@@ -790,7 +809,8 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @POST("client/tag/patient/save")
-    Observable<BaseResponse<String>> savePatientLabel(@Header("token") String token, @Body Map<String, Object> info);
+    Observable<BaseResponse<String>> savePatientLabel(@Header("token") String token,
+                                                      @Body Map<String, Object> info);
 
     /**
      * 获取居民标签
@@ -801,7 +821,7 @@ public interface ApiUrlManager {
      */
     @POST("client/tag/group")
     Observable<BaseResponse<BaseListBean<LabelBean>>> getPatientLabel(@Header("token") String token,
-            @Body Map<String, Integer> info);
+                                                                      @Body Map<String, Integer> info);
 
     /**
      * 删除标签
@@ -811,7 +831,8 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @GET("client/tag/doctor/tag/delete/{tagId}")
-    Observable<BaseResponse<LabelSetBean>> deleteLabel(@Header("token") String token, @Path("tagId") long tagId);
+    Observable<BaseResponse<LabelSetBean>> deleteLabel(@Header("token") String token, @Path(
+            "tagId") long tagId);
 
     /**
      * 获取已存在的标签（筛选）
@@ -831,7 +852,7 @@ public interface ApiUrlManager {
      */
     @GET("client/tag/group/{tagId}")
     Observable<BaseResponse<List<LabelBean>>> getPatientByLabel(@Header("token") String token,
-            @Path("tagId") long tagId);
+                                                                @Path("tagId") long tagId);
 
     /**
      * 获取最近添加的居民
@@ -851,7 +872,7 @@ public interface ApiUrlManager {
      */
     @POST("remote/join")
     Observable<BaseResponse<BaseListBean<LabelBean>>> applyRemote(@Header("token") String token,
-            @Body Map<String, String> info);
+                                                                  @Body Map<String, String> info);
 
     /**
      * 远程会诊发布意见确认
@@ -862,7 +883,7 @@ public interface ApiUrlManager {
      */
     @POST("remote/publish-result")
     Observable<BaseResponse<BaseListBean<LabelBean>>> applyRemoteAdvice(@Header("token") String token,
-            @Body Map<String, String> info);
+                                                                        @Body Map<String, String> info);
 
     /**
      * 远程会诊详情
@@ -873,7 +894,7 @@ public interface ApiUrlManager {
      */
     @POST("remote/query-detail")
     Observable<BaseResponse<RemoteDetailBean>> getRemoteDetail(@Header("token") String token,
-            @Query("orderNo") String orderNo);
+                                                               @Query("orderNo") String orderNo);
 
     /**
      * 通过扫码添加居民 查询居民信息
@@ -884,7 +905,7 @@ public interface ApiUrlManager {
      */
     @POST("client/doctor/scan/patient")
     Observable<BaseResponse<PatientBean>> getPatientByQrId(@Header("token") String token,
-            @Body Map<String, Object> info);
+                                                           @Body Map<String, Object> info);
 
     /**
      * 通过扫码添加医生 查询医生信息
@@ -895,7 +916,7 @@ public interface ApiUrlManager {
      */
     @POST("client/doctor/scan/doctor")
     Observable<BaseResponse<DoctorQrCodeBean>> getDoctorByQrId(@Header("token") String token,
-            @Body Map<String, Object> info);
+                                                               @Body Map<String, Object> info);
 
     /**
      * 医生添加医生为好友
@@ -905,7 +926,8 @@ public interface ApiUrlManager {
      * @return 返回值
      */
     @POST("client/doctor/friend/add/doctor")
-    Observable<BaseResponse<String>> addDoctorFriend(@Header("token") String token, @Body Map<String, Object> info);
+    Observable<BaseResponse<String>> addDoctorFriend(@Header("token") String token,
+                                                     @Body Map<String, Object> info);
 
     /**
      * 在当天日期查询已经有的预约时间信息
@@ -916,7 +938,7 @@ public interface ApiUrlManager {
      */
     @GET("remote/check-have-remote")
     Observable<BaseResponse<List<RemoteHourBean>>> getRemoteTime(@Header("token") String token,
-            @Query("date") String info);
+                                                                 @Query("date") String info);
 
     /**
      * 获取远程科室列表
@@ -927,7 +949,8 @@ public interface ApiUrlManager {
      */
     @GET("remote/getRemoteDepartmentInfo")
     Observable<BaseResponse<List<RemoteDepartBean>>> getRemoteDepartmentInfo(@Header("token") String token,
-            @QueryMap Map<String, String> info);
+                                                                             @QueryMap Map<String
+                                                                                     , String> info);
 
     /**
      * 新增远程会诊订单
@@ -938,7 +961,7 @@ public interface ApiUrlManager {
      */
     @POST("remote/create")
     Observable<BaseResponse<String>> addReserveRemoteOrder(@Header("token") String token,
-            @Body Map<String, Object> info);
+                                                           @Body Map<String, Object> info);
 
     /**
      * 查询检查订单列表
@@ -949,7 +972,8 @@ public interface ApiUrlManager {
      */
     @GET("remote/query")
     Observable<BaseResponse<List<RemoteBean>>> getReserveRemoteOrderList(@Header("token") String token,
-            @QueryMap Map<String, Integer> info);
+                                                                         @QueryMap Map<String,
+                                                                                 Integer> info);
 
     /**
      * 健康管理列表
@@ -960,7 +984,8 @@ public interface ApiUrlManager {
      */
     @POST("client/product/queryPackageList")
     Observable<BaseResponse<BaseListBean<HealthPackageBean>>> queryPackageList(@Header("token") String token,
-            @Body Map<String, Integer> info);
+                                                                               @Body Map<String,
+                                                                                       Integer> info);
 
     /**
      * 健康管理详情
@@ -971,7 +996,7 @@ public interface ApiUrlManager {
      */
     @GET("client/product/queryPackageDetail")
     Observable<BaseResponse<HealthPackageDetailBean>> queryPackageDetail(@Header("token") String token,
-            @Query("packageCode") String info);
+                                                                         @Query("packageCode") String info);
 
     /**
      * 医生回执报告
@@ -983,6 +1008,19 @@ public interface ApiUrlManager {
      */
     @Multipart
     @POST("order-check/report")
-    Observable<BaseResponse<String>> doctorReport(@Header("token") String token, @QueryMap Map<String, Object> info,
-            @Part ArrayList<MultipartBody.Part> imageData);
+    Observable<BaseResponse<String>> doctorReport(@Header("token") String token,
+                                                  @QueryMap Map<String, Object> info,
+                                                  @Part ArrayList<MultipartBody.Part> imageData);
+
+    /**
+     * 医生回执报告  无附件
+     *
+     * @param token token
+     * @param info  map参数
+     * @return 返回值
+     */
+    @Multipart
+    @POST("order-check/report")
+    Observable<BaseResponse<String>> doctorReport(@Header("token") String token,
+                                                  @QueryMap Map<String, Object> info);
 }

@@ -537,12 +537,12 @@ public class RequestUtils {
                         listener));
     }
 
-    public static void getCheckTypeList(Context context, String token,
+    public static void getCheckTypeList(Context context, String token, boolean show,
                                         final ResponseListener<BaseResponse> listener) {
         RetrofitManager.getApiUrlManager()
                 .getCheckTypeList(token)
                 .compose(RxJavaHelper.observableIO2Main(context))
-                .subscribe(new AbstractLoadViewObserver<>(context, true, false,
+                .subscribe(new AbstractLoadViewObserver<>(context, show, false,
                         Tasks.GET_CHECK_TYPE, listener));
     }
 
@@ -1108,18 +1108,26 @@ public class RequestUtils {
         params.put("checkTranId", checkTranId);
         params.put("orderNo", orderNo);
         params.put("suggestionText", suggestionText);
-        ArrayList<MultipartBody.Part> imageData = new ArrayList<>();
-        for (File file : files) {
-            RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
-            MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(),
-                    reqFile);
-            imageData.add(body);
+        if (files.size() > 0) {
+            ArrayList<MultipartBody.Part> imageData = new ArrayList<>();
+            for (File file : files) {
+                RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
+                MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(),
+                        reqFile);
+                imageData.add(body);
+            }
+            RetrofitManager.getApiUrlManager()
+                    .doctorReport(token, params, imageData)
+                    .compose(RxJavaHelper.observableIO2Main(context))
+                    .subscribe(new AbstractLoadViewObserver<>(context, true, false,
+                            Tasks.DOCTOR_REPORT, listener));
+        } else {
+            RetrofitManager.getApiUrlManager()
+                    .doctorReport(token, params)
+                    .compose(RxJavaHelper.observableIO2Main(context))
+                    .subscribe(new AbstractLoadViewObserver<>(context, true, false,
+                            Tasks.DOCTOR_REPORT, listener));
         }
-        RetrofitManager.getApiUrlManager()
-                .doctorReport(token, params, imageData)
-                .compose(RxJavaHelper.observableIO2Main(context))
-                .subscribe(new AbstractLoadViewObserver<>(context, true, false,
-                        Tasks.DOCTOR_REPORT, listener));
     }
 }
 
