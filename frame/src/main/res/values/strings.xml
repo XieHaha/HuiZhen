@@ -293,6 +293,7 @@
     <string name="txt_medical_service">诊疗服务</string>
 
     <!--医院相关-->
+    <string name="txt_our_hospital">（本院）</string>
     <string name="txt_hospital_overview">医院概况</string>
     <string name="txt_hospital_address">医院地址</string>
     <string name="txt_hospital_business">院间业务</string>

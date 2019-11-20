@@ -228,6 +228,7 @@ public class SelectCheckTypeActivity extends BaseActivity
         filterRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         filterAdapter = new SelectCheckTypeFilterAdapter(R.layout.item_select_filter,
                 new ArrayList<>());
+        filterAdapter.setHospitalName(loginBean.getHospitalName());
         filterAdapter.setOnItemClickListener(this);
         filterRecyclerView.setAdapter(filterAdapter);
         //搜索列表
@@ -486,7 +487,11 @@ public class SelectCheckTypeActivity extends BaseActivity
      */
     private void hideFilterLayout() {
         layoutExpandable.collapse();
-        layoutFilterContentRoot.setVisibility(View.GONE);
+        layoutExpandable.setOnExpansionUpdateListener((expansionFraction, state) -> {
+            if (state == 0) {
+                layoutFilterContentRoot.setVisibility(View.GONE);
+            }
+        });
     }
 
     /**
@@ -635,7 +640,8 @@ public class SelectCheckTypeActivity extends BaseActivity
      */
     private void startAnim() {
         float y = ivPath.getY();
-        Animation animation = new TranslateAnimation(ivPath.getX(), ivPath.getX(), y - 120, y + 140);
+        Animation animation = new TranslateAnimation(ivPath.getX(), ivPath.getX(), y - 120,
+                y + 140);
         animation.setRepeatMode(Animation.RESTART);
         animation.setRepeatCount(Animation.INFINITE);
         animation.setInterpolator(new AccelerateDecelerateInterpolator());
@@ -648,7 +654,8 @@ public class SelectCheckTypeActivity extends BaseActivity
     }
 
     @OnClick({R.id.tv_cancel, R.id.layout_all_hospital, R.id.layout_all_service, R.id.tv_selected,
-            R.id.tv_next, R.id.layout_bg, R.id.tv_none_refresh, R.id.layout_shop_bg, R.id.tv_clear_shop,
+            R.id.tv_next, R.id.layout_bg, R.id.tv_none_refresh, R.id.layout_shop_bg,
+            R.id.tv_clear_shop,
             R.id.tv_know})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -800,9 +807,9 @@ public class SelectCheckTypeActivity extends BaseActivity
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
         if (task == Tasks.GET_CHECK_TYPE) {
-            parentBeans = (List<SelectCheckTypeParentBean>) response.getData();
-            //医院名字首字母排序
-            BaseUtils.sortHospitalData(parentBeans);
+            List<SelectCheckTypeParentBean> list =
+                    (List<SelectCheckTypeParentBean>) response.getData();
+            sortHospitalData(list);
             //过滤无服务医院
             filterNoneCheckHospital();
             bindServiceListData();
@@ -818,6 +825,25 @@ public class SelectCheckTypeActivity extends BaseActivity
         super.onResponseEnd(task);
         layoutRefresh.setRefreshing(false);
     }
+
+    /**
+     * 根据医院排序、本院置顶，其他医院按首字母排序
+     */
+    private void sortHospitalData(List<SelectCheckTypeParentBean> list) {
+        parentBeans.clear();
+        for (int i = 0; i < list.size(); i++) {
+            SelectCheckTypeParentBean bean = list.get(i);
+            if (TextUtils.equals(bean.getHospitalCode(), loginBean.getHospitalCode())) {
+                parentBeans.add(bean);
+                list.remove(bean);
+                break;
+            }
+        }
+        //医院名字首字母排序
+        BaseUtils.sortHospitalData(list);
+        parentBeans.addAll(list);
+    }
+
 
     /**
      * 保存到数据库
