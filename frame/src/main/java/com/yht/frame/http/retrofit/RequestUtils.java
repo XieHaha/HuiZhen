@@ -225,12 +225,12 @@ public class RequestUtils {
                         listener));
     }
 
-    public static void getValidateHospitalList(Context context, String token,boolean showDialog,
+    public static void getValidateHospitalList(Context context, String token, boolean showDialog,
                                                final ResponseListener<BaseResponse> listener) {
         RetrofitManager.getApiUrlManager()
                 .getValidateHospitalList(token)
                 .compose(RxJavaHelper.observableIO2Main(context))
-                .subscribe(new AbstractLoadViewObserver<>(context,showDialog,
+                .subscribe(new AbstractLoadViewObserver<>(context, showDialog,
                         Tasks.GET_VALIDATE_HOSPITAL_LIST, listener));
     }
 
@@ -1107,7 +1107,9 @@ public class RequestUtils {
         Map<String, Object> params = new HashMap<>(16);
         params.put("checkTranId", checkTranId);
         params.put("orderNo", orderNo);
-        params.put("suggestionText", suggestionText);
+        if (!TextUtils.isEmpty(suggestionText)) {
+            params.put("suggestionText", suggestionText);
+        }
         if (files.size() > 0) {
             ArrayList<MultipartBody.Part> imageData = new ArrayList<>();
             for (File file : files) {

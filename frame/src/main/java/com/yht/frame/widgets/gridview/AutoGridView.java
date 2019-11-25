@@ -156,7 +156,6 @@ public class AutoGridView extends RelativeLayout {
             }
             String url = images.get(position).getImageUrl();
             if (!TextUtils.isEmpty(url) && isAdd) {
-                holder.imageView.setVisibility(VISIBLE);
                 holder.ivDelete.setVisibility(VISIBLE);
                 holder.ivDelete.setOnClickListener(v -> {
                     if (onDeleteClickListener != null) {
@@ -165,6 +164,10 @@ public class AutoGridView extends RelativeLayout {
                 });
             } else {
                 holder.ivDelete.setVisibility(GONE);
+            }
+            if (isAdd) {
+                holder.imageView.setVisibility(VISIBLE);
+            } else {
                 holder.imageView.setVisibility(GONE);
             }
             if (showNum) {
