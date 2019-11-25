@@ -248,8 +248,7 @@ public class SelectCheckTypeActivity extends BaseActivity
         } else {
             tvNext.setSelected(false);
         }
-        tvSelected.setText(String.format(getString(R.string.txt_calc_selected_num),
-                selectedCodes.size()));
+        tvSelected.setText(String.valueOf(selectedCodes.size()));
         tvSelected.setSelected(true);
         //是否显示刷新引导
         boolean status = sharePreferenceUtil.getAlwaysBoolean(CommonData.KEY_SHOW_REFRESH_STATUS);
@@ -591,8 +590,7 @@ public class SelectCheckTypeActivity extends BaseActivity
         selectedCodes.clear();
         selectedCodes.addAll(newSelected);
         ZycApplication.getInstance().setSelectCodes(selectedCodes);
-        tvSelected.setText(String.format(getString(R.string.txt_calc_selected_num),
-                selectedCodes.size()));
+        tvSelected.setText(String.valueOf(selectedCodes.size()));
         if (selectedCodes.size() > 0) {
             tvNext.setSelected(true);
         } else {
@@ -649,8 +647,7 @@ public class SelectCheckTypeActivity extends BaseActivity
         parentAdapter.notifyDataSetChanged();
         //搜索列表刷新
         searchAdapter.notifyDataSetChanged();
-        tvSelected.setText(String.format(getString(R.string.txt_calc_selected_num),
-                selectedCodes.size()));
+        tvSelected.setText(String.valueOf(selectedCodes.size()));
         if (selectedCodes.size() > 0) {
             tvNext.setSelected(true);
             layoutNoneShop.setVisibility(View.GONE);
@@ -716,8 +713,7 @@ public class SelectCheckTypeActivity extends BaseActivity
         } else {
             tvNext.setSelected(false);
         }
-        tvSelected.setText(String.format(getString(R.string.txt_calc_selected_num),
-                selectedCodes.size()));
+        tvSelected.setText(String.valueOf(selectedCodes.size()));
         ZycApplication.getInstance().setSelectCodes(selectedCodes);
     }
 

@@ -456,7 +456,8 @@
     <string name="txt_add_service_goon">继续添加服务</string>
     <string name="txt_add_service">添加服务</string>
     <string name="txt_clear_all">清空所有</string>
-    <string name="txt_calc_selected_num">已选择&#160;%d&#160;项</string>
+    <string name="txt_calc_selected_num_left">已选择&#160;</string>
+    <string name="txt_calc_selected_num_right">&#160;项</string>
     <string name="txt_select_service_refresh_hint">找不到服务，下拉刷新试试！</string>
     <string name="txt_know">我知道了</string>
 

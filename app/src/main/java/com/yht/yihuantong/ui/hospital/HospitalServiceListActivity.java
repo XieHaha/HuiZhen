@@ -2,13 +2,14 @@ package com.yht.yihuantong.ui.hospital;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
 
 import com.yht.frame.data.BaseData;
 import com.yht.frame.data.CommonData;
@@ -31,7 +32,7 @@ import butterknife.OnClick;
 /**
  * @author 顿顿
  * @date 19/6/27 14:17
- * @description 我收到的转诊
+ * @description
  */
 public class HospitalServiceListActivity extends BaseActivity
         implements TransferWaitFragment.OnPendingTransferOrderListener {

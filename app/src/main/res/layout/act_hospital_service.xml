@@ -8,8 +8,8 @@
     android:orientation="vertical">
 
     <include
-        layout="@layout/public_title"
-        android:id="@+id/top_bar" />
+        android:id="@+id/top_bar"
+        layout="@layout/public_title" />
 
     <LinearLayout
         android:id="@+id/layout_button"
@@ -19,8 +19,8 @@
         <RelativeLayout
             android:id="@+id/layout_left"
             android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_weight="1">
 
             <TextView
                 android:id="@+id/tv_left"
@@ -29,24 +29,24 @@
                 android:layout_centerInParent="true"
                 android:text="@string/txt_service_package"
                 android:textColor="@color/txt_color_6a6f80_1491fc_selector"
-                android:textSize="@dimen/text_15"
+                android:textSize="@dimen/text_16"
                 android:textStyle="bold" />
 
             <ImageView
                 android:layout_width="6dp"
                 android:layout_height="6dp"
-                android:background="@drawable/circular_red_point_bg"
-                android:layout_toEndOf="@id/tv_left"
-                android:layout_marginTop="10dp"
                 android:layout_marginStart="3dp"
+                android:layout_marginTop="10dp"
+                android:layout_toEndOf="@id/tv_left"
+                android:background="@drawable/circular_red_point_bg"
                 android:visibility="gone" />
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/layout_right"
             android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_weight="1">
 
             <TextView
                 android:id="@+id/tv_right"
@@ -55,29 +55,29 @@
                 android:layout_centerInParent="true"
                 android:text="@string/txt_service"
                 android:textColor="@color/txt_color_6a6f80_1491fc_selector"
-                android:textSize="@dimen/text_15" />
+                android:textSize="@dimen/text_16" />
 
             <RelativeLayout
                 android:id="@+id/layout_receiving_transfer_num"
                 android:layout_width="wrap_content"
-                android:minWidth="18dp"
                 android:layout_height="18dp"
+                android:layout_marginTop="5dp"
                 android:layout_toEndOf="@id/tv_right"
+                android:background="@drawable/circular_ff5452_point_bg"
+                android:minWidth="18dp"
                 android:paddingStart="3dp"
                 android:paddingEnd="3dp"
-                android:layout_marginTop="5dp"
-                android:visibility="gone"
-                android:background="@drawable/circular_ff5452_point_bg">
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/tv_receiving_transfer_num"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textStyle="bold"
                     android:layout_centerInParent="true"
-                    tools:text="10"
                     android:textColor="@color/color_ffffff"
-                    android:textSize="@dimen/text_12" />
+                    android:textSize="@dimen/text_12"
+                    android:textStyle="bold"
+                    tools:text="10" />
             </RelativeLayout>
         </RelativeLayout>
     </LinearLayout>

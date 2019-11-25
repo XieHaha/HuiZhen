@@ -64,7 +64,7 @@ public class HospitalServicePackageFragment extends BaseFragment
         loadViewHelper.setOnNextClickListener(this);
         refreshLayout.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light,
                 android.R.color.holo_orange_light, android.R.color.holo_green_light);
-        hospitalPackageAdapter = new HospitalPackageAdapter(R.layout.item_hospital_project, hospitalProductBeans);
+        hospitalPackageAdapter = new HospitalPackageAdapter(R.layout.item_hospital_project1, hospitalProductBeans);
         hospitalPackageAdapter.setLoadMoreView(new CustomLoadMoreView());
         hospitalPackageAdapter.setOnLoadMoreListener(this, recyclerView);
         hospitalPackageAdapter.setOnItemClickListener(this);

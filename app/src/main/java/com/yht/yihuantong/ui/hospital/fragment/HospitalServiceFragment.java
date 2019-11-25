@@ -2,11 +2,12 @@ package com.yht.yihuantong.ui.hospital.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+
 import androidx.annotation.NonNull;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.view.View;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.yht.frame.data.BaseData;
@@ -63,7 +64,7 @@ public class HospitalServiceFragment extends BaseFragment
         loadViewHelper.setOnNextClickListener(this);
         refreshLayout.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light,
                                               android.R.color.holo_orange_light, android.R.color.holo_green_light);
-        hospitalProjectAdapter = new HospitalProductAdapter(R.layout.item_hospital_project, hospitalProductBeans);
+        hospitalProjectAdapter = new HospitalProductAdapter(R.layout.item_hospital_project1, hospitalProductBeans);
         hospitalProjectAdapter.setLoadMoreView(new CustomLoadMoreView());
         hospitalProjectAdapter.setOnLoadMoreListener(this, recyclerView);
         hospitalProjectAdapter.setOnItemClickListener(this);
