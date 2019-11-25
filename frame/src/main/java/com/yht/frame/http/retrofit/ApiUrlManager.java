@@ -1019,7 +1019,6 @@ public interface ApiUrlManager {
      * @param info  map参数
      * @return 返回值
      */
-    @Multipart
     @POST("order-check/report")
     Observable<BaseResponse<String>> doctorReport(@Header("token") String token,
                                                   @QueryMap Map<String, Object> info);

@@ -144,50 +144,51 @@ public class AutoGridView extends RelativeLayout {
         public View getView(int position, android.view.View convertView, ViewGroup parent) {
             if (convertView == null) {
                 holder = new ViewHolder();
-                convertView = LayoutInflater.from(context).inflate(R.layout.item_add_image_two, parent, false);
-                holder.imageView = convertView.findViewById(R.id.iv_upload);
+                convertView = LayoutInflater.from(context).inflate(R.layout.item_add_image_two,
+                        parent, false);
+                holder.imageView = convertView.findViewById(R.id.image);
+                holder.ivUpload = convertView.findViewById(R.id.iv_upload);
                 holder.ivDelete = convertView.findViewById(R.id.iv_delete);
                 holder.tvNum = convertView.findViewById(R.id.tv_num);
                 convertView.setTag(holder);
-            }
-            else {
-                holder = (ViewHolder)convertView.getTag();
+            } else {
+                holder = (ViewHolder) convertView.getTag();
             }
             String url = images.get(position).getImageUrl();
             if (!TextUtils.isEmpty(url) && isAdd) {
+                holder.imageView.setVisibility(VISIBLE);
                 holder.ivDelete.setVisibility(VISIBLE);
                 holder.ivDelete.setOnClickListener(v -> {
                     if (onDeleteClickListener != null) {
                         onDeleteClickListener.onDeleteClick(position);
                     }
                 });
-            }
-            else {
+            } else {
                 holder.ivDelete.setVisibility(GONE);
+                holder.imageView.setVisibility(GONE);
             }
             if (showNum) {
                 holder.tvNum.setVisibility(VISIBLE);
                 if (images.size() == 1) {
                     holder.tvNum.setText(R.string.txt_add_image_hint);
-                }
-                else {
+                } else {
                     holder.tvNum.setText(
-                            String.format(context.getString(R.string.txt_percent_num), images.size() - 1, maxTotal));
+                            String.format(context.getString(R.string.txt_percent_num),
+                                    images.size() - 1, maxTotal));
                 }
-            }
-            else {
+            } else {
                 holder.tvNum.setVisibility(GONE);
             }
             Glide.with(context)
-                 .load(url)
-                 .apply(GlideHelper.getOptionsPic(BaseUtils.dp2px(context, 4)))
-                 .into(holder.imageView);
+                    .load(url)
+                    .apply(GlideHelper.getOptionsPic(BaseUtils.dp2px(context, 4)))
+                    .into(holder.ivUpload);
             return convertView;
         }
     }
 
     private class ViewHolder {
-        private ImageView imageView, ivDelete;
+        private ImageView imageView, ivUpload, ivDelete;
         private TextView tvNum;
     }
 

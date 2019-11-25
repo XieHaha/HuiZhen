@@ -55,6 +55,10 @@ public interface BaseData {
      */
     int MAX_WAIT_TIME = 5;
     /**
+     * 最近服务 最多保留最近30条
+     */
+    int BASE_MAX_RECENT_SERVICE_NUM = 30;
+    /**
      * 验证码二次获取默认时间
      */
     int BASE_MAX_RESEND_TIME = 60;

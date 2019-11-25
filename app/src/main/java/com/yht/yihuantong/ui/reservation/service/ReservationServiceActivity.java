@@ -3,9 +3,6 @@ package com.yht.yihuantong.ui.reservation.service;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -13,6 +10,10 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -24,6 +25,7 @@ import com.yanzhenjie.nohttp.rest.OnResponseListener;
 import com.yanzhenjie.nohttp.rest.Request;
 import com.yanzhenjie.nohttp.rest.RequestQueue;
 import com.yanzhenjie.nohttp.rest.Response;
+import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseNetConfig;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
@@ -40,8 +42,8 @@ import com.yht.frame.data.bean.ServiceSubmitErrorBean;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.HuiZhenLog;
 import com.yht.frame.utils.ToastUtil;
-import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.frame.widgets.dialog.ErrorServiceListDialog;
+import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.yihuantong.BuildConfig;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ZycApplication;
@@ -51,6 +53,7 @@ import com.yht.yihuantong.ui.reservation.ReservationSuccessActivity;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -150,10 +153,12 @@ public class ReservationServiceActivity extends BaseActivity implements OnCheckL
         fragmentManager = getSupportFragmentManager();
         if (getIntent() != null) {
             //居民详情页面回传数据
-            patientBean = (PatientBean)getIntent().getSerializableExtra(CommonData.KEY_PATIENT_BEAN);
-            healthPackageDetailBean = (HealthPackageDetailBean)getIntent().getSerializableExtra(
+            patientBean =
+                    (PatientBean) getIntent().getSerializableExtra(CommonData.KEY_PATIENT_BEAN);
+            healthPackageDetailBean = (HealthPackageDetailBean) getIntent().getSerializableExtra(
                     CommonData.KEY_HOSPITAL_PRODUCT_BEAN);
-            healthPackageBean = (HealthPackageBean)getIntent().getSerializableExtra(CommonData.KEY_HOSPITAL_BEAN);
+            healthPackageBean =
+                    (HealthPackageBean) getIntent().getSerializableExtra(CommonData.KEY_HOSPITAL_BEAN);
         }
         initTitlePage();
         //预约该服务所选数据
@@ -166,8 +171,7 @@ public class ReservationServiceActivity extends BaseActivity implements OnCheckL
         if (hasHistoryData()) {
             //直接进入到第二步
             tabReservationLicenseView();
-        }
-        else {
+        } else {
             tabReservationBaseView();
         }
     }
@@ -210,8 +214,9 @@ public class ReservationServiceActivity extends BaseActivity implements OnCheckL
      */
     private void addReserveCheckOrder() {
         RequestQueue queue = NoHttp.getRequestQueueInstance();
-        final Request<String> request = NoHttp.createStringRequest(BuildConfig.BASE_BASIC_URL + "order-check/create",
-                                                                   RequestMethod.POST);
+        final Request<String> request = NoHttp.createStringRequest(BuildConfig.BASE_BASIC_URL +
+                        "order-check/create",
+                RequestMethod.POST);
         String params = new Gson().toJson(reserveCheckBean);
         request.setDefineRequestBodyForJson(params);
         HuiZhenLog.i("HTTP", "params:" + params);
@@ -245,7 +250,8 @@ public class ReservationServiceActivity extends BaseActivity implements OnCheckL
     private void submitSuccess(String s) {
         HuiZhenLog.i("HTTP", "response:" + s);
         // 动态生成所需的java类的类型
-        Type type = new TypeToken<BaseResponse<List<ServiceSubmitErrorBean>>>() { }.getType();
+        Type type = new TypeToken<BaseResponse<List<ServiceSubmitErrorBean>>>() {
+        }.getType();
         Gson gson = new Gson();
         BaseResponse<List<ServiceSubmitErrorBean>> baseResponse;
         //获取code
@@ -274,8 +280,7 @@ public class ReservationServiceActivity extends BaseActivity implements OnCheckL
         //账号禁用
         else if (code == BaseNetConfig.REQUEST_ACCOUNT_ERROR) {
             accountError();
-        }
-        else {
+        } else {
             ToastUtil.toast(this, jsonObject.get("msg").getAsString());
         }
     }
@@ -284,8 +289,7 @@ public class ReservationServiceActivity extends BaseActivity implements OnCheckL
         ErrorServiceListDialog listDialog = new ErrorServiceListDialog(this);
         if (hideRight) {
             listDialog.setContentString(getString(R.string.txt_service_submit_status_error)).setHideRight(true);
-        }
-        else {
+        } else {
             listDialog.setContentString(getString(R.string.txt_service_submit_price_error));
         }
         listDialog.setData(list).setOnNextClickListener(new ErrorServiceListDialog.OnNextClickListener() {
@@ -307,15 +311,31 @@ public class ReservationServiceActivity extends BaseActivity implements OnCheckL
      * 保存最近使用的服务项 服务包
      */
     private void saveRecentlyUsedService() {
-        Set<String> localData = sharePreferenceUtil.getStringSet(CommonData.KEY_RECENTLY_USED_SERVICE);
+        Set<String> localData =
+                sharePreferenceUtil.getStringSet(CommonData.KEY_RECENTLY_USED_SERVICE);
         if (localData != null) {
             localData = new HashSet<>(localData);
-        }
-        else {
+        } else {
             localData = new HashSet<>();
         }
         List<String> codes = ZycApplication.getInstance().getSelectCodes();
         localData.addAll(codes);
+        //最多只保留最近30条数据
+        int out = localData.size() - BaseData.BASE_MAX_RECENT_SERVICE_NUM;
+        int num = 0;
+        if (out > 0) {
+            Iterator it = localData.iterator();
+            while (it.hasNext()) {
+                if (num == out) {
+                    break;
+                } else {
+                    num++;
+                    String code = (String) it.next();
+                    HuiZhenLog.i(TAG, "code:" + code);
+                    it.remove();
+                }
+            }
+        }
         sharePreferenceUtil.putStringSet(CommonData.KEY_RECENTLY_USED_SERVICE, localData);
         //清除临时数据
         ZycApplication.getInstance().clearSelectCodes();
@@ -343,8 +363,7 @@ public class ReservationServiceActivity extends BaseActivity implements OnCheckL
         if (patientBean != null) {
             initPatientBaseData();
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -375,8 +394,7 @@ public class ReservationServiceActivity extends BaseActivity implements OnCheckL
             identifyFragment.setOnCheckListener(this);
             identifyFragment.setReserveCheckBean(reserveCheckBean);
             fragmentTransaction.add(R.id.layout_frame_root, identifyFragment);
-        }
-        else {
+        } else {
             fragmentTransaction.show(identifyFragment);
             identifyFragment.setReserveCheckBean(reserveCheckBean);
             identifyFragment.onResume();
@@ -393,8 +411,7 @@ public class ReservationServiceActivity extends BaseActivity implements OnCheckL
             materialFragment.setOnCheckListener(this);
             materialFragment.setReserveCheckBean(reserveCheckBean);
             fragmentTransaction.add(R.id.layout_frame_root, materialFragment);
-        }
-        else {
+        } else {
             fragmentTransaction.show(materialFragment);
             materialFragment.setReserveCheckBean(reserveCheckBean);
             materialFragment.onResume();
@@ -417,8 +434,7 @@ public class ReservationServiceActivity extends BaseActivity implements OnCheckL
                 submitCheckFragment.setParentBean(parentBean);
             }
             fragmentTransaction.add(R.id.layout_frame_root, submitCheckFragment);
-        }
-        else {
+        } else {
             fragmentTransaction.show(submitCheckFragment);
             submitCheckFragment.setReserveCheckBean(reserveCheckBean);
             submitCheckFragment.onResume();
@@ -506,10 +522,10 @@ public class ReservationServiceActivity extends BaseActivity implements OnCheckL
                 break;
             case R.id.public_title_bar_more:
                 new HintDialog(this).setPhone(getString(R.string.txt_contact_service),
-                                              getString(R.string.txt_contact_service_phone), false)
-                                    .setOnEnterClickListener(
-                                            () -> callPhone(getString(R.string.txt_contact_service_phone)))
-                                    .show();
+                        getString(R.string.txt_contact_service_phone), false)
+                        .setOnEnterClickListener(
+                                () -> callPhone(getString(R.string.txt_contact_service_phone)))
+                        .show();
                 break;
             default:
                 break;
@@ -561,8 +577,7 @@ public class ReservationServiceActivity extends BaseActivity implements OnCheckL
             curPage = 1;
             tabReservationLicenseView();
             return false;
-        }
-        else if (curPage == 1) {
+        } else if (curPage == 1) {
             if (patientBean != null) {
                 return true;
             }
@@ -588,16 +603,18 @@ public class ReservationServiceActivity extends BaseActivity implements OnCheckL
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-            @NonNull int[] grantResults) {
+                                           @NonNull int[] grantResults) {
         switch (curPage) {
             case BASE_ZERO:
                 if (identifyFragment != null) {
-                    identifyFragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
+                    identifyFragment.onRequestPermissionsResult(requestCode, permissions,
+                            grantResults);
                 }
                 break;
             case BASE_TWO:
                 if (submitCheckFragment != null) {
-                    submitCheckFragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
+                    submitCheckFragment.onRequestPermissionsResult(requestCode, permissions,
+                            grantResults);
                 }
                 break;
             default:

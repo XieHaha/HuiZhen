@@ -47,7 +47,8 @@ import butterknife.OnClick;
  *
  * @author dundun 2019年3月5日17:33:04
  */
-public class FileDisplayActivity extends BaseActivity implements OnMediaItemClickListener, SuggestionTypeStatus, AdapterView.OnItemClickListener {
+public class FileDisplayActivity extends BaseActivity implements OnMediaItemClickListener,
+        SuggestionTypeStatus, AdapterView.OnItemClickListener {
     @BindView(R.id.public_title_bar_title)
     TextView tvTitle;
     @BindView(R.id.documentReaderView)
@@ -62,6 +63,8 @@ public class FileDisplayActivity extends BaseActivity implements OnMediaItemClic
     JustifiedTextView tvAdvice;
     @BindView(R.id.layout_diagnosis_detail)
     RelativeLayout layoutDiagnosisDetail;
+    @BindView(R.id.layout_advice)
+    LinearLayout layoutAdvice;
     /**
      * 报告列表
      */
@@ -105,7 +108,7 @@ public class FileDisplayActivity extends BaseActivity implements OnMediaItemClic
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         if (getIntent() != null) {
-            reportList = (ArrayList<CheckTypeByDetailBean>)getIntent().getSerializableExtra(
+            reportList = (ArrayList<CheckTypeByDetailBean>) getIntent().getSerializableExtra(
                     CommonData.KEY_CHECK_REPORT_LIST);
             curPosition = getIntent().getIntExtra(CommonData.KEY_PUBLIC, -1);
         }
@@ -127,9 +130,8 @@ public class FileDisplayActivity extends BaseActivity implements OnMediaItemClic
             intent.putExtra(ImagePreviewActivity.INTENT_POSITION, position);
             startActivity(intent);
             overridePendingTransition(R.anim.anim_fade_in, R.anim.keep);
-        }
-        else {
-            permissionHelper.request(new String[] { Permission.CAMERA, Permission.STORAGE_WRITE });
+        } else {
+            permissionHelper.request(new String[]{Permission.CAMERA, Permission.STORAGE_WRITE});
         }
     }
 
@@ -162,8 +164,7 @@ public class FileDisplayActivity extends BaseActivity implements OnMediaItemClic
         }
         if (reportNameList.size() > 1) {
             layoutReportList.setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             layoutReportList.setVisibility(View.GONE);
         }
     }
@@ -171,9 +172,9 @@ public class FileDisplayActivity extends BaseActivity implements OnMediaItemClic
     @OnClick(R.id.tv_report)
     public void onViewClicked() {
         new DownDialog(this).setData(reportNameList)
-                            .setCurPosition(curPosition)
-                            .setOnMediaItemClickListener(this)
-                            .show();
+                .setCurPosition(curPosition)
+                .setOnMediaItemClickListener(this)
+                .show();
     }
 
 
@@ -184,14 +185,18 @@ public class FileDisplayActivity extends BaseActivity implements OnMediaItemClic
         CheckTypeByDetailBean bean = reportList.get(curPosition);
         tvTitle.setText(bean.getName());
         String url = bean.getReport();
-        if(bean.getSuggestionType() == SUGGESTION_TYPE_DOCTOR)
-        {
+        if (bean.getSuggestionType() == SUGGESTION_TYPE_DOCTOR) {
             webView.setVisibility(View.GONE);
             fileReaderView.setVisibility(View.GONE);
             layoutDiagnosisDetail.setVisibility(View.VISIBLE);
             //医生录入
             imagePaths.clear();
-            tvAdvice.setText(bean.getSuggestionText());
+            if (TextUtils.isEmpty(bean.getSuggestionText())) {
+                layoutAdvice.setVisibility(View.GONE);
+            } else {
+                layoutAdvice.setVisibility(View.VISIBLE);
+                tvAdvice.setText(bean.getSuggestionText());
+            }
             String reports = bean.getReport();
             if (!TextUtils.isEmpty(reports)) {
                 autoGridView.setVisibility(View.VISIBLE);
@@ -202,12 +207,11 @@ public class FileDisplayActivity extends BaseActivity implements OnMediaItemClic
                     imagePaths.add(normImage);
                 }
                 autoGridView.updateImg(imagePaths, false);
-            }
-            else {
+            } else {
                 autoGridView.setVisibility(View.GONE);
             }
 
-        }else {
+        } else {
             //科室录入
             layoutDiagnosisDetail.setVisibility(View.GONE);
             String fileName = url.substring(url.lastIndexOf("/") + 1);
@@ -219,13 +223,11 @@ public class FileDisplayActivity extends BaseActivity implements OnMediaItemClic
                 webView.setVisibility(View.VISIBLE);
                 fileReaderView.setVisibility(View.GONE);
                 webView.loadUrl(url);
-            }
-            else {
+            } else {
                 File file = new File(filePath);
-                if ( file.exists()) {
+                if (file.exists()) {
                     openFile(filePath);
-                }
-                else {
+                } else {
                     //本地文件不存在
                     downReportFile(url, fileName);
                 }
@@ -244,42 +246,45 @@ public class FileDisplayActivity extends BaseActivity implements OnMediaItemClic
 
     @Override
     public void onMediaItemClick(int position) {
-        if (curPosition == position) { return; }
+        if (curPosition == position) {
+            return;
+        }
         curPosition = position;
         distinguishFile();
     }
 
     private void downReportFile(String url, String fileName) {
         FileTransferServer.getInstance(this)
-                          .downloadFile(1, loginBean.getToken(), url, DirHelper.getPathFile(), fileName,
-                                        new DownloadListener() {
-                                            @Override
-                                            public void onDownloadError(int what, Exception exception) {
-                                                ToastUtil.toast(FileDisplayActivity.this, "加载失败");
-                                            }
+                .downloadFile(1, loginBean.getToken(), url, DirHelper.getPathFile(), fileName,
+                        new DownloadListener() {
+                            @Override
+                            public void onDownloadError(int what, Exception exception) {
+                                ToastUtil.toast(FileDisplayActivity.this, "加载失败");
+                            }
 
-                                            @Override
-                                            public void onStart(int what, boolean isResume, long rangeSize,
-                                                    Headers responseHeaders, long allCount) {
-                                                fileSize = allCount;
-                                                percentDialog.show();
-                                            }
+                            @Override
+                            public void onStart(int what, boolean isResume, long rangeSize,
+                                                Headers responseHeaders, long allCount) {
+                                fileSize = allCount;
+                                percentDialog.show();
+                            }
 
-                                            @Override
-                                            public void onProgress(int what, int progress, long fileCount, long speed) {
-                                                percentDialog.setProgressValue(fileSize, fileCount);
-                                            }
+                            @Override
+                            public void onProgress(int what, int progress, long fileCount,
+                                                   long speed) {
+                                percentDialog.setProgressValue(fileSize, fileCount);
+                            }
 
-                                            @Override
-                                            public void onFinish(int what, String filePath) {
-                                                percentDialog.dismiss();
-                                                openFile(filePath);
-                                            }
+                            @Override
+                            public void onFinish(int what, String filePath) {
+                                percentDialog.dismiss();
+                                openFile(filePath);
+                            }
 
-                                            @Override
-                                            public void onCancel(int what) {
-                                            }
-                                        });
+                            @Override
+                            public void onCancel(int what) {
+                            }
+                        });
     }
 
     /**

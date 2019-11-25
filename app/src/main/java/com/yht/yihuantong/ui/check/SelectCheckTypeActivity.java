@@ -124,6 +124,7 @@ public class SelectCheckTypeActivity extends BaseActivity
      * 服务项
      */
     private SelectCheckTypeParentAdapter parentAdapter;
+    private LinearLayoutManager layoutManager;
     /**
      * 筛选列表
      */
@@ -219,7 +220,7 @@ public class SelectCheckTypeActivity extends BaseActivity
         curHospital = getString(R.string.txt_all_hospitals);
         curServiceType = getString(R.string.txt_all_services);
         //服务项列表
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(layoutManager = new LinearLayoutManager(this));
         parentAdapter = new SelectCheckTypeParentAdapter(R.layout.item_check_select_root,
                 filterBeans);
         parentAdapter.setBitmap(bitmap);
@@ -484,6 +485,7 @@ public class SelectCheckTypeActivity extends BaseActivity
         } else {
             layoutNone.setVisibility(View.GONE);
         }
+        layoutManager.scrollToPositionWithOffset(0, 0);
     }
 
     /**
@@ -735,10 +737,9 @@ public class SelectCheckTypeActivity extends BaseActivity
         ivPath.clearAnimation();
     }
 
-    @OnClick({R.id.tv_cancel, R.id.layout_all_hospital, R.id.layout_all_service, R.id.tv_selected,
-            R.id.tv_next, R.id.layout_bg, R.id.tv_none_refresh, R.id.layout_shop_bg,
-            R.id.tv_clear_shop,
-            R.id.tv_know})
+    @OnClick({R.id.tv_cancel, R.id.layout_all_hospital, R.id.layout_all_service,
+            R.id.layout_calc_selected, R.id.tv_next, R.id.layout_bg, R.id.tv_none_refresh,
+            R.id.layout_shop_bg, R.id.tv_clear_shop, R.id.tv_know})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_cancel:
@@ -772,7 +773,7 @@ public class SelectCheckTypeActivity extends BaseActivity
                     }
                 }
                 break;
-            case R.id.tv_selected:
+            case R.id.layout_calc_selected:
                 if (tvSelected.isSelected()) {
                     showShopLayout();
                 } else {
