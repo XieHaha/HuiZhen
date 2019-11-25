@@ -225,12 +225,12 @@ public class RequestUtils {
                         listener));
     }
 
-    public static void getValidateHospitalList(Context context, String token,
+    public static void getValidateHospitalList(Context context, String token,boolean showDialog,
                                                final ResponseListener<BaseResponse> listener) {
         RetrofitManager.getApiUrlManager()
                 .getValidateHospitalList(token)
                 .compose(RxJavaHelper.observableIO2Main(context))
-                .subscribe(new AbstractLoadViewObserver<>(context,
+                .subscribe(new AbstractLoadViewObserver<>(context,showDialog,
                         Tasks.GET_VALIDATE_HOSPITAL_LIST, listener));
     }
 

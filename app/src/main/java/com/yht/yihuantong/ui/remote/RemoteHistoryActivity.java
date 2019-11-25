@@ -125,7 +125,7 @@ public class RemoteHistoryActivity extends BaseActivity
      * 校验医生是否有预约检查和预约转诊的合作医院
      */
     private void getValidateHospitalList() {
-        RequestUtils.getValidateHospitalList(this, loginBean.getToken(), this);
+        RequestUtils.getValidateHospitalList(this, loginBean.getToken(), false,this);
     }
 
     /**

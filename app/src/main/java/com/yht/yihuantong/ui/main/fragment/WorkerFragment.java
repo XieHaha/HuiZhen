@@ -214,7 +214,7 @@ public class WorkerFragment extends BaseFragment implements TopRightMenu.OnMenuI
      * 校验医生是否有预约检查和预约转诊的合作医院
      */
     private void getValidateHospitalList() {
-        RequestUtils.getValidateHospitalList(getContext(), loginBean.getToken(), this);
+        RequestUtils.getValidateHospitalList(getContext(), loginBean.getToken(), false,this);
     }
 
     /**
