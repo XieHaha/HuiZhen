@@ -256,13 +256,17 @@ public class ConsultationTimeActivity extends BaseActivity
      */
     private void calcAppointed() {
         appointedPositions.clear();
-        if (appointedHours == null) {
+        if (appointedHours == null || appointedHours.size() == 0) {
             return;
         }
         String[] hour = getResources().getStringArray(R.array.hour);
         List<String> hourStrings = Arrays.asList(hour);
         for (int i = 0; i < appointedHours.size(); i++) {
             RemoteHourBean bean = appointedHours.get(i);
+            //如果结束时间已经比当前时间小，就不再统计
+            if (bean.getEndAt() < System.currentTimeMillis()) {
+                continue;
+            }
             String startHour = BaseUtils.formatDate(bean.getStartAt(), BaseUtils.HH_MM);
             String endHour = BaseUtils.formatDate(bean.getEndAt(), BaseUtils.HH_MM);
             int startPosition = hourStrings.indexOf(startHour);
@@ -272,7 +276,6 @@ public class ConsultationTimeActivity extends BaseActivity
                 startPosition++;
             }
         }
-        calcHourRange();
     }
 
     /**
@@ -297,7 +300,7 @@ public class ConsultationTimeActivity extends BaseActivity
         //计算可选时段的开始时间
         if (hour >= START_HOUR) {
             //当前时间大于6点
-            startPosition = (hour - START_HOUR) * 2 + (minute >= 30 ? 1 : 0);
+            startPosition = (hour - START_HOUR) * 2 + (minute >= 30 ? 2 : 1);
         } else {
             //当前时间在6点之前
             startPosition = 0;
@@ -394,7 +397,7 @@ public class ConsultationTimeActivity extends BaseActivity
 
     @Override
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-        if (position <= startPosition || appointedPositions.contains(position)) {
+        if (position < startPosition || appointedPositions.contains(position)) {
             return;
         }
         //清除已选时间
@@ -518,7 +521,10 @@ public class ConsultationTimeActivity extends BaseActivity
         super.onResponseSuccess(task, response);
         if (task == Tasks.GET_REMOTE_TIME) {
             appointedHours = (ArrayList<RemoteHourBean>) response.getData();
+            //统计已被预约的时间段
             calcAppointed();
+            //统计可以预约的开始时间
+            calcHourRange();
         }
     }
 }

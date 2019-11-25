@@ -3,15 +3,16 @@ package com.yht.yihuantong.ui.transfer;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.core.app.NavUtils;
-import androidx.core.app.TaskStackBuilder;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.core.app.NavUtils;
+import androidx.core.app.TaskStackBuilder;
 
 import com.bumptech.glide.Glide;
 import com.yht.frame.data.BaseData;
@@ -255,7 +256,7 @@ public class TransferReceiveDetailActivity extends BaseActivity
         switch (status) {
             case TRANSFER_STATUS_WAIT:
                 tvReceivingStatus.setText(getString(R.string.txt_status_wait));
-                ivCheckStatus.setImageResource(R.mipmap.ic_tag_wait_transfer);
+                ivCheckStatus.setImageResource(R.mipmap.ic_status_wait);
                 layoutContact.setVisibility(View.GONE);
                 layoutReceived.setVisibility(View.VISIBLE);
                 break;

@@ -1,9 +1,10 @@
 package com.yht.yihuantong.ui.patient;
 
 import android.os.Bundle;
-import androidx.annotation.NonNull;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.bumptech.glide.Glide;
 import com.yht.frame.data.BaseData;
@@ -135,7 +136,7 @@ public class TransferDetailActivity extends BaseActivity implements TransferOrde
         int status = transferBean.getReceiveStatus();
         switch (status) {
             case TRANSFER_STATUS_WAIT:
-                ivCheckStatus.setImageResource(R.mipmap.ic_tag_wait_transfer);
+                ivCheckStatus.setImageResource(R.mipmap.ic_status_wait);
                 tvReceivingStatus.setText(getString(R.string.txt_status_wait));
                 break;
             case TRANSFER_STATUS_RECEIVED:

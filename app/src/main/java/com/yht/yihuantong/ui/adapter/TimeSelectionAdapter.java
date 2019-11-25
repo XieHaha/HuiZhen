@@ -1,8 +1,9 @@
 package com.yht.yihuantong.ui.adapter;
 
-import androidx.annotation.Nullable;
 import android.view.View;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -49,7 +50,7 @@ public class TimeSelectionAdapter extends BaseQuickAdapter<TimeBarBean, BaseView
         int position = helper.getAdapterPosition();
         TextView textView = helper.getView(R.id.tv_hour_status);
         //当前坐标小于开始坐标  或者  当前坐标已限制选择
-        if (position <= startPosition || rangePosition.contains(position)) {
+        if (position < startPosition || rangePosition.contains(position)) {
             textView.setVisibility(View.VISIBLE);
             textView.setSelected(false);
         }

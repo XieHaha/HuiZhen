@@ -257,7 +257,36 @@ public class RemoteDetailActivity extends BaseActivity implements RemoteOrderSta
                 break;
         }
         //受邀方数据
-        remoteInvitedBeans = remoteDetailBean.getInvitationList();
+        dealRemoteInvited();
+    }
+
+
+    /**
+     * 重新排序受邀方  已接受靠前、已拒绝靠后
+     */
+    private void dealRemoteInvited() {
+        ArrayList<RemoteInvitedBean> list = remoteDetailBean.getInvitationList();
+        ArrayList<RemoteInvitedBean> completedList = new ArrayList<>();
+        ArrayList<RemoteInvitedBean> refusedList = new ArrayList<>();
+        ArrayList<RemoteInvitedBean> otherList = new ArrayList<>();
+        for (RemoteInvitedBean bean : list) {
+            switch (bean.getStatus()) {
+                case INVITED_PARTY_STATUS_RECEIVED:
+                    completedList.add(bean);
+                    break;
+                case INVITED_PARTY_STATUS_WAIT:
+                    otherList.add(bean);
+                    break;
+                case INVITED_PARTY_STATUS_REFUSED:
+                    refusedList.add(bean);
+                    break;
+                default:
+                    break;
+            }
+        }
+        remoteInvitedBeans.addAll(completedList);
+        remoteInvitedBeans.addAll(otherList);
+        remoteInvitedBeans.addAll(refusedList);
         invitedAdapter.setOrderStatus(remoteDetailBean.getStatus());
         invitedAdapter.setNewData(remoteInvitedBeans);
         invitedAdapter.notifyDataSetChanged();

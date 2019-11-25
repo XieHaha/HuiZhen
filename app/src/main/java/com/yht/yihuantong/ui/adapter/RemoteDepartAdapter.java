@@ -1,6 +1,8 @@
 package com.yht.yihuantong.ui.adapter;
 
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -35,43 +37,50 @@ public class RemoteDepartAdapter extends BaseMultiItemQuickAdapter<MultiItemEnti
     protected void convert(BaseViewHolder helper, MultiItemEntity item) {
         switch (helper.getItemViewType()) {
             case BASE_ZERO:
-                RemoteDepartTitleBean bean = (RemoteDepartTitleBean)item;
+                RemoteDepartTitleBean bean = (RemoteDepartTitleBean) item;
                 if (bean.getSelectedNum() > 0) {
                     helper.setText(R.id.tv_title, bean.getHospitalName() +
-                                                  String.format(mContext.getString(R.string.txt_num),
-                                                                bean.getSelectedNum()));
-                }
-                else {
+                            String.format(mContext.getString(R.string.txt_num),
+                                    bean.getSelectedNum()));
+                } else {
                     helper.setText(R.id.tv_title, bean.getHospitalName());
                 }
-                helper.setImageResource(R.id.iv_tab, bean.isExpanded() ? R.mipmap.ic_up : R.mipmap.ic_down);
+                helper.setImageResource(R.id.iv_tab, bean.isExpanded() ? R.mipmap.ic_up :
+                        R.mipmap.ic_down);
                 helper.itemView.setOnClickListener(v -> {
                     int pos = helper.getAdapterPosition();
                     if (bean.isExpanded()) {
                         collapse(pos);
-                    }
-                    else {
+                    } else {
                         expand(pos);
                     }
                 });
                 break;
             case BASE_ONE:
-                RemoteDepartBean remoteDepartBean = (RemoteDepartBean)item;
-                helper.setText(R.id.tv_depart, remoteDepartBean.getDepartmentName());
+                RemoteDepartBean remoteDepartBean = (RemoteDepartBean) item;
+                TextView tvDepart = helper.getView(R.id.tv_depart);
                 ImageView image = helper.getView(R.id.iv_select);
+                tvDepart.setText(remoteDepartBean.getDepartmentName());
+                if (remoteDepartBean.isFree()) {
+                    tvDepart.setSelected(true);
+                    image.setVisibility(View.VISIBLE);
+                } else {
+                    tvDepart.setSelected(false);
+                    image.setVisibility(View.INVISIBLE);
+                    tvDepart.append(mContext.getString(R.string.txt_reservation_error));
+                }
                 if (selectedRemoteDepartIds.contains(remoteDepartBean.getDepartmentId())) {
                     image.setSelected(true);
                     if (onRemoteDepartSelectListener != null) {
                         //二次选择时，历史数据回填
                         onRemoteDepartSelectListener.addRemoteDepartHistory(remoteDepartBean);
                     }
-                }
-                else {
+                } else {
                     image.setSelected(false);
                 }
                 //点击事件处理
                 helper.itemView.setOnClickListener(v -> {
-                    if (onRemoteDepartSelectListener != null) {
+                    if (onRemoteDepartSelectListener != null && remoteDepartBean.isFree()) {
                         onRemoteDepartSelectListener.onRemoteDepartSelect(remoteDepartBean);
                     }
                 });
@@ -85,12 +94,11 @@ public class RemoteDepartAdapter extends BaseMultiItemQuickAdapter<MultiItemEnti
      * 计算单个医院下科室选中情况
      */
     private void calcSelectNum(int parentPosition, boolean selected) {
-        RemoteDepartTitleBean titleBean = (RemoteDepartTitleBean)getData().get(parentPosition);
+        RemoteDepartTitleBean titleBean = (RemoteDepartTitleBean) getData().get(parentPosition);
         int num = titleBean.getSelectedNum();
         if (selected) {
             num++;
-        }
-        else {
+        } else {
             num--;
         }
         titleBean.setSelectedNum(num);

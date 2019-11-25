@@ -4,12 +4,13 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.yht.frame.data.BaseResponse;
@@ -41,7 +42,8 @@ import butterknife.OnClick;
  * @description 远程会诊选择医院-科室
  */
 public class SelectRemoteDepartActivity extends BaseActivity
-        implements LoadViewHelper.OnNextClickListener, RemoteDepartAdapter.OnRemoteDepartSelectListener {
+        implements LoadViewHelper.OnNextClickListener,
+        RemoteDepartAdapter.OnRemoteDepartSelectListener {
     @BindView(R.id.public_title_bar_more)
     TextView publicTitleBarMore;
     @BindView(R.id.tv_time)
@@ -99,7 +101,8 @@ public class SelectRemoteDepartActivity extends BaseActivity
         super.initView(savedInstanceState);
         if (getIntent() != null) {
             initRemoteHour(getIntent());
-            selectedRemoteDepartId = getIntent().getIntegerArrayListExtra(CommonData.KEY_REMOTE_DEPART_LIST_ID);
+            selectedRemoteDepartId =
+                    getIntent().getIntegerArrayListExtra(CommonData.KEY_REMOTE_DEPART_LIST_ID);
         }
         publicTitleBarMore.setVisibility(View.VISIBLE);
         publicTitleBarMore.setText(R.string.txt_sure);
@@ -116,8 +119,7 @@ public class SelectRemoteDepartActivity extends BaseActivity
         super.initData(savedInstanceState);
         if (BaseUtils.isNetworkAvailable(this)) {
             getRemoteDepartmentInfo();
-        }
-        else {
+        } else {
             layoutHint.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.GONE);
             loadViewHelper.load(LoadViewHelper.NONE_NETWORK);
@@ -128,8 +130,9 @@ public class SelectRemoteDepartActivity extends BaseActivity
      * 获取远程  科室列表
      */
     private void getRemoteDepartmentInfo() {
-        RequestUtils.getRemoteDepartmentInfo(this, loginBean.getToken(), date + " " + startHour, date + " " + endHour,
-                                             this);
+        RequestUtils.getRemoteDepartmentInfo(this, loginBean.getToken(), date + " " + startHour,
+                date + " " + endHour,
+                this);
     }
 
     /**
@@ -157,8 +160,7 @@ public class SelectRemoteDepartActivity extends BaseActivity
             remoteDepartBean = remoteDepartBeans.get(i);
             if (resultMap.containsKey(remoteDepartBean.getHospitalName())) {
                 resultMap.get(remoteDepartBean.getHospitalName()).add(remoteDepartBean);
-            }
-            else {
+            } else {
                 List<RemoteDepartBean> list = new ArrayList<>();
                 list.add(remoteDepartBean);
                 resultMap.put(remoteDepartBean.getHospitalName(), list);
@@ -182,7 +184,7 @@ public class SelectRemoteDepartActivity extends BaseActivity
         getRemoteDepartmentInfo();
     }
 
-    @OnClick({ R.id.public_title_bar_more, R.id.layout_time })
+    @OnClick({R.id.public_title_bar_more, R.id.layout_time})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.public_title_bar_more:
@@ -213,22 +215,20 @@ public class SelectRemoteDepartActivity extends BaseActivity
 
     @Override
     public void onRemoteDepartSelect(RemoteDepartBean remoteDepartBean) {
-        if (selectedRemoteDepartBeans.size() >= MAX_DEPART) {
-            ToastUtil.toast(this, R.string.txt_add_depart_max);
-            return;
-        }
         if (selectedRemoteDepartBeans.contains(remoteDepartBean)) {
             selectedRemoteDepartBeans.remove(remoteDepartBean);
             selectedRemoteDepartId.remove(Integer.valueOf(remoteDepartBean.getDepartmentId()));
-        }
-        else {
+        } else {
+            if (selectedRemoteDepartBeans.size() >= MAX_DEPART) {
+                ToastUtil.toast(this, R.string.txt_add_depart_max);
+                return;
+            }
             selectedRemoteDepartBeans.add(remoteDepartBean);
             selectedRemoteDepartId.add(remoteDepartBean.getDepartmentId());
         }
         if (selectedRemoteDepartBeans.size() > 0) {
             publicTitleBarMore.setSelected(true);
-        }
-        else {
+        } else {
             publicTitleBarMore.setSelected(false);
         }
         //刷新数据
@@ -247,13 +247,12 @@ public class SelectRemoteDepartActivity extends BaseActivity
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
         if (task == Tasks.GET_REMOTE_DEPARTMENT_INFO) {
-            remoteDepartBeans = (ArrayList<RemoteDepartBean>)response.getData();
+            remoteDepartBeans = (ArrayList<RemoteDepartBean>) response.getData();
             //清除已有数据
             remoteDepartGroup.clear();
             if (remoteDepartBeans != null && remoteDepartBeans.size() > 0) {
                 initGroupData();
-            }
-            else {
+            } else {
                 recyclerView.setVisibility(View.GONE);
                 layoutHint.setVisibility(View.VISIBLE);
                 loadViewHelper.load(LoadViewHelper.NONE_RECORDING);
@@ -289,6 +288,7 @@ public class SelectRemoteDepartActivity extends BaseActivity
         startHour = data.getStringExtra(CommonData.KEY_REMOTE_START_HOUR);
         endHour = data.getStringExtra(CommonData.KEY_REMOTE_END_HOUR);
         //时间
-        tvTime.setText(String.format(getString(R.string.txt_date_joiner), date, startHour, endHour));
+        tvTime.setText(String.format(getString(R.string.txt_date_joiner), date, startHour,
+                endHour));
     }
 }
