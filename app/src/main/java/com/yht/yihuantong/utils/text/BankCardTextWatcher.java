@@ -1,10 +1,11 @@
 package com.yht.yihuantong.utils.text;
 
-import androidx.fragment.app.Fragment;
 import android.text.Editable;
 import android.text.Selection;
 import android.text.TextWatcher;
 import android.widget.EditText;
+
+import androidx.fragment.app.Fragment;
 
 import com.yht.yihuantong.ui.reservation.remote.RemoteIdentifyFragment;
 import com.yht.yihuantong.ui.reservation.service.ServiceIdentifyFragment;

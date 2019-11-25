@@ -138,9 +138,6 @@ public class ServiceMaterialFragment extends BaseFragment implements View.OnFocu
                 sex = reserveCheckBean.getSex();
                 phone = reserveCheckBean.getPhone();
                 etPhone.setText(phone);
-                pastMedicalHis = reserveCheckBean.getPastHistory();
-                familyMedicalHis = reserveCheckBean.getFamilyHistory();
-                allergiesHis = reserveCheckBean.getAllergyHistory();
             } else {
                 //新用户
                 editStatus(true);
@@ -153,6 +150,9 @@ public class ServiceMaterialFragment extends BaseFragment implements View.OnFocu
                     reserveCheckBean.setAge(0);
                 }
             }
+            pastMedicalHis = reserveCheckBean.getPastHistory();
+            familyMedicalHis = reserveCheckBean.getFamilyHistory();
+            allergiesHis = reserveCheckBean.getAllergyHistory();
             tvName.setText(reserveCheckBean.getPatientName());
             tvIdCard.setText(reserveCheckBean.getIdCardNo());
             etAge.setText(age);
@@ -312,9 +312,12 @@ public class ServiceMaterialFragment extends BaseFragment implements View.OnFocu
         }
         if (requestCode == REQUEST_CODE_PAST_HISTORY) {
             pastHistoryData = data.getStringArrayListExtra(CommonData.KEY_PUBLIC);
-            reserveCheckBean.setPastHistory(pastHistoryData.get(0));
-            reserveCheckBean.setFamilyHistory(pastHistoryData.get(1));
-            reserveCheckBean.setAllergyHistory(pastHistoryData.get(2));
+            reserveCheckBean.setPastHistory(PastHistoryUtil.getPastMedical(getContext(),
+                    pastHistoryData.get(0)));
+            reserveCheckBean.setFamilyHistory(PastHistoryUtil.getFamilyMedical(getContext(),
+                    pastHistoryData.get(1)));
+            reserveCheckBean.setAllergyHistory(PastHistoryUtil.getAllergies(getContext(),
+                    pastHistoryData.get(2)));
         }
     }
 

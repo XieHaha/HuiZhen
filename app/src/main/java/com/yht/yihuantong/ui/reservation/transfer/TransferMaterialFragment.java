@@ -138,9 +138,6 @@ public class TransferMaterialFragment extends BaseFragment implements View.OnFoc
                 sex = reverseTransferBean.getSex();
                 phone = reverseTransferBean.getPatientMobile();
                 etPhone.setText(phone);
-                pastMedicalHis = reverseTransferBean.getPastHistory();
-                familyMedicalHis = reverseTransferBean.getFamilyHistory();
-                allergiesHis = reverseTransferBean.getAllergyHistory();
             } else {
                 //新用户
                 editStatus(true);
@@ -153,6 +150,9 @@ public class TransferMaterialFragment extends BaseFragment implements View.OnFoc
                 }
                 reverseTransferBean.setSex(sex);
             }
+            pastMedicalHis = reverseTransferBean.getPastHistory();
+            familyMedicalHis = reverseTransferBean.getFamilyHistory();
+            allergiesHis = reverseTransferBean.getAllergyHistory();
             tvName.setText(reverseTransferBean.getPatientName());
             tvIdCard.setText(reverseTransferBean.getPatientIdCardNo());
             etAge.setText(age);
@@ -316,9 +316,12 @@ public class TransferMaterialFragment extends BaseFragment implements View.OnFoc
         }
         if (requestCode == REQUEST_CODE_PAST_HISTORY) {
             pastHistoryData = data.getStringArrayListExtra(CommonData.KEY_PUBLIC);
-            reverseTransferBean.setPastHistory(pastHistoryData.get(0));
-            reverseTransferBean.setFamilyHistory(pastHistoryData.get(1));
-            reverseTransferBean.setAllergyHistory(pastHistoryData.get(2));
+            reverseTransferBean.setPastHistory(PastHistoryUtil.getPastMedical(getContext(),
+                    pastHistoryData.get(0)));
+            reverseTransferBean.setFamilyHistory(PastHistoryUtil.getFamilyMedical(getContext(),
+                    pastHistoryData.get(1)));
+            reverseTransferBean.setAllergyHistory(PastHistoryUtil.getAllergies(getContext(),
+                    pastHistoryData.get(2)));
         }
     }
 

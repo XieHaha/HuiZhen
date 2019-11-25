@@ -120,7 +120,7 @@ public class RequestUtils {
     }
 
     public static void uploadImgWaterMark(Context context, String token, File file,
-                                          boolean showDialog,
+                                          boolean cancel,
                                           final ResponseListener<BaseResponse> listener) {
         RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
         MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(),
@@ -128,7 +128,7 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                 .uploadImgWaterMark(token, body)
                 .compose(RxJavaHelper.observableIO2Main(context))
-                .subscribe(new AbstractLoadViewObserver<>(context, showDialog, Tasks.UPLOAD_FILE,
+                .subscribe(new AbstractLoadViewObserver<>(context, true, cancel, Tasks.UPLOAD_FILE,
                         listener));
     }
 

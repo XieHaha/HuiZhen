@@ -10,21 +10,21 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:scrollbars="none"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="214dp">
+                android:layout_height="232dp">
 
                 <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="188dp"
                     android:scaleType="fitXY"
                     android:src="@mipmap/pic_home_bg" />
 
@@ -32,99 +32,103 @@
                     android:id="@+id/layout_personal_base"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="14dp"
                     android:layout_marginStart="16dp"
+                    android:layout_marginTop="9dp"
                     android:layout_marginEnd="16dp"
-                    android:padding="20dp">
+                    android:paddingStart="16dp"
+                    android:paddingTop="17dp"
+                    android:paddingEnd="16dp"
+                    android:paddingBottom="20dp">
 
                     <TextView
                         android:id="@+id/tv_personal_depart"
                         android:layout_width="wrap_content"
                         android:layout_height="26dp"
+                        android:gravity="center"
                         android:textColor="@color/color_fd8134"
-                        android:textSize="@dimen/text_14"
-                        tools:text="科室"
-                        android:gravity="center" />
+                        android:textSize="@dimen/text_18"
+                        tools:text="科室" />
 
                     <TextView
                         android:id="@+id/tv_personal_hospital"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/color_6a6f80"
-                        android:textSize="@dimen/text_15"
-                        android:singleLine="true"
-                        android:ellipsize="end"
-                        android:paddingEnd="80dp"
-                        tools:text="医院"
                         android:layout_below="@id/tv_personal_depart"
-                        android:paddingTop="8dp" />
+                        android:ellipsize="end"
+                        android:paddingTop="14dp"
+                        android:paddingEnd="80dp"
+                        android:singleLine="true"
+                        android:textColor="@color/color_6a6f80"
+                        android:textSize="@dimen/text_14"
+                        tools:text="医院" />
 
                     <ImageView
                         android:id="@+id/iv_personal_image"
                         android:layout_width="56dp"
                         android:layout_height="56dp"
                         android:layout_alignParentEnd="true"
+                        android:layout_marginTop="3dp"
                         android:src="@mipmap/ic_default_header_r" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:orientation="horizontal"
                         android:layout_height="wrap_content"
-                        android:paddingTop="30dp"
+                        android:layout_below="@id/iv_personal_image"
+                        android:orientation="horizontal"
                         android:paddingStart="10dp"
-                        android:paddingEnd="10dp"
-                        android:layout_below="@id/iv_personal_image">
+                        android:paddingTop="18dp"
+                        android:paddingEnd="10dp">
 
                         <LinearLayout
                             android:id="@+id/layout_initiate_check"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:gravity="center">
+                            android:gravity="center"
+                            android:orientation="vertical">
 
                             <TextView
                                 android:id="@+id/tv_initiate_check_num"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:text="@string/txt_min_num"
                                 android:textColor="@color/color_373d4d"
                                 android:textSize="@dimen/text_20"
-                                android:text="@string/txt_min_num"
                                 android:textStyle="bold" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/color_a1a8b3"
-                                android:textSize="@dimen/text_13"
+                                android:paddingTop="4dp"
                                 android:text="@string/txt_initiate_check"
-                                android:paddingTop="2dp" />
+                                android:textColor="@color/color_a1a8b3"
+                                android:textSize="@dimen/text_13" />
 
                         </LinearLayout>
 
                         <LinearLayout
                             android:id="@+id/layout_initiate_transfer"
                             android:layout_width="0dp"
-                            android:layout_weight="1"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:gravity="center">
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
 
                             <TextView
                                 android:id="@+id/tv_initiate_transfer_num"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:text="@string/txt_min_num"
                                 android:textColor="@color/color_373d4d"
                                 android:textSize="@dimen/text_20"
-                                android:text="@string/txt_min_num"
                                 android:textStyle="bold" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/color_a1a8b3"
-                                android:textSize="@dimen/text_13"
+                                android:layout_marginTop="4dp"
                                 android:text="@string/txt_initiate_transfer"
-                                android:layout_marginTop="2dp" />
+                                android:textColor="@color/color_a1a8b3"
+                                android:textSize="@dimen/text_13" />
 
                         </LinearLayout>
 
@@ -132,112 +136,114 @@
                             android:id="@+id/layout_initiate_remote"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:gravity="center">
+                            android:gravity="center"
+                            android:orientation="vertical">
 
                             <TextView
                                 android:id="@+id/tv_initiate_remote_num"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:text="@string/txt_min_num"
                                 android:textColor="@color/color_373d4d"
                                 android:textSize="@dimen/text_20"
-                                android:text="@string/txt_min_num"
                                 android:textStyle="bold" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/color_a1a8b3"
-                                android:textSize="@dimen/text_13"
+                                android:layout_marginTop="4dp"
                                 android:text="@string/txt_initiate_remote"
-                                android:layout_marginTop="2dp" />
+                                android:textColor="@color/color_a1a8b3"
+                                android:textSize="@dimen/text_13" />
 
                         </LinearLayout>
 
                     </LinearLayout>
 
                 </RelativeLayout>
-            </RelativeLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:paddingStart="14dp"
-                android:paddingEnd="7dp"
-                android:background="@drawable/corner2_ffffff_bg">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@mipmap/ic_flipper" />
-
-                <ViewFlipper
-                    android:id="@+id/view_flipper"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="14dp"
-                    android:layout_marginEnd="7dp"
-                    android:flipInterval="5000"
-                    android:inAnimation="@anim/anim_marquee_in"
-                    android:outAnimation="@anim/anim_marquee_out" />
-            </LinearLayout>
+                    android:layout_height="44dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/corner2_ffffff_bg"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="7dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/ic_flipper" />
+
+                    <ViewFlipper
+                        android:id="@+id/view_flipper"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="14dp"
+                        android:layout_marginEnd="7dp"
+                        android:flipInterval="5000"
+                        android:inAnimation="@anim/anim_marquee_in"
+                        android:outAnimation="@anim/anim_marquee_out" />
+                </LinearLayout>
+            </RelativeLayout>
 
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textSize="@dimen/text_16"
-                android:textColor="@color/color_373d4d"
-                android:text="@string/txt_my_consulting_room"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginStart="16dp" />
+                android:text="@string/txt_my_consulting_room"
+                android:textColor="@color/color_373d4d"
+                android:textSize="@dimen/text_16"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:orientation="horizontal"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="7dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp">
+                android:layout_marginTop="7dp"
+                android:layout_marginEnd="16dp"
+                android:orientation="horizontal">
 
                 <LinearLayout
                     android:id="@+id/layout_check"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="13dp"
+                    android:layout_weight="1"
                     android:background="@drawable/corner4_ffffff_bg"
-                    android:paddingStart="20dp"
-                    android:paddingTop="30dp"
-                    android:paddingBottom="18dp"
-                    android:layout_marginEnd="13dp">
+                    android:orientation="vertical"
+                    android:paddingStart="15dp"
+                    android:paddingTop="15dp"
+                    android:paddingEnd="0dp"
+                    android:paddingBottom="12dp">
 
                     <ImageView
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
+                        android:layout_width="34dp"
+                        android:layout_height="34dp"
                         android:src="@mipmap/ic_check" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/txt_reserve_check"
                         android:textColor="@color/color_373d4d"
                         android:textSize="@dimen/text_18"
-                        android:text="@string/txt_reserve_check"
-                        android:textStyle="bold"
-                        android:layout_marginTop="10dp" />
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/color_a1a8b3"
-                        android:textSize="@dimen/text_13"
+                        android:layout_marginTop="3dp"
                         android:text="@string/txt_remote_billing"
-                        android:layout_marginTop="3dp" />
+                        android:textColor="@color/color_a1a8b3"
+                        android:textSize="@dimen/text_13" />
 
 
                 </LinearLayout>
@@ -245,142 +251,145 @@
                 <LinearLayout
                     android:id="@+id/layout_transfer"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:background="@drawable/corner4_ffffff_bg"
-                    android:paddingStart="20dp"
-                    android:paddingTop="30dp"
-                    android:paddingBottom="18dp">
+                    android:orientation="vertical"
+                    android:paddingStart="15dp"
+                    android:paddingTop="15dp"
+                    android:paddingEnd="0dp"
+                    android:paddingBottom="12dp">
 
                     <ImageView
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
+                        android:layout_width="34dp"
+                        android:layout_height="34dp"
                         android:src="@mipmap/ic_transfer" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/txt_reserve_transfer"
                         android:textColor="@color/color_373d4d"
                         android:textSize="@dimen/text_18"
-                        android:text="@string/txt_reserve_transfer"
-                        android:textStyle="bold"
-                        android:layout_marginTop="10dp" />
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/color_a1a8b3"
-                        android:textSize="@dimen/text_13"
+                        android:layout_marginTop="3dp"
                         android:text="@string/txt_bilateral_transfer"
-                        android:layout_marginTop="3dp" />
+                        android:textColor="@color/color_a1a8b3"
+                        android:textSize="@dimen/text_13" />
 
                 </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:orientation="horizontal"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="13dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp">
+                android:layout_marginTop="13dp"
+                android:layout_marginEnd="16dp"
+                android:orientation="horizontal">
 
                 <RelativeLayout
                     android:id="@+id/layout_transfer_apply"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
                     android:layout_height="match_parent"
+                    android:layout_marginEnd="13dp"
+                    android:layout_weight="1"
                     android:background="@drawable/corner4_ffffff_bg"
-                    android:paddingStart="20dp"
-                    android:paddingTop="22dp"
-                    android:paddingBottom="18dp"
-                    android:layout_marginEnd="13dp">
+                    android:orientation="vertical"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="0dp"
+                    android:paddingBottom="12dp">
 
                     <ImageView
                         android:id="@+id/image"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:layout_marginTop="8dp"
+                        android:layout_width="34dp"
+                        android:layout_height="34dp"
+                        android:layout_marginTop="15dp"
                         android:src="@mipmap/ic_transfer_apply" />
 
                     <RelativeLayout
                         android:id="@+id/layout_receiving_transfer_num"
                         android:layout_width="wrap_content"
-                        android:minWidth="18dp"
                         android:layout_height="18dp"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginTop="8dp"
                         android:layout_toEndOf="@id/image"
+                        android:background="@drawable/circular_ff5452_point_bg"
+                        android:minWidth="18dp"
                         android:paddingStart="3dp"
                         android:paddingEnd="3dp"
-                        android:layout_marginStart="2dp"
-                        android:visibility="gone"
-                        android:background="@drawable/circular_ff5452_point_bg">
+                        android:visibility="gone">
 
                         <TextView
                             android:id="@+id/tv_receiving_transfer_num"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textStyle="bold"
                             android:layout_centerInParent="true"
-                            tools:text="10"
                             android:textColor="@color/color_ffffff"
-                            android:textSize="@dimen/text_12" />
+                            android:textSize="@dimen/text_12"
+                            android:textStyle="bold"
+                            tools:text="10" />
                     </RelativeLayout>
 
                     <TextView
                         android:id="@+id/text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_below="@id/image"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/title_transfer_apply"
                         android:textColor="@color/color_373d4d"
                         android:textSize="@dimen/text_18"
-                        android:text="@string/title_transfer_apply"
-                        android:textStyle="bold"
-                        android:layout_marginTop="10dp"
-                        android:layout_below="@id/image" />
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/color_a1a8b3"
-                        android:textSize="@dimen/text_13"
-                        android:text="@string/txt_transfer_receiver"
+                        android:layout_below="@id/text"
                         android:layout_marginTop="3dp"
-                        android:layout_below="@id/text" />
+                        android:text="@string/txt_transfer_receiver"
+                        android:textColor="@color/color_a1a8b3"
+                        android:textSize="@dimen/text_13" />
                 </RelativeLayout>
 
                 <LinearLayout
                     android:id="@+id/layout_remote"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:background="@drawable/corner4_ffffff_bg"
-                    android:paddingStart="20dp"
-                    android:paddingTop="30dp"
-                    android:paddingBottom="18dp">
+                    android:orientation="vertical"
+                    android:paddingStart="15dp"
+                    android:paddingTop="15dp"
+                    android:paddingEnd="0dp"
+                    android:paddingBottom="12dp">
 
                     <ImageView
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
+                        android:layout_width="34dp"
+                        android:layout_height="34dp"
                         android:src="@mipmap/ic_remote" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/txt_remote_consultation"
                         android:textColor="@color/color_373d4d"
                         android:textSize="@dimen/text_18"
-                        android:text="@string/txt_remote_consultation"
-                        android:textStyle="bold"
-                        android:layout_marginTop="10dp" />
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/color_a1a8b3"
-                        android:textSize="@dimen/text_13"
+                        android:layout_marginTop="3dp"
                         android:text="@string/txt_remote_multi"
-                        android:layout_marginTop="3dp" />
+                        android:textColor="@color/color_a1a8b3"
+                        android:textSize="@dimen/text_13" />
 
                 </LinearLayout>
 
@@ -389,56 +398,56 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textSize="@dimen/text_16"
-                android:textColor="@color/color_373d4d"
-                android:text="@string/txt_health_manager"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginStart="16dp" />
+                android:text="@string/txt_health_manager"
+                android:textColor="@color/color_373d4d"
+                android:textSize="@dimen/text_16"
+                android:textStyle="bold" />
 
             <RelativeLayout
                 android:id="@+id/layout_health_manager"
                 android:layout_width="match_parent"
-                android:orientation="vertical"
                 android:layout_height="80dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:paddingStart="15dp"
-                android:paddingEnd="1dp"
                 android:layout_marginTop="7dp"
-                android:background="@drawable/corner4_ffffff_bg">
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/corner4_ffffff_bg"
+                android:orientation="vertical"
+                android:paddingStart="15dp"
+                android:paddingEnd="1dp">
 
                 <ImageView
                     android:id="@+id/image1"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
                     android:layout_centerVertical="true"
+                    android:layout_marginTop="8dp"
                     android:src="@mipmap/ic_health_manager" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:orientation="vertical"
+                    android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_toEndOf="@id/image1"
                     android:layout_marginStart="25dp"
-                    android:layout_height="wrap_content">
+                    android:layout_toEndOf="@id/image1"
+                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="@string/txt_made_service"
                         android:textColor="@color/color_373d4d"
                         android:textSize="@dimen/text_18"
-                        android:text="@string/txt_made_service"
                         android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/color_a1a8b3"
-                        android:textSize="@dimen/text_13"
+                        android:layout_marginTop="3dp"
                         android:text="@string/txt_health_service"
-                        android:layout_marginTop="3dp" />
+                        android:textColor="@color/color_a1a8b3"
+                        android:textSize="@dimen/text_13" />
                 </LinearLayout>
 
             </RelativeLayout>

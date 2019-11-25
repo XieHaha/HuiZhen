@@ -3,7 +3,6 @@ package com.yht.yihuantong.ui.reservation.remote;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Handler;
-import androidx.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
@@ -11,6 +10,8 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
@@ -192,9 +193,6 @@ public class RemoteMaterialFragment extends BaseFragment implements View.OnFocus
                 sex = reserveRemoteBean.getPatientSex();
                 phone = reserveRemoteBean.getPatientMobile();
                 etPhone.setText(phone);
-                pastMedicalHis = reserveRemoteBean.getPast();
-                familyMedicalHis = reserveRemoteBean.getFamily();
-                allergiesHis = reserveRemoteBean.getAllergy();
             } else {
                 //新用户
                 editStatus(true);
@@ -207,6 +205,9 @@ public class RemoteMaterialFragment extends BaseFragment implements View.OnFocus
                     reserveRemoteBean.setPatientAge(0);
                 }
             }
+            pastMedicalHis = reserveRemoteBean.getPast();
+            familyMedicalHis = reserveRemoteBean.getFamily();
+            allergiesHis = reserveRemoteBean.getAllergy();
             tvName.setText(reserveRemoteBean.getPatientName());
             tvIdCard.setText(reserveRemoteBean.getPatientIdCard());
             etAge.setText(age);
@@ -487,24 +488,20 @@ public class RemoteMaterialFragment extends BaseFragment implements View.OnFocus
     @Override
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
-        switch (task) {
-            case UPLOAD_FILE:
-                String url = (String) response.getData();
-                NormImage normImage = new NormImage();
-                normImage.setImageUrl(url);
-                imagePaths.add(normImage);
-                autoGridView.updateImg(imagePaths, true);
-                if (paths.size() - 1 > currentUploadImgIndex) {
-                    currentUploadImgIndex++;
-                    uploadImage(new File(paths.get(currentUploadImgIndex)));
-                } else {
-                    //上传完后赋值
-                    initPatientResource();
-                    closeLoadingView();
-                }
-                break;
-            default:
-                break;
+        if (task == Tasks.UPLOAD_FILE) {
+            String url = (String) response.getData();
+            NormImage normImage = new NormImage();
+            normImage.setImageUrl(url);
+            imagePaths.add(normImage);
+            autoGridView.updateImg(imagePaths, true);
+            if (paths.size() - 1 > currentUploadImgIndex) {
+                currentUploadImgIndex++;
+                uploadImage(new File(paths.get(currentUploadImgIndex)));
+            } else {
+                //上传完后赋值
+                initPatientResource();
+                closeLoadingView();
+            }
         }
     }
 
@@ -516,9 +513,12 @@ public class RemoteMaterialFragment extends BaseFragment implements View.OnFocus
         }
         if (requestCode == REQUEST_CODE_PAST_HISTORY) {
             pastHistoryData = data.getStringArrayListExtra(CommonData.KEY_PUBLIC);
-            reserveRemoteBean.setPast(pastHistoryData.get(0));
-            reserveRemoteBean.setFamily(pastHistoryData.get(1));
-            reserveRemoteBean.setAllergy(pastHistoryData.get(2));
+            reserveRemoteBean.setPast(PastHistoryUtil.getPastMedical(getContext(),
+                    pastHistoryData.get(0)));
+            reserveRemoteBean.setFamily(PastHistoryUtil.getFamilyMedical(getContext(),
+                    pastHistoryData.get(1)));
+            reserveRemoteBean.setAllergy(PastHistoryUtil.getAllergies(getContext(),
+                    pastHistoryData.get(2)));
         } else if (requestCode == RC_PICK_IMG) {
             paths = Matisse.obtainPathResult(data);
             if (paths != null && paths.size() > 0) {

@@ -210,7 +210,6 @@ public class NotifyMessageFragment extends BaseFragment
                 intent.putExtra(CommonData.KEY_DOCTOR_CURRENCY_ID, orderNo);
                 startActivity(intent);
                 break;
-            case MESSAGE_DIRECTLY_ACCOUNT_CREATE:
             case MESSAGE_COOPERATE_ACCOUNT_CREATE:
                 intent = new Intent(getContext(), HospitalDetailActivity.class);
                 intent.putExtra(CommonData.KEY_HOSPITAL_CODE, orderNo);
