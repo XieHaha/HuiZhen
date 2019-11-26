@@ -3,14 +3,15 @@ package com.yht.yihuantong.ui.dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.yht.yihuantong.R;
@@ -23,7 +24,8 @@ import java.util.List;
 /**
  * @author dundun
  */
-public class DownDialog extends Dialog implements BaseQuickAdapter.OnItemClickListener, View.OnClickListener {
+public class DownDialog extends Dialog implements BaseQuickAdapter.OnItemClickListener,
+        View.OnClickListener {
     private Context context;
     private RecyclerView recyclerView;
     private TextView tvCancel;
@@ -74,8 +76,6 @@ public class DownDialog extends Dialog implements BaseQuickAdapter.OnItemClickLi
 
     /**
      * 列表数据
-     *
-     * @param data
      */
     public DownDialog setData(List<String> data) {
         this.data = data;
@@ -89,8 +89,6 @@ public class DownDialog extends Dialog implements BaseQuickAdapter.OnItemClickLi
 
     /**
      * 列表点击回调
-     *
-     * @param onMediaItemClickListener
      */
     public DownDialog setOnMediaItemClickListener(OnMediaItemClickListener onMediaItemClickListener) {
         this.onMediaItemClickListener = onMediaItemClickListener;

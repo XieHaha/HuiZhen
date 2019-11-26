@@ -936,7 +936,8 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                 .getRecentAddPatient(token)
                 .compose(RxJavaHelper.observableIO2Main(context))
-                .subscribe(new AbstractLoadViewObserver<>(context, Tasks.GET_RECENT_ADD_PATIENT,
+                .subscribe(new AbstractLoadViewObserver<>(context, true,
+                        Tasks.GET_RECENT_ADD_PATIENT,
                         listener));
     }
 

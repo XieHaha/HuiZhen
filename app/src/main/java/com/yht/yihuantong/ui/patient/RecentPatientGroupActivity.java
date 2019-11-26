@@ -1,22 +1,19 @@
 package com.yht.yihuantong.ui.patient;
 
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
+import android.widget.ExpandableListView;
 
-import com.chad.library.adapter.base.entity.MultiItemEntity;
+import androidx.annotation.NonNull;
+
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.Tasks;
 import com.yht.frame.data.bean.PatientBean;
 import com.yht.frame.data.bean.RecentPatientBean;
-import com.yht.frame.data.bean.RecentPatientTitleBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.widgets.LoadViewHelper;
-import com.yht.frame.widgets.recyclerview.loadview.CustomLoadMoreView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.adapter.RecentPatientGroupAdapter;
 
@@ -30,17 +27,15 @@ import butterknife.BindView;
  * @description 最近添加的居民
  */
 public class RecentPatientGroupActivity extends BaseActivity implements LoadViewHelper.OnNextClickListener {
-    @BindView(R.id.recyclerview)
-    RecyclerView recyclerView;
+    @BindView(R.id.expandable_list_view)
+    ExpandableListView expandableListView;
     private RecentPatientGroupAdapter recentPatientGroupAdapter;
     /**
      * 居民
      */
     private RecentPatientBean recentPatientBean;
-    /**
-     * 分组title
-     */
-    private ArrayList<MultiItemEntity> recentPatientTitleBeans = new ArrayList<>();
+    private ArrayList<String> parentData = new ArrayList<>();
+    private ArrayList<ArrayList<PatientBean>> childData = new ArrayList<>();
 
     @Override
     protected boolean isInitBackBtn() {
@@ -57,6 +52,8 @@ public class RecentPatientGroupActivity extends BaseActivity implements LoadView
         super.initView(savedInstanceState);
         loadViewHelper = new LoadViewHelper(this);
         loadViewHelper.setOnNextClickListener(this);
+        //隐藏箭头
+        expandableListView.setGroupIndicator(null);
         initAdapter();
     }
 
@@ -65,8 +62,7 @@ public class RecentPatientGroupActivity extends BaseActivity implements LoadView
         super.initData(savedInstanceState);
         if (BaseUtils.isNetworkAvailable(this)) {
             getRecentAddPatient();
-        }
-        else {
+        } else {
             loadViewHelper.load(LoadViewHelper.NONE_NETWORK);
         }
     }
@@ -75,11 +71,8 @@ public class RecentPatientGroupActivity extends BaseActivity implements LoadView
      * 适配器处理
      */
     private void initAdapter() {
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recentPatientGroupAdapter = new RecentPatientGroupAdapter(recentPatientTitleBeans);
-        recentPatientGroupAdapter.setLoadMoreView(new CustomLoadMoreView());
-        recentPatientGroupAdapter.loadMoreEnd();
-        recyclerView.setAdapter(recentPatientGroupAdapter);
+        recentPatientGroupAdapter = new RecentPatientGroupAdapter(this);
+        expandableListView.setAdapter(recentPatientGroupAdapter);
     }
 
     /**
@@ -101,14 +94,15 @@ public class RecentPatientGroupActivity extends BaseActivity implements LoadView
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
         if (task == Tasks.GET_RECENT_ADD_PATIENT) {
-            recentPatientBean = (RecentPatientBean)response.getData();
+            recentPatientBean = (RecentPatientBean) response.getData();
             initGroupData();
-            recentPatientGroupAdapter.setNewData(recentPatientTitleBeans);
-            if (recentPatientTitleBeans != null && recentPatientTitleBeans.size() > 0) {
-                recyclerView.setVisibility(View.VISIBLE);
-            }
-            else {
-                recyclerView.setVisibility(View.GONE);
+            recentPatientGroupAdapter.setParentData(parentData);
+            recentPatientGroupAdapter.setChildData(childData);
+            recentPatientGroupAdapter.notifyDataSetChanged();
+            if (parentData != null && parentData.size() > 0) {
+                expandableListView.setVisibility(View.VISIBLE);
+            } else {
+                expandableListView.setVisibility(View.GONE);
                 loadViewHelper.load(LoadViewHelper.NONE_RECORDING);
             }
         }
@@ -116,36 +110,31 @@ public class RecentPatientGroupActivity extends BaseActivity implements LoadView
 
     private void initGroupData() {
         for (int i = 0; i < 6; i++) {
-            RecentPatientTitleBean bean = new RecentPatientTitleBean();
             ArrayList<PatientBean> list;
             if (i == 0) {
                 list = recentPatientBean.getToday();
-                bean.setTitle(String.format(getString(R.string.txt_recent_today), list.size()));
-            }
-            else if (i == 1) {
+                parentData.add(String.format(getString(R.string.txt_recent_today), list.size()));
+            } else if (i == 1) {
                 list = recentPatientBean.getYesterday();
-                bean.setTitle(String.format(getString(R.string.txt_recent_yesterday), list.size()));
-            }
-            else if (i == 2) {
+                parentData.add(String.format(getString(R.string.txt_recent_yesterday),
+                        list.size()));
+            } else if (i == 2) {
                 list = recentPatientBean.getWeek();
-                bean.setTitle(String.format(getString(R.string.txt_recent_week), list.size()));
-            }
-            else if (i == 3) {
+                parentData.add(String.format(getString(R.string.txt_recent_week), list.size()));
+            } else if (i == 3) {
                 list = recentPatientBean.getMonth();
-                bean.setTitle(String.format(getString(R.string.txt_recent_one_month), list.size()));
-            }
-            else if (i == 4) {
+                parentData.add(String.format(getString(R.string.txt_recent_one_month),
+                        list.size()));
+            } else if (i == 4) {
                 list = recentPatientBean.getThreeMonth();
-                bean.setTitle(String.format(getString(R.string.txt_recent_three_month), list.size()));
-            }
-            else {
+                parentData.add(String.format(getString(R.string.txt_recent_three_month),
+                        list.size()));
+            } else {
                 list = recentPatientBean.getHalfYear();
-                bean.setTitle(String.format(getString(R.string.txt_recent_six_month), list.size()));
+                parentData.add(String.format(getString(R.string.txt_recent_six_month),
+                        list.size()));
             }
-            for (PatientBean patientBean : list) {
-                bean.addSubItem(patientBean);
-            }
-            recentPatientTitleBeans.add(bean);
+            childData.add(list);
         }
     }
 }
