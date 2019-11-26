@@ -213,7 +213,7 @@ public class TransferInitiateDetailActivity extends BaseActivity
                 layoutBottom.setVisibility(View.VISIBLE);
                 layoutBottomOne.setVisibility(View.GONE);
                 layoutRejectResult.setVisibility(View.GONE);
-                ivCheckStatus.setImageResource(R.mipmap.ic_status_wait);
+                ivCheckStatus.setImageResource(R.mipmap.ic_status_wait_transfer);
                 tvTransferAgain.setText(R.string.txt_transfer_cancel);
                 tvReceivingStatus.setText(getString(R.string.txt_status_wait));
                 break;

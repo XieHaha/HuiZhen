@@ -256,7 +256,7 @@ public class TransferReceiveDetailActivity extends BaseActivity
         switch (status) {
             case TRANSFER_STATUS_WAIT:
                 tvReceivingStatus.setText(getString(R.string.txt_status_wait));
-                ivCheckStatus.setImageResource(R.mipmap.ic_status_wait);
+                ivCheckStatus.setImageResource(R.mipmap.ic_status_wait_transfer);
                 layoutContact.setVisibility(View.GONE);
                 layoutReceived.setVisibility(View.VISIBLE);
                 break;

@@ -9,9 +9,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.content.FileProvider;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +16,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.FileProvider;
 
 import com.bumptech.glide.Glide;
 import com.yht.frame.api.DirHelper;
@@ -178,6 +179,7 @@ public class RemoteSubmitFragment extends BaseFragment {
             tvDepartSelect.setSelected(false);
             //移除所有已添加子VIEW
             layoutDepart.removeAllViews();
+            layoutDepart.setVisibility(View.GONE);
             remoteDepartBeans.clear();
         } else {
             //数据回填
@@ -292,10 +294,12 @@ public class RemoteSubmitFragment extends BaseFragment {
                         bean.getHospitalName()));
                 layoutDepart.addView(textView);
             }
+            layoutDepart.setVisibility(View.VISIBLE);
             tvSelectHint.setVisibility(View.VISIBLE);
             tvDepartSelect.setText(R.string.txt_add);
             tvDepartSelect.setSelected(true);
         } else {
+            layoutDepart.setVisibility(View.GONE);
             tvSelectHint.setVisibility(View.INVISIBLE);
             tvDepartSelect.setText(R.string.txt_select_depart_hint1);
             tvDepartSelect.setSelected(false);
@@ -316,6 +320,7 @@ public class RemoteSubmitFragment extends BaseFragment {
             remoteDepartId.clear();
             remoteDepartBeans.clear();
             layoutDepart.removeAllViews();
+            layoutDepart.setVisibility(View.GONE);
             reserveRemoteBean.setHosDeptInfo(null);
             intent = new Intent(getContext(), SelectRemoteDepartActivity.class);
             intent.putExtra(CommonData.KEY_REMOTE_DATE, date);
@@ -495,6 +500,7 @@ public class RemoteSubmitFragment extends BaseFragment {
                     remoteDepartBeans.clear();
                     remoteDepartId.clear();
                     layoutDepart.removeAllViews();
+                    layoutDepart.setVisibility(View.GONE);
                     reserveRemoteBean.setHosDeptInfo(null);
                     //选择的时间
                     date = data.getStringExtra(CommonData.KEY_REMOTE_DATE);

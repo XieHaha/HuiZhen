@@ -136,7 +136,7 @@ public class TransferDetailActivity extends BaseActivity implements TransferOrde
         int status = transferBean.getReceiveStatus();
         switch (status) {
             case TRANSFER_STATUS_WAIT:
-                ivCheckStatus.setImageResource(R.mipmap.ic_status_wait);
+                ivCheckStatus.setImageResource(R.mipmap.ic_status_wait_transfer);
                 tvReceivingStatus.setText(getString(R.string.txt_status_wait));
                 break;
             case TRANSFER_STATUS_RECEIVED:
