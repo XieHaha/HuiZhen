@@ -292,6 +292,12 @@ public class ServiceMaterialFragment extends BaseFragment implements View.OnFocu
         switch (view.getId()) {
             case R.id.tv_material_next:
                 if (initNextButton() && checkListener != null) {
+                    reserveCheckBean.setPastHistory(PastHistoryUtil.getPastMedical(getContext(),
+                            pastHistoryData.get(0)));
+                    reserveCheckBean.setFamilyHistory(PastHistoryUtil.getFamilyMedical(getContext(),
+                            pastHistoryData.get(1)));
+                    reserveCheckBean.setAllergyHistory(PastHistoryUtil.getAllergies(getContext(),
+                            pastHistoryData.get(2)));
                     checkListener.onCheckStepTwo(reserveCheckBean);
                 }
                 break;

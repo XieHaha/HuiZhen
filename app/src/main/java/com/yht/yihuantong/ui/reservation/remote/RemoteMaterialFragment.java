@@ -477,6 +477,12 @@ public class RemoteMaterialFragment extends BaseFragment implements View.OnFocus
                 break;
             case R.id.tv_material_next:
                 if (initNextButton() && onRemoteListener != null) {
+                    reserveRemoteBean.setPast(PastHistoryUtil.getPastMedical(getContext(),
+                            pastHistoryData.get(0)));
+                    reserveRemoteBean.setFamily(PastHistoryUtil.getFamilyMedical(getContext(),
+                            pastHistoryData.get(1)));
+                    reserveRemoteBean.setAllergy(PastHistoryUtil.getAllergies(getContext(),
+                            pastHistoryData.get(2)));
                     onRemoteListener.onRemoteStepTwo(reserveRemoteBean);
                 }
                 break;

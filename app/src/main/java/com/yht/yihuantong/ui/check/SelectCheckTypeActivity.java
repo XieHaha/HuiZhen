@@ -108,6 +108,8 @@ public class SelectCheckTypeActivity extends BaseActivity
     RelativeLayout layoutShopBg;
     @BindView(R.id.tv_clear_shop)
     TextView tvClearShop;
+    @BindView(R.id.tv_arrow)
+    TextView tvArrow;
     @BindView(R.id.shop_recycler_view)
     RecyclerView shopRecyclerView;
     @BindView(R.id.layout_shop)
@@ -250,7 +252,7 @@ public class SelectCheckTypeActivity extends BaseActivity
             tvNext.setSelected(false);
         }
         tvSelected.setText(String.valueOf(selectedCodes.size()));
-        tvSelected.setSelected(true);
+        tvArrow.setSelected(true);
         //是否显示刷新引导
         boolean status = sharePreferenceUtil.getAlwaysBoolean(CommonData.KEY_SHOW_REFRESH_STATUS);
         if (!status) {
@@ -665,7 +667,7 @@ public class SelectCheckTypeActivity extends BaseActivity
      */
     private void showShopLayout() {
         layoutShopBg.setVisibility(View.VISIBLE);
-        tvSelected.setSelected(false);
+        tvArrow.setSelected(false);
         Animation toUp = AnimationUtils.loadAnimation(this, R.anim.anim_down_in);
         Animation alpha = AnimationUtils.loadAnimation(this, R.anim.fade_in);
         if (shopBeans.size() > 0) {
@@ -682,7 +684,7 @@ public class SelectCheckTypeActivity extends BaseActivity
      * 隐藏购物车
      */
     private void hideShopLayout() {
-        tvSelected.setSelected(true);
+        tvArrow.setSelected(true);
         Animation toUp = AnimationUtils.loadAnimation(this, R.anim.anim_down_out);
         Animation alpha = AnimationUtils.loadAnimation(this, R.anim.fade_out);
         toUp.setAnimationListener(new AbstractAnimationListener() {
@@ -774,7 +776,7 @@ public class SelectCheckTypeActivity extends BaseActivity
                 }
                 break;
             case R.id.layout_calc_selected:
-                if (tvSelected.isSelected()) {
+                if (tvArrow.isSelected()) {
                     showShopLayout();
                 } else {
                     hideShopLayout();

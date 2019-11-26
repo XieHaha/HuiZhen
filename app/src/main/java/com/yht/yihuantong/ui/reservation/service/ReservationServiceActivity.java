@@ -52,8 +52,8 @@ import com.yht.yihuantong.ui.reservation.ReservationSuccessActivity;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -314,11 +314,16 @@ public class ReservationServiceActivity extends BaseActivity implements OnCheckL
         Set<String> localData =
                 sharePreferenceUtil.getStringSet(CommonData.KEY_RECENTLY_USED_SERVICE);
         if (localData != null) {
-            localData = new HashSet<>(localData);
+            localData = new LinkedHashSet<>(localData);
         } else {
-            localData = new HashSet<>();
+            localData = new LinkedHashSet<>();
         }
         List<String> codes = ZycApplication.getInstance().getSelectCodes();
+        for (String str : codes) {
+            if (localData.contains(str)) {
+                localData.remove(str);
+            }
+        }
         localData.addAll(codes);
         //最多只保留最近30条数据
         int out = localData.size() - BaseData.BASE_MAX_RECENT_SERVICE_NUM;

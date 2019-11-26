@@ -44,7 +44,11 @@
                         android:id="@+id/tv_personal_depart"
                         android:layout_width="wrap_content"
                         android:layout_height="26dp"
+                        android:ellipsize="end"
                         android:gravity="center"
+                        android:paddingStart="0dp"
+                        android:paddingEnd="80dp"
+                        android:singleLine="true"
                         android:textColor="@color/color_fd8134"
                         android:textSize="@dimen/text_18"
                         tools:text="科室" />

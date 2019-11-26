@@ -296,6 +296,12 @@ public class TransferMaterialFragment extends BaseFragment implements View.OnFoc
         switch (view.getId()) {
             case R.id.tv_material_next:
                 if (initNextButton() && onTransferListener != null) {
+                    reverseTransferBean.setPastHistory(PastHistoryUtil.getPastMedical(getContext(),
+                            pastHistoryData.get(0)));
+                    reverseTransferBean.setFamilyHistory(PastHistoryUtil.getFamilyMedical(getContext(),
+                            pastHistoryData.get(1)));
+                    reverseTransferBean.setAllergyHistory(PastHistoryUtil.getAllergies(getContext(),
+                            pastHistoryData.get(2)));
                     onTransferListener.onTransferStepTwo(reverseTransferBean);
                 }
                 break;
