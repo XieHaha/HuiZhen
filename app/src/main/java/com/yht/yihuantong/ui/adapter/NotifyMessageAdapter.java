@@ -1,5 +1,7 @@
 package com.yht.yihuantong.ui.adapter;
 
+import android.text.TextUtils;
+
 import androidx.annotation.Nullable;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -55,7 +57,11 @@ public class NotifyMessageAdapter extends BaseQuickAdapter<NotifyMessageBean, Ba
             case MESSAGE_CURRENCY_ARRIVED:
             case MESSAGE_CURRENCY_DEDUCTION:
             case MESSAGE_COOPERATE_ACCOUNT_CREATE:
-                helper.setVisible(R.id.layout_detail, true);
+                if (TextUtils.isEmpty(item.getExtraData())) {
+                    helper.setGone(R.id.layout_detail, false);
+                } else {
+                    helper.setVisible(R.id.layout_detail, true);
+                }
                 break;
             default:
                 helper.setGone(R.id.layout_detail, false);

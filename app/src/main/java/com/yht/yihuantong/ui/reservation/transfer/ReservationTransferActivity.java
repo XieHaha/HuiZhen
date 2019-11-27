@@ -3,15 +3,16 @@ package com.yht.yihuantong.ui.reservation.transfer;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
@@ -94,6 +95,10 @@ public class ReservationTransferActivity extends BaseActivity implements OnTrans
      */
     private ReserveTransferBean reverseTransferBean;
     /**
+     * 是否为重新转诊
+     */
+    private boolean remoteAgain;
+    /**
      * 当前碎片
      */
     private int curPage;
@@ -114,9 +119,11 @@ public class ReservationTransferActivity extends BaseActivity implements OnTrans
         fragmentManager = getSupportFragmentManager();
         if (getIntent() != null) {
             //居民详情页面回传数据
-            patientBean = (PatientBean)getIntent().getSerializableExtra(CommonData.KEY_PATIENT_BEAN);
+            patientBean =
+                    (PatientBean) getIntent().getSerializableExtra(CommonData.KEY_PATIENT_BEAN);
             //转诊详情页面回传数据(重新转诊)
-            transferBean = (TransferDetailBean)getIntent().getSerializableExtra(CommonData.KEY_TRANSFER_ORDER_BEAN);
+            transferBean =
+                    (TransferDetailBean) getIntent().getSerializableExtra(CommonData.KEY_TRANSFER_ORDER_BEAN);
         }
         initTitlePage();
     }
@@ -141,7 +148,8 @@ public class ReservationTransferActivity extends BaseActivity implements OnTrans
      * (重新转诊，需要校验用户)
      */
     private void verifyPatient() {
-        RequestUtils.verifyPatient(this, loginBean.getToken(), transferBean.getPatientIdCardNo(), this);
+        RequestUtils.verifyPatient(this, loginBean.getToken(), transferBean.getPatientIdCardNo(),
+                this);
     }
 
     /**
@@ -168,12 +176,11 @@ public class ReservationTransferActivity extends BaseActivity implements OnTrans
             //直接进入到第二步 或者在居民页面预约转诊
             tabReservationLicenseView();
             return true;
-        }
-        else if (transferBean != null) {
+        } else if (transferBean != null) {
+            remoteAgain = true;
             verifyPatient();
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -243,8 +250,7 @@ public class ReservationTransferActivity extends BaseActivity implements OnTrans
             identifyFragment.setReverseTransferBean(reverseTransferBean);
             identifyFragment.setOnTransferListener(this);
             fragmentTransaction.add(R.id.layout_frame_root, identifyFragment);
-        }
-        else {
+        } else {
             fragmentTransaction.show(identifyFragment);
             identifyFragment.setReverseTransferBean(reverseTransferBean);
             identifyFragment.onResume();
@@ -261,8 +267,7 @@ public class ReservationTransferActivity extends BaseActivity implements OnTrans
             materialFragment.setOnTransferListener(this);
             materialFragment.setReverseTransferBean(reverseTransferBean);
             fragmentTransaction.add(R.id.layout_frame_root, materialFragment);
-        }
-        else {
+        } else {
             fragmentTransaction.show(materialFragment);
             materialFragment.setReverseTransferBean(reverseTransferBean);
             materialFragment.onResume();
@@ -279,11 +284,11 @@ public class ReservationTransferActivity extends BaseActivity implements OnTrans
         hideAll(fragmentTransaction);
         if (submitTransferFragment == null) {
             submitTransferFragment = new TransferSubmitFragment();
+            submitTransferFragment.setRemoteAgain(remoteAgain);
             submitTransferFragment.setOnTransferListener(this);
             submitTransferFragment.setReverseTransferBean(reverseTransferBean);
             fragmentTransaction.add(R.id.layout_frame_root, submitTransferFragment);
-        }
-        else {
+        } else {
             fragmentTransaction.show(submitTransferFragment);
             submitTransferFragment.setReverseTransferBean(reverseTransferBean);
             submitTransferFragment.onResume();
@@ -371,10 +376,10 @@ public class ReservationTransferActivity extends BaseActivity implements OnTrans
                 break;
             case R.id.public_title_bar_more:
                 new HintDialog(this).setPhone(getString(R.string.txt_contact_service),
-                                              getString(R.string.txt_contact_service_phone), false)
-                                    .setOnEnterClickListener(
-                                            () -> callPhone(getString(R.string.txt_contact_service_phone)))
-                                    .show();
+                        getString(R.string.txt_contact_service_phone), false)
+                        .setOnEnterClickListener(
+                                () -> callPhone(getString(R.string.txt_contact_service_phone)))
+                        .show();
                 break;
             default:
                 break;
@@ -406,7 +411,7 @@ public class ReservationTransferActivity extends BaseActivity implements OnTrans
         String orderNo;
         switch (task) {
             case ADD_RESERVE_TRANSFER_ORDER:
-                orderNo = (String)response.getData();
+                orderNo = (String) response.getData();
                 intent = new Intent(this, ReservationSuccessActivity.class);
                 intent.putExtra(CommonData.KEY_RESERVATION_TYPE, BASE_ONE);
                 intent.putExtra(CommonData.KEY_ORDER_ID, orderNo);
@@ -414,7 +419,7 @@ public class ReservationTransferActivity extends BaseActivity implements OnTrans
                 finish();
                 break;
             case VERIFY_PATIENT:
-                PatientBean bean = (PatientBean)response.getData();
+                PatientBean bean = (PatientBean) response.getData();
                 initTransferOrderData(bean);
                 tabReservationLicenseView();
                 break;
@@ -434,8 +439,7 @@ public class ReservationTransferActivity extends BaseActivity implements OnTrans
             }
             tabReservationLicenseView();
             return false;
-        }
-        else if (curPage == 1) {
+        } else if (curPage == 1) {
             if (transferBean != null || patientBean != null) {
                 return true;
             }
@@ -461,16 +465,18 @@ public class ReservationTransferActivity extends BaseActivity implements OnTrans
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-            @NonNull int[] grantResults) {
+                                           @NonNull int[] grantResults) {
         switch (curPage) {
             case BASE_ZERO:
                 if (identifyFragment != null) {
-                    identifyFragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
+                    identifyFragment.onRequestPermissionsResult(requestCode, permissions,
+                            grantResults);
                 }
                 break;
             case BASE_TWO:
                 if (submitTransferFragment != null) {
-                    submitTransferFragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
+                    submitTransferFragment.onRequestPermissionsResult(requestCode, permissions,
+                            grantResults);
                 }
                 break;
             default:

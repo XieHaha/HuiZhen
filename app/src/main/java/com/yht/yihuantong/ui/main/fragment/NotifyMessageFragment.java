@@ -169,6 +169,10 @@ public class NotifyMessageFragment extends BaseFragment
             messageList.get(position).setState(1);
             updateAppUnReadMessageById(messageList.get(position).getId());
         }
+        if (TextUtils.isEmpty(bean.getExtraData())) {
+            //数据为空 不做跳转
+            return;
+        }
         Intent intent;
         String type = bean.getMsgType();
         String orderNo = getMessageTypeId(bean.getExtraData());

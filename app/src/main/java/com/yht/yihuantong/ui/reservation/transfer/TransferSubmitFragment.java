@@ -10,8 +10,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import androidx.annotation.NonNull;
-import androidx.core.content.FileProvider;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -21,6 +19,9 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.FileProvider;
 
 import com.bumptech.glide.Glide;
 import com.yht.frame.api.DirHelper;
@@ -160,6 +161,10 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
      */
     private boolean clearAll;
     /**
+     * 是否为重新转诊
+     */
+    private boolean remoteAgain;
+    /**
      * 选择接诊医生
      */
     public static final int REQUEST_CODE_SELECT_DOCTOR = 100;
@@ -212,6 +217,10 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
     public void setReverseTransferBean(ReserveTransferBean bean) {
         clearAll(bean);
         this.reverseTransferBean = bean;
+    }
+
+    public void setRemoteAgain(boolean remoteAgain) {
+        this.remoteAgain = remoteAgain;
     }
 
     /**
@@ -297,7 +306,7 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
                 curReceiveDoctor.setDepartmentName(reverseTransferBean.getReceiveDoctorDepart());
                 initReceiveDoctor(false);
             }
-            if (!TextUtils.isEmpty(reverseTransferBean.getConfirmPhoto())) {
+            if (!TextUtils.isEmpty(reverseTransferBean.getConfirmPhoto()) && !remoteAgain) {
                 confirmImageUrl = reverseTransferBean.getConfirmPhoto();
                 ivDeleteOne.setVisibility(View.VISIBLE);
                 //裁剪完成，上传图片
@@ -537,6 +546,8 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
         if (task == Tasks.UPLOAD_FILE) {
+            //更新后 重置
+            remoteAgain = false;
             if (sureType == BASE_ONE) {
                 confirmImageUrl = (String) response.getData();
                 if (imagePaths.size() > 0) {
