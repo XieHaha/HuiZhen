@@ -1,8 +1,6 @@
 package com.yht.yihuantong.ui.check;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -12,9 +10,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -43,7 +39,7 @@ import com.yht.yihuantong.R;
 import com.yht.yihuantong.ZycApplication;
 import com.yht.yihuantong.ui.adapter.SelectCheckTypeAdapter;
 import com.yht.yihuantong.ui.adapter.SelectCheckTypeFilterAdapter;
-import com.yht.yihuantong.ui.adapter.SelectCheckTypeParentAdapter;
+import com.yht.yihuantong.ui.adapter.SelectCheckTypeRvAdapter;
 import com.yht.yihuantong.ui.adapter.SelectCheckTypeShopAdapter;
 import com.yht.yihuantong.ui.adapter.ShopCheckTypeAdapter;
 
@@ -61,31 +57,19 @@ import butterknife.OnClick;
  * @date 19/6/4 17:53
  * @des 医院选择
  */
-public class SelectCheckTypeActivity extends BaseActivity
-        implements SelectCheckTypeParentAdapter.OnSelectedCallback,
-        BaseQuickAdapter.OnItemClickListener,
-        AdapterView.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener,
-        ShopCheckTypeAdapter.OnServiceDeleteListener {
+public class SelectCheckTypeActivity extends BaseActivity implements BaseQuickAdapter.OnItemClickListener, AdapterView.OnItemClickListener,
+        SwipeRefreshLayout.OnRefreshListener, ShopCheckTypeAdapter.OnServiceDeleteListener,
+        BaseQuickAdapter.OnItemChildClickListener {
     @BindView(R.id.et_search_check_type)
     SuperEditText etSearchCheckType;
-    @BindView(R.id.tv_cancel)
-    TextView tvCancel;
     @BindView(R.id.tv_hospital_btn)
     TextView tvHospitalBtn;
-    @BindView(R.id.layout_all_hospital)
-    FrameLayout layoutAllHospital;
     @BindView(R.id.tv_service_btn)
     TextView tvServiceBtn;
-    @BindView(R.id.layout_all_service)
-    FrameLayout layoutAllService;
-    @BindView(R.id.layout_filter)
-    LinearLayout layoutFilter;
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
-    @BindView(R.id.hospital_recycler_view)
-    RecyclerView hospitalRecyclerView;
     @BindView(R.id.search_recycler_view)
-    ListView searchRecyclerView;
+    ListView searchListView;
     @BindView(R.id.tv_selected)
     TextView tvSelected;
     @BindView(R.id.tv_next)
@@ -98,16 +82,12 @@ public class SelectCheckTypeActivity extends BaseActivity
     RelativeLayout layoutFilterContentRoot;
     @BindView(R.id.tv_none)
     TextView tvNone;
-    @BindView(R.id.tv_none_refresh)
-    TextView tvNoneRefresh;
     @BindView(R.id.layout_none)
     RelativeLayout layoutNone;
     @BindView(R.id.layout_search_none)
     RelativeLayout layoutSearchNone;
     @BindView(R.id.layout_shop_bg)
     RelativeLayout layoutShopBg;
-    @BindView(R.id.tv_clear_shop)
-    TextView tvClearShop;
     @BindView(R.id.tv_arrow)
     TextView tvArrow;
     @BindView(R.id.shop_recycler_view)
@@ -125,10 +105,10 @@ public class SelectCheckTypeActivity extends BaseActivity
     /**
      * 服务项
      */
-    private SelectCheckTypeParentAdapter parentAdapter;
+    private SelectCheckTypeRvAdapter parentAdapter;
     private LinearLayoutManager layoutManager;
     /**
-     * 筛选列表
+     * 筛选条件列表
      */
     private SelectCheckTypeFilterAdapter filterAdapter;
     /**
@@ -142,23 +122,19 @@ public class SelectCheckTypeActivity extends BaseActivity
     /**
      * 医院 服务项、服务包数据集合
      */
-    private List<SelectCheckTypeParentBean> parentBeans = new ArrayList<>();
+    private List<SelectCheckTypeBean> parentNewBeans = new ArrayList<>();
     /**
      * 医院 服务项、服务包数据集合  筛选结果
      */
-    private List<SelectCheckTypeParentBean> filterBeans = new ArrayList<>();
+    private List<SelectCheckTypeBean> filterBeans = new ArrayList<>();
     /**
      * 购物车
      */
-    private ArrayList<SelectCheckTypeParentBean> shopBeans = new ArrayList<>();
+    private ArrayList<SelectCheckTypeBean> shopBeans = new ArrayList<>();
     /**
      * 搜索结果
      */
     private List<SelectCheckTypeBean> searchBeans = new ArrayList<>();
-    /**
-     * 搜索结果 包含医院数据
-     */
-    private List<SelectCheckTypeParentBean> searchParentBeans = new ArrayList<>();
     /**
      * 医院筛选条件
      */
@@ -175,7 +151,6 @@ public class SelectCheckTypeActivity extends BaseActivity
      * 最近使用的服务项、服务包code
      */
     private List<String> recentlyUsedServiceData;
-    private Bitmap bitmap;
     /**
      * 当前选中的医院、选中的服务（全部服务or最近使用）
      */
@@ -203,7 +178,7 @@ public class SelectCheckTypeActivity extends BaseActivity
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
         if (getIntent() != null) {
-            shopBeans = (ArrayList<SelectCheckTypeParentBean>) getIntent().getSerializableExtra(
+            shopBeans = (ArrayList<SelectCheckTypeBean>) getIntent().getSerializableExtra(
                     CommonData.KEY_RESERVE_CHECK_TYPE_LIST);
             //重新选择的强制更新
             forcedUpdate = getIntent().getBooleanExtra(CommonData.KEY_INTENT_BOOLEAN, false);
@@ -212,8 +187,6 @@ public class SelectCheckTypeActivity extends BaseActivity
             //忽略价格的强制更新
             forcedUpdate = sharePreferenceUtil.getBoolean(CommonData.KEY_RESERVE_CHECK_UPDATE);
         }
-        bitmap = BitmapFactory.decodeResource(getApplication().getResources(),
-                R.mipmap.ic_label_noreach);
         layoutRefresh.setColorSchemeResources(android.R.color.holo_blue_light,
                 android.R.color.holo_red_light,
                 android.R.color.holo_orange_light, android.R.color.holo_green_light);
@@ -223,10 +196,9 @@ public class SelectCheckTypeActivity extends BaseActivity
         curServiceType = getString(R.string.txt_all_services);
         //服务项列表
         recyclerView.setLayoutManager(layoutManager = new LinearLayoutManager(this));
-        parentAdapter = new SelectCheckTypeParentAdapter(R.layout.item_check_select_root,
-                filterBeans);
-        parentAdapter.setBitmap(bitmap);
-        parentAdapter.setOnSelectedCallback(this);
+        parentAdapter = new SelectCheckTypeRvAdapter(R.layout.item_check_select_new,
+                parentNewBeans);
+        parentAdapter.setOnItemClickListener(this);
         recyclerView.setAdapter(parentAdapter);
         //医院列表数据
         filterRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -237,13 +209,12 @@ public class SelectCheckTypeActivity extends BaseActivity
         filterRecyclerView.setAdapter(filterAdapter);
         //搜索列表
         searchAdapter = new SelectCheckTypeAdapter(this);
-        searchAdapter.setBitmap(bitmap);
-        searchRecyclerView.setOnItemClickListener(this);
-        searchRecyclerView.setAdapter(searchAdapter);
+        searchListView.setOnItemClickListener(this);
+        searchListView.setAdapter(searchAdapter);
         //购物车
         shopRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        shopAdapter = new SelectCheckTypeShopAdapter(R.layout.item_check_shop_root, shopBeans);
-        shopAdapter.setOnServiceDeleteListener(this);
+        shopAdapter = new SelectCheckTypeShopAdapter(R.layout.item_check_shop, shopBeans);
+        shopAdapter.setOnItemChildClickListener(this);
         shopRecyclerView.setAdapter(shopAdapter);
         selectedCodes = ZycApplication.getInstance().getSelectCodes();
         if (selectedCodes.size() > 0) {
@@ -274,7 +245,7 @@ public class SelectCheckTypeActivity extends BaseActivity
             //绑定数据
             bindServiceListData();
             //本地没有数据
-            if (parentBeans.size() == 0) {
+            if (parentNewBeans.size() == 0) {
                 getCheckTypeList(true);
             }
         }
@@ -290,7 +261,7 @@ public class SelectCheckTypeActivity extends BaseActivity
                 searchCheckTypeListByLocal(s.toString());
             }
         });
-        searchRecyclerView.setOnScrollListener(new AbsListView.OnScrollListener() {
+        searchListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
                 switch (scrollState) {
@@ -327,23 +298,7 @@ public class SelectCheckTypeActivity extends BaseActivity
      * 获取本地数据
      */
     private void getCheckTypeListByLocal() {
-        parentBeans = LitePal.findAll(SelectCheckTypeParentBean.class, true);
-        //过滤
-        filterNoneCheckHospital();
-    }
-
-    /**
-     * 过滤掉没有服务项、服务包的医院
-     */
-    private void filterNoneCheckHospital() {
-        ArrayList<SelectCheckTypeParentBean> nullData = new ArrayList<>();
-        for (int i = 0; i < parentBeans.size(); i++) {
-            SelectCheckTypeParentBean parentBean = parentBeans.get(i);
-            if (parentBean.getProductPackageList() == null || parentBean.getProductPackageList().size() == 0) {
-                nullData.add(parentBean);
-            }
-        }
-        parentBeans.removeAll(nullData);
+        parentNewBeans = LitePal.findAll(SelectCheckTypeBean.class, true);
     }
 
     /**
@@ -363,45 +318,39 @@ public class SelectCheckTypeActivity extends BaseActivity
     private void searchCheckTypeListByLocal(String searchKey) {
         if (!TextUtils.isEmpty(searchKey)) {
             searchBeans.clear();
-            searchParentBeans.clear();
             //重新拉取本地数据
             getCheckTypeListByLocal();
-            for (SelectCheckTypeParentBean parentBean : parentBeans) {
-                ArrayList<SelectCheckTypeBean> beans = parentBean.getProductPackageList();
-                for (SelectCheckTypeBean bean : beans) {
-                    //服务名称、服务别名
-                    boolean contains = bean.getProjectName().contains(searchKey) ||
-                            (!TextUtils.isEmpty(bean.getProjectAlias()) &&
-                                    bean.getProjectAlias().contains(searchKey));
-                    if (contains) {
-                        searchBeans.add(bean);
-                        searchParentBeans.add(parentBean);
-                    } else {
-                        //服务包下的服务项
-                        List<SelectCheckTypeChildBean> childBeans =
-                                bean.getChildServiceTypes(bean.getProjectCode());
-                        for (SelectCheckTypeChildBean childBean : childBeans) {
-                            if (childBean.getProductName().contains(searchKey)) {
-                                searchBeans.add(bean);
-                                searchParentBeans.add(parentBean);
-                                //服务包下的服务项轮询到结果及跳出
-                                break;
-                            }
+            for (SelectCheckTypeBean bean : parentNewBeans) {
+                //服务名称、服务别名
+                boolean contains = bean.getProjectName().contains(searchKey) ||
+                        (!TextUtils.isEmpty(bean.getProjectAlias()) &&
+                                bean.getProjectAlias().contains(searchKey));
+                if (contains) {
+                    searchBeans.add(bean);
+                } else {
+                    //服务包下的服务项
+                    List<SelectCheckTypeChildBean> childBeans =
+                            bean.getChildServiceTypes(bean.getProjectCode());
+                    for (SelectCheckTypeChildBean childBean : childBeans) {
+                        if (childBean.getProductName().contains(searchKey)) {
+                            searchBeans.add(bean);
+                            //服务包下的服务项轮询到结果及跳出
+                            break;
                         }
                     }
                 }
             }
             if (searchBeans.size() > 0) {
-                searchRecyclerView.setVisibility(View.VISIBLE);
+                searchListView.setVisibility(View.VISIBLE);
                 searchAdapter.setList(searchBeans);
                 layoutSearchNone.setVisibility(View.GONE);
             } else {
-                searchRecyclerView.setVisibility(View.GONE);
+                searchListView.setVisibility(View.GONE);
                 layoutSearchNone.setVisibility(View.VISIBLE);
             }
         } else {
             //取消搜索
-            searchRecyclerView.setVisibility(View.GONE);
+            searchListView.setVisibility(View.GONE);
             layoutSearchNone.setVisibility(View.GONE);
         }
     }
@@ -410,10 +359,9 @@ public class SelectCheckTypeActivity extends BaseActivity
      * 服务项数据集合
      */
     private void bindServiceListData() {
-        filterBeans.clear();
-        filterBeans.addAll(parentBeans);
-        parentAdapter.setNewData(filterBeans);
-        if (filterBeans.size() > 0) {
+        parentAdapter.setSelectedCodes(selectedCodes);
+        parentAdapter.setNewData(parentNewBeans);
+        if (parentNewBeans.size() > 0) {
             layoutNone.setVisibility(View.GONE);
         } else {
             layoutNone.setVisibility(View.VISIBLE);
@@ -429,54 +377,39 @@ public class SelectCheckTypeActivity extends BaseActivity
         //重新拉取本地数据
         getCheckTypeListByLocal();
         filterBeans.clear();
-        if (TextUtils.equals(curHospital, getString(R.string.txt_all_hospitals)) &&
-                TextUtils.equals(curServiceType, getString(R.string.txt_all_services))) {
+        if (TextUtils.equals(curHospital, getString(R.string.txt_all_hospitals)) && TextUtils.equals(curServiceType, getString(R.string.txt_all_services))) {
             //当前筛选条件为 全部医院、全部服务
-            filterBeans.addAll(parentBeans);
+            filterBeans.addAll(parentNewBeans);
         } else {
             if (TextUtils.equals(curHospital, getString(R.string.txt_all_hospitals))) {
                 //医院条件为全部医院  最近使用
-                for (SelectCheckTypeParentBean parentBean : parentBeans) {
-                    List<SelectCheckTypeBean> beans = parentBean.getProductPackageList();
-                    ArrayList<SelectCheckTypeBean> filterBeans = new ArrayList<>();
-                    for (SelectCheckTypeBean bean : beans) {
-                        //筛选出最近使用
-                        if (recentlyUsedServiceData.contains(bean.getProjectCode())) {
-                            filterBeans.add(bean);
-                        }
-                    }
-                    //当含有服务项数据才添加
-                    if (filterBeans.size() > 0) {
-                        parentBean.setProductPackageList(filterBeans);
-                        this.filterBeans.add(parentBean);
+                for (SelectCheckTypeBean bean : parentNewBeans) {
+                    //筛选出最近使用
+                    if (recentlyUsedServiceData.contains(bean.getProjectCode())) {
+                        filterBeans.add(bean);
                     }
                 }
             } else {
-                for (SelectCheckTypeParentBean parentBean : parentBeans) {
+                for (SelectCheckTypeBean parentBean : parentNewBeans) {
+                    //单个医院
                     if (TextUtils.equals(curHospital, parentBean.getHospitalName())) {
-                        if (!TextUtils.equals(curServiceType,
+                        if (TextUtils.equals(curServiceType,
                                 getString(R.string.txt_all_services))) {
-                            //筛选条件为单个医院 最近服务
-                            List<SelectCheckTypeBean> beans = parentBean.getProductPackageList();
-                            ArrayList<SelectCheckTypeBean> filterBeans = new ArrayList<>();
-                            for (SelectCheckTypeBean bean : beans) {
-                                //筛选出最近使用
-                                if (recentlyUsedServiceData.contains(bean.getProjectCode())) {
-                                    filterBeans.add(bean);
-                                }
-                            }
-                            parentBean.setProductPackageList(filterBeans);
-                        }
-                        //当含有服务项数据才添加
-                        if (parentBean.getProductPackageList().size() > 0) {
+                            //全部服务
+                            filterBeans.add(parentBean);
+
+                        } else if (recentlyUsedServiceData.contains(parentBean.getProjectCode())) {
+                            //最近使用
                             filterBeans.add(parentBean);
                         }
-                        break;
                     }
                 }
             }
         }
-        parentAdapter.setNewData(filterBeans);
+        parentAdapter.setSelectedCodes(selectedCodes);
+        parentNewBeans.clear();
+        parentNewBeans.addAll(filterBeans);
+        parentAdapter.setNewData(parentNewBeans);
         if (filterBeans.size() == 0) {
             layoutNone.setVisibility(View.VISIBLE);
             if (TextUtils.equals(curServiceType, getString(R.string.txt_all_services))) {
@@ -497,8 +430,11 @@ public class SelectCheckTypeActivity extends BaseActivity
         //医院数据
         filterHospitalData = new ArrayList<>();
         filterHospitalData.add(getString(R.string.txt_all_hospitals));
-        for (SelectCheckTypeParentBean bean : parentBeans) {
-            filterHospitalData.add(bean.getHospitalName());
+        for (SelectCheckTypeBean bean : parentNewBeans) {
+            String hospitalName = bean.getHospitalName();
+            if (!filterHospitalData.contains(hospitalName)) {
+                filterHospitalData.add(hospitalName);
+            }
         }
         //服务范围数据
         filterServiceData = new ArrayList<>();
@@ -554,38 +490,13 @@ public class SelectCheckTypeActivity extends BaseActivity
         if (shopBeans.size() == 0) {
             return;
         }
-        ArrayList<SelectCheckTypeParentBean> newShop = new ArrayList<>();
+        ArrayList<SelectCheckTypeBean> newShop = new ArrayList<>();
         ArrayList<String> newSelected = new ArrayList<>();
-
-        for (int i = 0; i < parentBeans.size(); i++) {
-            SelectCheckTypeParentBean parentBean = parentBeans.get(i);
-            ArrayList<SelectCheckTypeBean> beans = parentBean.getProductPackageList();
-            for (int j = 0; j < beans.size(); j++) {
-                SelectCheckTypeBean bean = beans.get(j);
-                if (selectedCodes.contains(bean.getProjectCode())) {
-                    newSelected.add(bean.getProjectCode());
-                    if (newShop.contains(parentBean)) {
-                        for (SelectCheckTypeParentBean data : newShop) {
-                            if (data.equals(parentBean)) {
-                                ArrayList<SelectCheckTypeBean> list = data.getProductPackageList();
-                                if (list == null) {
-                                    list = new ArrayList<>();
-                                }
-                                list.add(bean);
-                                data.setProductPackageList(list);
-                                break;
-                            }
-                        }
-                    } else {
-                        SelectCheckTypeParentBean newBean = new SelectCheckTypeParentBean();
-                        newBean.setHospitalCode(parentBean.getHospitalCode());
-                        newBean.setHospitalName(parentBean.getHospitalName());
-                        ArrayList<SelectCheckTypeBean> list = new ArrayList<>();
-                        list.add(bean);
-                        newBean.setProductPackageList(list);
-                        newShop.add(newBean);
-                    }
-                }
+        for (int i = 0; i < parentNewBeans.size(); i++) {
+            SelectCheckTypeBean bean = parentNewBeans.get(i);
+            if (selectedCodes.contains(bean.getProjectCode())) {
+                newSelected.add(bean.getProjectCode());
+                newShop.add(bean);
             }
         }
 
@@ -603,51 +514,13 @@ public class SelectCheckTypeActivity extends BaseActivity
     }
 
     /**
-     * 添加服务后  更新购物车
-     */
-    private void addUpdateShopCart(SelectCheckTypeParentBean parentBean, SelectCheckTypeBean bean) {
-        //购物车列表
-        SelectCheckTypeParentBean newBean;
-        if (shopBeans.contains(parentBean)) {
-            for (SelectCheckTypeParentBean data : shopBeans) {
-                if (data.equals(parentBean)) {
-                    ArrayList<SelectCheckTypeBean> list = data.getProductPackageList();
-                    if (list == null) {
-                        list = new ArrayList<>();
-                    } else {
-                        if (list.contains(bean)) {
-                            list.remove(bean);
-                        } else {
-                            list.add(bean);
-                        }
-                    }
-                    if (list.size() == 0) {
-                        shopBeans.remove(data);
-                    } else {
-                        data.setProductPackageList(list);
-                    }
-                    break;
-                }
-            }
-        } else {
-            newBean = new SelectCheckTypeParentBean();
-            newBean.setHospitalCode(parentBean.getHospitalCode());
-            newBean.setHospitalName(parentBean.getHospitalName());
-            ArrayList<SelectCheckTypeBean> list = new ArrayList<>();
-            list.add(bean);
-            newBean.setProductPackageList(list);
-            shopBeans.add(newBean);
-        }
-        shopAdapter.setNewData(shopBeans);
-    }
-
-    /**
      * 删除后 更新购物车
      */
     private void updateShopCart() {
         //购物车列表刷新
         shopAdapter.setNewData(shopBeans);
         //主数据列表刷新
+        parentAdapter.setSelectedCodes(selectedCodes);
         parentAdapter.notifyDataSetChanged();
         //搜索列表刷新
         searchAdapter.notifyDataSetChanged();
@@ -706,11 +579,11 @@ public class SelectCheckTypeActivity extends BaseActivity
     /**
      * 已选code更新
      */
-    private void updateSelectedCodes(String projectCode) {
-        if (selectedCodes.contains(projectCode)) {
-            selectedCodes.remove(projectCode);
+    private void updateSelectedCodes(SelectCheckTypeBean bean) {
+        if (selectedCodes.contains(bean.getProjectCode())) {
+            selectedCodes.remove(bean.getProjectCode());
         } else {
-            selectedCodes.add(projectCode);
+            selectedCodes.add(bean.getProjectCode());
         }
         if (selectedCodes.size() > 0) {
             tvNext.setSelected(true);
@@ -718,6 +591,17 @@ public class SelectCheckTypeActivity extends BaseActivity
             tvNext.setSelected(false);
         }
         tvSelected.setText(String.valueOf(selectedCodes.size()));
+        //通知主列表
+        parentAdapter.setSelectedCodes(selectedCodes);
+        parentAdapter.notifyDataSetChanged();
+        //更新购物车
+        if (shopBeans.contains(bean)) {
+            shopBeans.remove(bean);
+        } else {
+            shopBeans.add(bean);
+        }
+        shopAdapter.setNewData(shopBeans);
+        //更新本地数据
         ZycApplication.getInstance().setSelectCodes(selectedCodes);
     }
 
@@ -824,15 +708,9 @@ public class SelectCheckTypeActivity extends BaseActivity
      */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        SelectCheckTypeParentBean parentBean = searchParentBeans.get(position);
-        SelectCheckTypeBean bean = searchBeans.get(position);
-        updateSelectedCodes(bean.getProjectCode());
+        updateSelectedCodes(searchBeans.get(position));
         //搜索列表
         searchAdapter.notifyDataSetChanged();
-        //更新主列表
-        parentAdapter.notifyDataSetChanged();
-        //更新购物车
-        addUpdateShopCart(parentBean, bean);
     }
 
     /**
@@ -840,45 +718,44 @@ public class SelectCheckTypeActivity extends BaseActivity
      */
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        if (filterType == BASE_ONE) {
-            curHospital = filterHospitalData.get(position);
-            tvHospitalBtn.setText(curHospital);
-        } else {
-            curServiceType = filterServiceData.get(position);
-            tvServiceBtn.setText(curServiceType);
+        if (adapter instanceof SelectCheckTypeFilterAdapter) {
+            if (filterType == BASE_ONE) {
+                curHospital = filterHospitalData.get(position);
+                tvHospitalBtn.setText(curHospital);
+            } else {
+                curServiceType = filterServiceData.get(position);
+                tvServiceBtn.setText(curServiceType);
+            }
+            bindFilterServiceListData();
+            hideFilterLayout();
+        } else if (adapter instanceof SelectCheckTypeRvAdapter) {
+            updateSelectedCodes(parentNewBeans.get(position));
         }
-        bindFilterServiceListData();
-        hideFilterLayout();
     }
 
     /**
-     * 购物车数据源
+     * 购物车删除按钮监听
      */
     @Override
-    public void onSelectedParent(SelectCheckTypeParentBean parentBean, SelectCheckTypeBean bean) {
-        updateSelectedCodes(bean.getProjectCode());
-        addUpdateShopCart(parentBean, bean);
+    public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+        SelectCheckTypeBean bean = shopBeans.get(position);
+        selectedCodes.remove(bean.getProjectCode());
+        for (int i = 0; i < shopBeans.size(); i++) {
+            if (shopBeans.contains(bean)) {
+                shopBeans.remove(bean);
+            }
+        }
+        ZycApplication.getInstance().setSelectCodes(selectedCodes);
+        updateShopCart();
     }
 
     /**
      * 购物车数据删除
      */
     @Override
-    public void onServiceDelete(String code) {
-        selectedCodes.remove(code);
-        for (int i = 0; i < shopBeans.size(); i++) {
-            SelectCheckTypeParentBean data = shopBeans.get(i);
-            ArrayList<SelectCheckTypeBean> list = data.getProductPackageList();
-            for (int j = 0; j < list.size(); j++) {
-                SelectCheckTypeBean bean = list.get(j);
-                if (TextUtils.equals(code, bean.getProjectCode())) {
-                    list.remove(bean);
-                }
-            }
-            if (list.size() == 0) {
-                shopBeans.remove(data);
-            }
-        }
+    public void onServiceDelete(SelectCheckTypeBean bean) {
+        selectedCodes.remove(bean.getProjectCode());
+        shopBeans.remove(bean);
         ZycApplication.getInstance().setSelectCodes(selectedCodes);
         updateShopCart();
     }
@@ -896,16 +773,12 @@ public class SelectCheckTypeActivity extends BaseActivity
                     (List<SelectCheckTypeParentBean>) response.getData();
             //排序
             sortHospitalData(list);
-            //过滤无服务医院
-            filterNoneCheckHospital();
             //购物车、数据过滤
             refreshDataInit();
             //绑定列表服务项数据
             bindServiceListData();
             //存储
-            ThreadPoolHelper.getInstance().execInSingle(() -> saveLocal(parentBeans));
-            //重新拉取数据需要清除最近使用
-            // sharePreferenceUtil.putStringSet(CommonData.KEY_RECENTLY_USED_SERVICE, null);
+            ThreadPoolHelper.getInstance().execInSingle(() -> saveLocal());
         }
     }
 
@@ -919,7 +792,17 @@ public class SelectCheckTypeActivity extends BaseActivity
      * 根据医院排序、本院置顶，其他医院按首字母排序
      */
     private void sortHospitalData(List<SelectCheckTypeParentBean> list) {
-        parentBeans.clear();
+        //过滤掉没有服务项、服务包的医院
+        ArrayList<SelectCheckTypeParentBean> nullData = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            SelectCheckTypeParentBean parentBean = list.get(i);
+            if (parentBean.getProductPackageList() == null || parentBean.getProductPackageList().size() == 0) {
+                nullData.add(parentBean);
+            }
+        }
+        list.removeAll(nullData);
+        //根据医院排序、本院置顶，其他医院按首字母排序
+        List<SelectCheckTypeParentBean> parentBeans = new ArrayList<>();
         for (int i = 0; i < list.size(); i++) {
             SelectCheckTypeParentBean bean = list.get(i);
             if (TextUtils.equals(bean.getHospitalCode(), loginBean.getHospitalCode())) {
@@ -931,48 +814,50 @@ public class SelectCheckTypeActivity extends BaseActivity
         //医院名字首字母排序
         BaseUtils.sortHospitalData(list);
         parentBeans.addAll(list);
+        //过滤
+        filterHospitalLevel(parentBeans);
     }
 
+    /**
+     * 过滤掉医院层级
+     */
+    private void filterHospitalLevel(List<SelectCheckTypeParentBean> parentBeans) {
+        parentNewBeans.clear();
+        for (SelectCheckTypeParentBean parentBean : parentBeans) {
+            ArrayList<SelectCheckTypeBean> list = parentBean.getProductPackageList();
+            if (list != null && list.size() > 0) {
+                for (SelectCheckTypeBean bean :
+                        list) {
+                    bean.setHospitalName(parentBean.getHospitalName());
+                    bean.setHospitalCode(parentBean.getHospitalCode());
+                    parentNewBeans.add(bean);
+                }
+            }
+        }
+    }
 
     /**
      * 保存到数据库
      */
-    private void saveLocal(List<SelectCheckTypeParentBean> list) {
+    private void saveLocal() {
         //保存数据
-        ThreadPoolHelper.getInstance().execInSingle(() -> {
-            LitePal.deleteAll(SelectCheckTypeParentBean.class);
-            LitePal.deleteAll(SelectCheckTypeBean.class);
-            LitePal.deleteAll(SelectCheckTypeChildBean.class);
-            for (int i = 0; i < list.size(); i++) {
-                SelectCheckTypeParentBean parentBean = list.get(i);
-                ArrayList<SelectCheckTypeBean> oneBeans = parentBean.getProductPackageList();
-                for (int j = 0; j < oneBeans.size(); j++) {
-                    SelectCheckTypeBean oneBean = oneBeans.get(j);
-                    List<SelectCheckTypeChildBean> twoBeans = oneBean.getProductInfoList();
-                    if (twoBeans != null) {
-                        List<SelectCheckTypeChildBean> newTwoBeans = new ArrayList<>();
-                        for (int k = 0; k < twoBeans.size(); k++) {
-                            SelectCheckTypeChildBean twoBean = twoBeans.get(k);
-                            twoBean.setParentId(oneBean.getProjectCode());
-                            newTwoBeans.add(twoBean);
-                        }
-                        LitePal.saveAll(newTwoBeans);
-                    }
+        LitePal.deleteAll(SelectCheckTypeBean.class);
+        LitePal.deleteAll(SelectCheckTypeChildBean.class);
+        for (int i = 0; i < parentNewBeans.size(); i++) {
+            SelectCheckTypeBean oneBean = parentNewBeans.get(i);
+            List<SelectCheckTypeChildBean> twoBeans = oneBean.getProductInfoList();
+            if (twoBeans != null) {
+                List<SelectCheckTypeChildBean> newTwoBeans = new ArrayList<>();
+                for (int k = 0; k < twoBeans.size(); k++) {
+                    SelectCheckTypeChildBean twoBean = twoBeans.get(k);
+                    twoBean.setParentId(oneBean.getProjectCode());
+                    newTwoBeans.add(twoBean);
                 }
-                LitePal.saveAll(oneBeans);
+                LitePal.saveAll(newTwoBeans);
             }
-            LitePal.saveAll(list);
-        });
+        }
+        LitePal.saveAll(parentNewBeans);
         //变更更新状态为已更新
         sharePreferenceUtil.putBoolean(CommonData.KEY_RESERVE_CHECK_UPDATE, false);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (bitmap != null) {
-            bitmap.recycle();
-            bitmap = null;
-        }
     }
 }

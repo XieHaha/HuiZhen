@@ -2,8 +2,6 @@ package com.yht.frame.data.bean;
 
 import android.text.TextUtils;
 
-import org.litepal.crud.LitePalSupport;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -12,7 +10,7 @@ import java.util.ArrayList;
  * @date 19/10/30 14:20
  * @description 包含医院、服务包、服务项集合
  */
-public class SelectCheckTypeParentBean extends LitePalSupport implements Serializable {
+public class SelectCheckTypeParentBean implements Serializable {
     private static final long serialVersionUID = -8735324027625934833L;
     /**
      * 1、直属   2、合作
@@ -68,7 +66,7 @@ public class SelectCheckTypeParentBean extends LitePalSupport implements Seriali
 
     @Override
     public boolean equals(Object obj) {
-        SelectCheckTypeParentBean bean = (SelectCheckTypeParentBean)obj;
+        SelectCheckTypeParentBean bean = (SelectCheckTypeParentBean) obj;
         return TextUtils.equals(hospitalCode, bean.getHospitalCode());
     }
 }

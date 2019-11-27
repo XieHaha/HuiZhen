@@ -60,7 +60,10 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/service_recycler_view"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:background="@color/color_ffffff"
+                android:visibility="gone"
+                android:paddingBottom="20dp"/>
         </LinearLayout>
 
         <RelativeLayout

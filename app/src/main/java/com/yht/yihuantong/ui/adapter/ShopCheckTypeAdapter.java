@@ -79,7 +79,7 @@ public class ShopCheckTypeAdapter extends BaseAdapter {
                 String.format(context.getString(R.string.txt_price), BaseUtils.getPrice(item.getPrice())));
         holder.ivDelete.setOnClickListener(v -> {
             if (onServiceDeleteListener != null) {
-                onServiceDeleteListener.onServiceDelete(item.getProjectCode());
+                onServiceDeleteListener.onServiceDelete(item);
             }
         });
     }
@@ -96,6 +96,6 @@ public class ShopCheckTypeAdapter extends BaseAdapter {
     }
 
     public interface OnServiceDeleteListener {
-        void onServiceDelete(String code);
+        void onServiceDelete(SelectCheckTypeBean code);
     }
 }

@@ -35,7 +35,6 @@
         <mapping class="com.yht.frame.data.bean.PatientBean" />
         <mapping class="com.yht.frame.data.bean.DoctorBean" />
         <mapping class="com.yht.frame.data.bean.HospitalBean" />
-        <mapping class="com.yht.frame.data.bean.SelectCheckTypeParentBean" />
         <mapping class="com.yht.frame.data.bean.SelectCheckTypeBean" />
         <mapping class="com.yht.frame.data.bean.SelectCheckTypeChildBean" />
         <mapping class="com.yht.frame.data.bean.RecentlyUsedServiceBean" />

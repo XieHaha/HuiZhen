@@ -131,7 +131,7 @@ public class ReservationServiceActivity extends BaseActivity implements OnCheckL
     /**
      * 医院数据  (预约该服务)
      */
-    private SelectCheckTypeParentBean parentBean;
+    private SelectCheckTypeBean parentBean;
     /**
      * 当前碎片
      */
@@ -182,10 +182,12 @@ public class ReservationServiceActivity extends BaseActivity implements OnCheckL
     private void initServiceData() {
         if (healthPackageDetailBean != null && healthPackageBean != null) {
             //服务包
-            SelectCheckTypeBean selectCheckTypeBean = new SelectCheckTypeBean();
-            selectCheckTypeBean.setPrice(healthPackageDetailBean.getSuggestPrice());
-            selectCheckTypeBean.setProjectCode(healthPackageDetailBean.getPackageCode());
-            selectCheckTypeBean.setProjectName(healthPackageDetailBean.getPackageName());
+            parentBean = new SelectCheckTypeBean();
+            parentBean.setPrice(healthPackageDetailBean.getSuggestPrice());
+            parentBean.setProjectCode(healthPackageDetailBean.getPackageCode());
+            parentBean.setProjectName(healthPackageDetailBean.getPackageName());
+            parentBean.setHospitalCode(healthPackageBean.getHospitalCode());
+            parentBean.setHospitalName(healthPackageBean.getHospitalName());
             //服务包下服务项
             ArrayList<SelectCheckTypeChildBean> childList = new ArrayList<>();
             ArrayList<ProductBean> oldList = healthPackageDetailBean.getProductInfoList();
@@ -198,16 +200,10 @@ public class ReservationServiceActivity extends BaseActivity implements OnCheckL
                     childList.add(childBean);
                 }
             }
-            selectCheckTypeBean.setProductInfoList(childList);
-            ArrayList<SelectCheckTypeBean> list = new ArrayList<>();
-            list.add(selectCheckTypeBean);
-            //医院数据
-            parentBean = new SelectCheckTypeParentBean();
-            parentBean.setHospitalCode(healthPackageBean.getHospitalCode());
-            parentBean.setHospitalName(healthPackageBean.getHospitalName());
-            parentBean.setProductPackageList(list);
+            parentBean.setProductInfoList(childList);
         }
     }
+
 
     /**
      * 新增预约检查订单

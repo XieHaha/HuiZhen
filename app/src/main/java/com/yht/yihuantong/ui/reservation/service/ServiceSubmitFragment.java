@@ -34,7 +34,6 @@ import com.yht.frame.data.bean.NormImage;
 import com.yht.frame.data.bean.ReserveCheckBean;
 import com.yht.frame.data.bean.ReserveCheckTypeBean;
 import com.yht.frame.data.bean.SelectCheckTypeBean;
-import com.yht.frame.data.bean.SelectCheckTypeParentBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.permission.Permission;
 import com.yht.frame.ui.BaseFragment;
@@ -46,7 +45,7 @@ import com.yht.frame.widgets.dialog.SignatureDialog;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ZycApplication;
 import com.yht.yihuantong.ui.ImagePreviewActivity;
-import com.yht.yihuantong.ui.adapter.SelectCheckTypeParentSubmitAdapter;
+import com.yht.yihuantong.ui.adapter.SelectCheckTypeSubmitAdapter;
 import com.yht.yihuantong.ui.check.SelectCheckTypeActivity;
 import com.yht.yihuantong.ui.check.listener.OnCheckListener;
 
@@ -108,15 +107,15 @@ public class ServiceSubmitFragment extends BaseFragment implements RadioGroup.On
     /**
      * 预约该服务入口传递的数据
      */
-    private SelectCheckTypeParentBean parentBean;
+    private SelectCheckTypeBean parentBean;
     /**
      * 已选择检查项目适配器
      */
-    private SelectCheckTypeParentSubmitAdapter shopAdapter;
+    private SelectCheckTypeSubmitAdapter shopAdapter;
     /**
      * 购物车
      */
-    private ArrayList<SelectCheckTypeParentBean> checkTypeData = new ArrayList<>();
+    private ArrayList<SelectCheckTypeBean> checkTypeData = new ArrayList<>();
     /**
      * 拍照确认图片url   签名
      */
@@ -164,9 +163,11 @@ public class ServiceSubmitFragment extends BaseFragment implements RadioGroup.On
         if (parentBean != null) {
             checkTypeData.add(parentBean);
             if (checkTypeData.size() > 0) {
+                serviceRecyclerView.setVisibility(View.VISIBLE);
                 layoutCheck.setVisibility(View.VISIBLE);
                 tvSelect.setText(R.string.txt_add_service_goon);
             } else {
+                serviceRecyclerView.setVisibility(View.GONE);
                 layoutCheck.setVisibility(View.GONE);
                 tvSelect.setText(R.string.txt_add_service);
             }
@@ -194,7 +195,7 @@ public class ServiceSubmitFragment extends BaseFragment implements RadioGroup.On
         this.reserveCheckBean = reserveCheckBean;
     }
 
-    public void setParentBean(SelectCheckTypeParentBean parentBean) {
+    public void setParentBean(SelectCheckTypeBean parentBean) {
         this.parentBean = parentBean;
     }
 
@@ -212,9 +213,8 @@ public class ServiceSubmitFragment extends BaseFragment implements RadioGroup.On
     private void initAdapter() {
         serviceRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         serviceRecyclerView.setNestedScrollingEnabled(false);
-        shopAdapter =
-                new SelectCheckTypeParentSubmitAdapter(R.layout.item_check_select_submit_root,
-                        checkTypeData);
+        shopAdapter = new SelectCheckTypeSubmitAdapter(R.layout.item_check_select_submit,
+                checkTypeData);
         serviceRecyclerView.setAdapter(shopAdapter);
     }
 
@@ -244,15 +244,17 @@ public class ServiceSubmitFragment extends BaseFragment implements RadioGroup.On
      * 选择的检查项目
      */
     private void selectCheckItemByHospital(Intent data) {
-        ArrayList<SelectCheckTypeParentBean> list =
-                (ArrayList<SelectCheckTypeParentBean>) data.getSerializableExtra(
+        ArrayList<SelectCheckTypeBean> list =
+                (ArrayList<SelectCheckTypeBean>) data.getSerializableExtra(
                         CommonData.KEY_RESERVE_CHECK_TYPE_LIST);
         checkTypeData.clear();
         checkTypeData.addAll(list);
         if (checkTypeData.size() > 0) {
+            serviceRecyclerView.setVisibility(View.VISIBLE);
             layoutCheck.setVisibility(View.VISIBLE);
             tvSelect.setText(R.string.txt_add_service_goon);
         } else {
+            serviceRecyclerView.setVisibility(View.GONE);
             layoutCheck.setVisibility(View.GONE);
             tvSelect.setText(R.string.txt_add_service);
         }
@@ -294,21 +296,16 @@ public class ServiceSubmitFragment extends BaseFragment implements RadioGroup.On
         }
     }
 
-    @OnClick({
-            R.id.layout_select_check_type, R.id.layout_upload_one, R.id.iv_delete_one,
-            R.id.tv_submit_next,
-            R.id.layout_upload_two, R.id.layout_signature, R.id.layout_camera})
+    @OnClick({R.id.layout_select_check_type, R.id.layout_upload_one, R.id.iv_delete_one,
+            R.id.tv_submit_next, R.id.layout_upload_two, R.id.layout_signature, R.id.layout_camera})
     public void onViewClicked(View view) {
         Intent intent;
         switch (view.getId()) {
             case R.id.layout_select_check_type:
                 //选中该服务
                 ArrayList<String> selectCodes = new ArrayList<>();
-                for (SelectCheckTypeParentBean parentBean : checkTypeData) {
-                    ArrayList<SelectCheckTypeBean> beans = parentBean.getProductPackageList();
-                    for (SelectCheckTypeBean bean : beans) {
-                        selectCodes.add(bean.getProjectCode());
-                    }
+                for (SelectCheckTypeBean bean : checkTypeData) {
+                    selectCodes.add(bean.getProjectCode());
                 }
                 ZycApplication.getInstance().setSelectCodes(selectCodes);
                 intent = new Intent(getContext(), SelectCheckTypeActivity.class);
@@ -397,16 +394,13 @@ public class ServiceSubmitFragment extends BaseFragment implements RadioGroup.On
                 reserveCheckBean.setConfirmType(String.valueOf(BASE_TWO));
             }
             ArrayList<ReserveCheckTypeBean> list = new ArrayList<>();
-            for (SelectCheckTypeParentBean parentBean : checkTypeData) {
-                ArrayList<SelectCheckTypeBean> beans = parentBean.getProductPackageList();
-                for (SelectCheckTypeBean bean : beans) {
-                    ReserveCheckTypeBean checkBean = new ReserveCheckTypeBean();
-                    checkBean.setHospitalCode(parentBean.getHospitalCode());
-                    checkBean.setProductCode(bean.getProjectCode());
-                    checkBean.setPrice(bean.getPrice());
-                    checkBean.setType(bean.getType());
-                    list.add(checkBean);
-                }
+            for (SelectCheckTypeBean bean : checkTypeData) {
+                ReserveCheckTypeBean checkBean = new ReserveCheckTypeBean();
+                checkBean.setHospitalCode(parentBean.getHospitalCode());
+                checkBean.setProductCode(bean.getProjectCode());
+                checkBean.setPrice(bean.getPrice());
+                checkBean.setType(bean.getType());
+                list.add(checkBean);
             }
             //检查项列表
             reserveCheckBean.setCheckTrans(list);
