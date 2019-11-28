@@ -396,7 +396,7 @@ public class ServiceSubmitFragment extends BaseFragment implements RadioGroup.On
             ArrayList<ReserveCheckTypeBean> list = new ArrayList<>();
             for (SelectCheckTypeBean bean : checkTypeData) {
                 ReserveCheckTypeBean checkBean = new ReserveCheckTypeBean();
-                checkBean.setHospitalCode(parentBean.getHospitalCode());
+                checkBean.setHospitalCode(bean.getHospitalCode());
                 checkBean.setProductCode(bean.getProjectCode());
                 checkBean.setPrice(bean.getPrice());
                 checkBean.setType(bean.getType());

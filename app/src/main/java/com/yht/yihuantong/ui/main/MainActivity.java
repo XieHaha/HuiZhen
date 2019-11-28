@@ -12,11 +12,6 @@ import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.core.app.NotificationCompat;
-import androidx.core.content.ContextCompat;
-import androidx.viewpager.widget.ViewPager;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -24,6 +19,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
 
 import com.hyphenate.EMCallBack;
 import com.hyphenate.EMConnectionListener;
@@ -81,7 +82,8 @@ import static com.yht.yihuantong.jpush.TagAliasOperatorHelper.ACTION_SET;
  * @author dundun
  */
 public class MainActivity extends BaseActivity
-        implements VersionPresenter.VersionViewListener, UpdateDialog.OnEnterClickListener, OnMessageUpdateListener {
+        implements VersionPresenter.VersionViewListener, UpdateDialog.OnEnterClickListener,
+        OnMessageUpdateListener {
     @BindView(R.id.act_main_tab1)
     RelativeLayout actMainTab1;
     @BindView(R.id.act_main_tab3)
@@ -167,9 +169,11 @@ public class MainActivity extends BaseActivity
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
         if (getIntent() != null) {
-            hideVersionUpdate = getIntent().getBooleanExtra(CommonData.KEY_HIDE_VERSION_UPDATE, false);
+            hideVersionUpdate = getIntent().getBooleanExtra(CommonData.KEY_HIDE_VERSION_UPDATE,
+                    false);
         }
-        largeIcon = ((BitmapDrawable)ContextCompat.getDrawable(this, R.mipmap.logo_icon)).getBitmap();
+        largeIcon =
+                ((BitmapDrawable) ContextCompat.getDrawable(this, R.mipmap.logo_icon)).getBitmap();
         ZycApplication.getInstance().setLoginStatus(true);
         boolean protocol = sharePreferenceUtil.getBoolean(CommonData.KEY_IS_PROTOCOL_UPDATE_DATE);
         if (protocol) {
@@ -223,7 +227,8 @@ public class MainActivity extends BaseActivity
             }
         });
         //注册用户协议更新监听
-        iNotifyChangeListenerServer.registerProtocolChangeListener(protocolUpdate, RegisterType.REGISTER);
+        iNotifyChangeListenerServer.registerProtocolChangeListener(protocolUpdate,
+                RegisterType.REGISTER);
         //注册一个监听连接状态的listener
         connectionListener = new EaseConnectionListener();
         EMClient.getInstance().addConnectionListener(connectionListener);
@@ -257,11 +262,13 @@ public class MainActivity extends BaseActivity
      * 极光alias推送设置
      */
     private void setJPushAlias(String alias) {
-        TagAliasOperatorHelper.TagAliasBean tagAliasBean = new TagAliasOperatorHelper.TagAliasBean();
+        TagAliasOperatorHelper.TagAliasBean tagAliasBean =
+                new TagAliasOperatorHelper.TagAliasBean();
         tagAliasBean.action = ACTION_SET;
         tagAliasBean.alias = alias;
         tagAliasBean.isAliasAction = true;
-        TagAliasOperatorHelper.getInstance().handleAction(getApplicationContext(), BASE_ONE, tagAliasBean);
+        TagAliasOperatorHelper.getInstance().handleAction(getApplicationContext(), BASE_ONE,
+                tagAliasBean);
     }
 
     /**
@@ -270,7 +277,7 @@ public class MainActivity extends BaseActivity
     private void showProtocol() {
         Intent intent = new Intent(this, WebViewActivity.class);
         intent.putExtra(CommonData.KEY_PUBLIC,
-                        ZycApplication.getInstance().getBaseUrl() + BaseNetConfig.BASE_BASIC_USER_PROTOCOL_URL);
+                ZycApplication.getInstance().getBaseUrl() + BaseNetConfig.BASE_BASIC_USER_PROTOCOL_URL);
         intent.putExtra(CommonData.KEY_IS_PROTOCOL, true);
         startActivity(intent);
     }
@@ -287,28 +294,31 @@ public class MainActivity extends BaseActivity
         if (isLogin) {
             return;
         }
-        EMClient.getInstance()
-                .login(loginBean.getDoctorCode().toLowerCase(), BaseData.BASE_EASE_DEFAULT_PWD, new EMCallBack() {
-                    @Override
-                    public void onSuccess() {
-                        EMClient.getInstance().groupManager().loadAllGroups();
-                        EMClient.getInstance().chatManager().loadAllConversations();
-                        if (loginBean != null) {
-                            // update current user's display name for APNs
-                            EMClient.getInstance().pushManager().updatePushNickname(loginBean.getDoctorName());
+        if (loginBean != null) {
+            EMClient.getInstance().login(loginBean.getDoctorCode().toLowerCase(),
+                    BaseData.BASE_EASE_DEFAULT_PWD, new EMCallBack() {
+                        @Override
+                        public void onSuccess() {
+                            EMClient.getInstance().groupManager().loadAllGroups();
+                            EMClient.getInstance().chatManager().loadAllConversations();
+                            if (loginBean != null) {
+                                // update current user's display name for APNs
+                                EMClient.getInstance().pushManager().updatePushNickname(loginBean.getDoctorName());
+                            }
+                            runOnUiThread(() -> HuiZhenLog.i(TAG,
+                                    getString(R.string.txt_login_ease_success)));
                         }
-                        runOnUiThread(() -> HuiZhenLog.i(TAG, getString(R.string.txt_login_ease_success)));
-                    }
 
-                    @Override
-                    public void onProgress(int progress, String status) {
-                    }
+                        @Override
+                        public void onProgress(int progress, String status) {
+                        }
 
-                    @Override
-                    public void onError(int code, String message) {
-                        HuiZhenLog.i(TAG, getString(R.string.txt_login_ease_error));
-                    }
-                });
+                        @Override
+                        public void onError(int code, String message) {
+                            HuiZhenLog.i(TAG, getString(R.string.txt_login_ease_error));
+                        }
+                    });
+        }
     }
 
     private void initNotify() {
@@ -317,9 +327,9 @@ public class MainActivity extends BaseActivity
             String channelName = "聊天消息";
             int importance = NotificationManager.IMPORTANCE_HIGH;
             createNotificationChannel(channelId, channelName, importance);
-        }
-        else {
-            mNotificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+        } else {
+            mNotificationManager =
+                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         }
     }
 
@@ -343,7 +353,8 @@ public class MainActivity extends BaseActivity
             return;
         }
         String nickName = "";
-        List<PatientBean> list = LitePal.where("code = ?", message.getFrom().toUpperCase()).find(PatientBean.class);
+        List<PatientBean> list =
+                LitePal.where("code = ?", message.getFrom().toUpperCase()).find(PatientBean.class);
         if (list != null && list.size() > 0) {
             PatientBean bean = list.get(0);
             nickName = bean.getName();
@@ -351,15 +362,12 @@ public class MainActivity extends BaseActivity
         String text;
         EMMessageBody body = message.getBody();
         if (body instanceof EMTextMessageBody) {
-            text = ((EMTextMessageBody)body).getMessage();
-        }
-        else if (body instanceof EMImageMessageBody) {
+            text = ((EMTextMessageBody) body).getMessage();
+        } else if (body instanceof EMImageMessageBody) {
             text = getString(R.string.picture);
-        }
-        else if (body instanceof EMVoiceMessageBody) {
+        } else if (body instanceof EMVoiceMessageBody) {
             text = getString(R.string.voice_prefix);
-        }
-        else {
+        } else {
             text = getString(R.string.txt_receive_ease_message);
         }
         if (pendingCount > BaseData.BASE_PENDING_COUNT) {
@@ -369,21 +377,20 @@ public class MainActivity extends BaseActivity
         Intent intent = new Intent(MainActivity.this, EaseMsgClickBroadCastReceiver.class);
         intent.putExtra(CommonData.KEY_CHAT_ID, message.getFrom());
         intent.setAction(BaseData.EASE_MSG_ANDROID_INTENT_CLICK);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this, pendingCount, intent,
-                                                                 PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this, pendingCount,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Builder builder;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             builder = new NotificationCompat.Builder(this, BaseData.BASE_CHAT_CHANNEL);
             builder.setLargeIcon(largeIcon);
             builder.setChannelId(BaseData.BASE_CHAT_CHANNEL);
-        }
-        else {
+        } else {
             builder = new NotificationCompat.Builder(this, null);
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             builder.setSmallIcon(R.mipmap.icon_alpha_logo);
-        }
-        else {
+        } else {
             builder.setSmallIcon(R.mipmap.logo_icon);
         }
         builder.setAutoCancel(true);
@@ -391,8 +398,7 @@ public class MainActivity extends BaseActivity
         if (TextUtils.isEmpty(nickName)) {
             builder.setContentTitle(getString(R.string.APP_NAME));
             builder.setContentText(getString(R.string.txt_receive_ease_message));
-        }
-        else {
+        } else {
             builder.setContentTitle(nickName);
             builder.setContentText(text);
         }
@@ -405,7 +411,7 @@ public class MainActivity extends BaseActivity
     @TargetApi(Build.VERSION_CODES.O)
     private void createNotificationChannel(String channelId, String channelName, int importance) {
         NotificationChannel channel = new NotificationChannel(channelId, channelName, importance);
-        mNotificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         channel.setLightColor(Color.GREEN);
         channel.enableVibration(true);
         //        channel.setShowBadge(true);
@@ -423,12 +429,10 @@ public class MainActivity extends BaseActivity
             ivMessageDot.setVisibility(View.VISIBLE);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 //                sendSubscribeMsg(msgUnReadCount);
-            }
-            else {
+            } else {
                 setShortcutBadge(easeMessage);
             }
-        }
-        else {
+        } else {
             removeShortcutBadge();
             ivMessageDot.setVisibility(View.INVISIBLE);
         }
@@ -465,7 +469,8 @@ public class MainActivity extends BaseActivity
             runOnUiThread(() -> {
                 if (error == EMError.USER_LOGIN_ANOTHER_DEVICE) {
                     Intent intent = new Intent(MainActivity.this, HintLoginActivity.class);
-                    intent.putExtra(CommonData.KEY_PUBLIC_STRING, getString(R.string.txt_ease_login_expired));
+                    intent.putExtra(CommonData.KEY_PUBLIC_STRING,
+                            getString(R.string.txt_ease_login_expired));
                     startActivity(intent);
                     overridePendingTransition(R.anim.anim_fade_in, R.anim.keep);
                 }
@@ -488,7 +493,8 @@ public class MainActivity extends BaseActivity
         fragmentList.add(messageFragment);
         fragmentList.add(workerFragment);
         fragmentList.add(friendsFragment);
-        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), fragmentList);
+        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(),
+                fragmentList);
         viewPager.setAdapter(viewPagerAdapter);
         selectTab(BASE_ONE);
     }
@@ -531,7 +537,7 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-            @NonNull int[] grantResults) {
+                                           @NonNull int[] grantResults) {
         if (workerFragment != null) {
             workerFragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
@@ -560,9 +566,9 @@ public class MainActivity extends BaseActivity
         updateDialog = new UpdateDialog(this);
         updateDialog.setCancelable(false);
         updateDialog.setUpdateMode(mode)
-                    .setIsDownNewAPK(isDownNewApk)
-                    .setTitle(version.getTitle())
-                    .setData(version.getNotes());
+                .setIsDownNewAPK(isDownNewApk)
+                .setTitle(version.getTitle())
+                .setData(version.getNotes());
         updateDialog.setOnEnterClickListener(this);
         updateDialog.show();
     }
@@ -603,7 +609,8 @@ public class MainActivity extends BaseActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        iNotifyChangeListenerServer.registerProtocolChangeListener(protocolUpdate, RegisterType.UNREGISTER);
+        iNotifyChangeListenerServer.registerProtocolChangeListener(protocolUpdate,
+                RegisterType.UNREGISTER);
         //移除监听
         EMClient.getInstance().removeConnectionListener(connectionListener);
         EMClient.getInstance().chatManager().removeMessageListener(msgListener);

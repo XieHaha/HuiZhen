@@ -37,14 +37,12 @@ import com.yht.frame.data.bean.ReserveCheckBean;
 import com.yht.frame.data.bean.ReserveCheckTypeBean;
 import com.yht.frame.data.bean.SelectCheckTypeBean;
 import com.yht.frame.data.bean.SelectCheckTypeChildBean;
-import com.yht.frame.data.bean.SelectCheckTypeParentBean;
 import com.yht.frame.data.bean.ServiceSubmitErrorBean;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.HuiZhenLog;
 import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.widgets.dialog.ErrorServiceListDialog;
 import com.yht.frame.widgets.dialog.HintDialog;
-import com.yht.yihuantong.BuildConfig;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ZycApplication;
 import com.yht.yihuantong.ui.check.listener.OnCheckListener;
@@ -210,8 +208,8 @@ public class ReservationServiceActivity extends BaseActivity implements OnCheckL
      */
     private void addReserveCheckOrder() {
         RequestQueue queue = NoHttp.getRequestQueueInstance();
-        final Request<String> request = NoHttp.createStringRequest(BuildConfig.BASE_BASIC_URL +
-                        "order-check/create",
+        final Request<String> request = NoHttp.createStringRequest(
+                ZycApplication.getInstance().getBaseUrl() + "order-check/create",
                 RequestMethod.POST);
         String params = new Gson().toJson(reserveCheckBean);
         request.setDefineRequestBodyForJson(params);
