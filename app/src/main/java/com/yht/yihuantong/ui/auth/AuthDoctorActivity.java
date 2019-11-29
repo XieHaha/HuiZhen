@@ -3,14 +3,15 @@ package com.yht.yihuantong.ui.auth;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.yht.frame.api.ApiManager;
 import com.yht.frame.api.notify.IChange;
@@ -145,15 +146,17 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
     public void initListener() {
         super.initListener();
         //注册监听
-        iNotifyChangeListenerServer.registerDoctorAuthStatusChangeListener(authStatus, RegisterType.REGISTER);
+        iNotifyChangeListenerServer.registerDoctorAuthStatusChangeListener(authStatus,
+                RegisterType.REGISTER);
     }
 
     /**
      * 提交医生认证
      */
     private void submitDoctorAuth() {
-        RequestUtils.submitDoctorAuth(this, doctorAuthBean, loginBean.getToken(), loginBean.getMobile(), BaseData.ADMIN,
-                                      this);
+        RequestUtils.submitDoctorAuth(this, doctorAuthBean, loginBean.getToken(),
+                loginBean.getMobile(), BaseData.ADMIN,
+                this);
     }
 
     /**
@@ -165,15 +168,15 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
 
     /**
      * 极光alias推送设置
-     *
-     * @param alias
      */
     private void setJPushAlias(String alias) {
-        TagAliasOperatorHelper.TagAliasBean tagAliasBean = new TagAliasOperatorHelper.TagAliasBean();
+        TagAliasOperatorHelper.TagAliasBean tagAliasBean =
+                new TagAliasOperatorHelper.TagAliasBean();
         tagAliasBean.action = ACTION_SET;
         tagAliasBean.alias = alias;
         tagAliasBean.isAliasAction = true;
-        TagAliasOperatorHelper.getInstance().handleAction(getApplicationContext(), BASE_ONE, tagAliasBean);
+        TagAliasOperatorHelper.getInstance().handleAction(getApplicationContext(), BASE_ONE,
+                tagAliasBean);
     }
 
     private void tabAuthBaseView() {
@@ -183,8 +186,7 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
             authBaseFragment = new AuthBaseFragment();
             authBaseFragment.setOnAuthStepListener(this);
             transaction.add(R.id.layout_frame_root, authBaseFragment);
-        }
-        else {
+        } else {
             transaction.show(authBaseFragment);
             authBaseFragment.onResume();
         }
@@ -200,8 +202,7 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
             authLicenseFragment = new AuthLicenseFragment();
             authLicenseFragment.setOnAuthStepListener(this);
             transaction.add(R.id.layout_frame_root, authLicenseFragment);
-        }
-        else {
+        } else {
             transaction.show(authLicenseFragment);
             authLicenseFragment.onResume();
         }
@@ -218,8 +219,7 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
             authResultFragment = new AuthResultFragment();
             authResultFragment.setOnAuthStepListener(this);
             transaction.add(R.id.layout_frame_root, authResultFragment);
-        }
-        else {
+        } else {
             transaction.show(authResultFragment);
             authResultFragment.onResume();
         }
@@ -321,18 +321,21 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
         switch (task) {
             case SUBMIT_DOCTOR_AUTH:
                 //提交成功后需要更新用户code、token
-                LoginBean bean = (LoginBean)response.getData();
+                LoginBean bean = (LoginBean) response.getData();
                 loginBean.setToken(bean.getToken());
                 loginBean.setDoctorCode(bean.getDoctorCode());
                 //提交成功后需要更新本地认证状态
                 loginBean.setApprovalStatus(DocAuthStatus.AUTH_WAITTING);
                 ZycApplication.getInstance().setLoginBean(loginBean);
+                setJPushAlias(bean.getDoctorCode());
                 //跳转到认证结果
                 tabAuthResultView();
                 break;
             case GET_DOCTOR_AUTH:
-                doctorAuthBean = (DoctorAuthBean)response.getData();
-                if (doctorAuthBean == null) { return; }
+                doctorAuthBean = (DoctorAuthBean) response.getData();
+                if (doctorAuthBean == null) {
+                    return;
+                }
                 //如果已经认证成功
                 if (doctorAuthBean.getApprovalStatus() == DocAuthStatus.AUTH_SUCCESS) {
                     loginBean.setDoctorName(doctorAuthBean.getDoctorName());
@@ -353,26 +356,22 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                     return;
-                }
-                else if (doctorAuthBean.getApprovalStatus() == DocAuthStatus.AUTH_FAILD) {
+                } else if (doctorAuthBean.getApprovalStatus() == DocAuthStatus.AUTH_FAILD) {
                     loginBean.setApprovalStatus(doctorAuthBean.getApprovalStatus());
                     loginBean.setRejectReason(doctorAuthBean.getApprovalRejectReason());
                     ZycApplication.getInstance().setLoginBean(loginBean);
                     if (authAgain && !pushStatus) {
                         tabAuthBaseView();
-                    }
-                    else {
+                    } else {
                         pushStatus = false;
                         tabAuthResultView();
                     }
-                }
-                else if (doctorAuthBean.getApprovalStatus() == DocAuthStatus.AUTH_WAITTING) {
+                } else if (doctorAuthBean.getApprovalStatus() == DocAuthStatus.AUTH_WAITTING) {
                     loginBean.setApprovalStatus(doctorAuthBean.getApprovalStatus());
                     loginBean.setRejectReason(doctorAuthBean.getApprovalRejectReason());
                     ZycApplication.getInstance().setLoginBean(loginBean);
                     tabAuthResultView();
-                }
-                else {
+                } else {
                     tabAuthBaseView();
                 }
                 break;
@@ -391,8 +390,7 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
     public void onAuthTwo(int type, DoctorAuthBean bean) {
         if (type == BASE_ONE) {
             tabAuthBaseView();
-        }
-        else {
+        } else {
             doctorAuthBean = bean;
             submitDoctorAuth();
         }
@@ -435,21 +433,24 @@ public class AuthDoctorActivity extends BaseActivity implements OnAuthStepListen
     public void onDestroy() {
         super.onDestroy();
         //注销监听
-        iNotifyChangeListenerServer.registerDoctorAuthStatusChangeListener(authStatus, RegisterType.UNREGISTER);
+        iNotifyChangeListenerServer.registerDoctorAuthStatusChangeListener(authStatus,
+                RegisterType.UNREGISTER);
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-            @NonNull int[] grantResults) {
+                                           @NonNull int[] grantResults) {
         switch (curPage) {
             case BASE_ZERO:
                 if (authBaseFragment != null) {
-                    authBaseFragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
+                    authBaseFragment.onRequestPermissionsResult(requestCode, permissions,
+                            grantResults);
                 }
                 break;
             case BASE_ONE:
                 if (authLicenseFragment != null) {
-                    authLicenseFragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
+                    authLicenseFragment.onRequestPermissionsResult(requestCode, permissions,
+                            grantResults);
                 }
                 break;
             default:

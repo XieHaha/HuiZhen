@@ -26,18 +26,22 @@ public final class GlideHelper {
         //设置图片圆角角度
         RoundedCorners roundedCorners = new RoundedCorners(corner);
         return OPTIONS.optionalTransform(roundedCorners)
-                      .placeholder(R.mipmap.ic_default_header_r)
-                      .error(R.mipmap.ic_default_header_r)
-                      .priority(Priority.NORMAL);
+                .placeholder(R.mipmap.ic_default_header_r)
+                .error(R.mipmap.ic_default_header_r)
+                .priority(Priority.NORMAL);
     }
 
     public static RequestOptions getOptionsPic(int corner) {
         return OPTIONS_PIC.transform(new CenterCropRoundCornerTransform(corner)).priority(Priority.NORMAL);
     }
 
+    public static RequestOptions getOptionsPic() {
+        return OPTIONS_PIC.priority(Priority.NORMAL);
+    }
+
     public static RequestOptions getOptionsPicBig() {
         return OPTIONS_PIC_BIG.placeholder(R.mipmap.icon_loading_img)
-                              .error(R.mipmap.icon_load_faild_img)
-                              .priority(Priority.NORMAL);
+                .error(R.mipmap.icon_load_faild_img)
+                .priority(Priority.NORMAL);
     }
 }

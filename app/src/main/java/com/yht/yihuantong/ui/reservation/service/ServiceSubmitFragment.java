@@ -427,7 +427,7 @@ public class ServiceSubmitFragment extends BaseFragment implements RadioGroup.On
             initImage(true);
         } else {
             signatureImageUrl = (String) response.getData();
-            Glide.with(this).load(signatureImageUrl).apply(GlideHelper.getOptionsPic(0)).into(ivSignature);
+            Glide.with(this).load(signatureImageUrl).apply(GlideHelper.getOptionsPic()).into(ivSignature);
         }
     }
 

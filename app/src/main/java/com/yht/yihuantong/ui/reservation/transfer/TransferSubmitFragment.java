@@ -556,7 +556,7 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
                 initImage(true);
             } else {
                 signatureImageUrl = (String) response.getData();
-                Glide.with(this).load(signatureImageUrl).apply(GlideHelper.getOptionsPic(0)).into(ivSignature);
+                Glide.with(this).load(signatureImageUrl).apply(GlideHelper.getOptionsPic()).into(ivSignature);
             }
         }
     }

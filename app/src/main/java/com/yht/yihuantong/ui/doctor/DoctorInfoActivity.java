@@ -1,10 +1,12 @@
 package com.yht.yihuantong.ui.doctor;
 
+import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.bumptech.glide.Glide;
 import com.yht.frame.api.notify.NotifyChangeListenerManager;
@@ -19,6 +21,7 @@ import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.frame.widgets.textview.JustifiedTextView;
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.ui.patient.ChatContainerActivity;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -65,9 +68,12 @@ public class DoctorInfoActivity extends BaseActivity {
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
         if (getIntent() != null) {
-            doctorBean = (DoctorQrCodeBean)getIntent().getSerializableExtra(CommonData.KEY_DOCTOR_QR_CODE_BEAN);
+            doctorBean =
+                    (DoctorQrCodeBean) getIntent().getSerializableExtra(CommonData.KEY_DOCTOR_QR_CODE_BEAN);
         }
-        if (doctorBean != null) { bindData(); }
+        if (doctorBean != null) {
+            bindData();
+        }
     }
 
     /**
@@ -79,9 +85,9 @@ public class DoctorInfoActivity extends BaseActivity {
 
     private void bindData() {
         Glide.with(this)
-             .load(doctorBean.getPhoto())
-             .apply(GlideHelper.getOptions(BaseUtils.dp2px(this, 4)))
-             .into(ivHeadImg);
+                .load(doctorBean.getPhoto())
+                .apply(GlideHelper.getOptions(BaseUtils.dp2px(this, 4)))
+                .into(ivHeadImg);
         tvName.setText(doctorBean.getName());
         tvTitle.setText(doctorBean.getJobTitle());
         tvDepart.setText(doctorBean.getDepartmentName());
@@ -91,8 +97,7 @@ public class DoctorInfoActivity extends BaseActivity {
             if (tvIntroduction.getLineCount() > MAX_NUM) {
                 tvMore.setVisibility(View.VISIBLE);
                 initIntroduction(true);
-            }
-            else {
+            } else {
                 tvMore.setVisibility(View.GONE);
             }
         });
@@ -108,19 +113,20 @@ public class DoctorInfoActivity extends BaseActivity {
             tvMore.setSelected(false);
             tvMore.setText(R.string.txt_pack_down);
             tvIntroduction.setMaxLines(MAX_NUM);
-        }
-        else {
+        } else {
             tvMore.setSelected(true);
             tvMore.setText(R.string.txt_pack_up);
             tvIntroduction.setMaxLines(Integer.MAX_VALUE);
         }
     }
 
-    @OnClick({ R.id.tv_next, R.id.tv_more })
+    @OnClick({R.id.tv_next, R.id.tv_more})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_next:
-                if (doctorBean != null) { addDoctorFriend(); }
+                if (doctorBean != null) {
+                    addDoctorFriend();
+                }
                 break;
             case R.id.tv_more:
                 initIntroduction(tvMore.isSelected());
@@ -137,6 +143,12 @@ public class DoctorInfoActivity extends BaseActivity {
             //医生添加成功后  刷新医生列表
             NotifyChangeListenerManager.getInstance().notifyDoctorStatusChange("");
             ToastUtil.toast(this, response.getMsg());
+            //跳转到im
+            Intent intent = new Intent(this, ChatContainerActivity.class);
+            intent.putExtra(CommonData.KEY_CHAT_ID, doctorBean.getCode());
+            intent.putExtra(CommonData.KEY_CHAT_NAME, doctorBean.getName());
+            intent.putExtra(CommonData.KEY_DOCTOR_CHAT, true);
+            startActivity(intent);
             finish();
         }
     }

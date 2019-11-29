@@ -72,6 +72,7 @@ public class MatisseUtils {
                 .thumbnailScale(0.85f)
                 // 使用的图片加载引擎
                 .imageEngine(new GlideEngine())
+                .showPreview(false)
                 // 设置作为标记的请求码，返回图片时使用
                 .forResult(RC_PICK_IMG);
     }
