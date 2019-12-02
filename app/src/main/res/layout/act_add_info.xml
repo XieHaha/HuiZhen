@@ -1,40 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/color_f8f9fa"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
 
-    <include layout="@layout/public_title" />
+    <include
+        android:id="@+id/title_bar"
+        layout="@layout/public_title" />
 
     <RelativeLayout
+        android:id="@+id/layout_root"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/color_ffffff"
-        android:paddingEnd="20dp"
-        android:paddingStart="20dp"
-        android:layout_marginTop="20dp"
-        android:paddingTop="8dp"
-        android:paddingBottom="18dp">
+        android:layout_height="match_parent"
+        android:layout_below="@id/title_bar">
 
-        <com.yht.frame.widgets.edittext.EditTextLayout
-            android:id="@+id/edit_layout"
+        <RelativeLayout
+            android:id="@+id/layout_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="48dp" />
+            android:layout_marginTop="20dp"
+            android:background="@color/color_ffffff"
+            android:paddingStart="20dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="18dp">
 
-        <TextView
-            android:id="@+id/tv_calc_num"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:textSize="@dimen/text_16"
-            android:visibility="gone"
-            android:textColor="#c5c8cc"
-            android:layout_marginTop="10dp"
-            android:text="@string/txt_calc_num_five"
-            android:layout_below="@id/edit_layout" />
+            <com.yht.frame.widgets.edittext.EditTextLayout
+                android:id="@+id/edit_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp" />
+
+            <TextView
+                android:id="@+id/tv_calc_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/edit_layout"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="10dp"
+                android:text="@string/txt_calc_num_five"
+                android:textColor="#c5c8cc"
+                android:textSize="@dimen/text_16"
+                android:visibility="gone" />
+        </RelativeLayout>
     </RelativeLayout>
 
-</LinearLayout>
+</RelativeLayout>

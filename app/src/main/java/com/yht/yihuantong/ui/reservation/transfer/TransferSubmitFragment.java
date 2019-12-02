@@ -246,6 +246,8 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
             rbUp.setChecked(true);
             rbFamilyRequire.setChecked(true);
             rbSelf.setChecked(true);
+            //清空数据后 初始化
+            clearAll = false;
         } else {
             //数据回填
             initTransferData();

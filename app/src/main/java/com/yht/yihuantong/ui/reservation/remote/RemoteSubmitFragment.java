@@ -181,6 +181,8 @@ public class RemoteSubmitFragment extends BaseFragment {
             layoutDepart.removeAllViews();
             layoutDepart.setVisibility(View.GONE);
             remoteDepartBeans.clear();
+            //清空数据后 初始化
+            clearAll = false;
         } else {
             //数据回填
             initRemoteData();

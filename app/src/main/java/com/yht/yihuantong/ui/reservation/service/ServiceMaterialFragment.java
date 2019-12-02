@@ -124,6 +124,8 @@ public class ServiceMaterialFragment extends BaseFragment implements View.OnFocu
             pastMedicalHis = "";
             familyMedicalHis = "";
             allergiesHis = "";
+            //清空数据后 初始化
+            clearAll = false;
         }
         initCheckData();
     }

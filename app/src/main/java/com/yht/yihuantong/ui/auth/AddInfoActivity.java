@@ -2,13 +2,15 @@ package com.yht.yihuantong.ui.auth;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
@@ -17,10 +19,12 @@ import com.yht.frame.data.bean.HospitalBean;
 import com.yht.frame.http.retrofit.RequestUtils;
 import com.yht.frame.ui.BaseActivity;
 import com.yht.frame.utils.BaseUtils;
+import com.yht.frame.utils.ScreenUtils;
 import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.frame.widgets.edittext.AbstractTextWatcher;
 import com.yht.frame.widgets.edittext.EditTextLayout;
+import com.yht.frame.widgets.view.ViewPrepared;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ZycApplication;
 
@@ -46,6 +50,10 @@ public class AddInfoActivity extends BaseActivity {
     ImageView publicTitleBarBack;
     @BindView(R.id.tv_calc_num)
     TextView tvCalcNum;
+    @BindView(R.id.layout_input)
+    RelativeLayout layoutInput;
+    @BindView(R.id.layout_root)
+    RelativeLayout layoutRoot;
     private String inputValue;
     /**
      * true 添加个人简介
@@ -71,6 +79,13 @@ public class AddInfoActivity extends BaseActivity {
         }
         publicTitleBarMore.setVisibility(View.VISIBLE);
         publicTitleBarBack.setOnClickListener(this);
+
+        new ViewPrepared().asyncPrepare(etHospital, (w, h) -> {
+            if (mode) {
+                ScreenUtils.controlKeyboardLayout(AddInfoActivity.this, layoutRoot, layoutInput);
+            }
+            showSoftInputFromWindow(etHospital);
+        });
     }
 
     @Override

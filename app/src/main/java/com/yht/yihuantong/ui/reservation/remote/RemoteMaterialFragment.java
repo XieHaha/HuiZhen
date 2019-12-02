@@ -178,6 +178,8 @@ public class RemoteMaterialFragment extends BaseFragment implements View.OnFocus
             pastMedicalHis = "";
             familyMedicalHis = "";
             allergiesHis = "";
+            //清空数据后 初始化
+            clearAll = false;
         }
         initRemoteData();
     }

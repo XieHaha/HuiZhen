@@ -170,7 +170,7 @@
     <!--相机-->
     <string name="txt_camera_hint">将二维码放入框中，即可自动扫描</string>
     <string name="txt_camera_error">无法识别此二维码</string>
-    <string name="txt_camera_patient_error">请扫描【会珍】公众号中的居民二维码</string>
+    <string name="txt_camera_patient_error">请扫描&#160;【会珍】&#160;公众号中的居民二维码</string>
     <string name="txt_camera_qr">二维码</string>
     <string name="txt_camera_qr_again">重新扫描</string>
 

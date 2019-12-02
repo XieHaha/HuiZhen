@@ -8,7 +8,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
@@ -16,6 +15,8 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
@@ -275,7 +276,6 @@ public abstract class BaseActivity extends RxAppCompatActivity
     /**
      * 打开软键盘
      */
-    @Deprecated
     public void showSoftInputFromWindow(View editText) {
         InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
         if (inputMethodManager != null) {

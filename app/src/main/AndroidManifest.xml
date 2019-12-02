@@ -132,7 +132,7 @@
             android:name=".ui.auth.AddInfoActivity"
             android:label="@string/title_add_hospital"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysVisible" />
+            android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.auth.SelectDepartActivity"
             android:label="@string/title_select_depart"

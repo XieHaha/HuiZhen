@@ -124,6 +124,8 @@ public class TransferMaterialFragment extends BaseFragment implements View.OnFoc
             pastMedicalHis = "";
             familyMedicalHis = "";
             allergiesHis = "";
+            //清空数据后 初始化
+            clearAll = false;
         }
         initTransferData();
     }

@@ -224,6 +224,8 @@ public class SelectCheckTypeActivity extends BaseActivity implements BaseQuickAd
         }
         tvSelected.setText(String.valueOf(selectedCodes.size()));
         tvArrow.setSelected(true);
+        //隐藏输入框光标
+        etSearchCheckType.setCursorVisible(false);
         //是否显示刷新引导
         boolean status = sharePreferenceUtil.getAlwaysBoolean(CommonData.KEY_SHOW_REFRESH_STATUS);
         if (!status) {
@@ -261,6 +263,8 @@ public class SelectCheckTypeActivity extends BaseActivity implements BaseQuickAd
                 searchCheckTypeListByLocal(s.toString());
             }
         });
+        //重新显示光标
+        etSearchCheckType.setOnClickListener(v -> etSearchCheckType.setCursorVisible(true));
         searchListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
