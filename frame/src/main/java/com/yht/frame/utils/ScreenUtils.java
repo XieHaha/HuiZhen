@@ -96,31 +96,19 @@ public class ScreenUtils {
             Rect rect = new Rect();
             //获取root在窗体的可视区域
             root.getWindowVisibleDisplayFrame(rect);
+            //总高度
+            int totalHeight = root.getRootView().getHeight();
             //获取root在窗体的不可视区域高度(被其他View遮挡的区域高度)
-            int rootInvisibleHeight =
-                    root.getRootView().getHeight() - rect.bottom - getVirtualBarHeigh(context);
+            int rootInvisibleHeight = totalHeight - rect.bottom - getVirtualBarHeigh(context);
+            //输入框加上titlebar  实际高度
+            int curHeight = scrollToView.getHeight() + BaseUtils.dp2px(context, 110);
             //若不可视区域高度大于100，则键盘显示
-            if (rootInvisibleHeight > 200 && rootInvisibleHeight + 60 < scrollToView.getHeight()) {
-                scrollToView.scrollTo(0, 60);
+            if (rootInvisibleHeight != 0 && curHeight >= rect.bottom) {
+                scrollToView.scrollTo(0, BaseUtils.dp2px(context, 30));
             } else {
                 //键盘隐藏
                 scrollToView.scrollTo(0, 0);
             }
         });
-    }
-
-
-    /**
-     * 获取view宽，高及屏幕上的坐标
-     */
-    public static int[] getLocation(View v) {
-        int[] loc = new int[4];
-        int[] location = new int[2];
-        v.getLocationOnScreen(location);
-        loc[0] = location[0];
-        loc[1] = location[1];
-        loc[2] = v.getWidth();
-        loc[3] = v.getHeight();
-        return loc;
     }
 }

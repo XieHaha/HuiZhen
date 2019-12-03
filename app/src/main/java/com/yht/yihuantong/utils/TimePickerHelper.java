@@ -1,8 +1,9 @@
 package com.yht.yihuantong.utils;
 
 import android.content.Context;
-import androidx.core.content.ContextCompat;
 import android.widget.TextView;
+
+import androidx.core.content.ContextCompat;
 
 import com.yht.frame.widgets.picker.builder.TimePickerBuilder;
 import com.yht.frame.widgets.picker.view.TimePickerView;
@@ -25,35 +26,38 @@ public class TimePickerHelper {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd-HH");
         String time = simpleDateFormat.format(new Date());
         String[] strings = time.split("-");
-        startDate.set(Integer.parseInt(strings[0]), Integer.parseInt(strings[1]) - 1, Integer.parseInt(strings[02]),
-                      Integer.parseInt(strings[3]) + 1, 0);
+        startDate.set(Integer.parseInt(strings[0]), Integer.parseInt(strings[1]) - 1,
+                Integer.parseInt(strings[02]),
+                Integer.parseInt(strings[3]) + 1, 0);
         Calendar endDate = Calendar.getInstance();
-        endDate.set(Integer.parseInt(strings[0]) + 1, 12 - Integer.parseInt(strings[1]) - 1, 31, 23, 0);
+        int endMonth = Integer.parseInt(strings[1]) == 1 ? 12 : Integer.parseInt(strings[1]) - 1;
+        endDate.set(Integer.parseInt(strings[0]) + 1, endMonth, 31, 23, 0);
         //时间选择器 ，自定义布局
-        timePickerView = new TimePickerBuilder(context, (date, v) -> {//选中事件回调
+        timePickerView = new TimePickerBuilder(context, (date, v) -> {
+            //选中事件回调
             if (callBack != null) {
                 callBack.result(date);
             }
         }).setRangDate(startDate, endDate)
-          .setLayoutRes(R.layout.view_time_picker, v -> {
-              final TextView tvSubmit = v.findViewById(R.id.tv_sure);
-              TextView ivCancel = v.findViewById(R.id.tv_cancel);
-              tvSubmit.setOnClickListener(v1 -> {
-                  timePickerView.returnData();
-                  timePickerView.dismiss();
-              });
-              ivCancel.setOnClickListener(v12 -> timePickerView.dismiss());
-          })
-          .setType(new boolean[] { false, true, true, true, false, false })
-          .setLabel("年", "月", "日", "时", "分", "秒")
-          .setLineSpacingMultiplier(2.5f)
-          .setContentTextSize(18)
-          .setTextColorCenter(ContextCompat.getColor(context, R.color.color_373d4d))
-          .setTextColorOut(ContextCompat.getColor(context, R.color.color_a1a8b3))
-          .setTextXOffset(0, 0, 0, 0, 0, 0)
-          .isCenterLabel(false) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
-          .setDividerColor(ContextCompat.getColor(context, R.color.color_a1a8b3))
-          .build();
+                .setLayoutRes(R.layout.view_time_picker, v -> {
+                    final TextView tvSubmit = v.findViewById(R.id.tv_sure);
+                    TextView ivCancel = v.findViewById(R.id.tv_cancel);
+                    tvSubmit.setOnClickListener(v1 -> {
+                        timePickerView.returnData();
+                        timePickerView.dismiss();
+                    });
+                    ivCancel.setOnClickListener(v12 -> timePickerView.dismiss());
+                })
+                .setType(new boolean[]{false, true, true, true, false, false})
+                .setLabel("年", "月", "日", "时", "分", "秒")
+                .setLineSpacingMultiplier(2.5f)
+                .setContentTextSize(18)
+                .setTextColorCenter(ContextCompat.getColor(context, R.color.color_373d4d))
+                .setTextColorOut(ContextCompat.getColor(context, R.color.color_a1a8b3))
+                .setTextXOffset(0, 0, 0, 0, 0, 0)
+                .isCenterLabel(false) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
+                .setDividerColor(ContextCompat.getColor(context, R.color.color_a1a8b3))
+                .build();
         timePickerView.show();
     }
 
