@@ -75,8 +75,7 @@ public class SelectCheckTypeRvAdapter extends BaseQuickAdapter<SelectCheckTypeBe
         } else {
             ivSelect.setSelected(false);
         }
-        List<SelectCheckTypeChildBean> childBeans =
-                item.getChildServiceTypes(item.getProjectCode());
+        List<SelectCheckTypeChildBean> childBeans = item.getProductInfoList();
         LinearLayout layoutCheck = helper.getView(R.id.layout_check);
         layoutCheck.removeAllViews();
         if (childBeans != null && childBeans.size() > 0) {

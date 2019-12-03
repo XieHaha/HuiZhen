@@ -42,7 +42,7 @@ import butterknife.OnClick;
 public class AddInfoActivity extends BaseActivity {
     @BindView(R.id.edit_layout)
     EditTextLayout etHospital;
-    @BindView(R.id.public_title_bar_more)
+    @BindView(R.id.public_title_bar_more_a1)
     TextView publicTitleBarMore;
     @BindView(R.id.public_title_bar_title)
     TextView publicTitleBarTitle;
@@ -161,7 +161,7 @@ public class AddInfoActivity extends BaseActivity {
         }
     }
 
-    @OnClick({ R.id.public_title_bar_more })
+    @OnClick({ R.id.public_title_bar_more_a1 })
     public void onViewClicked() {
         if (publicTitleBarMore.isSelected()) { save(); }
     }

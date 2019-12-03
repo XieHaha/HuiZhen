@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -237,8 +238,12 @@ public class RemoteDetailActivity extends BaseActivity implements RemoteOrderSta
             case REMOTE_ORDER_STATUS_TIMEOUT_CLOSE:
             case REMOTE_ORDER_STATUS_INTERRRUPT_CLOSE:
             case REMOTE_ORDER_STATUS_ALL_REFUSE_CLOSE:
-                layoutCloseReason.setVisibility(View.VISIBLE);
-                tvCloseReason.setText(remoteDetailBean.getRejectReason());
+                if (TextUtils.isEmpty(remoteDetailBean.getRejectReason())) {
+                    layoutCloseReason.setVisibility(View.GONE);
+                } else {
+                    layoutCloseReason.setVisibility(View.VISIBLE);
+                    tvCloseReason.setText(remoteDetailBean.getRejectReason());
+                }
                 layoutAgainApply.setVisibility(View.GONE);
                 ivStatus.setImageResource(R.mipmap.ic_status_closed);
                 break;
@@ -248,9 +253,13 @@ public class RemoteDetailActivity extends BaseActivity implements RemoteOrderSta
                 ivStatus.setImageResource(R.mipmap.ic_status_wait_review);
                 break;
             case REMOTE_ORDER_STATUS_REVIEW_REFUSE:
+                if (TextUtils.isEmpty(remoteDetailBean.getRejectReason())) {
+                    layoutCloseReason.setVisibility(View.GONE);
+                } else {
+                    layoutCloseReason.setVisibility(View.VISIBLE);
+                    tvCloseReason.setText(remoteDetailBean.getRejectReason());
+                }
                 layoutAgainApply.setVisibility(View.VISIBLE);
-                layoutCloseReason.setVisibility(View.VISIBLE);
-                tvCloseReason.setText(remoteDetailBean.getRejectReason());
                 ivStatus.setImageResource(R.mipmap.ic_status_pass_not);
                 break;
             default:

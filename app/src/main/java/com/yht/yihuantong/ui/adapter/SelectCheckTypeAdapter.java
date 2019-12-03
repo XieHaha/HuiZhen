@@ -104,8 +104,7 @@ public class SelectCheckTypeAdapter extends BaseAdapter {
         } else {
             holder.ivSelect.setSelected(false);
         }
-        List<SelectCheckTypeChildBean> childBeans =
-                item.getChildServiceTypes(item.getProjectCode());
+        List<SelectCheckTypeChildBean> childBeans = item.getProductInfoList();
         holder.layoutCheck.removeAllViews();
         if (childBeans != null && childBeans.size() > 0) {
             for (SelectCheckTypeChildBean childBean : childBeans) {

@@ -54,7 +54,7 @@ public class PastHistoryActivity extends BaseActivity {
     LinearLayout layoutAllergies;
     @BindView(R.id.public_title_bar_back)
     ImageView publicTitleBarBack;
-    @BindView(R.id.public_title_bar_more)
+    @BindView(R.id.public_title_bar_more_a1)
     TextView publicTitleBarMore;
     private String pastMedicalHis = "", familyMedicalHis = "", allergiesHis = "";
     private ArrayList<String> pastHistoryData;
@@ -213,7 +213,7 @@ public class PastHistoryActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.public_title_bar_more, R.id.iv_past_medical_his, R.id.iv_family_medical_his,
+    @OnClick({R.id.public_title_bar_more_a1, R.id.iv_past_medical_his, R.id.iv_family_medical_his,
             R.id.iv_allergies})
     public void onViewClicked(View view) {
         switch (view.getId()) {

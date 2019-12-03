@@ -3,8 +3,6 @@ package com.yht.yihuantong.ui.patient;
 import android.annotation.SuppressLint;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -17,6 +15,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 
 import com.yht.frame.api.notify.NotifyChangeListenerManager;
 import com.yht.frame.data.BaseData;
@@ -59,7 +60,7 @@ public class EditLabelActivity extends BaseActivity
     TagFlowLayout allFlow;
     @BindView(R.id.layout_all)
     LinearLayout layoutAll;
-    @BindView(R.id.public_title_bar_more)
+    @BindView(R.id.public_title_bar_more_a1)
     TextView publicTitleBarMore;
     @BindView(R.id.list_view)
     ListView listView;
@@ -292,7 +293,7 @@ public class EditLabelActivity extends BaseActivity
         }
     }
 
-    @OnClick(R.id.public_title_bar_more)
+    @OnClick(R.id.public_title_bar_more_a1)
     public void onViewClicked() {
         if (publicTitleBarMore.isSelected()) {
             String content = inputEditText.getText().toString();

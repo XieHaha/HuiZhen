@@ -51,8 +51,7 @@ public class SelectCheckTypeSubmitAdapter extends BaseQuickAdapter<SelectCheckTy
         helper.setText(R.id.tv_check_type_name, item.getProjectName());
 
         LinearLayout layoutCheck = helper.getView(R.id.layout_check);
-        List<SelectCheckTypeChildBean> childBeans =
-                item.getChildServiceTypes(item.getProjectCode());
+        List<SelectCheckTypeChildBean> childBeans = item.getProductInfoList();
         layoutCheck.removeAllViews();
         if (childBeans != null && childBeans.size() > 0) {
             layoutCheck.setVisibility(View.VISIBLE);
