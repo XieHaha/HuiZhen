@@ -94,7 +94,8 @@ public final class SelectionCreator {
      * @param matisse   a requester context wrapper.
      * @param mimeTypes MIME type set to select.
      */
-    SelectionCreator(Matisse matisse, @NonNull Set<MimeType> mimeTypes, boolean mediaTypeExclusive) {
+    SelectionCreator(Matisse matisse, @NonNull Set<MimeType> mimeTypes,
+                     boolean mediaTypeExclusive) {
         mMatisse = matisse;
         mSelectionSpec = SelectionSpec.getCleanInstance();
         mSelectionSpec.mimeTypeSet = mimeTypes;
@@ -150,10 +151,14 @@ public final class SelectionCreator {
      * @return {@link SelectionCreator} for fluent API.
      */
     public SelectionCreator maxSelectable(int maxSelectable) {
-        if (maxSelectable < 1)
-            throw new IllegalArgumentException("maxSelectable must be greater than or equal to one");
-        if (mSelectionSpec.maxImageSelectable > 0 || mSelectionSpec.maxVideoSelectable > 0)
-            throw new IllegalStateException("already set maxImageSelectable and maxVideoSelectable");
+        if (maxSelectable < 1) {
+            throw new IllegalArgumentException("maxSelectable must be greater than or equal to " +
+                    "one");
+        }
+        if (mSelectionSpec.maxImageSelectable > 0 || mSelectionSpec.maxVideoSelectable > 0) {
+            throw new IllegalStateException("already set maxImageSelectable and " +
+                    "maxVideoSelectable");
+        }
         mSelectionSpec.maxSelectable = maxSelectable;
         return this;
     }
@@ -167,16 +172,20 @@ public final class SelectionCreator {
     }
 
     /**
-     * Only useful when {@link SelectionSpec#mediaTypeExclusive} set true and you want to set different maximum
+     * Only useful when {@link SelectionSpec#mediaTypeExclusive} set true and you want to set
+     * different maximum
      * selectable files for image and video media types.
      *
      * @param maxImageSelectable Maximum selectable count for image.
      * @param maxVideoSelectable Maximum selectable count for video.
-     * @return  {@link SelectionCreator} for fluent API.
+     * @return {@link SelectionCreator} for fluent API.
      */
-    public SelectionCreator maxSelectablePerMediaType(int maxImageSelectable, int maxVideoSelectable) {
-        if (maxImageSelectable < 1 || maxVideoSelectable < 1)
-            throw new IllegalArgumentException(("max selectable must be greater than or equal to one"));
+    public SelectionCreator maxSelectablePerMediaType(int maxImageSelectable,
+                                                      int maxVideoSelectable) {
+        if (maxImageSelectable < 1 || maxVideoSelectable < 1) {
+            throw new IllegalArgumentException(("max selectable must be greater than or equal to " +
+                    "one"));
+        }
         mSelectionSpec.maxSelectable = -1;
         mSelectionSpec.maxImageSelectable = maxImageSelectable;
         mSelectionSpec.maxVideoSelectable = maxVideoSelectable;
@@ -193,7 +202,8 @@ public final class SelectionCreator {
         if (mSelectionSpec.filters == null) {
             mSelectionSpec.filters = new ArrayList<>();
         }
-        if (filter == null) throw new IllegalArgumentException("filter cannot be null");
+        if (filter == null)
+            throw new IllegalArgumentException("filter cannot be null");
         mSelectionSpec.filters.add(filter);
         return this;
     }
@@ -225,6 +235,7 @@ public final class SelectionCreator {
 
     /**
      * Determines Whether to hide top and bottom toolbar in PreView mode ,when user tap the picture
+     *
      * @param enable
      * @return {@link SelectionCreator} for fluent API.
      */
@@ -246,7 +257,6 @@ public final class SelectionCreator {
 
     /**
      * Capture strategy provided for the location to save photos including internal and external
-     * storage and also a authority for {@link android.support.v4.content.FileProvider}.
      *
      * @param captureStrategy {@link CaptureStrategy}, needed only when capturing is enabled.
      * @return {@link SelectionCreator} for fluent API.
@@ -260,7 +270,8 @@ public final class SelectionCreator {
      * Set the desired orientation of this activity.
      *
      * @param orientation An orientation constant as used in {@link ScreenOrientation}.
-     *                    Default value is {@link android.content.pm.ActivityInfo#SCREEN_ORIENTATION_PORTRAIT}.
+     *                    Default value is
+     *                    {@link android.content.pm.ActivityInfo#SCREEN_ORIENTATION_PORTRAIT}.
      * @return {@link SelectionCreator} for fluent API.
      * @see Activity#setRequestedOrientation(int)
      */
@@ -278,7 +289,9 @@ public final class SelectionCreator {
      * @return {@link SelectionCreator} for fluent API.
      */
     public SelectionCreator spanCount(int spanCount) {
-        if (spanCount < 1) throw new IllegalArgumentException("spanCount cannot be less than 1");
+        if (spanCount < 1) {
+            throw new IllegalArgumentException("spanCount cannot be less than 1");
+        }
         mSelectionSpec.spanCount = spanCount;
         return this;
     }
@@ -304,8 +317,9 @@ public final class SelectionCreator {
      * @return {@link SelectionCreator} for fluent API.
      */
     public SelectionCreator thumbnailScale(float scale) {
-        if (scale <= 0f || scale > 1f)
+        if (scale <= 0f || scale > 1f) {
             throw new IllegalArgumentException("Thumbnail scale must be between (0.0, 1.0]");
+        }
         mSelectionSpec.thumbnailScale = scale;
         return this;
     }

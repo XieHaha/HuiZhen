@@ -118,20 +118,23 @@ public enum MimeType {
     }
 
     public static boolean isImage(String mimeType) {
-        if (mimeType == null)
+        if (mimeType == null) {
             return false;
+        }
         return mimeType.startsWith("image");
     }
 
     public static boolean isVideo(String mimeType) {
-        if (mimeType == null)
+        if (mimeType == null) {
             return false;
+        }
         return mimeType.startsWith("video");
     }
 
     public static boolean isGif(String mimeType) {
-        if (mimeType == null)
+        if (mimeType == null) {
             return false;
+        }
         return mimeType.equals(MimeType.GIF.toString());
     }
 
