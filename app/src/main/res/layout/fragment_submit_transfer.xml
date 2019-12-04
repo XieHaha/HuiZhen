@@ -259,13 +259,22 @@
             android:paddingEnd="20dp">
 
             <com.yht.frame.widgets.textview.RedStarTextView
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:text="@string/txt_receiving_doctor"
                 android:textColor="@color/color_373d4d"
                 android:textSize="@dimen/text_16"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_time"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="9dp"
+                android:layout_weight="1"
+                android:text="@string/txt_timeout_fifteen"
+                android:textColor="@color/color_a1a8b3"
+                android:textSize="@dimen/text_14" />
 
             <TextView
                 android:id="@+id/tv_select"
@@ -390,6 +399,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
+                android:padding="2dp"
                 android:background="@drawable/corner2_stroke1_d9d9d9"
                 android:visibility="visible">
 

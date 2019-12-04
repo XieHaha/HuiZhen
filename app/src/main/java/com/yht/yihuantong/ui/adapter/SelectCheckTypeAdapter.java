@@ -1,5 +1,8 @@
 package com.yht.yihuantong.ui.adapter;
 
+import android.graphics.Bitmap;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +17,7 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.yht.frame.data.bean.SelectCheckTypeBean;
 import com.yht.frame.data.bean.SelectCheckTypeChildBean;
 import com.yht.frame.utils.BaseUtils;
+import com.yht.frame.widgets.view.CenterImageSpan;
 import com.yht.yihuantong.R;
 
 import java.util.ArrayList;
@@ -26,11 +30,16 @@ import java.util.List;
  */
 public class SelectCheckTypeAdapter extends BaseQuickAdapter<SelectCheckTypeBean,
         BaseViewHolder> {
+    private Bitmap bitmap;
 
     private ArrayList<String> selectedCodes = new ArrayList<>();
 
     public void setSelectedCodes(ArrayList<String> selectedCodes) {
         this.selectedCodes = selectedCodes;
+    }
+
+    public void setBitmap(Bitmap bitmap) {
+        this.bitmap = bitmap;
     }
 
     public SelectCheckTypeAdapter(int layoutResId, @Nullable List<SelectCheckTypeBean> data) {
@@ -66,9 +75,17 @@ public class SelectCheckTypeAdapter extends BaseQuickAdapter<SelectCheckTypeBean
             helper.setVisible(R.id.view_line, true).setVisible(R.id.tv_space, false);
         }
         //数据绑定
-        helper.setText(R.id.tv_check_type_name, item.getProjectName())
-                .setText(R.id.tv_price, String.format(mContext.getString(R.string.txt_price),
-                        BaseUtils.getPrice(item.getPrice())));
+        helper.setText(R.id.tv_price, String.format(mContext.getString(R.string.txt_price),
+                BaseUtils.getPrice(item.getPrice())));
+        TextView tvName = helper.getView(R.id.tv_check_type_name);
+        tvName.setText(String.format(mContext.getString(R.string.txt_space),
+                item.getProjectName()));
+        //1、服务包；
+        //2、服务包线上支付；
+        //3、服务包配置了不可退款。
+        if (true) {
+            tvName.append(appendImage(item.getProjectName()));
+        }
         ImageView ivSelect = helper.getView(R.id.iv_select);
         if (selectedCodes.contains(item.getProjectCode())) {
             ivSelect.setSelected(true);
@@ -93,5 +110,12 @@ public class SelectCheckTypeAdapter extends BaseQuickAdapter<SelectCheckTypeBean
         tvNum.setText(String.format(mContext.getString(R.string.txt_amount),
                 childBean.getProductCount()));
         layoutCheck.addView(convertView);
+    }
+
+    private SpannableString appendImage(String showText) {
+        CenterImageSpan imgSpan = new CenterImageSpan(mContext, bitmap);
+        SpannableString spanString = new SpannableString(showText);
+        spanString.setSpan(imgSpan, 0, showText.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return spanString;
     }
 }

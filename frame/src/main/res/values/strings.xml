@@ -461,6 +461,7 @@
     <string name="txt_calc_selected_num_right">&#160;项</string>
     <string name="txt_select_service_refresh_hint">找不到服务，下拉刷新试试！</string>
     <string name="txt_know">我知道了</string>
+    <string name="txt_timeout_fifteen">15分钟未处理，系统自动取消</string>
 
     <!--远程相关-->
     <string name="txt_reserve_remote">预约远程会诊</string>

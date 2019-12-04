@@ -43,7 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:drawableStart="@mipmap/ic_hour"
+            android:drawableStart="@mipmap/ic_tips"
             android:drawablePadding="4dp"
             android:gravity="center"
             android:paddingStart="20dp"

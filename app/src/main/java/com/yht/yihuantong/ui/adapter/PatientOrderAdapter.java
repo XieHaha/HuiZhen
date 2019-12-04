@@ -73,13 +73,13 @@ public class PatientOrderAdapter extends BaseMultiItemQuickAdapter<PatientOrderB
         int status = item.getStatus();
         switch (status) {
             case PATIENT_ORDER_INCOMPLETE:
-                helper.setImageResource(R.id.iv_check_status_in, R.mipmap.ic_tag_check_incomplete);
+                helper.setImageResource(R.id.iv_check_status_in, R.mipmap.ic_tag_check_patient_incomplete);
                 break;
             case PATIENT_ORDER_COMPLETE:
-                helper.setImageResource(R.id.iv_check_status_in, R.mipmap.ic_tag_complete);
+                helper.setImageResource(R.id.iv_check_status_in, R.mipmap.ic_tag_patient_complete);
                 break;
             case PATIENT_ORDER_CANCEL:
-                helper.setImageResource(R.id.iv_check_status_in, R.mipmap.ic_tag_cancel);
+                helper.setImageResource(R.id.iv_check_status_in, R.mipmap.ic_tag_patient_cancel);
                 break;
             default:
                 break;

@@ -1,6 +1,8 @@
 package com.yht.yihuantong.ui.check;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -37,9 +39,9 @@ import com.yht.frame.widgets.edittext.SuperEditText;
 import com.yht.frame.widgets.view.ExpandableLayout;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ZycApplication;
-import com.yht.yihuantong.ui.adapter.SelectCheckTypeSearchAdapter;
-import com.yht.yihuantong.ui.adapter.SelectCheckTypeFilterAdapter;
 import com.yht.yihuantong.ui.adapter.SelectCheckTypeAdapter;
+import com.yht.yihuantong.ui.adapter.SelectCheckTypeFilterAdapter;
+import com.yht.yihuantong.ui.adapter.SelectCheckTypeSearchAdapter;
 import com.yht.yihuantong.ui.adapter.SelectCheckTypeShopAdapter;
 
 import org.litepal.LitePal;
@@ -150,6 +152,10 @@ public class SelectCheckTypeActivity extends BaseActivity implements BaseQuickAd
      */
     private List<String> recentlyUsedServiceData;
     /**
+     * 不可退标识
+     */
+    private Bitmap bitmap;
+    /**
      * 当前选中的医院、选中的服务（全部服务or最近使用）
      */
     private String curHospital, curServiceType;
@@ -185,6 +191,8 @@ public class SelectCheckTypeActivity extends BaseActivity implements BaseQuickAd
             //忽略价格的强制更新
             forcedUpdate = sharePreferenceUtil.getBoolean(CommonData.KEY_RESERVE_CHECK_UPDATE);
         }
+        bitmap = BitmapFactory.decodeResource(getApplication().getResources(),
+                R.mipmap.ic_label_reufund_refused);
         layoutRefresh.setColorSchemeResources(android.R.color.holo_blue_light,
                 android.R.color.holo_red_light,
                 android.R.color.holo_orange_light, android.R.color.holo_green_light);
@@ -196,6 +204,7 @@ public class SelectCheckTypeActivity extends BaseActivity implements BaseQuickAd
         recyclerView.setLayoutManager(layoutManager = new LinearLayoutManager(this));
         parentAdapter = new SelectCheckTypeAdapter(R.layout.item_check_select_new,
                 parentNewBeans);
+        parentAdapter.setBitmap(bitmap);
         parentAdapter.setOnItemClickListener(this);
         recyclerView.setAdapter(parentAdapter);
         //医院列表数据
@@ -207,6 +216,7 @@ public class SelectCheckTypeActivity extends BaseActivity implements BaseQuickAd
         filterRecyclerView.setAdapter(filterAdapter);
         //搜索列表
         searchAdapter = new SelectCheckTypeSearchAdapter(this);
+        searchAdapter.setBitmap(bitmap);
         searchListView.setOnItemClickListener(this);
         searchListView.setAdapter(searchAdapter);
         //购物车
@@ -850,5 +860,14 @@ public class SelectCheckTypeActivity extends BaseActivity implements BaseQuickAd
         LitePal.saveAll(parentNewBeans);
         //变更更新状态为已更新
         sharePreferenceUtil.putBoolean(CommonData.KEY_RESERVE_CHECK_UPDATE, false);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (bitmap != null) {
+            bitmap.recycle();
+            bitmap = null;
+        }
     }
 }

@@ -84,6 +84,8 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
     RadioButton rbNcms;
     @BindView(R.id.rb_medicare)
     RadioButton rbMedicare;
+    @BindView(R.id.tv_time)
+    TextView tvTime;
     @BindView(R.id.tv_select)
     TextView tvSelect;
     @BindView(R.id.iv_receiving_doctor)

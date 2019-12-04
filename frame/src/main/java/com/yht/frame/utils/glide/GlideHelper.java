@@ -18,6 +18,10 @@ public final class GlideHelper {
      */
     private static final RequestOptions OPTIONS_PIC = new RequestOptions();
     /**
+     * 图片
+     */
+    private static final RequestOptions OPTIONS_NONE_CORNER_PIC = new RequestOptions();
+    /**
      * 图片 大图
      */
     private static final RequestOptions OPTIONS_PIC_BIG = new RequestOptions();
@@ -36,7 +40,7 @@ public final class GlideHelper {
     }
 
     public static RequestOptions getOptionsPic() {
-        return OPTIONS_PIC.priority(Priority.NORMAL);
+        return OPTIONS_NONE_CORNER_PIC.priority(Priority.NORMAL);
     }
 
     public static RequestOptions getOptionsPicBig() {
