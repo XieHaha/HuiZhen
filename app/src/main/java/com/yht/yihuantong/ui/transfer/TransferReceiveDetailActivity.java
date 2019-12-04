@@ -172,8 +172,7 @@ public class TransferReceiveDetailActivity extends BaseActivity
         }
         if (BaseUtils.isNetworkAvailable(this)) {
             getTransferOrderDetail();
-        }
-        else {
+        } else {
             layoutHint.setVisibility(View.VISIBLE);
             loadViewHelper.load(LoadViewHelper.NONE_NETWORK);
         }
@@ -190,7 +189,8 @@ public class TransferReceiveDetailActivity extends BaseActivity
      * 拒绝转诊
      */
     private void rejectReserveTransferOrder() {
-        RequestUtils.rejectReserveTransferOrder(this, loginBean.getToken(), rejectReason, orderNo, this);
+        RequestUtils.rejectReserveTransferOrder(this, loginBean.getToken(), rejectReason, orderNo
+                , this);
     }
 
     /**
@@ -214,9 +214,9 @@ public class TransferReceiveDetailActivity extends BaseActivity
 
     private void initDetailData() {
         Glide.with(this)
-             .load(transferBean.getPhoto())
-             .apply(GlideHelper.getOptions(BaseUtils.dp2px(this, 4)))
-             .into(ivPatientImg);
+                .load(transferBean.getPhoto())
+                .apply(GlideHelper.getOptions(BaseUtils.dp2px(this, 4)))
+                .into(ivPatientImg);
         tvDoctorPhone.setText(transferBean.getSourceDoctorMobile());
         tvReceivingDepart.setText(transferBean.getTargetHospitalDepartmentName());
         tvReceivingHospital.setText(transferBean.getTargetHospitalName());
@@ -224,10 +224,10 @@ public class TransferReceiveDetailActivity extends BaseActivity
         tvTransferNotice.setText(transferBean.getNote());
         tvPatientName.setText(transferBean.getPatientName());
         tvPhone.setText(BaseUtils.asteriskUserPhone(transferBean.getPatientMobile()));
-        tvIcCard.setText(BaseUtils.asteriskUserCard(transferBean.getPatientIdCardNo(),12));
+        tvIcCard.setText(BaseUtils.asteriskUserCard(transferBean.getPatientIdCardNo(), 12));
         tvPatientSex.setText(transferBean.getSex() == BaseData.BASE_ONE
-                             ? getString(R.string.txt_sex_male)
-                             : getString(R.string.txt_sex_female));
+                ? getString(R.string.txt_sex_male)
+                : getString(R.string.txt_sex_female));
         tvPatientAge.setText(String.valueOf(transferBean.getPatientAge()));
         tvPastMedical.setText(transferBean.getPastHistory());
         tvFamilyMedical.setText(transferBean.getFamilyHistory());
@@ -238,17 +238,15 @@ public class TransferReceiveDetailActivity extends BaseActivity
         tvTransferHospital.setText(transferBean.getSourceHospitalName());
         tvTransferPurpose.setText(transferBean.getTransferTarget());
         tvTransferType.setText(transferBean.getTransferType() == BaseData.BASE_ZERO
-                               ? getString(R.string.txt_transfer_up)
-                               : getString(R.string.txt_transfer_down));
+                ? getString(R.string.txt_transfer_up)
+                : getString(R.string.txt_transfer_down));
         tvTransferPurpose.setText(transferBean.getTransferTarget());
         int payType = transferBean.getPayType();
         if (payType == BaseData.BASE_ZERO) {
             tvPayment.setText(getString(R.string.txt_self_pay));
-        }
-        else if (payType == BaseData.BASE_ONE) {
+        } else if (payType == BaseData.BASE_ONE) {
             tvPayment.setText(getString(R.string.txt_medicare));
-        }
-        else {
+        } else {
             tvPayment.setText(getString(R.string.txt_self_medicare));
         }
         tvInitiateDiagnosis.setText(transferBean.getInitResult());
@@ -286,7 +284,8 @@ public class TransferReceiveDetailActivity extends BaseActivity
         }
         if (!TextUtils.equals(transferBean.getTargetDoctorCode(), loginBean.getDoctorCode())) {
             tvReceivingStatus.setText(
-                    String.format(getString(R.string.txt_transfer_other_doctor), transferBean.getTargetDoctorName()));
+                    String.format(getString(R.string.txt_transfer_other_doctor),
+                            transferBean.getTargetDoctorName()));
             tvTransferDescription.setText(transferBean.getTransferReason());
             layoutTransferDescription.setVisibility(View.VISIBLE);
             layoutContact.setVisibility(View.GONE);
@@ -297,10 +296,13 @@ public class TransferReceiveDetailActivity extends BaseActivity
     }
 
     @OnClick({
-            R.id.public_title_bar_back, R.id.layout_call, R.id.layout_edit_transfer, R.id.tv_transfer_other,
-            R.id.tv_refuse, R.id.tv_received, R.id.tv_contact_doctor, R.id.tv_contact_patient })
+            R.id.public_title_bar_back, R.id.layout_call, R.id.layout_edit_transfer,
+            R.id.tv_transfer_other,
+            R.id.tv_refuse, R.id.tv_received, R.id.tv_contact_doctor, R.id.tv_contact_patient})
     public void onViewClicked(View view) {
-        if (transferBean == null) { return; }
+        if (transferBean == null) {
+            return;
+        }
         Intent intent;
         switch (view.getId()) {
             case R.id.public_title_bar_back:
@@ -309,9 +311,9 @@ public class TransferReceiveDetailActivity extends BaseActivity
                 break;
             case R.id.layout_call:
                 new HintDialog(this).setPhone(getString(R.string.txt_contact_doctor_phone),
-                                              transferBean.getSourceDoctorMobile())
-                                    .setOnEnterClickListener(() -> callPhone(transferBean.getSourceDoctorMobile()))
-                                    .show();
+                        transferBean.getSourceDoctorMobile())
+                        .setOnEnterClickListener(() -> callPhone(transferBean.getSourceDoctorMobile()))
+                        .show();
                 break;
             case R.id.layout_edit_transfer:
                 intent = new Intent(this, TransferEditActivity.class);
@@ -326,18 +328,18 @@ public class TransferReceiveDetailActivity extends BaseActivity
                 break;
             case R.id.tv_refuse:
                 new InputDialog(this).Builder()
-                                     .setCancelable(false)
-                                     .setCanceledOnTouchOutside(false)
-                                     .setEditHintText(getString(R.string.txt_reject_transfer_reason_hint))
-                                     .setEnterBtnTxt(getString(R.string.txt_refuse))
-                                     .setEnterSelect(true)
-                                     .setOnEnterClickListener(() -> {
-                                     })
-                                     .setResultListener(result -> {
-                                         rejectReason = result;
-                                         rejectReserveTransferOrder();
-                                     })
-                                     .show();
+                        .setCancelable(false)
+                        .setCanceledOnTouchOutside(false)
+                        .setEditHintText(getString(R.string.txt_reject_transfer_reason_hint))
+                        .setEnterBtnTxt(getString(R.string.txt_refuse))
+                        .setEnterSelect(true)
+                        .setOnEnterClickListener(() -> {
+                        })
+                        .setResultListener(result -> {
+                            rejectReason = result;
+                            rejectReserveTransferOrder();
+                        })
+                        .show();
                 break;
             case R.id.tv_received:
                 intent = new Intent(this, TransferEditActivity.class);
@@ -346,15 +348,15 @@ public class TransferReceiveDetailActivity extends BaseActivity
                 break;
             case R.id.tv_contact_patient:
                 new HintDialog(this).setPhone(getString(R.string.txt_contact_patient_phone),
-                                              transferBean.getPatientMobile())
-                                    .setOnEnterClickListener(() -> callPhone(transferBean.getPatientMobile()))
-                                    .show();
+                        transferBean.getPatientMobile())
+                        .setOnEnterClickListener(() -> callPhone(transferBean.getPatientMobile()))
+                        .show();
                 break;
             case R.id.tv_contact_doctor:
                 new HintDialog(this).setPhone(getString(R.string.txt_contact_doctor_phone),
-                                              transferBean.getSourceDoctorMobile())
-                                    .setOnEnterClickListener(() -> callPhone(transferBean.getSourceDoctorMobile()))
-                                    .show();
+                        transferBean.getSourceDoctorMobile())
+                        .setOnEnterClickListener(() -> callPhone(transferBean.getSourceDoctorMobile()))
+                        .show();
                 break;
             default:
                 break;
@@ -372,16 +374,14 @@ public class TransferReceiveDetailActivity extends BaseActivity
         switch (task) {
             case GET_TRANSFER_ORDER_DETAIL:
                 layoutHint.setVisibility(View.GONE);
-                transferBean = (TransferDetailBean)response.getData();
+                transferBean = (TransferDetailBean) response.getData();
                 initPage();
                 initDetailData();
                 break;
             case RECEIVE_RESERVE_TRANSFER_ORDER:
             case REJECT_RESERVE_TRANSFER_ORDER:
                 ToastUtil.toast(this, response.getMsg());
-                //通知列表刷新
-                setResult(RESULT_OK);
-                finish();
+                getTransferOrderDetail();
                 break;
             default:
                 break;
@@ -400,8 +400,9 @@ public class TransferReceiveDetailActivity extends BaseActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_CANCELED &&
-            (requestCode == REQUEST_CODE_TRANSFER_AGAIN || requestCode == REQUEST_CODE_RECEIVE_TRANSFER)) {
+        boolean next = resultCode == Activity.RESULT_CANCELED &&
+                (requestCode == REQUEST_CODE_TRANSFER_AGAIN || requestCode == REQUEST_CODE_RECEIVE_TRANSFER);
+        if (next) {
             setResult(RESULT_OK);
             getTransferOrderDetail();
         }
@@ -410,10 +411,10 @@ public class TransferReceiveDetailActivity extends BaseActivity
         }
         switch (requestCode) {
             case REQUEST_CODE_UPDATE_TRANSFER:
+            case REQUEST_CODE_RECEIVE_TRANSFER:
                 setResult(RESULT_OK);
                 getTransferOrderDetail();
                 break;
-            case REQUEST_CODE_RECEIVE_TRANSFER:
             case REQUEST_CODE_TRANSFER_AGAIN:
                 setResult(RESULT_OK);
                 finish();
@@ -430,13 +431,11 @@ public class TransferReceiveDetailActivity extends BaseActivity
                 Intent upIntent = NavUtils.getParentActivityIntent(this);
                 if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
                     TaskStackBuilder.create(this).addNextIntentWithParentStack(upIntent).startActivities();
-                }
-                else {
+                } else {
                     upIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     NavUtils.navigateUpTo(this, upIntent);
                 }
-            }
-            else {
+            } else {
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
             }

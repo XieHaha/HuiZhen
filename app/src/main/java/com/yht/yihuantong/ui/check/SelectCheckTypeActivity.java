@@ -331,7 +331,7 @@ public class SelectCheckTypeActivity extends BaseActivity implements BaseQuickAd
                                 bean.getProjectAlias().contains(searchKey));
                 if (contains) {
                     searchBeans.add(bean);
-                } else {
+                } else  if (bean.getType() == BASE_TWO){
                     //服务包下的服务项
                     List<SelectCheckTypeChildBean> childBeans =
                             bean.getChildServiceTypes(bean.getProjectCode());

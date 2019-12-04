@@ -14,6 +14,9 @@ import java.util.List;
  */
 public class SelectCheckTypeBean extends LitePalSupport implements Serializable {
     private static final long serialVersionUID = 2307028291664717958L;
+    /**
+     * 1 服务项，2 服务包
+     */
     private int type;
     private long price;
     private String projectCode;

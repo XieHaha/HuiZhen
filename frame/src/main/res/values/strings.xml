@@ -492,6 +492,7 @@
     <string name="txt_select_depart_again">重新选择科室</string>
     <string name="txt_open_file_error">暂不支持查看此格式文件</string>
     <string name="txt_reservation_error">&#160;(该时段不可预约)</string>
+    <string name="txt_reservation_depart_error">暂无可预约科室</string>
 
     <!--转诊申请-->
     <string name="txt_visiting">接诊</string>

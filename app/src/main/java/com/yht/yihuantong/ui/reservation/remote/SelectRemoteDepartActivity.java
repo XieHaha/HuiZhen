@@ -166,6 +166,7 @@ public class SelectRemoteDepartActivity extends BaseActivity
                 resultMap.put(remoteDepartBean.getHospitalName(), list);
             }
         }
+        remoteDepartGroup.clear();
         for (List<RemoteDepartBean> value : resultMap.values()) {
             titleBean = new RemoteDepartTitleBean();
             for (RemoteDepartBean bean : value) {
@@ -174,9 +175,17 @@ public class SelectRemoteDepartActivity extends BaseActivity
             }
             remoteDepartGroup.add(titleBean);
         }
-        remoteDepartAdapter.setNewData(remoteDepartGroup);
-        //默认展开全部
-        remoteDepartAdapter.expandAll();
+        if (remoteDepartGroup.size() > 0) {
+            remoteDepartAdapter.setNewData(remoteDepartGroup);
+            //默认展开全部
+            remoteDepartAdapter.expandAll();
+            recyclerView.setVisibility(View.VISIBLE);
+            layoutHint.setVisibility(View.GONE);
+        } else {
+            recyclerView.setVisibility(View.GONE);
+            layoutHint.setVisibility(View.VISIBLE);
+            loadViewHelper.load(LoadViewHelper.NONE_RESERVATION_DEPART);
+        }
     }
 
     @Override
@@ -255,7 +264,7 @@ public class SelectRemoteDepartActivity extends BaseActivity
             } else {
                 recyclerView.setVisibility(View.GONE);
                 layoutHint.setVisibility(View.VISIBLE);
-                loadViewHelper.load(LoadViewHelper.NONE_RECORDING);
+                loadViewHelper.load(LoadViewHelper.NONE_RESERVATION_DEPART);
             }
         }
     }
