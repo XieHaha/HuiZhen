@@ -67,7 +67,7 @@
             android:paddingTop="12dp"
             android:paddingRight="16dp"
             android:paddingBottom="12dp"
-            android:src="@mipmap/ic_left_gray"
+            android:src="@mipmap/ic_back_white"
             android:visibility="visible" />
 
         <TextView

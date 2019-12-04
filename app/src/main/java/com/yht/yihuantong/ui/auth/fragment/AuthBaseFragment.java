@@ -210,7 +210,12 @@ public class AuthBaseFragment extends BaseFragment implements OnMediaItemClickLi
                 rbFemale.setChecked(true);
             }
         }
-        Glide.with(this).load(FileUrlUtil.addTokenToUrl(doctorAuthBean.getDoctorPhoto())).apply(GlideHelper.getOptions(BaseUtils.dp2px(getContext(), 4))).into(ivAuthBaseImg);
+        headerImageUrl = doctorAuthBean.getDoctorPhoto();
+        imagePaths.clear();
+        NormImage normImage = new NormImage();
+        normImage.setImageUrl(headerImageUrl);
+        imagePaths.add(normImage);
+        Glide.with(this).load(FileUrlUtil.addTokenToUrl(headerImageUrl)).apply(GlideHelper.getOptions(BaseUtils.dp2px(getContext(), 4))).into(ivAuthBaseImg);
     }
 
     /**
@@ -391,7 +396,7 @@ public class AuthBaseFragment extends BaseFragment implements OnMediaItemClickLi
      * 打开图片库
      */
     private void openPhoto() {
-        MatisseUtils.open(this, true, 1,true);
+        MatisseUtils.open(this, true, 1, true);
     }
 
     /**
