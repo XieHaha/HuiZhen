@@ -430,7 +430,7 @@ public class RemoteMaterialFragment extends BaseFragment implements View.OnFocus
      * 打开图片库
      */
     private void openPhoto() {
-        MatisseUtils.open(this, true, BaseData.BASE_IMAGE_SIZE_MAX - imagePaths.size());
+        MatisseUtils.open(this, true, BaseData.BASE_IMAGE_SIZE_MAX - imagePaths.size(),false);
     }
 
     /**

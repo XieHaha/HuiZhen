@@ -282,7 +282,7 @@ public class AuthLicenseFragment extends BaseFragment
                 num--;
             }
         }
-        MatisseUtils.open(this, true, num);
+        MatisseUtils.open(this, true, num,false);
     }
 
     @Override

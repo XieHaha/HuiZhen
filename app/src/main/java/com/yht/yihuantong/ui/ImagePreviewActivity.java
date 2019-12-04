@@ -5,9 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import androidx.annotation.NonNull;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -15,6 +12,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.bean.NormImage;
@@ -177,7 +178,7 @@ public class ImagePreviewActivity extends Activity implements ViewPager.OnPageCh
                 onBackPressed();
                 break;
             case R.id.public_title_bar_more:
-                MatisseUtils.open(this, true, 1);
+                MatisseUtils.open(this, true, 1,true);
                 break;
             default:
                 break;

@@ -24,12 +24,12 @@ public class MatisseUtils {
      */
     private static final int RC_PICK_IMG = 0x0001;
 
-    public static void open(Activity activity, boolean isCapture, int maxNum) {
+    public static void open(Activity activity, boolean isCapture, int maxNum, boolean single) {
         Matisse.from(activity)
                 // 选择 mime 的类型
                 .choose(EnumSet.of(MimeType.JPEG, MimeType.PNG))
                 // 显示选择的数量
-                .countable(true)
+                .countable(!single)
                 //相机
                 .capture(isCapture)
                 .captureStrategy(
@@ -39,6 +39,7 @@ public class MatisseUtils {
                 .theme(R.style.Matisse_Zhihu)
                 // 图片选择的最多数量
                 .maxSelectable(maxNum)
+                .single(single)
                 // 列表中显示的图片大小
                 .gridExpectedSize(activity.getResources().getDimensionPixelSize(R.dimen.app_picture_size))
                 .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
@@ -50,12 +51,12 @@ public class MatisseUtils {
                 .forResult(RC_PICK_IMG);
     }
 
-    public static void open(Fragment fragment, boolean isCapture, int maxNum) {
+    public static void open(Fragment fragment, boolean isCapture, int maxNum, boolean single) {
         Matisse.from(fragment)
                 // 选择 mime 的类型
                 .choose(EnumSet.of(MimeType.JPEG, MimeType.PNG))
                 // 显示选择的数量
-                .countable(false)
+                .countable(!single)
                 //相机
                 .capture(isCapture)
                 .captureStrategy(
@@ -65,6 +66,7 @@ public class MatisseUtils {
                 .theme(R.style.Matisse_Zhihu)
                 // 图片选择的最多数量
                 .maxSelectable(maxNum)
+                .single(single)
                 // 列表中显示的图片大小
                 .gridExpectedSize(fragment.getResources().getDimensionPixelSize(R.dimen.app_picture_size))
                 .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
@@ -72,7 +74,6 @@ public class MatisseUtils {
                 .thumbnailScale(0.85f)
                 // 使用的图片加载引擎
                 .imageEngine(new GlideEngine())
-                .showPreview(false)
                 // 设置作为标记的请求码，返回图片时使用
                 .forResult(RC_PICK_IMG);
     }

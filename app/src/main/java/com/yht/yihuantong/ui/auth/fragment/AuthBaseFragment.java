@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.Selection;
@@ -16,6 +15,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.bumptech.glide.Glide;
 import com.yht.frame.api.DirHelper;
@@ -390,7 +391,7 @@ public class AuthBaseFragment extends BaseFragment implements OnMediaItemClickLi
      * 打开图片库
      */
     private void openPhoto() {
-        MatisseUtils.open(this, true, 1);
+        MatisseUtils.open(this, true, 1,true);
     }
 
     /**

@@ -3,12 +3,13 @@ package com.yht.yihuantong.ui.check;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.yht.frame.data.BaseData;
 import com.yht.frame.data.BaseResponse;
@@ -183,7 +184,7 @@ public class AddDiagnosisActivity extends BaseActivity
      * 打开图片库
      */
     private void openPhoto() {
-        MatisseUtils.open(this, true, BaseData.BASE_IMAGE_SIZE_MAX - imagePaths.size());
+        MatisseUtils.open(this, true, BaseData.BASE_IMAGE_SIZE_MAX - imagePaths.size(),false);
     }
 
     private void initNextButton() {

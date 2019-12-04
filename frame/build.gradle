@@ -25,6 +25,7 @@ android {
 
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
+    api project(':matisse')
     api project(':zxinglibrary')
     api 'androidx.appcompat:appcompat:1.1.0'
     api 'androidx.recyclerview:recyclerview:1.0.0'
@@ -46,7 +47,7 @@ dependencies {
     //适配界面
 //    api 'me.jessyan:autosize:1.1.2'
     //知乎
-    api 'com.zhihu.android:matisse:0.5.3-beta3'
+//    api 'com.zhihu.android:matisse:0.5.3-beta3'
     //glide
     api 'com.github.bumptech.glide:glide:4.7.1'
     //网络 文件下载
