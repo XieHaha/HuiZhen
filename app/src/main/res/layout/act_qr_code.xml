@@ -1,40 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/color_1491fc">
+    android:layout_height="match_parent">
 
-    <RelativeLayout
+    <ImageView
+        android:id="@+id/iv_bg"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/app_title_bar_height"
-        android:layout_marginTop="40dp">
-
-        <ImageView
-            android:id="@+id/public_title_bar_back"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_centerVertical="true"
-            android:paddingLeft="16dp"
-            android:paddingTop="12dp"
-            android:paddingRight="16dp"
-            android:paddingBottom="12dp"
-            android:src="@mipmap/ic_left_gray"
-            android:visibility="visible" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:ellipsize="marquee"
-            android:marqueeRepeatLimit="marquee_forever"
-            android:maxWidth="200dp"
-            android:singleLine="true"
-            android:text="@string/title_my_qr_code"
-            android:textColor="@color/color_ffffff"
-            android:textSize="@dimen/text_18"
-            android:textStyle="bold" />
-
-    </RelativeLayout>
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/pic_patient_bg" />
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/view_pager"
@@ -62,4 +36,36 @@
             android:src="@drawable/selector_circular_alpha_tab" />
 
     </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/app_title_bar_height"
+        android:layout_marginTop="30dp">
+
+        <ImageView
+            android:id="@+id/public_title_bar_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:paddingLeft="16dp"
+            android:paddingTop="12dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="12dp"
+            android:src="@mipmap/ic_back_white"
+            android:visibility="visible" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:maxWidth="200dp"
+            android:singleLine="true"
+            android:text="@string/title_my_qr_code"
+            android:textColor="@color/color_ffffff"
+            android:textSize="@dimen/text_18"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
 </RelativeLayout>

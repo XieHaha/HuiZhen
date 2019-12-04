@@ -28,6 +28,8 @@ import butterknife.OnClick;
 public class QrCodeActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
     @BindView(R.id.view_pager)
     ViewPager viewPager;
+    @BindView(R.id.iv_bg)
+    ImageView ivBg;
     @BindView(R.id.iv_left)
     ImageView ivLeft;
     @BindView(R.id.iv_right)
@@ -123,10 +125,12 @@ public class QrCodeActivity extends BaseActivity implements ViewPager.OnPageChan
     public void onPageSelected(int position) {
         switch (position) {
             case BASE_ZERO:
+                ivBg.setImageResource(R.mipmap.pic_patient_bg);
                 ivLeft.setSelected(true);
                 ivRight.setSelected(false);
                 break;
             case BASE_ONE:
+                ivBg.setImageResource(R.mipmap.pic_doctor_bg);
                 ivLeft.setSelected(false);
                 ivRight.setSelected(true);
                 break;

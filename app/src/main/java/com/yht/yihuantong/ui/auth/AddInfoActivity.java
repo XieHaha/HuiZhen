@@ -79,13 +79,14 @@ public class AddInfoActivity extends BaseActivity {
         }
         publicTitleBarMore.setVisibility(View.VISIBLE);
         publicTitleBarBack.setOnClickListener(this);
-
         new ViewPrepared().asyncPrepare(etHospital, (w, h) -> {
             if (mode) {
                 ScreenUtils.controlKeyboardLayout(AddInfoActivity.this, layoutRoot, layoutInput);
             }
             showSoftInputFromWindow(etHospital);
         });
+
+
     }
 
     @Override

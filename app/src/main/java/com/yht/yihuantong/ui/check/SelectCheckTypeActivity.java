@@ -37,11 +37,10 @@ import com.yht.frame.widgets.edittext.SuperEditText;
 import com.yht.frame.widgets.view.ExpandableLayout;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ZycApplication;
-import com.yht.yihuantong.ui.adapter.SelectCheckTypeAdapter;
+import com.yht.yihuantong.ui.adapter.SelectCheckTypeSearchAdapter;
 import com.yht.yihuantong.ui.adapter.SelectCheckTypeFilterAdapter;
-import com.yht.yihuantong.ui.adapter.SelectCheckTypeRvAdapter;
+import com.yht.yihuantong.ui.adapter.SelectCheckTypeAdapter;
 import com.yht.yihuantong.ui.adapter.SelectCheckTypeShopAdapter;
-import com.yht.yihuantong.ui.adapter.ShopCheckTypeAdapter;
 
 import org.litepal.LitePal;
 
@@ -58,8 +57,7 @@ import butterknife.OnClick;
  * @des 医院选择
  */
 public class SelectCheckTypeActivity extends BaseActivity implements BaseQuickAdapter.OnItemClickListener, AdapterView.OnItemClickListener,
-        SwipeRefreshLayout.OnRefreshListener, ShopCheckTypeAdapter.OnServiceDeleteListener,
-        BaseQuickAdapter.OnItemChildClickListener {
+        SwipeRefreshLayout.OnRefreshListener, BaseQuickAdapter.OnItemChildClickListener {
     @BindView(R.id.et_search_check_type)
     SuperEditText etSearchCheckType;
     @BindView(R.id.tv_hospital_btn)
@@ -105,7 +103,7 @@ public class SelectCheckTypeActivity extends BaseActivity implements BaseQuickAd
     /**
      * 服务项
      */
-    private SelectCheckTypeRvAdapter parentAdapter;
+    private SelectCheckTypeAdapter parentAdapter;
     private LinearLayoutManager layoutManager;
     /**
      * 筛选条件列表
@@ -114,7 +112,7 @@ public class SelectCheckTypeActivity extends BaseActivity implements BaseQuickAd
     /**
      * 搜索结果列表
      */
-    private SelectCheckTypeAdapter searchAdapter;
+    private SelectCheckTypeSearchAdapter searchAdapter;
     /**
      * 购物车
      */
@@ -196,7 +194,7 @@ public class SelectCheckTypeActivity extends BaseActivity implements BaseQuickAd
         curServiceType = getString(R.string.txt_all_services);
         //服务项列表
         recyclerView.setLayoutManager(layoutManager = new LinearLayoutManager(this));
-        parentAdapter = new SelectCheckTypeRvAdapter(R.layout.item_check_select_new,
+        parentAdapter = new SelectCheckTypeAdapter(R.layout.item_check_select_new,
                 parentNewBeans);
         parentAdapter.setOnItemClickListener(this);
         recyclerView.setAdapter(parentAdapter);
@@ -208,7 +206,7 @@ public class SelectCheckTypeActivity extends BaseActivity implements BaseQuickAd
         filterAdapter.setOnItemClickListener(this);
         filterRecyclerView.setAdapter(filterAdapter);
         //搜索列表
-        searchAdapter = new SelectCheckTypeAdapter(this);
+        searchAdapter = new SelectCheckTypeSearchAdapter(this);
         searchListView.setOnItemClickListener(this);
         searchListView.setAdapter(searchAdapter);
         //购物车
@@ -331,7 +329,7 @@ public class SelectCheckTypeActivity extends BaseActivity implements BaseQuickAd
                                 bean.getProjectAlias().contains(searchKey));
                 if (contains) {
                     searchBeans.add(bean);
-                } else  if (bean.getType() == BASE_TWO){
+                } else if (bean.getType() == BASE_TWO) {
                     //服务包下的服务项
                     List<SelectCheckTypeChildBean> childBeans =
                             bean.getChildServiceTypes(bean.getProjectCode());
@@ -732,7 +730,7 @@ public class SelectCheckTypeActivity extends BaseActivity implements BaseQuickAd
             }
             bindFilterServiceListData();
             hideFilterLayout();
-        } else if (adapter instanceof SelectCheckTypeRvAdapter) {
+        } else if (adapter instanceof SelectCheckTypeAdapter) {
             updateSelectedCodes(parentNewBeans.get(position));
         }
     }
@@ -749,17 +747,6 @@ public class SelectCheckTypeActivity extends BaseActivity implements BaseQuickAd
                 shopBeans.remove(bean);
             }
         }
-        ZycApplication.getInstance().setSelectCodes(selectedCodes);
-        updateShopCart();
-    }
-
-    /**
-     * 购物车数据删除
-     */
-    @Override
-    public void onServiceDelete(SelectCheckTypeBean bean) {
-        selectedCodes.remove(bean.getProjectCode());
-        shopBeans.remove(bean);
         ZycApplication.getInstance().setSelectCodes(selectedCodes);
         updateShopCart();
     }

@@ -49,7 +49,8 @@ import butterknife.ButterKnife;
  * @author DUNDUN
  */
 public abstract class BaseActivity extends RxAppCompatActivity
-        implements UiInterface, BaseData, ResponseListener<BaseResponse>, View.OnClickListener, OnPermissionCallback {
+        implements UiInterface, BaseData, ResponseListener<BaseResponse>, View.OnClickListener,
+        OnPermissionCallback {
     public static final String TAG = "ZYC";
     /**
      * load view
@@ -93,8 +94,7 @@ public abstract class BaseActivity extends RxAppCompatActivity
         int layoutID = getLayoutID();
         if (layoutID != 0) {
             setContentView(layoutID);
-        }
-        else {
+        } else {
             setContentView(getLayoutView());
         }
         ButterKnife.bind(this);
@@ -127,8 +127,7 @@ public abstract class BaseActivity extends RxAppCompatActivity
         try {
             backBtn = findViewById(R.id.public_title_bar_back);
             tvTitle = findViewById(R.id.public_title_bar_title);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             HuiZhenLog.e(getClass().getSimpleName(), e.getMessage());
         }
     }
@@ -145,8 +144,7 @@ public abstract class BaseActivity extends RxAppCompatActivity
             });
             tvTitle.setSelected(true);
             tvTitle.setText(getTitle().toString());
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             HuiZhenLog.e(getClass().getSimpleName(), e.getMessage());
         }
     }
@@ -220,7 +218,8 @@ public abstract class BaseActivity extends RxAppCompatActivity
      * 初始化login数据
      */
     public LoginBean getLoginBean() {
-        String userStr = (String)SharePreferenceUtil.getObject(this, CommonData.KEY_LOGIN_BEAN, "");
+        String userStr = (String) SharePreferenceUtil.getObject(this, CommonData.KEY_LOGIN_BEAN,
+                "");
         if (!TextUtils.isEmpty(userStr)) {
             loginBean = new Gson().fromJson(userStr, LoginBean.class);
         }
@@ -249,14 +248,13 @@ public abstract class BaseActivity extends RxAppCompatActivity
             Window window = activity.getWindow();
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.getDecorView()
-                  .setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+                    .setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(Color.TRANSPARENT);
-        }
-        else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window window = activity.getWindow();
             window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
-                            WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
     }
 
@@ -266,8 +264,11 @@ public abstract class BaseActivity extends RxAppCompatActivity
     public void hideSoftInputFromWindow() {
         Activity activity = AppManager.getInstance().getCurrentActivity();
         if (activity == null || activity.getCurrentFocus() == null ||
-            activity.getCurrentFocus().getWindowToken() == null) { return; }
-        InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                activity.getCurrentFocus().getWindowToken() == null) {
+            return;
+        }
+        InputMethodManager inputMethodManager =
+                (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         if (inputMethodManager != null) {
             inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
         }
@@ -277,9 +278,10 @@ public abstract class BaseActivity extends RxAppCompatActivity
      * 打开软键盘
      */
     public void showSoftInputFromWindow(View editText) {
-        InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (inputMethodManager != null) {
-            inputMethodManager.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
+        InputMethodManager input =
+                (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (input != null) {
+            input.showSoftInput(editText, InputMethodManager.SHOW_FORCED);
         }
     }
 
@@ -354,7 +356,7 @@ public abstract class BaseActivity extends RxAppCompatActivity
 
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
-        permissionHelper.request(new String[] { Permission.STORAGE_WRITE });
+        permissionHelper.request(new String[]{Permission.STORAGE_WRITE});
     }
 
     @Override
@@ -384,12 +386,10 @@ public abstract class BaseActivity extends RxAppCompatActivity
     public void onResponseCode(Tasks task, BaseResponse response) {
         if (response.getCode() == BaseNetConfig.REQUEST_TOKEN_ERROR) {
             token(response.getMsg());
-        }
-        else if (response.getCode() == BaseNetConfig.REQUEST_OTHER_ERROR ||
-                 response.getCode() == BaseNetConfig.REQUEST_SERVER_ERROR) {
+        } else if (response.getCode() == BaseNetConfig.REQUEST_OTHER_ERROR ||
+                response.getCode() == BaseNetConfig.REQUEST_SERVER_ERROR) {
             ToastUtil.toast(this, response.getMsg());
-        }
-        else if (response.getCode() == BaseNetConfig.REQUEST_ACCOUNT_ERROR) {
+        } else if (response.getCode() == BaseNetConfig.REQUEST_ACCOUNT_ERROR) {
             accountError();
         }
     }
@@ -413,7 +413,7 @@ public abstract class BaseActivity extends RxAppCompatActivity
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-            @NonNull int[] grantResults) {
+                                           @NonNull int[] grantResults) {
         for (String per : permissions) {
             if (Permission.STORAGE_WRITE.equals(per)) {
                 permissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);

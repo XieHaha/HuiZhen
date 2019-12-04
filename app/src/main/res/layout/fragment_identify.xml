@@ -141,6 +141,8 @@
         android:layout_height="match_parent"
         android:layout_below="@id/layout_name"
         android:background="@color/color_ffffff"
+        android:paddingStart="20dp"
+        android:paddingEnd="0dp"
         android:divider="@null"
         android:visibility="gone" />
 

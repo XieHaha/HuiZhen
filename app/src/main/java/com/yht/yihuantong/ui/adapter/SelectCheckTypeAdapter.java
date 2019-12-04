@@ -1,23 +1,20 @@
 package com.yht.yihuantong.ui.adapter;
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.text.Spannable;
-import android.text.SpannableString;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.BaseViewHolder;
 import com.yht.frame.data.bean.SelectCheckTypeBean;
 import com.yht.frame.data.bean.SelectCheckTypeChildBean;
 import com.yht.frame.utils.BaseUtils;
-import com.yht.frame.widgets.view.CenterImageSpan;
 import com.yht.yihuantong.R;
-import com.yht.yihuantong.ZycApplication;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,112 +24,74 @@ import java.util.List;
  * @date 19/8/12 17:56
  * @description 服务项  服务包
  */
-public class SelectCheckTypeAdapter extends BaseAdapter {
-    private Context context;
-    private Bitmap bitmap;
-    /**
-     * 服务项、服务包列表
-     */
-    private List<SelectCheckTypeBean> list = new ArrayList<>();
+public class SelectCheckTypeAdapter extends BaseQuickAdapter<SelectCheckTypeBean,
+        BaseViewHolder> {
 
-    public SelectCheckTypeAdapter(Context context) {
-        this.context = context;
+    private ArrayList<String> selectedCodes = new ArrayList<>();
+
+    public void setSelectedCodes(ArrayList<String> selectedCodes) {
+        this.selectedCodes = selectedCodes;
     }
 
-    public void setList(List<SelectCheckTypeBean> list) {
-        if (list == null) {
-            list = new ArrayList<>();
+    public SelectCheckTypeAdapter(int layoutResId, @Nullable List<SelectCheckTypeBean> data) {
+        super(layoutResId, data);
+    }
+
+    @Override
+    protected void convert(BaseViewHolder helper, SelectCheckTypeBean item) {
+        int position = helper.getAdapterPosition();
+        SelectCheckTypeBean lastBean, nextBean = null;
+        if (mData.size() - 1 > position) {
+            nextBean = mData.get(position + 1);
         }
-        this.list = list;
-        notifyDataSetChanged();
-    }
-
-    public void setBitmap(Bitmap bitmap) {
-        this.bitmap = bitmap;
-    }
-
-    @Override
-    public int getCount() {
-        return list.size();
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return list.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
-        if (convertView == null) {
-            holder = new ViewHolder();
-            convertView = LayoutInflater.from(context).inflate(R.layout.item_check_select, parent
-                    , false);
-            holder.tvName = convertView.findViewById(R.id.tv_check_type_name);
-            holder.tvPrice = convertView.findViewById(R.id.tv_price);
-            holder.ivSelect = convertView.findViewById(R.id.iv_select);
-            holder.layoutCheck = convertView.findViewById(R.id.layout_check);
-            convertView.setTag(holder);
+        //处理医院显示问题
+        if (position == 0) {
+            helper.setVisible(R.id.layout_hospital_title, true).setText(R.id.tv_hospital_name,
+                    item.getHospitalName());
         } else {
-            holder = (ViewHolder) convertView.getTag();
+            lastBean = mData.get(position - 1);
+            if (TextUtils.equals(lastBean.getHospitalCode(), item.getHospitalCode())) {
+                helper.setGone(R.id.layout_hospital_title, false);
+            } else {
+                helper.setVisible(R.id.layout_hospital_title, true).setText(R.id.tv_hospital_name
+                        , item.getHospitalName());
+            }
         }
-        init(holder, position);
-        return convertView;
-    }
-
-    private void init(ViewHolder holder, int position) {
-        SelectCheckTypeBean item = list.get(position);
-        holder.tvName.setText(String.format(context.getString(R.string.txt_space),
-                item.getProjectName()));
-        //1、服务包；
-        //2、服务包线上支付；
-        //3、服务包配置了不可退款。
-        if (true) {
-            holder.tvName.append(appendImage(item.getProjectName()));
+        //处理底部圆角问题
+        boolean end = mData.size() - 1 == position || nextBean == null ||
+                !TextUtils.equals(nextBean.getHospitalCode(), item.getHospitalCode());
+        if (end) {
+            helper.setVisible(R.id.view_line, false).setVisible(R.id.tv_space, true);
+        } else {
+            helper.setVisible(R.id.view_line, true).setVisible(R.id.tv_space, false);
         }
-        holder.tvPrice.setText(
-                String.format(context.getString(R.string.txt_price),
+        //数据绑定
+        helper.setText(R.id.tv_check_type_name, item.getProjectName())
+                .setText(R.id.tv_price, String.format(mContext.getString(R.string.txt_price),
                         BaseUtils.getPrice(item.getPrice())));
-        ArrayList<String> selectCodes = ZycApplication.getInstance().getSelectCodes();
-        if (selectCodes != null && selectCodes.contains(item.getProjectCode())) {
-            holder.ivSelect.setSelected(true);
+        ImageView ivSelect = helper.getView(R.id.iv_select);
+        if (selectedCodes.contains(item.getProjectCode())) {
+            ivSelect.setSelected(true);
         } else {
-            holder.ivSelect.setSelected(false);
+            ivSelect.setSelected(false);
         }
         List<SelectCheckTypeChildBean> childBeans = item.getProductInfoList();
-        holder.layoutCheck.removeAllViews();
+        LinearLayout layoutCheck = helper.getView(R.id.layout_check);
+        layoutCheck.removeAllViews();
         if (childBeans != null && childBeans.size() > 0) {
             for (SelectCheckTypeChildBean childBean : childBeans) {
-                addServiceType(holder, childBean);
+                addServiceType(layoutCheck, childBean);
             }
         }
     }
 
-    private class ViewHolder {
-        private TextView tvName, tvPrice;
-        private ImageView ivSelect;
-        private LinearLayout layoutCheck;
-    }
-
-    private void addServiceType(ViewHolder holder, SelectCheckTypeChildBean childBean) {
-        View convertView = LayoutInflater.from(context).inflate(R.layout.item_child_service, null);
+    private void addServiceType(LinearLayout layoutCheck, SelectCheckTypeChildBean childBean) {
+        View convertView = LayoutInflater.from(mContext).inflate(R.layout.item_child_service, null);
         TextView tvContent = convertView.findViewById(R.id.tv_content);
         TextView tvNum = convertView.findViewById(R.id.tv_num);
         tvContent.setText(childBean.getProductName());
-        tvNum.setText(String.format(context.getString(R.string.txt_amount),
+        tvNum.setText(String.format(mContext.getString(R.string.txt_amount),
                 childBean.getProductCount()));
-        holder.layoutCheck.addView(convertView);
-    }
-
-    private SpannableString appendImage(String showText) {
-        CenterImageSpan imgSpan = new CenterImageSpan(context, bitmap);
-        SpannableString spanString = new SpannableString(showText);
-        spanString.setSpan(imgSpan, 0, showText.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        return spanString;
+        layoutCheck.addView(convertView);
     }
 }
