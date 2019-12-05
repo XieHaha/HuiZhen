@@ -31,13 +31,11 @@ import java.util.Locale;
 import java.util.Set;
 
 /**
- * MIME Type enumeration to restrict selectable media on the selection activity. Matisse only
- * supports images and
+ * MIME Type enumeration to restrict selectable media on the selection activity. Matisse only supports images and
  * videos.
  * <p>
  * Good example of mime types Android supports:
- * https://android.googlesource.com/platform/frameworks/base/+/refs/heads/master/media/java
- * /android/media/MediaFile.java
+ * https://android.googlesource.com/platform/frameworks/base/+/refs/heads/master/media/java/android/media/MediaFile.java
  */
 @SuppressWarnings("unused")
 public enum MimeType {
@@ -113,28 +111,30 @@ public enum MimeType {
         return EnumSet.of(JPEG, PNG, GIF, BMP, WEBP);
     }
 
+    public static Set<MimeType> ofImage(boolean onlyGif) {
+        return EnumSet.of(GIF);
+    }
+
+    public static Set<MimeType> ofGif() {
+        return ofImage(true);
+    }
+
     public static Set<MimeType> ofVideo() {
         return EnumSet.of(MPEG, MP4, QUICKTIME, THREEGPP, THREEGPP2, MKV, WEBM, TS, AVI);
     }
 
     public static boolean isImage(String mimeType) {
-        if (mimeType == null) {
-            return false;
-        }
+        if (mimeType == null) return false;
         return mimeType.startsWith("image");
     }
 
     public static boolean isVideo(String mimeType) {
-        if (mimeType == null) {
-            return false;
-        }
+        if (mimeType == null) return false;
         return mimeType.startsWith("video");
     }
 
     public static boolean isGif(String mimeType) {
-        if (mimeType == null) {
-            return false;
-        }
+        if (mimeType == null) return false;
         return mimeType.equals(MimeType.GIF.toString());
     }
 

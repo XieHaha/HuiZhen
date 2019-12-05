@@ -36,8 +36,7 @@ public interface ImageEngine {
      * @param imageView   ImageView widget
      * @param uri         Uri of the loaded image
      */
-    void loadThumbnail(Context context, int resize, Drawable placeholder, ImageView imageView,
-                       Uri uri);
+    void loadThumbnail(Context context, int resize, Drawable placeholder, ImageView imageView, Uri uri);
 
     /**
      * Load thumbnail of a gif image resource. You don't have to load an animated gif when it's only
@@ -49,8 +48,7 @@ public interface ImageEngine {
      * @param imageView   ImageView widget
      * @param uri         Uri of the loaded image
      */
-    void loadGifThumbnail(Context context, int resize, Drawable placeholder, ImageView imageView,
-                          Uri uri);
+    void loadGifThumbnail(Context context, int resize, Drawable placeholder, ImageView imageView, Uri uri);
 
     /**
      * Load a static image resource.

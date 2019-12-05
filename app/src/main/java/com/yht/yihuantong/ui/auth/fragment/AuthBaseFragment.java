@@ -396,7 +396,7 @@ public class AuthBaseFragment extends BaseFragment implements OnMediaItemClickLi
      * 打开图片库
      */
     private void openPhoto() {
-        MatisseUtils.open(this, true, 1, true);
+        MatisseUtils.open(this, true, 2, false);
     }
 
     /**

@@ -24,10 +24,9 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
-
+import androidx.fragment.app.Fragment;
 import androidx.core.content.FileProvider;
 import androidx.core.os.EnvironmentCompat;
-import androidx.fragment.app.Fragment;
 
 import com.zhihu.matisse.internal.entity.CaptureStrategy;
 
@@ -43,9 +42,9 @@ public class MediaStoreCompat {
 
     private final WeakReference<Activity> mContext;
     private final WeakReference<Fragment> mFragment;
-    private CaptureStrategy mCaptureStrategy;
-    private Uri mCurrentPhotoUri;
-    private String mCurrentPhotoPath;
+    private       CaptureStrategy         mCaptureStrategy;
+    private       Uri                     mCurrentPhotoUri;
+    private       String                  mCurrentPhotoPath;
 
     public MediaStoreCompat(Activity activity) {
         mContext = new WeakReference<>(activity);
@@ -90,8 +89,7 @@ public class MediaStoreCompat {
                 captureIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
                     List<ResolveInfo> resInfoList = context.getPackageManager()
-                            .queryIntentActivities(captureIntent,
-                                    PackageManager.MATCH_DEFAULT_ONLY);
+                            .queryIntentActivities(captureIntent, PackageManager.MATCH_DEFAULT_ONLY);
                     for (ResolveInfo resolveInfo : resInfoList) {
                         String packageName = resolveInfo.activityInfo.packageName;
                         context.grantUriPermission(packageName, mCurrentPhotoUri,
@@ -117,15 +115,13 @@ public class MediaStoreCompat {
         if (mCaptureStrategy.isPublic) {
             storageDir = Environment.getExternalStoragePublicDirectory(
                     Environment.DIRECTORY_PICTURES);
-            if (!storageDir.exists())
-                storageDir.mkdirs();
+            if (!storageDir.exists()) storageDir.mkdirs();
         } else {
             storageDir = mContext.get().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         }
         if (mCaptureStrategy.directory != null) {
             storageDir = new File(storageDir, mCaptureStrategy.directory);
-            if (!storageDir.exists())
-                storageDir.mkdirs();
+            if (!storageDir.exists()) storageDir.mkdirs();
         }
 
         // Avoid joining path components manually

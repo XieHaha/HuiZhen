@@ -20,7 +20,6 @@ import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,12 +52,14 @@ public class AlbumMediaAdapter extends
     private RecyclerView mRecyclerView;
     private int mImageResize;
 
-    public AlbumMediaAdapter(Context context, SelectedItemCollection selectedCollection, RecyclerView recyclerView) {
+    public AlbumMediaAdapter(Context context, SelectedItemCollection selectedCollection,
+                             RecyclerView recyclerView) {
         super(null);
         mSelectionSpec = SelectionSpec.getInstance();
         mSelectedCollection = selectedCollection;
 
-        TypedArray ta = context.getTheme().obtainStyledAttributes(new int[]{R.attr.item_placeholder});
+        TypedArray ta =
+                context.getTheme().obtainStyledAttributes(new int[]{R.attr.item_placeholder});
         mPlaceholder = ta.getDrawable(0);
         ta.recycle();
 
@@ -68,7 +69,8 @@ public class AlbumMediaAdapter extends
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == VIEW_TYPE_CAPTURE) {
-            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.photo_capture_item, parent, false);
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.photo_capture_item
+                    , parent, false);
             CaptureViewHolder holder = new CaptureViewHolder(v);
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -80,7 +82,8 @@ public class AlbumMediaAdapter extends
             });
             return holder;
         } else if (viewType == VIEW_TYPE_MEDIA) {
-            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.media_grid_item, parent, false);
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.media_grid_item,
+                    parent, false);
             return new MediaViewHolder(v);
         }
         return null;
@@ -110,7 +113,8 @@ public class AlbumMediaAdapter extends
                     drawables[i] = newDrawable;
                 }
             }
-            captureViewHolder.mHint.setCompoundDrawables(drawables[0], drawables[1], drawables[2], drawables[3]);
+            captureViewHolder.mHint.setCompoundDrawables(drawables[0], drawables[1], drawables[2]
+                    , drawables[3]);
         } else if (holder instanceof MediaViewHolder) {
             MediaViewHolder mediaViewHolder = (MediaViewHolder) holder;
 
@@ -121,7 +125,7 @@ public class AlbumMediaAdapter extends
                     mSelectionSpec.countable,
                     holder
             ));
-            mediaViewHolder.mMediaGrid.bindMedia(item,mSelectionSpec.single);
+            mediaViewHolder.mMediaGrid.bindMedia(item, mSelectionSpec.single);
             mediaViewHolder.mMediaGrid.setOnMediaGridClickListener(this);
             setCheckStatus(item, mediaViewHolder.mMediaGrid);
         }
@@ -161,17 +165,24 @@ public class AlbumMediaAdapter extends
 
     @Override
     public void onThumbnailClicked(ImageView thumbnail, Item item, RecyclerView.ViewHolder holder) {
-        if (mOnMediaClickListener != null) {
-            if(mSelectionSpec.single) {
-                Log.i("ZYC","裁剪");
-            }else {
+        if (mSelectionSpec.showPreview) {
+            if (mOnMediaClickListener != null) {
                 mOnMediaClickListener.onMediaClick(null, item, holder.getAdapterPosition());
+            }
+        } else {
+            updateSelectedItem(item, holder);
+            if (mSelectionSpec.single && mOnMediaClickListener != null) {
+                mOnMediaClickListener.onSingleClick();
             }
         }
     }
 
     @Override
     public void onCheckViewClicked(CheckView checkView, Item item, RecyclerView.ViewHolder holder) {
+        updateSelectedItem(item, holder);
+    }
+
+    private void updateSelectedItem(Item item, RecyclerView.ViewHolder holder) {
         if (mSelectionSpec.countable) {
             int checkedNum = mSelectedCollection.checkedNumOf(item);
             if (checkedNum == CheckView.UNCHECKED) {
@@ -268,6 +279,8 @@ public class AlbumMediaAdapter extends
 
     public interface OnMediaClickListener {
         void onMediaClick(Album album, Item item, int adapterPosition);
+
+        void onSingleClick();
     }
 
     public interface OnPhotoCapture {
