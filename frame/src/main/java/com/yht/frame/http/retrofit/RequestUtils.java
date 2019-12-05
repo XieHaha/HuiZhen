@@ -1132,5 +1132,14 @@ public class RequestUtils {
                             Tasks.DOCTOR_REPORT, listener));
         }
     }
+
+    public static void getTransferTimeout(Context context, String token,
+                                          final ResponseListener<BaseResponse> listener) {
+        RetrofitManager.getApiUrlManager()
+                .getTransferTimeout(token)
+                .compose(RxJavaHelper.observableIO2Main(context))
+                .subscribe(new AbstractLoadViewObserver<>(context, true,
+                        Tasks.GET_TRANSFER_TIMEOUT, listener));
+    }
 }
 

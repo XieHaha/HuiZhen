@@ -345,5 +345,9 @@ WE_CHAT_LOGIN,
      * 医生回执报告
      */
     DOCTOR_REPORT,
+    /**
+     * 获取预约转诊订单超时取消时间
+     */
+    GET_TRANSFER_TIMEOUT,
 }
 

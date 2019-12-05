@@ -194,6 +194,7 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
         transferPurposeId = rbFamilyRequire.getId();
         //默认上转
         transferTypeId = rbUp.getId();
+        getTransferTimeout();
     }
 
     @Override
@@ -238,6 +239,13 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
     private void uploadImage(File file) {
         ScalingUtils.resizePic(Objects.requireNonNull(getContext()), file.getAbsolutePath());
         RequestUtils.uploadImg(getContext(), loginBean.getToken(), file, this);
+    }
+
+    /**
+     * 获取预约转诊订单超时取消时间
+     */
+    private void getTransferTimeout() {
+        RequestUtils.getTransferTimeout(getContext(), loginBean.getToken(), this);
     }
 
     /**
@@ -561,6 +569,13 @@ public class TransferSubmitFragment extends BaseFragment implements RadioGroup.O
             } else {
                 signatureImageUrl = (String) response.getData();
                 Glide.with(this).load(signatureImageUrl).apply(GlideHelper.getOptionsPic()).into(ivSignature);
+            }
+        } else if (task == Tasks.GET_TRANSFER_TIMEOUT) {
+            try {
+                long minute = (long) response.getData();
+                tvTime.setText(String.format(getString(R.string.txt_timeout_fifteen), minute / 60));
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }

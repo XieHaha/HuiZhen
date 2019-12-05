@@ -1022,4 +1022,13 @@ public interface ApiUrlManager {
     @POST("order-check/report")
     Observable<BaseResponse<String>> doctorReport(@Header("token") String token,
                                                   @QueryMap Map<String, Object> info);
+
+    /**
+     * 获取预约转诊订单超时取消时间
+     *
+     * @param token token
+     * @return 返回值
+     */
+    @GET("systemConfig/getTransferTimeout")
+    Observable<BaseResponse<Long>> getTransferTimeout(@Header("token") String token);
 }
