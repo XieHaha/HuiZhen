@@ -69,6 +69,10 @@ public interface BaseNetConfig {
      */
     String BASE_BASIC_REMOTE_URL = "https://hsp.med-value.com/remoteintroduce/";
     /**
+     * 证书照片实例
+     */
+    String BASE_PHOTO_INSTANCE_URL = "http://remote-t.med-value.com/correctexample/";
+    /**
      * banner详情
      */
     String BASE_BASIC_BANNER_URL = "client/banner/banner_desc?bannerId=";

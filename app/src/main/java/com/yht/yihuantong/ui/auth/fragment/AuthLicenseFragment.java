@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.yht.frame.data.BaseData;
+import com.yht.frame.data.BaseNetConfig;
 import com.yht.frame.data.BaseResponse;
 import com.yht.frame.data.CommonData;
 import com.yht.frame.data.Tasks;
@@ -34,8 +35,8 @@ import com.yht.frame.utils.ScalingUtils;
 import com.yht.frame.widgets.textview.JustifiedTextView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.ImagePreviewActivity;
+import com.yht.yihuantong.ui.WebViewActivity;
 import com.yht.yihuantong.ui.adapter.AddImageAdapter;
-import com.yht.yihuantong.ui.auth.PhotoInstanceActivity;
 import com.yht.yihuantong.ui.auth.listener.OnAuthStepListener;
 import com.yht.yihuantong.ui.dialog.listener.OnMediaItemClickListener;
 import com.yht.yihuantong.utils.MatisseUtils;
@@ -251,7 +252,11 @@ public class AuthLicenseFragment extends BaseFragment
                 }
                 break;
             case R.id.tv_instance:
-                startActivity(new Intent(getContext(), PhotoInstanceActivity.class));
+                //                isAgree = true;
+                Intent intent = new Intent(getContext(), WebViewActivity.class);
+                intent.putExtra(CommonData.KEY_PUBLIC, BaseNetConfig.BASE_PHOTO_INSTANCE_URL);
+                intent.putExtra(CommonData.KEY_TITLE, getString(R.string.title_instance));
+                startActivity(intent);
                 break;
             default:
                 break;
@@ -282,7 +287,7 @@ public class AuthLicenseFragment extends BaseFragment
                 num--;
             }
         }
-        MatisseUtils.open(this, true, num,false);
+        MatisseUtils.open(this, true, num, false);
     }
 
     @Override

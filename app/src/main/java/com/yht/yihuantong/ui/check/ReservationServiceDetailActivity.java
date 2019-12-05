@@ -131,7 +131,8 @@ public class ReservationServiceDetailActivity extends BaseActivity
      * 已拆分后的检查报告列表（每一项只包含一项报告）
      */
     private ArrayList<CheckTypeByDetailBean> newReportUrls;
-    private Bitmap bitmapCancel, bitmapNoReach, bitmapReach;
+    private Bitmap bitmapCancel, bitmapNoReach, bitmapReach, bitmapRefunding, bitmapRefundFailed,
+            bitmapRefundSuccess;
     /**
      * 订单
      */
@@ -194,6 +195,12 @@ public class ReservationServiceDetailActivity extends BaseActivity
                 R.mipmap.ic_label_noreach);
         bitmapReach = BitmapFactory.decodeResource(getApplication().getResources(),
                 R.mipmap.ic_label_reach);
+        bitmapRefunding = BitmapFactory.decodeResource(getApplication().getResources(),
+                R.mipmap.ic_label_refunding);
+        bitmapRefundFailed = BitmapFactory.decodeResource(getApplication().getResources(),
+                R.mipmap.ic_label_refund_failed);
+        bitmapRefundSuccess = BitmapFactory.decodeResource(getApplication().getResources(),
+                R.mipmap.ic_label_refund_seccess);
     }
 
     /**
@@ -355,6 +362,7 @@ public class ReservationServiceDetailActivity extends BaseActivity
             //服务包下的服务项父布局
             LinearLayout layoutChildCheck = view.findViewById(R.id.layout_two_check_type);
             ArrayList<CheckTypeByDetailBean> childCheck = bean.getItemList();
+            layoutChildCheck.removeAllViews();
             if (childCheck != null && childCheck.size() > 0) {
                 for (int i = 0; i < childCheck.size(); i++) {
                     CheckTypeByDetailBean childBean = childCheck.get(i);
@@ -382,9 +390,9 @@ public class ReservationServiceDetailActivity extends BaseActivity
         if (bean.getStatus() == CHECK_TYPE_STATUS_COMPLETE) {
             reportList.add(bean);
         }
-        //订单和服务项均为已取消状态
-        if (checkDetailBean.getStatus() != CHECK_ORDER_STATUS_CANCEL && bean.getStatus() == CHECK_TYPE_STATUS_CANCEL) {
-            tvType.append(appendImage(bean.getStatus(), bean.getName()));
+        int checkStatus = bean.getStatus();
+        tvType.append(appendImage(checkStatus, bean.getName()));
+        if (checkStatus == CHECK_TYPE_STATUS_CANCEL) {
             tvType.setSelected(true);
             imageView.setSelected(true);
         } else {
@@ -425,10 +433,9 @@ public class ReservationServiceDetailActivity extends BaseActivity
         if (childBean.getStatus() == CHECK_TYPE_STATUS_COMPLETE) {
             reportList.add(childBean);
         }
-        //订单和服务项均为已取消状态
-        if (checkDetailBean.getStatus() != CHECK_ORDER_STATUS_CANCEL &&
-                childBean.getStatus() == CHECK_TYPE_STATUS_CANCEL) {
-            tvType.append(appendImage(childBean.getStatus(), childBean.getName()));
+        int checkStatus = childBean.getStatus();
+        //        tvType.append(appendImage(checkStatus, childBean.getName()));
+        if (checkStatus == CHECK_TYPE_STATUS_CANCEL) {
             tvType.setSelected(true);
         } else {
             tvType.setSelected(false);
@@ -472,7 +479,8 @@ public class ReservationServiceDetailActivity extends BaseActivity
             TextView textView = view.findViewById(R.id.tv_check_report_name);
             textView.setText(bean.getName());
             view.setTag(i);
-            view.setOnClickListener(v -> FileDisplayActivity.show(this, newReportUrls, (Integer) v.getTag()));
+            view.setOnClickListener(v -> FileDisplayActivity.show(this, newReportUrls,
+                    (Integer) v.getTag()));
             layoutCheckReport.addView(view);
         }
     }
@@ -500,7 +508,8 @@ public class ReservationServiceDetailActivity extends BaseActivity
                         CheckTypeByDetailBean checkTypeByDetailBean = new CheckTypeByDetailBean();
                         String name = bean.getName();
                         checkTypeByDetailBean.setName(
-                                String.format(getString(R.string.txt_report_name_by_num), name, (j + 1)));
+                                String.format(getString(R.string.txt_report_name_by_num), name,
+                                        (j + 1)));
                         checkTypeByDetailBean.setReport(reportUrls[j]);
                         checkTypeByDetailBean.setSuggestionType(bean.getSuggestionType());
                         checkTypeByDetailBean.setId(bean.getId());
@@ -528,8 +537,17 @@ public class ReservationServiceDetailActivity extends BaseActivity
             case CHECK_TYPE_STATUS_CANCEL:
                 imgSpan = new CenterImageSpan(this, bitmapCancel);
                 break;
+            case CHECK_TYPE_STATUS_REFUNDING:
+                imgSpan = new CenterImageSpan(this, bitmapRefunding);
+                break;
+            case CHECK_TYPE_STATUS_REFUND_FAILED:
+                imgSpan = new CenterImageSpan(this, bitmapRefundFailed);
+                break;
+            case CHECK_TYPE_STATUS_REFUND_SUCCESS:
+                imgSpan = new CenterImageSpan(this, bitmapRefundSuccess);
+                break;
             default:
-                imgSpan = new CenterImageSpan(this, bitmapCancel);
+                imgSpan = new CenterImageSpan(this, bitmapReach);
                 break;
         }
         SpannableString spanString = new SpannableString(showText);
@@ -562,6 +580,18 @@ public class ReservationServiceDetailActivity extends BaseActivity
         if (bitmapCancel != null) {
             bitmapCancel.recycle();
             bitmapCancel = null;
+        }
+        if (bitmapRefunding != null) {
+            bitmapRefunding.recycle();
+            bitmapRefunding = null;
+        }
+        if (bitmapRefundFailed != null) {
+            bitmapRefundFailed.recycle();
+            bitmapRefundFailed = null;
+        }
+        if (bitmapRefundSuccess != null) {
+            bitmapRefundSuccess.recycle();
+            bitmapRefundSuccess = null;
         }
     }
 }

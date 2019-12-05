@@ -30,4 +30,16 @@ public interface CheckTypeStatus {
      * 5-待发放
      */
     int CHECK_TYPE_STATUS_PENDING = 5;
+    /**
+     * 6-退款中
+     */
+    int CHECK_TYPE_STATUS_REFUNDING = 6;
+    /**
+     * 7-退款失败
+     */
+    int CHECK_TYPE_STATUS_REFUND_FAILED = 7;
+    /**
+     * 8-退款成功
+     */
+    int CHECK_TYPE_STATUS_REFUND_SUCCESS = 8;
 }
