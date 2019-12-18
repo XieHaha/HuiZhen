@@ -37,7 +37,7 @@ public interface RemoteOrderStatus {
     /**
      * 中断关闭
      */
-    int REMOTE_ORDER_STATUS_INTERRRUPT_CLOSE = 7;
+    int REMOTE_ORDER_STATUS_INTERRUPT_CLOSE = 7;
     /**
      * 全员拒绝关闭
      */

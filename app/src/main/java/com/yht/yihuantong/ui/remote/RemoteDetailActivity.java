@@ -235,8 +235,23 @@ public class RemoteDetailActivity extends BaseActivity implements RemoteOrderSta
                 ivStatus.setImageResource(R.mipmap.ic_status_complete);
                 break;
             case REMOTE_ORDER_STATUS_CLOSED:
+                layoutCloseReason.setVisibility(View.VISIBLE);
+                tvCloseReason.setText(R.string.txt_remote_order_close);
+                layoutAgainApply.setVisibility(View.GONE);
+                ivStatus.setImageResource(R.mipmap.ic_status_closed);
+                break;
             case REMOTE_ORDER_STATUS_TIMEOUT_CLOSE:
-            case REMOTE_ORDER_STATUS_INTERRRUPT_CLOSE:
+                layoutCloseReason.setVisibility(View.VISIBLE);
+                tvCloseReason.setText(R.string.txt_remote_order_timeout_close);
+                layoutAgainApply.setVisibility(View.GONE);
+                ivStatus.setImageResource(R.mipmap.ic_status_closed);
+                break;
+            case REMOTE_ORDER_STATUS_INTERRUPT_CLOSE:
+                layoutCloseReason.setVisibility(View.VISIBLE);
+                tvCloseReason.setText(R.string.txt_remote_order_interrupt_close);
+                layoutAgainApply.setVisibility(View.GONE);
+                ivStatus.setImageResource(R.mipmap.ic_status_closed);
+                break;
             case REMOTE_ORDER_STATUS_ALL_REFUSE_CLOSE:
                 if (TextUtils.isEmpty(remoteDetailBean.getRejectReason())) {
                     layoutCloseReason.setVisibility(View.GONE);

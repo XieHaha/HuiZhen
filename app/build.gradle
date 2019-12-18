@@ -41,7 +41,7 @@ android {
                                     jpush_appkey       : "ad21b958f6040b2b0ae89f46",
                                     UMENG_CHANNEL_VALUE: "beta"]
         } else if ("develop" == name) {
-            applicationId "com.yht.yihuantong"
+            applicationId "com.yht.yihuantong_test"
             buildConfigField "String", "BASE_BASIC_URL", "\"http://192.168.0.126:7071/\""
             resValue "string", "APP_NAME", "\"会珍医生开发版\""
             manifestPlaceholders = [ease_appkey        : "1110180330253249#dpappproject",
@@ -49,7 +49,7 @@ android {
                                     UMENG_CHANNEL_VALUE: "develop"]
 
         } else if ("zyc" == name) {
-            applicationId "com.yht.yihuantong"
+            applicationId "com.yht.yihuantong_test"
             buildConfigField "String", "BASE_BASIC_URL", "\"https://doctor-pre.med-value.com/\""
             resValue "string", "APP_NAME", "\"会珍医生灰度版\""
             flavor.manifestPlaceholders = [ease_appkey        : "1110180330253249#dpappproject",

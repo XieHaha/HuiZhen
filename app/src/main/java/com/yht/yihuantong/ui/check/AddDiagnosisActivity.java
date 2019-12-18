@@ -123,7 +123,8 @@ public class AddDiagnosisActivity extends BaseActivity
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 super.onTextChanged(s, start, before, count);
                 diagnosisAdvice = s.toString();
-                tvCalcNum.setText(String.format(getString(R.string.txt_calc_num), s.toString().trim().length()));
+                tvCalcNum.setText(String.format(getString(R.string.txt_calc_num),
+                        s.toString().trim().length()));
                 initNextButton();
             }
         });
@@ -133,15 +134,13 @@ public class AddDiagnosisActivity extends BaseActivity
      * 保存回执报告
      */
     private void doctorReport() {
-        RequestUtils.doctorReport(this, loginBean.getToken(), checkTranId, orderNo, diagnosisAdvice, files, this);
-    }
-
-    /**
-     * 上传图片
-     */
-    private void uploadImage(File file) {
-        ScalingUtils.resizePic(this, file.getAbsolutePath());
-        RequestUtils.uploadImgWaterMark(this, loginBean.getToken(), file, false, this);
+        showLoadingView(false);
+        for (int i = 0; i < files.size(); i++) {
+            File file = files.get(i);
+            ScalingUtils.resizePic(this, file.getAbsolutePath());
+        }
+        RequestUtils.doctorReport(this, loginBean.getToken(), checkTranId, orderNo,
+                diagnosisAdvice, files, this);
     }
 
     @Override
@@ -152,9 +151,11 @@ public class AddDiagnosisActivity extends BaseActivity
         }
     }
 
-    @OnClick({ R.id.public_title_bar_more })
+    @OnClick({R.id.public_title_bar_more})
     public void onViewClicked() {
-        if (publicTitleBarMore.isSelected()) { save(); }
+        if (publicTitleBarMore.isSelected()) {
+            save();
+        }
     }
 
     @Override
@@ -166,9 +167,8 @@ public class AddDiagnosisActivity extends BaseActivity
             intent.putExtra(ImagePreviewActivity.INTENT_POSITION, position);
             startActivity(intent);
             overridePendingTransition(R.anim.anim_fade_in, R.anim.keep);
-        }
-        else {
-            permissionHelper.request(new String[] { Permission.CAMERA, Permission.STORAGE_WRITE });
+        } else {
+            permissionHelper.request(new String[]{Permission.CAMERA, Permission.STORAGE_WRITE});
         }
     }
 
@@ -184,14 +184,13 @@ public class AddDiagnosisActivity extends BaseActivity
      * 打开图片库
      */
     private void openPhoto() {
-        MatisseUtils.open(this, true, BaseData.BASE_IMAGE_SIZE_MAX - imagePaths.size(),false);
+        MatisseUtils.open(this, true, BaseData.BASE_IMAGE_SIZE_MAX - imagePaths.size(), false);
     }
 
     private void initNextButton() {
         if (!TextUtils.isEmpty(diagnosisAdvice) || files.size() > 0) {
             publicTitleBarMore.setSelected(true);
-        }
-        else {
+        } else {
             publicTitleBarMore.setSelected(false);
         }
     }
@@ -207,30 +206,17 @@ public class AddDiagnosisActivity extends BaseActivity
     @Override
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
-        switch (task) {
-            case UPLOAD_FILE:
-                String url = (String)response.getData();
-                NormImage normImage = new NormImage();
-                normImage.setImageUrl(url);
-                imagePaths.add(normImage);
-                autoGridView.updateImg(imagePaths, true);
-                if (paths.size() - 1 > currentUploadImgIndex) {
-                    currentUploadImgIndex++;
-                    uploadImage(new File(paths.get(currentUploadImgIndex)));
-                }
-                else {
-                    closeLoadingView();
-                }
-                initNextButton();
-                break;
-            case DOCTOR_REPORT:
-                ToastUtil.toast(this, response.getMsg());
-                setResult(RESULT_OK);
-                finish();
-                break;
-            default:
-                break;
+        if (task == Tasks.DOCTOR_REPORT) {
+            ToastUtil.toast(this, response.getMsg());
+            setResult(RESULT_OK);
+            finish();
         }
+    }
+
+    @Override
+    public void onResponseEnd(Tasks task) {
+        super.onResponseEnd(task);
+        closeLoadingView();
     }
 
     @Override
@@ -257,7 +243,7 @@ public class AddDiagnosisActivity extends BaseActivity
     @Override
     public void onNoPermissionNeeded(@NonNull Object permissionName) {
         if (permissionName instanceof String[]) {
-            if (isSamePermission(Permission.CAMERA, ((String[])permissionName)[0])) {
+            if (isSamePermission(Permission.CAMERA, ((String[]) permissionName)[0])) {
                 openPhoto();
             }
         }
@@ -271,13 +257,13 @@ public class AddDiagnosisActivity extends BaseActivity
     private void onFinish() {
         if (publicTitleBarMore.isSelected()) {
             new HintDialog(this).setContentString(R.string.txt_save_edit)
-                                .setCancleBtnTxt(R.string.txt_not_save)
-                                .setOnCancelClickListener(this::finish)
-                                .setEnterBtnTxt(R.string.txt_save)
-                                .setEnterSelect(true)
-                                .setDeleteVisible(View.VISIBLE)
-                                .setOnEnterClickListener(this::save)
-                                .show();
+                    .setCancleBtnTxt(R.string.txt_not_save)
+                    .setOnCancelClickListener(this::finish)
+                    .setEnterBtnTxt(R.string.txt_save)
+                    .setEnterSelect(true)
+                    .setDeleteVisible(View.VISIBLE)
+                    .setOnEnterClickListener(this::save)
+                    .show();
             return;
         }
         hideSoftInputFromWindow();

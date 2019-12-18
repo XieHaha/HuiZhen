@@ -1,10 +1,11 @@
 package com.yht.yihuantong.ui.adapter;
 
-import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -56,7 +57,7 @@ public class RemoteHistoryAdapter extends BaseQuickAdapter<RemoteBean, BaseViewH
                 break;
             case REMOTE_ORDER_STATUS_CLOSED:
             case REMOTE_ORDER_STATUS_TIMEOUT_CLOSE:
-            case REMOTE_ORDER_STATUS_INTERRRUPT_CLOSE:
+            case REMOTE_ORDER_STATUS_INTERRUPT_CLOSE:
             case REMOTE_ORDER_STATUS_ALL_REFUSE_CLOSE:
                 helper.setImageResource(R.id.iv_status, R.mipmap.ic_tag_closed);
                 break;

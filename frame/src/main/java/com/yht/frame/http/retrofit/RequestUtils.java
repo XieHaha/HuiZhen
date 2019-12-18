@@ -13,6 +13,8 @@ import com.yht.frame.data.bean.ReserveTransferBean;
 import com.yht.frame.http.listener.ResponseListener;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -110,8 +112,13 @@ public class RequestUtils {
     public static void uploadImg(Context context, String token, File file,
                                  final ResponseListener<BaseResponse> listener) {
         RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
-        MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(),
-                reqFile);
+        MultipartBody.Part body = null;
+        try {
+            body = MultipartBody.Part.createFormData("file", URLEncoder.encode(file.getName(),
+                    "UTF-8"), reqFile);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         RetrofitManager.getApiUrlManager()
                 .uploadImg(token, body)
                 .compose(RxJavaHelper.observableIO2Main(context))
@@ -123,8 +130,13 @@ public class RequestUtils {
                                           boolean cancel,
                                           final ResponseListener<BaseResponse> listener) {
         RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
-        MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(),
-                reqFile);
+        MultipartBody.Part body = null;
+        try {
+            body = MultipartBody.Part.createFormData("file", URLEncoder.encode(file.getName(),
+                    "UTF-8"), reqFile);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         RetrofitManager.getApiUrlManager()
                 .uploadImgWaterMark(token, body)
                 .compose(RxJavaHelper.observableIO2Main(context))
@@ -1115,8 +1127,9 @@ public class RequestUtils {
             ArrayList<MultipartBody.Part> imageData = new ArrayList<>();
             for (File file : files) {
                 RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
-                MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(),
-                        reqFile);
+                MultipartBody.Part body = MultipartBody.Part.createFormData("file",
+                        URLEncoder.encode(file.getName(),
+                                "UTF-8"), reqFile);
                 imageData.add(body);
             }
             RetrofitManager.getApiUrlManager()
