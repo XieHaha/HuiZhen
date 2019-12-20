@@ -20,8 +20,6 @@ import com.yht.yihuantong.R;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.yht.frame.data.type.ServiceOrderStatus.CHECK_ORDER_STATUS_CANCEL;
-
 /**
  * @author 顿顿
  * @date 19/6/5 14:25
@@ -73,7 +71,8 @@ public class PatientOrderAdapter extends BaseMultiItemQuickAdapter<PatientOrderB
         int status = item.getStatus();
         switch (status) {
             case PATIENT_ORDER_INCOMPLETE:
-                helper.setImageResource(R.id.iv_check_status_in, R.mipmap.ic_tag_check_patient_incomplete);
+                helper.setImageResource(R.id.iv_check_status_in,
+                        R.mipmap.ic_tag_check_patient_incomplete);
                 break;
             case PATIENT_ORDER_COMPLETE:
                 helper.setImageResource(R.id.iv_check_status_in, R.mipmap.ic_tag_patient_complete);
@@ -208,13 +207,14 @@ public class PatientOrderAdapter extends BaseMultiItemQuickAdapter<PatientOrderB
                     reportList.add(bean);
                 }
                 //检查项已取消
-                if (item.getStatus() != CHECK_ORDER_STATUS_CANCEL && status == CHECK_TYPE_STATUS_CANCEL) {
-                    serviceName.setSelected(true);
-                    imageDot.setSelected(true);
-                } else {
-                    serviceName.setSelected(false);
-                    imageDot.setSelected(false);
-                }
+                //                if (item.getStatus() != CHECK_ORDER_STATUS_CANCEL && status ==
+                //                CHECK_TYPE_STATUS_CANCEL) {
+                //                    serviceName.setSelected(true);
+                //                    imageDot.setSelected(true);
+                //                } else {
+                //                    serviceName.setSelected(false);
+                //                    imageDot.setSelected(false);
+                //                }
                 //最多展示3条数据
                 if (i < MAX_SHOW_NUN) {
                     layout.addView(view);

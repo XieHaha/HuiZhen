@@ -527,31 +527,35 @@ public class ReservationServiceDetailActivity extends BaseActivity
 
     private SpannableString appendImage(int status, String showText) {
         CenterImageSpan imgSpan;
+        SpannableString spanString = new SpannableString(showText);
         switch (status) {
             case CHECK_TYPE_STATUS_WAIT_PAY:
-                imgSpan = new CenterImageSpan(this, bitmapNoReach);
                 break;
             case CHECK_TYPE_STATUS_COMPLETE:
-                imgSpan = new CenterImageSpan(this, bitmapReach);
                 break;
             case CHECK_TYPE_STATUS_CANCEL:
                 imgSpan = new CenterImageSpan(this, bitmapCancel);
+                spanString.setSpan(imgSpan, 0, showText.length(),
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 break;
             case CHECK_TYPE_STATUS_REFUNDING:
                 imgSpan = new CenterImageSpan(this, bitmapRefunding);
+                spanString.setSpan(imgSpan, 0, showText.length(),
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 break;
             case CHECK_TYPE_STATUS_REFUND_FAILED:
                 imgSpan = new CenterImageSpan(this, bitmapRefundFailed);
+                spanString.setSpan(imgSpan, 0, showText.length(),
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 break;
             case CHECK_TYPE_STATUS_REFUND_SUCCESS:
                 imgSpan = new CenterImageSpan(this, bitmapRefundSuccess);
+                spanString.setSpan(imgSpan, 0, showText.length(),
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 break;
             default:
-                imgSpan = new CenterImageSpan(this, bitmapReach);
                 break;
         }
-        SpannableString spanString = new SpannableString(showText);
-        spanString.setSpan(imgSpan, 0, showText.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         return spanString;
     }
 
