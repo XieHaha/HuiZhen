@@ -38,23 +38,23 @@ import java.io.File;
  * @date 2015/10/20
  */
 public class ImagePreviewView extends AppCompatImageView {
-    //
-    // SuperMin and SuperMax multipliers. Determine how much the image can be
-    // zoomed below or above the zoom boundaries, before animating back to the
-    // min/max zoom boundary.
-    //
+    /**
+     * SuperMin and SuperMax multipliers. Determine how much the image can be
+     * zoomed below or above the zoom boundaries, before animating back to the
+     * min/max zoom boundary.
+     */
     private static final float SUPER_MIN_MULTIPLIER = 0.75f;
     private static final float SUPER_MAX_MULTIPLIER = 1.25f;
-    //
-    // Scale of image ranges from minScale to maxScale, where minScale == 1
-    // when the image is stretched to fit view.
-    //
+    /**
+     * Scale of image ranges from minScale to maxScale, where minScale == 1
+     * when the image is stretched to fit view.
+     */
     private float normalizedScale;
-    //
-    // Matrix applied to image. MSCALE_X and MSCALE_Y should always be equal.
-    // MTRANS_X and MTRANS_Y are the other values used. prevMatrix is the matrix
-    // saved prior to the screen rotating.
-    //
+    /**
+     * Matrix applied to image. MSCALE_X and MSCALE_Y should always be equal.
+     * MTRANS_X and MTRANS_Y are the other values used. prevMatrix is the matrix
+     * saved prior to the screen rotating.
+     */
     private Matrix matrix, prevMatrix;
 
     private enum State {NONE, DRAG, ZOOM, FLING, ANIMATE_ZOOM}
@@ -71,13 +71,13 @@ public class ImagePreviewView extends AppCompatImageView {
     private boolean imageRenderedAtLeastOnce;
     private boolean onDrawReady;
     private ZoomVariables delayedZoomVariables;
-    //
-    // Size of view and previous view size (ie before rotation)
-    //
+    /**
+     * Size of view and previous view size (ie before rotation)
+     */
     private int viewWidth, viewHeight, prevViewWidth, prevViewHeight;
-    //
-    // Size of image when it is stretched to fit view. Before and After rotation.
-    //
+    /**
+     * Size of image when it is stretched to fit view. Before and After rotation.
+     */
     private float matchViewWidth, matchViewHeight, prevMatchViewWidth, prevMatchViewHeight;
     private ScaleGestureDetector mScaleDetector;
     private GestureDetector mGestureDetector;
@@ -123,8 +123,7 @@ public class ImagePreviewView extends AppCompatImageView {
     public void loadingImageAsync(final String imgPath, final String bigUrl) {
         if (TextUtils.isEmpty(imgPath)) {
             loadImaByGlide(bigUrl);
-        }
-        else {
+        } else {
             loadImaLocal(imgPath);
         }
     }
@@ -135,8 +134,6 @@ public class ImagePreviewView extends AppCompatImageView {
 
     /**
      * glide
-     *
-     * @param url
      */
     private void loadImaByGlide(final String url) {
         Glide.with(context).load(url).apply(GlideHelper.getOptionsPicBig()).into(this);
@@ -210,12 +207,12 @@ public class ImagePreviewView extends AppCompatImageView {
     @Override
     public void setScaleType(ScaleType type) {
         if (type == ScaleType.FIT_START || type == ScaleType.FIT_END) {
-            throw new UnsupportedOperationException("TouchImageView does not support FIT_START or FIT_END");
+            throw new UnsupportedOperationException("TouchImageView does not support FIT_START or" +
+                    " FIT_END");
         }
         if (type == ScaleType.MATRIX) {
             super.setScaleType(ScaleType.MATRIX);
-        }
-        else {
+        } else {
             mScaleType = type;
             if (onDrawReady) {
                 //
@@ -290,7 +287,7 @@ public class ImagePreviewView extends AppCompatImageView {
     @Override
     public void onRestoreInstanceState(Parcelable state) {
         if (state instanceof Bundle) {
-            Bundle bundle = (Bundle)state;
+            Bundle bundle = (Bundle) state;
             normalizedScale = bundle.getFloat("saveScale");
             m = bundle.getFloatArray("matrix");
             prevMatrix.setValues(m);
@@ -311,7 +308,8 @@ public class ImagePreviewView extends AppCompatImageView {
         if (isBigLoaded) {
             imageRenderedAtLeastOnce = true;
             if (delayedZoomVariables != null) {
-                setZoom(delayedZoomVariables.scale, delayedZoomVariables.focusX, delayedZoomVariables.focusY,
+                setZoom(delayedZoomVariables.scale, delayedZoomVariables.xFocus,
+                        delayedZoomVariables.yFocus,
                         delayedZoomVariables.scaleType);
                 delayedZoomVariables = null;
             }
@@ -383,8 +381,6 @@ public class ImagePreviewView extends AppCompatImageView {
 
     /**
      * Set zoom to the specified scale. Image will be centered by default.
-     *
-     * @param scale
      */
     public void setZoom(float scale) {
         setZoom(scale, 0.5f, 0.5f);
@@ -392,37 +388,26 @@ public class ImagePreviewView extends AppCompatImageView {
 
     /**
      * Set zoom to the specified scale. Image will be centered around the point
-     * (focusX, focusY). These floats range from 0 to 1 and denote the focus point
+     * (xFocus, yFocus). These floats range from 0 to 1 and denote the focus point
      * as a fraction from the left and top of the view. For example, the top left
      * corner of the image would be (0, 0). And the bottom right corner would be (1, 1).
-     *
-     * @param scale
-     * @param focusX
-     * @param focusY
      */
-    public void setZoom(float scale, float focusX, float focusY) {
-        setZoom(scale, focusX, focusY, mScaleType);
+    public void setZoom(float scale, float xFocus, float yFocus) {
+        setZoom(scale, xFocus, yFocus, mScaleType);
     }
 
     /**
      * Set zoom to the specified scale. Image will be centered around the point
-     * (focusX, focusY). These floats range from 0 to 1 and denote the focus point
+     * (xFocus, yFocus). These floats range from 0 to 1 and denote the focus point
      * as a fraction from the left and top of the view. For example, the top left
      * corner of the image would be (0, 0). And the bottom right corner would be (1, 1).
-     *
-     * @param scale
-     * @param focusX
-     * @param focusY
-     * @param scaleType
      */
-    public void setZoom(float scale, float focusX, float focusY, ScaleType scaleType) {
-        //
+    public void setZoom(float scale, float xFocus, float yFocus, ScaleType scaleType) {
         // setZoom can be called before the image is on the screen, but at this point,
         // image and view sizes have not yet been calculated in onMeasure. Thus, we should
         // delay calling setZoom until the view has been measured.
-        //
         if (!onDrawReady) {
-            delayedZoomVariables = new ZoomVariables(scale, focusX, focusY, scaleType);
+            delayedZoomVariables = new ZoomVariables(scale, xFocus, yFocus, scaleType);
             return;
         }
         if (scaleType != mScaleType) {
@@ -431,8 +416,8 @@ public class ImagePreviewView extends AppCompatImageView {
         resetZoom();
         scaleImage(scale, viewWidth / 2f, viewHeight / 2f, true);
         matrix.getValues(m);
-        m[Matrix.MTRANS_X] = -((focusX * getImageWidth()) - (viewWidth * 0.5f));
-        m[Matrix.MTRANS_Y] = -((focusY * getImageHeight()) - (viewHeight * 0.5f));
+        m[Matrix.MTRANS_X] = -((xFocus * getImageWidth()) - (viewWidth * 0.5f));
+        m[Matrix.MTRANS_Y] = -((yFocus * getImageHeight()) - (viewHeight * 0.5f));
         matrix.setValues(m);
         fixTrans();
         setImageMatrix(matrix);
@@ -441,8 +426,6 @@ public class ImagePreviewView extends AppCompatImageView {
     /**
      * Set zoom parameters equal to another TouchImageView. Including scale, position,
      * and ScaleType.
-     *
-     * @param img
      */
     public void setZoom(ImagePreviewView img) {
         if (img != null) {
@@ -475,12 +458,9 @@ public class ImagePreviewView extends AppCompatImageView {
     /**
      * Set the focus point of the zoomed image. The focus points are denoted as a fraction from the
      * left and top of the view. The focus points can range in value between 0 and 1.
-     *
-     * @param focusX
-     * @param focusY
      */
-    public void setScrollPosition(float focusX, float focusY) {
-        setZoom(normalizedScale, focusX, focusY);
+    public void setScrollPosition(float xFocus, float yFocus) {
+        setZoom(normalizedScale, xFocus, yFocus);
     }
 
     /**
@@ -489,10 +469,10 @@ public class ImagePreviewView extends AppCompatImageView {
      */
     private void fixTrans() {
         matrix.getValues(m);
-        float transX = m[Matrix.MTRANS_X];
-        float transY = m[Matrix.MTRANS_Y];
-        float fixTransX = getFixTrans(transX, viewWidth, getImageWidth());
-        float fixTransY = getFixTrans(transY, viewHeight, getImageHeight());
+        float xTrans = m[Matrix.MTRANS_X];
+        float yTrans = m[Matrix.MTRANS_Y];
+        float fixTransX = getFixTrans(xTrans, viewWidth, getImageWidth());
+        float fixTransY = getFixTrans(yTrans, viewHeight, getImageHeight());
         if (fixTransX != 0 || fixTransY != 0) {
             matrix.postTranslate(fixTransX, fixTransY);
         }
@@ -522,8 +502,7 @@ public class ImagePreviewView extends AppCompatImageView {
         if (contentSize <= viewSize) {
             minTrans = 0;
             maxTrans = viewSize - contentSize;
-        }
-        else {
+        } else {
             minTrans = viewSize - contentSize;
             maxTrans = 0;
         }
@@ -566,13 +545,9 @@ public class ImagePreviewView extends AppCompatImageView {
         int heightMode = MeasureSpec.getMode(heightMeasureSpec);
         viewWidth = setViewSize(widthMode, widthSize, drawableWidth);
         viewHeight = setViewSize(heightMode, heightSize, drawableHeight);
-        //
         // Set view dimensions
-        //
         setMeasuredDimension(viewWidth, viewHeight);
-        //
         // Fit content within view
-        //
         fitImageToView();
     }
 
@@ -594,8 +569,8 @@ public class ImagePreviewView extends AppCompatImageView {
         //
         // Scale image for view
         //
-        float scaleX = (float)viewWidth / drawableWidth;
-        float scaleY = (float)viewHeight / drawableHeight;
+        float scaleX = (float) viewWidth / drawableWidth;
+        float scaleY = (float) viewHeight / drawableHeight;
         switch (mScaleType) {
             case CENTER:
                 scaleX = scaleY = 1;
@@ -611,10 +586,9 @@ public class ImagePreviewView extends AppCompatImageView {
             case FIT_XY:
                 break;
             default:
-                //
                 // FIT_START and FIT_END not supported
-                //
-                throw new UnsupportedOperationException("TouchImageView does not support FIT_START or FIT_END");
+                throw new UnsupportedOperationException("TouchImageView does not support " +
+                        "FIT_START or FIT_END");
         }
         //
         // Center the image
@@ -630,44 +604,33 @@ public class ImagePreviewView extends AppCompatImageView {
             matrix.setScale(scaleX, scaleY);
             matrix.postTranslate(redundantXSpace / 2, redundantYSpace / 2);
             normalizedScale = 1;
-        }
-        else {
-            //
+        } else {
             // These values should never be 0 or we will set viewWidth and viewHeight
             // to NaN in translateMatrixAfterRotate. To avoid this, call savePreviousImageValues
             // to set them equal to the current values.
-            //
             if (prevMatchViewWidth == 0 || prevMatchViewHeight == 0) {
                 savePreviousImageValues();
             }
             prevMatrix.getValues(m);
-            //
             // Rescale Matrix after rotation
-            //
             m[Matrix.MSCALE_X] = matchViewWidth / drawableWidth * normalizedScale;
             m[Matrix.MSCALE_Y] = matchViewHeight / drawableHeight * normalizedScale;
-            //
-            // TransX and TransY from previous matrix
-            //
-            float transX = m[Matrix.MTRANS_X];
-            float transY = m[Matrix.MTRANS_Y];
-            //
+            // xTrans and yTrans from previous matrix
+            float xTrans = m[Matrix.MTRANS_X];
+            float yTrans = m[Matrix.MTRANS_Y];
             // Width
-            //
             float prevActualWidth = prevMatchViewWidth * normalizedScale;
             float actualWidth = getImageWidth();
-            translateMatrixAfterRotate(Matrix.MTRANS_X, transX, prevActualWidth, actualWidth, prevViewWidth, viewWidth,
-                                       drawableWidth);
-            //
+            translateMatrixAfterRotate(Matrix.MTRANS_X, xTrans, prevActualWidth, actualWidth,
+                    prevViewWidth, viewWidth,
+                    drawableWidth);
             // Height
-            //
             float prevActualHeight = prevMatchViewHeight * normalizedScale;
             float actualHeight = getImageHeight();
-            translateMatrixAfterRotate(Matrix.MTRANS_Y, transY, prevActualHeight, actualHeight, prevViewHeight,
-                                       viewHeight, drawableHeight);
-            //
+            translateMatrixAfterRotate(Matrix.MTRANS_Y, yTrans, prevActualHeight, actualHeight,
+                    prevViewHeight,
+                    viewHeight, drawableHeight);
             // Set the matrix to the adjusted scale and translate values.
-            //
             matrix.setValues(m);
         }
         fixTrans();
@@ -676,11 +639,6 @@ public class ImagePreviewView extends AppCompatImageView {
 
     /**
      * Set view dimensions based on layout params
-     *
-     * @param mode
-     * @param size
-     * @param drawableWidth
-     * @return
      */
     private int setViewSize(int mode, int size, int drawableWidth) {
         int viewSize;
@@ -703,7 +661,8 @@ public class ImagePreviewView extends AppCompatImageView {
 
     /**
      * After rotating, the matrix needs to be translated. This function finds the area of image
-     * which was previously centered and adjusts translations so that is again the center, post-rotation.
+     * which was previously centered and adjusts translations so that is again the center,
+     * post-rotation.
      *
      * @param axis          Matrix.MTRANS_X or Matrix.MTRANS_Y
      * @param trans         the value of trans in that axis before the rotation
@@ -713,24 +672,25 @@ public class ImagePreviewView extends AppCompatImageView {
      * @param viewSize      width/height of view after rotation
      * @param drawableSize  width/height of drawable
      */
-    private void translateMatrixAfterRotate(int axis, float trans, float prevImageSize, float imageSize,
-            int prevViewSize, int viewSize, int drawableSize) {
+    private void translateMatrixAfterRotate(int axis, float trans, float prevImageSize,
+                                            float imageSize,
+                                            int prevViewSize, int viewSize, int drawableSize) {
         if (imageSize < viewSize) {
             //
             // The width/height of image is less than the view's width/height. Center it.
             //
             m[axis] = (viewSize - (drawableSize * m[Matrix.MSCALE_X])) * 0.5f;
-        }
-        else if (trans > 0) {
+        } else if (trans > 0) {
             //
             // The image is larger than the view, but was not before rotation. Center it.
             //
             m[axis] = -((imageSize - viewSize) * 0.5f);
-        }
-        else {
+        } else {
             //
-            // Find the area of the image which was previously centered in the view. Determine its distance
-            // from the left/top side of the view as a fraction of the entire image's width/height. Use that percentage
+            // Find the area of the image which was previously centered in the view. Determine
+            // its distance
+            // from the left/top side of the view as a fraction of the entire image's
+            // width/height. Use that percentage
             // to calculate the trans in the new view width/height.
             //
             float percentage = (Math.abs(trans) + (0.5f * prevViewSize)) / prevImageSize;
@@ -752,14 +712,11 @@ public class ImagePreviewView extends AppCompatImageView {
         float x = m[Matrix.MTRANS_X];
         if (getImageWidth() < viewWidth) {
             return false;
-        }
-        else if (x >= -1 && direction < 0) {
+        } else if (x >= -1 && direction < 0) {
             return false;
+        } else {
+            return !(Math.abs(x) + viewWidth + 1 >= getImageWidth()) || direction <= 0;
         }
-        else if (Math.abs(x) + viewWidth + 1 >= getImageWidth() && direction > 0) {
-            return false;
-        }
-        return true;
     }
 
     /**
@@ -791,7 +748,7 @@ public class ImagePreviewView extends AppCompatImageView {
                 //
                 fling.cancelFling();
             }
-            fling = new Fling((int)velocityX, (int)velocityY);
+            fling = new Fling((int) velocityX, (int) velocityY);
             compatPostOnAnimation(fling);
             return super.onFling(e1, e2, velocityX, velocityY);
         }
@@ -805,7 +762,8 @@ public class ImagePreviewView extends AppCompatImageView {
                 }
                 if (state == State.NONE) {
                     float targetZoom = (normalizedScale == minScale) ? maxScale : minScale;
-                    DoubleTapZoom doubleTap = new DoubleTapZoom(targetZoom, e.getX(), e.getY(), false);
+                    DoubleTapZoom doubleTap = new DoubleTapZoom(targetZoom, e.getX(), e.getY(),
+                            false);
                     compatPostOnAnimation(doubleTap);
                     consumed = true;
                 }
@@ -823,7 +781,7 @@ public class ImagePreviewView extends AppCompatImageView {
     }
 
     public interface OnTouchImageViewListener {
-        public void onMove();
+        void onMove();
     }
 
     /**
@@ -833,9 +791,7 @@ public class ImagePreviewView extends AppCompatImageView {
      * @author Ortiz
      */
     private class PrivateOnTouchListener implements OnTouchListener {
-        //
         // Remember last point position for dragging
-        //
         private PointF last = new PointF();
 
         @Override
@@ -872,21 +828,15 @@ public class ImagePreviewView extends AppCompatImageView {
                 }
             }
             setImageMatrix(matrix);
-            //
             // User-defined OnTouchListener
-            //
             if (userTouchListener != null) {
                 userTouchListener.onTouch(v, event);
             }
-            //
             // OnTouchImageViewListener is set: TouchImageView dragged by user.
-            //
             if (touchImageViewListener != null) {
                 touchImageViewListener.onMove();
             }
-            //
             // indicate event was handled
-            //
             return true;
         }
     }
@@ -906,7 +856,8 @@ public class ImagePreviewView extends AppCompatImageView {
         @Override
         public boolean onScale(ScaleGestureDetector detector) {
             if (detector != null) {
-                scaleImage(detector.getScaleFactor(), detector.getFocusX(), detector.getFocusY(), true);
+                scaleImage(detector.getScaleFactor(), detector.getFocusX(), detector.getFocusY(),
+                        true);
             }
             // OnTouchImageViewListener is set: TouchImageView pinch zoomed by user.
             if (touchImageViewListener != null) {
@@ -924,13 +875,13 @@ public class ImagePreviewView extends AppCompatImageView {
             if (normalizedScale > maxScale) {
                 targetZoom = maxScale;
                 animateToZoomBoundary = true;
-            }
-            else if (normalizedScale < minScale) {
+            } else if (normalizedScale < minScale) {
                 targetZoom = minScale;
                 animateToZoomBoundary = true;
             }
             if (animateToZoomBoundary) {
-                DoubleTapZoom doubleTap = new DoubleTapZoom(targetZoom, viewWidth / 2, viewHeight / 2, true);
+                DoubleTapZoom doubleTap = new DoubleTapZoom(targetZoom, viewWidth / 2f,
+                        viewHeight / 2f, true);
                 compatPostOnAnimation(doubleTap);
             }
         }
@@ -943,13 +894,13 @@ public class ImagePreviewView extends AppCompatImageView {
         }
     }
 
-    private void scaleImage(double deltaScale, float focusX, float focusY, boolean stretchImageToSuper) {
+    private void scaleImage(double deltaScale, float xFocus, float yFocus,
+                            boolean stretchImageToSuper) {
         float lowerScale, upperScale;
         if (stretchImageToSuper) {
             lowerScale = superMinScale;
             upperScale = superMaxScale;
-        }
-        else {
+        } else {
             lowerScale = minScale;
             upperScale = maxScale;
         }
@@ -958,12 +909,11 @@ public class ImagePreviewView extends AppCompatImageView {
         if (normalizedScale > upperScale) {
             normalizedScale = upperScale;
             deltaScale = upperScale / origScale;
-        }
-        else if (normalizedScale < lowerScale) {
+        } else if (normalizedScale < lowerScale) {
             normalizedScale = lowerScale;
             deltaScale = lowerScale / origScale;
         }
-        matrix.postScale((float)deltaScale, (float)deltaScale, focusX, focusY);
+        matrix.postScale((float) deltaScale, (float) deltaScale, xFocus, yFocus);
         fixScaleTrans();
     }
 
@@ -979,24 +929,25 @@ public class ImagePreviewView extends AppCompatImageView {
         private float startZoom, targetZoom;
         private float bitmapX, bitmapY;
         private boolean stretchImageToSuper;
-        private AccelerateDecelerateInterpolator interpolator = new AccelerateDecelerateInterpolator();
+        private AccelerateDecelerateInterpolator interpolator =
+                new AccelerateDecelerateInterpolator();
         private PointF startTouch;
         private PointF endTouch;
 
-        DoubleTapZoom(float targetZoom, float focusX, float focusY, boolean stretchImageToSuper) {
+        DoubleTapZoom(float targetZoom, float xFocus, float yFocus, boolean stretchImageToSuper) {
             setState(State.ANIMATE_ZOOM);
             startTime = System.currentTimeMillis();
             this.startZoom = normalizedScale;
             this.targetZoom = targetZoom;
             this.stretchImageToSuper = stretchImageToSuper;
-            PointF bitmapPoint = transformCoordTouchToBitmap(focusX, focusY, false);
+            PointF bitmapPoint = transformCoordTouchToBitmap(xFocus, yFocus, false);
             this.bitmapX = bitmapPoint.x;
             this.bitmapY = bitmapPoint.y;
             //
             // Used for translating image during scaling
             //
             startTouch = transformCoordBitmapToTouch(bitmapX, bitmapY);
-            endTouch = new PointF(viewWidth / 2, viewHeight / 2);
+            endTouch = new PointF(viewWidth / 2f, viewHeight / 2f);
         }
 
         @Override
@@ -1019,8 +970,7 @@ public class ImagePreviewView extends AppCompatImageView {
                 // We haven't finished zooming
                 //
                 compatPostOnAnimation(this);
-            }
-            else {
+            } else {
                 //
                 // Finished zooming
                 //
@@ -1032,8 +982,6 @@ public class ImagePreviewView extends AppCompatImageView {
          * Interpolate between where the image should start and end in order to translate
          * the image so that the point that is touched is what ends up centered at the end
          * of the zoom.
-         *
-         * @param t a
          */
         private void translateImageToCenterTouchPosition(float t) {
             float targetX = startTouch.x + t * (endTouch.x - startTouch.x);
@@ -1044,8 +992,6 @@ public class ImagePreviewView extends AppCompatImageView {
 
         /**
          * Use interpolator to getObject t
-         *
-         * @return a
          */
         private float interpolate() {
             long currTime = System.currentTimeMillis();
@@ -1057,9 +1003,6 @@ public class ImagePreviewView extends AppCompatImageView {
         /**
          * Interpolate the current targeted zoom and getObject the delta
          * from the current zoom.
-         *
-         * @param t a
-         * @return a
          */
         private double calculateDeltaScale(float t) {
             double zoom = startZoom + t * (targetZoom - startZoom);
@@ -1073,7 +1016,8 @@ public class ImagePreviewView extends AppCompatImageView {
      *
      * @param x            x-coordinate of touch event
      * @param y            y-coordinate of touch event
-     * @param clipToBitmap Touch event may occur within view, but outside image content. True, to clip return value
+     * @param clipToBitmap Touch event may occur within view, but outside image content. True, to
+     *                     clip return value
      *                     to the bounds of the bitmap size.
      * @return Coordinates of the point touched, in the coordinate system of the original drawable.
      */
@@ -1081,10 +1025,10 @@ public class ImagePreviewView extends AppCompatImageView {
         matrix.getValues(m);
         float origW = getDrawable().getIntrinsicWidth();
         float origH = getDrawable().getIntrinsicHeight();
-        float transX = m[Matrix.MTRANS_X];
-        float transY = m[Matrix.MTRANS_Y];
-        float finalX = ((x - transX) * origW) / getImageWidth();
-        float finalY = ((y - transY) * origH) / getImageHeight();
+        float xTrans = m[Matrix.MTRANS_X];
+        float yTrans = m[Matrix.MTRANS_Y];
+        float finalX = ((x - xTrans) * origW) / getImageWidth();
+        float finalY = ((y - yTrans) * origH) / getImageHeight();
         if (clipToBitmap) {
             finalX = Math.min(Math.max(finalX, 0), origW);
             finalY = Math.min(Math.max(finalY, 0), origH);
@@ -1126,26 +1070,24 @@ public class ImagePreviewView extends AppCompatImageView {
             setState(State.FLING);
             scroller = new CompatScroller(context);
             matrix.getValues(m);
-            int startX = (int)m[Matrix.MTRANS_X];
-            int startY = (int)m[Matrix.MTRANS_Y];
+            int xStart = (int) m[Matrix.MTRANS_X];
+            int yStart = (int) m[Matrix.MTRANS_Y];
             int minX, maxX, minY, maxY;
             if (getImageWidth() > viewWidth) {
-                minX = viewWidth - (int)getImageWidth();
+                minX = viewWidth - (int) getImageWidth();
                 maxX = 0;
-            }
-            else {
-                minX = maxX = startX;
+            } else {
+                minX = maxX = xStart;
             }
             if (getImageHeight() > viewHeight) {
-                minY = viewHeight - (int)getImageHeight();
+                minY = viewHeight - (int) getImageHeight();
                 maxY = 0;
+            } else {
+                minY = maxY = yStart;
             }
-            else {
-                minY = maxY = startY;
-            }
-            scroller.fling(startX, startY, velocityX, velocityY, minX, maxX, minY, maxY);
-            currX = startX;
-            currY = startY;
+            scroller.fling(xStart, yStart, velocityX, velocityY, minX, maxX, minY, maxY);
+            currX = xStart;
+            currY = yStart;
         }
 
         private void cancelFling() {
@@ -1169,13 +1111,13 @@ public class ImagePreviewView extends AppCompatImageView {
                 return;
             }
             if (scroller.computeScrollOffset()) {
-                int newX = scroller.getCurrX();
-                int newY = scroller.getCurrY();
-                int transX = newX - currX;
-                int transY = newY - currY;
-                currX = newX;
-                currY = newY;
-                matrix.postTranslate(transX, transY);
+                int xNew = scroller.getCurrX();
+                int yNew = scroller.getCurrY();
+                int xTrans = xNew - currX;
+                int yTrans = yNew - currY;
+                currX = xNew;
+                currY = yNew;
+                matrix.postTranslate(xTrans, yTrans);
                 fixTrans();
                 setImageMatrix(matrix);
                 compatPostOnAnimation(this);
@@ -1194,21 +1136,20 @@ public class ImagePreviewView extends AppCompatImageView {
             overScroller = new OverScroller(context);
         }
 
-        private void fling(int startX, int startY, int velocityX, int velocityY, int minX, int maxX, int minY,
-                int maxY) {
+        private void fling(int xStart, int yStart, int velocityX, int velocityY, int minX,
+                           int maxX, int minY,
+                           int maxY) {
             if (isPreGingerbread) {
-                scroller.fling(startX, startY, velocityX, velocityY, minX, maxX, minY, maxY);
-            }
-            else {
-                overScroller.fling(startX, startY, velocityX, velocityY, minX, maxX, minY, maxY);
+                scroller.fling(xStart, yStart, velocityX, velocityY, minX, maxX, minY, maxY);
+            } else {
+                overScroller.fling(xStart, yStart, velocityX, velocityY, minX, maxX, minY, maxY);
             }
         }
 
         private void forceFinished() {
             if (isPreGingerbread) {
                 scroller.forceFinished(true);
-            }
-            else {
+            } else {
                 overScroller.forceFinished(true);
             }
         }
@@ -1216,8 +1157,7 @@ public class ImagePreviewView extends AppCompatImageView {
         private boolean isFinished() {
             if (isPreGingerbread) {
                 return scroller.isFinished();
-            }
-            else {
+            } else {
                 return overScroller.isFinished();
             }
         }
@@ -1225,8 +1165,7 @@ public class ImagePreviewView extends AppCompatImageView {
         private boolean computeScrollOffset() {
             if (isPreGingerbread) {
                 return scroller.computeScrollOffset();
-            }
-            else {
+            } else {
                 overScroller.computeScrollOffset();
                 return overScroller.computeScrollOffset();
             }
@@ -1235,8 +1174,7 @@ public class ImagePreviewView extends AppCompatImageView {
         private int getCurrX() {
             if (isPreGingerbread) {
                 return scroller.getCurrX();
-            }
-            else {
+            } else {
                 return overScroller.getCurrX();
             }
         }
@@ -1244,8 +1182,7 @@ public class ImagePreviewView extends AppCompatImageView {
         private int getCurrY() {
             if (isPreGingerbread) {
                 return scroller.getCurrY();
-            }
-            else {
+            } else {
                 return overScroller.getCurrY();
             }
         }
@@ -1255,22 +1192,21 @@ public class ImagePreviewView extends AppCompatImageView {
     private void compatPostOnAnimation(Runnable runnable) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             postOnAnimation(runnable);
-        }
-        else {
+        } else {
             postDelayed(runnable, 1000 / 60);
         }
     }
 
     private class ZoomVariables {
         private float scale;
-        private float focusX;
-        private float focusY;
+        private float xFocus;
+        private float yFocus;
         private ScaleType scaleType;
 
-        private ZoomVariables(float scale, float focusX, float focusY, ScaleType scaleType) {
+        private ZoomVariables(float scale, float xFocus, float yFocus, ScaleType scaleType) {
             this.scale = scale;
-            this.focusX = focusX;
-            this.focusY = focusY;
+            this.xFocus = xFocus;
+            this.yFocus = yFocus;
             this.scaleType = scaleType;
         }
     }
@@ -1278,8 +1214,9 @@ public class ImagePreviewView extends AppCompatImageView {
     public void clickFinish() {
         isBreak = true;
         if (getContext() instanceof Activity) {
-            ((Activity)getContext()).finish();
-            ((Activity)getContext()).overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_fade_out);
+            ((Activity) getContext()).finish();
+            ((Activity) getContext()).overridePendingTransition(R.anim.anim_fade_in,
+                    R.anim.anim_fade_out);
         }
     }
 }
