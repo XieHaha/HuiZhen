@@ -32,6 +32,7 @@ import com.yht.frame.permission.Permission;
 import com.yht.frame.ui.BaseFragment;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.ScalingUtils;
+import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.widgets.textview.JustifiedTextView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.ImagePreviewActivity;
@@ -186,8 +187,13 @@ public class AuthLicenseFragment extends BaseFragment
      * 判断 下一步按钮
      */
     private boolean initNextButton() {
-        //等于2表示里面至少有一张真实图片(可能存在占位图)
-        return imagePaths.size() == BaseData.BASE_TWO;
+        if (imagePaths.size() == BaseData.BASE_TWO) {
+            //等于2表示里面至少有一张真实图片(可能存在占位图)
+            return true;
+        } else {
+            ToastUtil.toast(getContext(), R.string.txt_certificate_hint);
+            return false;
+        }
     }
 
     @Override

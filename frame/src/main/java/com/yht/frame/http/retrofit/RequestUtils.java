@@ -1127,9 +1127,13 @@ public class RequestUtils {
             ArrayList<MultipartBody.Part> imageData = new ArrayList<>();
             for (File file : files) {
                 RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
-                MultipartBody.Part body = MultipartBody.Part.createFormData("file",
-                        URLEncoder.encode(file.getName(),
-                                "UTF-8"), reqFile);
+                MultipartBody.Part body = null;
+                try {
+                    body = MultipartBody.Part.createFormData("file",
+                            URLEncoder.encode(file.getName(), "UTF-8"), reqFile);
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
                 imageData.add(body);
             }
             RetrofitManager.getApiUrlManager()

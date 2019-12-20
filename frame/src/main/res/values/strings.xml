@@ -237,10 +237,12 @@
     <string name="txt_review_failure_hint">失败原因50字，超级过的十几个 啊火锅和军事基地，手机号改户火锅看帅哥开始减肥。是开花结果后。</string>
     <string name="txt_header_image_hint">请上传本人正面免冠近照</string>
     <string name="txt_input_name_hint">请输入姓名</string>
+    <string name="txt_sex_hint">请选择性别</string>
     <string name="txt_hospital_hint">请选择医院</string>
     <string name="txt_depart_hint">请选择科室</string>
     <string name="txt_title_hint">请选择职称</string>
     <string name="txt_instance_hint">医师执业证书正确示例</string>
+    <string name="txt_certificate_hint">请上传医师执业证书信息页</string>
 
     <!--个人中心-->
     <string name="txt_star">****</string>
@@ -534,8 +536,8 @@
     <string name="txt_download_hint">开始下载</string>
     <string name="toast_input_name">请输入居民姓名</string>
     <string name="toast_input_age">请输入居民年龄</string>
-    <string name="toast_input_id_card">请输入居明身份证</string>
-    <string name="toast_input_phone">请输入居明联系方式</string>
+    <string name="toast_input_id_card">请输入居民身份证</string>
+    <string name="toast_input_phone">请输入居民手机号</string>
     <string name="toast_input_description">请输入病情描述</string>
     <string name="toast_input_diagnosisHis">请输入初步诊断</string>
     <string name="toast_input_diagnosisHis_description">请输入初步诊断及居民病情简介</string>

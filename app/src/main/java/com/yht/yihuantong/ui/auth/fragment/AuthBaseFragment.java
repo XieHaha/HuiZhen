@@ -260,6 +260,10 @@ public class AuthBaseFragment extends BaseFragment implements OnMediaItemClickLi
             ToastUtil.toast(getContext(), R.string.txt_input_name_hint);
             return false;
         }
+        if (doctorAuthBean.getDoctorSex() == 0) {
+            ToastUtil.toast(getContext(), R.string.txt_sex_hint);
+            return false;
+        }
         if (TextUtils.isEmpty(doctorAuthBean.getLastApplyHospitalName())) {
             ToastUtil.toast(getContext(), R.string.txt_hospital_hint);
             return false;
@@ -419,7 +423,6 @@ public class AuthBaseFragment extends BaseFragment implements OnMediaItemClickLi
             case RC_CROP_IMG:
                 uploadImage(cutFile);
                 break;
-            //医院选择
             case REQUEST_NEW_HEADER_IMAGE:
                 headerImageCallBack(data);
                 break;

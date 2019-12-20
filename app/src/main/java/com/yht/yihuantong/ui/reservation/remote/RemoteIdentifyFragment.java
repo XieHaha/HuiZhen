@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.Selection;
@@ -16,6 +15,8 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.yht.frame.api.LitePalHelper;
 import com.yht.frame.data.BaseData;
@@ -251,6 +252,10 @@ public class RemoteIdentifyFragment extends BaseFragment
         }
         if (TextUtils.isEmpty(idCard)) {
             ToastUtil.toast(getContext(), R.string.toast_input_id_card);
+            return false;
+        }
+        if (!BaseUtils.isCardNum(idCard)) {
+            ToastUtil.toast(getContext(), R.string.toast_id_card_error);
             return false;
         }
         return true;

@@ -71,7 +71,7 @@ public interface BaseNetConfig {
     /**
      * 证书照片实例
      */
-    String BASE_PHOTO_INSTANCE_URL = "http://remote-t.med-value.com/correctexample/";
+    String BASE_PHOTO_INSTANCE_URL = "http://remote-t.med-value.com/correctexample";
     /**
      * banner详情
      */

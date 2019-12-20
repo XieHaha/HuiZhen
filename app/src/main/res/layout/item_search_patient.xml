@@ -29,7 +29,7 @@
             android:layout_marginTop="2dp"
             android:text="@string/txt_id_card_hint"
             android:textColor="@color/color_6a6f80"
-            android:textSize="@dimen/text_13" />
+            android:textSize="@dimen/text_15" />
 
         <com.yht.frame.widgets.edittext.SuperEditText
             android:id="@+id/tv_id_card"

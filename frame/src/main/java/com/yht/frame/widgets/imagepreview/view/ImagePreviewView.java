@@ -15,7 +15,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
-import androidx.appcompat.widget.AppCompatImageView;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
@@ -25,6 +24,8 @@ import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.OverScroller;
 import android.widget.Scroller;
+
+import androidx.appcompat.widget.AppCompatImageView;
 
 import com.bumptech.glide.Glide;
 import com.yht.frame.R;
@@ -115,7 +116,7 @@ public class ImagePreviewView extends AppCompatImageView {
     }
 
     private void init() {
-        setScaleType(ScaleType.CENTER_INSIDE);
+        setScaleType(ScaleType.FIT_CENTER);
         isBreak = false;
     }
 
@@ -907,9 +908,7 @@ public class ImagePreviewView extends AppCompatImageView {
             if (detector != null) {
                 scaleImage(detector.getScaleFactor(), detector.getFocusX(), detector.getFocusY(), true);
             }
-            //
             // OnTouchImageViewListener is set: TouchImageView pinch zoomed by user.
-            //
             if (touchImageViewListener != null) {
                 touchImageViewListener.onMove();
             }
