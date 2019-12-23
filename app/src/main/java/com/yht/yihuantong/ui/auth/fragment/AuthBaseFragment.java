@@ -372,14 +372,8 @@ public class AuthBaseFragment extends BaseFragment implements OnMediaItemClickLi
         super.onResponseSuccess(task, response);
         switch (task) {
             case UPLOAD_FILE:
-                //图片上传成功
-                Glide.with(this).load(cutFileUri).apply(GlideHelper.getOptions(BaseUtils.dp2px(getContext(), 4))).into(ivAuthBaseImg);
                 headerImageUrl = (String) response.getData();
-                imagePaths.clear();
-                NormImage normImage = new NormImage();
-                normImage.setImageUrl(headerImageUrl);
-                imagePaths.add(normImage);
-                doctorAuthBean.setDoctorPhoto(headerImageUrl);
+                imageUploadSuccess();
                 break;
             case DATA_JOB_TITLE:
                 ArrayList<HospitalTitleBean> list =
@@ -395,6 +389,17 @@ public class AuthBaseFragment extends BaseFragment implements OnMediaItemClickLi
                 break;
         }
     }
+
+    private void imageUploadSuccess() {
+        //图片上传成功
+        Glide.with(this).load(headerImageUrl).apply(GlideHelper.getOptions(BaseUtils.dp2px(getContext(), 4))).into(ivAuthBaseImg);
+        imagePaths.clear();
+        NormImage normImage = new NormImage();
+        normImage.setImageUrl(headerImageUrl);
+        imagePaths.add(normImage);
+        doctorAuthBean.setDoctorPhoto(headerImageUrl);
+    }
+
 
     /**
      * 打开图片库
@@ -424,7 +429,8 @@ public class AuthBaseFragment extends BaseFragment implements OnMediaItemClickLi
                 uploadImage(cutFile);
                 break;
             case REQUEST_NEW_HEADER_IMAGE:
-                headerImageCallBack(data);
+                headerImageUrl = data.getStringExtra(CommonData.KEY_PUBLIC_STRING);
+                imageUploadSuccess();
                 break;
             case REQUEST_CODE_HOSPITAL:
                 HospitalBean bean =
