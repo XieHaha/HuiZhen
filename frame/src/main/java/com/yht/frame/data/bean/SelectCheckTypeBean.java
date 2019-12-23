@@ -18,6 +18,8 @@ public class SelectCheckTypeBean extends LitePalSupport implements Serializable 
      * 1 服务项，2 服务包
      */
     private int type;
+    private int refundType;
+    private int payType;
     private long price;
     private String projectCode;
     private String projectName;
@@ -72,6 +74,22 @@ public class SelectCheckTypeBean extends LitePalSupport implements Serializable 
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public int getRefundType() {
+        return refundType;
+    }
+
+    public void setRefundType(int refundType) {
+        this.refundType = refundType;
+    }
+
+    public int getPayType() {
+        return payType;
+    }
+
+    public void setPayType(int payType) {
+        this.payType = payType;
     }
 
     public String getProjectAlias() {

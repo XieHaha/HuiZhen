@@ -391,7 +391,8 @@ public class ReservationServiceDetailActivity extends BaseActivity
             reportList.add(bean);
         }
         int checkStatus = bean.getStatus();
-        tvType.append(appendImage(checkStatus, bean.getName()));
+        //添加检查项状态
+        appendImage(tvType, checkStatus, bean.getName());
         if (checkStatus == CHECK_TYPE_STATUS_CANCEL) {
             tvType.setSelected(true);
             imageView.setSelected(true);
@@ -525,38 +526,37 @@ public class ReservationServiceDetailActivity extends BaseActivity
         }
     }
 
-    private SpannableString appendImage(int status, String showText) {
+    private void appendImage(TextView tvType, int status, String showText) {
         CenterImageSpan imgSpan;
         SpannableString spanString = new SpannableString(showText);
         switch (status) {
-            case CHECK_TYPE_STATUS_WAIT_PAY:
-                break;
-            case CHECK_TYPE_STATUS_COMPLETE:
-                break;
             case CHECK_TYPE_STATUS_CANCEL:
                 imgSpan = new CenterImageSpan(this, bitmapCancel);
                 spanString.setSpan(imgSpan, 0, showText.length(),
                         Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                tvType.append(spanString);
                 break;
             case CHECK_TYPE_STATUS_REFUNDING:
                 imgSpan = new CenterImageSpan(this, bitmapRefunding);
                 spanString.setSpan(imgSpan, 0, showText.length(),
                         Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                tvType.append(spanString);
                 break;
             case CHECK_TYPE_STATUS_REFUND_FAILED:
                 imgSpan = new CenterImageSpan(this, bitmapRefundFailed);
                 spanString.setSpan(imgSpan, 0, showText.length(),
                         Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                tvType.append(spanString);
                 break;
             case CHECK_TYPE_STATUS_REFUND_SUCCESS:
                 imgSpan = new CenterImageSpan(this, bitmapRefundSuccess);
                 spanString.setSpan(imgSpan, 0, showText.length(),
                         Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                tvType.append(spanString);
                 break;
             default:
                 break;
         }
-        return spanString;
     }
 
     @Override

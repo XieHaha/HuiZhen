@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 
 import com.yht.frame.data.CommonData;
 import com.yht.frame.ui.BaseActivity;
+import com.yht.frame.utils.ToastUtil;
 import com.yht.frame.widgets.dialog.HintDialog;
 import com.yht.frame.widgets.edittext.AbstractTextWatcher;
 import com.yht.frame.widgets.edittext.MultiLineEditText;
@@ -217,7 +218,7 @@ public class PastHistoryActivity extends BaseActivity {
             R.id.iv_allergies})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.public_title_bar_more:
+            case R.id.public_title_bar_more_a1:
                 if (publicTitleBarMore.isSelected()) {
                     save();
                 }
@@ -249,6 +250,21 @@ public class PastHistoryActivity extends BaseActivity {
      * 保存
      */
     private void save() {
+        if (TextUtils.isEmpty(pastMedicalHis) && etPastMedicalHis.getVisibility() == View.VISIBLE) {
+            ToastUtil.toast(this, R.string.txt_input_past_hint);
+            etPastMedicalHis.requestFocus();
+            return;
+        }
+        if (TextUtils.isEmpty(familyMedicalHis) && etFamilyMedicalHis.getVisibility() == View.VISIBLE) {
+            ToastUtil.toast(this, R.string.txt_input_past_hint);
+            etFamilyMedicalHis.requestFocus();
+            return;
+        }
+        if (TextUtils.isEmpty(allergiesHis) && etAllergies.getVisibility() == View.VISIBLE) {
+            ToastUtil.toast(this, R.string.txt_input_past_hint);
+            etAllergies.requestFocus();
+            return;
+        }
         hideSoftInputFromWindow();
         pastHistoryData.clear();
         pastHistoryData.add(pastMedicalHis);

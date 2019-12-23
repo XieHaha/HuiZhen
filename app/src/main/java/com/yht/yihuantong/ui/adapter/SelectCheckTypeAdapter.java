@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.yht.frame.data.BaseData;
 import com.yht.frame.data.bean.SelectCheckTypeBean;
 import com.yht.frame.data.bean.SelectCheckTypeChildBean;
 import com.yht.frame.utils.BaseUtils;
@@ -80,10 +81,8 @@ public class SelectCheckTypeAdapter extends BaseQuickAdapter<SelectCheckTypeBean
         TextView tvName = helper.getView(R.id.tv_check_type_name);
         tvName.setText(String.format(mContext.getString(R.string.txt_space),
                 item.getProjectName()));
-        //1、服务包；
-        //2、服务包线上支付；
-        //3、服务包配置了不可退款。
-        if (true) {
+        //1、服务包；2、服务包线上支付；3、服务包配置了不可退款。
+        if (item.getType() == BaseData.BASE_TWO && item.getPayType() == BaseData.BASE_ONE && item.getRefundType() == BaseData.BASE_ZERO) {
             tvName.append(appendImage(item.getProjectName()));
         }
         ImageView ivSelect = helper.getView(R.id.iv_select);
@@ -102,6 +101,9 @@ public class SelectCheckTypeAdapter extends BaseQuickAdapter<SelectCheckTypeBean
         }
     }
 
+    /**
+     * 服务包下服务项
+     */
     private void addServiceType(LinearLayout layoutCheck, SelectCheckTypeChildBean childBean) {
         View convertView = LayoutInflater.from(mContext).inflate(R.layout.item_child_service, null);
         TextView tvContent = convertView.findViewById(R.id.tv_content);
@@ -112,6 +114,9 @@ public class SelectCheckTypeAdapter extends BaseQuickAdapter<SelectCheckTypeBean
         layoutCheck.addView(convertView);
     }
 
+    /**
+     * 服务包标识
+     */
     private SpannableString appendImage(String showText) {
         CenterImageSpan imgSpan = new CenterImageSpan(mContext, bitmap);
         SpannableString spanString = new SpannableString(showText);

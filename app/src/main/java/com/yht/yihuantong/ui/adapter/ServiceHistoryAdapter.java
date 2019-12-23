@@ -15,7 +15,6 @@ import com.yht.frame.data.BaseData;
 import com.yht.frame.data.bean.CheckBean;
 import com.yht.frame.data.bean.CheckTypeBean;
 import com.yht.frame.data.type.ServiceOrderStatus;
-import com.yht.frame.data.type.CheckTypeStatus;
 import com.yht.frame.utils.BaseUtils;
 import com.yht.frame.utils.glide.GlideHelper;
 import com.yht.yihuantong.R;
@@ -85,20 +84,10 @@ public class ServiceHistoryAdapter extends BaseQuickAdapter<CheckBean, BaseViewH
             CheckTypeBean bean = checkTypeList.get(i);
             View view = LayoutInflater.from(mContext).inflate(R.layout.item_check_type, null);
             TextView serviceName = view.findViewById(R.id.tv_check_type_name);
-            ImageView imageDot = view.findViewById(R.id.iv_check_type_dot);
             if (bean.getItemType() == BaseData.BASE_ONE) {
                 serviceName.setText(bean.getName());
             } else {
                 serviceName.setText(bean.getPackName());
-            }
-            //如果订单为已取消，检查项不做处理
-            if (item.getStatus() != CHECK_ORDER_STATUS_CANCEL &&
-                    bean.getStatus() == CheckTypeStatus.CHECK_TYPE_STATUS_CANCEL) {
-                serviceName.setSelected(true);
-                imageDot.setSelected(true);
-            } else {
-                serviceName.setSelected(false);
-                imageDot.setSelected(false);
             }
             layout.addView(view);
         }

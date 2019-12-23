@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.yht.frame.data.BaseData;
 import com.yht.frame.data.bean.SelectCheckTypeBean;
 import com.yht.frame.data.bean.SelectCheckTypeChildBean;
 import com.yht.frame.utils.BaseUtils;
@@ -89,10 +90,8 @@ public class SelectCheckTypeSearchAdapter extends BaseAdapter {
         SelectCheckTypeBean item = list.get(position);
         holder.tvName.setText(String.format(context.getString(R.string.txt_space),
                 item.getProjectName()));
-        //1、服务包；
-        //2、服务包线上支付；
-        //3、服务包配置了不可退款。
-        if (true) {
+        //1、服务包；2、服务包线上支付；3、服务包配置了不可退款。
+        if (item.getType() == BaseData.BASE_TWO && item.getPayType() == BaseData.BASE_ONE && item.getRefundType() == BaseData.BASE_ZERO) {
             holder.tvName.append(appendImage(item.getProjectName()));
         }
         holder.tvPrice.setText(

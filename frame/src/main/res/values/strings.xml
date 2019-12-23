@@ -184,6 +184,7 @@
     <string name="txt_login_protocol">登录即代表同意会珍用户协议和隐私协议</string>
     <string name="txt_login_hint">未注册手机号登录后将自动注册</string>
     <string name="txt_login_account_hint">手机号</string>
+    <string name="txt_input_phone_hint">请输入手机号码</string>
     <string name="txt_login_code_hint">短信验证码</string>
     <string name="txt_login_obtain_code">获取验证码</string>
     <string name="txt_login_time">%ds</string>
@@ -389,6 +390,7 @@
     <string name="txt_family_medical_his_not_p">该患者否认有家族病史</string>
     <string name="txt_allergies_not">该居民否认有过敏史</string>
     <string name="txt_allergies_not_p">该患者否认有过敏史</string>
+    <string name="txt_input_past_hint">请输入居民既往史</string>
     <string name="txt_allergies">过敏史</string>
     <string name="txt_diagnosis_hint">请针对居民病情填写初步诊断及病情简介</string>
     <string name="txt_camera_people">拍照确认</string>
