@@ -98,6 +98,8 @@ public class QrCodeActivity extends BaseActivity implements ViewPager.OnPageChan
         qrCodePageAdapter.notifyDataSetChanged();
         if (mode) {
             viewPager.setCurrentItem(1);
+        }else {
+            ivLeft.setSelected(true);
         }
         return qrCodeBeans;
     }

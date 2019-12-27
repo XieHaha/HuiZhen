@@ -111,7 +111,7 @@ public class RequestUtils {
 
     public static void uploadImg(Context context, String token, File file,
                                  final ResponseListener<BaseResponse> listener) {
-        RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
+        RequestBody reqFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
         MultipartBody.Part body = null;
         try {
             body = MultipartBody.Part.createFormData("file", URLEncoder.encode(file.getName(),
@@ -129,7 +129,7 @@ public class RequestUtils {
     public static void uploadImgWaterMark(Context context, String token, File file,
                                           boolean cancel,
                                           final ResponseListener<BaseResponse> listener) {
-        RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
+        RequestBody reqFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
         MultipartBody.Part body = null;
         try {
             body = MultipartBody.Part.createFormData("file", URLEncoder.encode(file.getName(),
@@ -1126,7 +1126,8 @@ public class RequestUtils {
         if (files.size() > 0) {
             ArrayList<MultipartBody.Part> imageData = new ArrayList<>();
             for (File file : files) {
-                RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
+                RequestBody reqFile = RequestBody.create(MediaType.parse("multipart/form-data"),
+                        file);
                 MultipartBody.Part body = null;
                 try {
                     body = MultipartBody.Part.createFormData("file",
