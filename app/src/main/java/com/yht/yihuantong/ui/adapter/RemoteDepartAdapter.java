@@ -81,7 +81,10 @@ public class RemoteDepartAdapter extends BaseMultiItemQuickAdapter<MultiItemEnti
                 //点击事件处理
                 helper.itemView.setOnClickListener(v -> {
                     if (onRemoteDepartSelectListener != null && remoteDepartBean.isFree()) {
-                        onRemoteDepartSelectListener.onRemoteDepartSelect(remoteDepartBean);
+                        RemoteDepartTitleBean parentBean =
+                                (RemoteDepartTitleBean) getData().get(getParentPosition(item));
+                        onRemoteDepartSelectListener.onRemoteDepartSelect(remoteDepartBean,
+                                parentBean);
                     }
                 });
                 break;
@@ -119,15 +122,16 @@ public class RemoteDepartAdapter extends BaseMultiItemQuickAdapter<MultiItemEnti
         /**
          * 已选科室
          *
-         * @param remoteDepartBean 数据
+         * @param bean       数据
+         * @param parentBean 数据
          */
-        void onRemoteDepartSelect(RemoteDepartBean remoteDepartBean);
+        void onRemoteDepartSelect(RemoteDepartBean bean, RemoteDepartTitleBean parentBean);
 
         /**
          * 历史数据回填
          *
-         * @param remoteDepartBean 科室
+         * @param bean 科室
          */
-        void addRemoteDepartHistory(RemoteDepartBean remoteDepartBean);
+        void addRemoteDepartHistory(RemoteDepartBean bean);
     }
 }

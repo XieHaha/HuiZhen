@@ -154,7 +154,7 @@ public class SelectRemoteDepartActivity extends BaseActivity
      */
     private void initGroupData() {
         RemoteDepartTitleBean titleBean;
-        Map<String, List<RemoteDepartBean>> resultMap = new HashMap<>(16);
+        Map<String, List<RemoteDepartBean>> resultMap = new HashMap<>();
         RemoteDepartBean remoteDepartBean;
         for (int i = 0; i < remoteDepartBeans.size(); i++) {
             remoteDepartBean = remoteDepartBeans.get(i);
@@ -172,6 +172,17 @@ public class SelectRemoteDepartActivity extends BaseActivity
             for (RemoteDepartBean bean : value) {
                 titleBean.setHospitalName(bean.getHospitalName());
                 titleBean.addSubItem(bean);
+                if (selectedRemoteDepartId != null && selectedRemoteDepartId.size() > 0) {
+                    if (selectedRemoteDepartId.contains(bean.getDepartmentId())) {
+                        //计数
+                        int num = titleBean.getSelectedNum();
+                        if (num < 0) {
+                            num = 0;
+                        }
+                        num++;
+                        titleBean.setSelectedNum(num);
+                    }
+                }
             }
             remoteDepartGroup.add(titleBean);
         }
@@ -223,17 +234,32 @@ public class SelectRemoteDepartActivity extends BaseActivity
     }
 
     @Override
-    public void onRemoteDepartSelect(RemoteDepartBean remoteDepartBean) {
-        if (selectedRemoteDepartBeans.contains(remoteDepartBean)) {
-            selectedRemoteDepartBeans.remove(remoteDepartBean);
-            selectedRemoteDepartId.remove(Integer.valueOf(remoteDepartBean.getDepartmentId()));
+    public void onRemoteDepartSelect(RemoteDepartBean bean, RemoteDepartTitleBean parentBean) {
+        if (selectedRemoteDepartBeans.contains(bean)) {
+            selectedRemoteDepartBeans.remove(bean);
+            selectedRemoteDepartId.remove(Integer.valueOf(bean.getDepartmentId()));
+            //计数
+            int num = parentBean.getSelectedNum();
+            if (num > 0) {
+                num--;
+            } else {
+                num = 0;
+            }
+            parentBean.setSelectedNum(num);
         } else {
             if (selectedRemoteDepartBeans.size() >= MAX_DEPART) {
                 ToastUtil.toast(this, R.string.txt_add_depart_max);
                 return;
             }
-            selectedRemoteDepartBeans.add(remoteDepartBean);
-            selectedRemoteDepartId.add(remoteDepartBean.getDepartmentId());
+            selectedRemoteDepartBeans.add(bean);
+            selectedRemoteDepartId.add(bean.getDepartmentId());
+            //计数
+            int num = parentBean.getSelectedNum();
+            if (num < 0) {
+                num = 0;
+            }
+            num++;
+            parentBean.setSelectedNum(num);
         }
         if (selectedRemoteDepartBeans.size() > 0) {
             publicTitleBarMore.setSelected(true);
@@ -246,9 +272,9 @@ public class SelectRemoteDepartActivity extends BaseActivity
     }
 
     @Override
-    public void addRemoteDepartHistory(RemoteDepartBean remoteDepartBean) {
-        if (!selectedRemoteDepartBeans.contains(remoteDepartBean)) {
-            selectedRemoteDepartBeans.add(remoteDepartBean);
+    public void addRemoteDepartHistory(RemoteDepartBean bean) {
+        if (!selectedRemoteDepartBeans.contains(bean)) {
+            selectedRemoteDepartBeans.add(bean);
         }
     }
 
